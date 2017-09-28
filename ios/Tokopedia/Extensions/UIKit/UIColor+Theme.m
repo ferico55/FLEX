@@ -74,6 +74,10 @@
         return [UIColor fromHexString:@"#bdbdbd"];
     }
 
+    +(UIColor *)tpDarkPurple{
+        return [UIColor fromHexString:@"#8f43b8"];
+    }
+
     +(UIColor *)fromHexString:(NSString *)hexString{
         
         unsigned int rgbValue = 0;

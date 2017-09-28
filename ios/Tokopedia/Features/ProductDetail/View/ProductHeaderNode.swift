@@ -386,6 +386,7 @@ class ProductHeaderNode: ContainerNode {
             }.add(children: [
                 productOriginalPriceView(),
                 productPriceView(),
+                productComponentOfficialStoreTag(),
                 productPricePromoView()
                 ])
     }
@@ -407,7 +408,7 @@ class ProductHeaderNode: ContainerNode {
     
     private func productPriceView() -> NodeType {
         var marginTop: CGFloat = 11
-        var marginBottom: CGFloat = 22
+        var marginBottom: CGFloat = 10
         if let _ = state.productDetail?.campaign?.percentage_amount {
             marginTop = 2
             marginBottom = 10
@@ -479,6 +480,32 @@ class ProductHeaderNode: ContainerNode {
             view.textAlignment = .center
             view.text = "\(percentage)%OFF"
         }
+    }
+    
+    private func productComponentOfficialStoreTag() -> NodeType {
+        guard let isOfficialStore = state.productDetail?.shop.isOfficial else {
+            return NilNode()
+        }
+        
+        if isOfficialStore {
+            return Node<UILabel>(identifier: "Product-Official-Store-Tag") { view, layout, _ in
+                layout.height = 16
+                layout.width = 313
+                layout.marginLeft = 15
+                layout.marginBottom = 10
+                view.textColor = .tpDarkPurple()
+                view.font = .microTheme()
+                view.text = "Produk dari Brand Resmi"
+                }.add(children: [
+                    Node<UIImageView>() { view, layout, _ in
+                        layout.width = 16
+                        layout.height = 16
+                        layout.alignSelf = .center
+                        view.image = UIImage(named: "badge_official")
+                    }])
+        }
+        
+        return NilNode()
     }
     
     private func productPricePromoView() -> NodeType {
