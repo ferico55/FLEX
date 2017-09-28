@@ -60,4 +60,11 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
     });
 }
 
+RCT_EXPORT_METHOD(showDangerAlert:(NSString*) message){
+    dispatch_async(dispatch_get_main_queue(), ^{
+        StickyAlertView *alertView = [[StickyAlertView alloc] initWithErrorMessages:@[message] delegate:[UIApplication sharedApplication].keyWindow.rootViewController];
+        [alertView show];
+    });
+}
+
 @end
