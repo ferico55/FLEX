@@ -552,6 +552,7 @@ NoResultDelegate
     _isrefreshview = YES;
     _collectionView.contentOffset = CGPointMake(0, 0);
     [_productFilter setEtalaseId:selectedEtalase.etalase_id];
+    [_searchBar setPlaceholder:selectedEtalase.etalase_name];
     _productFilter.isGetListProductToAce = selectedEtalase.isGetListProductFromAce;
     [_product removeAllObjects];
     [_collectionView reloadData];

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -17,6 +17,7 @@
                 <outlet property="flowLayout" destination="O0b-PL-j9s" id="1nn-db-p20"/>
                 <outlet property="footer" destination="6N7-Wf-YM3" id="NGF-gE-l5z"/>
                 <outlet property="header" destination="GPk-s2-Kf1" id="je3-HS-vso"/>
+                <outlet property="searchBar" destination="Uzb-YT-AsY" id="16n-i3-P9H"/>
                 <outlet property="view" destination="56G-bC-GIm" id="XbP-S1-RtX"/>
             </connections>
         </placeholder>
@@ -117,10 +118,10 @@
                             <variation key="heightClass=regular-widthClass=regular">
                                 <mask key="constraints">
                                     <include reference="9U6-2H-jbT"/>
-                                    <exclude reference="Ifd-gd-nhL"/>
                                     <include reference="FxK-LN-OYS"/>
                                     <exclude reference="Nbe-F5-zuC"/>
                                     <include reference="fZS-ng-9S8"/>
+                                    <exclude reference="Ifd-gd-nhL"/>
                                 </mask>
                             </variation>
                         </view>
@@ -287,10 +288,10 @@
                             <variation key="heightClass=regular-widthClass=regular">
                                 <mask key="constraints">
                                     <include reference="XTl-Ur-L66"/>
+                                    <exclude reference="oxN-ck-Evh"/>
                                     <exclude reference="WtI-hA-dSO"/>
                                     <include reference="Yb8-aA-pAH"/>
                                     <include reference="kDq-Gg-jEq"/>
-                                    <exclude reference="oxN-ck-Evh"/>
                                 </mask>
                             </variation>
                         </view>
