@@ -149,10 +149,10 @@
         _orderCancelled.hidden = YES;
     }
     
-    NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
+    NSInteger paymentConfirmation = [_notification.result.purchase.purchase_payment_confirm integerValue];
     
-    if(totalPaymentConfirmation > 0) {
-        _paymentConfirmationLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation];
+    if(paymentConfirmation > 0) {
+        _paymentConfirmationLabel.text = [NSString stringWithFormat:@"%zd",paymentConfirmation];
         _paymentConfirmation.hidden = NO;
     } else {
         _paymentConfirmation.hidden = YES;
