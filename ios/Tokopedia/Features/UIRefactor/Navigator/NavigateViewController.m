@@ -214,6 +214,7 @@
 -(void)navigateToBuyerOrderFromViewController:(UIViewController*)viewController {
     TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
     controller.action = @"get_tx_order_status";
+    controller.viewControllerTitle = @"Status Pemesanan";
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
@@ -221,6 +222,7 @@
 -(void)navigateToBuyerShippingConfFromViewController:(UIViewController*)viewController {
     TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
     controller.action = @"get_tx_order_deliver";
+    controller.viewControllerTitle = @"Konfirmasi Penerimaan";
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
@@ -228,6 +230,7 @@
 -(void)navigateToBuyerHistoryFromViewController:(UIViewController*)viewController {
     TxOrderStatusViewController *controller =[TxOrderStatusViewController new];
     controller.action = @"get_tx_order_list";
+    controller.viewControllerTitle = @"Daftar Transaksi";
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
