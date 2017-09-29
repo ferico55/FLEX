@@ -189,16 +189,35 @@ FavoriteShopRequestDelegate
         cell.delegate = self;
     }
     
-    if(indexPath.section == 0){
+    if(indexPath.section == 0) {
         PromoShop *promoShop = _promoShops[indexPath.row].shop;
+        if (promoShop.gold_shop) {
+            [cell.consImageToNameLabel setConstant:29];
+            cell.storeIcon.image = [UIImage imageNamed:@"icon_medal_gold"];
+        } else if (promoShop.isOfficialStore) {
+            [cell.consImageToNameLabel setConstant:29];
+            cell.storeIcon.image = [UIImage imageNamed:@"badge_official"];
+        } else {
+            [cell.consImageToNameLabel setConstant:8];
+            cell.storeIcon.image = nil;
+        }
         cell.shopname.text = [promoShop.name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = promoShop.location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:promoShop.image_shop.s_url]
                            placeholderImage:[UIImage imageNamed:@"icon_default_shops.jpg"]];
         cell.promoResult = _promoShops[indexPath.row];
         [cell setupButtonIsFavorited:NO];
-    }else{
+    } else {
         FavoritedShopList *favoritedShop = _shops[indexPath.row];
+        BOOL hasBadge = favoritedShop.shop_badge.count > 0;
+        [cell.storeIcon setHidden:!hasBadge];
+        if (hasBadge) {
+            [cell.consImageToNameLabel setConstant:29];
+            cell.storeIcon.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[favoritedShop.shop_badge firstObject].image_url]]];
+        } else {
+            cell.storeIcon.image = nil;
+            [cell.consImageToNameLabel setConstant:8];
+        }
         cell.shopname.text = [favoritedShop.shop_name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = favoritedShop.shop_location;
         [cell.shopimageview setImageWithURL:[NSURL URLWithString:favoritedShop.shop_image]

@@ -7,6 +7,7 @@
 //
 
 #import "FavoritedShopList.h"
+#import "Tokopedia-Swift.h"
 
 @implementation FavoritedShopList
 
@@ -25,8 +26,10 @@
 
 +(RKObjectMapping *) mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass: self];
-    
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    RKRelationshipMapping *badgeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_badge" toKeyPath:@"shop_badge" withMapping:[ProductBadge mapping]];
+    [mapping addPropertyMapping:badgeMapping];
     
     return mapping;
 }

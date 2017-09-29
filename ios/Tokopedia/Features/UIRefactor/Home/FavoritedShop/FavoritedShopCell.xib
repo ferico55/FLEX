@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -37,6 +37,13 @@
                                 <color key="textColor" red="0.039215686270000001" green="0.4941176471" blue="0.027450980390000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uZC-K1-hzP" userLabel="storeIcon">
+                                <rect key="frame" x="63" y="18" width="16" height="16"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="16" id="SDg-An-eVz"/>
+                                    <constraint firstAttribute="height" constant="16" id="kwE-if-vPI"/>
+                                </constraints>
+                            </imageView>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="qmy-ip-M1B">
                                 <rect key="frame" x="63" y="34" width="141" height="14"/>
                                 <constraints>
@@ -74,6 +81,7 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="uZC-K1-hzP" firstAttribute="centerY" secondItem="wdY-ec-t56" secondAttribute="centerY" id="0lE-9Y-UaG"/>
                             <constraint firstItem="5gt-to-Wkj" firstAttribute="top" secondItem="66d-Gf-XF3" secondAttribute="top" constant="13" id="146-xF-Zdp"/>
                             <constraint firstItem="qmy-ip-M1B" firstAttribute="top" secondItem="wdY-ec-t56" secondAttribute="bottom" id="CUB-s9-bmS"/>
                             <constraint firstAttribute="height" constant="66" id="DwX-1l-6R9"/>
@@ -85,6 +93,7 @@
                             <constraint firstItem="qmy-ip-M1B" firstAttribute="leading" secondItem="5gt-to-Wkj" secondAttribute="trailing" constant="8" id="eOJ-qg-qsh"/>
                             <constraint firstItem="gUX-i4-O76" firstAttribute="leading" secondItem="wdY-ec-t56" secondAttribute="trailing" constant="8" id="kjq-45-EmR"/>
                             <constraint firstItem="gUX-i4-O76" firstAttribute="top" secondItem="66d-Gf-XF3" secondAttribute="top" constant="17" id="mmd-3R-HkB"/>
+                            <constraint firstItem="uZC-K1-hzP" firstAttribute="leading" secondItem="5gt-to-Wkj" secondAttribute="trailing" constant="8" id="oJk-tD-EKK"/>
                             <constraint firstAttribute="bottom" secondItem="gUX-i4-O76" secondAttribute="bottom" constant="17" id="vza-Ha-Cbf"/>
                             <constraint firstItem="wdY-ec-t56" firstAttribute="leading" secondItem="5gt-to-Wkj" secondAttribute="trailing" constant="8" id="yGz-7s-T6V"/>
                         </constraints>
@@ -98,10 +107,12 @@
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.95202105978260865" green="0.95202105978260865" blue="0.95202105978260865" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <connections>
+                <outlet property="consImageToNameLabel" destination="yGz-7s-T6V" id="Owu-bw-oop"/>
                 <outlet property="isfavoritedshop" destination="gUX-i4-O76" id="ZmI-gA-GGd"/>
                 <outlet property="shopimageview" destination="5gt-to-Wkj" id="jcK-6j-cRg"/>
                 <outlet property="shoplocation" destination="qmy-ip-M1B" id="qlX-BS-25q"/>
                 <outlet property="shopname" destination="wdY-ec-t56" id="N7t-UF-Bku"/>
+                <outlet property="storeIcon" destination="uZC-K1-hzP" id="e5M-Iz-AOI"/>
                 <outletCollection property="gestureRecognizers" destination="Ev2-Sh-dk5" appends="YES" id="p2C-Te-Xdt"/>
             </connections>
             <point key="canvasLocation" x="-704" y="-156"/>

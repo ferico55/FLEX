@@ -9,6 +9,8 @@
 #import <UIKit/UIKit.h>
 #import "FavoritedShopCell.h"
 
+@class ProductBadge;
+
 @interface FavoritedShopViewController : GAITrackedViewController
 
 @property (assign, nonatomic) NSInteger index;

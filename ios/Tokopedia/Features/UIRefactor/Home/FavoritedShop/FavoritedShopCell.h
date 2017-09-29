@@ -23,6 +23,8 @@
 @property (nonatomic, weak) IBOutlet id<FavoritedShopCellDelegate> delegate;
 @property (strong,nonatomic) NSDictionary *data;
 @property (weak, nonatomic) IBOutlet UILabel *shopname;
+@property (weak, nonatomic) IBOutlet UIImageView *storeIcon;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *consImageToNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *shoplocation;
 @property (weak, nonatomic) IBOutlet UIImageView *shopimageview;
 @property (weak, nonatomic) IBOutlet UIButton *isfavoritedshop;

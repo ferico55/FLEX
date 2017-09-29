@@ -18,6 +18,7 @@
 @property (strong, nonatomic) NSString* lucky_shop;
 @property (strong, nonatomic) NSString* uri;
 @property (strong, nonatomic) PromoShopImage* image_shop;
+@property (nonatomic) BOOL isOfficialStore;
 @property (nonatomic) BOOL gold_shop;
 @property (nonatomic) BOOL enable_fav;
 @property (strong, nonatomic) NSArray *badges;
