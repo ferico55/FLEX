@@ -33,6 +33,12 @@ import Lottie
         title = "Pengaturan Pembayaran"
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsManager.trackScreenName("Credit Card List Page")
+    }
+    
     func setupRefreshControl() {
         tableView.addSubview(refreshControl)
     }
@@ -135,6 +141,7 @@ import Lottie
                 creditCardCell.setData(userData)
                 creditCardCell.delete
                     .flatMap({ [weak self] _ -> Observable<Void> in
+                        AnalyticsManager.trackEventName("clickDelete", category: "CC List", action: GA_EVENT_ACTION_CLICK, label: "Hapus-Attempt")
                         guard let `self` = self else { return .empty() }
                         return self.showAlertConfrimationDeleteCreditCard(userData)
                     }).subscribe(onNext: { [weak self] _ in
@@ -241,9 +248,11 @@ import Lottie
             guard let `self` = self else { return Disposables.create()}
             let alertVC = UIAlertController(title: "Hapus Kartu Kredit", message: "Hapus nomor kartu kredit\n\(data.number) ?", preferredStyle: .alert)
             alertVC.addAction(UIAlertAction(title: "Batal", style: .default, handler: { _ in
+                AnalyticsManager.trackEventName("clickDelete", category: "CC List", action: GA_EVENT_ACTION_CLICK, label: "Hapus-Batal")
                 observer.onCompleted()
             }))
             alertVC.addAction(UIAlertAction(title: "Hapus", style: .default, handler: { _ in
+                AnalyticsManager.trackEventName("clickDelete", category: "CC List", action: GA_EVENT_ACTION_CLICK, label: "Hapus-Confirmation")
                 observer.onNext()
                 observer.onCompleted()
             }))
