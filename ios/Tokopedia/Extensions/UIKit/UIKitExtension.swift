@@ -329,13 +329,93 @@ extension UIImage {
     }
     
     // MARK: - UIImage+Resize
+    func fixOrientation() -> UIImage {
+        
+        if self.imageOrientation == UIImageOrientation.up {
+            return self
+        }
+        
+        var transform = CGAffineTransform.identity
+        
+        switch self.imageOrientation {
+            case .down, .downMirrored:
+                transform = transform.translatedBy(x: self.size.width, y: self.size.height)
+                transform = transform.rotated(by: .pi);
+                
+            case .left, .leftMirrored:
+                transform = transform.translatedBy(x: self.size.width, y: 0);
+                transform = transform.rotated(by: .pi / 2);
+                
+            case .right, .rightMirrored:
+                transform = transform.translatedBy(x: 0, y: self.size.height);
+                transform = transform.rotated(by: -.pi / 2);
+                
+            case .up, .upMirrored:
+                break
+            }
+            
+            switch self.imageOrientation {
+                
+            case .upMirrored, .downMirrored:
+                transform = transform.translatedBy(x: self.size.width, y: 0)
+                transform = transform.scaledBy(x: -1, y: 1)
+                
+            case .leftMirrored, .rightMirrored:
+                transform = transform.translatedBy(x: self.size.height, y: 0)
+                transform = transform.scaledBy(x: -1, y: 1);
+                
+            default:
+                break;
+        }
+        
+        // Now we draw the underlying CGImage into a new context, applying the transform
+        // calculated above.
+        guard let cgImage = self.cgImage else {
+            return self
+        }
+        guard let colorSpace = cgImage.colorSpace else {
+            return self
+        }
+        guard let context = CGContext(
+            data: nil,
+            width: Int(self.size.width),
+            height: Int(self.size.height),
+            bitsPerComponent: cgImage.bitsPerComponent,
+            bytesPerRow: 0,
+            space: colorSpace,
+            bitmapInfo: UInt32(cgImage.bitmapInfo.rawValue)
+        ) else {
+            return self
+        }
+                
+        context.concatenate(transform);
+        
+        switch self.imageOrientation {
+            case .left, .leftMirrored, .right, .rightMirrored:
+                context.draw(cgImage, in: CGRect(x:0 ,y: 0 ,width: self.size.height ,height:self.size.width))
+            default:
+                context.draw(cgImage, in: CGRect(x:0 ,y: 0 ,width: self.size.width ,height:self.size.height))
+                break;
+        }
+        
+        // And now we just create a new UIImage from the drawing context
+        guard let newCGImage = context.makeImage() else {
+            return self
+        }
+        let image = UIImage(cgImage: newCGImage)
+        
+        return image;
+        
+    }
+    
     func compressImageData(maxSizeInMB:Int) -> Data? {
+        let image = self.fixOrientation()
         let sizeInBytes = maxSizeInMB * 1024 * 1024
         var needCompress:Bool = true
         var imgData:Data?
         var compressingValue:CGFloat = 1.0
         while (needCompress && compressingValue > 0.0) {
-            if let data:Data = UIImageJPEGRepresentation(self, compressingValue) {
+            if let data:Data = UIImageJPEGRepresentation(image, compressingValue) {
                 if data.count < sizeInBytes {
                     needCompress = false
                     imgData = data
@@ -350,7 +430,7 @@ extension UIImage {
                 return data
             }
         }
-        return UIImageJPEGRepresentation(self, 1)
+        return UIImageJPEGRepresentation(image, 1)
     }
 }
 
