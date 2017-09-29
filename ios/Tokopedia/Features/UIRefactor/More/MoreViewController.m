@@ -664,42 +664,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }
         } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Help"];
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
-                
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-            } else {
-                TKPDTabViewController *controller = [TKPDTabViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                controller.inboxType = InboxTypeTicket;
-                
-                InboxTicketViewController *allInbox = [InboxTicketViewController new];
-                allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-                allInbox.delegate = controller;
-                allInbox.onTapContactUsButton = ^{
-                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
-                };
-                
-                InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-                unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-                unreadInbox.delegate = controller;
-                unreadInbox.onTapContactUsButton = ^{
-                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
-                };
-                
-                InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-                closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-                closedInbox.delegate = controller;
-                closedInbox.onTapContactUsButton = ^{
-                    [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
-                };
-                
-                controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-                controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-                controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-                
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-            }
+            
+            UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+            WebViewController *webViewController = [WebViewController new];
+            webViewController.strURL = [userManager webViewUrlFromUrl:@"https://m.tokopedia.com/help/ticket-list/mobile"];
+            webViewController.strTitle = @"Help";
+            
+            [wrapperController.navigationController pushViewController:webViewController animated:YES];
         } else if (indexPath.row == 4) {
             [AnalyticsManager trackClickNavigateFromMore:@"Resolution Center"];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

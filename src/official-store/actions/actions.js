@@ -32,7 +32,6 @@ const checkProductInWishlist = (userId, pIds) => {
     .replace(':list_id', pIds)
 
   const config = {
-    headers: headers,
     url: url,
     method: 'GET'
   }
