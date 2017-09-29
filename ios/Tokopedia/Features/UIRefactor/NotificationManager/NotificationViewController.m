@@ -130,6 +130,7 @@
     }
     
     if([_notification.result.sales.sales_shipping_status integerValue] > 0) {
+        _shippingStatusCountLabel.text = _notification.result.sales.sales_shipping_status;
         _shippingStatus.hidden = NO;
     } else {
         _shippingStatus.hidden = YES;
