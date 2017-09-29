@@ -66,11 +66,11 @@ extension AccountTarget: TargetType {
         case .getInfo():
             return [:]
         case let .editProfile(birthday, gender):
-            let date = convertDateToString(birthday: birthday)
+            let (day, month, year) = getBirthdayComponents(birthday: birthday)
             return [
-                "bday_dd": date.0,
-                "bday_mm": date.1,
-                "bday_yy": date.2,
+                "bday_dd": day,
+                "bday_mm": month,
+                "bday_yy": year,
                 "gender": gender ?? 0,
             ]
         }
@@ -90,24 +90,12 @@ extension AccountTarget: TargetType {
     var task: Task { return .request }
 }
 
-func convertDateToString(birthday: Date?) -> (String, String, String) {
-    var day: String = ""
-    var month: String = ""
-    var year: String = ""
+func getBirthdayComponents(birthday: Date?) -> (String, String, String) {
     guard let birthday = birthday else {
         return ("", "", "")
     }
-    let dateFormatter = DateFormatter()
-    dateFormatter.dateFormat = "dd MMMM yyyy"
-    let birthdayStr = dateFormatter.string(from: birthday)
+    let calendar = Calendar(identifier: .gregorian)
+    let components = calendar.dateComponents([.day, .month, .year], from: birthday)
 
-    let strDateArr = birthdayStr.characters.split(separator: " ")
-    if strDateArr.count == 3 {
-        var mm = [String: String]()
-        mm = ["January": "01", "February": "02", "March": "03", "April": "04", "May": "05", "June": "06", "July": "07", "August": "08", "September": "09", "October": "10", "November": "11", "December": "12"]
-        day = String(strDateArr[0])
-        month = mm[String(strDateArr[1])]!
-        year = String(strDateArr[2])
-    }
-    return (day, month, year)
+    return ("\(components.day!)", "\(components.month!)", "\(components.year!)")
 }
