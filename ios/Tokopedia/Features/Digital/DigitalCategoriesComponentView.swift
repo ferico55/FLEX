@@ -57,28 +57,30 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                             if let stringUrl = category?.url, let url = URL(string: stringUrl) {
                                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: (category?.name)!, action: "Click Icon on All Categories")
                                 
-                                guard let categoryId = category?.category_id, categoryId == "103"  else {
+                                guard let categoryId = category?.category_id, categoryId == "103" else {
                                     TPRoutes.routeURL(url)
                                     return
                                 }
                                 
-                                WalletService.getBalance(userId: UserAuthentificationManager().getUserId())
-                                    .subscribe(onNext: { wallet in
-                                        
-                                        if wallet.shouldShowActivation {
-                                            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-                                            let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
-                                            controller.hidesBottomBarWhenPushed = true
-                                            UIApplication.topViewController()?
-                                                .navigationController?
-                                                .pushViewController(controller, animated: true)
-                                        }else {
-                                            TPRoutes.routeURL(url)
-                                        }
-                                    }, onError: { error in
-                                        StickyAlertView.showErrorMessage([error.localizedDescription])
-                                    })
-                                    .disposed(by: self.rx_disposeBag)
+                                guard let topViewController = UIApplication.topViewController() else { return }
+                                
+                                AuthenticationService().ensureLoggedInFromViewController(topViewController, onSuccess: {
+                                    WalletService.getBalance(userId: UserAuthentificationManager().getUserId())
+                                        .subscribe(onNext: { wallet in
+                                            
+                                            if wallet.shouldShowActivation {
+                                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                                let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+                                                controller.hidesBottomBarWhenPushed = true
+                                                topViewController.navigationController?.pushViewController(controller, animated: true)
+                                            } else {
+                                                TPRoutes.routeURL(url)
+                                            }
+                                        }, onError: { error in
+                                            StickyAlertView.showErrorMessage([error.localizedDescription])
+                                        })
+                                        .disposed(by: self.rx_disposeBag)
+                                })
                                 
                             }
                         }).addDisposableTo(self.rx_disposeBag)

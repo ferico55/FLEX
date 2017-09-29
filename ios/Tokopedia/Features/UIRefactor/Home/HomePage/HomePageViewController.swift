@@ -565,6 +565,9 @@ class HomePageViewController: UIViewController {
                 if wallet.isExpired() {
                     self?.requestTokocashWithNewToken()
                 } else {
+                    
+                    guard wallet.data != nil else { return }
+                    
                     let tokocash = TokoCashSectionViewController(wallet: wallet)
                     self?.addChildViewController(tokocash)
                     self?.tokocashPlaceholder.addSubview(tokocash.view)

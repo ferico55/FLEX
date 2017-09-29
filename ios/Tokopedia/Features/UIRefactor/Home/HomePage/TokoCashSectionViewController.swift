@@ -75,7 +75,7 @@ class TokoCashSectionViewController: UIViewController {
             if (wallet.data?.hasPendingCashback)! {
                 let closeButton = CFAlertAction.action(title: "Tutup", style: .Cancel, alignment: .justified, backgroundColor: .lightGray, textColor: .lightGray, handler: nil)
                 let cashbackButton = CFAlertAction.action(title: "Dapatkan Cashback Sekarang", style: .Default, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white) { [weak self] _ in
-                    TPRoutes.routeURL(URL(string: (self?.wallet.data?.action?.applinks)!)!)
+                    self?.openActivationPage()
                 }
                 
                 let actionSheet = TooltipAlert.createAlert(title: "Bonus Cashback", subtitle: "Anda mendapatkan cashback Tokocash sebesar \((wallet.data?.balance)!)", image: UIImage(named: "icon_cashback")!, buttons:[cashbackButton, closeButton])
