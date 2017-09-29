@@ -103,25 +103,21 @@ class TopAdsNode: NSObject, NodeType {
             
             let product = topAdsResult.viewModel!
             
-            let adView = Node<UIView>(
-                create: {
-                    let tapGesture = UITapGestureRecognizer()
-                    tapGesture.rx.event
-                        .subscribe(onNext: { _ in
-                            if let url = URL(string: topAdsResult.applinks) {
-                                TopAdsService.sendClickImpression(clickURLString: topAdsResult.product_click_url)
-                                TPRoutes.routeURL(url)
-                            }
-                        }).addDisposableTo(self.disposeBag)
-                    
-                    let view = UIView()
-                    view.backgroundColor = UIColor.white
-                    view.addGestureRecognizer(tapGesture)
-                    
-                    return view
-                }
-            ) {
-                _, layout, size in
+            let adView = Node<UIView>{
+                view, layout, size in
+                
+                let tapGesture = UITapGestureRecognizer()
+                tapGesture.rx.event
+                    .subscribe(onNext: { _ in
+                        if let url = URL(string: topAdsResult.applinks) {
+                            TopAdsService.sendClickImpression(clickURLString: topAdsResult.product_click_url)
+                            TPRoutes.routeURL(url)
+                        }
+                    }).addDisposableTo(self.disposeBag)
+                
+                view.backgroundColor = UIColor.white
+                view.gestureRecognizers?.removeAll()
+                view.addGestureRecognizer(tapGesture)
                 
                 layout.flexDirection = .column
                 layout.width = (size.width - (divider - 1)) / divider
