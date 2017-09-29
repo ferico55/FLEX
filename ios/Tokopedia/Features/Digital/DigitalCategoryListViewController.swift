@@ -23,12 +23,13 @@ class DigitalCategoryListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .tpBackground()
+        
         requestCategory()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+        AnalyticsManager.trackScreenName("Recharge Category Homepage")
         self.navigationController?.setWhite()
     }
     

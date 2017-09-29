@@ -236,14 +236,13 @@ class TPRoutes: NSObject {
             guard let categoryId = params["category_id"] as? String,
                 let operatorId = params["operator_id"] as? String,
                 let productId = params["product_id"] as? String,
-                let clientNumber = params["client_number"] as? String,
-                let instantCheckout = Bool(params["instant_checkout"] as! String)
+                let clientNumber = params["client_number"] as? String
                 else { return false }
             var textInputs = [String:String]()
             if !clientNumber.isEmpty {
                 textInputs = ["client_number": clientNumber]
             }
-            let cart = DigitalService().purchase(categoryId: categoryId, operatorId:operatorId, productId: productId, textInputs: textInputs, instantCheckout: instantCheckout)
+            let cart = DigitalService().purchase(categoryId: categoryId, operatorId:operatorId, productId: productId, textInputs: textInputs, instantCheckout: false)
             
             let vc = DigitalCartViewController(cart:cart)
             vc.hidesBottomBarWhenPushed = true
