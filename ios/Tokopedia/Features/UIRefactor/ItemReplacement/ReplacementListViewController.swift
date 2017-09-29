@@ -60,6 +60,12 @@ class ReplacementListViewController: UIViewController {
         setupButtons()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsManager.trackScreenName("Replacement List Page")
+    }
+    
     func setupView() {
         self.title = "Peluang"
         
@@ -101,6 +107,7 @@ class ReplacementListViewController: UIViewController {
         return UIBindingObserver(UIElement: act, binding: { (act, isLoading) in
             switch isLoading {
             case true:
+                AnalyticsManager.trackEventName("scrollPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: "Scroll", label: "Navigate page")
                 self.tableView.tableFooterView = self.footerView
                 act.startAnimating()
             case false:
@@ -111,6 +118,7 @@ class ReplacementListViewController: UIViewController {
                     self.tableView.selectRow(at: IndexPath(row: 0, section: 0), animated: false, scrollPosition: .none)
                     self.tableView.delegate?.tableView!(self.tableView, didSelectRowAt: IndexPath(row: 0, section: 0))
                 }
+                AnalyticsManager.trackEventName("loadPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: "Load", label: "\(self.viewModel.currentPage)")
                 act.stopAnimating()
             }
         }).asObserver()
@@ -175,6 +183,8 @@ class ReplacementListViewController: UIViewController {
                     presentedVC: self,
                     rootCategoryID:"" ,
                     onCompletion: { (selectedSort, sortParameter) in
+                        
+                    AnalyticsManager.trackEventName("clickPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: "Click", label: selectedSort.name)
                     
                     self.selectedFilter.sort = selectedSort
                     self.selectedSortParameter = sortParameter
@@ -255,5 +265,11 @@ class ReplacementListViewController: UIViewController {
             .searchButtonClicked
             .bindTo(viewModel.refreshTrigger)
             .disposed(by: rx_disposeBag)
+        
+        viewModel.query.asObservable().filter({ query -> Bool in
+            return query != ""
+        }).subscribe(onNext: { query in
+            AnalyticsManager.trackEventName("submitPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: "Submit", label: query)
+        }).disposed(by: rx_disposeBag)
     }
 }

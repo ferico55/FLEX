@@ -30,9 +30,15 @@ import Render
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         setupView()
         setupButton()
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsManager.trackScreenName("Replacement Detail Page")
     }
     
     override func viewDidLayoutSubviews() {
@@ -58,8 +64,10 @@ import Render
         viewModel.takeReplacement
             .asObserver()
             .flatMap({ () -> Observable<Void> in
+                AnalyticsManager.trackEventName("clickPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: GA_EVENT_ACTION_CLICK, label: "Ambil Peluang")
                 return self.showAlert()
             }).subscribe(onNext: { [unowned self] in
+                AnalyticsManager.trackEventName("clickPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: GA_EVENT_ACTION_CLICK, label: "Ya")
                 self.viewModel.takeReplacementTrigger.onNext()
             })
             .disposed(by: rx_disposeBag)
@@ -89,6 +97,7 @@ import Render
                 observer.onCompleted()
             }))
             alertVC.addAction(UIAlertAction(title: "Kembali", style: .cancel, handler: { _ in
+                AnalyticsManager.trackEventName("clickPeluang", category: GA_EVENT_CATEGORY_REPLACEMENT, action: GA_EVENT_ACTION_CLICK, label: "Tidak")
                 observer.onCompleted()
             }))
             self?.present(alertVC, animated: true, completion: nil)
