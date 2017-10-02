@@ -61,7 +61,6 @@
 #import <Masonry/Masonry.h>
 #import "WebViewController.h"
 #import "GAITrackedViewController.h"
-#import "LoginViewController.h"
 
 #import "ShopSettings.h"
 #import "WholesalePrice.h"
@@ -154,7 +153,6 @@
 #import "NoResultReusableView.h"
 #import "ShopHeaderView.h"
 #import "ShopInfoViewController.h"
-#import "AuthenticationService.h"
 #import "DetailReviewReputationViewModel.h"
 #import "Slide.h"
 #import "LabelMenu.h"
@@ -216,8 +214,11 @@
 #import "DetailShopResult.h"
 #import "GAI.h"
 #import "GAIFields.h"
+#import "ForgotPasswordViewController.h"
 #import "TransactionCartWebViewViewController.h"
 #import <CommonCrypto/CommonCrypto.h>
 #import "TransactionActionResult.h"
+#import "NSStringCategory.h"
+#import "CreatePassword.h"
 #import "VersionCheckerConfig.h"
-
+#import "string_alert.h"

@@ -260,6 +260,8 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
     @IBAction func tapBirthdayButton(_: Any) {
         let birthdayPicker: AlertDatePickerView = AlertDatePickerView.newview() as! AlertDatePickerView
         birthdayPicker.delegate = self
+        birthdayPicker.isSetMinimumDate = true
+        birthdayPicker.data = ["type": kTKPDALERT_DATAALERTTYPEREGISTERKEY.rawValue]
         birthdayPicker.show()
         AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: GA_EVENT_ACTION_CLICK, label: "DOB")
     }

@@ -19,7 +19,6 @@
 #import "GeneralAction.h"
 #import "ReportViewController.h"
 #import "SmileyAndMedal.h"
-#import "LoginViewController.h"
 #import "stringrestkit.h"
 #import "detail.h"
 #import "string_inbox_talk.h"
@@ -176,7 +175,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
 
 - (IBAction)tapToFollowTalk:(id)sender {
     __weak typeof(self) weakSelf = self;
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:(UIViewController *)self.delegate onSuccess: ^ {
+    [AuthenticationService.shared ensureLoggedInFromViewController:(UIViewController *)self.delegate onSuccess: ^ {
         if([self.delegate respondsToSelector:@selector(refreshTalks)]) [self.delegate refreshTalks];
         [weakSelf toggleTalk];
     }];

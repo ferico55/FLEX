@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 
-#import "CreatePasswordViewController.h"
-#import "RegisterViewController.h"
 #import "activation.h"
 #import "Register.h"
 #import "RegisterResult.h"

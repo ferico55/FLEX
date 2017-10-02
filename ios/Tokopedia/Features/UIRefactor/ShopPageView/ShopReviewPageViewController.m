@@ -13,7 +13,6 @@
 #import "DetailTotalLikeDislike.h"
 #import "TotalLikeDislike.h"
 #import "LikeDislike.h"
-#import "LoginViewController.h"
 #import "LikeDislikeResult.h"
 #import "CMPopTipView.h"
 #import "ProductDetailReputationViewController.h"
@@ -362,7 +361,7 @@
 }
 
 - (void)showLoginView {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
+    [AuthenticationService.shared ensureLoggedInFromViewController:self onSuccess:nil];
 }
 
 - (ProductReputationCell *)getCell:(UIView *)btn {

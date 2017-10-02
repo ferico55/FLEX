@@ -54,7 +54,7 @@ RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
 }
 
 RCT_EXPORT_METHOD(showLoginModal) {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:[UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController] onSuccess:^{
+    [AuthenticationService.shared ensureLoggedInFromViewController:[UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController] onSuccess:^{
         
     }];
 }

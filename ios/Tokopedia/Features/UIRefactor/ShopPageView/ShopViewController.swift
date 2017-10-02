@@ -21,7 +21,7 @@ class ShopViewController: UIViewController {
     var data: [AnyHashable: Any]?
     var initialEtalase: EtalaseList?
     
-    fileprivate let authenticationService = AuthenticationService()
+    fileprivate let authenticationService = AuthenticationService.shared
     fileprivate var tabChildren: [TabChild] = []
     fileprivate var segmentedPagerController: MXSegmentedPagerController!
     fileprivate var header: ShopHeaderView!
@@ -269,7 +269,7 @@ class ShopViewController: UIViewController {
         let index = shop.result.info.isOfficial ? 1 : 0
         DispatchQueue.main.async { [weak self] in
             guard let `self` = self else { return }
-            if(self.initialEtalase != nil) {
+            if self.initialEtalase != nil {
                 self.segmentedPagerController.segmentedPager.pager.showPage(at: index, animated: true)
             }
         }

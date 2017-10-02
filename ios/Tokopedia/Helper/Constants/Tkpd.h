@@ -158,6 +158,7 @@ typedef enum {
 #define UPDATE_TABBAR @"UPDATE_TABBAR"
 
 #define kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGINNOTIFICATION"
+#define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 #define kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION"
 #define kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION @"tokopedia.kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION"
 #define kTKPD_INTERRUPTNOTIFICATIONNAMEKEY @"tokopedia.kTKPD_INTERRUPTNOTIFICATIONNAMEKEY"
@@ -210,7 +211,9 @@ typedef enum {
 #define productCollectionViewCellHeight6plus 250
 #define productCollectionViewCellHeightNormal 205
 
+#define TKPDUserCreatePassword        @"TKPDUserCreatePassword"
 #define TKPDUserDidLoginNotification        @"TKPDUserDidLoginNotification"
+#define TKPDUserLoginFailureNotification        @"TKPDUserLoginFailureNotification"
 #define TKPDUserDidLogoutNotification        @"TKPDUserDidLogoutNotification"
 #define TKPDUserDidTappedTapBar @"TKPDUserDidTappedTapBar"
 #define kTKPD_REMOVE_SEARCH_HISTORY @"tokopedia.kTKPD_REMOVE_SEARCH_HISTORY"

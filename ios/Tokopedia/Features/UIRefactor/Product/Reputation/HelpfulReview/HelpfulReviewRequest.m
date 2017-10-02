@@ -13,7 +13,6 @@
 #import "DetailReputationReview.h"
 #import "LoadingView.h"
 #import "LikeDislike.h"
-#import "LoginViewController.h"
 #import "LikeDislikePost.h"
 #import "LikeDislikePostResult.h"
 #import "NoResultView.h"

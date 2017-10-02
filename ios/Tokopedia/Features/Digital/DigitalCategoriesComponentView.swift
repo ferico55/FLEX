@@ -64,7 +64,7 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                                 
                                 guard let topViewController = UIApplication.topViewController() else { return }
                                 
-                                AuthenticationService().ensureLoggedInFromViewController(topViewController, onSuccess: {
+                                AuthenticationService.shared.ensureLoggedInFromViewController(topViewController, onSuccess: {
                                     WalletService.getBalance(userId: UserAuthentificationManager().getUserId())
                                         .subscribe(onNext: { wallet in
                                             

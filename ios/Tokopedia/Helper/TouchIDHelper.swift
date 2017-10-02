@@ -28,16 +28,16 @@ var GlobalPriorityDefaultQueue: DispatchQueue {
 
 @objc
 protocol TouchIDHelperDelegate: class {
-   
+    
     @objc optional func touchIDHelperActivationSucceed(_ helper: TouchIDHelper)
     @objc optional func touchIDHelperActivationFailed(_ helper: TouchIDHelper)
-    @objc optional func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email:String, andPassword password:String)
+    @objc optional func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String)
     @objc optional func touchIDHelperLoadFailed(_ helper: TouchIDHelper)
 }
 
-@objc (TouchIDHelper)
+@objc(TouchIDHelper)
 class TouchIDHelper: NSObject {
-
+    
     static let sharedInstance = TouchIDHelper()
     weak var delegate: TouchIDHelperDelegate?
     
@@ -66,10 +66,12 @@ class TouchIDHelper: NSObject {
                 
                 if #available(iOS 9.0, *) {
                     try keychainTouch.accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .touchIDAny)
+                        .authenticationPrompt("Otentikasikan dengan touch ID sebagai password")
                         .set(password, key: email)
                 } else {
                     // Fallback on earlier versions
                     try keychainTouch.accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
+                        .authenticationPrompt("Otentikasikan dengan touch ID sebagai password")
                         .set(password, key: email)
                 }
                 
@@ -79,7 +81,7 @@ class TouchIDHelper: NSObject {
                 
             } catch let error {
                 // Error handling if needed...
-                print (error.localizedDescription)
+                print(error.localizedDescription)
                 
                 let keychainAccount = Keychain(service: KeychainAccessService.account)
                 keychainAccount[email] = nil
@@ -111,7 +113,7 @@ class TouchIDHelper: NSObject {
                 
             } catch let error {
                 // Error handling if needed...
-                print (error.localizedDescription)
+                print(error.localizedDescription)
                 
                 let keychainAccount = Keychain(service: KeychainAccessService.account)
                 keychainAccount[email] = nil
@@ -160,18 +162,18 @@ class TouchIDHelper: NSObject {
         var error: NSError?
         
         guard #available(iOS 9.0, *) else {
-            if (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error)) {
+            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
                 return true
             }
             self.removeAll()
             return false
         }
-    
-        if (context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error)) {
+        
+        if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             return true
         }
         
-        if let error = error as? LAError ,
+        if let error = error as? LAError,
             error.code == LAError.touchIDLockout {
             return true
         }
@@ -190,7 +192,7 @@ class TouchIDHelper: NSObject {
         return false
     }
     
-    func remove(forEmail email: String ) {
+    func remove(forEmail email: String) {
         let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
         let keychainAccount = Keychain(service: KeychainAccessService.account)
         

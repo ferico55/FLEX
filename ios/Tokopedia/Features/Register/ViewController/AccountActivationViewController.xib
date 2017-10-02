@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AccountActivationViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="activateButton" destination="Tdj-88-ej4" id="dFv-hY-aCP"/>
+                <outlet property="registeredEmail" destination="1xC-Fe-sAa" id="KdI-bm-Sep"/>
+                <outlet property="resendEmailButton" destination="C1h-Bc-GYJ" id="29H-GY-0w2"/>
+                <outlet property="scrollView" destination="HB8-fn-4eW" id="cmZ-oJ-81t"/>
+                <outlet property="uniqueCodeHorizontalLine" destination="Kr7-a0-uXe" id="gAQ-9t-9m9"/>
+                <outlet property="uniqueCodeTextField" destination="HTo-n8-3oX" id="HQp-zi-XbE"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <accessibility key="accessibilityConfiguration" label="accountActivationView">
+                <bool key="isElement" value="YES"/>
+            </accessibility>
+        </view>
+        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" id="HB8-fn-4eW" customClass="TPKeyboardAvoidingScrollView">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ssn-tz-jmb">
+                    <rect key="frame" x="16" y="48" width="288" height="41"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kode aktivasi akun telah dikirimkan ke" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="TK5-Q8-gsl">
+                            <rect key="frame" x="22" y="0.0" width="245" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.0" alpha="0.54000000000000004" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="elly.susilowati+089@tokopedia.com" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1xC-Fe-sAa">
+                            <rect key="frame" x="28" y="24" width="232" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="0.0" alpha="0.69999999999999996" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="TK5-Q8-gsl" firstAttribute="centerX" secondItem="Ssn-tz-jmb" secondAttribute="centerX" id="8Vt-Ya-pKu"/>
+                        <constraint firstItem="1xC-Fe-sAa" firstAttribute="centerX" secondItem="Ssn-tz-jmb" secondAttribute="centerX" id="IVd-qW-oH1"/>
+                        <constraint firstItem="TK5-Q8-gsl" firstAttribute="top" secondItem="Ssn-tz-jmb" secondAttribute="top" id="dah-V6-boT"/>
+                        <constraint firstAttribute="height" constant="41" id="e8u-5C-t1C"/>
+                        <constraint firstItem="1xC-Fe-sAa" firstAttribute="top" secondItem="TK5-Q8-gsl" secondAttribute="bottom" constant="7" id="tJu-zY-zRh"/>
+                    </constraints>
+                </view>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_account_activation" translatesAutoresizingMaskIntoConstraints="NO" id="omc-rE-osh">
+                    <rect key="frame" x="71" y="124" width="178" height="136"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="136" id="frQ-Xw-74a"/>
+                        <constraint firstAttribute="width" constant="178" id="iR9-WI-RiM"/>
+                    </constraints>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masukkan kode aktivasi:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZe-Rl-xmi">
+                    <rect key="frame" x="68" y="314" width="185" height="20"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                    <color key="textColor" white="0.0" alpha="0.69999999999999996" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="HTo-n8-3oX" customClass="VMaskTextField">
+                    <rect key="frame" x="67" y="348" width="186" height="33"/>
+                    <color key="tintColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <accessibility key="accessibilityConfiguration" label="uniqueCodeTextField"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="186" id="HFm-ZE-f1R"/>
+                        <constraint firstAttribute="height" constant="33" id="Z8M-C8-jkD"/>
+                    </constraints>
+                    <color key="textColor" white="0.0" alpha="0.69999999999999996" colorSpace="calibratedWhite"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                    <textInputTraits key="textInputTraits" keyboardType="numberPad"/>
+                </textField>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Kr7-a0-uXe">
+                    <rect key="frame" x="68" y="381" width="185" height="2"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.20000000000000001" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="1.5" id="nSi-s0-BbN"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Tdj-88-ej4">
+                    <rect key="frame" x="16" y="423" width="288" height="45"/>
+                    <color key="backgroundColor" red="0.8784313725490196" green="0.8784313725490196" blue="0.8784313725490196" alpha="0.26000000000000001" colorSpace="calibratedRGB"/>
+                    <accessibility key="accessibilityConfiguration" label="activateAccountButton"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="45" id="v1K-xZ-PsU"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                    <state key="normal" title="Aktivasi Sekarang">
+                        <color key="titleColor" white="0.0" alpha="0.26000000000000001" colorSpace="calibratedWhite"/>
+                    </state>
+                    <connections>
+                        <action selector="onTapActivateButton:" destination="-1" eventType="touchUpInside" id="pi6-3g-g0k"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lkI-TM-Cx2">
+                    <rect key="frame" x="35" y="476" width="250" height="28"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belum menerima email?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5pG-UJ-Lwr">
+                            <rect key="frame" x="0.0" y="6" width="144" height="16"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <color key="textColor" white="0.0" alpha="0.38" colorSpace="calibratedWhite"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C1h-Bc-GYJ">
+                            <rect key="frame" x="146" y="0.0" width="104" height="28"/>
+                            <accessibility key="accessibilityConfiguration" label="resendEmailButton"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="Kirim ulang email">
+                                <color key="titleColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </state>
+                            <connections>
+                                <action selector="onTapResendEmailButton:" destination="-1" eventType="touchUpInside" id="Xek-Al-W8a"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="C1h-Bc-GYJ" firstAttribute="centerY" secondItem="lkI-TM-Cx2" secondAttribute="centerY" id="68v-uC-rZA"/>
+                        <constraint firstAttribute="trailing" secondItem="C1h-Bc-GYJ" secondAttribute="trailing" id="Aup-s3-Cht"/>
+                        <constraint firstAttribute="height" constant="28" id="DTB-gL-09c"/>
+                        <constraint firstItem="C1h-Bc-GYJ" firstAttribute="top" secondItem="lkI-TM-Cx2" secondAttribute="top" id="LYR-aJ-Flf"/>
+                        <constraint firstItem="5pG-UJ-Lwr" firstAttribute="centerY" secondItem="lkI-TM-Cx2" secondAttribute="centerY" id="Lq8-4n-jbL"/>
+                        <constraint firstAttribute="bottom" secondItem="C1h-Bc-GYJ" secondAttribute="bottom" id="N4g-Nr-qdS"/>
+                        <constraint firstAttribute="width" constant="250" id="bMq-xB-TgO"/>
+                        <constraint firstItem="C1h-Bc-GYJ" firstAttribute="leading" secondItem="5pG-UJ-Lwr" secondAttribute="trailing" constant="2" id="she-y2-Mnb"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="lkI-TM-Cx2" firstAttribute="centerX" secondItem="HB8-fn-4eW" secondAttribute="centerX" id="8Gd-Jk-RV2"/>
+                <constraint firstItem="Ssn-tz-jmb" firstAttribute="centerX" secondItem="HB8-fn-4eW" secondAttribute="centerX" id="AK9-VD-KvZ"/>
+                <constraint firstItem="Kr7-a0-uXe" firstAttribute="trailing" secondItem="dZe-Rl-xmi" secondAttribute="trailing" id="AKT-mr-BHS"/>
+                <constraint firstItem="Kr7-a0-uXe" firstAttribute="top" secondItem="HTo-n8-3oX" secondAttribute="bottom" id="IrM-5u-KJF"/>
+                <constraint firstAttribute="trailing" secondItem="Tdj-88-ej4" secondAttribute="trailing" constant="16" id="Kav-Qz-KjP"/>
+                <constraint firstItem="Ssn-tz-jmb" firstAttribute="leading" secondItem="HB8-fn-4eW" secondAttribute="leading" constant="16" id="Les-Fa-R2K"/>
+                <constraint firstItem="HTo-n8-3oX" firstAttribute="centerX" secondItem="HB8-fn-4eW" secondAttribute="centerX" id="SCs-I8-ukY"/>
+                <constraint firstItem="lkI-TM-Cx2" firstAttribute="top" secondItem="Tdj-88-ej4" secondAttribute="bottom" constant="8" id="TOo-pR-vW5"/>
+                <constraint firstItem="Kr7-a0-uXe" firstAttribute="leading" secondItem="dZe-Rl-xmi" secondAttribute="leading" id="ZKf-ue-JYr"/>
+                <constraint firstAttribute="bottom" secondItem="lkI-TM-Cx2" secondAttribute="bottom" constant="65" id="bNV-OL-yjZ"/>
+                <constraint firstItem="HTo-n8-3oX" firstAttribute="top" secondItem="dZe-Rl-xmi" secondAttribute="bottom" constant="14" id="dgQ-3Q-3hI"/>
+                <constraint firstItem="Tdj-88-ej4" firstAttribute="leading" secondItem="HB8-fn-4eW" secondAttribute="leading" constant="16" id="eGm-ec-Iya"/>
+                <constraint firstItem="Tdj-88-ej4" firstAttribute="top" secondItem="Kr7-a0-uXe" secondAttribute="bottom" constant="40" id="gmj-jc-Ox7"/>
+                <constraint firstItem="dZe-Rl-xmi" firstAttribute="top" secondItem="omc-rE-osh" secondAttribute="bottom" constant="54" id="jov-aT-vGC"/>
+                <constraint firstItem="omc-rE-osh" firstAttribute="centerX" secondItem="HB8-fn-4eW" secondAttribute="centerX" id="l3w-XG-iaG"/>
+                <constraint firstItem="dZe-Rl-xmi" firstAttribute="centerX" secondItem="HB8-fn-4eW" secondAttribute="centerX" id="ml0-7V-Tsd"/>
+                <constraint firstAttribute="trailing" secondItem="Ssn-tz-jmb" secondAttribute="trailing" constant="16" id="t3H-iG-7ym"/>
+                <constraint firstItem="omc-rE-osh" firstAttribute="top" secondItem="Ssn-tz-jmb" secondAttribute="bottom" constant="35" id="uLs-6p-Xla"/>
+                <constraint firstItem="Ssn-tz-jmb" firstAttribute="top" secondItem="HB8-fn-4eW" secondAttribute="top" constant="48" id="zrp-mV-Fna"/>
+            </constraints>
+            <point key="canvasLocation" x="500" y="53"/>
+        </scrollView>
+    </objects>
+    <resources>
+        <image name="icon_account_activation" width="178" height="136"/>
+    </resources>
+</document>

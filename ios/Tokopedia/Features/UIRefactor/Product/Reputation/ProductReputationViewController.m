@@ -12,7 +12,6 @@
 #import "DetailReputationReview.h"
 #import "LoadingView.h"
 #import "LikeDislike.h"
-#import "LoginViewController.h"
 #import "LikeDislikePost.h"
 #import "LikeDislikePostResult.h"
 #import "NoResultView.h"
@@ -656,7 +655,7 @@ static NSInteger userViewHeight = 70;
     [self.navigationController pushViewController:productDetailReputationViewController animated:YES];
 }
 - (void)showLoginView {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
+    [AuthenticationService.shared ensureLoggedInFromViewController:self onSuccess:nil];
 }
 
 - (ProductReputationCell *)getCell:(UIView *)btn {

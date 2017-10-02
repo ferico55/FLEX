@@ -27,6 +27,7 @@
 +(nonnull UIColor *)tpBorder;
 +(nonnull UIColor *)tpGray;
 +(nonnull UIColor *)tpDarkPurple;
++(nonnull UIColor *)tpRedError;
 
 +(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 

@@ -14,7 +14,6 @@
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
-#import "LoginViewController.h"
 #import "MyReviewDetailViewController.h"
 #import "ReviewRequest.h"
 #import "TKPDTabViewController.h"
@@ -47,7 +46,7 @@
     self.navigationItem.rightBarButtonItem = doneButton;
     [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
     
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:nil];
+    [AuthenticationService.shared ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -136,7 +135,7 @@
 - (void)displayFrom:(UIViewController *)viewController {
     _userManager = [UserAuthentificationManager new];
     _viewControllerToNavigate = viewController;
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:^{
+    [AuthenticationService.shared ensureLoggedInFromViewController:_viewControllerToNavigate onSuccess:^{
         [viewController.navigationController pushViewController:self animated:YES];
     }];
 }

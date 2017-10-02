@@ -101,7 +101,7 @@
     }
     
     BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self.parentViewController onSuccess:^{
+    [AuthenticationService.shared ensureLoggedInFromViewController:self.parentViewController onSuccess:^{
         if(!isLoggedIn) return;
         if(self.setWishlistAnimationView == nil) {
             [self setupWishlistButton];

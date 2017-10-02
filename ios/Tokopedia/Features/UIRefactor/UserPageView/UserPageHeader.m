@@ -16,8 +16,6 @@
 #import "SendMessageViewController.h"
 #import "ProductAddEditViewController.h"
 
-#import "LoginViewController.h"
-
 
 
 @interface UserPageHeader () <UIScrollViewDelegate, UISearchBarDelegate> {

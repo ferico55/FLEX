@@ -16,14 +16,16 @@ class CreatePasswordUserProfile: NSObject {
     var provider = ""
     var providerName = ""
     var userId = ""
+    var accessToken: String?
 
     static func fromFacebook(userData: [String: String]) -> CreatePasswordUserProfile {
         let userProfile = CreatePasswordUserProfile()
         userProfile.email = userData["email"]
         userProfile.name = userData["name"]
         userProfile.birthDay = userData["birthday"]
-        userProfile.gender = userData["gender"] == "male" ? "1": "2"
+        userProfile.gender = userData["gender"] == "male" ? "1" : "2"
         userProfile.provider = "1"
+        userProfile.accessToken = userData["accessToken"]
         userProfile.providerName = "Facebook"
         userProfile.userId = userData["id"]!
 
@@ -35,8 +37,19 @@ class CreatePasswordUserProfile: NSObject {
         userProfile.email = user.profile.email
         userProfile.name = user.profile.name
         userProfile.provider = "2"
+        userProfile.accessToken = user.authentication.accessToken
         userProfile.providerName = "Google"
         userProfile.userId = user.userID
+
+        return userProfile
+    }
+
+    static func fromYahoo(token: String) -> CreatePasswordUserProfile {
+        let userProfile = CreatePasswordUserProfile()
+        userProfile.email = ""
+        userProfile.name = ""
+        userProfile.accessToken = token
+        userProfile.providerName = "Yahoo"
 
         return userProfile
     }

@@ -11,36 +11,20 @@ import RxSwift
 
 extension AuthenticationService {
     
-    func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void){
+    func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void) {
         
-        let loginViewController: LoginViewController = LoginViewController()
-        loginViewController.isPresentedViewController = true
-        loginViewController.onLoginFinished = { loginResult in
-            guard let loginResult = loginResult else {
+        let storyboard = UIStoryboard(name: "Login", bundle: nil)
+        let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
+        let loginViewController = navigationController.viewControllers.first as! LoginViewController
+        loginViewController.onLoginFinished = { (result: LoginResult?) in
+            guard let result = result else {
                 StickyAlertView.showErrorMessage(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])
                 return
             }
-            
-            if let loginNavCon = loginViewController.navigationController {
-                loginNavCon.dismiss(animated: true, completion: {
-                    self.loginSuccessBlock(loginResult)
-                    self.loginSuccessBlock = nil
-                })
-            }else{
-                loginViewController.dismiss(animated: true, completion: {
-                    self.loginSuccessBlock(loginResult)
-                    self.loginSuccessBlock = nil
-                })
-            }
+            navigationController.dismiss(animated: true, completion: nil)
+            onSignInSuccess(result)
         }
-        
-        let navigationController: UINavigationController = UINavigationController(rootViewController: loginViewController)
-        navigationController.navigationBar.isTranslucent = false;
-        
         viewController.present(navigationController, animated: true, completion: nil)
-        loginSuccessBlock = { loginResult in
-            onSignInSuccess(loginResult)
-        }
     }
     
     func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: (() -> Void)?) {
@@ -49,7 +33,7 @@ extension AuthenticationService {
                 theOnSuccess()
             }
         } else {
-            self.signInFromViewController(viewController) { result in
+            self.signInFromViewController(viewController) { _ in
                 if let theOnSuccess = onSuccess {
                     theOnSuccess()
                 }

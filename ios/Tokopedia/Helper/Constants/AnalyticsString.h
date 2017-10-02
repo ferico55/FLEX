@@ -82,6 +82,8 @@
 #define GA_EVENT_CATEGORY_REORDER @"Reorder"
 #define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
 #define GA_EVENT_CATEGORY_FORCE_UPDATE_ALERT @"Force Update Alert"
+#define GA_EVENT_CATEGORY_SETUP_TOUCHID @"Set Up Touch ID"
+#define GA_EVENT_CATEGORY_ACTIVATION @"Activation"
 #define GA_EVENT_CATEGORY_REPLACEMENT @"Peluang Filter"
 
 #pragma mark - Event Action

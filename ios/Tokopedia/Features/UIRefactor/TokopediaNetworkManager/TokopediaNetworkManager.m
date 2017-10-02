@@ -15,7 +15,6 @@
 #import <BlocksKit/BlocksKit.h>
 #import "Tokopedia-Swift.h"
 #import "NSOperationQueue+SharedQueue.h"
-#import "AuthenticationService.h"
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -270,17 +269,15 @@
                 NSString *path = response.pathPattern;
                 
                 if (![path isEqualToString:@"/v4/session/make_login.pl"]) {
-                    AuthenticationService *authService = [AuthenticationService new];
-                    
-                    [authService
-                     getNewTokenOnSuccess:^(OAuthToken *token) {
-                        [authService reloginAccount];
-                    } onFailure:^{
-                        [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
+                    AuthenticationService *authService = AuthenticationService.shared;
+                    [authService getNewTokenOnCompletion:^(OAuthToken * _Nullable token, NSError * _Nullable error) {
+                        if (error == nil) {
+                            [authService reloginAccount];
+                        } else {
+                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
+                        }
                     }];
-                    
-                    
-                }                
+                }
             }
         } else {
             successCallback(mappingResult, operation);

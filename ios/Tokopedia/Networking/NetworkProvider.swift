@@ -5,7 +5,6 @@
 //  Created by Samuel Edwin on 4/27/17.
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
-
 import UIKit
 import Moya
 import RxSwift
@@ -66,11 +65,11 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
             "X-Tkpd-UserId": UserAuthentificationManager().getUserId()!
         ]
         
-        let parameters = !(target.parameterEncoding is Moya.JSONEncoding) ? (target.parameters as! NSDictionary).autoParameters() : target.parameters
+        let parameters = !(target.parameterEncoding is Moya.JSONEncoding) ? (target.parameters! as NSDictionary).autoParameters() : target.parameters
         
         if !(target.parameterEncoding is Moya.JSONEncoding) {
             //TODO:: due to different signature creation of mojito, we need to handle it separately
-            if(target.baseURL == URL(string: NSString.mojitoUrl())) {
+            if target.baseURL == URL(string: NSString.mojitoUrl()) {
                 hmac.signature(withBaseUrl: target.baseURL.absoluteString,
                                method: target.method.rawValue,
                                path: target.path,
@@ -112,13 +111,13 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
                     NavigateViewController.navigateToMaintenanceViewController()
                     
                 case .requestDenied:
-                    let authService = AuthenticationService()
-                    authService.getNewToken(onSuccess: { (token) in
-                        authService.reloginAccount()
-                    }, onFailure: { 
-                        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+                    AuthenticationService.shared.getNewToken(onCompletion: { (token: OAuthToken?, error: Swift.Error?) in
+                        if error == nil {
+                            AuthenticationService.shared.reloginAccount()
+                        } else {
+                            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
+                        }
                     })
-                    
                 default: return
                     
                 }

@@ -26,7 +26,6 @@
 #import "Tokopedia-Swift.h"
 #import "UIAlertView+BlocksKit.h"
 #import "TransactionATCViewController.h"
-#import "RegisterViewController.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
 #import "NotificationManager.h"
@@ -167,8 +166,9 @@ typedef enum TagRequest {
     _notLoggedInView.button.backgroundColor = [UIColor tpGreen];
     _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
-        RegisterViewController* controller = [RegisterViewController new];
-        controller.onLoginSuccess = ^() {
+        RegisterBaseViewController *controller = [RegisterBaseViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
+        controller.onLoginSuccess = ^(LoginResult *result){
             [weakSelf.tabBarController setSelectedIndex:3];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
         };

@@ -998,4 +998,14 @@
     [topViewController.navigationController pushViewController:viewController animated:YES];
 }
 
++ (void)navigateToAccountActivationSuccess {
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    NSString *name = [userManager getUserFullName];
+    
+    AccountActivationSuccessViewController *vc = [[AccountActivationSuccessViewController alloc] initWithName:name];
+    
+    UIViewController * topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
+    [topViewController.navigationController presentViewController:vc animated:YES completion:nil];
+}
+
 @end

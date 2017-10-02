@@ -42,7 +42,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self.navigationController setGreen];
-    
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -57,7 +56,6 @@
             [_moreViewController updateSaldoTokopedia];
         }
     });
-    
 }
 
 - (void)tapNotificationBar {

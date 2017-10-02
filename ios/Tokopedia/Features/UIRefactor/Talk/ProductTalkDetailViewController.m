@@ -17,7 +17,6 @@
 #import "ProductTalkCommentAction.h"
 #import "MGSwipeButton.h"
 #import "GeneralAction.h"
-#import "LoginViewController.h"
 
 #import "ReportViewController.h"
 #import "NavigateViewController.h"
@@ -573,7 +572,7 @@
     }
     else
     {
-        [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:nil];
+        [AuthenticationService.shared ensureLoggedInFromViewController:self onSuccess:nil];
     }
 }
 

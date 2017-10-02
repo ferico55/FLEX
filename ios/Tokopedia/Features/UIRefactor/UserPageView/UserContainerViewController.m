@@ -5,7 +5,6 @@
 //  Created by Mani Shankar on 29/08/14.
 //  Copyright (c) 2014 makemegeek. All rights reserved.
 //
-#import "LoginViewController.h"
 #import "UserContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"

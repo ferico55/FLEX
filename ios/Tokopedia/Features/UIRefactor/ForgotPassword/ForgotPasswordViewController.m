@@ -11,8 +11,8 @@
 #import "StickyAlertView.h"
 #import "GeneralAction.h"
 #import "string_settings.h"
-#import "RegisterViewController.h"
 #import "Tokopedia-Swift.h"
+
 @import BlocksKit;
 
 @interface ForgotPasswordViewController (){
@@ -123,9 +123,9 @@
     UIAlertView *alertView = [UIAlertView bk_alertViewWithTitle:alertViewTitle message:@"Anda akan kami arahkan ke halaman registrasi"];
     [alertView bk_addButtonWithTitle:@"Tidak" handler:nil];
     [alertView bk_addButtonWithTitle:@"OK" handler:^{
-        RegisterViewController *registerViewController = [RegisterViewController new];
-        registerViewController.emailFromForgotPassword = _emailText.text;
-        [weakSelf.navigationController pushViewController:registerViewController animated:YES];
+        RegisterBaseViewController *vc = [RegisterBaseViewController new];
+        vc.hidesBottomBarWhenPushed = YES;
+        [weakSelf.navigationController pushViewController:vc animated:YES];
     }];
     [alertView show];
 }

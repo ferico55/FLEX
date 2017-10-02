@@ -47,7 +47,7 @@ extension UISearchBar {
     func setPlaceholderTextColor(color: UIColor) {
         
         if let textField = getSearchBarTextField() {
-            textField.attributedPlaceholder = NSAttributedString(string: self.placeholder != nil ? self.placeholder! : "", attributes: [NSForegroundColorAttributeName: color])
+            textField.attributedPlaceholder = NSAttributedString(string: placeholder != nil ? placeholder! : "", attributes: [NSForegroundColorAttributeName: color])
         }
     }
     
@@ -79,17 +79,17 @@ extension UISearchController {
         searchBar.placeholder = "Cari Produk atau Toko"
         searchBar.barTintColor = .white
         searchBar.setTextFieldColor(color: UIColor.fromHexString("E5E5E5"))
-        searchBar.setTextColor(color: UIColor(red: 0/255.0, green: 0/255.0, blue: 0/255.0, alpha: 0.7))
-        searchBar.layer.borderColor = UIColor(red: 255/255.0, green: 255/255.0, blue: 255/255.0, alpha: 1.0).cgColor
+        searchBar.setTextColor(color: UIColor(red: 0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha: 0.7))
+        searchBar.layer.borderColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha: 1.0).cgColor
         hidesNavigationBarDuringPresentation = false
         dimsBackgroundDuringPresentation = false
         searchBar.text = title
         searchBar.sizeToFit()
-        let searchWrapper = UIView(frame: self.searchBar.bounds)
-        searchWrapper.addSubview(self.searchBar)
+        let searchWrapper = UIView(frame: searchBar.bounds)
+        searchWrapper.addSubview(searchBar)
         searchWrapper.backgroundColor = .clear
         searchBar.layer.borderWidth = 1
-        searchBar.snp.makeConstraints { (make) in
+        searchBar.snp.makeConstraints { make in
             make.left.right.top.equalTo(searchWrapper)
         }
         viewController.navigationItem.titleView = searchWrapper
@@ -190,11 +190,11 @@ extension UIScreen {
 
 extension UIFont {
     
-    func sizeOfString (string: String, constrainedToWidth width: Double) -> CGSize {
-        return sizeOfString (string: string, constrainedToWidth: width, andHeight: Double.greatestFiniteMagnitude)
+    func sizeOfString(string: String, constrainedToWidth width: Double) -> CGSize {
+        return sizeOfString(string: string, constrainedToWidth: width, andHeight: Double.greatestFiniteMagnitude)
     }
     
-    func sizeOfString (string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
+    func sizeOfString(string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
         return (string as NSString).boundingRect(with: CGSize(width: width, height: height),
                                                  options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                                  attributes: [NSFontAttributeName: self],
@@ -213,7 +213,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowColor : UIColor {
+    @IBInspectable var shadowColor: UIColor {
         get {
             return UIColor.clear
         } set {
@@ -221,7 +221,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowOpacity : Float {
+    @IBInspectable var shadowOpacity: Float {
         get {
             return layer.shadowOpacity
         } set {
@@ -229,7 +229,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowRadius : CGFloat {
+    @IBInspectable var shadowRadius: CGFloat {
         get {
             return layer.shadowRadius
         } set {
@@ -237,7 +237,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var borderWidth : CGFloat {
+    @IBInspectable var borderWidth: CGFloat {
         get {
             return layer.borderWidth
         } set {
@@ -245,7 +245,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var borderColor : UIColor {
+    @IBInspectable var borderColor: UIColor {
         get {
             return UIColor(cgColor: layer.borderColor!)
         } set {
@@ -254,9 +254,30 @@ extension UIView {
     }
     
     func removeAllSubviews() {
-        subviews.forEach({view in
-            view.removeFromSuperview();
-        });
+        subviews.forEach({ view in
+            view.removeFromSuperview()
+        })
+    }
+    
+    func addDashedLine(color: UIColor, lineWidth: CGFloat) {
+        backgroundColor = .clear
+        
+        let shapeLayer = CAShapeLayer()
+        shapeLayer.name = "DashedTopLine"
+        shapeLayer.bounds = bounds
+        shapeLayer.position = CGPoint(x: frame.width / 2, y: frame.height / 2)
+        shapeLayer.fillColor = UIColor.clear.cgColor
+        shapeLayer.strokeColor = color.cgColor
+        shapeLayer.lineWidth = lineWidth
+        shapeLayer.lineJoin = kCALineJoinRound
+        shapeLayer.lineDashPattern = [4, 4]
+        
+        let path = CGMutablePath()
+        path.move(to: CGPoint.zero)
+        path.addLine(to: CGPoint(x: frame.width, y: 0))
+        shapeLayer.path = path
+        
+        layer.addSublayer(shapeLayer)
     }
 }
 
@@ -278,23 +299,23 @@ extension UISplitViewController {
         viewControllers = [masterViewController, viewController]
     }
     
-    func getDetailViewController()->UIViewController {
+    func getDetailViewController() -> UIViewController {
         let detailViewController = viewControllers.last!
-        return detailViewController;
+        return detailViewController
     }
 }
 
 extension UIScrollView {
     func scrollToBottomAnimated(_ animated: Bool) {
         if contentSize.height > bounds.size.height {
-            let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height);
-            setContentOffset(bottomOffset, animated: animated);
+            let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height)
+            setContentOffset(bottomOffset, animated: animated)
         }
     }
     
     func scrollToTop() {
         let inset = self.contentInset
-        self.setContentOffset(CGPoint(x:-inset.left, y:-inset.top), animated:true)
+        self.setContentOffset(CGPoint(x: -inset.left, y: -inset.top), animated: true)
     }
 }
 
@@ -338,34 +359,34 @@ extension UIImage {
         var transform = CGAffineTransform.identity
         
         switch self.imageOrientation {
-            case .down, .downMirrored:
-                transform = transform.translatedBy(x: self.size.width, y: self.size.height)
-                transform = transform.rotated(by: .pi);
-                
-            case .left, .leftMirrored:
-                transform = transform.translatedBy(x: self.size.width, y: 0);
-                transform = transform.rotated(by: .pi / 2);
-                
-            case .right, .rightMirrored:
-                transform = transform.translatedBy(x: 0, y: self.size.height);
-                transform = transform.rotated(by: -.pi / 2);
-                
-            case .up, .upMirrored:
-                break
-            }
+        case .down, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: self.size.height)
+            transform = transform.rotated(by: .pi)
             
-            switch self.imageOrientation {
-                
-            case .upMirrored, .downMirrored:
-                transform = transform.translatedBy(x: self.size.width, y: 0)
-                transform = transform.scaledBy(x: -1, y: 1)
-                
-            case .leftMirrored, .rightMirrored:
-                transform = transform.translatedBy(x: self.size.height, y: 0)
-                transform = transform.scaledBy(x: -1, y: 1);
-                
-            default:
-                break;
+        case .left, .leftMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.rotated(by: .pi / 2)
+            
+        case .right, .rightMirrored:
+            transform = transform.translatedBy(x: 0, y: self.size.height)
+            transform = transform.rotated(by: -.pi / 2)
+            
+        case .up, .upMirrored:
+            break
+        }
+        
+        switch self.imageOrientation {
+            
+        case .upMirrored, .downMirrored:
+            transform = transform.translatedBy(x: self.size.width, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+            
+        case .leftMirrored, .rightMirrored:
+            transform = transform.translatedBy(x: self.size.height, y: 0)
+            transform = transform.scaledBy(x: -1, y: 1)
+            
+        default:
+            break
         }
         
         // Now we draw the underlying CGImage into a new context, applying the transform
@@ -387,15 +408,15 @@ extension UIImage {
         ) else {
             return self
         }
-                
-        context.concatenate(transform);
+        
+        context.concatenate(transform)
         
         switch self.imageOrientation {
-            case .left, .leftMirrored, .right, .rightMirrored:
-                context.draw(cgImage, in: CGRect(x:0 ,y: 0 ,width: self.size.height ,height:self.size.width))
-            default:
-                context.draw(cgImage, in: CGRect(x:0 ,y: 0 ,width: self.size.width ,height:self.size.height))
-                break;
+        case .left, .leftMirrored, .right, .rightMirrored:
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.height, height: self.size.width))
+        default:
+            context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+            break
         }
         
         // And now we just create a new UIImage from the drawing context
@@ -404,18 +425,18 @@ extension UIImage {
         }
         let image = UIImage(cgImage: newCGImage)
         
-        return image;
+        return image
         
     }
     
-    func compressImageData(maxSizeInMB:Int) -> Data? {
+    func compressImageData(maxSizeInMB: Int) -> Data? {
         let image = self.fixOrientation()
         let sizeInBytes = maxSizeInMB * 1024 * 1024
-        var needCompress:Bool = true
-        var imgData:Data?
-        var compressingValue:CGFloat = 1.0
-        while (needCompress && compressingValue > 0.0) {
-            if let data:Data = UIImageJPEGRepresentation(image, compressingValue) {
+        var needCompress: Bool = true
+        var imgData: Data?
+        var compressingValue: CGFloat = 1.0
+        while needCompress && compressingValue > 0.0 {
+            if let data: Data = UIImageJPEGRepresentation(image, compressingValue) {
                 if data.count < sizeInBytes {
                     needCompress = false
                     imgData = data
@@ -426,7 +447,7 @@ extension UIImage {
         }
         
         if let data = imgData {
-            if (data.count < sizeInBytes) {
+            if data.count < sizeInBytes {
                 return data
             }
         }
@@ -447,40 +468,40 @@ extension UIDevice {
         }
         
         switch identifier {
-        case "iPod5,1":                                 return "iPod Touch 5"
-        case "iPod7,1":                                 return "iPod Touch 6"
-        case "iPhone3,1", "iPhone3,2", "iPhone3,3":     return "iPhone 4"
-        case "iPhone4,1":                               return "iPhone 4s"
-        case "iPhone5,1", "iPhone5,2":                  return "iPhone 5"
-        case "iPhone5,3", "iPhone5,4":                  return "iPhone 5c"
-        case "iPhone6,1", "iPhone6,2":                  return "iPhone 5s"
-        case "iPhone7,2":                               return "iPhone 6"
-        case "iPhone7,1":                               return "iPhone 6 Plus"
-        case "iPhone8,1":                               return "iPhone 6s"
-        case "iPhone8,2":                               return "iPhone 6s Plus"
-        case "iPhone9,1", "iPhone9,3":                  return "iPhone 7"
-        case "iPhone9,2", "iPhone9,4":                  return "iPhone 7 Plus"
-        case "iPhone8,4":                               return "iPhone SE"
+        case "iPod5,1": return "iPod Touch 5"
+        case "iPod7,1": return "iPod Touch 6"
+        case "iPhone3,1", "iPhone3,2", "iPhone3,3": return "iPhone 4"
+        case "iPhone4,1": return "iPhone 4s"
+        case "iPhone5,1", "iPhone5,2": return "iPhone 5"
+        case "iPhone5,3", "iPhone5,4": return "iPhone 5c"
+        case "iPhone6,1", "iPhone6,2": return "iPhone 5s"
+        case "iPhone7,2": return "iPhone 6"
+        case "iPhone7,1": return "iPhone 6 Plus"
+        case "iPhone8,1": return "iPhone 6s"
+        case "iPhone8,2": return "iPhone 6s Plus"
+        case "iPhone9,1", "iPhone9,3": return "iPhone 7"
+        case "iPhone9,2", "iPhone9,4": return "iPhone 7 Plus"
+        case "iPhone8,4": return "iPhone SE"
         case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4":return "iPad 2"
-        case "iPad3,1", "iPad3,2", "iPad3,3":           return "iPad 3"
-        case "iPad3,4", "iPad3,5", "iPad3,6":           return "iPad 4"
-        case "iPad4,1", "iPad4,2", "iPad4,3":           return "iPad Air"
-        case "iPad5,3", "iPad5,4":                      return "iPad Air 2"
-        case "iPad2,5", "iPad2,6", "iPad2,7":           return "iPad Mini"
-        case "iPad4,4", "iPad4,5", "iPad4,6":           return "iPad Mini 2"
-        case "iPad4,7", "iPad4,8", "iPad4,9":           return "iPad Mini 3"
-        case "iPad5,1", "iPad5,2":                      return "iPad Mini 4"
+        case "iPad3,1", "iPad3,2", "iPad3,3": return "iPad 3"
+        case "iPad3,4", "iPad3,5", "iPad3,6": return "iPad 4"
+        case "iPad4,1", "iPad4,2", "iPad4,3": return "iPad Air"
+        case "iPad5,3", "iPad5,4": return "iPad Air 2"
+        case "iPad2,5", "iPad2,6", "iPad2,7": return "iPad Mini"
+        case "iPad4,4", "iPad4,5", "iPad4,6": return "iPad Mini 2"
+        case "iPad4,7", "iPad4,8", "iPad4,9": return "iPad Mini 3"
+        case "iPad5,1", "iPad5,2": return "iPad Mini 4"
         case "iPad6,3", "iPad6,4", "iPad6,7", "iPad6,8":return "iPad Pro"
-        case "AppleTV5,3":                              return "Apple TV"
-        case "i386", "x86_64":                          return "Simulator"
-        default:                                        return identifier
+        case "AppleTV5,3": return "Apple TV"
+        case "i386", "x86_64": return "Simulator"
+        default: return identifier
         }
     }
 }
 
 extension UINavigationController {
     func replaceTopViewController(viewController: UIViewController) {
-        if self.viewControllers.count > 0  {
+        if self.viewControllers.count > 0 {
             self.viewControllers[self.viewControllers.count - 1] = viewController
         }
     }
@@ -489,8 +510,8 @@ extension UINavigationController {
         self.navigationBar.setBackgroundImage(UIImage(color: UIColor.tpGreen()), for: .default)
         self.navigationBar.shadowOpacity = 0
         self.navigationBar.tintColor = .white
-        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor.white]
-        self.navigationBar.isTranslucent = false;
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
+        self.navigationBar.isTranslucent = false
         self.navigationBar.shadowImage = UIImage(color: UIColor.tpGreen(), size: CGSize(width: 1, height: 0.3))
         
         UINavigationBar.appearance().setBackgroundImage(UIImage(color: UIColor.tpGreen()), for: .default)
@@ -501,7 +522,7 @@ extension UINavigationController {
         UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
         if #available(iOS 9.0, *) {
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.tpPrimaryBlackText()
-        } 
+        }
         
         UIApplication.shared.statusBarStyle = .lightContent
     }
@@ -509,20 +530,20 @@ extension UINavigationController {
     func setWhite() {
         self.navigationBar.setBackgroundImage(UIImage(color: .white), for: .default)
         self.navigationBar.tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
-        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
-        self.navigationBar.isTranslucent = false;
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
+        self.navigationBar.isTranslucent = false
         self.navigationBar.shadowImage = UIImage(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
         
         UINavigationBar.appearance().setBackgroundImage(UIImage(color: UIColor.white), for: .default)
         UINavigationBar.appearance().tintColor = UIColor.tpPrimaryBlackText()
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName : UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
-
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
+        
         let barButtonAttributes = [NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
         UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
         if #available(iOS 9.0, *) {
             UITextField.appearance(whenContainedInInstancesOf: [UISearchBar.self]).tintColor = UIColor.tpPrimaryBlackText()
         }
-    
+        
         UIApplication.shared.statusBarStyle = .default
     }
     
@@ -532,7 +553,7 @@ extension UINavigationController {
         UINavigationBar.appearance().barTintColor = .white
         UINavigationBar.appearance().tintColor = UIColor.tpPrimaryBlackText()
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
-                    UIApplication.shared.statusBarStyle = .default
+        UIApplication.shared.statusBarStyle = .default
     }
 }
 
@@ -550,8 +571,7 @@ extension UIScrollView {
                 let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
                 
                 return y > threshold ? Observable.just() : Observable.empty()
-        }
+            }
         
     }
 }
-

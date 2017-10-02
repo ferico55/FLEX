@@ -769,7 +769,7 @@ MGSwipeTableCellDelegate
 }
 
 - (void) showLoginView:(bool) isLike {
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess: ^{
+    [AuthenticationService.shared ensureLoggedInFromViewController:self onSuccess: ^{
         if(isLike)
             [self actionLike:self];
         else

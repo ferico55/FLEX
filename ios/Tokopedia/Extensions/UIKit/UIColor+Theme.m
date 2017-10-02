@@ -78,6 +78,10 @@
         return [UIColor fromHexString:@"#8f43b8"];
     }
 
+    +(UIColor *)tpRedError{
+        return [UIColor fromHexString:@"#d50000"];
+    }
+
     +(UIColor *)fromHexString:(NSString *)hexString{
         
         unsigned int rgbValue = 0;

@@ -167,6 +167,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(navigateToContactUs:)
                                                      name:@"navigateToContactUs" object:nil];
+        
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(tapProfileCompletion)
+                                                     name:@"openProfileCompletion" object:nil];
     }
     
     return self;
@@ -342,13 +346,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 - (void)requestWalletWithNewToken {
     __weak typeof(self) weakSelf = self;
     
-    [[AuthenticationService sharedService]
-     getNewTokenOnSuccess:^(OAuthToken *token) {
-         [weakSelf requestWallet];
-     }
-     onFailure:^{
-         [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-     }];
+    [AuthenticationService.shared getNewTokenOnCompletion:^(OAuthToken * _Nullable token, NSError * _Nullable error) {
+        if (token != nil) {
+            [weakSelf requestWallet];
+        } else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        }
+    }];
 }
 
 - (void)showActivationButton:(WalletStore*)wallet {

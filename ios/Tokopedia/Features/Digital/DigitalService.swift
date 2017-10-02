@@ -34,7 +34,7 @@ class DigitalService {
             onNavigateToCart()
         }
         
-        return AuthenticationService()
+        return AuthenticationService.shared
             .ensureLoggedIn(from: viewController)
             .flatMap { () -> Observable<Response> in
                 onNeedLoading()
@@ -131,7 +131,7 @@ class DigitalService {
                 cart.url = url
                 cart.callbackUrl = callbackSuccess
                 cart.queryString = queryString
-                let webViewController = TransactionCartWebViewViewController(cart:cart)
+                let webViewController = TransactionCartWebViewViewController(cart: cart)
                 guard let navigationController = viewController.navigationController, let webView = webViewController else {
                     return
                 }

@@ -2152,7 +2152,7 @@ TTTAttributedLabelDelegate
 - (void)callAuthService:(void (^)())successCallback {
     BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
     
-    [[AuthenticationService sharedService] ensureLoggedInFromViewController:self onSuccess:^{
+    [AuthenticationService.shared ensureLoggedInFromViewController:self onSuccess:^{
         if(!isLoggedIn){
             _userManager = [UserAuthentificationManager new];
             _auth = [_userManager getUserLoginData];

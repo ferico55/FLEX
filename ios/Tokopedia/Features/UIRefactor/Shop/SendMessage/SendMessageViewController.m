@@ -147,7 +147,7 @@
     self.title = kTKPDTITLE_SEND_MESSAGE;
     if (self) {
         _isnodata = YES;
-        _authenticationService = [AuthenticationService new];
+        _authenticationService = AuthenticationService.shared;
     }
     return self;
 }

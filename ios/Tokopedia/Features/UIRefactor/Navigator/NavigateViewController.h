@@ -20,6 +20,7 @@
 @interface NavigateViewController : NSObject
 
 +(void)navigateToMaintenanceViewController;
++ (void)navigateToAccountActivationSuccess;
 
 + (void)navigateToProductFromViewController:(UIViewController *)viewController
                               withProductID:(NSString *)productID
@@ -84,6 +85,7 @@
 - (void)navigateToFeedDetailFromViewController:(UIViewController *) viewController withFeedCardID:(NSString *) cardID;
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
+
 
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;

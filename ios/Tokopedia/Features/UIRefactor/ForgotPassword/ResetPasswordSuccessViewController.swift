@@ -13,15 +13,15 @@ class ResetPasswordSuccessViewController: UIViewController {
     
     private let email: String
     
-    @IBOutlet private var messageLabel: TTTAttributedLabel!
+    @IBOutlet var titleLabel: UILabel!
+    @IBOutlet var loginButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = "Pendaftaran"
+        self.title = "Daftar"
         AnalyticsManager.trackScreenName("Success Reset Password Page")
-        self.setupMessage()
+        self.setupTitle()
         self.resetPassword()
-        // Do any additional setup after loading the view.
     }
     
     init(email: String) {
@@ -35,35 +35,10 @@ class ResetPasswordSuccessViewController: UIViewController {
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
     
-    private func setupMessage() {
-        let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineSpacing = 4.0
-        
-        let infoAttributedString = NSMutableAttributedString(string: "Anda sudah mempunyai akun Tokopedia dengan email ")
-        
-        let emailString = NSMutableAttributedString(string: email)
-        
-        emailString.addAttributes(
-            [
-                NSFontAttributeName : UIFont.boldSystemFont(ofSize: 13),
-                NSForegroundColorAttributeName : UIColor.black.withAlphaComponent(0.54)
-            ],
-            range: NSMakeRange(0, email.characters.count))
-        
-        infoAttributedString.addAttributes(
-            [
-                NSParagraphStyleAttributeName : paragraphStyle,
-                NSForegroundColorAttributeName : UIColor.black.withAlphaComponent(0.54),
-                NSFontAttributeName : UIFont.largeTheme()
-            ],
-            range: NSMakeRange(0, infoAttributedString.length))
-        
-        infoAttributedString.append(emailString)
-        
-        self.messageLabel.attributedText = infoAttributedString
+    private func setupTitle() {
+        self.titleLabel.text = "Anda sudah terdaftar di Tokopedia dengan email\n\(self.email)"
     }
     
     private func resetPassword() {
@@ -74,23 +49,23 @@ class ResetPasswordSuccessViewController: UIViewController {
             withBaseUrl: NSString.accountsUrl(),
             path: "/api/reset",
             method: .POST,
-            parameter: ["email" : self.email ?? ""],
+            parameter: ["email": self.email ?? ""],
             mapping: GeneralAction.mapping(),
-            onSuccess: { (successResult, operation) in
+            onSuccess: { successResult, _ in
                 let reset = successResult.dictionary()[""] as! GeneralAction
                 
                 if reset.message_error != nil {
                     StickyAlertView.showErrorMessage(reset.message_error)
                 }
             },
-            onFailure: { (error) in
+            onFailure: { _ in
                 
-        })
+            }
+        )
     }
     
     @IBAction private func tapLoginNowButton(_ sender: AnyObject) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "navigateToPageInTabBar"), object: "4")
         self.navigationController?.popToRootViewController(animated: true)
     }
-    
 }

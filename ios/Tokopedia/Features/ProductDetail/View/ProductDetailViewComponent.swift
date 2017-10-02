@@ -683,7 +683,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                   },
                                   didTapProductImage: { [unowned self] index in
                                       let vc = GalleryViewController(photoSource: self.viewController, withStarting: Int32(index), usingNetwork: true, canDownload: true)
-                                    
+                                      
                                       self.viewController.navigationController?.present(vc!, animated: true, completion: nil)
                 }),
                 navigationView(),
@@ -798,7 +798,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                             AnalyticsManager.trackEventName("Click", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "All Reviews")
                                             
                                             AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
-
+                                            
                                             let vc = ProductReputationViewController()
                                             vc.strShopDomain = productDetail.shop.domain
                                             vc.strProductID = productDetail.id
@@ -809,9 +809,9 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                             state: state,
                                             didTapAllDiscussion: { [unowned self] productDetail in
                                                 AnalyticsManager.trackEventName("Click", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "All Discussions")
-
+                                                
                                                 AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Diskusi_Pdp", attributes: moengageAttributes(product: productDetail))
-
+                                                
                                                 let vc = ProductTalkViewController()
                                                 let images = productDetail.images
                                                 let dataTalk: [AnyHashable: Any] =
@@ -904,7 +904,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         let userAuthManager = UserAuthentificationManager()
         if !userAuthManager.isLogin {
-            AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+            AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
             }
             return
@@ -982,7 +982,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     
                     let userAuthManager = UserAuthentificationManager()
                     if !userAuthManager.isLogin {
-                        AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+                        AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                             NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
                         }
                         return
@@ -1007,7 +1007,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         let userAuthManager = UserAuthentificationManager()
         if !userAuthManager.isLogin {
-            AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+            AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
             }
             return
@@ -1065,7 +1065,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         let userAuthManager = UserAuthentificationManager()
         guard let userId = userAuthManager.getUserId(),
             userAuthManager.isLogin else {
-            AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+            AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
             }
             return
@@ -1159,7 +1159,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         let userAuthManager = UserAuthentificationManager()
         if !userAuthManager.isLogin {
-            AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+            AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
             }
             return
@@ -1185,7 +1185,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
         
         let userAuthManager = UserAuthentificationManager()
         if !userAuthManager.isLogin {
-            AuthenticationService.shared().ensureLoggedInFromViewController(self.viewController) {
+            AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
             }
             return

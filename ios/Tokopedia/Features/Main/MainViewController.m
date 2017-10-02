@@ -7,7 +7,6 @@
 //
 
 #import "MainViewController.h"
-#import "LoginViewController.h"
 #import "SearchViewController.h"
 #import "TransactionCartViewController.h"
 #import "MoreViewController.h"
@@ -45,7 +44,6 @@
 #import "ReactEventManager.h"
 #import "UIApplication+React.h"
 
-#define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @interface MainViewController ()
 <
@@ -130,6 +128,16 @@ typedef enum TagRequest {
     [center addObserver:self selector:@selector(navigateToPageInTabBar:) name:@"navigateToPageInTabBar" object:nil];
     [center addObserver:self selector:@selector(redirectToSearch) name:@"redirectToSearch"object:nil];
     [center addObserver:self selector:@selector(redirectToHotlist) name:@"redirectToHotlist"object:nil];
+    
+    [center addObserver:self
+               selector:@selector(showSuccessActivation)
+                   name:@"didSuccessActivateAccount"
+                 object:nil];
+    
+    [center addObserver:self
+               selector:@selector(redirectToMore)
+                   name:@"redirectToMore"
+                 object:nil];
     
     //refresh timer for GTM Container
     _containerTimer = [NSTimer scheduledTimerWithTimeInterval:7200.0f target:self selector:@selector(didRefreshContainer:) userInfo:nil repeats:YES];
@@ -245,7 +253,8 @@ typedef enum TagRequest {
     /** TAB BAR INDEX 5 **/
     UIViewController *moreVC;
     if (!isauth) {
-        LoginViewController *more = [LoginViewController new];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+        LoginViewController *more = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
         moreVC = more;
         if (_page == MainViewControllerPageRegister) {
             dispatch_async(dispatch_get_main_queue(), ^{
@@ -370,7 +379,8 @@ typedef enum TagRequest {
     
     UINavigationController *moreNavBar = nil;
     if (!isauth) {
-        LoginViewController *more = [LoginViewController new];
+        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
+        LoginViewController *more = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
         
         more.onLoginFinished = ^(LoginResult* result){
             [_tabBarController setSelectedIndex:0];
@@ -575,6 +585,10 @@ typedef enum TagRequest {
     _tabBarController.selectedIndex = 1;
 }
 
+- (void)showSuccessActivation {
+    [NavigateViewController navigateToAccountActivationSuccess];
+}
+
 #pragma mark - Logout Controller
 -(LogoutRequestParameter*) logoutObjectRequest{
     UserAuthentificationManager* auth = [UserAuthentificationManager new];
@@ -735,6 +749,10 @@ typedef enum TagRequest {
     NSString *pageId = [notification object];
     int pagenum = [pageId intValue];
     _tabBarController.selectedIndex = pagenum;
+}
+
+- (void)redirectToMore {
+    _tabBarController.selectedIndex = 5;
 }
 
 // MARK: TKPAppFlow methods

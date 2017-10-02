@@ -61,7 +61,7 @@ class HomePageViewController: UIViewController {
     //    private var categoryId = ""
     
     private let officialStorePlaceholder = UIView()
-    fileprivate let authenticationService = AuthenticationService()
+    fileprivate let authenticationService = AuthenticationService.shared
     fileprivate let userManager = UserAuthentificationManager()
     
     init() {
@@ -105,7 +105,7 @@ class HomePageViewController: UIViewController {
         }
         AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status": UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
-
+        
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -496,9 +496,9 @@ class HomePageViewController: UIViewController {
                 officialStoreSection.view.mas_makeConstraints { make in
                     make?.edges.equalTo()(self.officialStorePlaceholder)
                 }
-                }, onError: { [weak self] error in
-                    guard let `self` = self else { return }
-                    self.isRequestingOfficialStore = false
+            }, onError: { [weak self] _ in
+                guard let `self` = self else { return }
+                self.isRequestingOfficialStore = false
             })
     }
     
@@ -557,7 +557,7 @@ class HomePageViewController: UIViewController {
         
         guard let phoneNumber = self.userManager.getUserPhoneNumber(),
             !phoneNumber.isEmpty else {
-                return
+            return
         }
         
         WalletService.getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
@@ -582,21 +582,23 @@ class HomePageViewController: UIViewController {
                     
                     self?.tokocashPlaceholder.isHidden = false
                 }
-                }, onError: { [weak self] error in
-                    if #available(iOS 8.3, *) {
-                        StickyAlertView.showErrorMessage([error.localizedDescription])
-                    } else {
-                        self?.tokocashPlaceholder.isHidden = true
-                    }
+            }, onError: { [weak self] error in
+                if #available(iOS 8.3, *) {
+                    StickyAlertView.showErrorMessage([error.localizedDescription])
+                } else {
+                    self?.tokocashPlaceholder.isHidden = true
+                }
             }).disposed(by: self.rx_disposeBag)
     }
     
     private func requestTokocashWithNewToken() {
-        AuthenticationService.shared().getNewToken(onSuccess: { [weak self] token in
-            self?.requestTokocash()
-            }, onFailure: {
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
-        })
+        AuthenticationService.shared.getNewToken { (token: OAuthToken?, _: Error?) in
+            if token != nil {
+                self.requestTokocash()
+            } else {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: TkpdNotificationForcedLogout), object: nil)
+            }
+        }
     }
     
     private func navigateToIntermediaryPage() {
@@ -616,14 +618,14 @@ class HomePageViewController: UIViewController {
         let categoryName = layoutRow.name
         
         AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
-        AnalyticsManager.moEngageTrackEvent(withName: "Maincategory_Icon_Tapped", attributes: ["category" : categoryName ?? ""])
+        AnalyticsManager.moEngageTrackEvent(withName: "Maincategory_Icon_Tapped", attributes: ["category": categoryName ?? ""])
         
         if layoutRow.type == LayoutRowType.Marketplace.rawValue {
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: self, withCategoryId: layoutRow.category_id, categoryName: categoryName, isIntermediary: true)
             AnalyticsManager.moEngageTrackEvent(withName: "Category_Screen_Launched",
-                                                attributes: ["category" : categoryName ?? "",
-                                                             "category_id" : layoutRow.category_id])
+                                                attributes: ["category": categoryName ?? "",
+                                                             "category_id": layoutRow.category_id])
         } else if layoutRow.type == LayoutRowType.Digital.rawValue {
             guard let categoryId = layoutRow.category_id else {
                 
@@ -650,10 +652,10 @@ class HomePageViewController: UIViewController {
                                     let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
                                     controller.hidesBottomBarWhenPushed = true
                                     self.navigationController?.pushViewController(controller, animated: true)
-                                }else {
+                                } else {
                                     guard let data = wallet.data,
                                         let action = data.action,
-                                        let url = URL (string : action.applinks) else { return }
+                                        let url = URL(string: action.applinks) else { return }
                                     TPRoutes.routeURL(url)
                                 }
                             }
@@ -665,9 +667,14 @@ class HomePageViewController: UIViewController {
                 })
             } else {
                 AnalyticsManager.moEngageTrackEvent(withName: "Digital_Category_Screen_Launched",
-                                                    attributes: ["category" : categoryName ?? "",
-                                                                 "digital_category_id" : layoutRow.category_id])
-                TPRoutes.routeURL(URL(string: layoutRow.url)!)
+                                                    attributes: ["category": categoryName ?? "",
+                                                                 "digital_category_id": layoutRow.category_id])
+                
+                guard let url = URL(string: layoutRow.url) else {
+                    return
+                }
+                
+                TPRoutes.routeURL(url)
             }
         }
     }

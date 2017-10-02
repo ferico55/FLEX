@@ -44,7 +44,6 @@
 #import "Tokopedia-Swift.h"
 
 #import "UITableView+FDTemplateLayoutCell.h"
-#import "RegisterViewController.h"
 #import "NotificationManager.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
@@ -322,8 +321,9 @@ NoResultDelegate
     _noLoginView.button.backgroundColor = [UIColor tpGreen];
     _noLoginView.onButtonTap = ^(NoResultReusableView *noResultView) {
         
-        RegisterViewController* controller = [RegisterViewController new];
-        controller.onLoginSuccess = ^() {
+        RegisterBaseViewController *controller = [RegisterBaseViewController new];
+        controller.hidesBottomBarWhenPushed = YES;
+        controller.onLoginSuccess = ^(LoginResult *result){
             [weakSelf.tabBarController setSelectedIndex:3];
             [[NSNotificationCenter defaultCenter] postNotificationName:UPDATE_TABBAR object:nil userInfo:nil];
         };

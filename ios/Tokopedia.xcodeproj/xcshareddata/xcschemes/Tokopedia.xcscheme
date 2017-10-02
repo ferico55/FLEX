@@ -54,7 +54,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -63,16 +64,6 @@
                BlueprintIdentifier = "FC36DF9D19B0656400AF74C1"
                BuildableName = "TokopediaTests.xctest"
                BlueprintName = "TokopediaTests"
-               ReferencedContainer = "container:Tokopedia.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "452E82A01E64103E001191E0"
-               BuildableName = "TokopediaUITests.xctest"
-               BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">
             </BuildableReference>
          </TestableReference>
