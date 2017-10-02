@@ -213,10 +213,10 @@ FavoriteShopRequestDelegate
         [cell.storeIcon setHidden:!hasBadge];
         if (hasBadge) {
             [cell.consImageToNameLabel setConstant:29];
-            cell.storeIcon.image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:[favoritedShop.shop_badge firstObject].image_url]]];
+            [cell.storeIcon setImageWithURL: [NSURL URLWithString:[favoritedShop.shop_badge firstObject].image_url]];
         } else {
-            cell.storeIcon.image = nil;
             [cell.consImageToNameLabel setConstant:8];
+            cell.storeIcon.image = nil;
         }
         cell.shopname.text = [favoritedShop.shop_name kv_decodeHTMLCharacterEntities];
         cell.shoplocation.text = favoritedShop.shop_location;
