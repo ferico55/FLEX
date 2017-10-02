@@ -68,7 +68,9 @@ const HybridContainer = (ReactScreens) => {
         screenKey,
         list: []
       };
-      HybridNavigationManager.setTitle(rootTag, title || name);
+      if (name != 'CategoryResult'){
+      	HybridNavigationManager.setTitle(rootTag, title || name);
+  	  }
     }
 
     dispatch = (action) => {

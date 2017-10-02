@@ -11,13 +11,17 @@
 @implementation Slide
 
 + (NSDictionary *)attributeMappingDictionary {
-    NSArray *keys = @[@"title", @"message", @"image_url", @"redirect_url"];
+    NSArray *keys = @[@"message", @"image_url", @"redirect_url"];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
 
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"title": @"bannerTitle"
+                                                  }];
+
     [mapping addAttributeMappingsFromDictionary:@{
                                                   @"applink": @"applinks"
                                                   }];

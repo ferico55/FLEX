@@ -26,7 +26,7 @@
     [super viewDidLoad];
     
     UIImageView *logo = [[UIImageView alloc]initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
-    [self.navigationItem setTitleView:logo];
+    [self.navigationItem setTitleView:logo]; 
     
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"

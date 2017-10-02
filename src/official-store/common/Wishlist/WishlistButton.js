@@ -33,7 +33,7 @@ class Wishlist extends Component {
               isWishlist ? (<Icon name='ios-heart' size={25} color="#f33960" />) :
                 (<Icon name='ios-heart-outline' size={25} />)
             }
-          </View> 
+          </View>
         </Touchable>
       </View>
     )

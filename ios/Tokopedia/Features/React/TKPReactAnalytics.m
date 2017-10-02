@@ -43,5 +43,9 @@ RCT_EXPORT_METHOD(moEngageEvent:(NSString *)name attributes:(NSDictionary *)attr
     [AnalyticsManager moEngageTrackEventWithName:name attributes:attributes];
 }
 
+RCT_EXPORT_METHOD(trackPromoClickWithDictionary:(NSDictionary*)promotionsDict didSuccess:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {
+    [AnalyticsManager trackPromoClickWithDictionary:promotionsDict];
+}
+
 
 @end

@@ -14,6 +14,8 @@
 #import <React/RCTDevMenu.h>
 #import <CodePush/CodePush.h>
 
+#import "ReactEventManager.h"
+
 @import BlocksKit;
 
 static const NSString *codePushProductionKey = @"ZSvkwYIcHs4uXYNdxM99fYYlMaoX541ce7e1-ab64-41f9-845c-cde8b0ac2964";
@@ -65,10 +67,13 @@ static NSURL *bundleUrl() {
 - (RCTBridge *)reactBridge {
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
+        ReactEventManager *eventManager = [[ReactEventManager alloc] init];
+        
         RCTBridge *bridge = [[RCTBridge alloc] initWithBundleURL:bundleUrl()
                                                   moduleProvider:^{
                                                       return @[
-                                                               [HybridNavigationManager new]
+                                                               [HybridNavigationManager new],
+                                                               eventManager
                                                                ];
                                                   }
                                                    launchOptions:nil];

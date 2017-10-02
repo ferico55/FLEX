@@ -12,10 +12,10 @@ import RxCocoa
 import RxSwift
 
 class PopoverItem: NSObject {
-    var action: ((PopoverItem)->())?
+    var action: ((PopoverItem)->Void)?
     var title = ""
     
-    init(title: String, action: ((PopoverItem)->())?) {
+    init(title: String, action: ((PopoverItem)->Void)?) {
         self.action = action
         self.title = title
     }

@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Wrap
 
 extension NSDate {
     static func convertDateString(_ string: String, fromFormat format1: String, toFormat format2: String ) -> String{
@@ -157,6 +158,13 @@ extension Dictionary {
         var dict = self
         dict.merge(with: dictionary)
         return dict
+    }
+}
+
+extension NSObject {
+    
+    func wrap() -> [String: Any] {
+        return try! Wrap.wrap(self)
     }
 }
 

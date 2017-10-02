@@ -608,7 +608,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, with: pageControl)
         carouselDataSource.isCategoryBanner = true
         carouselDataSource.didSelectBanner = { [unowned self] banner, index in
-            AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.title)
+            AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.bannerTitle)
         }
         self.carouselDataSource.navigationDelegate = navigationController
         let slider = iCarousel(frame: .zero)
@@ -650,7 +650,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let searchController = SearchViewController()
-        searchController.presentController = self
+        
         uiSearchController = UISearchController(searchResultsController: searchController)
         searchController.searchBar = uiSearchController.searchBar
         uiSearchController.setSearchBarToTop(viewController: self, title: categoryIntermediaryResult.name)

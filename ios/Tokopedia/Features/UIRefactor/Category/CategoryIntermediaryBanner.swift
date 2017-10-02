@@ -15,7 +15,7 @@ final class CategoryIntermediaryBanner:NSObject, Unboxable {
     
     convenience init(unboxer:Unboxer) throws {
         self.init()
-        self.images = try unboxer.unbox(keyPath: "images")
+        self.images = unboxer.unbox(keyPath: "images")
     }
 
 }

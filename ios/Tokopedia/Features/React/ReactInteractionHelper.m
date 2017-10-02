@@ -44,12 +44,9 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString caption:(NSString*) caption anchor
 }
 
 RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
+    __weak typeof(self) weakSelf = self;
     dispatch_async(dispatch_get_main_queue(), ^{
-        if(lastNotificationView) {
-            [lastNotificationView setHidden:YES];
-            lastNotificationView = nil;
-            [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
-        }
+        [weakSelf destroyLastNotificationView];
         
         lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                         type:NotificationTypeSuccess
@@ -58,6 +55,28 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
                                                                  dismissable:YES
                                                                       action:nil];
     });
+}
+
+RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
+    __weak typeof(self) weakSelf = self;
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [weakSelf destroyLastNotificationView];
+        
+        lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                        type:NotificationTypeError
+                                                                    duration:4.0
+                                                                 buttonTitle:nil
+                                                                 dismissable:YES
+                                                                      action:nil];
+    });
+}
+
+-(void)destroyLastNotificationView {
+    if(lastNotificationView) {
+        [lastNotificationView setHidden:YES];
+        lastNotificationView = nil;
+        [NSObject cancelPreviousPerformRequestsWithTarget:SwiftOverlays.class];
+    }
 }
 
 RCT_EXPORT_METHOD(showDangerAlert:(NSString*) message){

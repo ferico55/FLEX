@@ -188,7 +188,6 @@
 
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
-    resultController.presentController = self;
     
     self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     self.searchController.searchResultsUpdater = self;

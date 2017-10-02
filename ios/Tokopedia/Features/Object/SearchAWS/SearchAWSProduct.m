@@ -63,7 +63,7 @@
         [viewModel setCatalogSeller:self.catalog_count_product];
         [viewModel setCatalogThumbUrl:self.catalog_image_300];
         _catalogViewModel = viewModel;
-    }
+}
     
     return _catalogViewModel;
 }

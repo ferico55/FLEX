@@ -10,6 +10,8 @@ import Foundation
 import Render
 import RestKit
 import SPTPersistentCache
+import Moya
+import RxSwift
 
 class TopAdsFilter: NSObject {
     var ep: TopAdsEp = .product
@@ -140,7 +142,33 @@ class TopAdsService: NSObject {
         self.cache = SPTPersistentCache(options: cacheOption)
     }
     
-    func getTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
+    func getTopAdsJSON(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [String: Any]?) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
+            NetworkProvider<TopAdsTarget>()
+                .request(.getTopAds(adFilter: topAdsFilter))
+                .mapJSON(failsOnEmptyData: false)
+                .subscribe(onNext: { json in
+                    if let dictionary = json as? [String: Any] {
+                        onSuccess(dictionary)
+                    }
+                    else if let array = json as? [Any] {
+                        var dictionary:[String: Any] = [:]
+                        for (index, element) in array.enumerated() {
+                            dictionary["\(index)"] = element
+                        }
+                        onSuccess(dictionary)
+                    }
+                    else {
+                        print("Error converting json to dictionary")
+                        onSuccess(nil)
+                        return
+                    }
+                }, onError: { error in
+                    onFailure(error)
+                })
+        
+    }
+    
+    func getTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
         if topAdsFilter.isRecommendationCategory {
             self.getTopAdsFromCategoryRecommendation(topAdsFilter: topAdsFilter, onSuccess: { result in
                 onSuccess(result)
@@ -183,7 +211,7 @@ class TopAdsService: NSObject {
                             on: DispatchQueue.main)
     }
     
-    private func getTopAdsFromCategoryRecommendation(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
+    private func getTopAdsFromCategoryRecommendation(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
         
         self.loadRecommendationCategoryIds { [weak self] ids in
             if ids.count > 0 {
@@ -238,11 +266,11 @@ class TopAdsService: NSObject {
         }
     }
     
-    private func requestTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Error) -> Void) {
+    private func requestTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         let path = "/promo/v1.1/display/ads"
-        let parameters = generateParameters(adFilter: topAdsFilter)
+        let parameters = TopAdsService.generateParameters(adFilter: topAdsFilter)
         
         networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: PromoResponse.mapping(), onSuccess: { successResult, _ in
             if let response = successResult.dictionary()[""] as? PromoResponse {
@@ -274,7 +302,7 @@ class TopAdsService: NSObject {
         })
     }
     
-    private func generateParameters(adFilter: TopAdsFilter) -> [String: String] {
+    class func generateParameters(adFilter: TopAdsFilter) -> [String: String] {
         
         let parameters: NSMutableDictionary = ["ep": adFilter.ep.name(),
                                                "item": "\(adFilter.numberOfProductItems),\(adFilter.numberOfShopItems)",

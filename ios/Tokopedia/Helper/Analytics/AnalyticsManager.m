@@ -288,6 +288,21 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:data];
 }
 
++ (void)trackPromoClickWithDictionary:(NSDictionary *)promotionsDict {
+    AnalyticsManager *manager = [[self alloc] init];
+    
+    NSDictionary *data = @{
+                           @"event" : @"promotionClick",
+                           @"ecommerce" : @{
+                                   @"promoClick" : @{
+                                           @"promotions" : @[promotionsDict]
+                                           }
+                                   }
+                           };
+    
+    [manager.dataLayer push:data];
+}
+
 + (void)trackCheckout:(NSArray *)shops step:(NSInteger)step option:(NSString *)option {
     if (!shops || !step || !option) return;
     AnalyticsManager *manager = [[self alloc] init];
@@ -651,13 +666,13 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
     GAIEcommercePromotion *promotion = [[GAIEcommercePromotion alloc] init];
     [promotion setId:slide.slideId];
-    [promotion setName:slide.title];
-    [promotion setCreative:[slide.title stringByReplacingOccurrencesOfString:@" " withString:@"-"]];
+    [promotion setName:slide.bannerTitle];
+    [promotion setCreative:[slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"]];
     [promotion setPosition:[NSString stringWithFormat:@"slide_banner_%ld",(long)index]];
     
     GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Internal Promotions"
                                                                            action:type == HomeBannerPromotionTrackerTypeView ? @"view" : @"click"
-                                                                            label:slide.title
+                                                                            label:slide.bannerTitle
                                                                             value:nil];
     
     [builder set:type == HomeBannerPromotionTrackerTypeView ? kGAIPromotionView : kGAIPromotionView forKey:kGAIPromotionAction];

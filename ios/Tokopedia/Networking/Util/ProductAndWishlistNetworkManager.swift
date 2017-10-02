@@ -60,7 +60,7 @@ class ProductAndWishlistNetworkManager: NSObject {
                 //ini masih ga bisa kalau search 'kaos'
                 guard let searchResult = outerResult else { errorHandler(error); return }
                 completionHandler(searchResult)
-            }).disposed(by: self.rx_disposeBag)
+            })
     }
     
     func requestIntermediaryCategory(forCategoryID:String, withCompletionHandler completionHandler: @escaping(CategoryIntermediaryResult) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {

@@ -84,6 +84,7 @@ Navigator.registerScreen('AddPromoCredit', () => props => (
 
 const container = HybridContainer({
   Hotlist: require('./src/Hotlist'),
+  CategoryResult: require('./src/category-result/CategoryResult'),
   Promo,
   PromoDetail,
   'Official Store': require('./src/official-store/setup'),

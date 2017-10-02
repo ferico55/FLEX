@@ -26,7 +26,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
 
   return (
     <View height={215} backgroundColor={'rgba(0, 0, 0, 0.05)'} paddingBottom={10}>
-      <Swiper 
+      <Swiper
         autoplay={true}
         showsPagination={true}
         autoplayTimeout={5}
@@ -39,7 +39,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
           topBanners.map((banner, index) => (
             <View key={banner.banner_id}>
               <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
-                <Image 
+                <Image
                         style={styles.pageStyle}
                         source={{ uri : banner.image_url }}
                         defaultSource = {{ uri : 'grey-bg' }}
@@ -59,7 +59,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
               <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
                 <Image source={{ uri: banner.image_url }} style={styles.pageStyle}></Image>
               </TouchableWithoutFeedback>
-            </View> 
+            </View>
           ))
         }
       </ViewPagerAndroid>  */}
