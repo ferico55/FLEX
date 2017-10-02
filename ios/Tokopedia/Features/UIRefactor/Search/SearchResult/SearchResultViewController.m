@@ -1032,7 +1032,8 @@ ProductCellDelegate
                         [weakSelf reloadView];
                         [weakSelf searchMappingResult:result];
                     } andErrorHandler:^(NSError *error) {
-                        //do nothing
+                        [_act stopAnimating];
+                        [_refreshControl endRefreshing];
                     }];
 }
 
