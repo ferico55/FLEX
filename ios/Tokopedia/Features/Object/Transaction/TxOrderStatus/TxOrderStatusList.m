@@ -161,18 +161,9 @@
 -(NSString*)lastStatusString{
     
     NSString *lastStatus = [NSString convertHTML:self.order_last.last_buyer_status];
+    NSArray *arrLastStatus = [lastStatus componentsSeparatedByString:@"\n"];
     
-    NSMutableArray *comment = [NSMutableArray new];
-    
-    if (lastStatus &&![lastStatus isEqualToString:@""]&&![lastStatus isEqualToString:@"0"]) {
-        [comment addObject:lastStatus];
-    }
-        
-    NSString *statusString = [[comment valueForKey:@"description"] componentsJoinedByString:@"\n"];
-    
-    if ([statusString isEqual:@""]) {
-        statusString = @"-";
-    }
+    NSString *statusString = arrLastStatus.count>0 ? arrLastStatus[0] : @"";
     
     return statusString;
 }
@@ -233,6 +224,7 @@
     RKRelationshipMapping *relHistoryMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"order_history" toKeyPath:@"order_history" withMapping:[OrderHistory mapping]];
     [mapping addPropertyMapping:relHistoryMapping];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"order_destination" toKeyPath:@"order_destination" withMapping:[OrderDestination mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"driver_info" toKeyPath:@"driver_info" withMapping:[DriverInfo mapping]]];
     return mapping;
 }
 

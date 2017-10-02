@@ -250,6 +250,8 @@
         
         __weak typeof(self) weakSelf = self;
         
+        _dataManager.context.viewController = weakSelf;
+        
         [_dataManager context].onTapDetail = ^(TxOrderStatusList *order){
             [weakSelf tapDetailOrder:order];
         };

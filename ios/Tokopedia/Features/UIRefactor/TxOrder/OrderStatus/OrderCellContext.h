@@ -30,4 +30,6 @@
 @property (nonatomic, copy) void(^onTapCancelReplacement)(TxOrderStatusList *);
 @property (nonatomic, copy) void(^onTapComplaint)(TxOrderStatusList *);
 
+@property (nonatomic, weak) UIViewController *viewController;
+
 @end

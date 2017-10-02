@@ -10,8 +10,10 @@
 @class TxOrderStatusList;
 @class OrderCellContext;
 
-@interface ListOrderStatusComponent : CKCompositeComponent
+@interface ListOrderStatusComponent : CKCompositeComponent <UIActionSheetDelegate>
 
 + (instancetype)newWithOrder:(TxOrderStatusList *)order context:(OrderCellContext*)context;
+
+@property (nonatomic) id<UIActionSheetDelegate> actionSheetDelegate;
 
 @end

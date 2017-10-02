@@ -19,6 +19,7 @@
 #import "OrderDestination.h"
 #import "OrderShop.h"
 #import "OrderButton.h"
+#import "DriverInfo.h"
 
 @interface TxOrderStatusList : NSObject <TKPObjectMapping>
 
@@ -35,6 +36,7 @@
 @property (strong, nonatomic) NSArray *order_history;
 @property (strong, nonatomic) NSString *order_JOB_detail;
 @property (strong, nonatomic) OrderDestination *order_destination;
+@property (strong, nonatomic) DriverInfo *driver_info;
 
 @property (strong, nonatomic) NSString *type;
 @property (strong, nonatomic) NSString *lastStatusString;

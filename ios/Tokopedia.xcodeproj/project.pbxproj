@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2A8D26AC1F7D24210095B180 /* DriverInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 2A8D26AB1F7D24210095B180 /* DriverInfo.m */; };
 		2AF7B6901F58176000966F4C /* APIAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF7B68F1F58176000966F4C /* APIAction.swift */; };
 		2AF7B6B21F58265200966F4C /* AccountTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF7B6B11F58265200966F4C /* AccountTarget.swift */; };
 		3494586E1F306BDB00EEB628 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = 349458281F306BDB00EEB628 /* TokopediaDB.db */; };
@@ -1960,6 +1961,8 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A8D26AA1F7D24210095B180 /* DriverInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DriverInfo.h; sourceTree = "<group>"; };
+		2A8D26AB1F7D24210095B180 /* DriverInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DriverInfo.m; sourceTree = "<group>"; };
 		2AF7B68F1F58176000966F4C /* APIAction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = APIAction.swift; sourceTree = "<group>"; };
 		2AF7B6B11F58265200966F4C /* AccountTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountTarget.swift; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
@@ -7082,6 +7085,8 @@
 		DADBA3481F3C5E26002B1FAE /* Sales */ = {
 			isa = PBXGroup;
 			children = (
+				2A8D26AA1F7D24210095B180 /* DriverInfo.h */,
+				2A8D26AB1F7D24210095B180 /* DriverInfo.m */,
 				DADBA3491F3C5E26002B1FAE /* ActionOrder.h */,
 				DADBA34A1F3C5E26002B1FAE /* ActionOrder.m */,
 				DADBA34B1F3C5E26002B1FAE /* ActionOrderResult.h */,
@@ -13238,6 +13243,7 @@
 				DADBB03A1F3C5E2E002B1FAE /* ProductReputationTableViewCell.swift in Sources */,
 				DADBAD481F3C5E2B002B1FAE /* WarehouseResponse.m in Sources */,
 				DADBAC9C1F3C5E2A002B1FAE /* ResolutionButton.m in Sources */,
+				2A8D26AC1F7D24210095B180 /* DriverInfo.m in Sources */,
 				DADBAD3A1F3C5E2B002B1FAE /* OrderCustomer.m in Sources */,
 				DADBAE201F3C5E2C002B1FAE /* WishListObject.m in Sources */,
 				DADBAD771F3C5E2B002B1FAE /* EtalaseResult.m in Sources */,
