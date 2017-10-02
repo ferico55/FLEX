@@ -648,6 +648,9 @@
         NSArray *messages = @[@"Kota Asal harus dilengkapi."];
         StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:messages delegate:self];
         [alert show];
+        if (self.shipmentType == ShipmentTypeOpenShop) {
+            [AnalyticsManager trackEventName:@"clickCreateShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_CLICK label:[NSString stringWithFormat:@"Save Logistic - %@", messages[0]]];
+        }
         return;
     }
     
@@ -660,6 +663,7 @@
         controller.shopLogo = self.shopLogo;
         controller.generatedHost = self.generatedHost;
         [self.navigationController pushViewController:controller animated:YES];
+        [AnalyticsManager trackEventName:@"clickCreateShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_CLICK label:@"Save Logistic"];
         return;
     }
     

@@ -80,6 +80,7 @@
 #define GA_EVENT_CATEGORY_RECHARGE @"Recharge"
 #define GA_EVENT_CATEGORY_SCREENSHOT @"Screenshot"
 #define GA_EVENT_CATEGORY_REORDER @"Reorder"
+#define GA_EVENT_CATEGORY_CREATE_SHOP @"Create Shop"
 #define GA_EVENT_CATEGORY_FORCE_UPDATE_ALERT @"Force Update Alert"
 #define GA_EVENT_CATEGORY_REPLACEMENT @"Peluang Filter"
 

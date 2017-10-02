@@ -259,11 +259,14 @@ import RestKit
         if shopDescription.length == 0 {
             errorMessages.append("Deskripsi harus diisi.")
         }
+        
         if errorMessages.count > 0 {
             let alert: StickyAlertView = StickyAlertView(errorMessages: errorMessages, delegate: self)
             alert.show()
+            AnalyticsManager.trackEventName("clickCreateShop", category: GA_EVENT_CATEGORY_CREATE_SHOP, action: GA_EVENT_ACTION_CLICK, label: "Continue Shop Biodata \(errorMessages)")
             return;
         }
+        AnalyticsManager.trackEventName("clickCreateShop", category: GA_EVENT_CATEGORY_CREATE_SHOP, action: GA_EVENT_ACTION_CLICK, label: "Continue Shop Biodata")
         let shopImageURL = (uploadImageResponse != nil) ? uploadImageResponse.image.pic_src as String : ""
                 
         let controller: ShipmentViewController = ShipmentViewController(shipmentType: .openShop)
