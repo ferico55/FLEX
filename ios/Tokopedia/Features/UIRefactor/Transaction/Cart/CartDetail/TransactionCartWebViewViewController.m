@@ -93,7 +93,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
 }
 -(IBAction)didTapSuccess:(id)sender
 {

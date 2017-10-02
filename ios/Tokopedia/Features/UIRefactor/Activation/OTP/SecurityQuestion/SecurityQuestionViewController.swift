@@ -112,8 +112,7 @@ class SecurityQuestionViewController : UIViewController, UITextFieldDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
-        self.navigationController?.setWhite()
+    
         AnalyticsManager.trackScreenName("Security Question Page")
         OTPRequest.checkChangePhoneNumberStatus(
             withToken: self.securityQuestionObject.token,

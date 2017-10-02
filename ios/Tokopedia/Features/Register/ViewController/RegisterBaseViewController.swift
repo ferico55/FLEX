@@ -49,7 +49,6 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Register Home Page")
-        self.navigationController?.setWhite()
     }
     
     private func updateFormViewAppearance() {
@@ -274,8 +273,6 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
         
         let navigationController = UINavigationController(rootViewController: vc)
-        navigationController.setWhite()
-        
         self.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     

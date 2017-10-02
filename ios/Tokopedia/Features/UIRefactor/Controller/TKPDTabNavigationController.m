@@ -110,7 +110,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     [self setSearchBar];
     if (self.navigationTitle) {
         self.navigationItem.title = [self.navigationTitle capitalizedString];

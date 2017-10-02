@@ -76,7 +76,6 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        navigationController?.setWhite()
     }
 
     override func didReceiveMemoryWarning() {

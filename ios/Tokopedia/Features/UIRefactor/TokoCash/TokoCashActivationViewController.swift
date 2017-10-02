@@ -40,7 +40,6 @@ class TokoCashActivationViewController: UIViewController, UITableViewDataSource,
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        navigationController?.setWhite()
         UIView.animate(withDuration: 0.5, delay: 0.3, animations: {
             self.tableView.layoutIfNeeded()
             self.tableViewheightConstraint.constant = self.tableView.contentSize.height

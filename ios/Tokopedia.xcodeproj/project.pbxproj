@@ -1930,6 +1930,8 @@
 		DADBB2321F3C628B002B1FAE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DADBB22F1F3C628B002B1FAE /* InfoPlist.strings */; };
 		DADBB2381F3C7906002B1FAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB2371F3C7906002B1FAE /* main.m */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		F754C9951F8279550043DC20 /* UINavigationController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F754C9931F8279550043DC20 /* UINavigationController+Header.swift */; };
+		F754C9961F8279550043DC20 /* UIViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F754C9941F8279550043DC20 /* UIViewController+Header.swift */; };
 		F9662B511F570858009CD692 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9662B501F570858009CD692 /* GoogleService-Info.plist */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
@@ -5012,6 +5014,8 @@
 		DADBB2361F3C78C5002B1FAE /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		DADBB2371F3C7906002B1FAE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		F754C9931F8279550043DC20 /* UINavigationController+Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Header.swift"; sourceTree = "<group>"; };
+		F754C9941F8279550043DC20 /* UIViewController+Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Header.swift"; sourceTree = "<group>"; };
 		F9662B501F570858009CD692 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -5191,6 +5195,8 @@
 		62C5DF141F826A2100EAE044 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				F754C9931F8279550043DC20 /* UINavigationController+Header.swift */,
+				F754C9941F8279550043DC20 /* UIViewController+Header.swift */,
 				62C5DF151F826A2100EAE044 /* UIFont+Theme.h */,
 				62C5DF161F826A2100EAE044 /* UIImageEffects.h */,
 				62C5DF171F826A2100EAE044 /* UIViewController+Swizzling.m */,
@@ -12338,6 +12344,7 @@
 				62C5EC1F1F826A2700EAE044 /* PromoDetailViewController.m in Sources */,
 				62C5EC8B1F826A2700EAE044 /* ResolutionInputReceiptViewController.m in Sources */,
 				62C5EE181F826A2800EAE044 /* ProductReputationViewModel.m in Sources */,
+				F754C9961F8279550043DC20 /* UIViewController+Header.swift in Sources */,
 				62C5F0CC1F826A2A00EAE044 /* CatalogSpecs.m in Sources */,
 				62C5EEDD1F826A2900EAE044 /* UserPageHeader.m in Sources */,
 				62C5EF0E1F826A2900EAE044 /* RequestOrderData.m in Sources */,
@@ -13159,6 +13166,7 @@
 				62C5F0611F826A2A00EAE044 /* RatingList.m in Sources */,
 				62C5ED431F826A2800EAE044 /* NotificationRequest.m in Sources */,
 				62C5ECFD1F826A2700EAE044 /* RejectReasonProductDescriptionViewController.m in Sources */,
+				F754C9951F8279550043DC20 /* UINavigationController+Header.swift in Sources */,
 				62C5EDD81F826A2800EAE044 /* OpenShopRequest.m in Sources */,
 				62C5F1511F826A2B00EAE044 /* ShopProductPageList.swift in Sources */,
 				62C5F1DD1F826A2C00EAE044 /* GeneralAction.m in Sources */,

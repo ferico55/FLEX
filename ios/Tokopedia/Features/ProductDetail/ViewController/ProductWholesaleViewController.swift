@@ -43,12 +43,6 @@ class ProductWholesaleViewController: UIViewController, UITableViewDataSource, U
         AnalyticsManager.trackScreenName("Product Detail - Wholesale Page")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        self.navigationController?.setWhite()
-    }
-    
     // MARK: - UITableView Data Source
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1

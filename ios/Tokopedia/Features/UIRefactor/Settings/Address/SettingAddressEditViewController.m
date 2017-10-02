@@ -140,7 +140,6 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     [_scrollView addSubview:_contentView];
     self.scrollView.delegate = self;
     [self.scrollView setContentSize:CGSizeMake(self.view.frame.size.width, self.contentView.frame.size.height)];

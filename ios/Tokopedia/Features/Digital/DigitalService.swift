@@ -287,8 +287,6 @@ class DigitalService {
             }
             
             let navigationController = UINavigationController(rootViewController: securityViewController)
-            navigationController.setWhite()
-            
             viewController.present(navigationController, animated: true, completion: nil)
             
             return Disposables.create()

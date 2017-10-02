@@ -126,7 +126,7 @@ class MessageViewController: JSQMessagesViewController, JSQMessagesInputToolbarD
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        self.navigationController?.setWhite()
+
         let size = self.inputToolbar.contentView.textView.sizeThatFits(CGSize(width: self.inputToolbar.contentView.textView.frame.size.width, height: CGFloat.max))
         let dy = size.height - self.inputToolbar.contentView.textView.frame.size.height
         self.jsq_adjustInputToolbar(forComposerTextViewContentSizeChange: dy)

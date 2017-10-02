@@ -334,7 +334,6 @@ NoResultDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController setGreen];
     
     if (_popFromToppay) {
         _popFromToppay = NO;

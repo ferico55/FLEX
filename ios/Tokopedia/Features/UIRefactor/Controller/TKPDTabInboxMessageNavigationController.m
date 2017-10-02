@@ -157,7 +157,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
 }
 
 -(void)viewWillDisappear:(BOOL)animated

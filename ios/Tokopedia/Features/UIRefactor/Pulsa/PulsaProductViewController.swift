@@ -42,8 +42,6 @@ class PulsaProductViewController: UIViewController, UITableViewDelegate, UITable
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setWhite()
-        
         AnalyticsManager.trackScreenName("Recharge Product Page from Widget")
     }
     

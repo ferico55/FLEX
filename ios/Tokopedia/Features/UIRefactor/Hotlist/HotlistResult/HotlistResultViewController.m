@@ -303,9 +303,7 @@ ProductCellDelegate
 }
 
 -(void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setWhite];
-    
+    [super viewWillAppear:animated];    
     [_collectionView reloadData];
 }
 

@@ -244,7 +244,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
-    [self.navigationController setGreen];
     [self showProfileProgress];
 }
 

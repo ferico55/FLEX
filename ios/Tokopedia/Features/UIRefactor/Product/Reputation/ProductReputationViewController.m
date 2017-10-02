@@ -126,7 +126,6 @@ static NSInteger userViewHeight = 70;
 -(void) viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     animationHasShown = NO;
 }
 

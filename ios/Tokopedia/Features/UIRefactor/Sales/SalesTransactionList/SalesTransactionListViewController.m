@@ -112,12 +112,6 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
-}
-
 - (UIBarButtonItem *)backBarButton {
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStylePlain

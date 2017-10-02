@@ -182,7 +182,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setWhite];
+    
     [AnalyticsManager trackScreenName:@"Shop - Send Message Page"];
 }
 

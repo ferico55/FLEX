@@ -127,12 +127,6 @@
     
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
-}
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     if ([self.delegate respondsToSelector:@selector(viewController:numberOfProcessedOrder:)]) {

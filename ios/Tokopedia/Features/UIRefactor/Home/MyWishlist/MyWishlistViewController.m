@@ -314,7 +314,6 @@ typedef enum TagRequest {
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setGreen];
     [AnalyticsManager trackScreenName:@"Home - Wish List"];
 }
 

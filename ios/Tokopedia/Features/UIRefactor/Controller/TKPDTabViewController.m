@@ -88,17 +88,9 @@
 
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
-}
-
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
-
 
 - (IBAction)valueChangedSegmentedControl:(UISegmentedControl *)sender {
     [AnalyticsManager trackSegmentedControlTapped:_inboxType label:[sender titleForSegmentAtIndex:[sender selectedSegmentIndex]]];

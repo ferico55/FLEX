@@ -46,7 +46,6 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             self.touchIdLoginWith(provider: provider)
         }
         self.providersListView.onFacebookSelected = { (provider: SignInProvider) in
-            self.navigationController?.setModalNavigation()
             LoginAnalytics().trackLoginClickEvent(label: provider.name)
             FBSDKLoginManager().logIn(
                 withReadPermissions: ["public_profile", "email", "user_birthday"],
@@ -58,7 +57,6 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             })
         }
         self.providersListView.onGoogleSelected = { (provider: SignInProvider) in
-            self.navigationController?.setModalNavigation()
             if let signIn = GIDSignIn.sharedInstance() {
                 signIn.shouldFetchBasicProfile = true
                 signIn.clientID = self.kClientId

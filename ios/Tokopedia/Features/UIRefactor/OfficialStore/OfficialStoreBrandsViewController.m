@@ -31,7 +31,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Official Store Page"];
-    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

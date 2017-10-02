@@ -28,7 +28,6 @@
 - (void) viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [AnalyticsManager trackScreenName:@"Promo Detail Page"];
-    [self.navigationController setWhite];
 }
 
 @end

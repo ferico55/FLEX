@@ -131,8 +131,6 @@
 
 - (void)viewWillAppear:(BOOL)animated  {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
     [AnalyticsManager trackScreenName:@"Inbox Message Detail Page"];
 }
 

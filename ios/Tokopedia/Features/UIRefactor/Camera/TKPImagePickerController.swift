@@ -48,7 +48,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         pickerController.showsCancelButton = showCancel
         pickerController.allowMultipleTypes = allowMultipleSelect
         pickerController.maxSelectableCount = maxSelected
-        pickerController.setWhite()
         if (selectedAssets?.count > 0 && selectedAssets != nil){
             pickerController.selectedAssets = selectedAssets as! [DKAsset]
         }

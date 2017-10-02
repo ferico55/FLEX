@@ -172,8 +172,6 @@
     [self resetDates];
     [self reloadListDeposit:nil];
     [self updateSaldoTokopedia:nil];
-    
-    [self.navigationController setWhite];
 }
 
 

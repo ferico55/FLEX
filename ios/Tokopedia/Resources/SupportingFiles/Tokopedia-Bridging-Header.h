@@ -221,4 +221,10 @@
 #import "NSStringCategory.h"
 #import "CreatePassword.h"
 #import "VersionCheckerConfig.h"
+
+#import "HotlistViewController.h"
+#import "MyWishlistViewController.h"
+#import "TransactionCartViewController.h"
+#import "MoreWrapperViewController.h"
+
 #import "string_alert.h"

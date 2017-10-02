@@ -219,8 +219,6 @@ typedef enum
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
 
     self.title = @"Beli";
     [AnalyticsManager trackScreenName:@"Add to Cart"];

@@ -38,7 +38,6 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setGreen];
     [AnalyticsManager trackScreenName:@"Hot List Page"];
     
     [self initNotificationManager];
@@ -58,7 +57,6 @@
                                                                 didVerifiedPhoneNumber:nil];
                  UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
                  navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-                 [navigationController setWhite];
                  [self.navigationController presentViewController:navigationController animated:YES completion:nil];
              }
          }

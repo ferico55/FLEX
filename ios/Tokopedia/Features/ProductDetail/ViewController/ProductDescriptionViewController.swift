@@ -37,8 +37,7 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
-        navigationController?.setWhite()
+     
         AnalyticsManager.trackScreenName("Product Detail - Description Page")
     }
     

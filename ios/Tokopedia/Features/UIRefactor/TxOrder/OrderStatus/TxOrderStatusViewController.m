@@ -141,11 +141,6 @@
     
     [self initNoResultView];
     
-    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
-        UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
-        self.navigationItem.rightBarButtonItem = barButton;
-    }
-    
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequest)
                                                  name:REFRESH_TX_ORDER_POST_NOTIFICATION_NAME
@@ -168,9 +163,12 @@
 {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
-    
     self.title = _viewControllerTitle?:@" ";
+    
+    if ([_action  isEqual: ACTION_GET_TX_ORDER_LIST] && !_isCanceledPayment) {
+        UIBarButtonItem *barButton = [[UIBarButtonItem alloc]initWithTitle:@"Filter" style:UIBarButtonItemStyleDone target:self action:@selector(tap:)];
+        self.navigationItem.rightBarButtonItem = barButton;
+    }
     
     if ([_action isEqualToString:ACTION_GET_TX_ORDER_STATUS]) {
         [AnalyticsManager trackScreenName:@"Purchase - Order Status"];

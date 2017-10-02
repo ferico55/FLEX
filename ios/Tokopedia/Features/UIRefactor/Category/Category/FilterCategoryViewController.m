@@ -58,7 +58,6 @@
         [self setCancelButton];
     }
     [self setDoneButton];
-    [self.navigationController setWhite];
 }
 
 - (void)didReceiveMemoryWarning {

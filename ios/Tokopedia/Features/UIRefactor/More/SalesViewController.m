@@ -66,7 +66,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     [AnalyticsManager trackScreenName:@"Sales Page"];
     
     self.hidesBottomBarWhenPushed = YES;    

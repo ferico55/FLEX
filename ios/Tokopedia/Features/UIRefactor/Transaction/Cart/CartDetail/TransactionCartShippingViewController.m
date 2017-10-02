@@ -108,13 +108,6 @@
     _tableView.rowHeight = UITableViewAutomaticDimension;
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
-}
-
-
 -(NSString*)addressString:(GMSAddress*)address {
     NSString *strSnippet = @"Lokasi Pengiriman";
     TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];

@@ -92,7 +92,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     if (_enableAddEtalase) {
         self.tambahEtalaseTextField.leftView = [[UIView alloc] initWithFrame:CGRectMake(0, 0, 8, 36)];
         self.tambahEtalaseTextField.leftViewMode = UITextFieldViewModeAlways;

@@ -141,8 +141,6 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
-    
     if(_needToDoLazyCellRemoval){
         [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
         _needToDoLazyCellRemoval = NO;

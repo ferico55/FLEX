@@ -113,8 +113,6 @@
 -(void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
-    
     _tableView.delegate = self;
     _tableView.dataSource = self;
     

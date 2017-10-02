@@ -26,7 +26,6 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setupUI()
-        self.navigationController?.setWhite()
     }
     // MARK: - Public
     func doLoginWithEmail(email: String, password: String) {

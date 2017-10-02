@@ -24,7 +24,6 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             
             contactPicker.delegate = self
             contactPicker.displayedPropertyKeys = [CNContactPhoneNumbersKey]
-            self.controller.navigationController?.setModalNavigation()
             self.controller.present(contactPicker, animated: true)
             
         } else {
@@ -32,7 +31,6 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             let contactPicker = ABPeoplePickerNavigationController()
             contactPicker.peoplePickerDelegate = self
             contactPicker.displayedProperties = [NSNumber(value: kABPersonPhoneProperty as Int32)]
-            self.controller.navigationController?.setModalNavigation()
             self.controller.present(contactPicker, animated: true)
             
         }

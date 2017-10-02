@@ -32,8 +32,6 @@ class PulsaOperatorViewController: UIViewController, UITableViewDelegate, UITabl
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setWhite()
-        
         AnalyticsManager.trackScreenName("Recharge Operator Page from Widget")
     }
 

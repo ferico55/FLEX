@@ -58,7 +58,7 @@
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [self.navigationController setWhite];
+    
     if(viewContent.subviews.count == 0) {
         [self.view setNeedsLayout];
         [self.view layoutIfNeeded];

@@ -68,7 +68,6 @@ class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Register With \(self.userProfile.providerName) Page")
-        self.navigationController?.setWhite()
     }
     
     override func didReceiveMemoryWarning() {

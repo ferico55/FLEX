@@ -692,9 +692,6 @@ class TPRoutes: NSObject {
             UIApplication.topViewController()?
                 .navigationController?
                 .pushViewController(viewController, animated: true)
-            UIApplication.topViewController()?
-                .navigationController?
-                .setWhite()
             
             return true
         }

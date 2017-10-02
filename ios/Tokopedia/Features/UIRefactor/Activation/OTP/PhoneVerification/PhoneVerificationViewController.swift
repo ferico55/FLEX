@@ -112,7 +112,6 @@ class PhoneVerificationViewController: UIViewController, UITextFieldDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.navigationController?.setWhite()
         AnalyticsManager.trackScreenName("Phone Verification Page")
         self.saveLastAppearInfoToCache()
     }

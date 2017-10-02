@@ -81,8 +81,7 @@
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [self.navigationController setWhite];
+
     [self.navigationController setNavigationBarHidden:YES animated:YES];
 
 }

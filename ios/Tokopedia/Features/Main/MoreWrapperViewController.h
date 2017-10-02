@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "NotificationManager.h"
-
-@interface MoreWrapperViewController : UIViewController <NotificationManagerDelegate>
+ 
+@interface MoreWrapperViewController : UIViewController
 
 @end

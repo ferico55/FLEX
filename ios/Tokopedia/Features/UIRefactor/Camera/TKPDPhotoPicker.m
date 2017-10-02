@@ -94,7 +94,6 @@
 
     [imagePicker setDelegate:self];
     [imagePicker setModalTransitionStyle:_transitionStyle];
-    [imagePicker setWhite];
     [_parentViewController presentViewController:imagePicker animated:YES completion:nil];
     
     if (_spinner == nil) {

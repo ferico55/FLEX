@@ -66,7 +66,6 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Register With Email Page")
-        self.navigationController?.setWhite()
     }
     
     override func didReceiveMemoryWarning() {

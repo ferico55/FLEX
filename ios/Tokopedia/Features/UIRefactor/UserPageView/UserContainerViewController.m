@@ -222,7 +222,6 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     self.pageController.view.frame = CGRectMake(0, 0, self.view.frame.size.width, self.view.frame.size.height+40);
     _userManager = [UserAuthentificationManager new];
     [AnalyticsManager trackScreenName:@"Profile Page"];

@@ -39,7 +39,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self.navigationController setWhite];
     _shouldAuthorizeRequest = YES;
     
     self.navigationItem.title = strTitle;

@@ -177,6 +177,8 @@
     [_homePageController didMoveToParentViewController:self];
     [self setArrow];
     [self setHeaderBar];
+    [self setSearchBar];
+    
 }
 
 
@@ -200,7 +202,6 @@
     resultController.searchBar = self.searchController.searchBar;
     resultController.searchBar.text = @"";
     [self.searchController.searchBar sizeToFit];
-    self.definesPresentationContext = YES;
     
     //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
     UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
@@ -243,11 +244,11 @@
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setGreen];
     self.navigationController.title = @"Home";
     
-    [self setSearchBar];
-
+    self.definesPresentationContext = YES;
+    [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
+    
     [self goToPage:_page];
     [self tapButtonAnimate:_scrollView.frame.size.width*(_page)];
     if([_userManager isLogin]) {
@@ -258,21 +259,17 @@
     
 }
 
-
-
 - (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
+    
     float fractionalPage = _scrollView.contentOffset.x  / _scrollView.frame.size.width;
     _page = lround(fractionalPage);
     
     _isViewLoaded = NO;
 }
 
-
-
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
-    
     _isViewLoaded = YES;
     [self initNotificationManager];
     

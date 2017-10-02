@@ -30,7 +30,6 @@ class DigitalCategoryListViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         AnalyticsManager.trackScreenName("Recharge Category Homepage")
-        self.navigationController?.setWhite()
     }
     
     private func requestCategory() {

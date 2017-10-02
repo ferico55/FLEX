@@ -10,6 +10,12 @@
 #import "MoreViewController.h"
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
+#import "NotificationManager.h"
+
+@interface MoreWrapperViewController()<NotificationManagerDelegate>
+
+@end
+
 
 @implementation MoreWrapperViewController {
     MoreViewController *_moreViewController;
@@ -37,11 +43,6 @@
     if(IS_IPAD) {
         [_moreViewController.tableView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
     }
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    [self.navigationController setGreen];
 }
 
 - (void)viewDidAppear:(BOOL)animated {

@@ -397,7 +397,6 @@ ProductCellDelegate
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     
-    [self.navigationController setWhite];
     _suggestion = @"";
     [_collectionView reloadData];
 }
