@@ -57,8 +57,9 @@ class HomeSliderView: UIView {
         
         self.carouselDataSource = CarouselDataSource(banner: banner, with: self.customPageControl)
         self.carouselDataSource.navigationDelegate = navigationController
-        carouselDataSource.didSelectBanner = { banner in
-            AnalyticsManager.trackEventName("sliderBanner" , category: "Slider", action: GA_EVENT_ACTION_CLICK, label: banner.title ?? "")
+        
+        carouselDataSource.didSelectBanner = { banner, index in
+            AnalyticsManager.trackHomeBanner(banner, index: index, type: .click)
         }
         slider.type = .linear
         slider.dataSource = self.carouselDataSource

@@ -10,7 +10,7 @@
 
 @interface Slide : NSObject <TKPObjectMapping>
 
-//@property(strong, nonatomic) NSString *id;
+@property(strong, nonatomic) NSString *slideId;
 @property(strong, nonatomic) NSString *title;
 @property(strong, nonatomic) NSString *message;
 @property(strong, nonatomic) NSString *image_url;

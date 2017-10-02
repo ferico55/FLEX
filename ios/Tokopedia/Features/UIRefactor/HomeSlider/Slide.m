@@ -21,6 +21,10 @@
     [mapping addAttributeMappingsFromDictionary:@{
                                                   @"applink": @"applinks"
                                                   }];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"id": @"slideId"
+                                                  }];
+    
     return mapping;
 }
 

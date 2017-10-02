@@ -21,7 +21,7 @@
 @property(nullable, nonatomic, weak) UINavigationController *navigationDelegate;
 @property(nullable, nonatomic, weak) NSTimer *timer;
 
-@property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide);
+@property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide, NSInteger index);
 @property (nonatomic) BOOL isCategoryBanner;
 
 @end

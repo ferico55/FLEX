@@ -607,7 +607,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         
         self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, with: pageControl)
         carouselDataSource.isCategoryBanner = true
-        carouselDataSource.didSelectBanner = { [unowned self] banner in
+        carouselDataSource.didSelectBanner = { [unowned self] banner, index in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.title)
         }
         self.carouselDataSource.navigationDelegate = navigationController

@@ -22,6 +22,12 @@
 #import <MoEngage_iOS_SDK/MOInbox.h>
 #import <MoEngage_iOS_SDK/MOEHelperConstants.h>
 #import <MoEngage_iOS_SDK/MOGeofenceHandler.h>
+#import "Slide.h"
+
+typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
+    HomeBannerPromotionTrackerTypeView,
+    HomeBannerPromotionTrackerTypeClick,
+};
 
 @interface AnalyticsManager : NSObject
 
@@ -69,5 +75,6 @@
 + (void)trackSearch:(NSString *)type keyword:(NSString *)keyword;
 + (void)trackClickSales:(NSString *)label;
 + (void)trackClickNavigateFromMore:(NSString *)page;
++ (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type;
 
 @end

@@ -323,7 +323,7 @@ UICollectionViewDelegate
     
         _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.images withPageControl:pageControl];
         _carouselDataSource.isCategoryBanner = YES;
-        _carouselDataSource.didSelectBanner = ^(Slide * _Nonnull slide) {
+        _carouselDataSource.didSelectBanner = ^(Slide * _Nonnull slide, NSInteger index) {
             didSelectBanner(slide);
         };
         

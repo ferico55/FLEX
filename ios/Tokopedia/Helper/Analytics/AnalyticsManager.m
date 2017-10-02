@@ -19,6 +19,7 @@
 #import "GAIDictionaryBuilder.h"
 #import "search.h"
 #import "Tokopedia-Swift.h"
+#import "GAIEcommerceFields.h"
 
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
@@ -644,6 +645,24 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 + (void)trackClickNavigateFromMore:(NSString *)page {
     [self trackEventName:@"clickMore" category:@"More" action:GA_EVENT_ACTION_CLICK label:page];
+}
+
++ (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type {
+    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
+    GAIEcommercePromotion *promotion = [[GAIEcommercePromotion alloc] init];
+    [promotion setId:slide.slideId];
+    [promotion setName:slide.title];
+    [promotion setCreative:[slide.title stringByReplacingOccurrencesOfString:@" " withString:@"-"]];
+    [promotion setPosition:[NSString stringWithFormat:@"slide_banner_%ld",(long)index]];
+    
+    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Internal Promotions"
+                                                                           action:type == HomeBannerPromotionTrackerTypeView ? @"view" : @"click"
+                                                                            label:slide.title
+                                                                            value:nil];
+    
+    [builder set:type == HomeBannerPromotionTrackerTypeView ? kGAIPromotionView : kGAIPromotionView forKey:kGAIPromotionAction];
+    [builder addPromotion:promotion];
+    [tracker send:[builder build]];
 }
 
 @end

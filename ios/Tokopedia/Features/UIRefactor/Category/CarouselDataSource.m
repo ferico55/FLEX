@@ -49,6 +49,10 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
     Slide *banner = _banners[index];
     [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
     
+    if(!_isCategoryBanner) {
+        [AnalyticsManager trackHomeBanner:banner index:index type:HomeBannerPromotionTrackerTypeView];
+    }
+    
     return view;
 }
 
@@ -69,7 +73,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 #pragma mark - delegate
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
-    self.didSelectBanner(banner);
+    self.didSelectBanner(banner, index);
 
     NSURL *url = [NSURL URLWithString:banner.applinks];
     if (url) {
