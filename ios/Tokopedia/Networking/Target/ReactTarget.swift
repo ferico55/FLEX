@@ -19,7 +19,7 @@ class ReactNetworkProviderObjcBridge: NSObject {
         params: [String: Any],
         headers: [String: String]?,
         encoding: String,
-        onSuccess: @escaping ([String: Any]?) -> Void,
+        onSuccess: @escaping (Any?) -> Void,
         onError: @escaping (NSError) -> Void
         ) {
         
@@ -39,11 +39,7 @@ class ReactNetworkProviderObjcBridge: NSObject {
                         onSuccess(dictionary)
                     }
                     else if let array = json as? [Any] {
-                        var dictionary:[String: Any] = [:]
-                        for (index, element) in array.enumerated() {
-                            dictionary["\(index)"] = element
-                        }
-                        onSuccess(dictionary)
+                        onSuccess(array)
                     }
                     else {
                         print("Error converting json to dictionary")
