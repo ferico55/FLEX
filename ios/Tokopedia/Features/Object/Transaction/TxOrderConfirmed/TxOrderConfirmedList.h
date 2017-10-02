@@ -28,4 +28,6 @@
 
 -(BOOL)isToppayConfirmation;
 
+@property (nonatomic) BOOL canEditPayment;
+@property (nonatomic) BOOL canUploadProof;
 @end

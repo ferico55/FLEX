@@ -34,5 +34,6 @@
 + (nonnull NSString*)oneClickURL;
 + (nonnull NSString*)creditCardURL;
 + (nonnull NSString*)creditCardSecretKey;
++ (nonnull NSString*)paymentURL;
 
 @end

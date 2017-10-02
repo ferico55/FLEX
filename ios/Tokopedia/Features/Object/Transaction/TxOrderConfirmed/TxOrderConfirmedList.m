@@ -14,6 +14,13 @@
     return ([self.button[@"button_edit_toppay"] integerValue] == 1);
 }
 
+-(BOOL)canEditPayment {
+    return ([[self.button objectForKey:@"button_edit_toppay"] integerValue] == 1);
+}
+
+-(BOOL)canUploadProof {
+    return ([[self.button objectForKey:@"button_upload_proof"] integerValue] == 1);
+}
 
 -(NSString *)userBankFullName{
     NSString *bankString = @"";

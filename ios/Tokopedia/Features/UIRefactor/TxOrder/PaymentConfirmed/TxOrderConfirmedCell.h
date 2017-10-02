@@ -17,6 +17,8 @@
 @property (nonatomic, copy) void(^didTapPaymentProof)(TxOrderConfirmedList *);
 @property (nonatomic, copy) void(^didTapUploadProof)(TxOrderConfirmedList *);
 @property (nonatomic, copy) void(^didTapEditPayment)(TxOrderConfirmedList *);
+@property (nonatomic, copy) void(^didTapCancelPayment)(TxOrderConfirmedList *);
+
 
 +(id)newCell;
 - (void)setupViewWithOrder:(TxOrderConfirmedList*)order;

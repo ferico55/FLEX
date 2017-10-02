@@ -83,6 +83,9 @@
 		457B98FC1F0E3125005851E5 /* WalletTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92371F0E311D005851E5 /* WalletTarget.swift */; };
 		457B98FD1F0E3125005851E5 /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */; };
 		457B98FE1F0E3125005851E5 /* ProductAndWishlistNetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */; };
+		45CDD6221F61040900FE475D /* PopoverTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CDD6211F61040900FE475D /* PopoverTableView.swift */; };
+		45CDD6241F615D4800FE475D /* PaymentTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CDD6231F615D4700FE475D /* PaymentTarget.swift */; };
+		45CDD6261F61621500FE475D /* PaymentService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45CDD6251F61621500FE475D /* PaymentService.swift */; };
 		528768A21F5669AF0048ED6F /* TransactionCartPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 528768A11F5669AF0048ED6F /* TransactionCartPayment.swift */; };
 		546715661F5D083E00E3E2BF /* VersionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 546715651F5D083E00E3E2BF /* VersionChecker.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
@@ -2035,6 +2038,9 @@
 		457B92371F0E311D005851E5 /* WalletTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletTarget.swift; sourceTree = "<group>"; };
 		457B92381F0E311D005851E5 /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
 		457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductAndWishlistNetworkManager.swift; sourceTree = "<group>"; };
+		45CDD6211F61040900FE475D /* PopoverTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopoverTableView.swift; sourceTree = "<group>"; };
+		45CDD6231F615D4700FE475D /* PaymentTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentTarget.swift; sourceTree = "<group>"; };
+		45CDD6251F61621500FE475D /* PaymentService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentService.swift; sourceTree = "<group>"; };
 		528768A11F5669AF0048ED6F /* TransactionCartPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransactionCartPayment.swift; sourceTree = "<group>"; };
 		546715651F5D083E00E3E2BF /* VersionChecker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VersionChecker.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -5211,6 +5217,7 @@
 				457B92371F0E311D005851E5 /* WalletTarget.swift */,
 				DA0C42071F43FCBC0067869F /* ReputationTarget.swift */,
 				DA0C42081F43FCBC0067869F /* TalkTarget.swift */,
+				45CDD6231F615D4700FE475D /* PaymentTarget.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -5221,6 +5228,14 @@
 				457B923A1F0E311D005851E5 /* ProductAndWishlistNetworkManager.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		45CDD6201F61040900FE475D /* Popover */ = {
+			isa = PBXGroup;
+			children = (
+				45CDD6211F61040900FE475D /* PopoverTableView.swift */,
+			);
+			path = Popover;
 			sourceTree = "<group>";
 		};
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
@@ -5710,6 +5725,7 @@
 		DADBA0521F3C5E25002B1FAE /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				45CDD6201F61040900FE475D /* Popover */,
 				450AC1A91F5D276D009D81B6 /* EmptyState */,
 				450AC1AC1F5D276D009D81B6 /* Payment */,
 				DADBA0531F3C5E25002B1FAE /* Cocoa */,
@@ -7483,6 +7499,7 @@
 				DADBA4E11F3C5E27002B1FAE /* TxOrderConfirmPaymentForm */,
 				DADBA4EE1F3C5E27002B1FAE /* TxOrderPayementEditForm */,
 				DADBA4FD1F3C5E27002B1FAE /* TxOrderStatus */,
+				45CDD6251F61621500FE475D /* PaymentService.swift */,
 			);
 			path = Transaction;
 			sourceTree = "<group>";
@@ -12244,6 +12261,7 @@
 				DADB9F4E1F3C46CE002B1FAE /* FBTweakShakeWindow.m in Sources */,
 				DADBA0171F3C5BA3002B1FAE /* NSURL+Dictionary.m in Sources */,
 				DADBAD1C1F3C5E2B002B1FAE /* PromoProduct.m in Sources */,
+				45CDD6221F61040900FE475D /* PopoverTableView.swift in Sources */,
 				DADBAF1C1F3C5E2D002B1FAE /* TagManagerHandler.m in Sources */,
 				DADBAF4F1F3C5E2D002B1FAE /* HotlistCollectionCell.m in Sources */,
 				DADBB0AD1F3C5E2F002B1FAE /* RejectReasonData.m in Sources */,
@@ -12455,6 +12473,7 @@
 				DADBAC7B1F3C5E2A002B1FAE /* HistoryProduct.m in Sources */,
 				DADBAD631F3C5E2B002B1FAE /* SendMessageResult.m in Sources */,
 				DADBB1811F3C5E30002B1FAE /* ShopNotesPageViewController.m in Sources */,
+				45CDD6241F615D4800FE475D /* PaymentTarget.swift in Sources */,
 				DADBAC441F3C5E2A002B1FAE /* DetailProductResult.m in Sources */,
 				DADBAEE21F3C5E2D002B1FAE /* ScrollViewSimultaneousGesture.m in Sources */,
 				DADBAC481F3C5E2A002B1FAE /* ProductDetail.m in Sources */,
@@ -12925,6 +12944,7 @@
 				DADBAEB61F3C5E2C002B1FAE /* CategoryIntermediaryHotListResponse.swift in Sources */,
 				DADBABCD1F3C5E2A002B1FAE /* DigitalForm.swift in Sources */,
 				DADBAC541F3C5E2A002B1FAE /* ShopStats.m in Sources */,
+				45CDD6261F61621500FE475D /* PaymentService.swift in Sources */,
 				DADBB1331F3C5E30002B1FAE /* SettingPasswordViewController.m in Sources */,
 				DADBADCF1F3C5E2B002B1FAE /* Shipment.swift in Sources */,
 				DADBAF7C1F3C5E2D002B1FAE /* InboxResolutionCenterOpenViewController.m in Sources */,

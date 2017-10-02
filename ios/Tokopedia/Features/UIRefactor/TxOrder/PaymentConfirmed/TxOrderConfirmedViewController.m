@@ -36,6 +36,7 @@
 #import "GalleryViewController.h"
 #import "RequestOrderData.h"
 #import "Tokopedia-Swift.h"
+@import SwiftOverlays;
 
 @interface TxOrderConfirmedViewController ()
 <
@@ -65,6 +66,7 @@
     UIAlertView *_loadingAlert;
     
     UIImage *_imageproof;
+    PaymentService *_service;
 }
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UIView *footer;
@@ -104,6 +106,8 @@
     [self doRequestList];
     
     _tableView.estimatedRowHeight = 40;
+    _service = [PaymentService new];
+    [AnalyticsManager trackScreenName:@"StatusPembayaran"];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -216,8 +220,9 @@
 -(void)pushEditConfirmationForm:(TxOrderConfirmedList *)order{
     EditConfirmationViewController *vc = [EditConfirmationViewController new];
     vc.paymentID = order.payment_id;
+    __weak typeof(self) wself = self;
     vc.didEditPayment = ^{
-        [self refreshRequest];
+        [wself refreshRequest];
     };
     [self.navigationController pushViewController:vc animated:YES];
 }
@@ -274,27 +279,93 @@
     }
     
     [cell setupViewWithOrder:detailOrder];
-    
+    __weak typeof(self) wself = self;
     cell.didTapInvoice = ^(TxOrderConfirmedList *order) {
-        [self doRequestDetailOrder:order];
+        [wself doRequestDetailOrder:order];
     };
     
     cell.didTapPaymentProof = ^(TxOrderConfirmedList *order) {
         _selectedOrder = order;
-        [self pushToGallery];
+        [wself pushToGallery];
     };
     
     cell.didTapEditPayment = ^(TxOrderConfirmedList *order) {
         if (order.has_user_bank == 1) {
-            [self pushEditConfirmationForm:order];
+            [wself pushEditConfirmationForm:order];
         }
     };
     
     cell.didTapUploadProof = ^(TxOrderConfirmedList *order) {
-        [self uploadProofOrder:order];
+        [wself uploadProofOrder:order];
+    };
+    
+    cell.didTapCancelPayment = ^(TxOrderConfirmedList *order) {
+        [AnalyticsManager trackEventName:@"clickBatal" category:@"Status Pembayaran" action:@"Click" label:@"Batal"];
+        [wself showAlertConfirmationCancelPayment:order];
     };
     
     return cell;
+}
+
+-(void)showAlertConfirmationCancelPayment:(TxOrderConfirmedList *)order {
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
+    __weak typeof(self) wself = self;
+    [_service getPaymentStatusWithPaymentID:order.payment_id onSuccess:^(NSString *confirmationMessage){
+        
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+
+        UIAlertController * alert = [UIAlertController
+                                     alertControllerWithTitle:@"Konfirmasi Pembatalan Transaksi"
+                                     message:confirmationMessage
+                                     preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* yes = [UIAlertAction
+                              actionWithTitle:@"Ya"
+                              style:UIAlertActionStyleDefault
+                              handler:^(UIAlertAction * action) {
+                                  [AnalyticsManager trackEventName:@"clickBatal" category:@"Status Pembayaran" action:@"Click" label:@"Ya"];
+                                  [wself cancelPayment:order];
+                              }];
+        
+        UIAlertAction* cancel = [UIAlertAction
+                                 actionWithTitle:@"Tidak"
+                                 style:UIAlertActionStyleCancel
+                                 handler:^(UIAlertAction * _Nonnull action) {
+                                     [AnalyticsManager trackEventName:@"clickBatal" category:@"Status Pembayaran" action:@"Click" label:@"Tidak"];
+                                 }];
+        
+        [alert addAction:yes];
+        [alert addAction:cancel];
+        
+        [wself presentViewController:alert animated:YES completion:nil];
+        
+    } onFailure:^(NSString *errorMessage) {
+        
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+        [StickyAlertView showErrorMessage:@[errorMessage]];
+        
+    }];
+}
+
+
+-(void)cancelPayment:(TxOrderConfirmedList *)order {
+    [SwiftOverlays showCenteredWaitOverlay:self.view];
+    
+    __weak typeof(self) wself = self;
+    [_service cancelPaymentWithPaymentID:order.payment_id onSuccess:^(NSString *successMessage){
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+        [StickyAlertView showSuccessMessage:@[successMessage]];
+        [wself refreshRequest];
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+    } onFailure:^(NSString *errorMessage, BOOL shouldRefresh){
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+        [StickyAlertView showErrorMessage:@[errorMessage]];
+        
+        if (shouldRefresh) {
+            [wself refreshRequest];
+        }
+        [SwiftOverlays removeAllOverlaysFromView:wself.view];
+    }];
 }
 
 #pragma mark - Tokopedia Network Manager
@@ -346,6 +417,7 @@
     
     [_loadingAlert show];
     
+    __weak typeof(self) wself = self;
     [RequestOrderData fetchDataDetailPaymentID:order.payment_id success:^(TxOrderConfirmedDetailOrder *data) {
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         
@@ -383,12 +455,13 @@
     
     TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
     
+    __weak typeof(self) wself = self;
     [RequestOrderAction fetchUploadImageProof:photo[@"photo"]
                                  imageName:photo[@"cameraimagename"]
                                  paymentID:selectedConfirmation.payment_id
                                    success:^(TransactionActionResult *data) {
 
-                                       [self refreshRequest];
+                                       [wself refreshRequest];
                                        
     } failure:^(NSError *error) {
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];

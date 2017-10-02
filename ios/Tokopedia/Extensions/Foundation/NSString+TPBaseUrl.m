@@ -337,6 +337,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)paymentURL {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://payment.tokopedia.com",
+                           @(TPUrlStaging) : @"https://payment-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://192.168.100.151:9096",
+                           @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 + (NSString*)creditCardSecretKey {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
