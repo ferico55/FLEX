@@ -167,7 +167,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             self.parentController.parentController.makeActivityIndicator(toShow: false)
             return
         }
-        if FBSDKAccessToken.current() != nil {
+        if let accessToken = FBSDKAccessToken.current() {
             let parameters = ["fields": "id, name, email, birthday, gender"]
             FBSDKGraphRequest(graphPath: "me", parameters: parameters).start { [unowned self] (_: FBSDKGraphRequestConnection?, result: Any?, error2: Error?) in
                 if let error3 = error2 {
@@ -176,7 +176,11 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                         StickyAlertView.showErrorMessage([error3.localizedDescription])
                     }
                 } else {
-                    self.didReceiveFacebookUserData(userData: result as? [String: String])
+                    guard var result = result as? [String: String] else {
+                        return
+                    }
+                    result["accessToken"] = accessToken.tokenString
+                    self.didReceiveFacebookUserData(userData: result)
                 }
             }
         } else {
