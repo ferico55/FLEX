@@ -1,66 +1,23 @@
-"use strict";
+import React from 'react'
+import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
+import color from '../Helper/Color'
+import checkImg from '../Icon/check.png'
 
-import { color } from "../Helper/Color";
-import React, { Component } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-  Image
-} from "react-native";
-
-class SelectableCell extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <TouchableOpacity
-        onPress={() => this.props.cellSelected(this.props.currentIndex)}
-      >
-        <View style={styles.cellContainer}>
-          <Text style={styles.cellTitleLabel}>
-            {this.props.title}
-          </Text>
-          <View style={styles.cellChecklistContainer}>
-            <View
-              style={{
-                height: 64,
-                justifyContent: "center",
-                marginRight: 5
-              }}
-            >
-              {this.props.isSelected
-                ? <Image
-                    style={styles.cellChecklistImageView}
-                    source={require("../Icon/check.png")}
-                  />
-                : <View style={styles.cellChecklistView} />}
-            </View>
-          </View>
-        </View>
-      </TouchableOpacity>
-    );
-  }
-}
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   cellContainer: {
-    backgroundColor: "white",
-    flexDirection: "row",
-    alignItems: "center",
-    paddingHorizontal: 20
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingHorizontal: 20,
   },
   cellTitleLabel: {
     flex: 1,
-    color: color.blackText
+    color: color.blackText,
   },
   cellChecklistContainer: {
     width: 16,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   cellChecklistView: {
     height: 16,
@@ -68,12 +25,35 @@ var styles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
     borderColor: color.darkerGrey,
-    overflow: "hidden"
+    overflow: 'hidden',
   },
   cellChecklistImageView: {
     height: 16,
-    width: 16
-  }
-});
+    width: 16,
+  },
+})
 
-module.exports = SelectableCell;
+const SelectableCell = ({ title, cellSelected, currentIndex, isSelected }) => (
+  <TouchableOpacity onPress={() => cellSelected(currentIndex)}>
+    <View style={styles.cellContainer}>
+      <Text style={styles.cellTitleLabel}>{title}</Text>
+      <View style={styles.cellChecklistContainer}>
+        <View
+          style={{
+            height: 64,
+            justifyContent: 'center',
+            marginRight: 5,
+          }}
+        >
+          {isSelected ? (
+            <Image style={styles.cellChecklistImageView} source={checkImg} />
+          ) : (
+            <View style={styles.cellChecklistView} />
+          )}
+        </View>
+      </View>
+    </View>
+  </TouchableOpacity>
+)
+
+export default SelectableCell

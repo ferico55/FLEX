@@ -1,54 +1,34 @@
-"use strict";
+import React from 'react'
+import { StyleSheet, Text, TouchableOpacity } from 'react-native'
+import color from '../Helper/Color'
 
-import React, { Component } from "react";
-import { color } from "../Helper/Color";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ActivityIndicator,
-  Image
-} from "react-native";
-
-class BigGreenButton extends Component {
-  constructor(props) {
-    super(props);
-  }
-  render() {
-    return (
-      <TouchableOpacity
-        style={[
-          styles.promoTokoAddButton,
-          {
-            backgroundColor: this.props.disabled
-              ? color.lineGrey
-              : color.mainGreen
-          }
-        ]}
-        onPress={() => this.props.buttonAction()}
-        disabled={this.props.disabled}
-      >
-        <Text style={styles.promoTokoAddButtonLabel}>
-          {this.props.title}
-        </Text>
-      </TouchableOpacity>
-    );
-  }
-}
-
-var styles = StyleSheet.create({
+const styles = StyleSheet.create({
   promoTokoAddButton: {
     height: 40,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginHorizontal: 17,
+    paddingHorizontal: 10,
     marginBottom: 10,
-    borderRadius: 3
+    borderRadius: 3,
   },
   promoTokoAddButtonLabel: {
-    color: "white"
-  }
-});
+    color: 'white',
+  },
+})
+const BigGreenButton = ({ disabled, buttonAction, title }) => (
+  <TouchableOpacity
+    style={[
+      styles.promoTokoAddButton,
+      {
+        backgroundColor: disabled ? color.lineGrey : color.mainGreen,
+      },
+    ]}
+    onPress={() => buttonAction()}
+    disabled={disabled}
+  >
+    <Text style={styles.promoTokoAddButtonLabel}>{title}</Text>
+  </TouchableOpacity>
+)
 
-export default BigGreenButton;
+export default BigGreenButton

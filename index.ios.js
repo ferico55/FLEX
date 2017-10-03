@@ -7,15 +7,15 @@ import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 import Navigator from 'native-navigation'
 import HybridContainer from './src/HybridContainer'
 import TopAdsDashboard from './src/TopAds/Page/TopAdsDashboard'
-import AddPromoCredit from './src/TopAds/Page/AddPromoCredit'
+import AddCreditPage from './src/TopAds/Page/AddCreditPage'
 import DateSettingsPage from './src/TopAds/Page/DateSettingsPage'
 import PromoListPage from './src/TopAds/Page/PromoListPage'
 import PromoDetailPage from './src/TopAds/Page/PromoDetailPage'
 import FilterPage from './src/TopAds/Page/FilterPage'
-import FilterGrupPage from './src/TopAds/Page/FilterGrupPage'
+import FilterDetailPage from './src/TopAds/Page/FilterDetailPage'
 import StatDetailPage from './src/TopAds/Page/StatDetailPage'
 
-import topAdsDashboardReducer from './src/TopAds/Redux/Reducer'
+import topAdsDashboardReducer from './src/TopAds/Redux/Reducers/GeneralReducer'
 import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
@@ -48,7 +48,7 @@ Navigator.registerScreen('FilterPage', () => props => (
 
 Navigator.registerScreen('FilterGrupPage', () => props => (
   <Provider store={topAdsDashboardStore}>
-    <FilterGrupPage {...props} />
+    <FilterDetailPage {...props} />
   </Provider>
 ))
 
@@ -78,7 +78,7 @@ Navigator.registerScreen('TopAdsDashboard', () => props => (
 
 Navigator.registerScreen('AddPromoCredit', () => props => (
   <Provider store={topAdsDashboardStore}>
-    <AddPromoCredit {...props} />
+    <AddCreditPage {...props} />
   </Provider>
 ))
 

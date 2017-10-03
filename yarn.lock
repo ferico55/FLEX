@@ -4130,6 +4130,13 @@ react-native-htmlview@^0.11.1:
     entities "^1.1.1"
     htmlparser2-without-node-native "^3.9.0"
 
+react-native-masked-text@^1.6.2:
+  version "1.6.2"
+  resolved "https://registry.yarnpkg.com/react-native-masked-text/-/react-native-masked-text-1.6.2.tgz#e459749dbe2a492ac0e0832db8014ac55358d63a"
+  dependencies:
+    moment "^2.18.1"
+    tinymask "^1.0.2"
+
 react-native-modal-datetime-picker@^4.8.0:
   version "4.11.0"
   resolved "https://registry.yarnpkg.com/react-native-modal-datetime-picker/-/react-native-modal-datetime-picker-4.11.0.tgz#bd2eb3a21cda584c6a018b11f6aed4bf4d020aca"
@@ -5079,6 +5086,10 @@ thunkify@~2.1.1:
 time-stamp@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/time-stamp/-/time-stamp-1.0.1.tgz#9f4bd23559c9365966f3302dbba2b07c6b99b151"
+
+tinymask@^1.0.2:
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/tinymask/-/tinymask-1.0.2.tgz#df3775a94087b0d3d056c256e8923c01b7ec0941"
 
 tmp@^0.0.29:
   version "0.0.29"
