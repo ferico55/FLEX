@@ -43,7 +43,6 @@ open class BaseRow : BaseRowType {
             guard validationErrors != oldValue else { return }
             RowDefaults.onRowValidationChanged["\(type(of: self))"]?(baseCell, self)
             callbackOnRowValidationChanged?()
-            updateCell()
         }
     }
     
@@ -126,7 +125,7 @@ open class BaseRow : BaseRowType {
     var hiddenCache = false
     var disabledCache = false {
         willSet {
-            if newValue && !disabledCache {
+            if newValue == true && disabledCache == false  {
                 baseCell.cellResignFirstResponder()
             }
         }
@@ -257,10 +256,10 @@ extension BaseRow {
         tableView.deselectRow(at: indexPath, animated: animated)
     }
     
-    public func select(animated: Bool = false, scrollPosition: UITableViewScrollPosition = .none) {
+    public func select(animated: Bool = false) {
         guard let indexPath = indexPath,
             let tableView = baseCell?.formViewController()?.tableView ?? (section?.form?.delegate as? FormViewController)?.tableView  else { return }
-        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: scrollPosition)
+        tableView.selectRow(at: indexPath, animated: animated, scrollPosition: .none)
     }
 }
 

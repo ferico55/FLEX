@@ -79,21 +79,14 @@ public class DKImageManager: DKBaseManager {
 	}()
 	
 	public var autoDownloadWhenAssetIsInCloud = true
-    
-    private var _groupDataManager: DKGroupDataManager?
-    
-    public var groupDataManager: DKGroupDataManager {
-        get {
-            if _groupDataManager == nil {
-                _groupDataManager = DKGroupDataManager()
-            }
-            return _groupDataManager!
-        }
-    }
+	
+    public lazy var groupDataManager: DKGroupDataManager! = {
+        return DKGroupDataManager()
+    }()
 	
 	public func invalidate() {
 		self.groupDataManager.invalidate()
-        _groupDataManager = nil
+        self.groupDataManager = nil
 	}
 	
 	public func fetchImageForAsset(_ asset: DKAsset, size: CGSize, completeBlock: @escaping (_ image: UIImage?, _ info: [AnyHashable: Any]?) -> Void) {

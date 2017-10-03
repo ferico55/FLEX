@@ -93,6 +93,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     NSString* _walletUrl;
     BOOL _isWalletActive;
     CGRect _defaultTableFrame;
+    BOOL _shouldShowAppShare;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -119,6 +120,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 @property (weak, nonatomic) IBOutlet UIProgressView *progressBar;
 @property (weak, nonatomic) IBOutlet UILabel *progressLabel;
+@property (weak, nonatomic) IBOutlet UITableViewCell *appShareCell;
 @property (strong, nonatomic) UIColor *progressBarTrack;
 @property (strong, nonatomic) UIColor *progressBarColor;
 
@@ -236,6 +238,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     _progressBar.layer.masksToBounds = true;
     _progressBar.layer.cornerRadius = 5;
     [self showProfileProgress];
+    _shouldShowAppShare = NO;
+    [self showHideAppShareCell];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -245,6 +249,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
     [self showProfileProgress];
+    [self showHideAppShareCell];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -467,6 +472,16 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     [self.tableView reloadData];
 }
 
+- (void)showHideAppShareCell {
+    [ReferralRemoteConfig.shared shouldShowAppShareOnCompletion:^(BOOL show) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            _shouldShowAppShare = show;
+            [self.appShareCell setHidden:!show];
+            [self.tableView reloadData];
+        });
+    }];
+}
+
 #pragma mark - Table view data source
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -491,10 +506,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
             
         case 1: return _shouldDisplayTopPointsCell?1:0;
-        case 2:
-            return 3;
-            break;
-            
+        case 2: return 3;
         case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
@@ -514,7 +526,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
             
         case 6:
-            return 3;
+            return 4;
             break;
             
         case 7:
@@ -537,7 +549,47 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
  objective : to simply reduce the width of the table
  problem : morevc is a tableviewcontroller, that is why it has no self.view, and we need to shrink the view, not the tableview
  */
-
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    switch (indexPath.section) {
+        case 2:
+        switch (indexPath.row) {
+                case 0: return 189;
+            default:
+                return 52;
+        }
+        case 3:
+        switch (indexPath.row) {
+                case 0: return 120;
+            default:
+                return 52;
+        }
+        case 4:
+            switch (indexPath.row) {
+                case 0: return 127;
+                default:
+                    return 52;
+            }
+        case 5:
+            switch (indexPath.row) {
+                case 0: return 90;
+                default:
+                    return 52;
+            }
+        case 6:
+            switch (indexPath.row) {
+                case 0:
+                    if (_shouldShowAppShare) {
+                        return 52;
+                    } else {
+                        return 0;
+                    }
+                default:
+                    return 52;
+            }
+        default:
+            return 52;
+    }
+}
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     _wrapperViewController.hidesBottomBarWhenPushed = YES;
@@ -579,28 +631,30 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         [AnalyticsManager trackClickNavigateFromMore:@"TopPoints"];
         [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
-    
-    if (indexPath.section == 2 && indexPath.row == 0) {
-        NavigateViewController *navigateController = [NavigateViewController new];
-        [AnalyticsManager trackClickNavigateFromMore:@"Profile"];
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
+    if (indexPath.section == 2) {
+        switch (indexPath.row) {
+            case 0: {
+                NavigateViewController *navigateController = [NavigateViewController new];
+                [AnalyticsManager trackClickNavigateFromMore:@"Profile"];
+                UserAuthentificationManager *auth = [UserAuthentificationManager new];
+                [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
+            }
+            case 1: {
+                [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
+                PurchaseViewController *purchaseController = [PurchaseViewController new];
+                purchaseController.notification = _notifManager.notification;
+                purchaseController.hidesBottomBarWhenPushed = YES;
+                [wrapperController.navigationController pushViewController:purchaseController animated:YES];
+            }
+                break;
+            case 2:
+                [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
+                [wrapperController.tabBarController setSelectedIndex:2];
+                break;
+            default:
+                break;
+        }
     }
-    
-    else if (indexPath.section == 2 && indexPath.row == 1) {
-        [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
-        
-        PurchaseViewController *purchaseController = [PurchaseViewController new];
-        purchaseController.notification = _notifManager.notification;
-        purchaseController.hidesBottomBarWhenPushed = YES;
-        [wrapperController.navigationController pushViewController:purchaseController animated:YES];
-        
-    }
-    else if(indexPath.section == 2 && indexPath.row == 2) {
-        [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
-        [wrapperController.tabBarController setSelectedIndex:2];
-    }
-    
     else if (indexPath.section == 3) {
         if(indexPath.row == 0) {
             UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
@@ -690,10 +744,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     }
     
     else if (indexPath.section == 6) {
-        if(indexPath.row == 0) {
+        if (indexPath.row == 0) {
+            [AnalyticsManager trackClickNavigateFromMore:@"Share ke teman"];
+            [self shareToFriend];
+        } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Contact Us"];
             [NavigateViewController navigateToContactUsFromViewController:wrapperController];
-        } else if(indexPath.row == 1) {
+        } else if(indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Privacy"];
             [AnalyticsManager trackScreenName:@"Privacy Policy"];
             
@@ -701,7 +758,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             webViewController.strURL = kTKPDMORE_PRIVACY_URL;
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [wrapperController.navigationController pushViewController:webViewController animated:YES];
-        } else if(indexPath.row == 2) {
+        } else if(indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Share Application"];
             [AnalyticsManager trackScreenName:@"Share App"];
             
@@ -757,6 +814,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     }
 }
 
+#pragma mark - Referral
+- (void)shareToFriend {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
+    CodeShareTableViewController *viewController = [storyboard instantiateInitialViewController];
+    [self.navigationController pushViewController:viewController animated:YES];
+ }
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {

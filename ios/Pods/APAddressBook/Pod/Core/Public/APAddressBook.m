@@ -63,13 +63,12 @@
     return [APAddressBookAccessRoutine accessStatus];
 }
 
-- (void)loadContacts:(void (^)(NSArray <APContact *> *contacts, NSError *error))completionBlock
+- (void)loadContacts:(APLoadContactsBlock)completionBlock
 {
     [self loadContactsOnQueue:dispatch_get_main_queue() completion:completionBlock];
 }
 
-- (void)loadContactsOnQueue:(dispatch_queue_t)queue
-                 completion:(void (^)(NSArray <APContact *> *contacts, NSError *error))completionBlock
+- (void)loadContactsOnQueue:(dispatch_queue_t)queue completion:(APLoadContactsBlock)completionBlock
 {
     APContactField fieldMask = self.fieldsMask;
     APContactListBuilder *listBuilder = [[APContactListBuilder alloc] init];
@@ -92,14 +91,13 @@
     }];
 }
 
-- (void)loadContactByRecordID:(NSNumber *)recordID
-                   completion:(void (^)(APContact *contact))completion
+- (void)loadContactByRecordID:(NSNumber *)recordID completion:(APLoadContactBlock)completion
 {
     [self loadContactByRecordID:recordID onQueue:dispatch_get_main_queue() completion:completion];
 }
 
 - (void)loadContactByRecordID:(NSNumber *)recordID onQueue:(dispatch_queue_t)queue
-                   completion:(void (^)(APContact *contact))completion
+                   completion:(APLoadContactBlock)completion
 {
     [self.thread dispatchAsync:^
     {
@@ -111,14 +109,13 @@
     }];
 }
 
-- (void)loadPhotoByRecordID:(nonnull NSNumber *)recordID
-                 completion:(void (^)(UIImage *photo))completion
+- (void)loadPhotoByRecordID:(nonnull NSNumber *)recordID completion:(APLoadPhotoBlock)completion
 {
     [self loadPhotoByRecordID:recordID onQueue:dispatch_get_main_queue() completion:completion];
 }
 
 - (void)loadPhotoByRecordID:(NSNumber *)recordID onQueue:(dispatch_queue_t)queue
-                 completion:(void (^)(UIImage *photo))completion
+                 completion:(APLoadPhotoBlock)completion
 {
     [self.thread dispatchAsync:^
     {
@@ -147,13 +144,13 @@
     self.externalChangeQueue = nil;
 }
 
-- (void)requestAccess:(void (^)(BOOL granted, NSError *error))completionBlock
+- (void)requestAccess:(nonnull APRequestAccessBlock)completionBlock
 {
     [self requestAccessOnQueue:dispatch_get_main_queue() completion:completionBlock];
 }
 
-- (void)requestAccessOnQueue:(dispatch_queue_t)queue
-                  completion:(void (^)(BOOL granted, NSError *error))completionBlock
+- (void)requestAccessOnQueue:(nonnull dispatch_queue_t)queue
+                  completion:(nonnull APRequestAccessBlock)completionBlock
 {
     [self.thread dispatchAsync:^
     {
@@ -176,6 +173,37 @@
     {
         self.externalChangeCallback ? self.externalChangeCallback() : nil;
     });
+}
+
+#pragma mark - deprecated
+
++ (void)requestAccess:(APRequestAccessBlock)completionBlock
+{
+    [self requestAccessOnQueue:dispatch_get_main_queue() completion:completionBlock];
+}
+
++ (void)requestAccessOnQueue:(dispatch_queue_t)queue completion:(APRequestAccessBlock)completionBlock
+{
+    APAddressBookRefWrapper *refWrapper = [[APAddressBookRefWrapper alloc] init];
+    APAddressBookAccessRoutine *access = [[APAddressBookAccessRoutine alloc] initWithAddressBookRefWrapper:refWrapper];
+    [access requestAccessWithCompletion:^(BOOL granted, NSError *error)
+    {
+        dispatch_async(queue, ^
+        {
+            completionBlock ? completionBlock(granted, error) : nil;
+        });
+    }];
+}
+
+- (APContact *)getContactByRecordID:(NSNumber *)recordID
+{
+    APContactField fieldMask = self.fieldsMask;
+    __block APContact *contact = nil;
+    [self.thread dispatchSync:^
+    {
+        contact = [self.contacts contactByRecordID:recordID withFieldMask:fieldMask];
+    }];
+    return contact;
 }
 
 @end

@@ -26,12 +26,11 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
             button.rx.tap
                 .subscribe(onNext: { [weak self] in
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
-                    let title = state.source.shopState.shareDescription
-                    let url = state.source.shopState.shareURL
-                    
-                    let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
-                    
-                    UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                    if let textURL = ReferralManager().getShortUrlFor(shopState: state.source.shopState) {
+                        let title = state.source.shopState.shareDescription
+                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button)
+                        UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                    }
                 })
                 .disposed(by: self.rx_disposeBag)
             

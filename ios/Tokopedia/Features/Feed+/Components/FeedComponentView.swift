@@ -554,12 +554,12 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 
                 button.rx.tap
                     .subscribe(onNext: {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Share - Feed")
-                        let title = state.source.shopState.shareDescription
-                        let url = state.source.shopState.shareURL
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)
-                        
-                        self.viewController?.present(controller!, animated: true, completion: nil)
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
+                        if let textURL = ReferralManager().getShortUrlFor(shopState: state.source.shopState) {
+                            let title = state.source.shopState.shareDescription
+                            let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button)
+                            self.viewController?.present(controller!, animated: true, completion: nil)
+                        }
                     })
                     .disposed(by: self.rx_disposeBag)
                 

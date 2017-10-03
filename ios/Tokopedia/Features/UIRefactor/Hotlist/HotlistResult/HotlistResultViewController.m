@@ -422,15 +422,16 @@ ProductCellDelegate
 
 - (IBAction)didTapShareButton:(id)sender {
     NSString *title;
-    NSURL *url;
+    NSString *shortUrl;
+    ReferralManager *referralManager = [[ReferralManager alloc] init];
     if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
-        url = [NSURL URLWithString:[_data objectForKey:@"url"]];
+        shortUrl = [referralManager getShortUrlForHotListData:_data];
     } else if (_bannerResult) {
         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _bannerResult.info.title];
-        url = [NSURL URLWithString:[NSString stringWithFormat:@"%@/hot/%@", [NSString tokopediaUrl], [[_bannerResult.info.title stringByReplacingOccurrencesOfString:@" " withString:@"-"] lowercaseString]]];
+        shortUrl = [referralManager getShortUrlForHotListBannerResult:_bannerResult];
     }
-    
+    NSURL *url = [NSURL URLWithString:shortUrl];
     if (title && url) {
         UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                           url:url

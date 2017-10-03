@@ -19,10 +19,9 @@ open class DKCameraPassthroughView: UIView {
 
 extension AVMetadataFaceObject {
 
-    open func realBounds(inCamera camera: DKCamera) -> CGRect {
+    open func realBounds(inPreviewLayer previewLayer: AVCaptureVideoPreviewLayer, isFront : Bool) -> CGRect {
         var bounds = CGRect()
-        let previewSize = camera.previewLayer.bounds.size
-        let isFront = camera.currentDevice == camera.captureDeviceFront
+        let previewSize = previewLayer.bounds.size
         
         if isFront {
             bounds.origin = CGPoint(x: previewSize.width - previewSize.width * (1 - self.bounds.origin.y - self.bounds.size.height / 2),
@@ -105,7 +104,7 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     fileprivate var beginZoomScale: CGFloat = 1.0
     fileprivate var zoomScale: CGFloat = 1.0
     
-    open var defaultCaptureDevice = DKCameraDeviceSourceType.rear
+    open var currentDeviceType = DKCameraDeviceSourceType.rear
     open var currentDevice: AVCaptureDevice?
     open var captureDeviceFront: AVCaptureDevice?
     open var captureDeviceRear: AVCaptureDevice?
@@ -161,7 +160,6 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             })
         }
         
-        self.updateSession(isEnable: true)
     }
     
     open override func viewDidLayoutSubviews() {
@@ -176,7 +174,7 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     open override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         
-        self.updateSession(isEnable: false)
+        self.stopSession()
         self.motionManager.stopAccelerometerUpdates()
     }
     
@@ -295,11 +293,16 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         
         if self.onFaceDetection != nil {
             let metadataOutput = AVCaptureMetadataOutput()
-            metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue(label: "MetadataOutputQueue"))
             
             if self.captureSession.canAddOutput(metadataOutput) {
                 self.captureSession.addOutput(metadataOutput)
-                metadataOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]
+                
+                if metadataOutput.availableMetadataObjectTypes.contains(where: { $0 as! String == AVMetadataObjectTypeFace }) {
+                    metadataOutput.setMetadataObjectsDelegate(self, queue: DispatchQueue(label: "MetadataOutputQueue"))
+                    metadataOutput.metadataObjectTypes = [AVMetadataObjectTypeFace]
+                } else {
+                    self.captureSession.removeOutput(metadataOutput)
+                }
             }
         }
         
@@ -357,7 +360,7 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             }
         }
         
-        switch self.defaultCaptureDevice {
+        switch self.currentDeviceType {
         case .front:
             self.currentDevice = self.captureDeviceFront ?? self.captureDeviceRear
         case .rear:
@@ -367,32 +370,15 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
     // MARK: - Session
     
-    fileprivate var isStopped = false
-    
     open func startSession() {
-        self.isStopped = false
-        
-        if !self.captureSession.isRunning {
-            self.captureSession.startRunning()
+        if let previewLayer = self.previewLayer, let connection = previewLayer.connection {
+            connection.isEnabled = true
         }
     }
     
     open func stopSession() {
-        self.pauseSession()
-        
-        self.captureSession.stopRunning()
-    }
-    
-    open func pauseSession() {
-        self.isStopped = true
-        
-        self.updateSession(isEnable: false)
-    }
-    
-    open func updateSession(isEnable: Bool) {
-        if ((!self.isStopped) || (self.isStopped && !isEnable)),
-            let connection = self.previewLayer.connection {
-            connection.isEnabled = isEnable
+        if let previewLayer = self.previewLayer, let connection = previewLayer.connection {
+            connection.isEnabled = false
         }
     }
     
@@ -413,6 +399,7 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
             
             DispatchQueue.global().async(execute: {
                 if let connection = stillImageOutput.connection(withMediaType: AVMediaTypeVideo) {
+                    
                     connection.videoOrientation = self.currentOrientation.toAVCaptureVideoOrientation()
                     connection.videoScaleAndCropFactor = self.zoomScale
                     
@@ -468,62 +455,12 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         }
     }
     
-    open func focusAtTouchPoint(_ touchPoint: CGPoint) {
-        
-        func showFocusViewAtPoint(_ touchPoint: CGPoint) {
-            
-            struct FocusView {
-                static let focusView: UIView = {
-                    let focusView = UIView()
-                    let diameter: CGFloat = 100
-                    focusView.bounds.size = CGSize(width: diameter, height: diameter)
-                    focusView.layer.borderWidth = 2
-                    focusView.layer.cornerRadius = diameter / 2
-                    focusView.layer.borderColor = UIColor.white.cgColor
-                    
-                    return focusView
-                }()
-            }
-            FocusView.focusView.transform = CGAffineTransform.identity
-            FocusView.focusView.center = touchPoint
-            self.view.addSubview(FocusView.focusView)
-            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.1,
-                           options: UIViewAnimationOptions(), animations: { () -> Void in
-                            FocusView.focusView.transform = CGAffineTransform.identity.scaledBy(x: 0.6, y: 0.6)
-            }) { (Bool) -> Void in
-                FocusView.focusView.removeFromSuperview()
-            }
-        }
-        
-        if self.currentDevice == nil || self.currentDevice?.isFlashAvailable == false {
-            return
-        }
-        
-        let focusPoint = self.previewLayer.captureDevicePointOfInterest(for: touchPoint)
-        
-        showFocusViewAtPoint(touchPoint)
-        
-        if let currentDevice = self.currentDevice {
-            try! currentDevice.lockForConfiguration()
-            currentDevice.focusPointOfInterest = focusPoint
-            currentDevice.exposurePointOfInterest = focusPoint
-            
-            currentDevice.focusMode = .continuousAutoFocus
-            
-            if currentDevice.isExposureModeSupported(.continuousAutoExposure) {
-                currentDevice.exposureMode = .continuousAutoExposure
-            }
-            
-            currentDevice.unlockForConfiguration()
-        }
-        
-    }
-    
     // MARK: - Handles Switch Camera
     
     internal func switchCamera() {
         self.currentDevice = self.currentDevice == self.captureDeviceRear ?
             self.captureDeviceFront : self.captureDeviceRear
+        self.currentDeviceType = self.currentDevice == self.captureDeviceRear ? .rear : .front
         
         self.setupCurrentDevice()
     }
@@ -566,6 +503,12 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         self.flashButton.sizeToFit()
     }
     
+    // MARK: - AVCaptureMetadataOutputObjectsDelegate
+    
+    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
+        self.onFaceDetection?(metadataObjects as! [AVMetadataFaceObject])
+    }
+    
     open func updateFlashMode() {
         if let currentDevice = self.currentDevice
             , currentDevice.isFlashAvailable && currentDevice.isFlashModeSupported(self.flashMode) {
@@ -575,10 +518,55 @@ open class DKCamera: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
         }
     }
     
-    // MARK: - AVCaptureMetadataOutputObjectsDelegate
-    
-    public func captureOutput(_ captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [Any]!, from connection: AVCaptureConnection!) {
-        self.onFaceDetection?(metadataObjects as! [AVMetadataFaceObject])
+    open func focusAtTouchPoint(_ touchPoint: CGPoint) {
+        
+        func showFocusViewAtPoint(_ touchPoint: CGPoint) {
+            
+            struct FocusView {
+                static let focusView: UIView = {
+                    let focusView = UIView()
+                    let diameter: CGFloat = 100
+                    focusView.bounds.size = CGSize(width: diameter, height: diameter)
+                    focusView.layer.borderWidth = 2
+                    focusView.layer.cornerRadius = diameter / 2
+                    focusView.layer.borderColor = UIColor.white.cgColor
+                    
+                    return focusView
+                }()
+            }
+            FocusView.focusView.transform = CGAffineTransform.identity
+            FocusView.focusView.center = touchPoint
+            self.view.addSubview(FocusView.focusView)
+            UIView.animate(withDuration: 0.7, delay: 0, usingSpringWithDamping: 0.5, initialSpringVelocity: 1.1,
+                                       options: UIViewAnimationOptions(), animations: { () -> Void in
+                                        FocusView.focusView.transform = CGAffineTransform.identity.scaledBy(x: 0.6, y: 0.6)
+            }) { (Bool) -> Void in
+                FocusView.focusView.removeFromSuperview()
+            }
+        }
+        
+        if self.currentDevice == nil || self.currentDevice?.isFlashAvailable == false {
+            return
+        }
+        
+        let focusPoint = self.previewLayer.captureDevicePointOfInterest(for: touchPoint)
+        
+        showFocusViewAtPoint(touchPoint)
+        
+        if let currentDevice = self.currentDevice {
+            try! currentDevice.lockForConfiguration()
+            currentDevice.focusPointOfInterest = focusPoint
+            currentDevice.exposurePointOfInterest = focusPoint
+            
+            currentDevice.focusMode = .continuousAutoFocus
+            
+            if currentDevice.isExposureModeSupported(.continuousAutoExposure) {
+                currentDevice.exposureMode = .continuousAutoExposure
+            }
+            
+            currentDevice.unlockForConfiguration()
+        }
+        
     }
     
     // MARK: - Handles Orientation
@@ -685,13 +673,13 @@ public extension UIDeviceOrientation {
         case .portrait:
             return 0
         case .portraitUpsideDown:
-            return CGFloat.pi
+            return CGFloat(M_PI)
         case .landscapeRight:
-            return -CGFloat.pi / 2.0
+            return CGFloat(-M_PI_2)
         case .landscapeLeft:
-            return CGFloat.pi / 2.0
+            return CGFloat(M_PI_2)
         default:
-            return 0.0
+            return 0
         }
     }
     

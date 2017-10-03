@@ -485,13 +485,17 @@ NoResultDelegate
         NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
                            _shop.result.info.shop_name,
                            _shop.result.info.shop_location];
-        NSURL *url = [NSURL URLWithString:_shop.result.info.shop_url];
-        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                          url:url
-                                                                                       anchor:sender];
-        
-        [self presentViewController:controller animated:YES completion:nil];
-    }
+        ReferralManager *referralManager = [[ReferralManager alloc] init];
+        NSString *shortUrl = [referralManager getShortUrlForShopInfo:_shop.result.info];
+        NSURL *url = [NSURL URLWithString:shortUrl];
+        if (url != nil) {
+            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
+                                                                                              url:url
+                                                                                           anchor:sender];
+            
+            [self presentViewController:controller animated:YES completion:nil];
+        }
+     }
 }
 
 - (IBAction)tapToEtalase:(id)sender {

@@ -8,12 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-//! Project version number for MMNumberKeyboard.
-FOUNDATION_EXPORT double MMNumberKeyboardVersionNumber;
-
-//! Project version string for MMNumberKeyboard.
-FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
-
 @class MMNumberKeyboard;
 
 /**
@@ -40,15 +34,6 @@ FOUNDATION_EXPORT const unsigned char MMNumberKeyboardVersionString[];
  *  @return Returns	@c YES if the keyboard should implement its default behavior for the return button; otherwise, @c NO.
  */
 - (BOOL)numberKeyboardShouldReturn:(MMNumberKeyboard *)numberKeyboard;
-
-/**
- *  Asks the delegate if the keyboard should remove the character just before the cursor.
- *
- *  @param numberKeyboard The keyboard whose return button was pressed.
- *
- *  @return Returns	@c YES if the keyboard should implement its default behavior for the delete backward button; otherwise, @c NO.
- */
-- (BOOL)numberKeyboardShouldDeleteBackward:(MMNumberKeyboard *)numberKeyboard;
 
 @end
 

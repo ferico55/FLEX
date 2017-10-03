@@ -123,11 +123,8 @@ open class DKImagePickerController : UINavigationController {
         return DKImagePickerControllerDefaultUIDelegate()
     }()
     
-    /// Forces deselect of previous selected image
+    /// Forces selection of tapped image immediatly.
     public var singleSelect = false
-    
-    /// Auto close picker on single select
-    public var autoCloseOnSingleSelect = true
     
     /// The maximum count of assets which the user will be able to select.
     public var maxSelectableCount = 999
@@ -150,12 +147,6 @@ open class DKImagePickerController : UINavigationController {
     public var showsEmptyAlbums = true {
         didSet {
             getImageManager().groupDataManager.showsEmptyAlbums = self.showsEmptyAlbums
-        }
-    }
-    
-    public var assetFilter: ((_ asset: PHAsset) -> Bool)? {
-        didSet {
-            getImageManager().groupDataManager.assetFilter = self.assetFilter
         }
     }
     
@@ -218,7 +209,7 @@ open class DKImagePickerController : UINavigationController {
     /// It will have selected the specific assets.
     public var defaultSelectedAssets: [DKAsset]? {
         didSet {
-            if let count = self.defaultSelectedAssets?.count, count != self.selectedAssets.count {
+            if let count = self.defaultSelectedAssets?.count, count > 0 {
                 self.selectedAssets = self.defaultSelectedAssets ?? []
                 
                 if let rootVC = self.viewControllers.first as? DKAssetGroupDetailVC {
@@ -265,7 +256,7 @@ open class DKImagePickerController : UINavigationController {
                 
                 let camera = self.createCamera()
                 if camera is UINavigationController {
-                    self.present(camera, animated: true, completion: nil)
+                    self.present(self.createCamera(), animated: true, completion: nil)
                     self.setViewControllers([], animated: false)
                 } else {
                     self.setViewControllers([camera], animated: false)
@@ -287,6 +278,7 @@ open class DKImagePickerController : UINavigationController {
     
     private lazy var assetFetchOptions: PHFetchOptions = {
         let assetFetchOptions = PHFetchOptions()
+        assetFetchOptions.sortDescriptors = [NSSortDescriptor(key: "creationDate", ascending: false)]
         return assetFetchOptions
     }()
     
@@ -333,45 +325,43 @@ open class DKImagePickerController : UINavigationController {
     }
     
     private func createCamera() -> UIViewController {
-        let didCancel = { [unowned self] () in
+        let didCancel = { () in
             if self.sourceType == .camera {
-                if (self.presentedViewController != nil) {
-                    self.dismiss(animated: false, completion: nil)
-                }
-                self.dismiss(animated: true)
+                self.dismiss(animated: true, completion: nil)
+                self.dismiss(animated: false)
             } else {
                 self.dismiss(animated: true, completion: nil)
             }
         }
         
-        let didFinishCapturingImage = { [unowned self] (image: UIImage) in
+        let didFinishCapturingImage = { (image: UIImage) in
             
             var newImageIdentifier: String!
 
             PHPhotoLibrary.shared().performChanges({
                 let assetRequest = PHAssetChangeRequest.creationRequestForAsset(from: image)
                 newImageIdentifier = assetRequest.placeholderForCreatedAsset!.localIdentifier
-            }) { [weak self] (success, error) in
-                DispatchQueue.main.async(execute: { [weak self] in
+            }) { (success, error) in
+                DispatchQueue.main.async(execute: {
                     if success {
                         if let newAsset = PHAsset.fetchAssets(withLocalIdentifiers: [newImageIdentifier], options: nil).firstObject {
-                            if self?.presentedViewController != nil {
-                                self?.dismiss(animated: true, completion: nil)
+                            if self.presentedViewController != nil {
+                                self.dismiss(animated: true, completion: nil)
                             }
-                            self?.selectImage(DKAsset(originalAsset: newAsset))
+                            self.selectImage(DKAsset(originalAsset: newAsset))
                         }
                     } else {
-                        if self?.sourceType != .camera {
-                            self?.dismiss(animated: true, completion: nil)
+                        if self.sourceType != .camera {
+                            self.dismiss(animated: true, completion: nil)
                         }
-                        self?.selectImage(DKAsset(image: image))
+                        self.selectImage(DKAsset(image: image))
                     }
                 })
                 
             }
         }
         
-        let didFinishCapturingVideo = { [unowned self] (videoURL: URL) in
+        let didFinishCapturingVideo = { (videoURL: URL) in
             var newVideoIdentifier: String!
             PHPhotoLibrary.shared().performChanges({
                 let assetRequest = PHAssetChangeRequest.creationRequestForAssetFromVideo(atFileURL: videoURL)
@@ -451,9 +441,7 @@ open class DKImagePickerController : UINavigationController {
         if self.singleSelect {
             self.deselectAllAssets()
             self.selectedAssets.append(asset)
-            if autoCloseOnSingleSelect {
-                self.done()
-            }
+            self.done()
         } else {
             self.selectedAssets.append(asset)
             if self.sourceType == .camera {

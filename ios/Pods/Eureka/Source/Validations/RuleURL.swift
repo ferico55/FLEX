@@ -27,14 +27,12 @@ import UIKit
 
 public struct RuleURL: RuleType {
     
-    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false, msg: String = "Field value must be an URL!") {
-        validationError = ValidationError(msg: msg)
-    }
+    public init(allowsEmpty: Bool = true, requiresProtocol: Bool = false) {}
     
     public var id: String?
     public var allowsEmpty = true
     public var requiresProtocol = false
-    public var validationError: ValidationError
+    public var validationError = ValidationError(msg: "Field value must be an URL!")
     
     public func isValid(value: URL?) -> ValidationError? {
         if let value = value, value.absoluteString.isEmpty == false {

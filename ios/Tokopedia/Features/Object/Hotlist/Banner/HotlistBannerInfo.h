@@ -15,5 +15,6 @@
 @property (nonatomic, strong) NSString *hotlist_description;
 @property (nonatomic, strong) NSString *cover_img;
 @property (nonatomic, strong) NSString *title;
+@property (nonatomic, strong) NSString *alias_key;
 
 @end

@@ -84,14 +84,12 @@ open class SliderCell: Cell<Float>, CellType {
         super.update()
         if !shouldShowTitle() {
             textLabel?.text = nil
-            valueLabel.text = nil
-        } else if valueLabel.text == nil {
-            valueLabel.text = " "
+            detailTextLabel?.text = nil
         }
         slider.value = row.value ?? 0.0
     }
     
-    func addConstraints() {
+    func addConstraints(justLabelConstraints: Bool = false) {
         let views: [String : Any] = ["titleLabel" : titleLabel, "valueLabel" : valueLabel, "slider" : slider]
         //TODO: in Iphone 6 Plus hPadding should be 20
         let metrics = ["hPadding" : 15.0, "vPadding" : 12.0, "spacing" : 12.0]
@@ -99,11 +97,12 @@ open class SliderCell: Cell<Float>, CellType {
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[titleLabel]-[valueLabel]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[titleLabel]-spacing-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
             
-        } else {
+        } else if !justLabelConstraints {
             contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "V:|-vPadding-[slider]-vPadding-|", options: NSLayoutFormatOptions.alignAllLeft, metrics: metrics, views: views))
         }
-        contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
-
+        if !justLabelConstraints {
+            contentView.addConstraints(NSLayoutConstraint.constraints(withVisualFormat: "H:|-hPadding-[slider]-hPadding-|", options: NSLayoutFormatOptions.alignAllLastBaseline, metrics: metrics, views: views))
+        }
     }
     
     func valueChanged() {
@@ -118,7 +117,9 @@ open class SliderCell: Cell<Float>, CellType {
             roundedValue = slider.value
         }
         row.value = roundedValue
-        row.updateCell()
+        if shouldShowTitle() {
+            valueLabel.text = row.displayValueFor?(row.value)
+        }
     }
     
     private func shouldShowTitle() -> Bool {

@@ -39,6 +39,7 @@
 @import FirebaseCore;
 
 @interface AppDelegate(Extensions) <ReactNavigationCoordinatorDelegate>
+@property(nonatomic, strong)NSString *deepLinkPathOpened;
 @end
 
 @implementation AppDelegate
@@ -128,7 +129,26 @@
     _window.rootViewController = viewController;
     _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     [_window makeKeyAndVisible];
-            
+    Branch *branch = [Branch getInstance];
+    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        if (!error && params) {
+            //Check universal link
+            NSString *ios_deeplink_path = params[@"$ios_deeplink_path"];
+            if (ios_deeplink_path == nil) {
+                return;
+            }
+            NSString *urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
+            urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            if ([self shallOpenDeepLinkPath:urlString] == NO) {
+                return;
+            }
+            NSURL *url = [NSURL URLWithString:urlString];
+            if (url != nil) {
+                [TPRoutes routeURL:url];
+            }
+        }
+    }];
+    
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
 #endif
@@ -165,7 +185,7 @@
     //opening URL in background state
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-        if(url) {
+        if(url && [self shallOpenDeepLinkPath:url.absoluteString]) {
             [TPRoutes routeURL:url];
         } else {
             //universal search link, only available in iOS 9
@@ -175,8 +195,11 @@
                     [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
                         if ([obj isKindOfClass:[NSUserActivity class]]) {
                             NSUserActivity *userActivity = obj;
-                            NSURL *url = userActivity.webpageURL;
-                            [TPRoutes routeURL:url];
+                            BOOL canHandle = [[Branch getInstance] continueUserActivity:userActivity];
+                            if(canHandle == NO) {
+                                NSURL *url = userActivity.webpageURL;
+                                [TPRoutes routeURL:url];
+                            }
                         }
                     }];
                 }
@@ -411,8 +434,17 @@
         return YES;
     } else if ([self.tagManager previewWithUrl:url]) {
         return YES;
-    } else if([TPRoutes routeURL: url]) {
+    } else if ([[Branch getInstance]
+                application:application
+                openURL:url
+                sourceApplication:sourceApplication
+                annotation:annotation] == YES && [url.scheme containsString:@"tokopedia"] == NO) {
         return YES;
+    } else {
+        if ([self shallOpenDeepLinkPath:url.absoluteString] == NO) {
+            return NO;
+        }
+        return [TPRoutes routeURL: url];
     }
     
     return NO;
@@ -427,10 +459,12 @@
     } else {
         url = userActivity.webpageURL;
     }
-    if (url) {
+    shouldContinue = [[Branch getInstance] continueUserActivity:userActivity];
+    if (shouldContinue == NO && url) {
         [TPRoutes routeURL: url];
         shouldContinue = YES;
     }
+
     return shouldContinue;
 }
 
@@ -439,6 +473,21 @@
     [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
 }
 
+- (BOOL)shallOpenDeepLinkPath:(NSString *)path {
+    if (path == nil) {
+        return NO;
+    }
+    if (self.deepLinkPathOpened == nil) {
+        self.deepLinkPathOpened = path;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            self.deepLinkPathOpened = nil;
+        });
+        return YES;
+    } else {
+        self.deepLinkPathOpened = nil;
+        return NO;
+    }
+}
 
 #pragma mark - reset persist data if freshly installed
 - (void)preparePersistData

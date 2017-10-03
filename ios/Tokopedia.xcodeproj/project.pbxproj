@@ -788,7 +788,6 @@
 		62C5EE461F826A2800EAE044 /* ProductReputationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E3B21F826A2300EAE044 /* ProductReputationViewController.xib */; };
 		62C5EE471F826A2800EAE044 /* ReviewResponseComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3B41F826A2300EAE044 /* ReviewResponseComponent.mm */; };
 		62C5EE481F826A2800EAE044 /* MyReviewDetailDataManager.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3B61F826A2300EAE044 /* MyReviewDetailDataManager.mm */; };
-		62C5EE491F826A2800EAE044 /* MyReviewDetailViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3B71F826A2300EAE044 /* MyReviewDetailViewController.mm */; };
 		62C5EE4A1F826A2800EAE044 /* ReviewRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3B81F826A2300EAE044 /* ReviewRequest.m */; };
 		62C5EE4B1F826A2800EAE044 /* MedalComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3B91F826A2300EAE044 /* MedalComponent.mm */; };
 		62C5EE4C1F826A2800EAE044 /* ReviewRatingComponent.mm in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E3BB1F826A2300EAE044 /* ReviewRatingComponent.mm */; };
@@ -1865,6 +1864,11 @@
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
 		7AC251FC1F31A414001D5FA3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7AC251FB1F31A413001D5FA3 /* assets */; };
+		846385071F835C0300AAF55C /* CodeShareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846385031F835C0300AAF55C /* CodeShareTableViewController.swift */; };
+		846385081F835C0300AAF55C /* Referral.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846385041F835C0300AAF55C /* Referral.storyboard */; };
+		846385091F835C0300AAF55C /* ReferralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846385051F835C0300AAF55C /* ReferralManager.swift */; };
+		8463850A1F835C0300AAF55C /* ReferralRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846385061F835C0300AAF55C /* ReferralRemoteConfig.swift */; };
+		8463850C1F836A2D00AAF55C /* MyReviewDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 8463850B1F836A2D00AAF55C /* MyReviewDetailViewController.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3106,7 +3110,6 @@
 		62C5E3B41F826A2300EAE044 /* ReviewResponseComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ReviewResponseComponent.mm; sourceTree = "<group>"; };
 		62C5E3B51F826A2300EAE044 /* AttachedPicture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttachedPicture.h; sourceTree = "<group>"; };
 		62C5E3B61F826A2300EAE044 /* MyReviewDetailDataManager.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailDataManager.mm; sourceTree = "<group>"; };
-		62C5E3B71F826A2300EAE044 /* MyReviewDetailViewController.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MyReviewDetailViewController.mm; sourceTree = "<group>"; };
 		62C5E3B81F826A2300EAE044 /* ReviewRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReviewRequest.m; sourceTree = "<group>"; };
 		62C5E3B91F826A2300EAE044 /* MedalComponent.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MedalComponent.mm; sourceTree = "<group>"; };
 		62C5E3BA1F826A2300EAE044 /* DetailReputationReviewComponent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailReputationReviewComponent.h; sourceTree = "<group>"; };
@@ -4902,6 +4905,11 @@
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7AC251FB1F31A413001D5FA3 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
+		846385031F835C0300AAF55C /* CodeShareTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeShareTableViewController.swift; sourceTree = "<group>"; };
+		846385041F835C0300AAF55C /* Referral.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Referral.storyboard; sourceTree = "<group>"; };
+		846385051F835C0300AAF55C /* ReferralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralManager.swift; sourceTree = "<group>"; };
+		846385061F835C0300AAF55C /* ReferralRemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralRemoteConfig.swift; sourceTree = "<group>"; };
+		8463850B1F836A2D00AAF55C /* MyReviewDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReviewDetailViewController.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -5267,6 +5275,7 @@
 		62C5DF4E1F826A2100EAE044 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				846385021F835C0300AAF55C /* Referral */,
 				62C5DF4F1F826A2100EAE044 /* ProductDetail */,
 				62C5DF611F826A2100EAE044 /* Payment */,
 				62C5DF761F826A2200EAE044 /* Popover */,
@@ -7226,6 +7235,7 @@
 		62C5E3971F826A2300EAE044 /* Reputation */ = {
 			isa = PBXGroup;
 			children = (
+				8463850B1F836A2D00AAF55C /* MyReviewDetailViewController.m */,
 				62C5E3981F826A2300EAE044 /* GiveReviewDetailViewController.xib */,
 				62C5E3991F826A2300EAE044 /* ProductDetailReputationCell.xib */,
 				62C5E39A1F826A2300EAE044 /* InboxReviewCell.xib */,
@@ -7251,7 +7261,6 @@
 				62C5E3B41F826A2300EAE044 /* ReviewResponseComponent.mm */,
 				62C5E3B51F826A2300EAE044 /* AttachedPicture.h */,
 				62C5E3B61F826A2300EAE044 /* MyReviewDetailDataManager.mm */,
-				62C5E3B71F826A2300EAE044 /* MyReviewDetailViewController.mm */,
 				62C5E3B81F826A2300EAE044 /* ReviewRequest.m */,
 				62C5E3B91F826A2300EAE044 /* MedalComponent.mm */,
 				62C5E3BA1F826A2300EAE044 /* DetailReputationReviewComponent.h */,
@@ -10474,6 +10483,17 @@
 			path = Tokopedia;
 			sourceTree = "<group>";
 		};
+		846385021F835C0300AAF55C /* Referral */ = {
+			isa = PBXGroup;
+			children = (
+				846385031F835C0300AAF55C /* CodeShareTableViewController.swift */,
+				846385041F835C0300AAF55C /* Referral.storyboard */,
+				846385051F835C0300AAF55C /* ReferralManager.swift */,
+				846385061F835C0300AAF55C /* ReferralRemoteConfig.swift */,
+			);
+			path = Referral;
+			sourceTree = "<group>";
+		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -11373,6 +11393,7 @@
 				62C5ECCE1F826A2700EAE044 /* ShipmentConfirmationViewController.xib in Resources */,
 				62C5ED4B1F826A2800EAE044 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				62C5EC8D1F826A2700EAE044 /* ResolutionInputReceiptViewController.xib in Resources */,
+				846385081F835C0300AAF55C /* Referral.storyboard in Resources */,
 				62C5EB9C1F826A2700EAE044 /* CreditCardCell.xib in Resources */,
 				62C5EC591F826A2700EAE044 /* DepositSummaryCell.xib in Resources */,
 				62C5ED501F826A2800EAE044 /* AlertPickerView.xib in Resources */,
@@ -12105,6 +12126,7 @@
 				62C5F1EE1F826A2C00EAE044 /* ShipmentData.m in Sources */,
 				62C5F0CD1F826A2A00EAE044 /* ProductList.m in Sources */,
 				62C5F0ED1F826A2B00EAE044 /* InboxMessageDetailResult.m in Sources */,
+				846385091F835C0300AAF55C /* ReferralManager.swift in Sources */,
 				62C5F08B1F826A2A00EAE044 /* HotlistList.m in Sources */,
 				DADB9F611F3C46CF002B1FAE /* RichEditorViewKeyboardManager.swift in Sources */,
 				62C5EFF71F826A2A00EAE044 /* TxOrderPaymentEdit.m in Sources */,
@@ -12242,8 +12264,8 @@
 				62C5EFB61F826A2900EAE044 /* LabelMenu.m in Sources */,
 				62C5EF7C1F826A2900EAE044 /* PulsaCategory.swift in Sources */,
 				62C5F2171F826A2C00EAE044 /* DigitalCartPayment.swift in Sources */,
+				8463850C1F836A2D00AAF55C /* MyReviewDetailViewController.m in Sources */,
 				62C5F06C1F826A2A00EAE044 /* TheOtherProduct.m in Sources */,
-				62C5EE491F826A2800EAE044 /* MyReviewDetailViewController.mm in Sources */,
 				62C5F1231F826A2B00EAE044 /* DepositSummaryDetail.m in Sources */,
 				62C5ECEA1F826A2700EAE044 /* OrderButtonView.swift in Sources */,
 				62C5EED21F826A2900EAE044 /* BackgroundLayer.m in Sources */,
@@ -13033,6 +13055,7 @@
 				62C5ED061F826A2700EAE044 /* RejectReasonEmptyStockViewController.m in Sources */,
 				62C5EC0C1F826A2700EAE044 /* HistoryProductViewController.m in Sources */,
 				62C5EC141F826A2700EAE044 /* MyWishlistViewController.m in Sources */,
+				8463850A1F835C0300AAF55C /* ReferralRemoteConfig.swift in Sources */,
 				62C5F1EB1F826A2C00EAE044 /* ShipmentServiceData.m in Sources */,
 				62C5F0A41F826A2A00EAE044 /* ResolutionShop.m in Sources */,
 				62C5EE121F826A2800EAE044 /* TopPicksWidgetViewController.swift in Sources */,
@@ -13396,6 +13419,7 @@
 				62C5EEBB1F826A2900EAE044 /* LoginSecurity.m in Sources */,
 				62C5ED791F826A2800EAE044 /* TPLiveCameraView.m in Sources */,
 				62C5F00E1F826A2A00EAE044 /* TxOrderConfirmedList.m in Sources */,
+				846385071F835C0300AAF55C /* CodeShareTableViewController.swift in Sources */,
 				62C5EEF91F826A2900EAE044 /* FiltersListDataSource.swift in Sources */,
 				62C5EF6F1F826A2900EAE044 /* PulsaView.swift in Sources */,
 				62C5EC6A1F826A2700EAE044 /* HotlistViewModel.m in Sources */,

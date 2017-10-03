@@ -112,11 +112,7 @@
         APSocialProfile *profile = [[APSocialProfile alloc] init];
         NSString *socialService = dictionary[(__bridge NSString *)kABPersonSocialProfileServiceKey];
         profile.socialNetwork = [APSocialServiceHelper socialNetworkTypeWithString:socialService];
-        NSString *urlString = dictionary[(__bridge NSString *)kABPersonSocialProfileURLKey];
-        if (urlString)
-        {
-            profile.url = [[NSURL alloc] initWithString:urlString];
-        }
+        profile.url = dictionary[(__bridge NSString *)kABPersonSocialProfileURLKey];
         profile.username = dictionary[(__bridge NSString *)kABPersonSocialProfileUsernameKey];
         profile.userIdentifier = dictionary[(__bridge NSString *)kABPersonSocialProfileUserIdentifierKey];
         [profiles addObject:profile];

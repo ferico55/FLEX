@@ -24,6 +24,7 @@
 #import "TokopediaNetworkManager.h"
 #import "GalleryViewController.h"
 #import "UIActivityViewController+Extensions.h"
+#import "Tokopedia-Swift.h"
 
 #define CTagGetAddCatalogPriceAlert 2
 
@@ -308,7 +309,8 @@ static CGFloat rowHeight = 40;
 
 - (void)requestResult:(RKMappingResult *)result withOperation:(RKObjectRequestOperation *)operation
 {
-    BOOL status = [[[result.dictionary objectForKey:@""] status] isEqualToString:kTKPDREQUEST_OKSTATUS];
+    Catalog *catalog = [result.dictionary objectForKey:@""];
+    BOOL status = [[catalog status] isEqualToString:kTKPDREQUEST_OKSTATUS];
     if (status) {
         [self loadMappingResult:result];
     }
@@ -448,6 +450,20 @@ static CGFloat rowHeight = 40;
     }
 }
 
+- (void)showShareActivityControllerFromView:(UIView *)view {
+    if (_catalog == nil) {
+        return;
+    }
+    NSString *title = _catalog.result.catalog_info.catalog_name;
+    ReferralManager *referralManager = [[ReferralManager alloc] init];
+    NSString *shortUrl = [referralManager getShortUrlForCatalog:_catalog.result.catalog_info];
+    NSURL *url = [NSURL URLWithString:shortUrl];
+    if (url != nil) {
+        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title url:url anchor:view];
+        [self presentViewController:controller animated:YES completion:nil];
+    }
+}
+
 #pragma mark - Action
 
 - (IBAction)tap:(id)sender
@@ -455,15 +471,7 @@ static CGFloat rowHeight = 40;
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem *)sender;
         if (button.tag == 1) {
-            if (_catalog) {
-                NSString *title = _catalog.result.catalog_info.catalog_name;
-                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                                  url:url
-                                                                                               anchor:self.view];
-                
-                [self presentViewController:controller animated:YES completion:nil];
-            }
+            [self showShareActivityControllerFromView:self.view];
         }
     } else if ([sender isKindOfClass:[UIButton class]]) {
         CatalogShopViewController *controller = [CatalogShopViewController new];
@@ -484,15 +492,7 @@ static CGFloat rowHeight = 40;
     } else if ([sender isKindOfClass:[UITapGestureRecognizer class]]) {
         UIView *view = ((UITapGestureRecognizer *) sender).view;
         if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
-            if (_catalog) {
-                NSString *title = _catalog.result.catalog_info.catalog_name;
-                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                                  url:url
-                                                                                               anchor:view];
-                
-                [self presentViewController:controller animated:YES completion:nil];
-            }
+            [self showShareActivityControllerFromView:view];
         }
         else {
             NSInteger startingIndex = _productPhotoPageControl.currentPage;
@@ -504,15 +504,7 @@ static CGFloat rowHeight = 40;
     } else{
         UIView *view = ((UIGestureRecognizer*)sender).view;
         if(view == ((UIBarButtonItem *) [self.navigationItem.rightBarButtonItems firstObject]).customView) {
-            if (_catalog) {
-                NSString *title = _catalog.result.catalog_info.catalog_name;
-                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                                  url:url
-                                                                                               anchor:view];
-                
-                [self presentViewController:controller animated:YES completion:nil];
-            }
+            [self showShareActivityControllerFromView:view];
         }
     }
 }

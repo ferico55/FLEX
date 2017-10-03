@@ -214,6 +214,13 @@
 #import "DetailShopResult.h"
 #import "GAI.h"
 #import "GAIFields.h"
+#import "Branch/Branch.h"
+#import "TransactionCartWebViewViewController.h"
+#import <CommonCrypto/CommonCrypto.h>
+#import "TransactionActionResult.h"
+#import "HotlistBannerResult.h"
+#import "CatalogInfo.h"
+#import "VersionCheckerConfig.h"
 #import "ForgotPasswordViewController.h"
 #import "TransactionCartWebViewViewController.h"
 #import <CommonCrypto/CommonCrypto.h>

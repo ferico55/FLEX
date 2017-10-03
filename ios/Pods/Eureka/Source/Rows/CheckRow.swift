@@ -33,7 +33,7 @@ public final class CheckCell : Cell<Bool>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     open override func update() {
@@ -54,7 +54,7 @@ public final class CheckCell : Cell<Bool>, CellType {
     
     open override func setup() {
         super.setup()
-        accessoryType = .checkmark
+        accessoryType =  .checkmark
         editingAccessoryType = accessoryType
     }
     

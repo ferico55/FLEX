@@ -40,21 +40,15 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         return result
     }()
     private var dynamicConstraints = [NSLayoutConstraint]()
-    fileprivate var observingTitleText: Bool = false
     
     required public init(style: UITableViewCellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil){ [weak self] notification in
             guard let me = self else { return }
-            guard me.observingTitleText else { return }
             me.titleLabel?.removeObserver(me, forKeyPath: "text")
-            me.observingTitleText = false
         }
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidBecomeActive, object: nil, queue: nil){ [weak self] notification in
-            guard let me = self else { return }
-            guard !me.observingTitleText else { return }
-            me.titleLabel?.addObserver(me, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
-            me.observingTitleText = true
+            self?.titleLabel?.addObserver(self!, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         }
         
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
@@ -68,9 +62,7 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
     
     deinit {
         segmentedControl.removeTarget(self, action: nil, for: .allEvents)
-        if observingTitleText {
-            titleLabel?.removeObserver(self, forKeyPath: "text")
-        }
+        titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -84,7 +76,6 @@ open class SegmentedCell<T: Equatable> : Cell<T>, CellType {
         contentView.addSubview(titleLabel!)
         contentView.addSubview(segmentedControl)
         titleLabel?.addObserver(self, forKeyPath: "text", options: [.old, .new], context: nil)
-        observingTitleText = true
         imageView?.addObserver(self, forKeyPath: "image", options: [.old, .new], context: nil)
         segmentedControl.addTarget(self, action: #selector(SegmentedCell.valueChanged), for: .valueChanged)
         contentView.addConstraint(NSLayoutConstraint(item: segmentedControl, attribute: .centerY, relatedBy: .equal, toItem: contentView, attribute: .centerY, multiplier: 1, constant: 0))

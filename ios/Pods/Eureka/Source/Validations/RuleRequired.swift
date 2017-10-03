@@ -26,12 +26,10 @@ import Foundation
 
 public struct RuleRequired<T: Equatable>: RuleType {
     
-    public init(msg: String = "Field required!"){
-        self.validationError = ValidationError(msg: msg)
-    }
+    public init(){}
     
     public var id: String?
-    public var validationError: ValidationError
+    public var validationError = ValidationError(msg: "Field required!")
     
     public func isValid(value: T?) -> ValidationError? {
         if let str = value as? String {

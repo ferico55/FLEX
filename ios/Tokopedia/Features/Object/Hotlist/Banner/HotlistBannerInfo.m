@@ -21,6 +21,7 @@
                       @"hotlist_description",
                       @"cover_img",
                       @"title",
+                      @"alias_key"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

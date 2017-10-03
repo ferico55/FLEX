@@ -10,6 +10,10 @@
 		<string>applinks:tokopedia.com</string>
 		<string>applinks:m.tokopedia.com</string>
 		<string>applinks:tokopedia.onelink.me</string>
+		<string>applinks:tokopedia.app.link</string>
+		<string>applinks:tokopedia-alternate.app.link</string>
+		<string>applinks:tokopedia.test-app.link</string>
+		<string>applinks:tokopedia-alternate.test-app.link</string>
 	</array>
 </dict>
 </plist>

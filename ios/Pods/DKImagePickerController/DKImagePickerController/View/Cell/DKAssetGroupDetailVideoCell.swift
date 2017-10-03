@@ -32,14 +32,12 @@ class DKAssetGroupDetailVideoCell: DKAssetGroupDetailImageCell {
                                           width: self.contentView.bounds.width, height: height)
     }
     
-    override weak var asset: DKAsset? {
+    override weak var asset: DKAsset! {
         didSet {
-            if let asset = asset {
-                let videoDurationLabel = self.videoInfoView.viewWithTag(-1) as! UILabel
-                let minutes: Int = Int(asset.duration!) / 60
-                let seconds: Int = Int(round(asset.duration!)) % 60
-                videoDurationLabel.text = String(format: "\(minutes):%02d", seconds)                
-            }
+            let videoDurationLabel = self.videoInfoView.viewWithTag(-1) as! UILabel
+            let minutes: Int = Int(asset.duration!) / 60
+            let seconds: Int = Int(round(asset.duration!)) % 60
+            videoDurationLabel.text = String(format: "\(minutes):%02d", seconds)
         }
     }
     

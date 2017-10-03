@@ -317,12 +317,13 @@
         } else if (button.tag == 3) {
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
-                NSURL *url = [NSURL URLWithString:_catalog.result.catalog_info.catalog_url];
-                UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                                  url:url
-                                                                                               anchor:button];
-                
-                [self presentViewController:controller animated:YES completion:nil];
+                ReferralManager *referralManager = [[ReferralManager alloc] init];
+                NSString *shortUrl = [referralManager getShortUrlForCatalog:_catalog.result.catalog_info];
+                NSURL *url = [NSURL URLWithString:shortUrl];
+                if (url != nil) {
+                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title url:url anchor:button];
+                    [self presentViewController:controller animated:YES completion:nil];
+                }
             }
         }
     }

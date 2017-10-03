@@ -540,17 +540,7 @@ TTTAttributedLabelDelegate
             }
             case 15:
             {
-                if (_product) {
-                    NSString *title = [NSString stringWithFormat:@"Jual %@ - %@ | Tokopedia ",
-                                       _formattedProductTitle,
-                                       _product.data.shop_info.shop_name];
-                    NSURL *url = [NSURL URLWithString:_product.data.info.product_url];
-                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                                      url:url
-                                                                                                   anchor:btn];
-                    
-                    [self presentViewController:controller animated:YES completion:nil];
-                }
+                [self showShareActivityController:btn];
                 break;
             }
             case 16:
@@ -1780,24 +1770,7 @@ TTTAttributedLabelDelegate
 
 - (IBAction)actionShare:(id)sender
 {
-    if (_product.data.info.product_url) {
-        NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
-                           _formattedProductTitle,
-                           _product.data.shop_info.shop_name];
-        NSURL *url = [NSURL URLWithString:_product.data.info.product_url];
-        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                          url:url
-                                                                                       anchor:sender];
-        
-        [self presentViewController:controller animated:YES completion:^{
-            NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _product.data.info.product_name];
-            [AnalyticsManager trackEventName:@"clickPDP"
-                                    category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
-                                      action:GA_EVENT_ACTION_CLICK
-                                       label:eventLabel];
-        }];
-        
-    }
+    [self showShareActivityController:sender];
 }
 
 
@@ -2030,6 +2003,26 @@ TTTAttributedLabelDelegate
     }
 }
 
+- (void)showShareActivityController:(UIView *)fromView {
+    if (_product.data.info) {
+        NSString *title = [NSString stringWithFormat:@"%@ - %@ | Tokopedia ",
+                           _formattedProductTitle,
+                           _product.data.shop_info.shop_name];
+        ReferralManager *referralManager = [[ReferralManager alloc] init];
+        NSString *shortUrl = [referralManager getShortUrlForProductDetail:_product.data.info];
+        NSURL *url = [NSURL URLWithString:shortUrl];
+        if (url != nil) {
+            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title url:url anchor:fromView];
+            [self presentViewController:controller animated:YES completion:^{
+                NSString *eventLabel = [NSString stringWithFormat:@"Share - %@", _product.data.info.product_name];
+                [AnalyticsManager trackEventName:@"clickPDP"
+                                        category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
+                                          action:GA_EVENT_ACTION_CLICK
+                                           label:eventLabel];
+            }];
+        }
+    }
+}
 
 #pragma mark - Request & Mapping Other Product
 - (void)configureGetOtherProductRestkit {

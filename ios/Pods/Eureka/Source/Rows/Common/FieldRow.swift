@@ -123,7 +123,11 @@ extension TextFieldCell {
 
 open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: Equatable, T: InputTypeInitiable {
     
-    public var textField: UITextField
+    lazy open var textField : UITextField = {
+        let textField = UITextField()
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        return textField
+    }()
     
     open var titleLabel : UILabel? {
         textLabel?.translatesAutoresizingMaskIntoConstraints = false
@@ -131,29 +135,17 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         textLabel?.setContentCompressionResistancePriority(1000, for: .horizontal)
         return textLabel
     }
-
-    fileprivate var observingTitleText: Bool = false
-
+    
     open var dynamicConstraints = [NSLayoutConstraint]()
     
     public required init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        
-        textField = UITextField()
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationWillResignActive, object: nil, queue: nil){ [weak self] notification in
             guard let me = self else { return }
-            guard me.observingTitleText else { return }
             me.titleLabel?.removeObserver(me, forKeyPath: "text")
-            me.observingTitleText = false
         }
         NotificationCenter.default.addObserver(forName: Notification.Name.UIApplicationDidBecomeActive, object: nil, queue: nil){ [weak self] notification in
-            guard let me = self else { return }
-            guard !me.observingTitleText else { return }
-            me.titleLabel?.addObserver(me, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
-            me.observingTitleText = true
+            self?.titleLabel?.addObserver(self!, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         }
         
         NotificationCenter.default.addObserver(forName: Notification.Name.UIContentSizeCategoryDidChange, object: nil, queue: nil){ [weak self] notification in
@@ -168,9 +160,7 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
     deinit {
         textField.delegate = nil
         textField.removeTarget(self, action: nil, for: .allEvents)
-        if observingTitleText {
-            titleLabel?.removeObserver(self, forKeyPath: "text")
-        }
+        titleLabel?.removeObserver(self, forKeyPath: "text")
         imageView?.removeObserver(self, forKeyPath: "image")
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationWillResignActive, object: nil)
         NotificationCenter.default.removeObserver(self, name: Notification.Name.UIApplicationDidBecomeActive, object: nil)
@@ -182,9 +172,8 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
         selectionStyle = .none
         contentView.addSubview(titleLabel!)
         contentView.addSubview(textField)
-
+        
         titleLabel?.addObserver(self, forKeyPath: "text", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
-        observingTitleText = true
         imageView?.addObserver(self, forKeyPath: "image", options: NSKeyValueObservingOptions.old.union(.new), context: nil)
         textField.addTarget(self, action: #selector(_FieldCell.textFieldDidChange(_:)), for: .editingChanged)
         
@@ -309,9 +298,6 @@ open class _FieldCell<T> : Cell<T>, UITextFieldDelegate, TextFieldCell where T: 
             let errorDesc: AutoreleasingUnsafeMutablePointer<NSString?>? = nil
             if formatter.getObjectValue(value, for: textValue, errorDescription: errorDesc) {
                 row.value = value.pointee as? T
-            }
-            else{
-                row.value = textValue.isEmpty ? nil : (T.init(string: textValue) ?? row.value)
             }
         }
     }

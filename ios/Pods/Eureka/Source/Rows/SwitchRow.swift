@@ -35,7 +35,7 @@ open class SwitchCell : Cell<Bool>, CellType {
     }
     
     required public init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     open var switchControl: UISwitch? {

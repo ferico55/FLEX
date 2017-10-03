@@ -30,6 +30,7 @@
 #import "AHKActionSheet.h"
 #import "FBSDKShareKit.h"
 #import "UIColor+Theme.h"
+#import "Tokopedia-Swift.h"
 
 @interface MyReviewDetailViewController ()
 <
@@ -486,10 +487,12 @@
     
     // Ini untuk mengubah warna icon menjadi berwarna, kalau di set 1 jadi hitam putih
     actionSheet.automaticallyTintButtonImages = 0;
+    ReferralManager *referralManager = [[ReferralManager alloc] init];
+    NSString *shortUrl = [referralManager getShortUrlForProductReview:review];
 
     [actionSheet addButtonWithTitle:@"Facebook" image:[UIImage imageNamed:@"icon_facebook"] type:AHKActionSheetButtonTypeDefault handler:^(AHKActionSheet *actionSheet) {
         FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
-        fbShareContent.contentURL = [NSURL URLWithString:[NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl] , review.product_uri]];
+        fbShareContent.contentURL = [NSURL URLWithString:shortUrl];
         fbShareContent.quote = review.review_message;
         
         [FBSDKShareDialog showFromViewController: self                                    withContent:fbShareContent
@@ -497,7 +500,7 @@
         
     }];
     [actionSheet addButtonWithTitle:@"Lainnya"  image: [UIImage imageNamed:@"icon_more_grey"] type:AHKActionSheetButtonTypeDefault handler:^(AHKActionSheet *as) {
-        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[review.review_message, [NSString stringWithFormat:@"%@/%@", [NSString tokopediaUrl], review.product_uri]] applicationActivities:nil];
+        UIActivityViewController *activityVC = [[UIActivityViewController alloc] initWithActivityItems:@[review.review_message, shortUrl] applicationActivities:nil];
         if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad) {
             activityVC.popoverPresentationController.sourceView = view;
         }

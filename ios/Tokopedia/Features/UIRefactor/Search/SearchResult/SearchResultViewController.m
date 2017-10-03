@@ -700,7 +700,9 @@ ProductCellDelegate
             }
             
             title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
-            NSURL *url = [NSURL URLWithString: _searchObject.data.shareUrl?:@"www.tokopedia.com"];
+            ReferralManager *referralManager = [[ReferralManager alloc] init];
+            NSString *shortUrl = [referralManager getShortUrlForSearch:_searchObject];
+            NSURL *url = [NSURL URLWithString: shortUrl];
             UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
                                                                                               url:url
                                                                                            anchor:button];

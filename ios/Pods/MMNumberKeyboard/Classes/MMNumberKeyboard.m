@@ -253,15 +253,7 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
     
     // Handle backspace.
     else if (keyboardButton == MMNumberKeyboardButtonBackspace) {
-        BOOL shouldDeleteBackward = YES;
-		
-        if ([delegate respondsToSelector:@selector(numberKeyboardShouldDeleteBackward:)]) {
-            shouldDeleteBackward = [delegate numberKeyboardShouldDeleteBackward:self];
-        }
-		
-        if (shouldDeleteBackward) {
-            [keyInput deleteBackward];
-        }
+        [keyInput deleteBackward];
     }
     
     // Handle done.
@@ -333,10 +325,9 @@ static const CGFloat MMNumberKeyboardPadSpacing = 8.0f;
 
 - (void)_dismissKeyboard:(id)sender
 {
-    id <UIKeyInput> keyInput = self.keyInput;
-    
-    if ([keyInput isKindOfClass:[UIResponder class]]) {
-        [(UIResponder *)keyInput resignFirstResponder];
+    UIResponder *firstResponder = self.keyInput;
+    if (firstResponder) {
+        [firstResponder resignFirstResponder];
     }
 }
 
@@ -632,18 +623,17 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
     NSString *resource = [name stringByDeletingPathExtension];
     NSString *extension = [name pathExtension];
     
-    if (!resource.length) {
-        return nil;
+    if (resource) {
+        NSBundle *bundle = [NSBundle bundleForClass:[self class]];
+        if (bundle) {
+            NSString *resourcePath = [bundle pathForResource:resource ofType:extension];
+            
+            return [UIImage imageWithContentsOfFile:resourcePath];
+        } else {
+            return [UIImage imageNamed:name];
+        }
     }
-
-    NSBundle *bundle = [NSBundle bundleForClass:[self class]];
-    NSString *resourcePath = [bundle pathForResource:resource ofType:extension];
-
-    if (resourcePath.length) {
-        return [UIImage imageWithContentsOfFile:resourcePath];
-    }
-
-    return [UIImage imageNamed:resource];
+    return nil;
 }
 
 @end
@@ -738,8 +728,6 @@ NS_INLINE CGRect MMButtonRectMake(CGRect rect, CGRect contentRect, UIUserInterfa
         buttonLayer.shadowOpacity = 1.0f;
         buttonLayer.shadowRadius = 0.0f;
     }
-
-    [self _updateButtonAppearance];
 }
 
 - (void)willMoveToWindow:(UIWindow *)newWindow
