@@ -39,7 +39,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             }.add(children: [
                 self.titleView(),
                 self.phoneItemLayout(toppicks: toppicks, size: size),
-                self.seeAll()
+                self.seeAll(page:state.page, row:state.row)
             ]),
             self.blankSpace()
         ])
@@ -64,7 +64,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
                 self.titleView(),
                 self.horizontalLine(size: size),
                 self.padItemLayout(toppicks: toppicks, size: size),
-                self.seeAll()
+                self.seeAll(page:state.page, row:state.row)
             ]),
             self.blankSpace()
         ])
@@ -156,7 +156,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             let gestureRecognizer = UITapGestureRecognizer()
             gestureRecognizer.rx.event.subscribe(onNext: { _ in
                 guard let urlString = URL(string: state.redirectURL) else { return }
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Toppicks - \(state.name)")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Toppicks - \(state.name)")
                 TPRoutes.routeURL(urlString)
             }).disposed(by: self.rx_disposeBag)
             
@@ -188,7 +188,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             let gestureRecognizer = UITapGestureRecognizer()
             gestureRecognizer.rx.event.subscribe(onNext: { _ in
                 guard let urlString = URL(string: state.redirectURL) else { return }
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Toppicks - \(state.name)")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Toppicks - \(state.name)")
                 TPRoutes.routeURL(urlString)
             }).disposed(by: self.rx_disposeBag)
             
@@ -203,7 +203,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         })
     }
     
-    private func seeAll() -> NodeType {
+    private func seeAll(page:Int, row:Int) -> NodeType {
         return Node<UIView>() { view, layout, _ in
             view.backgroundColor = .white
             view.borderWidth = 1
@@ -225,8 +225,8 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
                 layout.width = 94
                 layout.marginRight = 10
                 
-                button.bk_(whenTapped: {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Toppicks - Lihat Semua")
+                button.bk_(whenTapped: { [weak self] in
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(page).\(row) Toppicks - Lihat Semua")
                     TPRoutes.routeURL(URL(string: "tokopedia://toppicks")!)
                 })
             },

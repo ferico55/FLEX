@@ -176,7 +176,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             layout.alignItems = .center
             
             view.bk_(whenTapped: {
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Campaign - Shop")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - Shop")
                 TPRoutes.routeURL(URL(string: state.shopURL)!)
             })
         }.add(children: [
@@ -230,13 +230,13 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             
             if state.isMore {
                 view.bk_(whenTapped: {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Feed - Product List More Items")
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Feed - Product List More Items")
                     NavigateViewController().navigateToFeedDetail(from: UIApplication.topViewController(), withFeedCardID: state.cardID)
                 })
             } else {
                 view.bk_(whenTapped: {
                     if state.isRecommendationProduct {
-                        AnalyticsManager.trackEventName("r3", category: "r3User", action: GA_EVENT_ACTION_CLICK, label: "feed - \(state.recommendationProductSource)")
+                        AnalyticsManager.trackEventName("r3", category: "r3User", action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) feed - \(state.recommendationProductSource)")
                     } else {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
                     }
@@ -278,7 +278,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             layout.padding = 5
             
             view.bk_(whenTapped: {
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Campaign - PDP")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - PDP")
                 TPRoutes.routeURL(URL(string: state.productURL)!)
             })
         }.add(children: [

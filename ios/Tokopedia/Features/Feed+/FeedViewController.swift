@@ -14,7 +14,7 @@ import ReSwift
 import SnapKit
 import Apollo
 
-class FeedViewController: UIViewController {
+class FeedViewController: UIViewController, UITableViewDelegate {
     
     let refreshControl = UIRefreshControl()
     var feedState = FeedState()
@@ -28,6 +28,7 @@ class FeedViewController: UIViewController {
     var currentCursor = ""
     var emptyStateButtonTapped = false
     var isRefreshing = false
+    var row = 0
     
     let feedCardSource = PublishSubject<[FeedCardState]>()
     
@@ -81,12 +82,20 @@ class FeedViewController: UIViewController {
         self.tableView.backgroundColor = .tpBackground()
         self.tableView.separatorStyle = .none
         self.tableView.showsVerticalScrollIndicator = false
-        
+        self.tableView.delegate = self
         self.refreshControl.addTarget(self, action: #selector(self.refreshFeed), for: .valueChanged)
         
         self.footerView.frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40)
         self.footerView.backgroundColor = .clear
-        
+        self.tableView.rx.didScroll.buffer(timeSpan: 0.2, count: 10000, scheduler: MainScheduler.instance)
+            .filter { !$0.isEmpty }.subscribe(onNext: { [weak self] _ in
+                guard let `self` = self else { return }
+                guard (self.tableView.indexPathsForVisibleRows?.count)! > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
+                if self.feedCards[row].page > 0 && self.feedCards[row].row > 0 && !self.feedCards[row].isImpression {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[row].page).\(self.feedCards[row].row) - Product Feed")
+                    self.feedCards[row].isImpression = true
+                }
+            }).disposed(by: rx_disposeBag)
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         self.footerView.addSubview(activityIndicator)
         activityIndicator.startAnimating()
@@ -231,7 +240,7 @@ class FeedViewController: UIViewController {
                                                                                                            "is_feed_empty": true])
                     }
                     NSLog("Error while fetching query: \(error.localizedDescription)")
-                    self.feedState = FeedStateManager().initFeedState(queryResult: nil)
+                    self.feedState = FeedStateManager().initFeedState(queryResult: nil, page: self.page, row:&self.row)
                     self.loadContent(onPage: self.page, total: -1)
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
@@ -243,7 +252,7 @@ class FeedViewController: UIViewController {
                         AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
                                                                                                            "is_feed_empty": true])
                     }
-                    self.feedState = FeedStateManager().initFeedState(queryResult: nil)
+                    self.feedState = FeedStateManager().initFeedState(queryResult: nil, page: self.page, row:&self.row)
                     self.loadContent(onPage: self.page, total: -1)
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
@@ -254,8 +263,7 @@ class FeedViewController: UIViewController {
                     AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
                                                                                                        "is_feed_empty": false])
                 }
-                
-                self.feedState = FeedStateManager().initFeedState(queryResult: (result?.data)!)
+                self.feedState = FeedStateManager().initFeedState(queryResult: (result?.data)!, page: self.page, row:&self.row)
                 
                 self.loadContent(onPage: self.page, total: self.feedState.totalData)
             }
@@ -270,8 +278,6 @@ class FeedViewController: UIViewController {
         }
         
         if total > 2 {
-            self.feedCards += self.feedState.feedCards
-            self.feedCardSource.onNext(self.feedCards)
             self.loadTopAdsContent(onPage: page, totalData: total)
             
             if self.feedState.hasNextPage {
@@ -293,8 +299,6 @@ class FeedViewController: UIViewController {
                 emptyStateCard.errorType = (total < 0) ? .serverError : .emptyFeed
                 
                 self.feedState.feedCards = [emptyStateCard]
-                self.feedCards = self.feedState.feedCards
-                self.feedCardSource.onNext(self.feedCards)
                 self.loadTopAdsContent(onPage: page, totalData: total)
             }
         }
@@ -305,7 +309,7 @@ class FeedViewController: UIViewController {
     }
     
     private func loadTopAdsContent(onPage page: Int, totalData: Int) {
-        let filter = totalData > 1 ? TopAdsFilter(source: .favoriteProduct, ep: .random, numberOfProductItems: 4, numberOfShopItems: 1, page: page, searchKeyword: "", isRecommendationCategory: true) : TopAdsFilter(source: .favoriteProduct, ep: .shop, numberOfProductItems: 0, numberOfShopItems: 3, page: 1, searchKeyword: "", isRecommendationCategory: true)
+        let filter = totalData > 2 ? TopAdsFilter(source: .favoriteProduct, ep: .random, numberOfProductItems: 4, numberOfShopItems: 1, page: page, searchKeyword: "", isRecommendationCategory: true) : TopAdsFilter(source: .favoriteProduct, ep: .shop, numberOfProductItems: 0, numberOfShopItems: 3, page: 1, searchKeyword: "", isRecommendationCategory: true)
         
         self.topAdsService.getTopAds(
             topAdsFilter: filter,
@@ -314,12 +318,22 @@ class FeedViewController: UIViewController {
                 
                 guard ads.count > 0 else { return }
                 
-                if totalData > 1 {
+                if totalData > 2 {
                     var card = FeedCardState()
                     card.topads = TopAdsFeedPlusState(topAds: ads, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
                     
-                    self.feedCards = self.feedCards + [card]
+                    self.feedState.feedCards.insert(card, at: 1)
+                    self.feedCards += self.feedState.feedCards
+                    for (index, card) in self.feedCards.enumerated() {
+                        if card.page < self.page - 1 {
+                            self.feedCards[index].isImpression = true
+                        }
+                    }
                     self.feedCardSource.onNext(self.feedCards)
+                    if (page == 1) {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[0].page).\(self.feedCards[0].row) - Product Feed")
+                        self.feedCards[0].isImpression = true
+                    }
                 } else {
                     for ad in ads {
                         var topAdsCard = FeedCardState()
@@ -327,7 +341,7 @@ class FeedViewController: UIViewController {
                         self.feedState.feedCards.append(topAdsCard)
                     }
                     
-                    self.feedCards = self.feedState.feedCards
+                    self.feedCards += self.feedState.feedCards
                     self.feedCardSource.onNext(self.feedCards)
                 }
             },

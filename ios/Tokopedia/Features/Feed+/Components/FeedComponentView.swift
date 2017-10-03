@@ -318,7 +318,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
                             
                             button.rx.tap
                                 .subscribe(onNext: {
-                                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Promotion - Promo Page Lihat Promo Lainnya")
+                                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Promotion - Promo Page Lihat Promo Lainnya")
                                     NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
                                 })
                                 .disposed(by: (self?.rx_disposeBag)!)
@@ -554,7 +554,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 
                 button.rx.tap
                     .subscribe(onNext: {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Share - Feed")
                         let title = state.source.shopState.shareDescription
                         let url = state.source.shopState.shareURL
                         let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: url), anchor: button)

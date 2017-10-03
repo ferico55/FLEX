@@ -30,10 +30,10 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
         let authorImage: NodeType = Node<UIButton>() { button, _, _ in
             button.bk_(whenTapped: {
                 if !(state.source.fromTokopedia) {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - Shop")
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "\(state.page).\(state.row) Feed - Shop")
                     TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                 } else {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Promotion - Promo Page Header")
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Promotion - Promo Page Header")
                     NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
                 }
             })
@@ -63,10 +63,10 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             view.rx.tap
                 .subscribe(onNext: {
                     if !(state.source.fromTokopedia) {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - Product List")
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "\(state.page).\(state.row) Feed - Product List")
                         NavigateViewController().navigateToFeedDetail(from: self.viewController, withFeedCardID: state.cardID)
                     } else {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Promotion - Promo Page Header")
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Promotion - Promo Page Header")
                         NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
                     }
                 })
@@ -111,7 +111,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             
             button.rx.tap
                 .subscribe(onNext: {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Share - Feed")
                     let title = state.source.shopState.shareDescription
                     let url = state.source.shopState.shareURL
                     

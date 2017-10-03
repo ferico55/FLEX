@@ -90,7 +90,7 @@ class FeedPromotionComponentView: ComponentView<FeedCardPromotionState> {
         
         return Node<UIButton>() { button, _, _ in
             button.bk_(whenTapped: {
-                let eventLabel = "Promotion - \((state?.promoName)!)"
+                let eventLabel = "\(state?.page ?? 0).\(state?.row ?? 0) Promotion - \((state?.promoName)!)"
                 AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: eventLabel)
                 TPRoutes.routeURL(URL(string: (state?.promoURL)!)!)
             })
@@ -193,7 +193,7 @@ class FeedPromotionComponentView: ComponentView<FeedCardPromotionState> {
                 button.setTitleColor(.white, for: .normal)
                 button.rx.tap
                     .subscribe(onNext: {
-                        let eventLabel = "Promotion - \((state?.promoName)!)"
+                        let eventLabel = "\(state?.page ?? 0).\(state?.row ?? 0) Promotion - \((state?.promoName)!)"
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: "Copy Code", label: eventLabel)
                         UIPasteboard.general.string = state?.voucherCode
                         

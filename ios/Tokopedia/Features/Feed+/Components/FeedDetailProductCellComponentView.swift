@@ -16,7 +16,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
             layout.width = size.width
             layout.flexDirection = .column
             
-            view.bk_(whenTapped: {
+            view.bk_(whenTapped: { [weak self] in
                 AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - PDP")
                 TPRoutes.routeURL(URL(string: (state?.productURL)!)!)
             })

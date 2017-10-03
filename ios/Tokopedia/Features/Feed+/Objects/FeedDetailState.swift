@@ -20,6 +20,8 @@ struct FeedDetailState: Render.StateType {
     var content = FeedDetailContentState()
     var createTime = ""
     var isEmpty = false
+    var page = 0
+    var row = 0
 }
 
 struct FeedDetailSourceState: Render.StateType {
@@ -77,6 +79,8 @@ struct FeedDetailProductState: Render.StateType {
     var productPreorder = false
     var productCashback = ""
     var productWishlisted = false
+    var page = 0
+    var row = 0
 }
 
 class FeedDetailStateManager: NSObject {

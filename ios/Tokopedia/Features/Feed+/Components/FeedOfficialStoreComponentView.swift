@@ -69,7 +69,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
             }.add(children: [
                 titleView,
                 brandLayout,
-                self.seeAll(redirectURL: officialStore[0].redirectURL, isBrand: true)
+                self.seeAll(redirectURL: officialStore[0].redirectURL, isBrand: true, page: state.page, row: state.row)
             ]),
             Node<UIView>(identifier: "blank-space") { view, layout, size in
                 layout.height = 15
@@ -98,7 +98,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
             
             let gestureRecognizer = UITapGestureRecognizer()
             _ = gestureRecognizer.rx.event.subscribe(onNext: { _ in
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Campaign - Banner")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - Banner")
                 TPRoutes.routeURL(URL(string: state.redirectURL)!)
             })
             
@@ -142,7 +142,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
                         ProductCellComponentView().construct(state: campaign.products[3].productDetail, size: size),
                         self.verticalLine(withSize: size)
                     ]),
-                    self.seeAll(redirectURL: campaign.redirectURL, isBrand: false)
+                    self.seeAll(redirectURL: campaign.redirectURL, isBrand: false, page: state.page, row: state.row)
                 ])
             )
         } else if campaign.products.count == 6 {
@@ -181,7 +181,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
                         ProductCellComponentView().construct(state: campaign.products[5].productDetail, size: size),
                         self.verticalLine(withSize: size)
                     ]),
-                    self.seeAll(redirectURL: campaign.redirectURL, isBrand: false)
+                    self.seeAll(redirectURL: campaign.redirectURL, isBrand: false, page: state.page, row: state.row)
                 ])
             )
         }
@@ -236,7 +236,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
             
             view.backgroundColor = .white
             view.bk_(whenTapped: {
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Brand - Shop")
+                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Brand - Shop")
                 TPRoutes.routeURL(URL(string: shopURL)!)
             })
             view.contentMode = .scaleAspectFit
@@ -247,7 +247,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
         })
     }
     
-    private func seeAll(redirectURL: String, isBrand: Bool) -> NodeType {
+    private func seeAll(redirectURL: String, isBrand: Bool, page:Int, row:Int) -> NodeType {
         let cont = Node<UIView>() { view, layout, _ in
             view.backgroundColor = .white
             view.borderWidth = 1
@@ -268,11 +268,11 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
                 layout.width = 94
                 layout.marginRight = 10
                 
-                button.bk_(whenTapped: {
+                button.bk_(whenTapped: { [weak self] in
                     if isBrand {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Brand - Lihat Semua")
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(page).\(row) Official Store Brand - Lihat Semua")
                     } else {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Official Store Campaign - Lihat Semua")
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(page).\(row) Official Store Campaign - Lihat Semua")
                     }
                     TPRoutes.routeURL(URL(string: redirectURL)!)
                 })

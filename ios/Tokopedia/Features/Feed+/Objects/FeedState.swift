@@ -37,6 +37,7 @@ struct FeedState: Render.StateType, ReSwift.StateType {
     var topads: TopAdsFeedPlusState?
     var errorType: FeedErrorType = .emptyFeed
     var emptyStateButtonIsLoading = false
+    var page = 0
 }
 
 struct FeedCardState: Render.StateType, ReSwift.StateType {
@@ -54,6 +55,9 @@ struct FeedCardState: Render.StateType, ReSwift.StateType {
     var isNextPageError = false
     var nextPageReloadIsLoading = false
     var inspiration: FeedInspirationState?
+    var row = 0
+    var page = 0
+    var isImpression = false
 }
 
 struct FeedInspirationState: Render.StateType {
@@ -63,11 +67,11 @@ struct FeedInspirationState: Render.StateType {
     
     init() {}
     
-    init(data: FeedsQuery.Data.Inspiration.Datum) {
+    init(data: FeedsQuery.Data.Inspiration.Datum, page:Int, row:Int) {
         self.title = data.title!
         
         let productArray: [FeedCardProductState] = data.recommendation!.map { product in
-            var productState = FeedCardProductState(recommendationProduct: product!)
+            var productState = FeedCardProductState(recommendationProduct: product!, page:page, row:row)
             productState.recommendationProductSource = data.source!
             
             return productState
@@ -94,6 +98,8 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var officialStore: [FeedCardOfficialStoreState]?
     var redirectURL = ""
     var toppicks: [FeedCardToppicksState]?
+    var page = 0
+    var row = 0
 }
 
 struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
@@ -116,14 +122,18 @@ struct FeedCardToppicksState: Render.StateType, ReSwift.StateType {
     var isParent = false
     var imageURL = ""
     var redirectURL = ""
+    var page = 0
+    var row = 0
     
     init() { }
     
-    init(toppick: FeedsQuery.Data.Feed.Datum.Content.TopPick) {
+    init(toppick: FeedsQuery.Data.Feed.Datum.Content.TopPick, page:Int, row:Int) {
         self.name = toppick.name ?? ""
         self.isParent = toppick.isParent ?? false
         self.imageURL = toppick.imageUrl ?? ""
         self.redirectURL = toppick.url ?? ""
+        self.page = page
+        self.row = row
     }
 }
 
@@ -167,18 +177,22 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
     var shopName = ""
     var shopURL = ""
     var isFreeReturns = false
+    var page = 0
+    var row = 0
     
     init() {}
     
-    init(recommendationProduct: FeedsQuery.Data.Inspiration.Datum.Recommendation) {
+    init(recommendationProduct: FeedsQuery.Data.Inspiration.Datum.Recommendation, page:Int, row:Int) {
         self.productName = recommendationProduct.name!
         self.productPrice = recommendationProduct.price!
         self.productImageSmall = recommendationProduct.imageUrl!
         self.productURL = recommendationProduct.appUrl!
         self.isRecommendationProduct = true
+        self.page = page
+        self.row = row
     }
     
-    init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product) {
+    init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page:Int, row:Int) {
         guard let product = officialStoreProduct.data, let shop = product.shop, let badges = product.badges else { return }
         
         self.productPrice = product.price!
@@ -192,6 +206,8 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
         self.shopName = NSString.convertHTML(shop.name!)
         self.shopImageURL = officialStoreProduct.brandLogo!
         self.shopURL = shop.urlApp!
+        self.page = page
+        self.row = row
         
         _ = badges.map { badge in
             if badge?.title == "Free Return" {
@@ -224,6 +240,8 @@ struct FeedCardPromotionState: Render.StateType, ReSwift.StateType {
     var isSinglePromotion = false
     var hasNoCode = false
     var promoName = ""
+    var page = 0
+    var row = 0
 }
 
 struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
@@ -237,10 +255,12 @@ struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
     var redirectURL = "tokopedia://official-store/mobile"
     var products: [FeedCardOfficialStoreProductState] = []
     var incomplete = false
+    var page = 0
+    var row = 0
     
     init() {}
     
-    init(data: FeedsQuery.Data.Feed.Datum.Content.OfficialStore, redirectURL: String) {
+    init(data: FeedsQuery.Data.Feed.Datum.Content.OfficialStore, redirectURL: String, page:Int, row:Int) {
         self.shopURL = data.shopAppsUrl ?? ""
         self.shopImageURL = data.micrositeUrl ?? ""
         
@@ -248,10 +268,12 @@ struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
         self.bannerURL = data.mobileImgUrl ?? ""
         self.borderHexString = data.feedHexaColor ?? ""
         self.redirectURL = redirectURL
+        self.page = page
+        self.row = row
         
         if let offStoreProducts = data.products {
             let tempProducts: [FeedCardOfficialStoreProductState] = offStoreProducts.map { product in
-                return FeedCardOfficialStoreProductState(productData: product!)
+                return FeedCardOfficialStoreProductState(productData: product!, page: page, row:row)
             }
             
             self.products = tempProducts
@@ -270,9 +292,11 @@ struct FeedCardOfficialStoreProductState: Render.StateType, ReSwift.StateType {
     
     init() {}
     
-    init(productData: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product) {
+    init(productData: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page:Int, row:Int) {
         self.brandLogoURL = productData.brandLogo ?? ""
-        self.productDetail = FeedCardProductState(officialStoreProduct: productData)
+        self.productDetail = FeedCardProductState(officialStoreProduct: productData, page:page, row:row)
+        self.productDetail.page = page
+        self.productDetail.row = row
     }
 }
 
@@ -295,7 +319,7 @@ struct FeedCardProductLabelState: Render.StateType, ReSwift.StateType {
 }
 
 class FeedStateManager: NSObject {
-    func initFeedState(queryResult: FeedsQuery.Data?) -> FeedState {
+    func initFeedState(queryResult: FeedsQuery.Data?, page:Int, row: inout Int) -> FeedState {
         guard let result = queryResult,
             let feed = result.feed,
             let feedData = feed.data,
@@ -308,16 +332,16 @@ class FeedStateManager: NSObject {
         var feedState = FeedState()
         feedState.totalData = feedMeta.totalData ?? 0
         feedState.hasNextPage = pagination.hasNextPage!
-        
+        feedState.page = page
         if feedState.hasNextPage {
             let dataSize = feedData.count
             feedState.cursor = (feedData[dataSize - 1]?.cursor)!
         }
         
         var cards: [FeedCardState] = []
-        
         feedData.forEach({ card in
-            let feedCard = self.initFeedCard(feedData: card!)
+            row = row + 1
+            let feedCard = self.initFeedCard(feedData: card!, page: feedState.page, row: row)
             
             if feedCard.content.type == .notHandled || feedCard.content.type == .invalid {
                 return
@@ -327,7 +351,8 @@ class FeedStateManager: NSObject {
         })
         
         if inspirationData.count > 0, let recommendationCount = inspirationData[0]?.recommendation?.count, (feedState.oniPad && recommendationCount == 6) || (!feedState.oniPad && recommendationCount == 4) {
-            let feedInspiration = self.initFeedInspirationCard(data: inspirationData[0]!)
+            row = row + 1
+            let feedInspiration = self.initFeedInspirationCard(data: inspirationData[0]!, page: feedState.page, row:row)
             
             cards += [feedInspiration]
         }
@@ -337,7 +362,7 @@ class FeedStateManager: NSObject {
         return feedState
     }
     
-    private func initFeedCard(feedData: FeedsQuery.Data.Feed.Datum) -> FeedCardState {
+    private func initFeedCard(feedData: FeedsQuery.Data.Feed.Datum, page:Int, row:Int) -> FeedCardState {
         var feedCard = FeedCardState()
         feedCard.cardID = feedData.id
         feedCard.createTime = feedData.createTime
@@ -345,15 +370,17 @@ class FeedStateManager: NSObject {
         feedCard.createTime = feedData.createTime
         feedCard.type = feedData.type
         feedCard.source = self.initFeedCardSource(feedSource: feedData.source!)
-        feedCard.content = self.initFeedCardContent(feedContent: feedData.content!, cardID: feedData.id!)
-        
+        feedCard.content = self.initFeedCardContent(feedContent: feedData.content!, cardID: feedData.id!, page: page, row: row)
+        feedCard.row = row
+        feedCard.page = page
         return feedCard
     }
     
-    private func initFeedInspirationCard(data: FeedsQuery.Data.Inspiration.Datum) -> FeedCardState {
+    private func initFeedInspirationCard(data: FeedsQuery.Data.Inspiration.Datum, page:Int, row:Int) -> FeedCardState {
         var inspirationCard = FeedCardState()
-        
-        inspirationCard.inspiration = FeedInspirationState(data: data)
+        inspirationCard.page = page
+        inspirationCard.row = row
+        inspirationCard.inspiration = FeedInspirationState(data: data, page:page, row:row)
         
         return inspirationCard
     }
@@ -384,7 +411,7 @@ class FeedStateManager: NSObject {
         return shop
     }
     
-    private func initFeedCardContent(feedContent: FeedsQuery.Data.Feed.Datum.Content, cardID: String) -> FeedCardContentState {
+    private func initFeedCardContent(feedContent: FeedsQuery.Data.Feed.Datum.Content, cardID: String, page:Int, row:Int) -> FeedCardContentState {
         var content = FeedCardContentState()
         
         if feedContent.type == "promotion" {
@@ -393,7 +420,7 @@ class FeedStateManager: NSObject {
             var promotionArray: [FeedCardPromotionState] = []
             
             feedContent.promotions?.forEach({ promotion in
-                var promotionState = self.initFeedPromotion(promotion: promotion!)
+                var promotionState = self.initFeedPromotion(promotion: promotion!, page: page, row: row)
                 
                 if feedContent.promotions?.count == 1 {
                     promotionState.isSinglePromotion = true
@@ -409,7 +436,7 @@ class FeedStateManager: NSObject {
             guard let products = feedContent.products else { return FeedCardContentState() }
             
             let productArray: [FeedCardProductState] = products.enumerated().map { index, product in
-                var productState = self.initFeedProduct(feedProduct: product!, cardID: cardID)
+                var productState = self.initFeedProduct(feedProduct: product!, cardID: cardID, page: page, row: row)
                 
                 if products.count > 6 && index == 5 {
                     productState.isMore = true
@@ -432,7 +459,7 @@ class FeedStateManager: NSObject {
             guard let toppicks = feedContent.topPicks else { return FeedCardContentState() }
             
             content.toppicks = toppicks.map { item in
-                return FeedCardToppicksState(toppick: item!)
+                return FeedCardToppicksState(toppick: item!, page:page, row:row)
             }
             
             if (content.oniPad && content.toppicks?.count != 5) || (!content.oniPad && content.toppicks?.count != 4) {
@@ -444,7 +471,7 @@ class FeedStateManager: NSObject {
             
             if let officialStores = feedContent.officialStore {
                 content.officialStore = officialStores.map { officialStore in
-                    let store = FeedCardOfficialStoreState(data: officialStore!, redirectURL: officialStore?.redirectUrlApp ?? "tokopedia://official-store/mobile")
+                    let store = FeedCardOfficialStoreState(data: officialStore!, redirectURL: officialStore?.redirectUrlApp ?? "tokopedia://official-store/mobile", page:page, row:row)
                     
                     if store.incomplete {
                         content.type = .invalid
@@ -456,11 +483,12 @@ class FeedStateManager: NSObject {
         } else {
             content.type = .notHandled
         }
-        
+        content.page = page
+        content.row = row
         return content
     }
     
-    private func initFeedPromotion(promotion: FeedsQuery.Data.Feed.Datum.Content.Promotion) -> FeedCardPromotionState {
+    private func initFeedPromotion(promotion: FeedsQuery.Data.Feed.Datum.Content.Promotion, page:Int, row:Int) -> FeedCardPromotionState {
         var promo = FeedCardPromotionState()
         
         promo.banneriPhone = promotion.thumbnail
@@ -473,11 +501,12 @@ class FeedStateManager: NSObject {
         promo.hasNoCode = (promotion.code == "")
         promo.promoURL = promotion.url
         promo.promoName = promotion.name
-        
+        promo.page = page
+        promo.row = row
         return promo
     }
     
-    private func initFeedProduct(feedProduct: FeedsQuery.Data.Feed.Datum.Content.Product, cardID: String) -> FeedCardProductState {
+    private func initFeedProduct(feedProduct: FeedsQuery.Data.Feed.Datum.Content.Product, cardID: String, page:Int, row:Int) -> FeedCardProductState {
         var product = FeedCardProductState()
         
         product.productID = "\(feedProduct.id!)"
@@ -493,7 +522,8 @@ class FeedStateManager: NSObject {
         product.productPreorder = feedProduct.preorder!
         product.productURL = feedProduct.productLink!
         product.cardID = cardID
-        
+        product.page = page
+        product.row = row
         return product
     }
 }

@@ -24,7 +24,7 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
             button.setTitleColor(UIColor.tpSecondaryBlackText(), for: .normal)
             
             button.rx.tap
-                .subscribe(onNext: {
+                .subscribe(onNext: { [weak self] in
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
                     let title = state.source.shopState.shareDescription
                     let url = state.source.shopState.shareURL
@@ -61,7 +61,7 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
                 button.titleLabel?.font = .largeThemeSemibold()
                 button.setTitleColor(.white, for: .normal)
                 button.rx.tap
-                    .subscribe(onNext: {
+                    .subscribe(onNext: { [weak self] in
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Kunjungi Toko - Shop")
                         TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                     })

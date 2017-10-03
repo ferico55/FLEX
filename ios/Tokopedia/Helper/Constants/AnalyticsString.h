@@ -115,5 +115,6 @@
 #define GA_EVENT_ACTION_VERIFY_SUCCESS @"Verify Success"
 #define GA_EVENT_ACTION_VERIFY_FAILED @"Verify Failed"
 #define GA_EVENT_ACTION_HOTLIST @"Hotlist"
+#define GA_EVENT_ACTION_IMPRESSION @"Impression"
 
 #endif /* AnalyticsString_h */

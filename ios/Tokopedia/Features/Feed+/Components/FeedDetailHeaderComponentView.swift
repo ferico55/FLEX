@@ -98,7 +98,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 button.setTitleColor(.white, for: .normal)
                 
                 button.rx.tap
-                    .subscribe(onNext: {
+                    .subscribe(onNext: { [weak self] in
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - Shop")
                         TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
                     })
