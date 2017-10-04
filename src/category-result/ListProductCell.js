@@ -50,7 +50,7 @@ export default class ListProductCell extends React.PureComponent {
         style={{height: DeviceInfo.isTablet() ? 160 : undefined ,backgroundColor: 'white', width: cellWidth, overflow: 'hidden', borderLeftWidth: 1, borderLeftColor: 'rgba(224,224,224,1)'}}
         activeOpacity={1}>
         <View style={{flex: 1, flexDirection: 'row', borderBottomWidth: 1, borderColor:'rgba(224,224,224,1)'}}>
-          <Image source={{ uri: viewModel.productImage }} style={styles.thumbnailImageList}/>
+          <Image key={viewModel.productImage+'list'} source={{ uri: viewModel.productImage }} style={styles.thumbnailImageList}/>
           <View style={{marginTop:10, flex: 1}}>
             <Text style={[styles.productName, {marginRight: 35, height: DeviceInfo.isTablet() ? 50 : undefined }]}>{viewModel.productName}</Text>
             <Text style={styles.productPrice}>{viewModel.productPrice}</Text>
@@ -72,7 +72,7 @@ export default class ListProductCell extends React.PureComponent {
                   <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     {viewModel.badges != null  ?
                       viewModel.badges.map((badge) =>
-                        <Image key={badge.image_url} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
+                        <Image key={badge.image_url + viewModel.productId} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
                       ):(
                       <View/>
                     )}

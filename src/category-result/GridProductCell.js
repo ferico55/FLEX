@@ -48,7 +48,7 @@ export default class GridProductCell extends React.PureComponent {
         }}
         style={{backgroundColor: 'white', width:  screenWidth / (DeviceInfo.isTablet() ? 4 : 2) , borderLeftWidth: 1, borderBottomWidth: 1, borderColor:'rgba(224,224,224,1)', overflow: 'hidden'}}
         activeOpacity={1}>
-        <Image source={{ uri: viewModel.productImage }} style={styles.thumbnailImageGrid}/>
+        <Image key={viewModel.productImage+'grid'} source={{ uri: viewModel.productImage }} style={styles.thumbnailImageGrid}/>
         <View style={{height: 32, marginBottom:2}}>
           <Text
             numberOfLines={2}
@@ -75,7 +75,7 @@ export default class GridProductCell extends React.PureComponent {
             <View style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end', alignItems: 'center'}}>
               {viewModel.badges != null  ?
                 viewModel.badges.map((badge) =>
-                  <Image key={badge.image_url} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
+                  <Image key={badge.image_url + viewModel.productId} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
                 ):(
                 <View/>
               )}

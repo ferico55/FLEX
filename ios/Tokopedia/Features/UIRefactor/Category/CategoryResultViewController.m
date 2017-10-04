@@ -721,6 +721,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                    _isCategorySubviewExpanded = NO;
                                                    [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"%@%@", @"Browse Category - ", _categoryIntermediaryResult.id]];
                                                    
+                                                   [weakSelf setProductListBaseLayout];
+                                                   
                                                    if (_searchObject.data.products.count > 0) {
                                                        TopAdsWrapper *topAdsWrapper = [[TopAdsWrapper alloc] init];
                                                        
@@ -1028,6 +1030,27 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     }
     
     return selectedCellNumber;
+}
+
+- (void) setProductListBaseLayout {
+    self.cellType = [self mapCellLayoutAPI];
+    [_flowLayout setEstimatedSizeWithCellType:self.cellType];
+    if (self.cellType == UITableViewCellTypeOneColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
+        
+    } else if (self.cellType == UITableViewCellTypeTwoColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_tiga.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeNormal;
+        
+    } else if (self.cellType == UITableViewCellTypeThreeColumn) {
+        [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_satu.png"]
+                               forState:UIControlStateNormal];
+        self.promoCellType = PromoCollectionViewCellTypeThumbnail;
+        
+    }
 }
 
 - (void) refreshWishlist {

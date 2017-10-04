@@ -284,6 +284,7 @@ class CategoryResult extends React.PureComponent {
               }}>
                 <Image
                   style={{ height: 100, alignSelf: 'stretch', marginTop: 10 }}
+                  key={child.thumbnailImage}
                   source={{ uri: child.thumbnailImage }}
                   resizeMode='contain' />
                 <Text style={{
@@ -372,6 +373,7 @@ class CategoryResult extends React.PureComponent {
                     <Image
                       style={[styles.pageStyle]}
                       source={{ uri: image.imageUrl }}
+                      key={image.imageUrl}
                       resizeMode={'cover'}
                     />
                   </TouchableWithoutFeedback>
@@ -386,6 +388,7 @@ class CategoryResult extends React.PureComponent {
           return (
             <View style={{ height: 150, width: screenWidth, flexDirection: 'row' }}>
               <Image style={{ flex: 1, marginLeft: -85 }}
+                     key={this.props.navigation.state.params.categoryIntermediaryResult.headerImage}
                      source={{ uri: this.props.navigation.state.params.categoryIntermediaryResult.headerImage }}/>
               <Text style={{
                 position: 'absolute', 

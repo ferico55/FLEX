@@ -45,7 +45,7 @@ export default class ThumbnailProductCell extends React.PureComponent {
         }}
         style={{backgroundColor: 'white', flex:1, borderLeftWidth: 1, borderBottomWidth: 1, borderColor:'rgba(224,224,224,1)', overflow: 'hidden'}}
         activeOpacity={1}>
-        <Image source={{ uri: viewModel.productImage }} style={styles.thumbnailImageGrid}/>
+        <Image key={viewModel.productImage} source={{ uri: viewModel.productImage }} style={styles.thumbnailImageGrid}/>
         <Text
           numberOfLines={1}
           style={styles.productName}
@@ -72,7 +72,7 @@ export default class ThumbnailProductCell extends React.PureComponent {
             <View style={{flex: 1, flexDirection: 'row', justifyContent:'flex-end', alignItems: 'center'}}>
               {viewModel.badges != null  ?
                 viewModel.badges.map((badge) =>
-                  <Image key={badge.image_url} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
+                  <Image key={badge.image_url+viewModel.productId} style={{width: 15, height: 15}} source={{uri: badge.image_url}}/>
                 ):(
                 <View/>
               )}
