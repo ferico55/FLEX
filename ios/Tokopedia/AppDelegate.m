@@ -427,7 +427,9 @@
                                                                         openURL:url
                                                               sourceApplication:sourceApplication
                                                                      annotation:annotation];
-    
+
+    [[AppsFlyerTracker sharedTracker] handleOpenURL:url sourceApplication:sourceApplication withAnnotation:annotation];
+
     if (shouldOpenURL) {
         return YES;
     } else if ([[GIDSignIn sharedInstance] handleURL:url sourceApplication:sourceApplication annotation:annotation]) {
@@ -453,11 +455,18 @@
 - (BOOL)application:(UIApplication *)application continueUserActivity:(NSUserActivity *)userActivity restorationHandler:(void (^)(NSArray * _Nullable))restorationHandler {
     NSURL *url;
     BOOL shouldContinue = NO;
+    
     if ([userActivity.activityType isEqualToString:@"com.apple.corespotlightitem"]) {
         NSString *activityIdentifier = [userActivity.userInfo objectForKey:@"kCSSearchableItemActivityIdentifier"];
         url = [NSURL URLWithString:activityIdentifier];
     } else {
-        url = userActivity.webpageURL;
+        if ([userActivity.webpageURL.absoluteString containsString:@"onelink"]) {
+            NSDictionary *queryStringDictionary = userActivity.webpageURL.parameters;
+            url = [NSURL URLWithString:[queryStringDictionary objectForKey:@"af_dp"]];
+            [[AppsFlyerTracker sharedTracker] continueUserActivity:userActivity restorationHandler:restorationHandler];
+        } else {
+            url = userActivity.webpageURL;
+        }
     }
     shouldContinue = [[Branch getInstance] continueUserActivity:userActivity];
     if (shouldContinue == NO && url) {

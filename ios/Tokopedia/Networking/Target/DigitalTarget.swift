@@ -8,6 +8,8 @@
 
 import Moya
 import MoyaUnbox
+import AdSupport
+import AppsFlyer
 
 private let userAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
 
@@ -125,6 +127,9 @@ extension DigitalTarget: TargetType {
         case let .payment(voucherCode, transactionAmount, transactionId):
             let tracker = GAI.sharedInstance().tracker(withTrackingId: "UA-9801603-10")
             let clientID = tracker?.get(kGAIClientId) ?? ""
+            let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
+            let appsflyerID = AppsFlyerTracker.shared().appsFlyerDevKey ?? ""
+            let bundleID = Bundle.main.bundleIdentifier ?? "com.tokopedia.Tokopedia"
             return [
                 "data": [
                     "type": "checkout",
@@ -137,6 +142,11 @@ extension DigitalTarget: TargetType {
                         "voucher_code": voucherCode,
                         "transaction_amount": transactionAmount,
                         "client_id": clientID,
+                        "appsflyer" : [
+                            "appsflyer_id": appsflyerID,
+                            "device_id": idfa,
+                            "bundle_id": bundleID
+                        ],
                         "identifier" : [
                             "user_id" : userManager.getUserId(),
                             "device_token" : userManager.getMyDeviceToken(),
