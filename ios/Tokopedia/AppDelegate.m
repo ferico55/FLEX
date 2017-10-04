@@ -39,10 +39,11 @@
 @import FirebaseCore;
 
 @interface AppDelegate(Extensions) <ReactNavigationCoordinatorDelegate>
-@property(nonatomic, strong)NSString *deepLinkPathOpened;
 @end
 
-@implementation AppDelegate
+@implementation AppDelegate {
+    NSString *deepLinkPathOpened;
+}
 
 #ifdef DEBUG
 - (void)onThreeFingerTap {
@@ -486,14 +487,14 @@
     if (path == nil) {
         return NO;
     }
-    if (self.deepLinkPathOpened == nil) {
-        self.deepLinkPathOpened = path;
+    if (deepLinkPathOpened == nil) {
+        deepLinkPathOpened = path;
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            self.deepLinkPathOpened = nil;
+            deepLinkPathOpened = nil;
         });
         return YES;
     } else {
-        self.deepLinkPathOpened = nil;
+        deepLinkPathOpened = nil;
         return NO;
     }
 }
