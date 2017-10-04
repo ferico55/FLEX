@@ -1,0 +1,59 @@
+query MoEngage($userID: Int!){
+    shopInfoMoengage(userID: $userID){
+      info {
+        date_shop_created
+        shop_id
+        shop_location
+        shop_name
+        shop_score
+        total_active_product
+      }
+      owner {
+        is_gold_merchant
+        is_seller
+      }
+      stats {
+        shop_total_transaction
+        shop_item_sold
+      }
+    }
+    profile{
+      user_id
+      first_name
+      full_name
+      email
+      gender
+      bday
+      age
+      phone
+      phone_verified
+      register_date
+    }
+    address{
+      addresses{
+        city_name
+        province_name
+      }
+    }
+    wallet {
+      linked
+      balance
+      errors {
+        name
+        message
+      }
+    }
+    saldo{
+      deposit_fmt
+    }
+    paymentAdminProfile{
+      is_purchased_marketplace
+      is_purchased_digital
+      is_purchased_ticket
+      last_purchase_date
+    }
+    topadsDeposit(userID: $userID) {
+      topads_amount
+      is_topads_user
+    }
+  }

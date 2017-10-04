@@ -1082,7 +1082,8 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     "product_name": productDetail.name,
                     "product_id": productDetail.id,
                     "product_url": productDetail.url,
-                    "product_price": productDetail.info.priceUnformatted
+                    "product_price": productDetail.info.priceUnformatted,
+                    "is_official_store": productDetail.shop.isOfficial
                 ] as [String: Any]
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Added_To_Wishlist_Marketplace", attributes: attributes)
             }
@@ -1121,7 +1122,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     "product_name": productDetail.name,
                     "product_id": productDetail.id,
                     "product_url": productDetail.url,
-                    "product_price": productDetail.info.priceUnformatted
+                    "product_deeplink_url": "tokopedia://product/\(productDetail.id)",
+                    "product_price": productDetail.info.priceUnformatted,
+                    "product_image_url": productDetail.images[0].normalURL,
+                    "shop_id": productDetail.shop.id
                 ] as [String: Any]
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Removed_From_Wishlist_Marketplace", attributes: attributes)
             }

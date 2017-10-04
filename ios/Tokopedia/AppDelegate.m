@@ -337,7 +337,7 @@
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     
     if ([userManager isLogin]) {
-        if (![[userManager getUserEmail] isEqualToString:@"0"] && ![userManager getDOB]) {
+        if (![[userManager getUserEmail] isEqualToString:@"0"] && ![[userManager getCity] isEqualToString:@""]) {
             [AnalyticsManager moEngageTrackUserAttributes];
         } else {
             [UserRequest getUserInformationWithUserID:[userManager getUserId]

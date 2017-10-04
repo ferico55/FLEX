@@ -2082,7 +2082,14 @@ TTTAttributedLabelDelegate
     if (_product.data.breadcrumb.count > 1) {
         subcategory = _product.data.breadcrumb[1];
     }
-    NSDictionary *attributes = @{@"subcategory_id":subcategory.department_id ? :@"", @"category":category.department_name ? :@"", @"category_id":category.department_id ? :@"", @"product_name":_product.data.product.product_name ? :@"", @"product_id":_product.data.product.product_id ? :@"", @"product_url":_product.data.product.product_url ? :@"", @"product_price":_product.data.product.product_price ? :@""};
+    NSDictionary *attributes = @{@"subcategory_id":subcategory.department_id ? :@"",
+                                 @"category":category.department_name ? :@"",
+                                 @"category_id":category.department_id ? :@"",
+                                 @"product_name":_product.data.product.product_name ? :@"",
+                                 @"product_id":_product.data.product.product_id ? :@"",
+                                 @"product_url":_product.data.product.product_url ? :@"",
+                                 @"product_price":_product.data.product.product_price ? :@"",
+                                 @"is_official_store":@(_product.data.shop_info.isOfficial)};
     [AnalyticsManager moEngageTrackEventWithName:@"Product_Added_To_Wishlist_Marketplace" attributes:attributes];
     
     BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;

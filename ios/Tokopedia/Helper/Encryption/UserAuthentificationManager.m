@@ -338,10 +338,10 @@
     }
 }
 
-- (NSNumber *)userIsGoldMerchant {
-    return [[self secureStorageDictionary] objectForKey:@"shop_is_gold"] ?: @(0);
+- (BOOL)userIsGoldMerchant {
+    NSString* isGoldMerchant = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"shop_is_gold"]];
+    return [isGoldMerchant isEqualToString:@"1"];
 }
-
 - (NSString *)getDOB {
     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"dob"]];
 }
@@ -362,6 +362,51 @@
 }
 - (NSString *)getDateShopCreated {
     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"date_shop_created"]];
+}
+- (BOOL)userIsSeller {
+    NSString* isSeller = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_seller"]];
+    return [isSeller isEqualToString:@"1"];
+}
+- (NSString *)getGender {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"gender"]];
+}
+- (BOOL)userIsTokocashActive {
+    NSString* isTokocashActive = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_tokocash_active"]];
+    return [isTokocashActive isEqualToString:@"1"];
+}
+- (NSString *)getTokocashAmount {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"tokocash_amt"] ?: @"0"];
+}
+- (NSString *)getSaldoAmount {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"saldo_amt"] ?: @"0"];
+}
+- (NSString *)getTopAdsAmount {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"topads_amount"] ?: @"0"];
+}
+- (BOOL)userIsTopAdsUser {
+    NSString* isTopAdsUser = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_topads_user"]];
+    return [isTopAdsUser isEqualToString:@"1"];
+}
+- (BOOL)userHasPurchasedMarketplace {
+    NSString* hasPurchasedMarketplace = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_marketplace"]];
+    return [hasPurchasedMarketplace isEqualToString:@"1"];
+}
+- (BOOL)userHasPurchasedDigital {
+    NSString* hasPurchasedDigital = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_digital"]];
+    return [hasPurchasedDigital isEqualToString:@"1"];
+}
+- (BOOL)userHasPurchasedTicket {
+    NSString* hasPurchasedTicket = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_tiket"]];
+    return [hasPurchasedTicket isEqualToString:@"1"];
+}
+- (NSString *)getLastTransactionDate {
+    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"last_transaction_date"]];
+}
+- (NSNumber *)getTotalActiveProduct {
+    return [[self secureStorageDictionary] objectForKey:@"total_active_product"] ?: @(0);
+}
+- (NSNumber *)getShopScore {
+    return [[self secureStorageDictionary] objectForKey:@"shop_score"] ?: @(0);
 }
 
 -(NSDate *)convertStringToDateWithLocaleID:(NSString *)str

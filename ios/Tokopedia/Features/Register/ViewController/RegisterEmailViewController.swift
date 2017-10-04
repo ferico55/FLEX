@@ -273,11 +273,10 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
             withUserID: userManager.getUserId(),
             onSuccess: { _ in
                 AnalyticsManager.moEngageTrackUserAttributes()
-            },
+        },
             onFailure: {
                 
-            }
-        )
+        })
         
         if self.isLoginPresented {
             self.navigationController?.dismiss(animated: true, completion: nil)

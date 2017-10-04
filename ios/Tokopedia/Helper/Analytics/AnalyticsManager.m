@@ -230,7 +230,11 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                                       attributes:@{@"product_id" : productID ?: @"0",
                                                    @"product_name" : productName ?: @"",
                                                    @"product_price" : price ?: @"0",
+                                                   @"product_url" : product.product_url ?: @"",
+//                                                   @"is_official_store" : @"",
+                                                   @"category_id" : product.product_cat_id ?: @(0),
                                                    @"category" : (categories.count > 0) ? categories[0] : @"",
+//                                                   @"subcategory_id" : @"",
                                                    @"subcategory" : (categories.count > 1) ? categories[1] : @""}];
 }
 
@@ -550,11 +554,28 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
         [moEngage setUserAttribute:[userManager userHasShop]?@"true":@"false" forKey:@"is_seller"];
         [moEngage setUserAttribute:[userManager getShopId] forKey:@"shop_id"];
         [moEngage setUserAttribute:[userManager getShopName] forKey:@"shop_name"];
-        [moEngage setUserAttribute:[userManager userIsGoldMerchant] forKey:@"is_gold_merchant"];
+        [moEngage setUserAttribute:[userManager userIsGoldMerchant]?@"true":@"false" forKey:@"is_gold_merchant"];
         
         [moEngage setUserDateOfBirth:[userManager convertStringToDateWithLocaleID:[userManager getDOB]]];
         [moEngage setUserAttribute:[userManager getTotalItemSold] forKey:@"total_sold_item"];
         [moEngage setUserAttribute:[userManager getShopLocation] forKey:@"shop_location"];
+        int gender = [[userManager getGender] isEqualToString:@""] ? -1 : [[userManager getGender] isEqualToString:@"male"] ? MALE : FEMALE;
+        [moEngage setUserGender:gender];
+        [moEngage setUserAttribute:[userManager userIsSeller]?@"true":@"false" forKey:@"is_seller"];
+        [moEngage setUserAttribute:[userManager getCity] forKey:@"city"];
+        [moEngage setUserAttribute:[userManager getProvince] forKey:@"province"];
+        [moEngage setUserAttribute:[userManager getRegistrationDate] forKey:@"registration_date"];
+        [moEngage setUserAttribute:[userManager userIsTokocashActive]?@"true":@"false" forKey:@"is_tokocash_active"];
+        [moEngage setUserAttribute:[userManager getTokocashAmount] forKey:@"tokocash_amt"];
+        [moEngage setUserAttribute:[userManager getSaldoAmount] forKey:@"saldo_amt"];
+        [moEngage setUserAttribute:[userManager getTopAdsAmount] forKey:@"topads_amount"];
+        [moEngage setUserAttribute:[userManager userIsTopAdsUser]?@"true":@"false" forKey:@"is_topads_user"];
+        [moEngage setUserAttribute:[userManager userHasPurchasedMarketplace]?@"true":@"false" forKey:@"has_purchased_marketplace"];
+        [moEngage setUserAttribute:[userManager userHasPurchasedDigital]?@"true":@"false" forKey:@"has_purchased_digital"];
+        [moEngage setUserAttribute:[userManager userHasPurchasedTicket]?@"true":@"false" forKey:@"has_purchased_tiket"];
+        [moEngage setUserAttribute:[userManager getLastTransactionDate] forKey:@"last_transaction_date"];
+        [moEngage setUserAttribute:[userManager getTotalActiveProduct] forKey:@"total_active_product"];
+        [moEngage setUserAttribute:[userManager getShopScore] forKey:@"shop_score"];
         
         [moEngage syncNow];
     }

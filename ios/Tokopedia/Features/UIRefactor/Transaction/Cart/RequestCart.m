@@ -196,11 +196,18 @@
                                  NSArray<ProductDetail *> *cartProducts = cart.cart_products;
                                  
                                  for (ProductDetail *product in cartProducts) {
+                                     NSArray *categories = [product.product_cat_name componentsSeparatedByString:@" - "];
+                                     
                                      [AnalyticsManager moEngageTrackEventWithName:@"Product_Removed_From_Cart_Marketplace"
                                                                        attributes:@{@"product_id" : product.product_id ?: @"",
                                                                                     @"product_name" : product.product_name ?: @"",
                                                                                     @"product_price" : product.product_price ?: @(0),
-                                                                                    @"product_url" : product.product_url ?: @""}];
+                                                                                    @"product_url" : product.product_url ?: @"",
+                                                                                    @"category_id": product.product_cat_id ?: @(0),
+                                                                                    @"category": (categories.count > 0) ? categories[0] : @"",
+//                                                                                    @"subcategory_id": @"",
+                                                                                    @"subcategory": (categories.count > 1) ? categories[1] : @"",
+                                                                                    @"shop_id": shopID}];
                                  }                                
                                  
                                  

@@ -135,11 +135,10 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             withUserID: userManager.getUserId(),
             onSuccess: { _ in
                 AnalyticsManager.moEngageTrackUserAttributes()
-            },
+        },
             onFailure: {
                 
-            }
-        )
+        })
         
         AnalyticsManager.trackLogin(login)
         

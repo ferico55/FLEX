@@ -69,15 +69,10 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWithValue(userInfo.user_name, withKey: "full_name")
         self.storage.setKeychainWithValue(self.getShortNameFromFullName((userInfo.user_name)!), withKey: "short_name")
         self.storage.setKeychainWithValue(userInfo.user_id, withKey: "user_id")
-        self.storage.setKeychainWithValue(userInfo.user_birth, withKey: "user_birth")
         self.storage.setKeychainWithValue(convertedNumber, withKey: "user_phone")
         self.storage.setKeychainWithValue(userInfo.user_hobbies, withKey: "user_hobbies")
         self.storage.setKeychainWithValue(userInfo.user_email, withKey: "user_email")
-        
         self.storage.setKeychainWithValue(userInfo.user_birth, withKey: "dob")
-        self.storage.setKeychainWithValue("", withKey: "city")
-        self.storage.setKeychainWithValue("", withKey: "province")
-        self.storage.setKeychainWithValue("", withKey: "registration_date")
         
         if let userImage = userInfo.user_image {
             self.storage.setKeychainWithValue(userImage, withKey: "user_image")
@@ -100,6 +95,55 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWithValue(shopStats.shop_item_sold, withKey: "total_sold_item")
         self.storage.setKeychainWithValue(shopInfo.shop_location, withKey: "shop_location")
         self.storage.setKeychainWithValue(shopInfo.shop_open_since, withKey: "date_shop_created")
+    }
+    
+    func storeAnalyticsInformation(data:MoEngageQuery.Data) {
+        let isSeller = data.shopInfoMoengage?.owner?.isSeller ?? false
+        let gender = data.profile?.gender ?? ""
+        var city = ""
+        var province = ""
+        if let address = data.address {
+            if let addresses = address.addresses {
+                if addresses.count > 0 {
+                    if let cityName = addresses[0]?.cityName {
+                        city = cityName
+                    }
+                    if let provinceName = addresses[0]?.provinceName {
+                        province = provinceName
+                    }
+                }
+            }
+        }
+        let registerDate = data.profile?.registerDate ?? ""
+        let isTokocashActive = data.wallet?.linked ?? false
+        let tokocashAmount = data.wallet?.balance ?? "0"
+        let saldoAmount = data.saldo?.depositFmt ?? "0"
+        let topAdsAmount = String(describing: data.topadsDeposit?.topadsAmount ?? 0)
+        let isTopAdsUser = data.topadsDeposit?.isTopadsUser ?? false
+        let hasPurchasedMarketplace = data.paymentAdminProfile?.isPurchasedMarketplace ?? false
+        let hasPurchasedDigital = data.paymentAdminProfile?.isPurchasedDigital ?? false
+        let hasPurchasedTicket = data.paymentAdminProfile?.isPurchasedTicket ?? false
+        let lastPurchasedDate = data.paymentAdminProfile?.lastPurchaseDate ?? ""
+        let totalActiveProduct = data.shopInfoMoengage?.info?.totalActiveProduct ?? 0
+        let shopScore = data.shopInfoMoengage?.info?.shopScore ?? 0
+        
+        self.storage.setKeychainWithValue(NSNumber(value:isSeller), withKey: "is_seller")
+        self.storage.setKeychainWithValue(gender, withKey: "gender")
+        self.storage.setKeychainWithValue(city, withKey: "city")
+        self.storage.setKeychainWithValue(province, withKey: "province")
+        self.storage.setKeychainWithValue(registerDate, withKey: "registration_date")
+        
+        self.storage.setKeychainWithValue(NSNumber(value:isTokocashActive), withKey: "is_tokocash_active")
+        self.storage.setKeychainWithValue(tokocashAmount, withKey: "tokocash_amt")
+        self.storage.setKeychainWithValue(saldoAmount, withKey: "saldo_amt")
+        self.storage.setKeychainWithValue(topAdsAmount, withKey: "topads_amount")
+        self.storage.setKeychainWithValue(NSNumber(value:isTopAdsUser), withKey: "is_topads_user")
+        self.storage.setKeychainWithValue(NSNumber(value:hasPurchasedMarketplace), withKey: "has_purchased_marketplace")
+        self.storage.setKeychainWithValue(NSNumber(value:hasPurchasedDigital), withKey: "has_purchased_digital")
+        self.storage.setKeychainWithValue(NSNumber(value:hasPurchasedTicket), withKey: "has_purchased_tiket")
+        self.storage.setKeychainWithValue(lastPurchasedDate, withKey: "last_transaction_date")
+        self.storage.setKeychainWithValue(totalActiveProduct, withKey: "total_active_product")
+        self.storage.setKeychainWithValue(shopScore, withKey: "shop_score")
     }
     
     private func getShortNameFromFullName(_ fullName: String) -> String {

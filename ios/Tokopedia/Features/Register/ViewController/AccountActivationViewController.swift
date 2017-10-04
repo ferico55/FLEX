@@ -203,11 +203,10 @@ class AccountActivationViewController: UIViewController, UITextFieldDelegate {
             withUserID: userManager.getUserId(),
             onSuccess: { _ in
                 AnalyticsManager.moEngageTrackUserAttributes()
-            },
+        },
             onFailure: {
                 
-            }
-        )
+        })
         
         AnalyticsManager.trackLogin(login)
         

@@ -11,10 +11,27 @@ import Moya
 import Unbox
 import RxSwift
 import NSObject_Rx
+import Apollo
 
 class UserRequest: NSObject {
 
     class func getUserInformation(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
+        getMoengageUserInformation(withUserID: userID, onSuccess: {
+            getPeopleInfo(withUserID: userID, onSuccess: { profile in
+                onSuccess(profile)
+            }, onFailure: {
+                onFailure()
+            })
+        }, onFailure: {
+            getPeopleInfo(withUserID: userID, onSuccess: { profile in
+                onSuccess(profile)
+            }, onFailure: {
+                onFailure()
+            })
+        })
+    }
+
+    class func getPeopleInfo(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -313,5 +330,48 @@ class UserRequest: NSObject {
 
             return Disposables.create()
         })
+    }
+
+    class func getMoengageUserInformation(withUserID: String, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
+        let userID = Int(withUserID) ?? 0
+        var moengageWatcher: GraphQLQueryWatcher<MoEngageQuery>?
+        let moengageClient: ApolloClient = {
+            let configuration = URLSessionConfiguration.default
+            let userManager = UserAuthentificationManager()
+
+            let appVersion = UIApplication.getAppVersionString()
+
+            let loginData = userManager.getUserLoginData()
+            let tokenType = loginData?["oAuthToken.tokenType"] as? String ?? ""
+            let accessToken = loginData?["oAuthToken.accessToken"] as? String ?? ""
+            let accountsAuth = "\(tokenType) \(accessToken)" as String
+
+            let headers = ["Tkpd-UserId": userManager.getUserId(),
+                           "Tkpd-SessionId": userManager.getMyDeviceToken(),
+                           "X-Device": "ios-\(appVersion)",
+                           "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
+                           "Accounts-Authorization": accountsAuth]
+
+            configuration.httpAdditionalHeaders = headers
+
+            let url = URL(string: NSString.feedsMobileSiteUrl() + "/graphql")!
+
+            return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
+        }()
+
+        moengageWatcher = moengageClient.watch(query: MoEngageQuery(userID: userID)) { result, error in
+            guard error == nil, result?.errors == nil, let data = result?.data else {
+                onFailure()
+                return
+            }
+            self.storeUserInformationMoengage(data)
+            onSuccess()
+        }
+
+    }
+
+    private class func storeUserInformationMoengage(_ result: MoEngageQuery.Data) {
+        let storageManager = SecureStorageManager()
+        storageManager.storeAnalyticsInformation(data: result)
     }
 }

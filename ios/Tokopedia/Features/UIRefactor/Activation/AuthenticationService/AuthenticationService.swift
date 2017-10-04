@@ -186,10 +186,10 @@ import RestKit
                 withUserID: userManager.getUserId(),
                 onSuccess: { _ in
                     AnalyticsManager.moEngageTrackUserAttributes()
-                },
+            },
                 onFailure: {
-                }
-            )
+                    
+            })
             if self.didEnterCreatePassword, let delegate = self.loginDelegate {
                 delegate.successLoginAfterCreatePassword(sender: self, login: login)
             } else {

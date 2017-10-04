@@ -149,7 +149,7 @@ class FeedDetailViewController: UIViewController {
         if self.isRequesting {
             self.tableView.tableFooterView = self.footerView
             
-            self.feedDetailWatcher = self.feedDetailClient.watch(query: FeedDetailQuery(detailId: self.activityID, pageDetail: page, limitDetail: 30)) { result, error in
+            self.feedDetailWatcher = self.feedDetailClient.watch(query: FeedDetailQuery(detailID: self.activityID, pageDetail: page, limitDetail: 30)) { result, error in
                 if let error = error {
                     StickyAlertView.showErrorMessage([error.localizedDescription])
                     self.navigationController?.popViewController(animated: true)

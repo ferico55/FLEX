@@ -48,7 +48,7 @@
 - (BOOL)userHasShop;
 - (nonnull NSString*)userLatitude;
 - (nonnull NSString*)userLongitude;
-- (nonnull NSNumber *)userIsGoldMerchant;
+- (BOOL)userIsGoldMerchant;
 - (nonnull NSString *)webViewUrlFromUrl:(nonnull NSString *)url;
 
 - (nullable NSString*)getDOB;
@@ -59,4 +59,17 @@
 - (nullable NSString*)getShopLocation;
 - (nullable NSString*)getDateShopCreated;
 - (nullable NSDate*) convertStringToDateWithLocaleID:(nonnull NSString*) str;
+- (BOOL)userIsSeller;
+- (nullable NSString *)getGender;
+- (BOOL)userIsTokocashActive;
+- (nullable NSString *)getTokocashAmount;
+- (nullable NSString *)getSaldoAmount;
+- (nullable NSString *)getTopAdsAmount;
+- (BOOL)userIsTopAdsUser;
+- (BOOL)userHasPurchasedMarketplace;
+- (BOOL)userHasPurchasedDigital;
+- (BOOL)userHasPurchasedTicket;
+- (nullable NSString *)getLastTransactionDate;
+- (nonnull NSNumber *)getTotalActiveProduct;
+- (nonnull NSNumber *)getShopScore;
 @end

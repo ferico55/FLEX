@@ -4,7 +4,9 @@ PODS:
   - APAddressBook/Core (0.2.3)
   - APAddressBook/Swift (0.2.3):
     - APAddressBook/Core
-  - Apollo (0.5.6)
+  - Apollo (0.6.5):
+    - Apollo/Core (= 0.6.5)
+  - Apollo/Core (0.6.5)
   - Appsee (2.2)
   - AppsFlyerFramework (4.5.1)
   - BEMCheckBox (1.2.1)
@@ -269,7 +271,7 @@ PODS:
 DEPENDENCIES:
   - AHKActionSheet (~> 0.5.4)
   - APAddressBook/Swift (~> 0.2.3)
-  - Apollo (~> 0.5.6)
+  - Apollo (~> 0.6.5)
   - Appsee (~> 2.2)
   - AppsFlyerFramework (~> 4.5.1)
   - BEMCheckBox (~> 1.2.0)
@@ -417,7 +419,7 @@ SPEC CHECKSUMS:
   AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
   Alamofire: dc44b1600b800eb63da6a19039a0083d62a6a62d
   APAddressBook: 2a91bf05999548bea210ec9d1a68073f4dc8bfce
-  Apollo: 124ddbbca48acca75fd5f9ec5045454cb410bb31
+  Apollo: 575496b1fbdb27a47c0e62a48340da2bd1dc67d7
   Appsee: c95173e65acaab0ffc8a082c70633c9f5f45d5f0
   AppsFlyerFramework: 3d62e8c0408280ed06431345e192a461db339400
   BEMCheckBox: 264b8b72aa92adbfefa265cc58a0cdb86b207b9f
@@ -517,6 +519,6 @@ SPEC CHECKSUMS:
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: ba47d2ad1233455a9ddc51d55311d95aa5c63ba8
+PODFILE CHECKSUM: 48d445b0d9cdde59835a7330c3b9169c813d8b19
 
 COCOAPODS: 1.2.1

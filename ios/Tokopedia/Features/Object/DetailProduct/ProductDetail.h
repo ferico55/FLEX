@@ -59,6 +59,7 @@
 @property (nonatomic, strong) NSString *product_error_msg;
 @property (nonatomic, strong) NSString *product_price_last;
 @property (nonatomic, strong) NSString *product_cat_name;
+@property (nonatomic, strong) NSNumber *product_cat_id;
 @property (nonatomic, strong) ProductReturnInfo *return_info;
 
 @property (nonatomic, strong) NSArray<Errors *> *errors;

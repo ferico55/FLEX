@@ -233,7 +233,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 self.tableView.tableFooterView = self.footerView
             }
             
-            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userId: Int(userID!)!, limit: 3, cursor: cursor, page: self.page)) { result, error in
+            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userID: Int(userID!)!, limit: 3, cursor: cursor, page: self.page)) { result, error in
                 if let error = error {
                     if shouldTrackMoengage {
                         AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
