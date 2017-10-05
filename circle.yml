@@ -19,18 +19,18 @@ test:
 general:
   branches:
     only:
-      - devel
-      - release
+      - develop
       - /feature\/.*/
+      - /hotfix\/.*/
       - /release\/.*/
 
 deployment:
   devel_distribution:
-    branch: [devel, /feature\/.*/]
+    branch: [develop, /feature\/.*/, /release\/.*/]
     commands:
       - fastlane devel
 
   release_distribution:
-    branch: [release, /release\/.*/]
+    branch: [/hotfix\/.*/, /release\/.*/]
     commands:
       - fastlane beta
