@@ -190,6 +190,7 @@ class HomePageViewController: UIViewController {
         let categoryNameContainer = UIView()
         let categoryNameLabel = UILabel()
         categoryNameLabel.text = layoutRow.name
+        categoryNameLabel.accessibilityLabel = layoutRow.name
         categoryNameLabel.font = UIFont.microTheme()
         categoryNameLabel.textColor = UIColor(red: 102.0 / 255, green: 102.0 / 255, blue: 102.0 / 255, alpha: 1.0)
         categoryNameLabel.textAlignment = .left

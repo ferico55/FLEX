@@ -227,6 +227,7 @@ class ProductDetailReviewNode: ContainerNode {
                 view.textColor = .tpGreen()
                 view.text = "Lihat semua Ulasan (\(reviewCount))"
                 view.numberOfLines = 4
+                view.accessibilityLabel = "readMoreReview"
             },
             Node<UIImageView>(identifier: "more-icon", create: {
                 let view = UIImageView(image:#imageLiteral(resourceName: "icon_carret_green"))

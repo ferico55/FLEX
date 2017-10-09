@@ -128,6 +128,7 @@ class ProductInfoNode: ContainerNode {
             view.backgroundColor = productInfo.returnInfo.colorRGB()
             view.layer.cornerRadius = 4
             view.layer.masksToBounds = true
+            view.accessibilityLabel = "freeReturnView"
             }.add(children: [
                 Node<UIImageView>() { view, layout, _ in
                     view.setImageWith(URL(string: productInfo.returnInfo.iconImage))
@@ -191,6 +192,7 @@ class ProductInfoNode: ContainerNode {
                     view.text = "Waktu Preorder"
                     view.font = .title1Theme()
                     view.textColor = .tpSecondaryBlackText()
+                    view.accessibilityLabel = "preorderView"
                 },
                 Node<UILabel>() { view, _, _ in
                     view.text = "\(preorder.preorderTime) \(preorder.preorderTimeType)"
@@ -215,6 +217,7 @@ class ProductInfoNode: ContainerNode {
                     view.text = "Kondisi"
                     view.font = .title1Theme()
                     view.textColor = .tpSecondaryBlackText()
+                    view.accessibilityLabel = "conditionView"
                 },
                 Node<UILabel>() { view, _, _ in
                     view.text = info.condition
@@ -239,6 +242,7 @@ class ProductInfoNode: ContainerNode {
                     view.text = "Min Pemesanan"
                     view.font = .title1Theme()
                     view.textColor = .tpSecondaryBlackText()
+                    view.accessibilityLabel = "minimumBuyView"
                 },
                 Node<UILabel>() { view, _, _ in
                     view.text = info.minimumOrder
@@ -278,6 +282,7 @@ class ProductInfoNode: ContainerNode {
                                                                              constrainedToWidth: Double(size.width * 0.6),
                                                                              andHeight: 24)
                     layout.width = categoryNameSize.width + 10
+                    view.accessibilityLabel = "productCategory"
                 }
                 ])
     }
@@ -313,6 +318,7 @@ class ProductInfoNode: ContainerNode {
                                                                             constrainedToWidth: Double(size.width * 0.6),
                                                                             andHeight: 24)
                     layout.width = etalaseNameSize.width + 10
+                    view.accessibilityLabel = "productEtalase"
                     
                 }
                 ])

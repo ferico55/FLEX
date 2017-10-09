@@ -57,7 +57,6 @@ class AccountActivationViewController: UIViewController, UITextFieldDelegate {
     }
     
     private func setupView() {
-        self.scrollView.isAccessibilityElement = true
         self.scrollView.accessibilityLabel = "accountActivationScrollView"
         
         self.uniqueCodeTextField.delegate = self

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -72,9 +72,6 @@
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-            <accessibility key="accessibilityConfiguration" label="registerHomeView">
-                <bool key="isElement" value="YES"/>
-            </accessibility>
             <constraints>
                 <constraint firstItem="cZ0-FL-R2U" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="AlB-lT-Sr3"/>
                 <constraint firstAttribute="bottom" secondItem="cZ0-FL-R2U" secondAttribute="bottom" id="ZCC-Pj-klt"/>
@@ -149,6 +146,9 @@
                 </button>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <accessibility key="accessibilityConfiguration" identifier="registerView">
+                <bool key="isElement" value="NO"/>
+            </accessibility>
             <constraints>
                 <constraint firstItem="RZK-ZX-4K2" firstAttribute="centerX" secondItem="EKx-qY-MTa" secondAttribute="centerX" id="0uI-iF-pHl"/>
                 <constraint firstItem="RZK-ZX-4K2" firstAttribute="top" secondItem="Tem-Ab-DiX" secondAttribute="bottom" constant="25" id="3Ci-CO-9x8"/>

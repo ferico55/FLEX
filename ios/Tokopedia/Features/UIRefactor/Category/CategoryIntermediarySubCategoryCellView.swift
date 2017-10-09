@@ -18,6 +18,7 @@ class CategoryIntermediarySubCategoryCellView: UIView {
             let urlThumbnail: URL? = URL(string: thumbnailImage)
             if let urlThumbnail = urlThumbnail {
                 self.imageView.setImageWith(urlThumbnail)
+                self.imageView.accessibilityLabel = "subcategoryCell"
             }
         }
         self.categoryNameLabel.text = data.name.uppercased()

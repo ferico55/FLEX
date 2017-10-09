@@ -208,6 +208,7 @@ typedef enum TagRequest {
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_refreshControlNoResult addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
+    _collectionView.accessibilityLabel = @"wishlistView";
     
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
     

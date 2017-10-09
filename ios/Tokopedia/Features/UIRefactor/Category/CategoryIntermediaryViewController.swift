@@ -32,7 +32,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
     override func construct(state: IntermediaryState?, size: CGSize) -> NodeType {
         let containerView = Node<UIScrollView> { scrollView, layout, size in
             scrollView.backgroundColor = UIColor.tpBackground()
-            
+            scrollView.accessibilityLabel = "intermediaryScrollView"
             layout.width = size.width
             layout.height = size.height
         }
@@ -54,6 +54,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         let bannerView = Node<UIView>() { view, layout, _ in
             layout.height = 150
             view.clipsToBounds = true
+            view.accessibilityLabel = "intermediaryBanner"
             if (state?.banner?.numberOfItems)! > 0 {
                 view.addSubview((state?.banner)!)
                 state?.banner?.snp.makeConstraints({ make in
@@ -110,6 +111,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         
         let subCategoryView = Node<CategoryIntermediarySubCategoryView> { [unowned self] view, layout, size in
             view.setIsRevamp(isRevamp: categoryIntermediaryResult.isRevamp)
+            view.accessibilityLabel = "intermediarySubcategory"
             let isNeedSeeMoreButton = (state?.categoryIntermediaryNonHiddenChildren?.count)! > self.maximumNotExpandedCategory() ? true : false
             
             if state?.isCategorySubviewExpanded == false {
@@ -181,6 +183,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 layout.flexWrap = .wrap
                 layout.marginBottom = 0.5
                 view.backgroundColor = UIColor.tpBackground()
+                view.accessibilityLabel = "productCuratedCell"
             }
             
             return curatedListProductContainer
@@ -193,6 +196,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         func horizontalRectangleHotList(hotListItem: CategoryIntermediaryHotListItem) -> NodeType {
             return Node<UIView>(create: {
                 let view = UIView()
+                view.accessibilityLabel = "horizontalHotlist"
                 view.bk_(whenTapped: {
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
                     TPRoutes.routeURL(URL(string: hotListItem.url)!)
@@ -220,6 +224,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             
             return Node<UIView>(create: {
                 let view = UIView()
+                view.accessibilityLabel = "squareHotlist"
                 view.bk_(whenTapped: {
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
                     TPRoutes.routeURL(URL(string: "\(hotListItem.url)")!)
@@ -246,6 +251,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         func verticalRectangleHotList(hotListItem: CategoryIntermediaryHotListItem) -> NodeType {
             return Node<UIView>(create: {
                 let view = UIView()
+                view.accessibilityLabel = "verticalHotlist"
                 view.bk_(whenTapped: {
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: GA_EVENT_ACTION_HOTLIST, label: hotListItem.title)
                     TPRoutes.routeURL(URL(string: hotListItem.url)!)
@@ -304,6 +310,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                     layout.marginBottom = 15
                     layout.height = 150
                     layout.width = size.width
+                    playerView.accessibilityLabel = "intermediaryVideo"
                     playerView.backgroundColor = .green
                     playerView.delegate = state?.intermediaryViewController
                     
@@ -335,6 +342,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 return view
             }, configure: { view, layout, size in
                 layout.alignItems = .stretch
+                view.accessibilityLabel = "officialStoreView"
                 view.clipsToBounds = true
                 view.layer.cornerRadius = 3
                 view.layer.borderWidth = 1
@@ -343,6 +351,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 layout.width = ((size.width - officialStoreContentLeftPlusRightMargin()) / (UI_USER_INTERFACE_IDIOM() == .phone ? 3.0 : 6.0)) - layout.margin * 2
             }).add(child: Node<UIImageView>() { imageView, layout, _ in
                 layout.aspectRatio = 1
+                imageView.accessibilityLabel = "officialStoreCell"
                 imageView.layer.cornerRadius = 3
                 imageView.contentMode = .scaleAspectFit
                 layout.margin = 10
@@ -533,6 +542,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 layout.marginRight = 10
                 layout.height = 52
                 layout.flexGrow = 1
+                button.accessibilityLabel = "seeAllCategory"
                 button.backgroundColor = .tpGreen()
                 button.layer.cornerRadius = 3
                 button.setTitle("Lihat Produk \(categoryIntermediaryResult.name) Lainnya", for: .normal)

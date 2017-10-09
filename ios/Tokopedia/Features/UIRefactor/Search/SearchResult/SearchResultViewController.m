@@ -204,7 +204,7 @@ ProductCellDelegate
     [_collectionView setDataSource:self];
     [_firstFooter setFrame:CGRectMake(0, 0, _flowLayout.footerReferenceSize.width, 50)];
     [_collectionView addSubview:_firstFooter];
-    
+    _collectionView.accessibilityLabel = @"productCellCollection";
 //    [[UIDevice currentDevice] beginGeneratingDeviceOrientationNotifications];
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(orientationChanged:) name:UIDeviceOrientationDidChangeNotification object:[UIDevice currentDevice]];
     

@@ -53,7 +53,9 @@ class ProductWishlistCell : UICollectionViewCell {
     
     func setViewModel(_ viewModel : ProductModelView) {
         let url = URL(string: viewModel.productThumbUrl!)!
+        self.accessibilityLabel = "wishlistCell"
         productName.text = viewModel.productName
+        productName.accessibilityLabel = viewModel.productName
         productPrice.text = viewModel.productPrice
         productShopName.text = viewModel.productShop
         

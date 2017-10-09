@@ -1934,6 +1934,32 @@
 		DADBB2321F3C628B002B1FAE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = DADBB22F1F3C628B002B1FAE /* InfoPlist.strings */; };
 		DADBB2381F3C7906002B1FAE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DADBB2371F3C7906002B1FAE /* main.m */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CB1F838508008FDBCF /* AddToCartPage.swift */; };
+		E52517D91F838508008FDBCF /* CategoryIntermediaryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */; };
+		E52517DA1F838508008FDBCF /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CD1F838508008FDBCF /* HomePage.swift */; };
+		E52517DB1F838508008FDBCF /* HotlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CE1F838508008FDBCF /* HotlistPage.swift */; };
+		E52517DC1F838508008FDBCF /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CF1F838508008FDBCF /* LoginPage.swift */; };
+		E52517DD1F838508008FDBCF /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D01F838508008FDBCF /* MorePage.swift */; };
+		E52517DE1F838509008FDBCF /* OnBoardingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D11F838508008FDBCF /* OnBoardingObject.swift */; };
+		E52517DF1F838509008FDBCF /* ProductDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D21F838508008FDBCF /* ProductDetailPage.swift */; };
+		E52517E01F838509008FDBCF /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D31F838508008FDBCF /* RegisterPage.swift */; };
+		E52517E21F838509008FDBCF /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D51F838508008FDBCF /* SearchPage.swift */; };
+		E52517E31F838509008FDBCF /* Ultility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D61F838508008FDBCF /* Ultility.swift */; };
+		E52517E41F838509008FDBCF /* WishlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D71F838508008FDBCF /* WishlistPage.swift */; };
+		E52518121F838DA7008FDBCF /* SearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518021F838DA7008FDBCF /* SearchTest.swift */; };
+		E52518131F838DA7008FDBCF /* HomepageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518041F838DA7008FDBCF /* HomepageTest.swift */; };
+		E52518141F838DA7008FDBCF /* HotlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518061F838DA7008FDBCF /* HotlistTest.swift */; };
+		E52518151F838DA7008FDBCF /* IntermediaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518071F838DA7008FDBCF /* IntermediaryTest.swift */; };
+		E52518161F838DA7008FDBCF /* LoginTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518091F838DA7008FDBCF /* LoginTest.swift */; };
+		E52518171F838DA7008FDBCF /* ResetPasswordTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */; };
+		E52518181F838DA7008FDBCF /* OnBoardingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */; };
+		E52518191F838DA7008FDBCF /* PDPTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180D1F838DA7008FDBCF /* PDPTest.swift */; };
+		E525181A1F838DA7008FDBCF /* RegisterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180F1F838DA7008FDBCF /* RegisterTest.swift */; };
+		E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518111F838DA7008FDBCF /* WishlistTest.swift */; };
+		E56A634B1F8789F400F86F15 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A634A1F8789F400F86F15 /* Page.swift */; };
+		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
+		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
+		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
 		F754C9951F8279550043DC20 /* UINavigationController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F754C9931F8279550043DC20 /* UINavigationController+Header.swift */; };
 		F754C9961F8279550043DC20 /* UIViewController+Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = F754C9941F8279550043DC20 /* UIViewController+Header.swift */; };
 		F9662B511F570858009CD692 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F9662B501F570858009CD692 /* GoogleService-Info.plist */; };
@@ -1958,6 +1984,13 @@
 			proxyType = 1;
 			remoteGlobalIDString = 925BA62D1E518A54001CED3A;
 			remoteInfo = ServiceExtension;
+		};
+		E52517C01F838410008FDBCF /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FC36DF7B19B0656400AF74C1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FC36DF8219B0656400AF74C1;
+			remoteInfo = Tokopedia;
 		};
 		FC36DFA319B0656400AF74C1 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -5022,6 +5055,34 @@
 		DADBB2361F3C78C5002B1FAE /* Tokopedia.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = Tokopedia.entitlements; sourceTree = "<group>"; };
 		DADBB2371F3C7906002B1FAE /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E52517CB1F838508008FDBCF /* AddToCartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddToCartPage.swift; path = Class/AddToCartPage.swift; sourceTree = "<group>"; };
+		E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategoryIntermediaryPage.swift; path = Class/CategoryIntermediaryPage.swift; sourceTree = "<group>"; };
+		E52517CD1F838508008FDBCF /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
+		E52517CE1F838508008FDBCF /* HotlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotlistPage.swift; path = Class/HotlistPage.swift; sourceTree = "<group>"; };
+		E52517CF1F838508008FDBCF /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginPage.swift; path = Class/LoginPage.swift; sourceTree = "<group>"; };
+		E52517D01F838508008FDBCF /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
+		E52517D11F838508008FDBCF /* OnBoardingObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnBoardingObject.swift; path = Class/OnBoardingObject.swift; sourceTree = "<group>"; };
+		E52517D21F838508008FDBCF /* ProductDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductDetailPage.swift; path = Class/ProductDetailPage.swift; sourceTree = "<group>"; };
+		E52517D31F838508008FDBCF /* RegisterPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegisterPage.swift; path = Class/RegisterPage.swift; sourceTree = "<group>"; };
+		E52517D51F838508008FDBCF /* SearchPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchPage.swift; path = Class/SearchPage.swift; sourceTree = "<group>"; };
+		E52517D61F838508008FDBCF /* Ultility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ultility.swift; path = Class/Ultility.swift; sourceTree = "<group>"; };
+		E52517D71F838508008FDBCF /* WishlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WishlistPage.swift; path = Class/WishlistPage.swift; sourceTree = "<group>"; };
+		E52518021F838DA7008FDBCF /* SearchTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTest.swift; sourceTree = "<group>"; };
+		E52518041F838DA7008FDBCF /* HomepageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomepageTest.swift; sourceTree = "<group>"; };
+		E52518061F838DA7008FDBCF /* HotlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotlistTest.swift; sourceTree = "<group>"; };
+		E52518071F838DA7008FDBCF /* IntermediaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntermediaryTest.swift; sourceTree = "<group>"; };
+		E52518091F838DA7008FDBCF /* LoginTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTest.swift; sourceTree = "<group>"; };
+		E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordTest.swift; sourceTree = "<group>"; };
+		E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardingTest.swift; sourceTree = "<group>"; };
+		E525180D1F838DA7008FDBCF /* PDPTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDPTest.swift; sourceTree = "<group>"; };
+		E525180F1F838DA7008FDBCF /* RegisterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTest.swift; sourceTree = "<group>"; };
+		E52518111F838DA7008FDBCF /* WishlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistTest.swift; sourceTree = "<group>"; };
+		E56A634A1F8789F400F86F15 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
+		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
+		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
 		F754C9931F8279550043DC20 /* UINavigationController+Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+Header.swift"; sourceTree = "<group>"; };
 		F754C9941F8279550043DC20 /* UIViewController+Header.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIViewController+Header.swift"; sourceTree = "<group>"; };
 		F9662B501F570858009CD692 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -5046,6 +5107,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E52517B81F83840F008FDBCF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -10776,12 +10844,119 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E52517BC1F838410008FDBCF /* TokopediaUITests */ = {
+			isa = PBXGroup;
+			children = (
+				E52518001F838DA7008FDBCF /* Test */,
+				E52517C91F8384F3008FDBCF /* Class */,
+				E52517BF1F838410008FDBCF /* Info.plist */,
+			);
+			path = TokopediaUITests;
+			sourceTree = "<group>";
+		};
+		E52517C91F8384F3008FDBCF /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				E56A634A1F8789F400F86F15 /* Page.swift */,
+				E52517D61F838508008FDBCF /* Ultility.swift */,
+				E52517CF1F838508008FDBCF /* LoginPage.swift */,
+				E52517D01F838508008FDBCF /* MorePage.swift */,
+				E58286261F8A1D1E002FA9A3 /* FeedPage.swift */,
+				E58286281F8A4412002FA9A3 /* LastSeenPage.swift */,
+				E52517D31F838508008FDBCF /* RegisterPage.swift */,
+				E52517D71F838508008FDBCF /* WishlistPage.swift */,
+				E52517CE1F838508008FDBCF /* HotlistPage.swift */,
+				E52517D51F838508008FDBCF /* SearchPage.swift */,
+				E52517CD1F838508008FDBCF /* HomePage.swift */,
+				E582862A1F8A4561002FA9A3 /* CartPage.swift */,
+				E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */,
+				E52517CB1F838508008FDBCF /* AddToCartPage.swift */,
+				E52517D21F838508008FDBCF /* ProductDetailPage.swift */,
+				E52517D11F838508008FDBCF /* OnBoardingObject.swift */,
+			);
+			name = Class;
+			sourceTree = "<group>";
+		};
+		E52518001F838DA7008FDBCF /* Test */ = {
+			isa = PBXGroup;
+			children = (
+				E52518011F838DA7008FDBCF /* Discovery */,
+				E52518031F838DA7008FDBCF /* Homepage */,
+				E52518051F838DA7008FDBCF /* Hotlist */,
+				E52518071F838DA7008FDBCF /* IntermediaryTest.swift */,
+				E52518081F838DA7008FDBCF /* Login */,
+				E525180B1F838DA7008FDBCF /* OnBoarding */,
+				E525180D1F838DA7008FDBCF /* PDPTest.swift */,
+				E525180E1F838DA7008FDBCF /* Register */,
+				E52518101F838DA7008FDBCF /* Wishlist */,
+			);
+			path = Test;
+			sourceTree = "<group>";
+		};
+		E52518011F838DA7008FDBCF /* Discovery */ = {
+			isa = PBXGroup;
+			children = (
+				E52518021F838DA7008FDBCF /* SearchTest.swift */,
+			);
+			path = Discovery;
+			sourceTree = "<group>";
+		};
+		E52518031F838DA7008FDBCF /* Homepage */ = {
+			isa = PBXGroup;
+			children = (
+				E52518041F838DA7008FDBCF /* HomepageTest.swift */,
+			);
+			path = Homepage;
+			sourceTree = "<group>";
+		};
+		E52518051F838DA7008FDBCF /* Hotlist */ = {
+			isa = PBXGroup;
+			children = (
+				E52518061F838DA7008FDBCF /* HotlistTest.swift */,
+			);
+			path = Hotlist;
+			sourceTree = "<group>";
+		};
+		E52518081F838DA7008FDBCF /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E52518091F838DA7008FDBCF /* LoginTest.swift */,
+				E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E525180B1F838DA7008FDBCF /* OnBoarding */ = {
+			isa = PBXGroup;
+			children = (
+				E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */,
+			);
+			path = OnBoarding;
+			sourceTree = "<group>";
+		};
+		E525180E1F838DA7008FDBCF /* Register */ = {
+			isa = PBXGroup;
+			children = (
+				E525180F1F838DA7008FDBCF /* RegisterTest.swift */,
+			);
+			path = Register;
+			sourceTree = "<group>";
+		};
+		E52518101F838DA7008FDBCF /* Wishlist */ = {
+			isa = PBXGroup;
+			children = (
+				E52518111F838DA7008FDBCF /* WishlistTest.swift */,
+			);
+			path = Wishlist;
+			sourceTree = "<group>";
+		};
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
 				7AA485291E9B34C20099D9CE /* Tokopedia */,
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
 				925BA62F1E518A54001CED3A /* ServiceExtension */,
+				E52517BC1F838410008FDBCF /* TokopediaUITests */,
 				FC36DF8519B0656400AF74C1 /* Frameworks */,
 				FC36DF8419B0656400AF74C1 /* Products */,
 				E1A48FC656B05056B45251AD /* Pods */,
@@ -10795,6 +10970,7 @@
 				FC36DF8319B0656400AF74C1 /* Tokopedia.app */,
 				FC36DF9E19B0656400AF74C1 /* TokopediaTests.xctest */,
 				925BA62E1E518A54001CED3A /* ServiceExtension.appex */,
+				E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -10892,6 +11068,24 @@
 			productReference = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
+		E52517BA1F83840F008FDBCF /* TokopediaUITests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = E52517C21F838410008FDBCF /* Build configuration list for PBXNativeTarget "TokopediaUITests" */;
+			buildPhases = (
+				E52517B71F83840F008FDBCF /* Sources */,
+				E52517B81F83840F008FDBCF /* Frameworks */,
+				E52517B91F83840F008FDBCF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				E52517C11F838410008FDBCF /* PBXTargetDependency */,
+			);
+			name = TokopediaUITests;
+			productName = TokopediaUITests;
+			productReference = E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		FC36DF8219B0656400AF74C1 /* Tokopedia */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
@@ -10946,7 +11140,7 @@
 		FC36DF7B19B0656400AF74C1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 820;
+				LastSwiftUpdateCheck = 0830;
 				LastUpgradeCheck = 510;
 				ORGANIZATIONNAME = TOKOPEDIA;
 				TargetAttributes = {
@@ -10955,6 +11149,12 @@
 						DevelopmentTeam = YQP4A2M94J;
 						LastSwiftMigration = 820;
 						ProvisioningStyle = Automatic;
+					};
+					E52517BA1F83840F008FDBCF = {
+						CreatedOnToolsVersion = 8.3.2;
+						DevelopmentTeam = YQP4A2M94J;
+						ProvisioningStyle = Automatic;
+						TestTargetID = FC36DF8219B0656400AF74C1;
 					};
 					FC36DF8219B0656400AF74C1 = {
 						DevelopmentTeam = YQP4A2M94J;
@@ -11010,12 +11210,20 @@
 				FC36DF8219B0656400AF74C1 /* Tokopedia */,
 				FC36DF9D19B0656400AF74C1 /* TokopediaTests */,
 				925BA62D1E518A54001CED3A /* ServiceExtension */,
+				E52517BA1F83840F008FDBCF /* TokopediaUITests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
 		925BA62C1E518A54001CED3A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E52517B91F83840F008FDBCF /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -11989,6 +12197,39 @@
 			buildActionMask = 2147483647;
 			files = (
 				925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		E52517B71F83840F008FDBCF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E52517E41F838509008FDBCF /* WishlistPage.swift in Sources */,
+				E52517DF1F838509008FDBCF /* ProductDetailPage.swift in Sources */,
+				E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */,
+				E52518131F838DA7008FDBCF /* HomepageTest.swift in Sources */,
+				E52518151F838DA7008FDBCF /* IntermediaryTest.swift in Sources */,
+				E52517E31F838509008FDBCF /* Ultility.swift in Sources */,
+				E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */,
+				E52517E21F838509008FDBCF /* SearchPage.swift in Sources */,
+				E52517D91F838508008FDBCF /* CategoryIntermediaryPage.swift in Sources */,
+				E52518161F838DA7008FDBCF /* LoginTest.swift in Sources */,
+				E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */,
+				E52517DE1F838509008FDBCF /* OnBoardingObject.swift in Sources */,
+				E52518141F838DA7008FDBCF /* HotlistTest.swift in Sources */,
+				E52518181F838DA7008FDBCF /* OnBoardingTest.swift in Sources */,
+				E52518171F838DA7008FDBCF /* ResetPasswordTest.swift in Sources */,
+				E52517E01F838509008FDBCF /* RegisterPage.swift in Sources */,
+				E52518191F838DA7008FDBCF /* PDPTest.swift in Sources */,
+				E525181A1F838DA7008FDBCF /* RegisterTest.swift in Sources */,
+				E52517DA1F838508008FDBCF /* HomePage.swift in Sources */,
+				E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */,
+				E52517DD1F838508008FDBCF /* MorePage.swift in Sources */,
+				E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */,
+				E56A634B1F8789F400F86F15 /* Page.swift in Sources */,
+				E52517DC1F838508008FDBCF /* LoginPage.swift in Sources */,
+				E52517DB1F838508008FDBCF /* HotlistPage.swift in Sources */,
+				E52518121F838DA7008FDBCF /* SearchTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -13487,6 +13728,11 @@
 			target = 925BA62D1E518A54001CED3A /* ServiceExtension */;
 			targetProxy = 925BA6331E518A54001CED3A /* PBXContainerItemProxy */;
 		};
+		E52517C11F838410008FDBCF /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FC36DF8219B0656400AF74C1 /* Tokopedia */;
+			targetProxy = E52517C01F838410008FDBCF /* PBXContainerItemProxy */;
+		};
 		FC36DFA419B0656400AF74C1 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = FC36DF8219B0656400AF74C1 /* Tokopedia */;
@@ -13592,6 +13838,62 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "ServiceExtension/ServiceExtension-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_VERSION = 3.0;
+			};
+			name = Release;
+		};
+		E52517C31F838410008FDBCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = YQP4A2M94J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = TokopediaUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = Tokopedia.TokopediaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Tokopedia;
+			};
+			name = Debug;
+		};
+		E52517C41F838410008FDBCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = YQP4A2M94J;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				INFOPLIST_FILE = TokopediaUITests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.3;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_BUNDLE_IDENTIFIER = Tokopedia.TokopediaUITests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "";
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
+				TEST_TARGET_NAME = Tokopedia;
 			};
 			name = Release;
 		};
@@ -13889,6 +14191,15 @@
 			buildConfigurations = (
 				925BA6361E518A54001CED3A /* Debug */,
 				925BA6371E518A54001CED3A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		E52517C21F838410008FDBCF /* Build configuration list for PBXNativeTarget "TokopediaUITests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				E52517C31F838410008FDBCF /* Debug */,
+				E52517C41F838410008FDBCF /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Debug;

@@ -24,6 +24,7 @@ class LoginTableViewController: UITableViewController {
     var providersListViewHeight: CGFloat = 0.0 {
         didSet {
             self.tableView.reloadData()
+            self.tableView.accessibilityLabel = "loginTableView"
         }
     }
     //    MARK: - Lifecycle

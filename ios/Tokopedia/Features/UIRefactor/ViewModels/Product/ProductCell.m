@@ -35,6 +35,7 @@
     [_shopLocation mas_makeConstraints:^(MASConstraintMaker *make) {
         make.trailing.equalTo(_badgesView.mas_leading);
     }];
+    self.accessibilityLabel = @"productCell";
 }
 
 - (void) setupWishlistButton {
@@ -101,6 +102,7 @@
 
 - (void)setViewModel:(ProductModelView *)viewModel {
     _viewModel = viewModel;
+    
     if(imageDownloader == nil){
         imageDownloader = [QueueImageDownloader new];
     }

@@ -73,6 +73,7 @@
     [_isfavoritedshop setBackgroundColor:isFavorited?[UIColor whiteColor]:[UIColor fromHexString:@"#42B549"]];
     [_isfavoritedshop setBorderColor:isFavorited?[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53]:[UIColor fromHexString:@"#42B549"]];
     _isfavoritedshop.enabled = isFavorited ? NO : YES;
+    _isfavoritedshop.accessibilityLabel = isFavorited?@"Favorit":@"Favoritkan";
 }
 
 @end

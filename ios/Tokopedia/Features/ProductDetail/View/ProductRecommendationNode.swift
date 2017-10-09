@@ -97,7 +97,7 @@ class ProductRecommendationNode: ContainerNode {
             })
             
             view.addGestureRecognizer(tapGestureRecognizer)
-            
+            view.accessibilityLabel = "productRecommendView"
             }.add(children: [
                 Node<UIImageView>() { view, layout, _ in
                     layout.width = 133
@@ -108,6 +108,7 @@ class ProductRecommendationNode: ContainerNode {
                     view.layer.masksToBounds = true
                     view.backgroundColor = .tpBackground()
                     view.setImageWith(URL(string: product.image))
+                    view.accessibilityLabel = "productRecommendImage"
                 },
                 Node<UILabel>() { view, layout, _ in
                     layout.marginTop = 10

@@ -25,6 +25,8 @@
                                               initialProperties:@{@"name" : @"Official Store", @"params" : @{} }];
     
     self.view = rootView;
+    self.view.isAccessibilityElement = true;
+    self.view.accessibilityIdentifier = @"officialStoreBrands";
     self.title = @"Official Store";
 }
 

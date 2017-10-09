@@ -82,6 +82,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         self.tableView.backgroundColor = .tpBackground()
         self.tableView.separatorStyle = .none
         self.tableView.showsVerticalScrollIndicator = false
+        self.tableView.accessibilityLabel = "feedView"
         self.tableView.delegate = self
         self.refreshControl.addTarget(self, action: #selector(self.refreshFeed), for: .valueChanged)
         

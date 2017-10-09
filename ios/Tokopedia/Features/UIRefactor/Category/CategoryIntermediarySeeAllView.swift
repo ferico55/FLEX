@@ -26,10 +26,12 @@ class CategoryIntermediarySeeAllView: UIView {
         if isExpanded {
             seeMoreButton.setTitle("Sembunyikan Lainnya", for: .normal)
             self.arrowDownImageView.transform = CGAffineTransform(rotationAngle: CGFloat.pi);
+            seeMoreButton.accessibilityLabel = "hideSubcategory"
         }
         else {
             seeMoreButton.setTitle("Lihat Lainnya", for: .normal)
             self.arrowDownImageView.transform = .identity
+            seeMoreButton.accessibilityLabel = "expandSubcategory"
         }
     }
 }

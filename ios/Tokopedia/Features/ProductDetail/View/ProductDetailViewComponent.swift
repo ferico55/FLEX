@@ -156,7 +156,6 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
     init(store: Store<ProductDetailState>, viewController: ProductDetailViewController) {
         self.store = store
         self.viewController = viewController
-        
         super.init()
     }
     
@@ -272,12 +271,12 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 view.backgroundColor = .white
                 if self.scrollView.contentOffset.y > 264 {
                     view.alpha = 1.0
+                    
                 } else if self.scrollView.contentOffset.y == 0 {
                     view.alpha = 0.0
                 }
-                
                 self.fullNavigationView = view
-                
+                self.accessibilityLabel = "productDetailView"
                 layout.position = .absolute
                 layout.top = 0
                 layout.width = size.width
@@ -433,6 +432,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.addTarget(self, action: #selector(self.backButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .white
+                    view.accessibilityLabel = "backButton"
                 },
                 Node { _, layout, _ in
                     layout.justifyContent = .spaceBetween

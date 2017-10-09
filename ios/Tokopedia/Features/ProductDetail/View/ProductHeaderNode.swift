@@ -157,6 +157,7 @@ class ProductHeaderNode: ContainerNode {
             view.clipsToBounds = true
             view.setImageWith(URL(string: imageUrl))
             view.isUserInteractionEnabled = true
+            view.accessibilityLabel = "productImageView"
             if tappable {
                 let tapGestureRecognizer = UITapGestureRecognizer()
                 _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
@@ -205,7 +206,7 @@ class ProductHeaderNode: ContainerNode {
             view.isPagingEnabled = true
             view.bounces = false
             self.scrollView = view
-            
+            view.accessibilityLabel = "productScrollView"
             _ = view.rx.didScroll.subscribe(onNext: { [weak self] in
                 guard let wself = self else { return }
                 
@@ -271,6 +272,7 @@ class ProductHeaderNode: ContainerNode {
             view.layer.shadowOpacity = 0.5
             view.layer.shadowOffset = CGSize(width: -15, height: 20)
             view.layer.shadowRadius = 10
+            view.accessibilityLabel = "wishlistButton"
         }.add(child: wishlistLottie(isWishlisted: state.isWishlist))
     }
     
@@ -459,6 +461,7 @@ class ProductHeaderNode: ContainerNode {
             view.layer.masksToBounds = true
             view.textAlignment = .center
             view.text = "Cashback \(cashback)"
+            view.accessibilityLabel = "cashbackLabel"
         }
     }
     
@@ -588,14 +591,13 @@ class ProductHeaderNode: ContainerNode {
                 layout.alignSelf = .center
                 layout.flexShrink = 1
                 view.isUserInteractionEnabled = true
-                
                 self.starRating.center = CGPoint(x: layout.width / 2, y: layout.height / 2)
                 self.starRating.rating = Float(productRating)!
                 view.addSubview(self.starRating)
             },
             Node<UILabel>() { view, layout, _ in
                 layout.alignSelf = .center
-                
+                view.accessibilityLabel = "reviewButton"
                 view.text = "\(reviewCount) Ulasan"
                 view.textColor = .tpGreen()
                 view.highlightedTextColor = .tpLightGreen()

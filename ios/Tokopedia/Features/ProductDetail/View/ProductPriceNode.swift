@@ -58,10 +58,12 @@ class ProductPriceNode: ContainerNode {
         return Node<UIButton>() { view, layout, _ in
             layout.paddingTop = 15
             layout.paddingBottom = 15
+            view.accessibilityLabel = "wholesaleButton"
             view.backgroundColor = .white
             _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                 self.didTapWholesale(wholesales)
             })
+            
             }.add(children: [
                 Node<UILabel>(identifier: "Title-Label") { view, layout, _ in
                     layout.marginLeft = 15

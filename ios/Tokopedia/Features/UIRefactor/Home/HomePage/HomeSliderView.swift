@@ -21,6 +21,8 @@ class HomeSliderView: UIView {
     override func awakeFromNib() {
         setupCustomPageControl()
         setupSliderAddOnPromoButton()
+        self.isAccessibilityElement = true
+        self.accessibilityIdentifier = "bannerSliderView"
     }
     
     fileprivate func setupCustomPageControl() {

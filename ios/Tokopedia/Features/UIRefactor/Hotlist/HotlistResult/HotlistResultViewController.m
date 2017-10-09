@@ -247,6 +247,7 @@ ProductCellDelegate
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
+    _collectionView.accessibilityLabel = @"hotlistResultView";
     
     _topAdsService = [TopAdsService new];
     

@@ -98,7 +98,7 @@ RetryViewDelegate
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
-    
+    _collectionView.accessibilityLabel = @"lastSeen";
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
 
     [_collectionView setCollectionViewLayout:_flowLayout];

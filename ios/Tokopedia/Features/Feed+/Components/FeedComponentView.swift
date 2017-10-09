@@ -288,7 +288,6 @@ class FeedComponentView: ComponentView<FeedCardState> {
                     layout.height = 30
                     layout.flexDirection = .row
                     layout.justifyContent = .spaceBetween
-                    
                     view.backgroundColor = .white
                 }.add(children: [
                     Node<UIPageControl>(identifier: "page-control") { [weak self] view, layout, _ in

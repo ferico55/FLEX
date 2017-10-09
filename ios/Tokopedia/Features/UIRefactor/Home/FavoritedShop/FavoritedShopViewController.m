@@ -88,6 +88,9 @@ FavoriteShopRequestDelegate
     
     _table.delegate = self;
     _table.dataSource = self;
+    _table.accessibilityLabel = @"tableFavorite";
+    _table.isAccessibilityElement = true;
+    _table.userInteractionEnabled = true;
     _table.tableFooterView = _footer;
     [_act startAnimating];
     

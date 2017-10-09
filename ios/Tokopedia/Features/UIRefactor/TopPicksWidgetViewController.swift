@@ -116,6 +116,7 @@ class TopPicksWidgetViewController: UIViewController {
     
     fileprivate func setTopPicksCell() {
         let topPicksVerticalStackViewContainer = UIView()
+        topPicksVerticalStackViewContainer.accessibilityLabel = "topPicksCell"
         outerVerticalStackView.addArrangedSubview(topPicksVerticalStackViewContainer)
         innerVerticalStackView.setAttribute(.vertical, alignment: .fill, distribution: .fill, spacing: 0.0)
         topPicksVerticalStackViewContainer.addSubview(innerVerticalStackView)
@@ -130,6 +131,7 @@ class TopPicksWidgetViewController: UIViewController {
             let topPicksImageViewContainer = UIView()
             horizontalStackView.addArrangedSubview(topPicksImageViewContainer)
             let topPicksImageView = UIImageView()
+            topPicksImageView.isAccessibilityElement = true
             topPicksImageView.layer.cornerRadius = 2
             topPicksImageView.layer.masksToBounds = true
             topPicksImageView.setImageWith(NSURL(string: topPick.imageUrl) as URL!)

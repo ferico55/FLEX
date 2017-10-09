@@ -213,6 +213,7 @@ class ProductDetailDiscussionNode: ContainerNode {
                 view.textColor = .tpGreen()
                 view.text = "Lihat semua Diskusi (\(talkCount))"
                 view.numberOfLines = 4
+                view.accessibilityLabel = "readMoreTalk"
             },
             Node<UIImageView>(identifier: "more-icon", create: {
                 let view = UIImageView(image: #imageLiteral(resourceName: "icon_carret_green"))

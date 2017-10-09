@@ -68,6 +68,7 @@ class ProductSellerInfoNode: ContainerNode {
             layout.width = 18
             layout.height = 18
             view.image = shop.badgeImage
+            view.accessibilityLabel = "officialStoreBadgeImage"
         }
     }
     
@@ -77,6 +78,7 @@ class ProductSellerInfoNode: ContainerNode {
         return Node<UIView>() { view, layout, _ in
             view.backgroundColor = .clear
             view.isUserInteractionEnabled = true
+            view.accessibilityLabel = "sellerName"
             
             layout.flexDirection = .row
             }.add(children: [
@@ -170,6 +172,7 @@ class ProductSellerInfoNode: ContainerNode {
             layout.height = 18
             
             view.image = image
+            view.accessibilityLabel = "reputationView"
         }
     }
     
@@ -209,6 +212,7 @@ class ProductSellerInfoNode: ContainerNode {
                 layout.height = 32
                 layout.marginTop = 2
                 layout.marginRight = 15
+                view.accessibilityLabel = "unfavoriteButton"
                 view.layer.cornerRadius = 4
                 view.layer.masksToBounds = true
                 view.layer.borderWidth = 1
@@ -236,6 +240,7 @@ class ProductSellerInfoNode: ContainerNode {
             layout.height = 32
             layout.marginTop = 2
             layout.marginRight = 15
+            view.accessibilityLabel = "favoriteButton"
             view.layer.cornerRadius = 4
             view.layer.masksToBounds = true
             view.layer.borderWidth = 1

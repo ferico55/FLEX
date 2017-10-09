@@ -38,7 +38,8 @@ class OfficialStoreSectionViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        buttonSeeAll.isAccessibilityElement = true
+        buttonSeeAll.accessibilityIdentifier = "seeAllOfficialStore"
         var modIndex: Int!
         modIndex = shops.count
         if UIDevice.current.userInterfaceIdiom == .pad || shops.count < 4 {
@@ -73,6 +74,8 @@ class OfficialStoreSectionViewController: UIViewController {
 
             let imageView = UIImageView()
             imageView.contentMode = .scaleAspectFit
+            imageView.isAccessibilityElement = true
+            imageView.accessibilityIdentifier = "officialStore" + "\(index)"
             view.addSubview(imageView)
 
             imageView.mas_makeConstraints { make in

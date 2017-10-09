@@ -73,7 +73,6 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
     }
     
     private func setupForm() {
-        self.scrollView.isAccessibilityElement = true
         self.scrollView.accessibilityLabel = "registerEmailScrollView"
         
         let numberKeyboard = MMNumberKeyboard(frame: .zero)

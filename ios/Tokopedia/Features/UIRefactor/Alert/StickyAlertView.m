@@ -39,6 +39,7 @@
         _delegate = delegate;
         
         self.view.backgroundColor = backgroundColor;
+        self.view.accessibilityIdentifier = @"errorStickyAlert";
         [self attributedTextWithArray:messages color:textColor];
         
         NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:3
