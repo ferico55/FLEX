@@ -85,11 +85,19 @@ platform :ios do
   end
 
   lane :devel do
+    branch_name = ENV['CIRCLE_BRANCH']
+    phab_number = ''
+    if branch_name == 'develop'
+      phab_number = 0
+    elseif branch_name.include?('release')
+      phab_number = 1
+    else
+      phab_number = branch_name.split(/[^\d]/).join
+    end
 
-    build_number = Time.new.strftime("%Y%m%d%H%M")
     increment_build_number({
         xcodeproj: ENV["APP_XCODEPROJ"],
-        build_number: build_number
+        build_number: ENV['CIRCLE_BUILD_NUM'] + "." + phab_number
     })
 
     disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
