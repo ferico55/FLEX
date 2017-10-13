@@ -89,7 +89,7 @@ platform :ios do
     phab_number = ''
     if branch_name == 'develop'
       phab_number = 0
-    elseif branch_name.include?('release')
+    elsif branch_name.include?('release')
       phab_number = 1
     else
       phab_number = branch_name.split(/[^\d]/).join
