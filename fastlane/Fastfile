@@ -86,11 +86,11 @@ platform :ios do
 
   lane :devel do
     branch_name = ENV['CIRCLE_BRANCH']
-    phab_number = ''
+    
     if branch_name == 'develop'
-      phab_number = 0
+      phab_number = '0'
     elsif branch_name.include?('release')
-      phab_number = 1
+      phab_number = '1'
     else
       phab_number = branch_name.split(/[^\d]/).join
     end
