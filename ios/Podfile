@@ -71,6 +71,8 @@ def common_pods
     pod 'VMaskTextField', '~>1.0.8'
     
     #Analytics
+    pod 'Fabric', '~> 1.7.0'
+    pod 'Crashlytics', '~> 3.9.0'
     pod 'AppsFlyerFramework',  '~> 4.5.1'
     pod 'Appsee', '~> 2.2'
     pod 'MoEngage-iOS-SDK', '~> 3.3.0'

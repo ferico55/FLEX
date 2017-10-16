@@ -7,8 +7,6 @@
 //
 #import <SystemConfiguration/SystemConfiguration.h>
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
-#import <Fabric/Fabric.h>
-#import <Crashlytics/Crashlytics.h>
 #import "AppDelegate.h"
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
@@ -32,6 +30,8 @@
 #import "UIApplication+React.h"
 
 @import NativeNavigation;
+@import Fabric;
+@import Crashlytics;
 
 #ifdef DEBUG
 @import FLEX;

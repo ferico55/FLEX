@@ -1924,8 +1924,6 @@
 		DADB9F671F3C46CF002B1FAE /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F381F3C46CE002B1FAE /* vt-iOSlib-1.0.1.tar.gz */; };
 		DADB9F681F3C46CF002B1FAE /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F391F3C46CE002B1FAE /* vt-iOSlib-1.0.1.zip */; };
 		DADB9F691F3C46CF002B1FAE /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9F3C1F3C46CE002B1FAE /* XYPieChart.m */; };
-		DADB9F701F3C56D9002B1FAE /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6A1F3C56D9002B1FAE /* Crashlytics.framework */; };
-		DADB9F711F3C56D9002B1FAE /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6B1F3C56D9002B1FAE /* Fabric.framework */; };
 		DADB9F721F3C56D9002B1FAE /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */; };
 		DADB9F731F3C56D9002B1FAE /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6D1F3C56D9002B1FAE /* FBAudienceNetwork.framework */; };
 		DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */; };
@@ -5042,8 +5040,6 @@
 		DADB9F391F3C46CE002B1FAE /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		DADB9F3B1F3C46CE002B1FAE /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		DADB9F3C1F3C46CE002B1FAE /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
-		DADB9F6A1F3C56D9002B1FAE /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Crashlytics.framework; path = Tokopedia/ThirdParty/Crashlytics.framework; sourceTree = "<group>"; };
-		DADB9F6B1F3C56D9002B1FAE /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Fabric.framework; path = Tokopedia/ThirdParty/Fabric.framework; sourceTree = "<group>"; };
 		DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKStrings.bundle; path = Tokopedia/ThirdParty/FacebookSDKStrings.bundle; sourceTree = "<group>"; };
 		DADB9F6D1F3C56D9002B1FAE /* FBAudienceNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBAudienceNetwork.framework; path = Tokopedia/ThirdParty/FBAudienceNetwork.framework; sourceTree = "<group>"; };
 		DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = Tokopedia/ThirdParty/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
@@ -5122,7 +5118,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				DADB9F731F3C56D9002B1FAE /* FBAudienceNetwork.framework in Frameworks */,
-				DADB9F701F3C56D9002B1FAE /* Crashlytics.framework in Frameworks */,
 				DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */,
 				7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */,
 				FCA7751119F6609E0041CFE1 /* SystemConfiguration.framework in Frameworks */,
@@ -5134,7 +5129,6 @@
 				8565E1E51B9404D100843388 /* CoreText.framework in Frameworks */,
 				DADB9F751F3C56D9002B1FAE /* FBSDKShareKit.framework in Frameworks */,
 				FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */,
-				DADB9F711F3C56D9002B1FAE /* Fabric.framework in Frameworks */,
 				8565E1E31B9404C600843388 /* CoreMotion.framework in Frameworks */,
 				8565E1E11B9404BF00843388 /* CoreLocation.framework in Frameworks */,
 				FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */,
@@ -10979,8 +10973,6 @@
 			isa = PBXGroup;
 			children = (
 				450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */,
-				DADB9F6A1F3C56D9002B1FAE /* Crashlytics.framework */,
-				DADB9F6B1F3C56D9002B1FAE /* Fabric.framework */,
 				DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */,
 				DADB9F6D1F3C56D9002B1FAE /* FBAudienceNetwork.framework */,
 				DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */,
