@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "lint": "eslint .",
-    "bundling": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/Tokopedia/main.jsbundle' --dev=false --platform='ios' --assets-dest='./ios'",
+    "bundling": "node node_modules/react-native/local-cli/cli.js bundle --entry-file='index.ios.js' --bundle-output='./ios/Tokopedia/main.jsbundle' --dev=false --platform='ios' --assets-dest='./'",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h"
   },

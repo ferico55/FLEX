@@ -1863,7 +1863,6 @@
 		7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
-		7AC251FC1F31A414001D5FA3 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 7AC251FB1F31A413001D5FA3 /* assets */; };
 		846385071F835C0300AAF55C /* CodeShareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846385031F835C0300AAF55C /* CodeShareTableViewController.swift */; };
 		846385081F835C0300AAF55C /* Referral.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 846385041F835C0300AAF55C /* Referral.storyboard */; };
 		846385091F835C0300AAF55C /* ReferralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 846385051F835C0300AAF55C /* ReferralManager.swift */; };
@@ -1887,6 +1886,7 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		9249B1961F8F65A800487C26 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 9249B1951F8F65A800487C26 /* assets */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
@@ -4934,7 +4934,6 @@
 		7A466B751EB2FEAE00A72105 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
-		7AC251FB1F31A413001D5FA3 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; path = assets; sourceTree = SOURCE_ROOT; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
 		846385031F835C0300AAF55C /* CodeShareTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeShareTableViewController.swift; sourceTree = "<group>"; };
 		846385041F835C0300AAF55C /* Referral.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Referral.storyboard; sourceTree = "<group>"; };
@@ -4960,6 +4959,7 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		9249B1951F8F65A800487C26 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		925BA62E1E518A54001CED3A /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -5172,6 +5172,7 @@
 		349458261F306BDB00EEB628 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9249B1951F8F65A800487C26 /* assets */,
 				DADBB2331F3C62C1002B1FAE /* SupportingFiles */,
 				DADBB22C1F3C628B002B1FAE /* Language */,
 				349458271F306BDB00EEB628 /* Database */,
@@ -10529,7 +10530,6 @@
 				62C5EB001F826A2700EAE044 /* Helper */,
 				62C5EB4F1F826A2700EAE044 /* Networking */,
 				DADB9ED71F3C46CE002B1FAE /* ThirdParty */,
-				7AC251FB1F31A413001D5FA3 /* assets */,
 				349458261F306BDB00EEB628 /* Resources */,
 				7A3FD3121F2843A100ADF80D /* main.jsbundle */,
 				F9662B501F570858009CD692 /* GoogleService-Info.plist */,
@@ -11499,6 +11499,7 @@
 				62C5EDE51F826A2800EAE044 /* TKPInfoWindowMapView.xib in Resources */,
 				62C5ED5F1F826A2800EAE044 /* AlertListFilterView.xib in Resources */,
 				62C5EEE41F826A2900EAE044 /* UserContainerViewController.xib in Resources */,
+				9249B1961F8F65A800487C26 /* assets in Resources */,
 				62C5EFB01F826A2900EAE044 /* AccountActivationViewController.xib in Resources */,
 				62C5EDF71F826A2800EAE044 /* WebViewSignInViewController.xib in Resources */,
 				62C5ECEE1F826A2700EAE044 /* OrderDateView.xib in Resources */,
@@ -11647,7 +11648,6 @@
 				62C5EE8A1F826A2800EAE044 /* ActivatePushInstructionViewController7.xib in Resources */,
 				62C5EF301F826A2900EAE044 /* FilterConditionViewController.xib in Resources */,
 				62C5EF7E1F826A2900EAE044 /* PulsaOperatorCell.xib in Resources */,
-				7AC251FC1F31A414001D5FA3 /* assets in Resources */,
 				62C5EEA01F826A2900EAE044 /* SearchAutoCompleteCategoryCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
