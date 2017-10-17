@@ -18,7 +18,7 @@
     self.shopImage.layer.cornerRadius = self.shopImage.frame.size.width / 2;
     
     self.shopLocation.text = modelView.shopLocation;
-    self.goldBadgeView.hidden = modelView.isGoldShop ? NO : YES;
+    self.goldBadgeView.hidden = (modelView.isGoldShop || modelView.official) ? NO : YES;
     
     if (modelView.official) {
         _goldBadgeView.image = [UIImage imageNamed:@"badge_official_small"];
