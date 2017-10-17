@@ -639,6 +639,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
             }
+                break;
             case 1: {
                 [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
                 PurchaseViewController *purchaseController = [PurchaseViewController new];
