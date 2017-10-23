@@ -22,25 +22,14 @@ class OrderDetailReceiverView: UIView {
             let orderReceiver = order.order_destination
             
             receiverName.text = orderReceiver.receiver_name
-            receiverName.onCopy = { text in
-                UIPasteboard.general.string = text
-            }
+            
             receiverAddress.text = "\(orderReceiver.address_street)\n\(orderReceiver.address_district)\n\(orderReceiver.address_city)\n\(orderReceiver.address_province), \(orderReceiver.address_country), \(orderReceiver.address_postal)"
-            receiverAddress.onCopy = { text in
-                UIPasteboard.general.string = text
-            }
+            
             receiverPhone.text = orderReceiver.receiver_phone
-            receiverPhone.onCopy = { text in
-                UIPasteboard.general.string = text
-            }
+            
             courierAgent.text = "\(order.order_shipment.shipment_name) (\(order.order_shipment.shipment_product))"
-            courierAgent.onCopy = { text in
-                UIPasteboard.general.string = text
-            }
+            
             partialOrder.text = order.order_detail.partialString
-            partialOrder.onCopy = { text in
-                UIPasteboard.general.string = text
-            }
         }
     }
     

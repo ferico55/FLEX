@@ -1,8 +1,10 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11201" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11161"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,6 +15,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Produk" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PqC-sz-pMh">
+                    <rect key="frame" x="14" y="8" width="105" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="Qtp-Na-C61"/>
                         <constraint firstAttribute="width" constant="105" id="dlM-cU-gIH"/>
@@ -20,7 +23,8 @@
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EM-sj-gn7">
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EM-sj-gn7" customClass="LabelCopyable" customModule="Tokopedia" customModuleProvider="target">
+                    <rect key="frame" x="119" y="8" width="185" height="21"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="21" id="TBE-xq-Gy0"/>
                     </constraints>
@@ -28,14 +32,17 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="744-10-ucV" userLabel="Horizontal Border">
+                    <rect key="frame" x="0.0" y="38" width="320" height="1"/>
                     <color key="backgroundColor" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="1" id="tmO-5F-HXA"/>
                     </constraints>
                 </view>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6xh-jn-kQa">
+                    <rect key="frame" x="0.0" y="39" width="320" height="177"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Subtotal" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dZe-jH-EKF">
+                            <rect key="frame" x="15" y="27" width="98" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="98" id="1gD-bW-Mi0"/>
                                 <constraint firstAttribute="height" constant="21" id="jmf-sO-N0a"/>
@@ -43,7 +50,8 @@
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZI-fi-avQ">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VZI-fi-avQ" customClass="LabelCopyable" customModule="Tokopedia" customModuleProvider="target">
+                            <rect key="frame" x="121" y="27" width="184" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="ewF-do-d1x"/>
                             </constraints>
@@ -51,13 +59,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZWl-O6-lvX">
+                            <rect key="frame" x="15" y="53" width="100" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="100" id="A16-3l-c3t"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T1D-Kw-h0B">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="T1D-Kw-h0B" customClass="LabelCopyable" customModule="Tokopedia" customModuleProvider="target">
+                            <rect key="frame" x="155" y="53" width="150" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="g5c-2y-dC5"/>
                             </constraints>
@@ -65,13 +75,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="5Oj-Y0-WKZ">
+                            <rect key="frame" x="15" y="79" width="110" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="110" id="EvI-P8-0ZF"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoc-Pi-gCr">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aoc-Pi-gCr" customClass="LabelCopyable" customModule="Tokopedia" customModuleProvider="target">
+                            <rect key="frame" x="142" y="79" width="163" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="5EJ-LG-OQp"/>
                             </constraints>
@@ -79,13 +91,15 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Total Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gzf-M1-qRD">
+                            <rect key="frame" x="15" y="108" width="147" height="17"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="147" id="Nn4-Sr-VEL"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" weight="medium" pointSize="14"/>
                             <nil key="highlightedColor"/>
                         </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Io1-9R-uh0">
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Io1-9R-uh0" customClass="LabelCopyable" customModule="Tokopedia" customModuleProvider="target">
+                            <rect key="frame" x="163" y="108" width="142" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="21" id="KJn-Y4-2q1"/>
                             </constraints>
@@ -93,6 +107,7 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2uJ-mG-Vzo">
+                            <rect key="frame" x="115" y="47" width="32" height="32"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="32" id="Dsz-eY-Lei"/>
                                 <constraint firstAttribute="width" constant="32" id="Y2a-7c-rib"/>

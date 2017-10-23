@@ -19,7 +19,7 @@
 #define CTagAddress 2
 #define CTagPhone 3
 
-@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TransactionCartCellDelegate, LabelMenuDelegate>
+@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TransactionCartCellDelegate>
 {
     NavigateViewController *_navigate;
 }
@@ -40,10 +40,10 @@
 @property (weak, nonatomic) IBOutlet UILabel *shipmentPriceLabel;
 @property (weak, nonatomic) IBOutlet UILabel *totalPaymentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recieverName;
-@property (weak, nonatomic) IBOutlet LabelMenu *addressStreetLabel;
+@property (weak, nonatomic) IBOutlet UILabel *addressStreetLabel;
 @property (weak, nonatomic) IBOutlet UILabel *cityLabel;
 @property (weak, nonatomic) IBOutlet UILabel *countryLabel;
-@property (weak, nonatomic) IBOutlet LabelMenu *recieverPhone;
+@property (weak, nonatomic) IBOutlet UILabel *recieverPhone;
 @property (weak, nonatomic) IBOutlet UILabel *shipmentLabel;
 @property (weak, nonatomic) IBOutlet UILabel *partialLabel;
 @property (weak, nonatomic) IBOutlet UIImageView *shopThumb;
@@ -61,11 +61,6 @@
     _navigate = [NavigateViewController new];
     _addressStreetLabel.tag = CTagAddress;
     _recieverPhone.tag = CTagPhone;
-    
-    _addressStreetLabel.delegate = _recieverPhone.delegate = self;
-    [_addressStreetLabel addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    [_recieverPhone addGestureRecognizer:[[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)]];
-    
     
     self.title = @"Detail Transaksi";
     
@@ -166,21 +161,6 @@
     
     return 126+expectedLabelSize.height;
 }
-
-
-#pragma mark - Method
-- (void)longPress:(UILongPressGestureRecognizer *)sender
-{
-    if (sender.state == UIGestureRecognizerStateBegan) {
-        UILabel *lbl = (UILabel *)sender.view;
-        [lbl becomeFirstResponder];
-        
-        UIMenuController *menu = [UIMenuController sharedMenuController];
-        [menu setTargetRect:lbl.frame inView:lbl.superview];
-        [menu setMenuVisible:YES animated:YES];
-    }
-}
-
 
 #pragma mark - Cell Delegate
 -(void)didTapImageViewAtIndexPath:(NSIndexPath *)indexPath
@@ -321,15 +301,4 @@
     }
 }
 
-
-#pragma mark - LabelMenu Delegate
-- (void)duplicate:(int)tag
-{
-    if(tag == CTagAddress) {
-        [UIPasteboard generalPasteboard].string = _addressStreetLabel.text;
-    }
-    else if(tag == CTagPhone) {
-        [UIPasteboard generalPasteboard].string = _recieverPhone.text;
-    }
-}
 @end

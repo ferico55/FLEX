@@ -10,8 +10,6 @@ import UIKit
 
 class LabelCopyable: UILabel {
     
-    var onCopy : ((String) -> Void)?
-    
     fileprivate func attachTapHandler(){
         self.isUserInteractionEnabled = true
         
@@ -38,17 +36,34 @@ class LabelCopyable: UILabel {
         return (action == #selector(onTapCopy(_:)))
     }
     
+    private var pointerFrame: CGRect {
+        var rect = self.frame
+        
+        switch textAlignment {
+        case .left: rect.size.width = 0
+        case .right:
+            rect.origin.x += rect.size.width
+            rect.size.width = 0
+        default: break
+        }
+        
+        return rect
+    }
+    
     @objc fileprivate func handleLongTap(_ sender:UILongPressGestureRecognizer){
+        guard let superview = self.superview, sender.state == .began else { return }
+        
         self.becomeFirstResponder()
         
         let menu = UIMenuController.shared
-        menu.setTargetRect(self.frame, in: self.superview!)
+        menu.menuItems = [UIMenuItem(title: "Copy", action: #selector(onTapCopy))]
+        menu.setTargetRect(self.pointerFrame, in: superview)
         menu.setMenuVisible(true, animated: true)
         
     }
     
     @objc fileprivate func onTapCopy(_ sender: AnyObject?) {
-        onCopy?(self.text ?? "")
+        UIPasteboard.general.string = self.text ?? ""
     }
 
 }
