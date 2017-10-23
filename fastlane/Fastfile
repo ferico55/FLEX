@@ -69,9 +69,6 @@ platform :ios do
       codesigning_identity: "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)",
       export_method: "app-store"
     )
-
-    upload_symbols_to_crashlytics(dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH], binary_path: 'ios/Pods/Fabric/upload-symbols', api_token: ENV["CRASHLYTICS_API_KEY"])
-
     pilot(
        skip_submission: false,
        distribute_external: false,
@@ -88,20 +85,14 @@ platform :ios do
   end
 
   lane :devel do
-    branch_name = ENV['CIRCLE_BRANCH']
-    
-    if branch_name == 'develop'
-      phab_number = '0'
-    elsif branch_name.include?('release')
-      phab_number = '1'
-    else
-      phab_number = branch_name.split(/[^\d]/).join
-    end
+    current_version = get_version_number_from_plist(xcodeproj: ENV["APP_XCODEPROJ"],
+                                        scheme: "Tokopedia - Debug")
 
-    increment_build_number({
-        xcodeproj: ENV["APP_XCODEPROJ"],
-        build_number: ENV['CIRCLE_BUILD_NUM'] + "." + phab_number
-    })
+    increment_version_number_in_plist(
+      version_number: current_version + "-" + ENV['CIRCLE_BRANCH'] + "." + ENV['CIRCLE_BUILD_NUM'],
+      xcodeproj: ENV["APP_XCODEPROJ"],
+      scheme: "Tokopedia - Debug"
+    )
 
     disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
 
@@ -125,7 +116,7 @@ platform :ios do
       codesigning_identity: "iPhone Developer: Melissa Juminto (TT6A3N9KTC)",
       export_method: "development"
     )
-        
+
     hockeyapp
   end
 
