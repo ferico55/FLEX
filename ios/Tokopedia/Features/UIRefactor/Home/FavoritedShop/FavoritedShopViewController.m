@@ -196,9 +196,11 @@ FavoriteShopRequestDelegate
         PromoShop *promoShop = _promoShops[indexPath.row].shop;
         if (promoShop.gold_shop) {
             [cell.consImageToNameLabel setConstant:29];
-            cell.storeIcon.image = [UIImage imageNamed:@"icon_medal_gold"];
+            [cell.storeIcon setHidden:false];
+            cell.storeIcon.image = [UIImage imageNamed:@"Badges_gold_merchant"];
         } else if (promoShop.isOfficialStore) {
             [cell.consImageToNameLabel setConstant:29];
+            [cell.storeIcon setHidden:false];
             cell.storeIcon.image = [UIImage imageNamed:@"badge_official"];
         } else {
             [cell.consImageToNameLabel setConstant:8];
