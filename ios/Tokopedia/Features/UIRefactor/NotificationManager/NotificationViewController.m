@@ -239,10 +239,10 @@
         }
     } else if(section == 2) {
         NSInteger row = indexPath.row;
-        NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +        [_notification.result.purchase.purchase_payment_confirm integerValue];
+        NSInteger paymentConfirmation = [_notification.result.purchase.purchase_payment_confirm integerValue];
         if(row == 0 && [_notification.result.purchase.purchase_reorder integerValue] == 0) {
             return 0;
-        } else if(row == 1 && totalPaymentConfirmation == 0) {
+        } else if(row == 1 && paymentConfirmation == 0) {
             return 0;
         } else if(row == 2 && [_notification.result.purchase.purchase_order_status integerValue] == 0) {
             return 0;

@@ -107,8 +107,7 @@
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Status Pembayaran";
-            NSInteger totalPaymentConfirmation = [_notification.result.purchase.purchase_payment_conf integerValue] +[_notification.result.purchase.purchase_payment_confirm integerValue];
-            cell.detailTextLabel.text = [NSString stringWithFormat:@"%zd",totalPaymentConfirmation]?:@"0";
+            cell.detailTextLabel.text = _notification.result.purchase.purchase_payment_confirm?:@"0";
             break;
         case 1:
             cell.textLabel.text = @"Status Pemesanan";
