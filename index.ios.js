@@ -76,7 +76,7 @@ Navigator.registerScreen('TopAdsDashboard', () => props => (
   </Provider>
 ))
 
-Navigator.registerScreen('AddPromoCredit', () => props => (
+Navigator.registerScreen('AddCreditPage', () => props => (
   <Provider store={topAdsDashboardStore}>
     <AddCreditPage {...props} />
   </Provider>
