@@ -20,7 +20,7 @@ class BannerContainer extends Component {
 
   onViewAllPress = () => {
     //TODO: Add GTM Event.
-    ReactTPRoutes.navigate('https://www.tokopedia.com/promo/category/official-store')
+    ReactTPRoutes.navigate('https://www.tokopedia.com/promo/belanja/official-store')
   }
 
   render() {
