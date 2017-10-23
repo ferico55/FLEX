@@ -282,7 +282,7 @@ class HomePageViewController: UIViewController {
     
     private func setupOuterStackCategoryWithData(_ homePageCategoryData: HomePageCategoryData) {
         
-        for (index, layout_section) in homePageCategoryData.layout_sections.enumerated() {
+        for layout_section in homePageCategoryData.layout_sections {
             
             self.setOuterCategorySeparatorView()
             self.categoryVerticalView = OAStackView()
@@ -361,7 +361,8 @@ class HomePageViewController: UIViewController {
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse
             self.homePageCategoryData = homePageCategoryResponse.data
-            self.setupOuterStackCategoryWithData(self.homePageCategoryData!)
+            guard let homePageCategoryData = self.homePageCategoryData else { return }
+            self.setupOuterStackCategoryWithData(homePageCategoryData)
         }) { [unowned self] error in
             self.isRequestingCategory = false
             let stickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)

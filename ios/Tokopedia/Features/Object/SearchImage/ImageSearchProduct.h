@@ -11,7 +11,6 @@
 
 @interface ImageSearchProduct : NSObject
 
-@property (strong, nonatomic) NSString *shop_lucky;
 @property (strong, nonatomic) NSString *shop_id;
 @property (strong, nonatomic) NSString *shop_gold_status;
 @property (strong, nonatomic) NSString *shop_url;

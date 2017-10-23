@@ -45,7 +45,6 @@
         [viewModel setProductReview:_product.count_review_format];
         [viewModel setProductTalk:_product.count_talk_format];
         [viewModel setIsGoldShopProduct:_shop.gold_shop];
-        [viewModel setLuckyMerchantImageURL:_shop.lucky_shop];
         [viewModel setShopLocation:_shop.location];
         [viewModel setBadges:_shop.badges];
         [viewModel setLabels:_product.labels];

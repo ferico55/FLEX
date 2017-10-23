@@ -10,7 +10,6 @@ import Unbox
 
 @objc(ShopProductPageList)
 final class ShopProductPageList: NSObject, Unboxable {
-    let shop_lucky: String
     let shop_gold_status: String
     let shop_id: String
     let shop_url: String
@@ -48,7 +47,6 @@ final class ShopProductPageList: NSObject, Unboxable {
         vm.productReview = product_review_count
         vm.productTalk = product_talk_count
         vm.isGoldShopProduct = shop_gold_status == "1"
-        vm.luckyMerchantImageURL = shop_lucky
         vm.isProductPreorder = product_preorder == 1
         vm.isWholesale = is_product_wholesale
         vm.productLargeUrl = product_image_700
@@ -65,8 +63,7 @@ final class ShopProductPageList: NSObject, Unboxable {
         
     }
     
-    init(shop_lucky: String,
-         shop_gold_status: String,
+    init(shop_gold_status: String,
          shop_id: String,
          shop_url: String,
          product_id: String,
@@ -84,7 +81,6 @@ final class ShopProductPageList: NSObject, Unboxable {
          labels: [ProductLabel]?,
          product_wholesale: Int,
          product_preorder: Int) {
-        self.shop_lucky = shop_lucky
         self.shop_gold_status = shop_gold_status
         self.shop_id = shop_id
         self.shop_url = shop_url
@@ -107,7 +103,6 @@ final class ShopProductPageList: NSObject, Unboxable {
     
     convenience init(unboxer: Unboxer) throws {
         self.init(
-            shop_lucky: try unboxer.unbox(keyPath: "shop_lucky"),
             shop_gold_status: try unboxer.unbox(keyPath: "shop_gold_status"),
             shop_id: try unboxer.unbox(keyPath: "shop_id"),
             shop_url: try unboxer.unbox(keyPath: "shop_url"),

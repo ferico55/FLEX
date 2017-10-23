@@ -40,7 +40,6 @@
         [viewModel setProductReview:self.product_review_count];
         [viewModel setProductTalk:self.product_talk_count];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]?YES:NO];
-        [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         [viewModel setShopLocation:self.shop_location];
         [viewModel setIsProductPreorder:self.product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];

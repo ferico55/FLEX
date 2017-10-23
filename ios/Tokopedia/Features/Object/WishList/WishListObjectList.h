@@ -19,7 +19,6 @@
 @property (nonatomic, strong, nonnull) NSString *shop_name;
 @property (nonatomic, strong, nonnull) NSString *product_image;
 @property (nonatomic, strong, nonnull) NSString *product_name;
-@property (nonatomic, strong, nonnull) NSString *shop_lucky;
 @property (nonatomic, strong, nonnull) NSString *product_available;
 @property (nonatomic, strong, nonnull) NSArray<NSString*>* badges;
 

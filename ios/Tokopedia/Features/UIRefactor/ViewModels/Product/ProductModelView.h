@@ -23,7 +23,6 @@
 @property (strong, nonatomic) NSString *singleGridImageUrl;
 @property (strong, nonatomic) NSString *productReview;
 @property (strong, nonatomic) NSString *productTalk;
-@property (strong, nonatomic) NSString *luckyMerchantImageURL;
 @property (strong, nonatomic) NSString *productDescription;
 
 @property (strong, nonatomic) NSString *productPriceBeforeChange;

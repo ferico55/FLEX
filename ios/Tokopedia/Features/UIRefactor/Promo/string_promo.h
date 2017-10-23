@@ -40,7 +40,6 @@
 #define API_SHOP_RATE_ACCURACY_DESC_KEY @"shop_rate_accuracy_desc_key"
 #define API_SHOP_IS_OWNER_KEY           @"shop_is_owner"
 #define API_PRODUCT_URL_KEY             @"product_url"
-#define API_PRODUCT_SHOP_LUCKY_KEY      @"shop_lucky"
 
 #define API_SHOP_URI_AD_KEY             @"shop_uri_ad"
 #define API_SHOP_IMAGE_KEY              @"shop_image"

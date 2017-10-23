@@ -21,7 +21,7 @@ class MyWishlistData: NSObject {
     var wholesale_price: [MyWishlistWholesalePrice]!
     var condition: String!
     var shop: MyWishlistShop!
-    var badges: [ProductBadge]!
+    var badges: [ProductBadge] = []
     var labels: [ProductLabel]!
     var available: Bool = false
     var status: String!
@@ -50,14 +50,6 @@ class MyWishlistData: NSObject {
             productModelView.productThumbUrl = self.image
             productModelView.isGoldShopProduct = self.shop.gold_merchant
             productModelView.isProductBuyAble = self.available
-            
-            var luckyMerchantImageURL = ""
-            for badge: ProductBadge in self.badges {
-                if badge.title == "Lucky Merchant" {
-                    luckyMerchantImageURL = badge.image_url
-                }
-            }
-            productModelView.luckyMerchantImageURL = luckyMerchantImageURL
             
             var isProductWholesale = false
             if self.wholesale_price != nil {

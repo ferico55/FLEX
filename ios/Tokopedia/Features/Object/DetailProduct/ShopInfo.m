@@ -49,7 +49,6 @@
                       @"shop_domain",
                       @"shop_url",
                       @"shop_is_owner",
-                      @"shop_lucky",
                       @"shop_is_gold",
                       @"shop_is_closed_note",
                       @"shop_is_closed_reason",

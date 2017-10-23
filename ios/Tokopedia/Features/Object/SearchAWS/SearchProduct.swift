@@ -16,7 +16,6 @@ final class SearchProduct:NSObject, Unboxable {
     var product_review_count:Int
     let product_wholesale:Int
     let is_owner:Int
-    let shop_lucky:String?
     let product_image:String?
     let product_image_700:String?
     let preorder:Int
@@ -61,7 +60,6 @@ final class SearchProduct:NSObject, Unboxable {
             vm.productReview = String(self.product_review_count)
             vm.productTalk = String(self.product_talk_count)
             vm.isGoldShopProduct = self.shop_gold_status == 1
-            vm.luckyMerchantImageURL = self.shop_lucky
             vm.shopLocation = self.shop_location
             vm.isProductPreorder = self.product_preorder == 1
             vm.isWholesale = self.is_product_wholesale
@@ -92,7 +90,6 @@ final class SearchProduct:NSObject, Unboxable {
          product_review_count:Int?,
          product_wholesale:Int?,
          is_owner:Int?,
-         shop_lucky:String?,
          product_image:String?,
          product_image_700:String?,
          preorder:Int?,
@@ -127,7 +124,6 @@ final class SearchProduct:NSObject, Unboxable {
         self.product_review_count = product_review_count ?? 0
         self.product_wholesale = product_wholesale ?? 0
         self.is_owner = is_owner ?? 0
-        self.shop_lucky = shop_lucky
         self.product_image = product_image
         self.product_image_700 = product_image_700
         self.preorder = preorder ?? 0
@@ -166,7 +162,6 @@ final class SearchProduct:NSObject, Unboxable {
             product_review_count : try? unboxer.unbox(keyPath: "product_review_count") as Int,
             product_wholesale : try? unboxer.unbox(keyPath: "product_wholesale") as Int,
             is_owner : try? unboxer.unbox(keyPath: "is_owner") as Int,
-            shop_lucky : try? unboxer.unbox(keyPath: "shop_lucky")as String,
             product_image : try? unboxer.unbox(keyPath: "product_image") as String,
             product_image_700 : try? unboxer.unbox(keyPath: "product_image_700") as String,
             preorder : try? unboxer.unbox(keyPath: "preorder") as Int,

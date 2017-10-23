@@ -36,7 +36,6 @@
         [viewModel setProductShop:self.shop_name];
         [viewModel setProductThumbUrl:self.product_image];
         [viewModel setIsGoldShopProduct:[self.shop_gold_status isEqualToString:@"1"]];
-        [viewModel setLuckyMerchantImageURL:self.shop_lucky];
         [viewModel setIsProductPreorder:self.is_product_preorder];
         [viewModel setIsWholesale:self.is_product_wholesale];
         [viewModel setShopLocation:self.shop_location];

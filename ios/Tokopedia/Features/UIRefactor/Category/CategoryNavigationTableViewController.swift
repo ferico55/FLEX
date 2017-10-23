@@ -166,6 +166,10 @@ extension CategoryNavigationTableViewController: RATreeViewDataSource, RATreeVie
         }
     }
     
+    func treeView(_ treeView: RATreeView, editingStyleForRowForItem item: Any) -> UITableViewCellEditingStyle {
+        return .none
+    }
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
