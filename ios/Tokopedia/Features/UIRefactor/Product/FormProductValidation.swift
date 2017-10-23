@@ -260,7 +260,6 @@ class FormProductValidation: NSObject {
     
     //MARK: - Wholesale
     fileprivate func wholesaleValidation(_ wholesales: [WholesalePrice], product:ProductEditDetail) throws {
-        
         wholesales.forEach({ (wholesale) in
             do{
                 try self.wholesalePriceValidation(wholesale.wholesale_price, product: product)

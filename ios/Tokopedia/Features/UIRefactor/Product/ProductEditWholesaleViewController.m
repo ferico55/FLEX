@@ -55,7 +55,6 @@
     
     [self setHeaderAppearance];
     _wholesales = [_form.wholesale_price mutableCopy];
-    if(_wholesales.count == 0)[self addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
 }
 
 -(void)setHeaderAppearance{
@@ -81,6 +80,12 @@
 }
 - (IBAction)onTapAddWholesale:(id)sender {
     [[self.table superview] endEditing:YES];
+    
+    if (_wholesales.count == 5) {
+        [StickyAlertView showErrorMessage:@[@"Maksimal harga grosir yang dapat Anda masukkan adalah 5."]];
+        return;
+    }
+    
     if ([self isValidMaxWholesaleList]) {
         [self addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
         [_table scrollToRowAtIndexPath:[NSIndexPath indexPathForRow:_wholesales.count-1 inSection:0] atScrollPosition:UITableViewScrollPositionBottom animated:YES];
@@ -118,12 +123,7 @@
     __weak typeof(self) wself = self;
     __block ProductEditWholesaleCell *cellWholesale = cell;
     [cell setRemoveWholesale:^(WholesalePrice *wholesale) {
-        if (indexPath.row == 0) {
-            [_wholesales removeAllObjects];
-            [wself addWholesalePrice:@"" withQtyMin:@"" andQtyMax:@""];
-        } else {
-            [wself removeCell:cellWholesale atIndexPath:indexPath];
-        }
+        [wself removeCell:cellWholesale atIndexPath:indexPath];
     }];
     
     return cell;
