@@ -44,7 +44,9 @@ class DigitalCategoryListViewController: UIViewController {
             let grid = DigitalCategoriesComponentView(categories: categories)
             self.view.addSubview(grid)
             self.view.addSubview(header)
-            header.render(in: self.view.bounds.size)
+            if UserAuthentificationManager().isLogin {
+                header.render(in: self.view.bounds.size)
+            }
             grid.render(in: self.view.bounds.size)
             
         }, onFailure: { [weak self] error in

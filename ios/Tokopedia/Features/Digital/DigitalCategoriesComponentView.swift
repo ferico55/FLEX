@@ -43,9 +43,13 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
             view, layout, size in
             view.backgroundColor = .tpBackground()
             layout.width = size.width
-            layout.height = size.height - 60
-            layout.top = 60
-            view.contentInset.top = 10
+            if UserAuthentificationManager().isLogin {
+                layout.height = size.height - 60
+                layout.top = 60
+                view.contentInset.top = 10
+            } else {
+                layout.height = size.height
+            }
         }
         
         func digitalCategoryView(category: HomePageCategoryLayoutRow?) -> NodeType {
