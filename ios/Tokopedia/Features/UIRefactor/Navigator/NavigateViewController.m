@@ -662,10 +662,9 @@
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
-- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key{
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID{
     CatalogViewController *catalogViewController = [CatalogViewController new];
     catalogViewController.catalogID = catalogID;
-    catalogViewController.catalogName = key;
     catalogViewController.catalogImage = @"";
     catalogViewController.catalogPrice = @"";
     

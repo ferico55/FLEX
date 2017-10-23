@@ -628,8 +628,14 @@ class TPRoutes: NSObject {
         }
         
         // MARK: Catalog (Native)
+        JLRoutes.global().addRoute("/catalog/:catalogId") { (params: [String: Any]!) -> Bool in
+            navigator.navigateToCatalog(from: UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String)
+            return true
+        }
+        
+        // in the future, this catalog applinks will be deleted. We suggest to use catalog applinks above
         JLRoutes.global().addRoute("/catalog/:catalogId/:catalogKey") { (params: [String: Any]!) -> Bool in
-            navigator.navigateToCatalog(from: UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String, andCatalogKey: params["catalogKey"] as! String)
+            navigator.navigateToCatalog(from: UIApplication.topViewController(), withCatalogID: params["catalogId"] as! String)
             return true
         }
         

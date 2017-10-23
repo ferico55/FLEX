@@ -58,7 +58,7 @@
 
 -(void)navigateToHotListFromViewController:(UIViewController*)viewController;
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray*)images imageDescriptions:(NSArray*)imageDesc indexImage:(NSInteger)index;
-- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID andCatalogKey:(NSString*)key;
+- (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID;
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
 
