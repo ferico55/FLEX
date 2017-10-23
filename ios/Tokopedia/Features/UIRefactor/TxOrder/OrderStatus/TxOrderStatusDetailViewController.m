@@ -284,7 +284,7 @@
         [[NSNotificationCenter defaultCenter]postNotificationName:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME object:nil];
         
         [view removeAcceptButton];
-        [view removeComplaintNotReceivedButton];
+        [view removeComplaintButton];
         
         if (weakSelf.didReceivedOrder) {
             weakSelf.didReceivedOrder(order);
@@ -327,7 +327,7 @@
         }
         
         [view removeAcceptButton];
-        [view removeComplaintNotReceivedButton];
+        [view removeComplaintButton];
         
     } failure:^(NSError *error, TxOrderStatusList* order) {
 
@@ -428,7 +428,7 @@
     __weak typeof(self) weakSelf = self;
     vc.didCreateComplaint = ^(TxOrderStatusList *order){
         [AnalyticsManager moEngageTrackEventWithName:@"Shipping_Received_Confirmation" attributes:@{@"is_received" : @(isReceived)}];
-        [headerView removeComplaintNotReceivedButton];
+        [headerView removeComplaintButton];
         [headerView removeAcceptButton];
         if (weakSelf.didCreateComplaint) {
             weakSelf.didCreateComplaint(order);

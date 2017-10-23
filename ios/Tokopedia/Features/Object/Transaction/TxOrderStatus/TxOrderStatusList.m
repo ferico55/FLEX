@@ -46,6 +46,13 @@
     }
 }
 
+-(void)setCanComplaint:(BOOL)canComplaint {
+    if (!canComplaint) {
+        self.order_button.button_open_complaint_received = 0;
+        self.order_button.button_open_complaint_not_received = 0;
+    }
+}
+
 - (BOOL)canComplaint {
     if (self.order_button.button_res_center_go_to == 1 || self.order_button.show_reorder == 1) {
         return NO;

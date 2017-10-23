@@ -55,8 +55,8 @@
     [self updateModel:_order mode:CKUpdateModeSynchronous];
 }
 
--(void)removeComplaintNotReceivedButton{
-    _order.canComplaintNotReceived = NO;
+-(void)removeComplaintButton {
+    _order.canComplaint = NO;
     [self updateModel:_order mode:CKUpdateModeSynchronous];
 }
 
