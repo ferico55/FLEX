@@ -146,7 +146,7 @@ class FeedDetailStateManager: NSObject {
         
         product.productID = "\(feedProduct.id!)"
         product.productName = feedProduct.name!
-        product.productRating = feedProduct.rating!
+        product.productRating = Int(feedProduct.rating!)
         product.productCashback = feedProduct.cashback!
         product.productWholesale = ((feedProduct.wholesale?.count)! > 0)
         product.productPrice = feedProduct.price!

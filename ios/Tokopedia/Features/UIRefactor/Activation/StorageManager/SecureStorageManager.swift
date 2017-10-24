@@ -116,9 +116,9 @@ class SecureStorageManager: NSObject {
         }
         let registerDate = data.profile?.registerDate ?? ""
         let isTokocashActive = data.wallet?.linked ?? false
-        let tokocashAmount = data.wallet?.balance ?? "0"
-        let saldoAmount = data.saldo?.depositFmt ?? "0"
-        let topAdsAmount = String(describing: data.topadsDeposit?.topadsAmount ?? 0)
+        let tokocashAmount = data.wallet?.rawBalance ?? 0
+        let saldoAmount = data.saldo?.deposit ?? 0
+        let topAdsAmount = data.topadsDeposit?.topadsAmount ?? 0
         let isTopAdsUser = data.topadsDeposit?.isTopadsUser ?? false
         let hasPurchasedMarketplace = data.paymentAdminProfile?.isPurchasedMarketplace ?? false
         let hasPurchasedDigital = data.paymentAdminProfile?.isPurchasedDigital ?? false

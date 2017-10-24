@@ -47,6 +47,7 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		52414C891F97326100931EC2 /* UserRequest.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 52414C881F97326100931EC2 /* UserRequest.graphql */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -2067,6 +2068,7 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		52414C881F97326100931EC2 /* UserRequest.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserRequest.graphql; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
@@ -6976,6 +6978,7 @@
 		62C5E3111F826A2300EAE044 /* Activation */ = {
 			isa = PBXGroup;
 			children = (
+				52414C881F97326100931EC2 /* UserRequest.graphql */,
 				62C5E3121F826A2300EAE044 /* SignInProviders */,
 				62C5E3141F826A2300EAE044 /* StorageManager */,
 				62C5E3161F826A2300EAE044 /* OTP */,
@@ -11544,6 +11547,7 @@
 				62C5EC1C1F826A2700EAE044 /* FavoritedShopViewController.xib in Resources */,
 				62C5ED5A1F826A2800EAE044 /* AlertInfoView.xib in Resources */,
 				62C5EDD41F826A2800EAE044 /* OpenShopImageViewCell.xib in Resources */,
+				52414C891F97326100931EC2 /* UserRequest.graphql in Resources */,
 				62C5EEC01F826A2900EAE044 /* ReportViewController.xib in Resources */,
 				62C5F24F1F826A2C00EAE044 /* Entypo.ttf in Resources */,
 				62C5F2521F826A2C00EAE044 /* Ionicons.ttf in Resources */,

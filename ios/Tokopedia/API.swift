@@ -495,7 +495,7 @@ public final class FeedDetailQuery: GraphQLQuery {
               GraphQLField("url", type: .scalar(String.self)),
               GraphQLField("productLink", type: .scalar(String.self)),
               GraphQLField("wishlist", type: .scalar(Bool.self)),
-              GraphQLField("rating", type: .scalar(Int.self)),
+              GraphQLField("rating", type: .scalar(Double.self)),
             ]
 
             public var snapshot: Snapshot
@@ -504,7 +504,7 @@ public final class FeedDetailQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(id: Int? = nil, name: String? = nil, price: String? = nil, image: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Int? = nil) {
+            public init(id: Int? = nil, name: String? = nil, price: String? = nil, image: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Double? = nil) {
               self.init(snapshot: ["__typename": "ProductFeedType", "id": id, "name": name, "price": price, "image": image, "wholesale": wholesale, "freereturns": freereturns, "preorder": preorder, "cashback": cashback, "url": url, "productLink": productLink, "wishlist": wishlist, "rating": rating])
             }
 
@@ -616,9 +616,9 @@ public final class FeedDetailQuery: GraphQLQuery {
               }
             }
 
-            public var rating: Int? {
+            public var rating: Double? {
               get {
-                return snapshot["rating"]! as! Int?
+                return snapshot["rating"]! as! Double?
               }
               set {
                 snapshot.updateValue(newValue, forKey: "rating")
@@ -1440,7 +1440,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("url", type: .scalar(String.self)),
               GraphQLField("productLink", type: .scalar(String.self)),
               GraphQLField("wishlist", type: .scalar(Bool.self)),
-              GraphQLField("rating", type: .scalar(Int.self)),
+              GraphQLField("rating", type: .scalar(Double.self)),
             ]
 
             public var snapshot: Snapshot
@@ -1449,7 +1449,7 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(id: Int? = nil, name: String? = nil, price: String? = nil, image: String? = nil, imageSingle: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Int? = nil) {
+            public init(id: Int? = nil, name: String? = nil, price: String? = nil, image: String? = nil, imageSingle: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Double? = nil) {
               self.init(snapshot: ["__typename": "ProductFeedType", "id": id, "name": name, "price": price, "image": image, "image_single": imageSingle, "wholesale": wholesale, "freereturns": freereturns, "preorder": preorder, "cashback": cashback, "url": url, "productLink": productLink, "wishlist": wishlist, "rating": rating])
             }
 
@@ -1570,9 +1570,9 @@ public final class FeedsQuery: GraphQLQuery {
               }
             }
 
-            public var rating: Int? {
+            public var rating: Double? {
               get {
-                return snapshot["rating"]! as! Int?
+                return snapshot["rating"]! as! Double?
               }
               set {
                 snapshot.updateValue(newValue, forKey: "rating")
@@ -2911,6 +2911,7 @@ public final class MoEngageQuery: GraphQLQuery {
     "    __typename" +
     "    linked" +
     "    balance" +
+    "    rawBalance" +
     "    errors {" +
     "      __typename" +
     "      name" +
@@ -2920,6 +2921,7 @@ public final class MoEngageQuery: GraphQLQuery {
     "  saldo {" +
     "    __typename" +
     "    deposit_fmt" +
+    "    deposit" +
     "  }" +
     "  paymentAdminProfile {" +
     "    __typename" +
@@ -3487,6 +3489,7 @@ public final class MoEngageQuery: GraphQLQuery {
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("linked", type: .nonNull(.scalar(Bool.self))),
         GraphQLField("balance", type: .nonNull(.scalar(String.self))),
+        GraphQLField("rawBalance", type: .nonNull(.scalar(Int.self))),
         GraphQLField("errors", type: .list(.object(Error.self))),
       ]
 
@@ -3496,8 +3499,8 @@ public final class MoEngageQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(linked: Bool, balance: String, errors: [Error?]? = nil) {
-        self.init(snapshot: ["__typename": "Wallet", "linked": linked, "balance": balance, "errors": errors])
+      public init(linked: Bool, balance: String, rawBalance: Int, errors: [Error?]? = nil) {
+        self.init(snapshot: ["__typename": "Wallet", "linked": linked, "balance": balance, "rawBalance": rawBalance, "errors": errors])
       }
 
       public var __typename: String {
@@ -3524,6 +3527,15 @@ public final class MoEngageQuery: GraphQLQuery {
         }
         set {
           snapshot.updateValue(newValue, forKey: "balance")
+        }
+      }
+
+      public var rawBalance: Int {
+        get {
+          return snapshot["rawBalance"]! as! Int
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "rawBalance")
         }
       }
 
@@ -3590,6 +3602,7 @@ public final class MoEngageQuery: GraphQLQuery {
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
         GraphQLField("deposit_fmt", type: .nonNull(.scalar(String.self))),
+        GraphQLField("deposit", type: .nonNull(.scalar(Int.self))),
       ]
 
       public var snapshot: Snapshot
@@ -3598,8 +3611,8 @@ public final class MoEngageQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(depositFmt: String) {
-        self.init(snapshot: ["__typename": "Saldo", "deposit_fmt": depositFmt])
+      public init(depositFmt: String, deposit: Int) {
+        self.init(snapshot: ["__typename": "Saldo", "deposit_fmt": depositFmt, "deposit": deposit])
       }
 
       public var __typename: String {
@@ -3617,6 +3630,15 @@ public final class MoEngageQuery: GraphQLQuery {
         }
         set {
           snapshot.updateValue(newValue, forKey: "deposit_fmt")
+        }
+      }
+
+      public var deposit: Int {
+        get {
+          return snapshot["deposit"]! as! Int
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "deposit")
         }
       }
     }

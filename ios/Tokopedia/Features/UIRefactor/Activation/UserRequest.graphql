@@ -38,6 +38,7 @@ query MoEngage($userID: Int!){
     wallet {
       linked
       balance
+      rawBalance
       errors {
         name
         message
@@ -45,6 +46,7 @@ query MoEngage($userID: Int!){
     }
     saldo{
       deposit_fmt
+      deposit
     }
     paymentAdminProfile{
       is_purchased_marketplace
