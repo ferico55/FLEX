@@ -1,22 +1,17 @@
-import React, { Component } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 import {
-  ViewPagerAndroid,
-  Platform,
   View,
   Dimensions,
   Image,
   StyleSheet,
   TouchableWithoutFeedback,
   Text,
-  Linking,
 } from 'react-native'
-import DeviceInfo from 'react-native-device-info';
 
 import Swiper from 'react-native-swiper'
-import PlaceholderImg from './img/grey-bg.png'
 
-const { height, width } = Dimensions.get('window')
+const { width } = Dimensions.get('window')
 
 const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
   const topBanners = banners.filter(banner => banner.html_id === 0)
@@ -25,7 +20,11 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
   }
 
   return (
-    <View height={215} backgroundColor={'rgba(0, 0, 0, 0.05)'} paddingBottom={10}>
+    <View
+      height={215}
+      backgroundColor={'rgba(0, 0, 0, 0.05)'}
+      paddingBottom={10}
+    >
       <Swiper
         autoplay={true}
         showsPagination={true}
@@ -34,54 +33,33 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
         style={styles.bannerSwipe}
         paginationStyle={styles.bannerPagination}
         activeDotColor={'#FF5722'}
-        >
-        {
-          topBanners.map((banner, index) => (
-            <View key={banner.banner_id}>
-              <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
-                <Image
-                        style={styles.pageStyle}
-                        source={{ uri : banner.image_url }}
-                        defaultSource = {{ uri : 'grey-bg' }}
-                        resizeMode='contain'
-                        />
-              </TouchableWithoutFeedback>
-            </View>
-          ))
-        }
+      >
+        {topBanners.map(banner => (
+          <View key={banner.banner_id}>
+            <TouchableWithoutFeedback onPress={e => onBannerPress(e, banner)}>
+              <Image
+                style={styles.pageStyle}
+                source={{ uri: banner.image_url }}
+                defaultSource={{ uri: 'grey-bg' }}
+                resizeMode="contain"
+              />
+            </TouchableWithoutFeedback>
+          </View>
+        ))}
       </Swiper>
-      {/* <ViewPagerAndroid
-        initialPage={0}
-        style={styles.viewPager}>
-        {
-          banners.map((banner, index) => (
-            <View key={banner.banner_id}>
-              <TouchableWithoutFeedback onPress={(e) => onBannerPress(e, banner)}>
-                <Image source={{ uri: banner.image_url }} style={styles.pageStyle}></Image>
-              </TouchableWithoutFeedback>
-            </View>
-          ))
-        }
-      </ViewPagerAndroid>  */}
-      <Text
-        style={styles.viewAll}
-        onPress={onViewAllPress}> Lihat Semua Promo  >
-      </Text>
+      <Text style={styles.viewAll} onPress={onViewAllPress}> Lihat Semua Promo</Text>
     </View>
   )
 }
 
-var styles = StyleSheet.create({
-  container: {
-    //marginVertical: 10
-  },
+let styles = StyleSheet.create({
   bannerBox: {
-    width: width,
-    height: 180
+    width,
+    height: 180,
   },
   pageStyle: {
     alignItems: 'center',
-    width: width,
+    width,
     height: 180,
     resizeMode: 'contain',
   },
@@ -93,7 +71,7 @@ var styles = StyleSheet.create({
     fontSize: 12,
     fontWeight: '600',
     textAlign: 'right',
-    padding: 10
+    padding: 10,
   },
   slide: {
     flexGrow: 1,

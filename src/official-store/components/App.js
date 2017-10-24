@@ -1,14 +1,5 @@
 import React, { Component } from 'react'
-import {
-  ScrollView,
-  View,
-  Text,
-  Button,
-  StyleSheet,
-  TouchableHighlight,
-  Dimensions,
-  RefreshControl
-} from 'react-native'
+import { ScrollView, View, RefreshControl } from 'react-native'
 import { connect } from 'react-redux'
 import BannerContainer from '../containers/bannerContainer'
 import CampaignContainer from '../containers/campaignContainer'
@@ -21,66 +12,69 @@ import {
   fetchBanners,
   fetchCampaigns,
   fetchBrands,
-  refreshState
+  refreshState,
 } from '../actions/actions'
+import GridContainer from '../containers/gridContainer'
+import AllBrand from './AllBrand'
 
 class App extends Component {
   constructor(props) {
-    super(props);
-    this.state = { showBtn: false, refreshing: false, }
+    super(props)
+    this.state = { showBtn: false, refreshing: false }
   }
-  onBackToTopTap = (event) => {
-    var currentOffset = event.nativeEvent
-    this.refs.scrollView.scrollTo({ x: 0, y: 0, animatd: true });
+  onBackToTopTap = () => {
+    this.refs.scrollView.scrollTo({ x: 0, y: 0, animated: true })
   }
 
-  onScroll = (event) => {
+  onScroll = event => {
     if (event.nativeEvent.contentOffset.y > 800) {
       this.setState({
-        showBtn: true
+        showBtn: true,
       })
     } else {
       this.setState({
-        showBtn: false
+        showBtn: false,
       })
     }
   }
 
-  _onRefresh = (event) => {
-    this.setState({ refreshing: true });
+  _onRefresh = () => {
+    this.setState({ refreshing: true })
     const { dispatch } = this.props
     dispatch(refreshState())
     dispatch(fetchBanners())
     dispatch(fetchCampaigns())
     dispatch(fetchBrands(10, 0))
     setTimeout(() => {
-      this.setState({ refreshing: false });
+      this.setState({ refreshing: false })
     }, 5000)
   }
 
   render() {
     return (
       <View>
-        <ScrollView ref="scrollView" 
-          onScroll={this.onScroll} 
+        <ScrollView
+          ref="scrollView"
+          onScroll={this.onScroll}
           scrollEventThrottle={100}
           refreshControl={
             <RefreshControl
               refreshing={this.state.refreshing}
               onRefresh={this._onRefresh}
-              colors={['#42b549']}/>
-          } 
-          >
+              colors={['#42b549']}
+            />
+          }
+        >
           <OfficialStoreIntro />
           <BannerContainer />
+          <AllBrand />
+          <GridContainer />
           <CampaignContainer />
           <BrandContainer />
           <Infographic />
           <Seo />
         </ScrollView>
-        {
-          this.state.showBtn ? (<BackToTop onTap={this.onBackToTopTap} />) : null
-        }
+        {this.state.showBtn ? <BackToTop onTap={this.onBackToTopTap} /> : null}
       </View>
     )
   }

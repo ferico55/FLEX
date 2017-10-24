@@ -1,8 +1,6 @@
 import { combineReducers } from 'redux'
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
-import { 
-  ReactUserManager
-} from 'NativeModules';
+
 import {
   FETCH_CAMPAIGNS,
   FETCH_BANNERS,
@@ -14,27 +12,31 @@ import {
   REMOVE_FROM_FAVOURITE,
   REMOVE_FROM_WISHLIST,
   ADD_WISHLIST_FROM_PDP,
-  REMOVE_WISHLIST_FROM_PDP
+  REMOVE_WISHLIST_FROM_PDP,
 } from '../actions/actions'
 
-
-const campaigns = (state = {
-  items: [],
-  isFetching: false,
-}, action) => {
+const campaigns = (
+  state = {
+    items: [],
+    isFetching: false,
+  },
+  action,
+) => {
   switch (action.type) {
     case `${FETCH_CAMPAIGNS}_${PENDING}`:
       return Object.assign({}, state, {
         isFetching: true,
       })
-    case `${FETCH_CAMPAIGNS}_${FULFILLED}`:
+
+    case `${FETCH_CAMPAIGNS}_${FULFILLED}`: {
       const campaignData = action.payload.data
-      
+
       return {
         items: campaignData,
         isFetching: false,
       }
-      return state
+    }
+
     case `${FETCH_CAMPAIGNS}_${REJECTED}`:
       return state
 
@@ -43,98 +45,86 @@ const campaigns = (state = {
     case `${ADD_TO_WISHLIST}_${FULFILLED}`:
       return {
         ...state,
-        items: state.items.map(b => {
-          return {
-            ...b,
-            Products: b.Products.map(p => {
-              if (action.payload === p.data.id) {
-                return {
-                  ...p,
-                  data: {
-                    ...p.data,
-                    is_wishlist: true
-                  }
-                }
-              } else {
-                return p
+        items: state.items.map(b => ({
+          ...b,
+          Products: b.Products.map(p => {
+            if (action.payload === p.data.id) {
+              return {
+                ...p,
+                data: {
+                  ...p.data,
+                  is_wishlist: true,
+                },
               }
-            })
-          }
-
-        })
+            } else {
+              return p
+            }
+          }),
+        })),
       }
     case `${ADD_TO_WISHLIST}_${REJECTED}`:
       return state
     case ADD_TO_WISHLIST:
       return {
         ...state,
-        items: state.items.map(b => {
-          return {
-            ...b,
-            Products: b.Products.map(p => {
-              if (action.payload === p.data.id) {
-                return {
-                  ...p,
-                  data: {
-                    ...p.data,
-                    is_wishlist: true
-                  }
-                }
-              } else {
-                return p
+        items: state.items.map(b => ({
+          ...b,
+          Products: b.Products.map(p => {
+            if (action.payload === p.data.id) {
+              return {
+                ...p,
+                data: {
+                  ...p.data,
+                  is_wishlist: true,
+                },
               }
-            })
-          }
-
-        })
+            } else {
+              return p
+            }
+          }),
+        })),
       }
 
     case ADD_WISHLIST_FROM_PDP:
       return {
         ...state,
-        items: state.items.map(b => {
-          return {
-            ...b,
-            Products: b.Products.map(p => {
-              if (action.payload == p.data.id) {
-                return {
-                  ...p,
-                  data: {
-                    ...p.data,
-                    is_wishlist: true
-                  }
-                }
-              } else {
-                return p
+        items: state.items.map(b => ({
+          ...b,
+          Products: b.Products.map(p => {
+            if (action.payload == p.data.id) {
+              return {
+                ...p,
+                data: {
+                  ...p.data,
+                  is_wishlist: true,
+                },
               }
-            })
-          }
-
-        })
+            } else {
+              return p
+            }
+          }),
+        })),
       }
 
     case REMOVE_WISHLIST_FROM_PDP:
       return {
         ...state,
-        items: state.items.map(b => {
-          return {
-            ...b,
-            Products: b.Products.map(p => {
-              if (action.payload == p.data.id) {
-                return {
-                  ...p,
-                  data: {
-                    ...p.data,
-                    is_wishlist: false
-                  }
-                }
-              } else {
-                return p
+        items: state.items.map(b => ({
+          ...b,
+          Products: b.Products.map(p => {
+            if (action.payload == p.data.id) {
+              return {
+                ...p,
+                data: {
+                  ...p.data,
+                  is_wishlist: false,
+                },
               }
-            })
-          }
-
-        })
+            } else {
+              return p
+            }
+          }),
+        })),
       }
     case `${REMOVE_FROM_WISHLIST}_${FULFILLED}`:
       return {
@@ -188,10 +178,11 @@ const campaigns = (state = {
   }
 }
 
-const banners = (state = {
-  items: [],
-  isFetching: false,
-}, action) => {
+const banners = (
+  state = {
+    items: [],
+    isFetching: false,
+  }, action) => {
   switch (action.type) {
     case `${FETCH_BANNERS}_${PENDING}`:
       return { ...state, isFetching: true }
@@ -231,9 +222,9 @@ const brands = (state = {
 
       return {
         ...state,
-        items : brands
+        items: brands
       }
-      
+
     case `${FETCH_BRANDS}_${PENDING}`:
       return {
         ...state,
@@ -384,7 +375,7 @@ const brands = (state = {
         })
       }
 
-      case ADD_WISHLIST_FROM_PDP:
+    case ADD_WISHLIST_FROM_PDP:
       console.log(state)
       return {
         ...state,
@@ -442,17 +433,17 @@ const brands = (state = {
 
     case `${ADD_TO_FAVOURITE}_${FULFILLED}`:
       return {
-          ...state,
-          items: state.items.map(b => {
-            if (action.payload === b.id) {
-              return Object.assign({}, b, {
-                isFav: true
-              })
-            } else {
-              return b
-            }
-          })
-        }
+        ...state,
+        items: state.items.map(b => {
+          if (action.payload === b.id) {
+            return Object.assign({}, b, {
+              isFav: true
+            })
+          } else {
+            return b
+          }
+        })
+      }
     case `${REMOVE_FROM_FAVOURITE}_${FULFILLED}`:
       return {
         ...state,

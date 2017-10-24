@@ -8,16 +8,18 @@ import {
   View,
 } from 'react-native'
 
-const LoadMore = (props) => {
-  const Touchable = Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
+const LoadMore = props => {
+  const Touchable =
+    Platform.OS === 'android' ? TouchableNativeFeedback : TouchableOpacity
 
   return (
     <Touchable
-      onPress={() => { props.canFetch && !props.isFetching ? props.onLoadMore(props.limit, props.offset) : null }}>
+      onPress={() => {props.canFetch && !props.isFetching ? props.onLoadMore(props.limit, props.offset) : null }}
+    >
       <View style={styles.container}>
-      <View style={styles.button}>
-        <Text style={styles.text}>Lihat Selebihnya</Text>
-      </View>
+        <View style={styles.button}>
+          <Text style={styles.text}>Lihat Selebihnya</Text>
+        </View>
       </View>
     </Touchable>
   )
@@ -42,7 +44,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     borderWidth: 0,
     backgroundColor: '#fff',
-
-  }
+  },
 })
 export default LoadMore

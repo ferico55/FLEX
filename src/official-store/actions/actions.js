@@ -1,14 +1,13 @@
 import axios from 'axios'
 import find from 'lodash/find'
-import { 
+import {
   ReactNetworkManager,
   TKPReactURLManager,
-  ReactUserManager
-} from 'NativeModules';
-import DeviceInfo from 'react-native-device-info';
+  ReactUserManager,
+} from 'NativeModules'
+import DeviceInfo from 'react-native-device-info'
 
 const MOJITO_HOSTNAME = TKPReactURLManager.mojitoUrl
-const TOME_HOSTNAME = 'https://tome.tokopedia.com'
 
 const endpoints = {
   campaign: `${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/campaigns?device=:device&full_domain=:domain&image_size=:imageSize&image_square=:imageSquare`,
@@ -21,9 +20,9 @@ const checkProductInWishlist = (userId, pIds) => {
     return Promise.resolve({
       data: {
         data: {
-          ids: []
-        }
-      }
+          ids: [],
+        },
+      },
     })
   }
 
@@ -32,8 +31,8 @@ const checkProductInWishlist = (userId, pIds) => {
     .replace(':list_id', pIds)
 
   const config = {
-    url: url,
-    method: 'GET'
+    url,
+    method: 'GET',
   }
 
   return axios(config)
@@ -46,7 +45,8 @@ export const fetchCampaigns = () => {
   const imageSquare = true
   const domain = 'm.tokopedia.com'
 
-  const url = endpoints.campaign.replace(':device', device)
+  const url = endpoints.campaign
+    .replace(':device', device)
     .replace(':domain', domain)
     .replace(':imageSize', imageSize)
     .replace(':imageSquare', imageSquare)
@@ -56,10 +56,11 @@ export const fetchCampaigns = () => {
     return axios.get(url)
   }
 
-  const getCampaigns = () => {
-    return axios.get(url)
+  const getCampaigns = () =>
+    axios
+      .get(url)
       .then(response => {
-        let campaigns = response.data.data.campaigns || []
+        const campaigns = response.data.data.campaigns || []
         return getBanners()
           .then(res => {
             const banners = res.data.data.banners
@@ -81,25 +82,25 @@ export const fetchCampaigns = () => {
             return ReactUserManager.getUserId().then(userId => {
               return checkProductInWishlist(userId, pIds.toString())
             }).then(res => {
-                wishlistProd = res.data.data.ids.map(id => +id)
-                return {
-                  data: campaigns.map(c => {
-                    return {
-                      ...c,
-                      Products: c.Products.map(p => {
-                        const is_wishlist = wishlistProd.indexOf(p.data.id) > -1 ? true : false
-                        return {
-                          ...p,
-                          data: {
-                            ...p.data,
-                            is_wishlist,
-                          }
+              wishlistProd = res.data.data.ids.map(id => +id)
+              return {
+                data: campaigns.map(c => {
+                  return {
+                    ...c,
+                    Products: c.Products.map(p => {
+                      const is_wishlist = wishlistProd.indexOf(p.data.id) > -1 ? true : false
+                      return {
+                        ...p,
+                        data: {
+                          ...p.data,
+                          is_wishlist,
                         }
-                      })
-                    }
-                  })
-                }
-              })
+                      }
+                    })
+                  }
+                })
+              }
+            })
               .catch(err => {
                 return {
                   data: campaigns.map(c => {
@@ -131,7 +132,7 @@ export const fetchCampaigns = () => {
           data: []
         }
       })
-  }
+
 
   return {
     type: FETCH_CAMPAIGNS,
@@ -162,90 +163,90 @@ export const refreshState = () => ({
 })
 
 function getBrands(limit, offset) {
-  
+
   return ReactUserManager.getUserId().then(userId => {
     return axios.get(`${MOJITO_HOSTNAME}/os/api/v1/brands/list?device=ios&microsite=true&user_id=${userId}&limit=${limit}&offset=${offset}`)
-    .then(response => {
-      const brands = response.data.data
-      const total_brands = response.data.total_brands
-      let shopList = brands.map(shop => ({
-        id: shop.shop_id,
-        name: shop.shop_name,
-        brand_img_url: shop.brand_img_url,
-        logo_url: shop.logo_url,
-        microsite_url: shop.microsite_url,
-        shop_mobile_url: shop.shop_mobile_url,
-        shop_domain: shop.shop_domain,
-        shop_apps_url: shop.shop_apps_url,
-        isFav: false,
-      }))
-      let shopIds = brands.map(shop => shop.shop_id)
-      shopIds = shopIds.toString()
-      const shopCount = shopIds.length
-      const bannerRows = DeviceInfo.isTablet() ? 8 : 4
-      const url = `${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/products?device=ios&source=osmicrosite&rows=${bannerRows}&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`
-      
-      
+      .then(response => {
+        const brands = response.data.data
+        const total_brands = response.data.total_brands
+        let shopList = brands.map(shop => ({
+          id: shop.shop_id,
+          name: shop.shop_name,
+          brand_img_url: shop.brand_img_url,
+          logo_url: shop.logo_url,
+          microsite_url: shop.microsite_url,
+          shop_mobile_url: shop.shop_mobile_url,
+          shop_domain: shop.shop_domain,
+          shop_apps_url: shop.shop_apps_url,
+          isFav: false,
+        }))
+        let shopIds = brands.map(shop => shop.shop_id)
+        shopIds = shopIds.toString()
+        const shopCount = shopIds.length
+        const bannerRows = DeviceInfo.isTablet() ? 8 : 4
+        const url = `${MOJITO_HOSTNAME}/os/api/v1/brands/microsite/products?device=ios&source=osmicrosite&rows=${bannerRows}&full_domain=tokopedia.lite:3000&ob=11&image_size=200&image_square=true&brandCount=${shopCount}&brands=${shopIds}`
 
-      let ids = []
-      let wishlistProd = []
-      return axios.get(`${url}`)
-        .then(response => response.data.data.brands)
-        .then(brandsProducts => {
-          shopList = shopList.map(shop => {
-            const shopProduct = find(brandsProducts, product => {
-              return product.brand_id === shop.id
-            })
 
-            if (shopProduct && shopProduct.data) {
-              shopProduct.data.map(product => {
-                ids.push(product.id)
+
+        let ids = []
+        let wishlistProd = []
+        return axios.get(`${url}`)
+          .then(response => response.data.data.brands)
+          .then(brandsProducts => {
+            shopList = shopList.map(shop => {
+              const shopProduct = find(brandsProducts, product => {
+                return product.brand_id === shop.id
               })
 
-              shop.products = shopProduct.data.map(product => ({
-                id: product.id,
-                name: product.name,
-                price: product.price,
-                image_url: product.image_url,
-                is_wishlist: true,
-                url: product.url,
-                shop_name: product.shop.name,
-                labels: product.labels,
-                badges: product.badges,
-                discount_percentage: product.discount_percentage,
-                original_price: product.original_price,
-                url_app: product.url_app
-              }))
-              
-              return shop
-            } else {
-              shop.products = []
-              return shop
-            }
-          })
+              if (shopProduct && shopProduct.data) {
+                shopProduct.data.map(product => {
+                  ids.push(product.id)
+                })
 
-          return checkProductInWishlist(userId, ids.toString())
-          .then(res => {
-            wishlistProd = res.data.data.ids.map(id => +id)
-            
-            return {
-              data: shopList.map(s => {
+                shop.products = shopProduct.data.map(product => ({
+                  id: product.id,
+                  name: product.name,
+                  price: product.price,
+                  image_url: product.image_url,
+                  is_wishlist: true,
+                  url: product.url,
+                  shop_name: product.shop.name,
+                  labels: product.labels,
+                  badges: product.badges,
+                  discount_percentage: product.discount_percentage,
+                  original_price: product.original_price,
+                  url_app: product.url_app
+                }))
+
+                return shop
+              } else {
+                shop.products = []
+                return shop
+              }
+            })
+
+            return checkProductInWishlist(userId, ids.toString())
+              .then(res => {
+                wishlistProd = res.data.data.ids.map(id => +id)
+
                 return {
-                  ...s,
-                  products : s.products.map(p => {
+                  data: shopList.map(s => {
                     return {
-                      ...p,
-                      is_wishlist : wishlistProd.indexOf(p.id) > -1 ? true : false
+                      ...s,
+                      products: s.products.map(p => {
+                        return {
+                          ...p,
+                          is_wishlist: wishlistProd.indexOf(p.id) > -1 ? true : false
+                        }
+                      })
                     }
-                  })
+                  }),
+                  total_brands,
                 }
-              }),
-              total_brands,
-            }
-          })    
+              })
 
-        })
-    })
+          })
+      })
   })
 }
 
@@ -287,21 +288,21 @@ export const addToWishlist = (productId) => ({
   type: ADD_TO_WISHLIST,
   payload: ReactUserManager.getUserId()
     .then(userId => {
-        if(userId == '0') {
-          return
-        }
+      if (userId == '0') {
+        return
+      }
 
-        return ReactNetworkManager.request({
-          method: 'POST',
-          baseUrl: TKPReactURLManager.mojitoUrl,
-          path: '/users/'+ userId +'/wishlist/'+ productId +'/v1.1',
-          params: {},
-          headers: {'X-User-ID' : userId},
+      return ReactNetworkManager.request({
+        method: 'POST',
+        baseUrl: TKPReactURLManager.mojitoUrl,
+        path: '/users/' + userId + '/wishlist/' + productId + '/v1.1',
+        params: {},
+        headers: { 'X-User-ID': userId },
+      })
+        .then(response => {
+          return productId
         })
-    .then(response => {
-      return productId
     })
-  }) 
 })
 
 export const ADD_WISHLIST_FROM_PDP = 'ADD_WISHLIST_FROM_PDP'
@@ -321,63 +322,63 @@ export const removeFromWishlist = (productId) => ({
   type: REMOVE_FROM_WISHLIST,
   payload: ReactUserManager.getUserId()
     .then(userId => {
-      if(userId == '0') {
+      if (userId == '0') {
         return
       }
 
       return ReactNetworkManager.request({
         method: 'DELETE',
         baseUrl: TKPReactURLManager.mojitoUrl,
-        path: '/users/'+ userId +'/wishlist/'+ productId +'/v1.1',
+        path: '/users/' + userId + '/wishlist/' + productId + '/v1.1',
         params: {},
-        headers: {'X-User-ID' : ReactUserManager.userId},
+        headers: { 'X-User-ID': ReactUserManager.userId },
       })
-    .then(res => {
-        return productId
-      })
+        .then(res => {
+          return productId
+        })
     })
-  }) 
+})
 
 export const REMOVE_FROM_FAVOURITE = 'REMOVE_FROM_FAVOURITE'
 export const removeFromFavourite = (shopId) => ({
   type: REMOVE_FROM_FAVOURITE,
   payload: ReactUserManager.getUserId()
-  .then(userId => {
-    if(userId == '0') {
-      return
-    }
+    .then(userId => {
+      if (userId == '0') {
+        return
+      }
 
-    return ReactNetworkManager.request({
-      method: 'POST',
-      baseUrl: TKPReactURLManager.v4Url,
-      path: '/v4/action/favorite-shop/fav_shop.pl',
-      params: {'shop_id' : shopId}
-    }).then(res => {
-      return shopId
-    })
+      return ReactNetworkManager.request({
+        method: 'POST',
+        baseUrl: TKPReactURLManager.v4Url,
+        path: '/v4/action/favorite-shop/fav_shop.pl',
+        params: { 'shop_id': shopId }
+      }).then(res => {
+        return shopId
+      })
 
-  }),
+    }),
 })
 
 export const ADD_TO_FAVOURITE = 'ADD_TO_FAVOURITE'
 export const addToFavourite = (shopId) => ({
   type: ADD_TO_FAVOURITE,
   payload: ReactUserManager.getUserId()
-  .then(userId => {
-    if(userId == '0') {
-      return
-    }
-    
-    return ReactNetworkManager.request({
-      method: 'POST',
-      baseUrl: TKPReactURLManager.v4Url,
-      path: '/v4/action/favorite-shop/fav_shop.pl',
-      params: {'shop_id' : shopId}
-    }).then(res => {
-      return shopId
-    })
+    .then(userId => {
+      if (userId == '0') {
+        return
+      }
 
-  }),
+      return ReactNetworkManager.request({
+        method: 'POST',
+        baseUrl: TKPReactURLManager.v4Url,
+        path: '/v4/action/favorite-shop/fav_shop.pl',
+        params: { 'shop_id': shopId }
+      }).then(res => {
+        return shopId
+      })
+
+    }),
 })
 
 

@@ -6,12 +6,12 @@ import App from './components/App'
 class Root extends Component {
   render() {
     return (
-    <Provider store={store}>
-      <App/>
-    </Provider>
+      <Provider store={store}>
+        <App />
+      </Provider>
     )
   }
 }
 
 // export default Root
-module.exports = Root;
+module.exports = Root

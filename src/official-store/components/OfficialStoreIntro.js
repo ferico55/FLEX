@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Text, Image, FlatList, StyleSheet } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions } from 'react-native'
 import iconUSP from './img/icon-usp.png'
 import iconCheck from './img/icon-gcheck.png'
 
@@ -8,28 +8,56 @@ const OfficialStoreIntro = () => {
     'Produk dari Brand Resmi',
     'Penawaran Ekslusif',
     'Pelayanan Berkualitas',
-    'Cicilan 0% Gratis Biaya Admin'
+    'Cicilan 0% Gratis Biaya Admin',
   ]
+
+  const { width } = Dimensions.get('window')
+  const maxWidth = width > 320 ? 118 : 100
 
   return (
     <View style={styles.osIntro}>
       <View style={styles.osIntroInner}>
         <Image source={iconUSP} style={styles.osIntroImage} />
         <View style={styles.osIntroTextWrap}>
-          <Text style={styles.uspHeading}>{'Official Store Tokopedia'.toUpperCase()}</Text>
-          <View style={{ flexDirection: 'row', alignItems: 'flex-start', flexWrap: 'wrap' }}>
-            {
-              uspText.map((usp, idx) => (
-                <View key={idx} style={idx === 3 ? [{ width: 100 }, styles.uspTextWrap] : [{ width: 130 }, styles.uspTextWrap]}>
-                  <Image source={iconCheck} style={{ width: 10, height: 15, resizeMode: 'contain', marginRight: 5 }} />
-                  <Text
-                    numberOfLines={2}
-                    ellipsizeMode={'tail'}
-                    style={styles.uspText}
-                  >{usp}</Text>
-                </View>
-              ))
-            }
+          <Text style={styles.uspHeading}>
+            {'Official Store Tokopedia'.toUpperCase()}
+          </Text>
+          <View
+            style={{
+              flexDirection: 'row',
+              alignItems: 'flex-start',
+              flexWrap: 'wrap',
+            }}
+          >
+            {uspText.map((usp, idx) => (
+              <View
+                key={idx}
+                style={
+                  idx === 3 ? (
+                    [{ width: '50%', maxWidth }, styles.uspTextWrap]
+                  ) : (
+                      [{ width: '50%', maxWidth }, styles.uspTextWrap]
+                    )
+                }
+              >
+                <Image
+                  source={iconCheck}
+                  style={{
+                    width: 10,
+                    height: 15,
+                    resizeMode: 'contain',
+                    marginRight: 5,
+                  }}
+                />
+                <Text
+                  numberOfLines={2}
+                  ellipsizeMode={'tail'}
+                  style={styles.uspText}
+                >
+                  {usp}
+                </Text>
+              </View>
+            ))}
           </View>
         </View>
       </View>
@@ -71,12 +99,12 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginBottom: 3,
-    marginRight: 10
+    marginRight: 10,
   },
   uspText: {
-    fontSize: 11,
-    lineHeight: 15
-  }
+    fontSize: 10,
+    lineHeight: 12,
+  },
 })
 
 export default OfficialStoreIntro
