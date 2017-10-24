@@ -128,7 +128,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
             let infoButtonImageView = Node<UIImageView> {
                 view, layout, _ in
                 view.contentMode = .center
-                view.image = UIImage(named: "icon_information")
+                view.image = #imageLiteral(resourceName: "icon_info_grey")
                 view.backgroundColor = .clear
                 layout.width = 16
                 layout.height = 16
@@ -198,7 +198,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
                 view.clipsToBounds = true
                 view.cornerRadius = 2
                 view.ad = topAdsResult
-                view.setImageWith(URL(string: product.productThumbEcs), placeholderImage: UIImage(named: "grey-bg.png"))
+                view.setImageWith(URL(string: product.productThumbEcs), placeholderImage: #imageLiteral(resourceName: "grey-bg.png"))
                 layout.aspectRatio = 1
                 layout.margin = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5
             }
@@ -357,7 +357,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                 let infoButtonImageView = Node<UIImageView> {
                     view, layout, _ in
                     view.contentMode = .center
-                    view.image = UIImage(named: "icon_info_grey")
+                    view.image = #imageLiteral(resourceName: "icon_info_grey")
                     view.backgroundColor = .clear
                     layout.width = 14
                     layout.height = 14
@@ -433,7 +433,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
             let plusIcon = Node<UIImageView> {
                 view, layout, _ in
                 view.contentMode = .scaleAspectFit
-                view.image = isShopFavorited ? UIImage(named: "icon_check_favorited") : UIImage(named: "icon_follow_plus")
+                view.image = isShopFavorited ? #imageLiteral(resourceName: "icon_check_favorited") : #imageLiteral(resourceName: "icon_follow_plus")
                 var iconSize = UIDevice.current.userInterfaceIdiom == .pad ? 20 : 25
                 if isShopFavorited {
                     layout.marginRight = 5
@@ -528,7 +528,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     
                     let goldBadgeView = Node<UIImageView> {
                         view, layout, _ in
-                        view.image = UIImage(named: "Badges_gold_merchant")
+                        view.image = #imageLiteral(resourceName: "Badges_gold_merchant")
                         layout.height = 15
                         layout.width = 15
                         layout.marginRight = 5
