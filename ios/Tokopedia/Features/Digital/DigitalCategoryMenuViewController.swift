@@ -449,6 +449,68 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 ])
             }(),
             
+            Node<UIView>() { view, layout, _ in
+                view.backgroundColor = UIColor.tpLightGreen().withAlphaComponent(0.12)
+                view.layer.borderWidth = 1
+                view.layer.borderColor = UIColor.tpGreen().withAlphaComponent(0.12).cgColor
+                view.layer.cornerRadius = 2
+                if let text = state?.selectedProduct?.detail, !text.isEmpty {
+                    layout.padding = 10
+                } else {
+                    layout.padding = 0
+                }
+            }.add(children: [
+                Node<UILabel>(identifier: "keterangan_title") { label, layout, _ in
+                    label.font = .smallThemeMedium()
+                    label.textColor = .tpGreen()
+                    if let text = state?.selectedProduct?.detail, !text.isEmpty {
+                        label.text = "Keterangan"
+                        layout.marginBottom = 10
+                    } else {
+                        label.text = ""
+                        layout.marginBottom = 0
+                    }
+                },
+                Node<UILabel>(
+                    identifier: "keterangan_detail",
+                    create: {
+                        let label = UILabel()
+                        
+                        if let urlString = state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
+                            label.isUserInteractionEnabled = true
+                            let gestureRecognizer = UITapGestureRecognizer()
+                            gestureRecognizer.rx.event
+                                .subscribe(onNext: { _ in
+                                    let webViewController = WKWebViewController(urlString: urlString)
+                                    self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
+                                })
+                                .disposed(by: self.rx_disposeBag)
+                            
+                            label.addGestureRecognizer(gestureRecognizer)
+                        }
+                        
+                        return label
+                }
+                ) { label, _, _ in
+                    label.numberOfLines = 0
+                    label.font = .smallTheme()
+                    label.textColor = .tpSecondaryBlackText()
+                    if let infoString = state?.selectedProduct?.detail,
+                        let detailString = state?.selectedProduct?.urlText {
+                        if !detailString.isEmpty {
+                            let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
+                            let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
+                            let text = NSMutableAttributedString()
+                            text.append(NSMutableAttributedString(string: infoString + " "))
+                            text.append(attributedString)
+                            label.attributedText = text
+                        } else {
+                            label.text = infoString
+                        }
+                    }
+                }
+            ]),
+            
             Node<UIButton>(
                 identifier: "buy",
                 create: {

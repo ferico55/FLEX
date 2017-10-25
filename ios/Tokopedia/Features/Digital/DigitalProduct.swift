@@ -23,6 +23,8 @@ final class DigitalProduct: Unboxable, StateType {
     let detail: String
     let promoTag: String
     let status: DigitalProductStatus
+    let url:String
+    let urlText:String
     
     var hasDiscount: Bool {
         return self.priceText != self.promoPriceText
@@ -34,7 +36,9 @@ final class DigitalProduct: Unboxable, StateType {
          detail: String,
          promoPriceText: String? = nil,
          promoTag: String = "",
-         status: DigitalProductStatus = .available) {
+         status: DigitalProductStatus = .available,
+         url:String = "",
+         urlText:String = "") {
         self.id = id
         self.name = name
         self.priceText = priceText
@@ -42,6 +46,8 @@ final class DigitalProduct: Unboxable, StateType {
         self.promoPriceText = promoPriceText ?? priceText
         self.promoTag = promoTag
         self.status = status
+        self.url = url
+        self.urlText = urlText
     }
     
     convenience init(unboxer: Unboxer) throws {
@@ -54,6 +60,8 @@ final class DigitalProduct: Unboxable, StateType {
         
         let statusInt = try unboxer.unbox(keyPath: "attributes.status") as Int
         let status = DigitalProductStatus(rawValue: statusInt) ?? .available
+        let url = try unboxer.unbox(keyPath: "attributes.detail_url") as String
+        let urlText = try unboxer.unbox(keyPath: "attributes.detail_url_text") as String
         
         self.init(
             id: id,
@@ -62,6 +70,8 @@ final class DigitalProduct: Unboxable, StateType {
             detail: detail,
             promoPriceText: promoPriceText,
             promoTag: promoTag,
-            status: status)
+            status: status,
+            url:url,
+            urlText:urlText)
     }
 }
