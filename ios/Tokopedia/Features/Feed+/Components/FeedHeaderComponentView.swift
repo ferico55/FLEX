@@ -112,10 +112,8 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             button.rx.tap
                 .subscribe(onNext: {
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
-                    if let textURL = ReferralManager().getShortUrlFor(shopState: state.source.shopState) {
-                        let title = state.source.shopState.shareDescription
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button)
-                        self.viewController?.present(controller!, animated: true, completion: nil)
+                    if let viewController = UIApplication.topViewController() {
+                        ReferralManager().share(object:state.source.shopState, from:viewController, anchor: button)
                     }
                 })
                 .disposed(by: self.rx_disposeBag)

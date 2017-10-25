@@ -1456,7 +1456,8 @@ NoResultDelegate
                                        NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
                                        
                                        [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
-                                       
+                                       BranchAnalytics *branch = [BranchAnalytics new];
+                                       [branch sendCommerceEventWithParams:param revenue:revenue];
                                        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
                                                                                                                  AFEventParamContentType : @"Product",
                                                                                                                  AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",

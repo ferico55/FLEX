@@ -317,13 +317,8 @@
         } else if (button.tag == 3) {
             if (_catalog) {
                 NSString *title = _catalog.result.catalog_info.catalog_name;
-                ReferralManager *referralManager = [[ReferralManager alloc] init];
-                NSString *shortUrl = [referralManager getShortUrlForCatalog:_catalog.result.catalog_info];
-                NSURL *url = [NSURL URLWithString:shortUrl];
-                if (url != nil) {
-                    UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title url:url anchor:button];
-                    [self presentViewController:controller animated:YES completion:nil];
-                }
+                ReferralManager *referralManager = [ReferralManager new];
+                [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: button];
             }
         }
     }

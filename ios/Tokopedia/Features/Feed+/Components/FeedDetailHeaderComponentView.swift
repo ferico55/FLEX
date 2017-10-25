@@ -71,10 +71,8 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
             
             button.rx.tap
                 .subscribe(onNext: {
-                    if let textURL = ReferralManager().getShortUrlFor(shopState: state.source.shopState) {
-                        let title = state.source.shopState.shareDescription
-                        let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button)
-                        UIApplication.topViewController()?.present(controller!, animated: true, completion: nil)
+                    if let viewController = UIApplication.topViewController() {
+                        ReferralManager().share(object: state.source.shopState, from: viewController, anchor: button)
                     }
                 })
                 .disposed(by: self.rx_disposeBag)

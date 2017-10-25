@@ -423,22 +423,16 @@ ProductCellDelegate
 
 - (IBAction)didTapShareButton:(id)sender {
     NSString *title;
-    NSString *shortUrl;
-    ReferralManager *referralManager = [[ReferralManager alloc] init];
+    ReferralManager *referralManager = [ReferralManager new];
     if ([_data objectForKey:@"title"] && [_data objectForKey:@"url"]) {
         title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", [_data objectForKey:@"title"]];
-        shortUrl = [referralManager getShortUrlForHotListData:_data];
+        HotlistBannerData * hotlistData = [HotlistBannerData new];
+        hotlistData.title = title;
+        hotlistData.deeplinkPath = [NSString stringWithFormat:@"%@/hot/%@", [NSString tokopediaUrl], [[_bannerResult.info.title stringByReplacingOccurrencesOfString:@" " withString:@"-"] lowercaseString]];
+        hotlistData.desktopUrl = [_data objectForKey:@"url"];
+        [referralManager shareWithObject:hotlistData from:self anchor: sender];
     } else if (_bannerResult) {
-        title = [NSString stringWithFormat:@"Jual %@ | Tokopedia ", _bannerResult.info.title];
-        shortUrl = [referralManager getShortUrlForHotListBannerResult:_bannerResult];
-    }
-    NSURL *url = [NSURL URLWithString:shortUrl];
-    if (title && url) {
-        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                          url:url
-                                                                                       anchor:sender];
-        
-        [self presentViewController:controller animated:YES completion:nil];
+        [referralManager shareWithObject:_bannerResult from:self anchor: sender];
     }
 }
 

@@ -58,7 +58,10 @@
 }
 #endif	
 	
-- (BOOL)shouldShowOnboarding {
+- (BOOL)shouldShowOnboarding:(NSDictionary *)launchOptions {
+    if ([launchOptions valueForKey:UIApplicationLaunchOptionsURLKey]) {
+        return NO;
+    }
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
     
     BOOL alwaysShowOnboarding = FBTweakValue(@"Others", @"Onboarding", @"Always show onboarding", NO);
@@ -67,8 +70,8 @@
     return shouldShowOnboarding;
 }
 
-- (UIViewController*)frontViewController {
-    return [self shouldShowOnboarding]?
+- (UIViewController*)frontViewController:(NSDictionary *)launchOptions {
+    return [self shouldShowOnboarding: launchOptions]?
     [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
     [MainViewController new];
 }
@@ -123,7 +126,7 @@
     [self hideTitleBackButton];
     [JLRoutes setShouldDecodePlusSymbols:NO];
     
-    UIViewController* viewController = [self frontViewController];
+    UIViewController* viewController = [self frontViewController:launchOptions];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = [UIColor whiteColor];
@@ -139,16 +142,24 @@
                 return;
             }
             NSString *urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
-            urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+            urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
             if ([self shallOpenDeepLinkPath:urlString] == NO) {
                 return;
             }
-            NSURL *url = [NSURL URLWithString:urlString];
-            if (url != nil) {
-                [TPRoutes routeURL:url];
+            if ([_nav.topViewController isKindOfClass:[IntroViewController class]]) {
+                MainViewController *viewController = [MainViewController new];
+                _window.rootViewController = viewController;
             }
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                NSURL *url = [NSURL URLWithString:urlString];
+                if (url != nil) {
+                    [TPRoutes routeURL:url];
+                }
+            });
         }
     }];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    [branch setIdentity:[userManager getUserId]];
     
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];

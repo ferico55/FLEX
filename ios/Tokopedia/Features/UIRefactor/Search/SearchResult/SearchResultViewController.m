@@ -700,14 +700,11 @@ ProductCellDelegate
             }
             
             title = [[NSString stringWithFormat:@"Jual %@ | Tokopedia", title] capitalizedString];
-            ReferralManager *referralManager = [[ReferralManager alloc] init];
-            NSString *shortUrl = [referralManager getShortUrlForSearch:_searchObject];
-            NSURL *url = [NSURL URLWithString: shortUrl];
-            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                              url:url
-                                                                                           anchor:button];
-            
-            [self presentViewController:controller animated:YES completion:nil];
+            ReferralManager *referralManager = [ReferralManager new];
+            SearchProductWrapperReferable *referable = [SearchProductWrapperReferable new];
+            referable.wrapper = _searchObject;
+            referable.title = title;
+            [referralManager shareWithObject:referable from:self anchor: button];
             break;
         }
         case 13:

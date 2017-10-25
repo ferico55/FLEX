@@ -492,7 +492,7 @@ typedef enum TagRequest {
 //    [[GPPSignIn sharedInstance] disconnect];
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
-    
+    [[Branch getInstance] logout];
     [AnalyticsManager moEngageTrackLogout];
 
     [self requestLogout];

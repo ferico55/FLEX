@@ -32,12 +32,10 @@ class CodeShareTableViewController: UITableViewController {
     }
     @IBAction private func sendInviteButtonTapped(sender: UIButton) {
         ReferralRemoteConfig.shared.getAppShareDescription { (description: String) in
-            if let textURL = ReferralManager().getShortUrlForHome() {
-                let title = description
-                let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: sender)
-                self.present(controller!, animated: true, completion: nil)
-                AnalyticsManager.trackEventName("clickReferral", category: "Referral", action: GA_EVENT_ACTION_CLICK, label: "Share")
-            }
+            let appSharing = AppSharing()
+            appSharing.buoDescription = description
+            ReferralManager().share(object: appSharing, from: self, anchor: sender)
+            AnalyticsManager.trackEventName("clickReferral", category: "Referral", action: GA_EVENT_ACTION_CLICK, label: "Share")
         }
     }
 //    MARK:- UITableViewDelegate

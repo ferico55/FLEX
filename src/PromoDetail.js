@@ -339,6 +339,7 @@ class PromoDetail extends React.PureComponent {
         onPress={e =>
           ReactInteractionHelper.share(
             this.state.data.link,
+            this.state.data.slug,
             `${entities.decodeHTML(
               this.state.data.title.rendered,
             )} | Tokopedia`,

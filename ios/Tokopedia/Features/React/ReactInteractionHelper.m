@@ -31,15 +31,18 @@ RCT_EXPORT_METHOD(showTooltip:(NSString*) title subtitle:(NSString*)subtitle ima
     });
 }
 
-RCT_EXPORT_METHOD(share:(NSString *)urlString caption:(NSString*) caption anchor:(nonnull NSNumber*) anchorTag) {
+RCT_EXPORT_METHOD(share:(NSString *)urlString promoName:(NSString*)promo caption:(NSString*) caption anchor:(nonnull NSNumber*) anchorTag) {
     dispatch_async(dispatch_get_main_queue(), ^{
-        NSURL *url = [NSURL URLWithString: urlString];
+        RCTSharingReferable * object = [RCTSharingReferable new];
+        object.desktopUrl = urlString;
+        object.deeplinkPath = [NSString stringWithFormat:@"promo/%@",promo];
+        object.title = caption;
+        object.feature = @"Promo";
+        object.utm_campaign = @"promo";
         RCTView* view = (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
-        UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:caption
-                                                                                          url:url
-                                                                                       anchor:view];
-        
-        [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:controller animated:YES completion:nil];
+        UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        ReferralManager *referralManager = [[ReferralManager alloc] init];
+        [referralManager shareWithObject:object from:viewController anchor:view];
     });
 }
 

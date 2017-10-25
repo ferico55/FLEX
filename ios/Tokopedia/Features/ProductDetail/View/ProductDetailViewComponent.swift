@@ -884,15 +884,12 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             productDetail.url != "" else {
             return
         }
-        if let textURL = ReferralManager().getShortUrlFor(product: productDetail) {
-            let url = URL(string: textURL)
-            let title = " \(productDetail.name) - \(productDetail.shop.name)| Tokopedia "
-            let activityController = UIActivityViewController.shareDialog(withTitle: title, url: url, anchor: sender as! UIView)
-            self.viewController.present(activityController!, animated: true, completion: {
-                let eventLabel = "Share - \(productDetail.name)"
-                AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: eventLabel)
-            })
+        let anchor = sender as? UIView
+        if let viewController = UIApplication.topViewController() {
+            ReferralManager().share(object: productDetail, from: viewController, anchor: anchor)
         }
+        let eventLabel = "Share - \(productDetail.name)"
+        AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: eventLabel)
     }
     
     @objc

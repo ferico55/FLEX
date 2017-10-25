@@ -8,6 +8,7 @@
 
 import UIKit
 import SwiftOverlays
+import Branch
 
 class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, AuthenticationServiceProtocol {
     var onLoginFinished: ((_ loginResult: LoginResult?) -> Void)?
@@ -147,6 +148,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     }
     //    MARK: - Notifications
     fileprivate func notifyUserDidLogin() {
+        Branch.getInstance().setIdentity(UserAuthentificationManager().getUserId())
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
