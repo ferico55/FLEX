@@ -11,7 +11,7 @@ import MMNumberKeyboard
 import SwiftOverlays
 import TPKeyboardAvoiding
 import HMSegmentedControl
-
+import CFAlertViewController
 import Moya
 
 extension Array where Element: DigitalOperator {
@@ -435,6 +435,16 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             .map { DigitalWidgetAction.toggleInstantPayment }
                             .dispatch(to: self.store)
                             .disposed(by: self.disposeBag)
+                    },
+                    Node<UIButton>() { button, layout, _ in
+                        layout.marginLeft = 5
+                        button.setImage(#imageLiteral(resourceName: "icon_info_grey"), for: .normal)
+                        button.rx.tap.subscribe(onNext: { [weak self] in
+                            let closeButton = CFAlertAction.action(title: "Tutup", style: .Destructive, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white, handler: nil)
+                            let actionSheet = TooltipAlert.createAlert(title: "Bayar Instan", subtitle: "Selesaikan transaksi dengan 1 klik saja menggunakan TokoCash", image: #imageLiteral(resourceName:"icon_bayar_instan"), buttons: [closeButton])
+                            self?.viewController?.present(actionSheet, animated: true, completion: nil)
+                        }).disposed(by: self.disposeBag)
+                        
                     }
                 ])
             }(),

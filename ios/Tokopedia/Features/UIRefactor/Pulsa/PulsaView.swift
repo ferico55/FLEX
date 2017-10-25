@@ -13,6 +13,7 @@ import MMNumberKeyboard
 import HMSegmentedControl
 import BEMCheckBox
 import JLPermissions
+import CFAlertViewController
 
 @objc
 class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
@@ -114,6 +115,16 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         saldoLabel.font = UIFont.largeTheme()
         saldoLabel.isHidden = true
         return saldoLabel
+    }()
+    
+    lazy fileprivate var infoButton: UIButton = {
+        let infoButton = UIButton(frame: CGRect.zero)
+        infoButton.setImage(#imageLiteral(resourceName: "icon_info_grey"), for: .normal)
+        infoButton.isHidden = true
+        infoButton.bk_addEventHandler({ [weak self] button -> Void in
+            self?.showInfo()
+        }, for: .touchUpInside)
+        return infoButton
     }()
     
     fileprivate var numberErrorPlaceholder: UIView!
@@ -552,6 +563,13 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.width.equalTo()(120)
             make?.left.equalTo()(self.saldoCheckBox.mas_right)?.offset()(5)
         }
+        
+        saldoButtonPlaceholder.addSubview(self.infoButton)
+        
+        self.infoButton.mas_makeConstraints { make in
+            make?.centerY.equalTo()(self.saldoCheckBox)
+            make?.left.equalTo()(self.saldoLabel.mas_right)?.offset()(-35)
+        }
     }
     
     fileprivate func buildBuyButtonPlaceholder() {
@@ -774,6 +792,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
         self.saldoCheckBox.isHidden = true
         self.saldoLabel.isHidden = true
+        self.infoButton.isHidden = true
         
         _ = saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
             make?.height.equalTo()(0)
@@ -792,6 +811,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         
         self.saldoCheckBox.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         self.saldoLabel.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
+        self.infoButton.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
         self.buyButton.isHidden = false
     }
@@ -1140,6 +1160,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             return UserDefaults.standard.isInstantPaymentEnabled
         }
         return false
+    }
+    
+    fileprivate func showInfo() {
+        let closeButton = CFAlertAction.action(title: "Tutup", style: .Destructive, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white, handler: nil)
+        let actionSheet = TooltipAlert.createAlert(title: "Bayar Instan", subtitle: "Selesaikan transaksi dengan 1 klik saja menggunakan TokoCash", image: #imageLiteral(resourceName:"icon_bayar_instan"), buttons: [closeButton])
+        self.navigator.controller.present(actionSheet, animated: true, completion: nil)
     }
 }
 
