@@ -49,6 +49,15 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 #pragma mark - Google Analytics Trackers
 
++ (NSDictionary*)getEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    return @{
+             @"event" : event?:@"",
+             @"eventCategory" : category?:@"",
+             @"eventAction" : action?:@"",
+             @"eventLabel" : label?:@""
+             };
+}
+
 + (void)trackScreenName:(NSString *)name {
     AnalyticsManager *manager = [[self alloc] init];
     
@@ -519,13 +528,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
     AnalyticsManager *manager = [[self alloc] init];
     
-    NSDictionary *data = @{
-                           @"event" : event?:@"",
-                           @"eventCategory" : category?:@"",
-                           @"eventAction" : action?:@"",
-                           @"eventLabel" : label?:@""
-                           };
-    
+    NSDictionary *data = [self getEventName:event category:category action:action label:label];
     [manager.dataLayer push:data];
 }
 
@@ -684,21 +687,37 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 }
 
 + (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type {
-    id<GAITracker> tracker = [[GAI sharedInstance] defaultTracker];
-    GAIEcommercePromotion *promotion = [[GAIEcommercePromotion alloc] init];
-    [promotion setId:slide.slideId];
-    [promotion setName:slide.bannerTitle];
-    [promotion setCreative:[slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"]];
-    [promotion setPosition:[NSString stringWithFormat:@"slide_banner_%ld",(long)index]];
+    AnalyticsManager *manager = [[self alloc] init];
     
-    GAIDictionaryBuilder *builder = [GAIDictionaryBuilder createEventWithCategory:@"Internal Promotions"
-                                                                           action:type == HomeBannerPromotionTrackerTypeView ? @"view" : @"click"
-                                                                            label:slide.bannerTitle
-                                                                            value:nil];
+    NSString *promoAction = type == HomeBannerPromotionTrackerTypeView ? @"promoView" : @"promoClick";
     
-    [builder set:type == HomeBannerPromotionTrackerTypeView ? kGAIPromotionView : kGAIPromotionView forKey:kGAIPromotionAction];
-    [builder addPromotion:promotion];
-    [tracker send:[builder build]];
+    NSDictionary *ecommercePromoDataLayer = @{
+                           @"ecommerce": @{
+                                   promoAction : @{
+                                           @"promotions": @[@{
+                                                                @"id": slide.slideId,
+                                                                @"name": slide.bannerTitle,
+                                                                @"creative": [slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                                                @"position": [NSString stringWithFormat:@"slide_banner_%ld",(long)index]
+                                                                }]
+                                           }
+                                   }
+                           };
+    
+    if (type == HomeBannerPromotionTrackerTypeClick) {
+        ecommercePromoDataLayer = [ecommercePromoDataLayer mergedWithDictionary:@{@"event": @"promotionClick"}];
+    }
+
+    NSDictionary* eventDataLayer = [self
+                                 getEventName: @"InternalPromo"
+                                 category: @"Internal Promotions"
+                                 action: type == HomeBannerPromotionTrackerTypeView ? @"view" : @"click"
+                                 label: slide.bannerTitle];
+    
+    
+    [manager.dataLayer push:eventDataLayer];
+    [manager.dataLayer push:ecommercePromoDataLayer];
+
 }
 
 @end

@@ -82,4 +82,10 @@
     return [queries copy];
 }
 
+-(NSDictionary*)mergedWithDictionary:(NSDictionary *)dictionary {
+    NSMutableDictionary *mutableEcommerceData = [self mutableCopy];
+    [mutableEcommerceData addEntriesFromDictionary:dictionary];
+    return [mutableEcommerceData copy];
+}
+
 @end

@@ -15,5 +15,6 @@
 - (NSDictionary<NSString *, id> *)autoParameters;
 - (NSString*)toJSONString;
 + (NSDictionary*)dictionaryFromURLString:(NSString *)URLString;
+- (NSDictionary*)mergedWithDictionary:(NSDictionary *)dictionary;
 
 @end
