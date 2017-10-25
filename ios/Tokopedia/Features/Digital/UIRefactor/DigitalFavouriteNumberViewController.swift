@@ -56,6 +56,12 @@ class DigitalFavouriteNumberViewController: UIViewController, UITextFieldDelegat
         self.searchTextField.becomeFirstResponder()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        AnalyticsManager.trackScreenName("Recharge Favourite Number Page")
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.sizeToFit()

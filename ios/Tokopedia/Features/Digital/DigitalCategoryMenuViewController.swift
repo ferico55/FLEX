@@ -145,7 +145,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     func selectedFavouriteNumber(favourite: DigitalFavourite) {
         guard let categoryID = favourite.categoryID, let form = store.state.form else { return }
         let selectedData = DigitalLastOrder(categoryId: categoryID, operatorId: favourite.operatorID, productId: favourite.productID, clientNumber: favourite.clientNumber)
-        
+        AnalyticsManager.trackRechargeEvent(event: .homepage, category: form.name, action: "Select Number on User Profile", label: form.name)
         store.dispatch(DigitalWidgetAction.receiveForm(form, selectedData, widgetView.loadInstantPaymentCheck()))
     }
 }
@@ -1018,7 +1018,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             .map(to: DigitalForm.self)
         
         let lastOrder = DigitalService().getFavouriteList(category: categoryId).flatMap { [weak self] favourites -> Observable<DigitalLastOrder> in
-            guard let `self` = self, let list = favourites?.list else { return Observable<DigitalLastOrder>.empty() }
+            guard let `self` = self else { return Observable.empty() }
+            guard let list = favourites?.list else { return Observable.just(DigitalLastOrder(categoryId: self.categoryId)) }
             self.store.state.favourites = list
             return DigitalService().lastOrder(categoryId: self.categoryId, favourites: favourites)
         }
