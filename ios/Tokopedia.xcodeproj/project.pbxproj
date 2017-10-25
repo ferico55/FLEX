@@ -47,6 +47,12 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		522694691FA02F5900004056 /* DigitalFavouriteNumberCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522694651FA02F5600004056 /* DigitalFavouriteNumberCell.xib */; };
+		5226946A1FA02F5900004056 /* DigitalFavouriteNumberCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522694661FA02F5700004056 /* DigitalFavouriteNumberCell.swift */; };
+		5226946B1FA02F5900004056 /* DigitalFavouriteNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 522694671FA02F5700004056 /* DigitalFavouriteNumberViewController.xib */; };
+		5226946C1FA02F5900004056 /* DigitalFavouriteNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 522694681FA02F5800004056 /* DigitalFavouriteNumberViewController.swift */; };
+		5237C5FE1FA073070071C091 /* DigitalFavourite.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5237C5FC1FA073070071C091 /* DigitalFavourite.swift */; };
+		5237C5FF1FA073070071C091 /* DigitalFavourites.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5237C5FD1FA073070071C091 /* DigitalFavourites.swift */; };
 		52414C891F97326100931EC2 /* UserRequest.graphql in Resources */ = {isa = PBXBuildFile; fileRef = 52414C881F97326100931EC2 /* UserRequest.graphql */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
@@ -2068,6 +2074,12 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		522694651FA02F5600004056 /* DigitalFavouriteNumberCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalFavouriteNumberCell.xib; sourceTree = "<group>"; };
+		522694661FA02F5700004056 /* DigitalFavouriteNumberCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalFavouriteNumberCell.swift; sourceTree = "<group>"; };
+		522694671FA02F5700004056 /* DigitalFavouriteNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DigitalFavouriteNumberViewController.xib; sourceTree = "<group>"; };
+		522694681FA02F5800004056 /* DigitalFavouriteNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalFavouriteNumberViewController.swift; sourceTree = "<group>"; };
+		5237C5FC1FA073070071C091 /* DigitalFavourite.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalFavourite.swift; sourceTree = "<group>"; };
+		5237C5FD1FA073070071C091 /* DigitalFavourites.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalFavourites.swift; sourceTree = "<group>"; };
 		52414C881F97326100931EC2 /* UserRequest.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = UserRequest.graphql; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -10279,6 +10291,10 @@
 		62C5EACC1F826A2600EAE044 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				522694661FA02F5700004056 /* DigitalFavouriteNumberCell.swift */,
+				522694651FA02F5600004056 /* DigitalFavouriteNumberCell.xib */,
+				522694681FA02F5800004056 /* DigitalFavouriteNumberViewController.swift */,
+				522694671FA02F5700004056 /* DigitalFavouriteNumberViewController.xib */,
 				62C5EACD1F826A2600EAE044 /* DigitalCartViewController.swift */,
 				62C5EACE1F826A2600EAE044 /* DigitalCartViewController.xib */,
 			);
@@ -10288,6 +10304,8 @@
 		62C5EAD01F826A2600EAE044 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				5237C5FC1FA073070071C091 /* DigitalFavourite.swift */,
+				5237C5FD1FA073070071C091 /* DigitalFavourites.swift */,
 				62C5EAD11F826A2600EAE044 /* DigitalCart.swift */,
 				62C5EAD21F826A2600EAE044 /* DigitalCartUserInputPrice.swift */,
 				62C5EAD31F826A2600EAE044 /* DigitalCartPayment.swift */,
@@ -11363,6 +11381,7 @@
 				62C5ED471F826A2800EAE044 /* AlertListBankCell.xib in Resources */,
 				62C5ECD11F826A2700EAE044 /* ChangeCourierViewController.xib in Resources */,
 				62C5ED121F826A2800EAE044 /* ProductQuantityCell.xib in Resources */,
+				5226946B1FA02F5900004056 /* DigitalFavouriteNumberViewController.xib in Resources */,
 				62C5EFAB1F826A2900EAE044 /* RegisterEmailViewController.xib in Resources */,
 				3494588F1F306BDB00EEB628 /* icon_wishlist_active@2x.png in Resources */,
 				62C5EEE51F826A2900EAE044 /* UserProfileBiodataViewController.xib in Resources */,
@@ -11590,6 +11609,7 @@
 				62C5EF3B1F826A2900EAE044 /* ResolutionCenterCreateStepOneCell.xib in Resources */,
 				349458711F306BDB00EEB628 /* badge_official_small@2x.png in Resources */,
 				62C5EEDE1F826A2900EAE044 /* ProfileBiodataCell.xib in Resources */,
+				522694691FA02F5900004056 /* DigitalFavouriteNumberCell.xib in Resources */,
 				62C5EF4D1F826A2900EAE044 /* ResolutionCenterChooseSolutionViewController.xib in Resources */,
 				62C5EE4E1F826A2800EAE044 /* ReviewSummaryViewController.xib in Resources */,
 				62C5EE201F826A2800EAE044 /* DetailProductWholesaleTableCell.xib in Resources */,
@@ -12397,6 +12417,7 @@
 				62C5ECD51F826A2700EAE044 /* CancelOrderShipmentViewController.swift in Sources */,
 				62C5EE5C1F826A2800EAE044 /* AttachedPicture.m in Sources */,
 				62C5EE131F826A2800EAE044 /* TopPickItem.swift in Sources */,
+				5237C5FE1FA073070071C091 /* DigitalFavourite.swift in Sources */,
 				62C5F08A1F826A2A00EAE044 /* DepartmentChild2.m in Sources */,
 				DADB9F4E1F3C46CE002B1FAE /* FBTweakShakeWindow.m in Sources */,
 				62C5F1D81F826A2C00EAE044 /* DetailTotalLikeDislike.m in Sources */,
@@ -12447,6 +12468,7 @@
 				62C5EE4F1F826A2800EAE044 /* MyReviewDetailHeaderComponent.mm in Sources */,
 				62C5ED351F826A2800EAE044 /* ReplacementDetailViewModel.swift in Sources */,
 				62C5F0361F826A2A00EAE044 /* GoogleDistanceMatrixElement.m in Sources */,
+				5226946A1FA02F5900004056 /* DigitalFavouriteNumberCell.swift in Sources */,
 				62C5F1EA1F826A2C00EAE044 /* ShipmentShopData.m in Sources */,
 				62C5F0EB1F826A2B00EAE044 /* InboxMessageAction.m in Sources */,
 				62C5F0F51F826A2B00EAE044 /* ReputationDetail.m in Sources */,
@@ -13567,6 +13589,7 @@
 				62C5ECBC1F826A2700EAE044 /* FilterSalesTransactionListViewController.m in Sources */,
 				62C5F0A71F826A2A00EAE044 /* ResolutionCenterDetailResult.m in Sources */,
 				62C5EF9E1F826A2900EAE044 /* PromoRequest.m in Sources */,
+				5226946C1FA02F5900004056 /* DigitalFavouriteNumberViewController.swift in Sources */,
 				62C5EB6F1F826A2700EAE044 /* UIKitExtension.swift in Sources */,
 				62C5EE961F826A2900EAE044 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				62C5F19B1F826A2B00EAE044 /* UploadImageSubmitResult.m in Sources */,
@@ -13668,6 +13691,7 @@
 				62C5F23B1F826A2C00EAE044 /* AuthenticationServiceExtension.swift in Sources */,
 				62C5F0051F826A2A00EAE044 /* TxOrderStatus.m in Sources */,
 				62C5ECF11F826A2700EAE044 /* DueDateViewController.m in Sources */,
+				5237C5FF1FA073070071C091 /* DigitalFavourites.swift in Sources */,
 				62C5F1E81F826A2C00EAE044 /* ShipmentCourierData.m in Sources */,
 				62C5ECA61F826A2700EAE044 /* CarouselDataSource.m in Sources */,
 				62C5EC8F1F826A2700EAE044 /* ResolutionCenterDetailCell.m in Sources */,

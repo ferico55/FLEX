@@ -44,6 +44,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     var alertState = DigitalAlertState.idle
     var errorMessages = [String: String]()
     var selectedTab = 0
+    var favourites: [DigitalFavourite] = []
     
     var canAddToCart: Bool = true
     

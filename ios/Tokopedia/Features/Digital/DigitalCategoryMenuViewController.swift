@@ -44,7 +44,8 @@ import MoyaUnbox
 
 // MARK: UI
 
-class DigitalCategoryMenuViewController: UIViewController {
+class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumberProtocol {
+    
     fileprivate var store: Store<DigitalState>!
     
     fileprivate var widgetView: DigitalWidgetView!
@@ -134,6 +135,18 @@ class DigitalCategoryMenuViewController: UIViewController {
         guard widgetView != nil else { return }
         store.unsubscribe(widgetView)
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
+    func selectedFavouriteNumber(favourite: DigitalFavourite) {
+        guard let categoryID = favourite.categoryID, let form = store.state.form else { return }
+        let selectedData = DigitalLastOrder(categoryId: categoryID, operatorId: favourite.operatorID, productId: favourite.productID, clientNumber: favourite.clientNumber)
+        
+        store.dispatch(DigitalWidgetAction.receiveForm(form, selectedData, widgetView.loadInstantPaymentCheck()))
+    }
 }
 
 class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckBoxDelegate {
@@ -142,7 +155,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     
     fileprivate let phoneBookService = PhoneBookService()
     fileprivate weak var viewController: UIViewController?
-    
+    fileprivate var favouriteNumber: DigitalFavourite?
     fileprivate let categoryId: String
     
     init(store: Store<DigitalState>, categoryId: String, viewController: UIViewController) {
@@ -202,11 +215,20 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             view.inputView = keyboard
                         }
                         
-                        view
-                            .rx.text.orEmpty.changed
-                            .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
-                            .dispatch(to: self.store)
-                            .disposed(by: self.disposeBag)
+                        if self.store.state.favourites.count > 0 {
+                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                guard let favourites = self?.store.state.favourites, let `self` = self else { return }
+                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID:self.categoryId, operatorID:self.store.state.selectedOperator?.id ?? "", productID:self.store.state.selectedOperator?.defaultProduct?.id ?? "", number:textInputState.text, inputType:textInput.type)
+                                viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
+                                viewController.title = "Nomor Favorit"
+                                self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                            }).disposed(by: self.disposeBag)
+                        } else {
+                            view.rx.text.orEmpty.changed
+                                .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
+                                .dispatch(to: self.store)
+                                .disposed(by: self.disposeBag)
+                        }
                     }.add(
                         child: Node<UIImageView>(identifier: "icon") { [unowned self] imageView, layout, _ in
                             layout.width = 35
@@ -992,8 +1014,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             })
             .map(to: DigitalForm.self)
         
-        let lastOrder = DigitalService()
-            .lastOrder(categoryId: categoryId)
+        let lastOrder = DigitalService().getFavouriteList(category: categoryId).flatMap { [weak self] favourites -> Observable<DigitalLastOrder> in
+            guard let `self` = self, let list = favourites?.list else { return Observable<DigitalLastOrder>.empty() }
+            self.store.state.favourites = list
+            return DigitalService().lastOrder(categoryId: self.categoryId, favourites: favourites)
+        }
         
         Observable.zip(form, lastOrder) { form, lastOrder in
             return (form, lastOrder)

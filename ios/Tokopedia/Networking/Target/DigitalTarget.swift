@@ -31,7 +31,7 @@ class DigitalProvider: NetworkProvider<DigitalTarget> {
         return NetworkProvider.defaultEndpointCreator(for: target)
             .adding(
                 httpHeaderFields: headers
-        )
+            )
     }
 }
 
@@ -44,6 +44,7 @@ enum DigitalTarget {
     case getCart(String)
     case lastOrder(String)
     case deleteCart(String)
+    case favourite(String)
 }
 
 extension DigitalTarget: TargetType {
@@ -62,6 +63,7 @@ extension DigitalTarget: TargetType {
         case .getCart: return "/v1.4/cart"
         case .lastOrder: return "/v1.4/last-order"
         case .deleteCart: return "/v1.4/cart"
+        case .favourite : return "/v1.4/favorite/list"
         }
     }
     
@@ -69,7 +71,7 @@ extension DigitalTarget: TargetType {
     var method: Moya.Method {
         switch self {
         case .addToCart, .payment: return .post
-        case .category, .voucher, .getCart, .lastOrder: return .get
+        case .category, .voucher, .getCart, .lastOrder, .favourite: return .get
         case .otpSuccess: return .patch
         case .deleteCart: return .delete
         }
@@ -98,10 +100,10 @@ extension DigitalTarget: TargetType {
                         "user_agent": userAgent,
                         "show_subscribe_flag": true,
                         "fields": fields,
-                        "identifier" : [
-                            "user_id" : userManager.getUserId(),
-                            "device_token" : userManager.getMyDeviceToken(),
-                            "os_type" : "2"
+                        "identifier": [
+                            "user_id": userManager.getUserId(),
+                            "device_token": userManager.getMyDeviceToken(),
+                            "os_type": "2"
                         ]
                     ]
                 ]
@@ -115,10 +117,10 @@ extension DigitalTarget: TargetType {
                     "attributes": [
                         "ip_address": getIFAddresses(),
                         "user_agent": userAgent,
-                        "identifier" : [
-                            "user_id" : userManager.getUserId(),
-                            "device_token" : userManager.getMyDeviceToken(),
-                            "os_type" : "2"
+                        "identifier": [
+                            "user_id": userManager.getUserId(),
+                            "device_token": userManager.getMyDeviceToken(),
+                            "os_type": "2"
                         ]
                     ]
                 ]
@@ -142,15 +144,15 @@ extension DigitalTarget: TargetType {
                         "voucher_code": voucherCode,
                         "transaction_amount": transactionAmount,
                         "client_id": clientID,
-                        "appsflyer" : [
+                        "appsflyer": [
                             "appsflyer_id": appsflyerID,
                             "device_id": idfa,
                             "bundle_id": bundleID
                         ],
-                        "identifier" : [
-                            "user_id" : userManager.getUserId(),
-                            "device_token" : userManager.getMyDeviceToken(),
-                            "os_type" : "2"
+                        "identifier": [
+                            "user_id": userManager.getUserId(),
+                            "device_token": userManager.getMyDeviceToken(),
+                            "os_type": "2"
                         ]
                     ],
                     "relationships": [
@@ -174,6 +176,11 @@ extension DigitalTarget: TargetType {
             return ["category_id": categoryId]
         case let .deleteCart(categoryId):
             return ["category_id": categoryId]
+        case let .favourite(categoryId) :
+            return [
+                "category_id": categoryId,
+                "sort": "label"
+            ]
         default: return [:]
         }
         
@@ -222,7 +229,7 @@ func getIFAddresses() -> String {
                     nil,
                     socklen_t(0),
                     NI_NUMERICHOST
-                    ) == 0 {
+                ) == 0 {
                     let address = String(cString: hostname)
                     addresses.append(address)
                 }
