@@ -33,7 +33,11 @@ class FeedComponentView: ComponentView<FeedCardState> {
     }
     
     override func construct(state: FeedCardState?, size: CGSize) -> NodeType {
-        guard let state = state else { return NilNode() }
+        guard let state = state else {
+            return Node<UIView> { _, _, _ in
+            
+            }
+        }
         
         let topAdsComponent = TopAdsFeedPlusComponentView(favoriteCallback: { state in
             self.onTopAdsStateChanged(state)
@@ -291,14 +295,15 @@ class FeedComponentView: ComponentView<FeedCardState> {
                     view.backgroundColor = .white
                 }.add(children: [
                     Node<UIPageControl>(identifier: "page-control") { [weak self] view, layout, _ in
+                        guard let `self` = self else { return }
                         view.numberOfPages = state.content.promotion.count
                         view.currentPage = 0
                         view.currentPageIndicatorTintColor = .tpGreen()
                         view.pageIndicatorTintColor = .tpLine()
                         
-                        self?.pageIndex.asObservable()
+                        self.pageIndex.asObservable()
                             .bindTo(view.rx.currentPage)
-                            .addDisposableTo((self?.rx_disposeBag)!)
+                            .addDisposableTo(self.rx_disposeBag)
                         
                         layout.width = 36
                         layout.marginLeft = 16
@@ -315,12 +320,14 @@ class FeedComponentView: ComponentView<FeedCardState> {
                             button.titleLabel?.font = .microThemeMedium()
                             button.setTitleColor(.tpGreen(), for: .normal)
                             
+                            guard let `self` = self else { return }
+                            
                             button.rx.tap
                                 .subscribe(onNext: {
                                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Promotion - Promo Page Lihat Promo Lainnya")
                                     NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
                                 })
-                                .disposed(by: (self?.rx_disposeBag)!)
+                                .disposed(by: self.rx_disposeBag)
                             
                             layout.width = 121
                         },
@@ -340,6 +347,12 @@ class FeedComponentView: ComponentView<FeedCardState> {
             ])
         }
         
+        guard let vc = self.viewController else {
+            return Node<UIView> { _, _, _ in
+            
+            }
+        }
+        
         let card = Node<UIView> { view, layout, _ in
             layout.flexDirection = .column
             layout.alignItems = .stretch
@@ -349,7 +362,7 @@ class FeedComponentView: ComponentView<FeedCardState> {
             view.borderColor = UIColor.fromHexString("#e0e0e0")
             view.borderWidth = 1
         }.add(children: [
-            FeedHeaderComponentView(viewController: self.viewController!).construct(state: state, size: size),
+            FeedHeaderComponentView(viewController: vc).construct(state: state, size: size),
             feedContent,
             promotionPageControl,
             state.oniPad || (state.content.type == .promotion) ? NilNode() : self.shareButton(withSize: size)
@@ -402,26 +415,31 @@ class FeedComponentView: ComponentView<FeedCardState> {
         if amount == 1 {
             mainContent = FeedPromotionComponentView().construct(state: state.content.promotion[0], size: size)
         } else {
-            let promotionArray = NSMutableArray()
+            var promotionArray: [NodeType] = []
             state.content.promotion.forEach({ promotionState in
-                promotionArray.add(FeedPromotionComponentView().construct(state: promotionState, size: size))
+                promotionArray.append(FeedPromotionComponentView().construct(state: promotionState, size: size))
             })
             
             mainContent = Node<UIScrollView>(identifier: "scroll-view") { [weak self] view, layout, size in
-                view.backgroundColor = .white
-                view.showsHorizontalScrollIndicator = false
-                view.alwaysBounceVertical = false
-                view.isPagingEnabled = true
-                view.contentSize = ((self?.state?.content.promotion.count)! > 1) ? CGSize(width: size.width * CGFloat((self?.state?.content.promotion.count)!), height: size.height) : CGSize(width: size.width, height: size.height)
-                view.rx.contentOffset.bindNext({ _ in
-                    self?.scrollViewPageIndex = Int(floor((view.contentOffset.x - size.width / 2) / size.width) + 1.0)
-                    self?.pageIndex.value = (self?.scrollViewPageIndex)!
-                }).disposed(by: (self?.rx_disposeBag)!)
+                guard let `self` = self, let state = self.state else {
+                    return
+                }
                 
-                layout.width = size.width
-                layout.flexDirection = .row
-                layout.alignItems = .center
-            }.add(children: promotionArray as! [NodeType])
+                    view.backgroundColor = .white
+                    view.showsHorizontalScrollIndicator = false
+                    view.alwaysBounceVertical = false
+                    view.isPagingEnabled = true
+                    view.contentSize = (state.content.promotion.count > 1) ? CGSize(width: size.width * CGFloat(state.content.promotion.count), height: size.height) : CGSize(width: size.width, height: size.height)
+                    view.rx.contentOffset.bindNext({ _ in
+                        self.scrollViewPageIndex = Int(floor((view.contentOffset.x - size.width / 2) / size.width) + 1.0)
+                        self.pageIndex.value = self.scrollViewPageIndex
+                    }).disposed(by: self.rx_disposeBag)
+                    
+                    layout.width = size.width
+                    layout.flexDirection = .row
+                    layout.alignItems = .center
+                
+            }.add(children: promotionArray)
         }
         
         return mainContent
@@ -552,12 +570,16 @@ class FeedComponentView: ComponentView<FeedCardState> {
                 button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
                 
                 button.rx.tap
-                    .subscribe(onNext: {
+                    .subscribe(onNext: { [weak self] in
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
                         if let textURL = ReferralManager().getShortUrlFor(shopState: state.source.shopState) {
                             let title = state.source.shopState.shareDescription
-                            let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button)
-                            self.viewController?.present(controller!, animated: true, completion: nil)
+                            
+                            guard let controller = UIActivityViewController.shareDialog(withTitle: title, url: URL(string: textURL), anchor: button) else {
+                                return
+                            }
+                            
+                            self?.viewController?.present(controller, animated: true, completion: nil)
                         }
                     })
                     .disposed(by: self.rx_disposeBag)

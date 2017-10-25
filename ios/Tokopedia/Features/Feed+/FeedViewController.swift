@@ -234,7 +234,11 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 self.tableView.tableFooterView = self.footerView
             }
             
-            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userID: Int(userID!)!, limit: 3, cursor: cursor, page: self.page)) { result, error in
+            guard let userID = userID, let intUserID = Int(userID) else {
+                return
+            }
+            
+            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userID: intUserID, limit: 3, cursor: cursor, page: self.page)) { result, error in
                 if let error = error {
                     if shouldTrackMoengage {
                         AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
@@ -264,7 +268,12 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                     AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
                                                                                                        "is_feed_empty": false])
                 }
-                self.feedState = FeedStateManager().initFeedState(queryResult: (result?.data)!, page: self.page, row:&self.row)
+                
+                guard let data = result?.data else {
+                    return
+                }
+                
+                self.feedState = FeedStateManager().initFeedState(queryResult: data, page: self.page, row:&self.row)
                 
                 self.loadContent(onPage: self.page, total: self.feedState.totalData)
             }
@@ -272,8 +281,8 @@ class FeedViewController: UIViewController, UITableViewDelegate {
     }
     
     private func loadContent(onPage page: Int, total: Int) {
-        if self.feedCards.count > 0 {
-            if (self.feedCards.last?.isNextPageError)! && self.feedCards.last?.topads?.topAds == nil {
+        if self.feedCards.count > 0, let isNextPageError = self.feedCards.last?.isNextPageError {
+            if isNextPageError && self.feedCards.last?.topads?.topAds == nil {
                 self.feedCards.removeLast()
             }
         }
