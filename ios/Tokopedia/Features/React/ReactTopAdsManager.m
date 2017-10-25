@@ -15,7 +15,9 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(sendClickImpressionWithClickUrlString:(NSString*)clickUrlString didSuccess:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {
+RCT_EXPORT_METHOD(sendClickImpressionWithClickUrlString:(NSString*)clickUrlString
+                  didSuccess:(RCTPromiseResolveBlock)resolve
+                  reject:(__unused RCTPromiseRejectBlock)reject) {
     [TopAdsService sendClickImpressionWithClickURLString:clickUrlString];
 }
 
@@ -24,6 +26,7 @@ RCT_EXPORT_METHOD(showAddPromoTooltip) {
     dispatch_async(dispatch_get_main_queue(), ^{
         [alertController show];
     });
+}
 
 RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
     TopAdsInfoActionSheet *topAdsInfoActionSheet = [TopAdsInfoActionSheet new];

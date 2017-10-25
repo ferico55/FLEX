@@ -86,12 +86,13 @@ class ProductPromoNode: ContainerNode {
             layout.flexShrink = 1
             }.add(children: [
                 Node<UIButton>() { [weak self] view, layout, _ in
+                    guard let `self` = self else { return }
                     view.setAttributedTitle(NSAttributedString(fromHTML: shortDesc, normalFont: .largeThemeMedium(), boldFont: .smallTheme(), italicFont: .smallTheme()), for: .normal)
                     view.contentHorizontalAlignment = .left
                     view.titleLabel?.numberOfLines = 0
                     view.rx.tap.subscribe(onNext: { _ in
-                        self?.didTapDescription(promoDetail?.targetURL)
-                    }).disposed(by: (self?.rx_disposeBag)!)
+                        self.didTapDescription(promoDetail?.targetURL)
+                    }).disposed(by: self.rx_disposeBag)
                 },
                 Node<UILabel>() { view, layout, _ in
                     layout.marginTop = 3
@@ -126,7 +127,7 @@ class ProductPromoNode: ContainerNode {
                     view.borderWidth = 1
                     view.borderColor = .tpLine()
                 },
-                Node<UIButton>() { [weak self] view, layout, size in
+                Node<UIButton>() { view, layout, size in
                     layout.height = 32
                     layout.width = 105
                     view.titleLabel?.font = .smallTheme()
@@ -135,11 +136,12 @@ class ProductPromoNode: ContainerNode {
                     view.setTitleColor(.tpDisabledBlackText(), for: .normal)
                     view.borderWidth = 1
                     view.borderColor = .tpLine()
-                    view.rx.tap.subscribe(onNext: { _ in
-                        self?.didTapPromo(promoDetail?.code)
+                    view.rx.tap.subscribe(onNext: { [weak self] _ in
+                        guard let `self` = self else {return}
+                        self.didTapPromo(promoDetail?.code)
                         view.setTitle("Kode Tersalin", for: .normal)
                         view.setTitleColor(.tpGreen(), for: .normal)
-                    }).disposed(by: (self?.rx_disposeBag)!)
+                    }).disposed(by: self.rx_disposeBag)
                 }
                 ])
     }

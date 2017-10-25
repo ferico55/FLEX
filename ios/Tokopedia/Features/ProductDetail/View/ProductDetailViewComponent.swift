@@ -768,7 +768,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                 didTapCatalog: { [unowned self] catalogId in
                                     let navigateViewController = NavigateViewController()
 
-                                    navigateViewController.navigateToCatalog(from: self.viewController, withCatalogID: catalogId, andCatalogKey: "")
+                                    navigateViewController.navigateToCatalog(from: self.viewController, withCatalogID: catalogId)
                                     
                                 }),
                 ProductDescriptionNode(identifier: "description",
