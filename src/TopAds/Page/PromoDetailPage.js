@@ -1,6 +1,7 @@
 import Navigator from 'native-navigation'
+import moment from 'moment'
 import React, { Component } from 'react'
-import { ReactTPRoutes } from 'NativeModules'
+import { ReactTPRoutes, TKPReactAnalytics } from 'NativeModules'
 import {
   StyleSheet,
   Text,
@@ -10,6 +11,8 @@ import {
   Image,
   ScrollView,
   Switch,
+  ActionSheetIOS,
+  AlertIOS,
 } from 'react-native'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -21,6 +24,7 @@ import * as PromoDetailActions from '../Redux/Actions/PromoDetailActions'
 import * as DashboardActions from '../Redux/Actions/DashboardActions'
 import * as FilterActions from '../Redux/Actions/FilterActions'
 import * as GeneralActions from '../Redux/Actions/GeneralActions'
+import * as AddPromoActions from '../Redux/Actions/AddPromoActions'
 
 import arrowRightImg from '../Icon/arrow_right.png'
 
@@ -42,6 +46,7 @@ function mapDispatchToProps(dispatch) {
       ...DashboardActions,
       ...FilterActions,
       ...GeneralActions,
+      ...AddPromoActions,
     },
     dispatch,
   )
@@ -119,37 +124,187 @@ const styles = StyleSheet.create({
 })
 
 class PromoDetailPage extends Component {
-  getData = () => {
+  componentDidUpdate = () => {
+    if (this.props.isDeleted || this.props.isNoPromo) {
+      this.props.clearPromoDetail(reduxKey)
+      this.props.changeIsNeedRefreshDashboard(true)
+      Navigator.pop()
+    }
+  }
+  getGroupDetail = key => {
+    this.props.getGroupAdDetail({
+      shopId: this.props.authInfo.shop_id,
+      startDate: this.props.startDate.format('YYYY-MM-DD'),
+      endDate: this.props.endDate.format('YYYY-MM-DD'),
+      keyword: this.props.keyword,
+      status: this.props.promo.group_status,
+      groupId: this.props.promo.group_id,
+      key,
+    })
+  }
+  getProductDetail = key => {
+    this.props.getProductAdDetail({
+      shopId: this.props.authInfo.shop_id,
+      startDate: this.props.startDate.format('YYYY-MM-DD'),
+      endDate: this.props.endDate.format('YYYY-MM-DD'),
+      keyword: this.props.keyword,
+      status: this.props.promo.ad_status,
+      groupId: this.props.promo.group_id,
+      adId: this.props.promo.ad_id,
+      key,
+    })
+  }
+  getShopDetail = key => {
+    this.props.getShopAdDetail({
+      shopId: this.props.authInfo.shop_id,
+      startDate: this.props.startDate.format('YYYY-MM-DD'),
+      endDate: this.props.endDate.format('YYYY-MM-DD'),
+      key,
+    })
+  }
+  handleOnAppear = () => {
     if (this.props.promoType === 0) {
-      this.props.getGroupAdDetail({
-        shopId: this.props.authInfo.shop_id,
-        startDate: this.props.startDate.format('YYYY-MM-DD'),
-        endDate: this.props.endDate.format('YYYY-MM-DD'),
-        keyword: this.props.keyword,
-        status: this.props.promo.group_status,
-        groupId: this.props.promo.group_id,
-        key: reduxKey,
-      })
+      this.getGroupDetail(reduxKey)
     } else if (this.props.promoType === 1) {
-      this.props.getProductAdDetail({
+      this.getProductDetail(reduxKey)
+    } else {
+      this.getShopDetail(reduxKey)
+    }
+  }
+  deletePromo = () => {
+    if (this.props.promoType === 0) {
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label: `Delete Group Promo`,
+      })
+      this.props.deleteGroupAd({
         shopId: this.props.authInfo.shop_id,
-        startDate: this.props.startDate.format('YYYY-MM-DD'),
-        endDate: this.props.endDate.format('YYYY-MM-DD'),
-        keyword: this.props.keyword,
-        status: this.props.promo.ad_status,
         groupId: this.props.promo.group_id,
-        adId: this.props.promo.ad_id,
         key: reduxKey,
       })
     } else {
-      this.props.getShopAdDetail({
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label: `Delete Product Promo`,
+      })
+      this.props.deleteProductAd({
         shopId: this.props.authInfo.shop_id,
-        startDate: this.props.startDate.format('YYYY-MM-DD'),
-        endDate: this.props.endDate.format('YYYY-MM-DD'),
+        adId: this.props.promo.ad_id,
         key: reduxKey,
       })
     }
   }
+  handleActionButtonPressed = () => {
+    const id =
+      this.props.promoType == 0
+        ? this.props.promo.group_id
+        : this.props.promo.ad_id
+    if (!id) {
+      return
+    }
+    const buttons =
+      this.props.promoType == 2
+        ? ['Ubah', 'Cancel']
+        : ['Ubah', 'Hapus', 'Cancel']
+    const deleteIndex = 1
+    const cancelIndex = this.props.promoType == 2 ? 1 : 2
+    ActionSheetIOS.showActionSheetWithOptions(
+      {
+        // anchor: 12,
+        options: buttons,
+        cancelButtonIndex: cancelIndex,
+        destructiveButtonIndex: this.props.promoType == 2 ? 100 : deleteIndex,
+        tintColor: color.mainGreen,
+      },
+      buttonIndex => {
+        if (buttonIndex === 0) {
+          this.goToEditPromoPage()
+        } else if (buttonIndex === 1 && this.props.promoType != 2) {
+          const alertTitle =
+            this.props.promoType == 0 ? 'Hapus Grup?' : 'Hapus Promo?'
+          const alertMsg =
+            this.props.promoType == 0
+              ? 'Semua promo produk dalam grup ini akan dihapus.'
+              : 'Promo produk akan dihapus dari daftar promo TopAds Anda.'
+          AlertIOS.alert(alertTitle, alertMsg, [
+            { text: 'Batal' },
+            { text: 'Hapus', onPress: this.deletePromo },
+          ])
+        }
+      },
+    )
+  }
+  goToEditPromoPage = () => {
+    const promo = this.props.promo
+    const startDateString =
+      this.props.promoType == 0
+        ? this.processDate(promo.group_start_date, promo.group_start_time)
+        : this.processDate(promo.ad_start_date, promo.ad_start_time)
+    const endDateString =
+      this.props.promoType == 0
+        ? this.processDate(promo.group_end_date, promo.group_end_time)
+        : this.processDate(promo.ad_end_date, promo.ad_end_time)
+
+    const dailySpentFmt =
+      this.props.promoType == 0
+        ? promo.group_price_daily_spent_fmt
+        : promo.ad_price_daily_spent_fmt
+
+    const adEndTimeString =
+      this.props.promoType == 0 ? promo.group_end_time : promo.ad_end_time
+
+    const tempMaxPrice =
+      this.props.promoType == 0 ? promo.group_price_bid : promo.ad_price_bid
+
+    let tempGroupType = promo.group_id == '' ? 2 : 1
+    tempGroupType = this.props.promoType == 2 ? 3 : tempGroupType
+
+    this.props.setInitialEditPromo({
+      adId: promo.ad_id ? promo.ad_id : promo.group_id,
+      productId: this.props.promoType == 1 ? promo.item_id : '',
+      status: this.props.promoType == 0 ? promo.group_status : promo.ad_status,
+      isGroup: this.props.promoType == 0,
+      groupType: tempGroupType,
+      existingGroup: {
+        group_id: promo.group_id,
+        group_name: promo.group_name,
+        total_item: promo.total_item,
+      },
+      maxPrice: tempMaxPrice || 0,
+      budgetType: dailySpentFmt == '' ? 0 : 1,
+      budgetPerDay: 0, // no data from here
+      scheduleType: adEndTimeString == '' ? 0 : 1,
+      startDate: moment(startDateString, 'DD/MM/YYYY - HH:mm A'),
+      endDate:
+        adEndTimeString == ''
+          ? moment()
+          : moment(endDateString, 'DD/MM/YYYY - HH:mm A'),
+    })
+
+    if (
+      this.props.promoType == 1 &&
+      (promo.group_id != '0' && promo.group_id != '')
+    ) {
+      this.props.getProductAdDetailEdit(promo.ad_id)
+      Navigator.push('AddPromoPage', {
+        authInfo: this.props.authInfo,
+        isEdit: true,
+        isDirectEdit: true,
+        prevGroupName: promo.group_name,
+      })
+    } else {
+      Navigator.push('EditPromoPage', {
+        authInfo: this.props.authInfo,
+        promoType: this.props.promoType,
+      })
+    }
+  }
+  processDate = (dateString, timeString) =>
+    `${dateString} - ${timeString.split(' ')[0]} ${timeString.split(' ')[1]}`
   generateData = () => {
     let name = '-'
     if (this.props.promoType == 0 && this.props.promo) {
@@ -244,6 +399,7 @@ class PromoDetailPage extends Component {
       totalAdsOrGroup: '-',
       costAndScheduleData: [],
       statisticSumData: [],
+      isEmpty: true,
     }
 
     const adId =
@@ -258,6 +414,7 @@ class PromoDetailPage extends Component {
         totalAdsOrGroup,
         costAndScheduleData,
         statisticSumData,
+        isEmpty: false,
       }
     }
 
@@ -267,6 +424,9 @@ class PromoDetailPage extends Component {
     Navigator.push('DateSettingsPage', {
       changeDateActionId: 'CHANGE_DATE_RANGE_PROMODETAIL',
       reduxKey,
+      trackerFromDetailGroupPage: this.props.promoType === 0,
+      trackerFromDetailProductPage: this.props.promoType === 1,
+      trackerFromDetailShopPage: this.props.promoType === 2,
     })
   }
   switchToggled = value => {
@@ -296,6 +456,12 @@ class PromoDetailPage extends Component {
   }
   goToNativeAction = () => {
     if (this.props.promoType === 1 && this.props.promo) {
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label: `Detail Product Promo - PDP`,
+      })
       ReactTPRoutes.navigate(`tokopedia://product/${this.props.promo.item_id}`)
     }
 
@@ -345,7 +511,12 @@ class PromoDetailPage extends Component {
         endDate: this.props.endDate,
         key: newReduxKey,
       })
-
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label: `Detail Product Promo - Detail Group`,
+      })
       Navigator.push('PromoDetailPage', {
         authInfo: this.props.authInfo,
         keyword: this.props.keyword,
@@ -395,9 +566,21 @@ class PromoDetailPage extends Component {
       isSwitchOn = !isSwitchOn
     }
 
+    const moreImage = {
+      uri: 'iconn_more_black',
+      scale: 2,
+    }
+
+    // const buttonArray = hasNoPromoAtAll ? [] : [plusButton, filterButton]
+
     // the scrollview seems to work if the height is set to whatever
     return (
-      <Navigator.Config title={navTitle} onAppear={this.getData}>
+      <Navigator.Config
+        title={navTitle}
+        onAppear={this.handleOnAppear}
+        rightImage={moreImage}
+        onRightPress={this.handleActionButtonPressed}
+      >
         <View style={styles.container}>
           <ScrollView style={{ height: 0 }}>
             <DateSettingsButton
@@ -413,7 +596,11 @@ class PromoDetailPage extends Component {
                 <TouchableOpacity
                   style={{ flex: 1 }}
                   onPress={this.goToNativeAction}
-                  disabled={nameTitleString === 'Grup'}
+                  disabled={
+                    nameTitleString === 'Grup' ||
+                    this.props.isLoading ||
+                    data.isEmpty
+                  }
                 >
                   <View style={styles.mainCell}>
                     <View
@@ -468,7 +655,7 @@ class PromoDetailPage extends Component {
               </View>
               <View style={styles.separator} />
             </View>
-            {this.props.promoType !== 2 ? (
+            {this.props.promoType !== 2 && (
               <View style={styles.mainCellContainer}>
                 <View style={styles.separator} />
                 <View style={styles.mainCellOuter}>
@@ -485,7 +672,11 @@ class PromoDetailPage extends Component {
                         {this.props.promoType === 0 ? 'Produk' : 'Grup'}
                       </Text>
                     </View>
-                    {this.props.promo.group_id === 0 &&
+                    {this.props.isLoading ? (
+                      <View style={{ flex: 1, flexDirection: 'row-reverse' }}>
+                        <ActivityIndicator size="small" />
+                      </View>
+                    ) : this.props.promo.group_id === 0 &&
                     this.props.promoType === 1 ? (
                       <View style={styles.valueSubContainer}>
                         <Text style={[styles.valueLabel, { fontSize: 16 }]}>
@@ -496,14 +687,15 @@ class PromoDetailPage extends Component {
                       <TouchableOpacity
                         onPress={this.groupOrProductAction}
                         style={{ flex: 1 }}
+                        disabled={this.props.isLoading || data.isEmpty}
                       >
                         <View style={styles.valueSubContainer}>
-                          {this.props.promoType === 0 ? (
+                          {this.props.promoType === 0 && (
                             <Image
                               style={styles.arrowImageView}
                               source={arrowRightImg}
                             />
-                          ) : null}
+                          )}
                           <Text style={styles.greenValueLabel}>
                             {data.totalAdsOrGroup}
                           </Text>
@@ -514,7 +706,7 @@ class PromoDetailPage extends Component {
                 </View>
                 <View style={styles.separator} />
               </View>
-            ) : null}
+            )}
 
             <View style={styles.mainCellContainer}>
               <View style={styles.separator} />

@@ -1914,6 +1914,7 @@
 		9249B1961F8F65A800487C26 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 9249B1951F8F65A800487C26 /* assets */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		C08D08011F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D08001F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -5016,6 +5017,7 @@
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C08D08001F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAdsAddPromoTipsActionSheet.swift; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DADB9ED91F3C46CE002B1FAE /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
@@ -6098,6 +6100,7 @@
 				62C5E08E1F826A2200EAE044 /* TopAdsService.swift */,
 				62C5E08F1F826A2200EAE044 /* TopAdsFeedPlusComponentView.swift */,
 				62C5E0901F826A2200EAE044 /* TopAdsComponentView.swift */,
+				C08D08001F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift */,
 			);
 			path = TopAds;
 			sourceTree = "<group>";
@@ -12866,6 +12869,7 @@
 				62C5F1A41F826A2B00EAE044 /* NotificationFormResult.m in Sources */,
 				62C5EB781F826A2700EAE044 /* NSDictionaryCategory.m in Sources */,
 				62C5EE821F826A2800EAE044 /* ShopPaymentViewController.m in Sources */,
+				C08D08011F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
 				62C5EC071F826A2700EAE044 /* OfficialStoreHomeItem.swift in Sources */,
 				62C5ECE01F826A2700EAE044 /* OrderDetailViewController.m in Sources */,
 				62C5EE0F1F826A2800EAE044 /* MyShopEtalaseEditViewController.m in Sources */,

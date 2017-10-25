@@ -35,7 +35,8 @@ RCT_EXPORT_MODULE();
              @"tokopediaUrl" : NSString.tokopediaUrl,
              @"v4Url" : NSString.v4Url,
              @"mojitoUrl" : NSString.mojitoUrl,
-             @"topAdsUrl" : NSString.topAdsUrl
+             @"topAdsUrl" : NSString.topAdsUrl,
+             @"tomeUrl" : NSString.tomeUrl
              };
 }
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, Image, ActivityIndicator } from 'react-native'
 import color from '../Helper/Color'
 
 const styles = StyleSheet.create({
@@ -58,6 +58,20 @@ const styles = StyleSheet.create({
     height: 20,
     flexDirection: 'row',
   },
+  drawerIconOuterContainer: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    alignItems: 'center',
+    flexDirection: 'row-reverse',
+  },
+  drawerIconContainer: {
+    width: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
 })
 
 class PromoInfoCell extends Component {
@@ -84,12 +98,25 @@ class PromoInfoCell extends Component {
           {ad.usedCreditsLabel}
         </Text>
         {this.additionalInfo(ad)}
+        {this.props.adType === 0 && (
+          <View style={styles.drawerIconOuterContainer}>
+            <View style={styles.drawerIconContainer}>
+              <Image
+                source={{ uri: 'flick' }}
+                style={{
+                  height: 12,
+                  width: 8,
+                }}
+              />
+            </View>
+          </View>
+        )}
       </View>
     )
   }
   additionalInfo = ad => {
     if (
-      this.props.adType === 0 &&
+      this.props.adType !== 1 &&
       (ad.dailyPriceSpent !== '-' && ad.dailyPriceSpent !== '')
     ) {
       const greenFlex = parseFloat(ad.dailyPriceBar)
@@ -103,7 +130,7 @@ class PromoInfoCell extends Component {
           </View>
           <View style={styles.priceInfoContainer}>
             <Text style={{ color: color.greyText, fontSize: 14 }}>
-              Anggaran
+              Anggaran Harian
             </Text>
             <Text
               style={{
@@ -156,6 +183,9 @@ class PromoInfoCell extends Component {
           ? ad.ad_price_bid_fmt
           : ''} ${ad.label_per_click}`
         usedCreditsLabel = `Terpakai ${ad.stat_total_spent}`
+        dailyPrice = ad.ad_price_daily_fmt
+        dailyPriceSpent = ad.ad_price_daily_spent_fmt
+        dailyPriceBar = ad.ad_price_daily_bar
       } else if (adType === 0) {
         title = ad.group_name
         status = ad.group_status

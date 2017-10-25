@@ -1,3 +1,4 @@
+import { TKPReactAnalytics } from 'NativeModules'
 import React, { Component } from 'react'
 import {
   StyleSheet,
@@ -9,7 +10,6 @@ import {
   Dimensions,
   ScrollView,
   RefreshControl,
-  AlertIOS,
 } from 'react-native'
 
 import Navigator from 'native-navigation'
@@ -224,6 +224,12 @@ class TopAdsDashboard extends Component {
   }
   addCreditButtonTapped = () => {
     Navigator.push('AddCreditPage', {})
+    TKPReactAnalytics.trackEvent({
+      name: 'topadsios',
+      category: 'ta - product/shop',
+      action: 'Click',
+      label: 'Add Balance',
+    })
   }
   tabBarSelected = () => {
     this.props.getDashboardStatistic({
@@ -237,30 +243,49 @@ class TopAdsDashboard extends Component {
   dateButtonTapped = () => {
     Navigator.push('DateSettingsPage', {
       changeDateActionId: 'CHANGE_DATE_RANGE_DASHBOARD',
+      trackerFromMainPage: true,
     })
   }
   statCellTapped = title => {
+    let trackerString = ''
     switch (title) {
       case 'Tampil':
         this.props.changeStatDetailTab(0)
+        trackerString = 'Impression'
         break
       case 'Klik':
         this.props.changeStatDetailTab(1)
+        trackerString = 'Click'
         break
       case 'Persentase Klik':
         this.props.changeStatDetailTab(2)
+        trackerString = 'CTR'
         break
       case 'Konversi':
         this.props.changeStatDetailTab(3)
+        trackerString = 'Conversion'
         break
       case 'Rata-Rata':
         this.props.changeStatDetailTab(4)
+        trackerString = 'Average Conversion'
         break
       case 'Terpakai':
         this.props.changeStatDetailTab(5)
+        trackerString = 'CPC'
         break
       default:
     }
+
+    const trackerLabel =
+      this.props.selectedTabIndex === 0
+        ? `Statistic (TopAds Dashboard) - ${trackerString}`
+        : `Statistic - ${trackerString}`
+    TKPReactAnalytics.trackEvent({
+      name: 'topadsios',
+      category: this.props.selectedTabIndex === 1 ? 'ta- shop' : 'ta - product',
+      action: 'Click',
+      label: trackerLabel,
+    })
 
     this.props.setInitialDataStatDetail({
       dataSource: this.props.dashboardStatisticState.cellData,
@@ -276,6 +301,13 @@ class TopAdsDashboard extends Component {
   }
   bottomCellTapped = type => {
     // 0 for group, 1 for product
+    TKPReactAnalytics.trackEvent({
+      name: 'topadsios',
+      category: 'ta - product',
+      action: 'Click',
+      label: type === 0 ? `Group` : `Product`,
+    })
+
     const newReduxKey = `L${type}${this.props.authInfo.shop_id}`
     this.props.changeDateRange({
       actionId: 'CHANGE_DATE_RANGE_PROMOLIST',
@@ -310,11 +342,10 @@ class TopAdsDashboard extends Component {
     })
   }
   addPromoButtonTapped = () => {
-    AlertIOS.alert(
-      'Tambah Promo Tidak Tersedia',
-      'Saat ini tambah promo hanya bisa dilakukan dari komputer.',
-      [{ text: 'OK' }],
-    )
+    Navigator.present('AddPromoPageStep2', {
+      authInfo: this.props.authInfo,
+      isCreateShop: true,
+    })
   }
 
   infoDetailsMenuRow = (titleLeft, valueLeft, titleRight, valueRight) => {
@@ -374,60 +405,58 @@ class TopAdsDashboard extends Component {
       </View>
     )
   }
-  productBottom = () =>  {
-    return (
-      <View style={styles.productBottomContainer}>
-        <TouchableOpacity
-          onPress={() => this.bottomCellTapped(0)}
-          disabled={this.props.totalAdsState.isLoading}
-        >
-          <View style={styles.productBottomView}>
-            <Text style={styles.productBottomTitleLabel}>Grup</Text>
-            {this.props.totalAdsState.isLoading ? (
-              <View style={{ marginRight: 5 }}>
-                <ActivityIndicator size="small" />
-              </View>
-            ) : (
-              <Text style={styles.productBottomValueLabel}>
-                {this.props.totalAdsState.dataSource &&
-                  this.props.totalAdsState.dataSource.total_product_group_ad}
-              </Text>
-            )}
-            <View style={styles.productBottomArrowView}>
-              <Image
-                style={styles.productBottomArrowImageView}
-                source={arrowRight}
-              />
+  productBottom = () => (
+    <View style={styles.productBottomContainer}>
+      <TouchableOpacity
+        onPress={() => this.bottomCellTapped(0)}
+        disabled={this.props.totalAdsState.isLoading}
+      >
+        <View style={styles.productBottomView}>
+          <Text style={styles.productBottomTitleLabel}>Grup</Text>
+          {this.props.totalAdsState.isLoading ? (
+            <View style={{ marginRight: 5 }}>
+              <ActivityIndicator size="small" />
             </View>
+          ) : (
+            <Text style={styles.productBottomValueLabel}>
+              {this.props.totalAdsState.dataSource &&
+                this.props.totalAdsState.dataSource.total_product_group_ad}
+            </Text>
+          )}
+          <View style={styles.productBottomArrowView}>
+            <Image
+              style={styles.productBottomArrowImageView}
+              source={arrowRight}
+            />
           </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={() => this.bottomCellTapped(1)}
-          disabled={this.props.totalAdsState.isLoading}
-        >
-          <View style={styles.productBottomView}>
-            <Text style={styles.productBottomTitleLabel}>Produk</Text>
-            {this.props.totalAdsState.isLoading ? (
-              <View style={{ marginRight: 5 }}>
-                <ActivityIndicator size="small" />
-              </View>
-            ) : (
-              <Text style={styles.productBottomValueLabel}>
-                {this.props.totalAdsState.dataSource &&
-                  this.props.totalAdsState.dataSource.total_product_ad}
-              </Text>
-            )}
-            <View style={styles.productBottomArrowView}>
-              <Image
-                style={styles.productBottomArrowImageView}
-                source={arrowRight}
-              />
+        </View>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => this.bottomCellTapped(1)}
+        disabled={this.props.totalAdsState.isLoading}
+      >
+        <View style={styles.productBottomView}>
+          <Text style={styles.productBottomTitleLabel}>Produk</Text>
+          {this.props.totalAdsState.isLoading ? (
+            <View style={{ marginRight: 5 }}>
+              <ActivityIndicator size="small" />
             </View>
+          ) : (
+            <Text style={styles.productBottomValueLabel}>
+              {this.props.totalAdsState.dataSource &&
+                this.props.totalAdsState.dataSource.total_product_ad}
+            </Text>
+          )}
+          <View style={styles.productBottomArrowView}>
+            <Image
+              style={styles.productBottomArrowImageView}
+              source={arrowRight}
+            />
           </View>
-        </TouchableOpacity>
-      </View>
-    )
-  }
+        </View>
+      </TouchableOpacity>
+    </View>
+  )
   shopBottom = () => {
     if (!this.props.shopPromoState.dataSource) {
       return <View />
@@ -469,108 +498,117 @@ class TopAdsDashboard extends Component {
   }
   render = () => (
     <Navigator.Config title="TopAds" onAppear={this.onAppear}>
-      <View style={styles.container}>
+      <View style={{ flex: 1, flexDirection: 'column-reverse' }}>
+        <View style={styles.container}>
+          <ScrollView
+            refreshControl={
+              <RefreshControl
+                refreshing={this.state.refreshing}
+                onRefresh={() => this.getAllData()}
+              />
+            }
+          >
+            <View style={{ marginBottom: 20 }}>
+              <View style={styles.shopGeneralInfoContainer}>
+                <View style={styles.shopImageContainer}>
+                  <Image
+                    style={styles.shopImageView}
+                    source={{
+                      uri:
+                        this.props.authInfo.shop_avatar &&
+                        this.props.authInfo.shop_avatar != ''
+                          ? this.props.authInfo.shop_avatar
+                          : 'icon_default_shop',
+                    }}
+                  />
+                </View>
+                <View style={styles.shopNameContainer}>
+                  <Text style={styles.shopNameLabel}>
+                    {this.props.authInfo.shop_name}
+                  </Text>
+                  {this.props.creditState.isLoading ? (
+                    <View style={{ alignSelf: 'flex-start' }}>
+                      <ActivityIndicator size="small" />
+                    </View>
+                  ) : (
+                    <Text style={styles.shopTAKreditLabel}>
+                      Kredit TopAds: {this.props.creditState.creditString}
+                    </Text>
+                  )}
+                </View>
+                <TouchableOpacity
+                  style={styles.shopPlusButton}
+                  onPress={this.addCreditButtonTapped}
+                  disabled={this.props.creditState.isLoading}
+                >
+                  <Image
+                    style={{ height: 21, width: 21 }}
+                    source={greenPlusImg}
+                  />
+                </TouchableOpacity>
+              </View>
+              <View style={styles.line} />
+            </View>
+
+            <View style={styles.infoContainer}>
+              <DateSettingsButton
+                currentDateRange={{
+                  startDate: this.props.startDate,
+                  endDate: this.props.endDate,
+                }}
+                buttonTapped={this.dateButtonTapped}
+              />
+              <View style={styles.infoDetailsContainer}>
+                {this.infoDetailsMenuRow(
+                  'Tampil',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource
+                        .impression_sum_fmt
+                    : '-',
+                  'Klik',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource
+                        .click_sum_fmt
+                    : '-',
+                )}
+                {this.infoDetailsMenuRow(
+                  'Persentase Klik',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource
+                        .ctr_percentage_fmt
+                    : '-',
+                  'Konversi',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource
+                        .conversion_sum_fmt
+                    : '-',
+                )}
+                {this.infoDetailsMenuRow(
+                  'Rata-Rata',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource.cost_avg_fmt
+                    : '-',
+                  'Terpakai',
+                  this.props.dashboardStatisticState.dataSource
+                    ? this.props.dashboardStatisticState.dataSource.cost_sum_fmt
+                    : '-',
+                )}
+              </View>
+            </View>
+            {this.props.selectedTabIndex == 1 ? (
+              this.shopBottom()
+            ) : (
+              this.productBottom()
+            )}
+            <View style={{ marginBottom: 50 }} />
+          </ScrollView>
+        </View>
         <AboveTabBar
           firstTabTitle="Produk"
           secondTabTitle="Toko"
           selectedTabIndex={this.props.selectedTabIndex}
           tabBarSelected={this.tabBarSelected}
         />
-        <ScrollView
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => this.getAllData()}
-            />
-          }
-        >
-          <View style={{ marginBottom: 20 }}>
-            <View style={styles.shopGeneralInfoContainer}>
-              <View style={styles.shopImageContainer}>
-                <Image
-                  style={styles.shopImageView}
-                  source={{ uri: this.props.authInfo.shop_avatar }}
-                />
-              </View>
-              <View style={styles.shopNameContainer}>
-                <Text style={styles.shopNameLabel}>
-                  {this.props.authInfo.shop_name}
-                </Text>
-                {this.props.creditState.isLoading ? (
-                  <View style={{ alignSelf: 'flex-start' }}>
-                    <ActivityIndicator size="small" />
-                  </View>
-                ) : (
-                  <Text style={styles.shopTAKreditLabel}>
-                    Kredit TopAds: {this.props.creditState.creditString}
-                  </Text>
-                )}
-              </View>
-              <TouchableOpacity
-                style={styles.shopPlusButton}
-                onPress={this.addCreditButtonTapped}
-                disabled={this.props.creditState.isLoading}
-              >
-                <Image
-                  style={{ height: 21, width: 21 }}
-                  source={greenPlusImg}
-                />
-              </TouchableOpacity>
-            </View>
-            <View style={styles.line} />
-          </View>
-
-          <View style={styles.infoContainer}>
-            <DateSettingsButton
-              currentDateRange={{
-                startDate: this.props.startDate,
-                endDate: this.props.endDate,
-              }}
-              buttonTapped={this.dateButtonTapped}
-            />
-            <View style={styles.infoDetailsContainer}>
-              {this.infoDetailsMenuRow(
-                'Tampil',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource
-                      .impression_sum_fmt
-                  : '-',
-                'Klik',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource.click_sum_fmt
-                  : '-',
-              )}
-              {this.infoDetailsMenuRow(
-                'Persentase Klik',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource
-                      .ctr_percentage_fmt
-                  : '-',
-                'Konversi',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource
-                      .conversion_sum_fmt
-                  : '-',
-              )}
-              {this.infoDetailsMenuRow(
-                'Rata-Rata',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource.cost_avg_fmt
-                  : '-',
-                'Terpakai',
-                this.props.dashboardStatisticState.dataSource
-                  ? this.props.dashboardStatisticState.dataSource.cost_sum_fmt
-                  : '-',
-              )}
-            </View>
-          </View>
-          {this.props.selectedTabIndex == 1 ? (
-            this.shopBottom()
-          ) : (
-            this.productBottom()
-          )}
-          <View style={{ marginBottom: 50 }} />
-        </ScrollView>
       </View>
     </Navigator.Config>
   )

@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 
 import color from '../Helper/Color'
 import SelectableCell from '../Components/SelectableCell'
-import BigGreenButton from '../Components/BigGreenButton'
+import BigGreenButton2 from '../Components/BigGreenButton2'
 
 import * as AddCreditActions from '../Redux/Actions/AddCreditActions'
 import * as DashboardActions from '../Redux/Actions/DashboardActions'
@@ -96,7 +96,7 @@ class AddCreditPage extends Component {
             />
           }
         />
-        <BigGreenButton
+        <BigGreenButton2
           title={'Pilih'}
           buttonAction={this.selectButtonTapped}
           disabled={this.props.selectedIndex < 0}

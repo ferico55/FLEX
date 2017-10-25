@@ -1,3 +1,4 @@
+import { ReactInteractionHelper } from 'NativeModules'
 import { requestGroupAds, requestProductAds } from '../../Helper/Requests'
 
 export const needRefreshPromoList = key => ({
@@ -44,6 +45,9 @@ export const getGroupAds = ({
           key,
         })
       } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
         dispatch({
           type: 'GET_PROMOLIST_FAILED',
           key,
@@ -51,6 +55,7 @@ export const getGroupAds = ({
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMOLIST_FAILED',
         payload: error,
@@ -93,6 +98,9 @@ export const getProductAds = ({
           key,
         })
       } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
         dispatch({
           type: 'GET_PROMOLIST_FAILED',
           key,
@@ -100,6 +108,7 @@ export const getProductAds = ({
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMOLIST_FAILED',
         payload: error,

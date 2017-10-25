@@ -12,6 +12,7 @@ const styles = StyleSheet.create({
   },
   cellTitleLabel: {
     flex: 1,
+    fontSize: 16,
     color: color.blackText,
   },
   cellChecklistContainer: {

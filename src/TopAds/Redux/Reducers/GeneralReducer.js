@@ -5,6 +5,7 @@ import 'moment/locale/id'
 import * as DashboardReducer from './DashboardReducer'
 import addCreditReducer from './AddCreditReducer'
 import statDetailReducer from './StatDetailReducer'
+import addPromoReducer from './AddPromoReducer'
 
 moment.locale('id')
 
@@ -40,10 +41,10 @@ const promoListPageState = {
   isNoSearchResult: false,
   isFailedRequest: false,
   promoListDataSource: [],
+  isDeleted: false, // delete promo only
 }
 
 export function promoListPageReducer(state = promoListPageState, action) {
-  console.log('shooottt')
   switch (action.type) {
     case 'NEED_REFRESH_PROMOLIST':
       return {
@@ -73,7 +74,7 @@ export function promoListPageReducer(state = promoListPageState, action) {
         isNeedRefresh: true,
         filter: state.tempFilter,
       }
-    case 'RESET_FILTER': // UNUSED FOR NOW
+    case 'RESET_FILTER':
       return {
         ...state,
         isNoPromo: false,
@@ -95,8 +96,6 @@ export function promoListPageReducer(state = promoListPageState, action) {
         },
       }
     case 'CHANGE_DATE_RANGE_PROMOLIST':
-      console.log('this day')
-      console.log(action)
       return {
         ...state,
         isNeedRefresh: true,
@@ -127,9 +126,12 @@ export function promoListPageReducer(state = promoListPageState, action) {
         isFailedRequest: false,
       }
     case 'GET_PROMOLIST_SUCCESS':
-      let tempData = state.promoListDataSource.concat(action.payload)
+      const filteredPayload = action.payload.filter(
+        ad => ad.group_type !== 'cpm',
+      )
+      let tempData = state.promoListDataSource.concat(filteredPayload)
       if (action.pageObject.current <= 1) {
-        tempData = action.payload
+        tempData = filteredPayload
       }
 
       let isEndPage = false
@@ -212,6 +214,7 @@ export function promoDetailPageReducer(state = promoDetailPageState, action) {
         isLoading: false,
         isNoPromo: false,
         isFailedRequest: false,
+        isDeleted: false,
         promo: {},
       }
     case 'PATCH_TOGGLE_STATUS_PROMODETAIL_LOADING':
@@ -262,22 +265,19 @@ export function promoDetailPageReducer(state = promoDetailPageState, action) {
       }
     case 'GET_PROMODETAIL_SUCCESS':
       let tempData = {}
-      if (action.payload.length > 0) {
+      let isNoPromo = false
+      if (action.payload.length === 1) {
         tempData = action.payload[0]
       } else {
         tempData = action.payload
-      }
-
-      let isNoPromo = false
-      if (!tempData) {
-        isNoPromo = true
+        isNoPromo = !tempData.ad_id
       }
 
       return {
         ...state,
         isLoading: false,
         promo: tempData,
-        isNoPromo: false,
+        isNoPromo,
         isFailedRequest: false,
       }
     case 'GET_PROMODETAIL_FAILED':
@@ -285,6 +285,25 @@ export function promoDetailPageReducer(state = promoDetailPageState, action) {
         ...state,
         isLoading: false,
         isNoPromo: true,
+        isFailedRequest: true,
+      }
+    case 'DELETE_PROMO_LOADING':
+      return {
+        ...state,
+        isLoading: true,
+        isFailedRequest: false,
+      }
+    case 'DELETE_PROMO_SUCCESS':
+      return {
+        ...state,
+        isLoading: false,
+        isFailedRequest: false,
+        isDeleted: true,
+      }
+    case 'DELETE_PROMO_FAILED':
+      return {
+        ...state,
+        isLoading: false,
         isFailedRequest: true,
       }
     default:
@@ -322,6 +341,7 @@ export default combineReducers({
   ...DashboardReducer,
   addCreditReducer,
   statDetailReducer,
+  addPromoReducer,
   promoListPageReducer: listMultiReducer(promoListPageReducer),
   promoDetailPageReducer: detailMultiReducer(promoDetailPageReducer),
 })

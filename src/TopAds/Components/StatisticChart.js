@@ -319,7 +319,7 @@ class StatisticChart extends Component {
                 },
               }}
             />
-            {graphData.data.length >= 2 ? (
+            {graphData.data.length >= 2 && (
               <VictoryLine
                 data={graphData.data}
                 standalone={false}
@@ -334,7 +334,7 @@ class StatisticChart extends Component {
                   },
                 }}
               />
-            ) : null}
+            )}
             <VictoryScatter
               data={graphData.data}
               standalone={false}
@@ -352,7 +352,7 @@ class StatisticChart extends Component {
                 },
               }}
             />
-            {graphData.data.length >= 2 ? (
+            {graphData.data.length >= 2 && (
               <VictoryArea
                 data={graphData.data}
                 standalone={false}
@@ -365,7 +365,7 @@ class StatisticChart extends Component {
                   },
                 }}
               />
-            ) : null}
+            )}
           </VictoryChart>
         </View>
         <View style={styles.separator} />

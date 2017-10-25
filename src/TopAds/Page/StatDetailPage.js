@@ -1,5 +1,6 @@
 import Navigator from 'native-navigation'
 import DeviceInfo from 'react-native-device-info'
+import { TKPReactAnalytics } from 'NativeModules'
 import React, { Component } from 'react'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -19,6 +20,31 @@ import color from '../Helper/Color'
 import * as Actions from '../Redux/Actions/StatDetailActions'
 
 const { width } = Dimensions.get('window')
+let totalContentWidth = 0
+const tabTracker = [
+  'Impression',
+  'Click',
+  'CTR',
+  'Conversion',
+  'Average Conversion',
+  'CPC',
+]
+const tabMenus = [
+  'Tampil',
+  'Klik',
+  'Persentase Klik',
+  'Konversi',
+  'Rata-Rata',
+  'Terpakai',
+]
+const selectedComponentRefArray = [
+  'tab0',
+  'tab1',
+  'tab2',
+  'tab3',
+  'tab4',
+  'tab5',
+]
 
 function mapStateToProps(state) {
   return {
@@ -52,11 +78,6 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: '500',
   },
-  aboveTabView: {
-    backgroundColor: 'white',
-    height: 45,
-    width: 120,
-  },
   aboveTabTextContainer: {
     flex: 9,
     alignItems: 'center',
@@ -73,19 +94,20 @@ class StatDetailPage extends Component {
     super(props)
     this.state = {
       isCenterTab: false,
-      defaultTabOffset: 0,
+      tabBarOffset: 0,
     }
   }
   componentDidMount = () => {
-    if (this.props.selectedTabIndex >= 3) {
-      this.setState({
-        defaultTabOffset: 720 - width,
-      })
-    } else if (width >= 640) {
+    if (width >= 640) {
       this.setState({
         isCenterTab: true,
-        defaultTabOffset: 0,
       })
+    }
+  }
+  onAppear = () => {
+    this.adjustTabBarScrollPosition(this.props.selectedTabIndex)
+    if (this.props.isNeedRefresh) {
+      this.refreshData()
     }
   }
   refreshData = () => {
@@ -96,37 +118,76 @@ class StatDetailPage extends Component {
       endDate: this.props.endDate.format('YYYY-MM-DD'),
     })
   }
-  onAppear = () => {
-    if (this.props.isNeedRefresh) {
-      this.refreshData()
+  tabBarTapped = index => {
+    TKPReactAnalytics.trackEvent({
+      name: 'topadsios',
+      category: this.props.promoType === 2 ? 'ta- shop' : 'ta - product',
+      action: 'Click',
+      label: `Statistic Bar - ${tabTracker[index]}`,
+    })
+    this.props.changeStatDetailTab(index)
+    this.adjustTabBarScrollPosition(index)
+  }
+  adjustTabBarScrollPosition = index => {
+    if (index > this.props.selectedTabIndex) {
+      if (totalContentWidth <= 0) {
+        for (let i = 0; i < 6; i++) {
+          this.refs[
+            `${selectedComponentRefArray[i]}`
+          ].measure((fx, fy, compWidth, compHeight, px, py) => {
+            totalContentWidth += compWidth
+          })
+        }
+      }
+
+      this.refs[
+        `${selectedComponentRefArray[index]}`
+      ].measure((fx, fy, compWidth, compHeight, px, py) => {
+        const maxScrollOffset = totalContentWidth - width
+        const scrolToPosition = fx - 50
+        this.refs.scrollView.scrollTo({
+          x:
+            scrolToPosition <= maxScrollOffset
+              ? scrolToPosition
+              : maxScrollOffset,
+          y: 0,
+          animated: true,
+        })
+      })
+    } else {
+      this.refs[
+        `${selectedComponentRefArray[index]}`
+      ].measure((fx, fy, compWidth, compHeight, px, py) => {
+        const scrolToPosition = fx - width + compWidth + 50
+        this.refs.scrollView.scrollTo({
+          x: scrolToPosition > 0 ? scrolToPosition : 0,
+          y: 0,
+          animated: true,
+        })
+      })
     }
   }
   renderTabBar = () => {
-    const tabMenus = [
-      'Tampil',
-      'Klik',
-      'Persentase Klik',
-      'Konversi',
-      'Rata-Rata',
-      'Terpakai',
-    ]
     return (
       <View style={styles.aboveTabBarContainer}>
         <ScrollView
+          ref="scrollView"
           horizontal
           centerContent={this.state.isCenterTab}
           showsHorizontalScrollIndicator={false}
-          contentOffset={{ x: this.state.defaultTabOffset, y: 0 }}
+          contentOffset={{ x: this.state.tabBarOffset, y: 0 }}
         >
           {tabMenus.map((item, index) => (
             <TouchableOpacity
-              style={styles.aboveTabView}
-              onPress={() => this.props.changeStatDetailTab(index)}
+              ref={`tab${index}`}
+              onPress={() => this.tabBarTapped(index)}
               key={index}
             >
-              <View style={styles.defaultView}>
-                <View style={styles.aboveTabTextContainer}>
-                  <Text style={styles.aboveTabTitleLabel}>{item}</Text>
+              <View>
+                <View style={{ height: 42, paddingHorizontal: 20 }}>
+                  <View style={styles.aboveTabTextContainer}>
+                    <Text style={styles.aboveTabTitleLabel}>{item}</Text>
+                  </View>
                 </View>
                 <View
                   style={
@@ -149,7 +210,8 @@ class StatDetailPage extends Component {
       DeviceInfo.getModel() == 'iPhone 5' ||
       DeviceInfo.getModel() == 'iPhone 5s' ||
       DeviceInfo.getModel() == 'iPhone 4' ||
-      DeviceInfo.getModel() == 'iPhone 5s'
+      DeviceInfo.getModel() == 'iPhone 5s' ||
+      DeviceInfo.getModel() == 'iPod Touch'
     return (
       <Navigator.Config title={'Statistik'} onAppear={this.onAppear}>
         <View style={styles.container}>
@@ -176,6 +238,7 @@ class StatDetailPage extends Component {
   dateButtonTapped = () => {
     Navigator.push('DateSettingsPage', {
       changeDateActionId: 'CHANGE_DATE_RANGE_STATDETAIL',
+      trackerFromStatisticPage: true,
     })
   }
 }

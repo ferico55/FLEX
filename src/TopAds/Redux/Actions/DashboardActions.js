@@ -1,3 +1,4 @@
+import { ReactInteractionHelper } from 'NativeModules'
 import {
   requestCreditInfo,
   requestDashboardInfo,
@@ -51,6 +52,7 @@ export const getDashboardStatistic = ({
       })
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_DASHBOARD_STATISTIC_FAILED',
         payload: error,

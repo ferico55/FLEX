@@ -1,3 +1,4 @@
+import { ReactInteractionHelper } from 'NativeModules'
 import { requestPromoCreditList } from '../../Helper/Requests'
 
 export const changeAddCreditSelectedIndex = index => ({
@@ -17,6 +18,7 @@ export const getPromoCreditList = () => dispatch => {
       })
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMOCREDIT_LIST_FAILED',
         payload: error,

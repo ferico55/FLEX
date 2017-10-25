@@ -1,9 +1,12 @@
+import { ReactInteractionHelper } from 'NativeModules'
 import {
   requestShopTopAdsInfo,
   requestGroupAds,
   requestProductAds,
   requestPatchToggleStatus,
   requestPatchToggleStatusGroup,
+  requestPatchDeleteGroup,
+  requestPatchDeleteProductAd,
 } from '../../Helper/Requests'
 
 export const setInitialDataPromoDetail = ({
@@ -42,6 +45,7 @@ export const getShopAdDetail = ({
       })
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMODETAIL_FAILED',
         payload: error,
@@ -67,8 +71,8 @@ export const getGroupAdDetail = ({
     shopId,
     startDate,
     endDate,
-    keyword,
-    status,
+    keyword: '',
+    status: 0,
     page: 0,
     groupId,
   })
@@ -80,6 +84,9 @@ export const getGroupAdDetail = ({
           key,
         })
       } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
         dispatch({
           type: 'GET_PROMODETAIL_FAILED',
           key,
@@ -87,6 +94,7 @@ export const getGroupAdDetail = ({
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMODETAIL_FAILED',
         payload: error,
@@ -113,9 +121,9 @@ export const getProductAdDetail = ({
     shopId,
     startDate,
     endDate,
-    keyword,
-    status,
-    groupId,
+    keyword: '',
+    status: 0,
+    groupId: 0,
     page: 0,
     adId,
   })
@@ -127,6 +135,9 @@ export const getProductAdDetail = ({
           key,
         })
       } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
         dispatch({
           type: 'GET_PROMODETAIL_FAILED',
           key,
@@ -134,6 +145,7 @@ export const getProductAdDetail = ({
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'GET_PROMODETAIL_FAILED',
         payload: error,
@@ -163,6 +175,7 @@ export const toggleStatusAd = ({ toggleOn, shopId, adId, key }) => dispatch => {
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'PATCH_TOGGLE_STATUS_PROMODETAIL_FAILED',
         payload: error,
@@ -197,6 +210,7 @@ export const toggleStatusGroupAd = ({
       }
     })
     .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
       dispatch({
         type: 'PATCH_TOGGLE_STATUS_PROMODETAIL_FAILED',
         payload: error,
@@ -204,3 +218,74 @@ export const toggleStatusGroupAd = ({
       })
     })
 }
+
+export const deleteGroupAd = ({ shopId, groupId, key }) => dispatch => {
+  dispatch({
+    type: 'DELETE_PROMO_LOADING',
+    key,
+  })
+  requestPatchDeleteGroup(shopId, groupId)
+    .then(result => {
+      if (result.data) {
+        dispatch({
+          type: 'DELETE_PROMO_SUCCESS',
+          payload: result.data,
+          key,
+        })
+      } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
+        dispatch({
+          type: 'DELETE_PROMO_FAILED',
+          key,
+        })
+      }
+    })
+    .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
+      dispatch({
+        type: 'DELETE_PROMO_FAILED',
+        payload: error,
+        key,
+      })
+    })
+}
+
+export const deleteProductAd = ({ shopId, adId, key }) => dispatch => {
+  dispatch({
+    type: 'DELETE_PROMO_LOADING',
+    key,
+  })
+  requestPatchDeleteProductAd(shopId, adId)
+    .then(result => {
+      if (result.data) {
+        dispatch({
+          type: 'DELETE_PROMO_SUCCESS',
+          payload: result.data,
+          key,
+        })
+      } else {
+        if (result.errors && result.errors.length > 0) {
+          ReactInteractionHelper.showErrorStickyAlert(result.errors[0].detail)
+        }
+        dispatch({
+          type: 'DELETE_PROMO_FAILED',
+          key,
+        })
+      }
+    })
+    .catch(error => {
+      ReactInteractionHelper.showErrorStickyAlert(error.message)
+      dispatch({
+        type: 'DELETE_PROMO_FAILED',
+        payload: error,
+        key,
+      })
+    })
+}
+
+export const clearPromoDetail = key => ({
+  type: 'CLEAR_PROMODETAIL',
+  key,
+})

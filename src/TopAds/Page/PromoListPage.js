@@ -1,16 +1,20 @@
 import Navigator from 'native-navigation'
+import { TKPReactAnalytics } from 'NativeModules'
 import React, { Component } from 'react'
 import {
   StyleSheet,
   View,
   TouchableOpacity,
+  TouchableHighlight,
   FlatList,
   RefreshControl,
-  AlertIOS,
   Animated,
+  Text,
 } from 'react-native'
+import Swipeable from 'react-native-swipeable'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+import moment from 'moment'
 
 import color from '../Helper/Color'
 import DateSettingsButton from '../Components/DateSettingsButton'
@@ -21,6 +25,7 @@ import SearchBar from '../Components/SearchBar'
 import * as PromoListActions from '../Redux/Actions/PromoListActions'
 import * as FilterActions from '../Redux/Actions/FilterActions'
 import * as PromoDetailActions from '../Redux/Actions/PromoDetailActions'
+import * as AddPromoActions from '../Redux/Actions/AddPromoActions'
 
 const DATEBUTTON_HEIGHT = 64
 const DATEBUTTON_HEIGHT_PLUS_OFFSET = DATEBUTTON_HEIGHT + 15
@@ -42,6 +47,7 @@ function mapDispatchToProps(dispatch) {
       ...PromoListActions,
       ...FilterActions,
       ...PromoDetailActions,
+      ...AddPromoActions,
     },
     dispatch,
   )
@@ -95,6 +101,7 @@ class PromoListPage extends Component {
         0,
         DATEBUTTON_HEIGHT_PLUS_OFFSET,
       ),
+      currentlyOpenSwipeable: null,
     }
   }
   onAppear = () => {
@@ -188,16 +195,189 @@ class PromoListPage extends Component {
       })
     }
   }
+  processDate = (dateString, timeString) =>
+    `${dateString} - ${timeString.split(' ')[0]} ${timeString.split(' ')[1]}`
 
-  renderItem = (item, adType) => (
-    <TouchableOpacity onPress={() => this.cellSelected(item)}>
-      <View>
-        {item.index == 0 ? <View style={styles.separator} /> : null}
-        <PromoInfoCell isLoading={false} ad={item.item} adType={adType} />
-        <View style={styles.separator} />
-      </View>
-    </TouchableOpacity>
-  )
+  prepDataForEdit = promo => {
+    const startDateString =
+      this.props.promoListType == 0
+        ? this.processDate(promo.group_start_date, promo.group_start_time)
+        : this.processDate(promo.ad_start_date, promo.ad_start_time)
+    const endDateString =
+      this.props.promoListType == 0
+        ? this.processDate(promo.group_end_date, promo.group_end_time)
+        : this.processDate(promo.ad_end_date, promo.ad_end_time)
+
+    const dailySpentFmt =
+      this.props.promoListType == 0
+        ? promo.group_price_daily_spent_fmt
+        : promo.ad_price_daily_spent_fmt
+
+    const adEndTimeString =
+      this.props.promoListType == 0 ? promo.group_end_time : promo.ad_end_time
+
+    this.props.setInitialEditPromo({
+      adId: promo.ad_id ? promo.ad_id : promo.group_id,
+      productId: this.props.promoType == 1 ? promo.item_id : '',
+      status:
+        this.props.promoListType == 0 ? promo.group_status : promo.ad_status,
+      isGroup: this.props.promoListType == 0,
+      groupType: promo.group_id == '' ? 2 : 1,
+      existingGroup: {
+        group_id: promo.group_id,
+        group_name: promo.group_name,
+        total_item: promo.total_item,
+      },
+      maxPrice:
+        this.props.promoListType == 0
+          ? promo.group_price_bid
+          : promo.ad_price_bid,
+      budgetType: dailySpentFmt == '' ? 0 : 1,
+      budgetPerDay: 0, // no data from here
+      scheduleType: adEndTimeString == '' ? 0 : 1,
+      startDate: moment(startDateString, 'DD/MM/YYYY - HH:mm A'),
+      endDate:
+        adEndTimeString == ''
+          ? moment()
+          : moment(endDateString, 'DD/MM/YYYY - HH:mm A'),
+    })
+
+    this.recenterSwipeable()
+    this.props.needRefreshPromoList(reduxKey)
+  }
+  cellAddButtonTapped = promo => {
+    this.prepDataForEdit(promo)
+    Navigator.push('AddPromoPageStep1', {
+      authInfo: this.props.authInfo,
+      isEdit: true,
+      isDirectEdit: true,
+    })
+  }
+  cellEditPriceButtonTapped = promo => {
+    this.prepDataForEdit(promo)
+    this.props.getGroupAdDetailEdit(promo.group_id)
+    Navigator.push('AddPromoPageStep2', {
+      authInfo: this.props.authInfo,
+      isEdit: true,
+      isDirectEdit: true,
+    })
+  }
+
+  swipeable = null
+
+  recenterSwipeable = () => {
+    const { currentlyOpenSwipeable } = this.state
+
+    if (currentlyOpenSwipeable) {
+      currentlyOpenSwipeable.recenter()
+    }
+  }
+
+  renderItem = (item, adType) => {
+    if (this.props.promoListType != 0) {
+      return (
+        <TouchableOpacity onPress={() => this.cellSelected(item)}>
+          <View>
+            {item.index == 0 && <View style={styles.separator} />}
+            <PromoInfoCell isLoading={false} ad={item.item} adType={adType} />
+            <View style={styles.separator} />
+          </View>
+        </TouchableOpacity>
+      )
+    }
+
+    const rightButtons = [
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: color.mainGreen,
+        }}
+      >
+        <TouchableHighlight
+          style={{
+            width: 110,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            backgroundColor: color.mainGreen,
+          }}
+          underlayColor="green"
+          onPress={() => this.cellAddButtonTapped(item.item)}
+        >
+          <Text
+            style={{
+              fontSize: 10,
+              color: 'white',
+              backgroundColor: 'transparent',
+            }}
+          >
+            Tambah Produk
+          </Text>
+        </TouchableHighlight>
+      </View>,
+      <View
+        style={{
+          flex: 1,
+          backgroundColor: color.mainGreen,
+        }}
+      >
+        <TouchableHighlight
+          style={{
+            width: 110,
+            alignItems: 'center',
+            justifyContent: 'center',
+            flex: 1,
+            backgroundColor: color.mainGreen,
+          }}
+          underlayColor="green"
+          onPress={() => this.cellEditPriceButtonTapped(item.item)}
+        >
+          <Text
+            style={{
+              fontSize: 10,
+              color: 'white',
+              backgroundColor: 'transparent',
+            }}
+          >
+            Ubah Biaya
+          </Text>
+        </TouchableHighlight>
+      </View>,
+    ]
+
+    return (
+      <Swipeable
+        onRef={ref => {
+          this.swipeable = ref
+        }}
+        rightButtonWidth={110}
+        rightButtons={rightButtons}
+        onRightButtonsOpenRelease={(event, gestureState, swipeable) => {
+          if (
+            this.state.currentlyOpenSwipeable &&
+            this.state.currentlyOpenSwipeable !== swipeable
+          ) {
+            this.state.currentlyOpenSwipeable.recenter()
+          }
+          this.setState({
+            currentlyOpenSwipeable: swipeable,
+          })
+        }}
+        onRightButtonsCloseRelease={() =>
+          this.setState({
+            currentlyOpenSwipeable: null,
+          })}
+      >
+        <TouchableOpacity onPress={() => this.cellSelected(item)}>
+          <View>
+            {item.index == 0 && <View style={styles.separator} />}
+            <PromoInfoCell isLoading={false} ad={item.item} adType={adType} />
+            <View style={styles.separator} />
+          </View>
+        </TouchableOpacity>
+      </Swipeable>
+    )
+  }
   renderSeparator = () => <View style={styles.separator} />
   renderNoResult = () => {
     if (!this.props.isNoPromo) {
@@ -235,7 +415,7 @@ class PromoListPage extends Component {
     const desc =
       this.props.promoListType == 0
         ? 'Gunakan Grup Promo dan nikmati kemudahan mengatur Promo Anda dalam sekali pengaturan.'
-        : 'Promosikan produk Anda agar lebih mudah ditemukan pembeli untuk mendapatkan lebih banyak pengunjung dan meningkatkan penjualan.'
+        : 'Promosikan produk Anda agar lebih mudah ditemukan pembeli untuk mendapatkan lebih banyak pengunjung dan meningkatkan pembelian.'
     return (
       <NoResultView
         title={alertTitle}
@@ -296,13 +476,14 @@ class PromoListPage extends Component {
               onRefresh={this.refreshData}
             />
           }
-          scrollEventThrottle={1}
+          scrollEventThrottle={16}
           onScroll={Animated.event(
             [{ nativeEvent: { contentOffset: { y: this.state.scrollAnim } } }],
             {
               useNativeDriver: true,
             },
           )}
+          onScrollBeginDrag={this.recenterSwipeable}
         />
         <Animated.View
           style={[
@@ -357,7 +538,7 @@ class PromoListPage extends Component {
 
     return (
       <Navigator.Config
-        title={this.props.promoListType == 0 ? 'Grup' : 'Produk'}
+        title={this.props.promoListType == 0 ? 'Promo Grup' : 'Promo Produk'}
         onAppear={this.onAppear}
         rightButtons={buttonArray}
         onRightPress={this.navBarButtonTapped}
@@ -366,16 +547,22 @@ class PromoListPage extends Component {
       </Navigator.Config>
     )
   }
-
   navBarButtonTapped = index => {
     if (index == 0) {
-      AlertIOS.alert(
-        'Tambah Promo Tidak Tersedia',
-        'Saat ini tambah promo hanya bisa dilakukan dari komputer.',
-        [{ text: 'OK' }],
-      )
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label:
+          this.props.promoListType === 0
+            ? `Add Group Promo`
+            : `Add Product Promo`,
+      })
+      this.props.needRefreshPromoList(reduxKey)
+      Navigator.present('AddPromoPage', { authInfo: this.props.authInfo })
     } else {
       Navigator.push('FilterPage', {
+        promoType: this.props.promoListType,
         shopId: this.props.authInfo.shop_id,
         reduxKey,
       })
@@ -398,9 +585,12 @@ class PromoListPage extends Component {
     Navigator.push('DateSettingsPage', {
       changeDateActionId: 'CHANGE_DATE_RANGE_PROMOLIST',
       reduxKey,
+      trackerFromGroupPage: this.props.promoListType === 0,
+      trackerFromProductPage: this.props.promoListType === 1,
     })
   }
   cellSelected = item => {
+    this.recenterSwipeable()
     this.props.needRefreshPromoList(reduxKey)
 
     const newReduxKey =
@@ -427,11 +617,17 @@ class PromoListPage extends Component {
     if (this.props.isFailedRequest) {
       this.refreshData()
     } else {
-      AlertIOS.alert(
-        'Tambah Promo Tidak Tersedia',
-        'Saat ini tambah promo hanya bisa dilakukan dari komputer.',
-        [{ text: 'OK' }],
-      )
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category: 'ta - product',
+        action: 'Click',
+        label:
+          this.props.promoListType === 0
+            ? `Add Group Promo`
+            : `Add Product Promo`,
+      })
+      this.props.needRefreshPromoList(reduxKey)
+      Navigator.present('AddPromoPage', { authInfo: this.props.authInfo })
     }
   }
 }

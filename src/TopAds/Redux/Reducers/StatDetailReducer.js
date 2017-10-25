@@ -27,7 +27,6 @@ export default function statDetailReducer(state = statDetailState, action) {
         isNeedRefresh: true,
       }
     case 'SET_INITIAL_DATA_STATDETAIL':
-      console.log(action)
       return {
         ...state,
         dataSource: action.payload,

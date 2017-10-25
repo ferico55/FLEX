@@ -23,3 +23,17 @@ export const resetFilter = key => ({
   type: 'RESET_FILTER',
   key,
 })
+
+export const changeTempFilterPromotedStatus = tempPromotedStatus => ({
+  type: 'CHANGE_FILTER_ADDPROMOPRODUCT_TEMP_PROMOTEDSTATUS',
+  tempPromotedStatus,
+})
+
+export const changeTempFilterEtalase = tempEtalase => ({
+  type: 'CHANGE_FILTER_ADDPROMOPRODUCT_TEMP_ETALASE',
+  tempEtalase,
+})
+
+export const changeAddPromoProductListFilter = () => ({
+  type: 'CHANGE_FILTER_ADDPROMOPRODUCT',
+})

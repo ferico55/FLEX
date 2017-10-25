@@ -1,5 +1,6 @@
 import DateTimePicker from 'react-native-modal-datetime-picker'
 import Navigator from 'native-navigation'
+import { TKPReactAnalytics } from 'NativeModules'
 import React, { Component } from 'react'
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native'
 import moment from 'moment'
@@ -163,8 +164,6 @@ class DateSettingsPage extends Component {
   hideDateTimePicker = () => this.setState({ isDateTimePickerVisible: false })
 
   handleDatePicked = (date, isStartDate) => {
-    console.log('A date has been picked: ', date)
-
     if (isStartDate) {
       let theEndDate =
         moment(date) > this.state.tempEndDate
@@ -187,6 +186,37 @@ class DateSettingsPage extends Component {
     }
   }
   saveDate = () => {
+    let trackerOriginString = ''
+    if (this.props.trackerFromMainPage) {
+      trackerOriginString = 'Main Page'
+    } else if (this.props.trackerFromStatisticPage) {
+      trackerOriginString = 'Statistik Page'
+    } else if (this.props.trackerFromGroupPage) {
+      trackerOriginString = 'Group Page'
+    } else if (this.props.trackerFromProductPage) {
+      trackerOriginString = 'Product Page'
+    } else if (this.props.trackerFromDetailGroupPage) {
+      trackerOriginString = 'Detail Group Page'
+    } else if (this.props.trackerFromDetailProductPage) {
+      trackerOriginString = 'Detail Product Page'
+    } else if (this.props.trackerFromDetailShopPage) {
+      trackerOriginString = 'Detail Shop Page'
+    }
+
+    if (trackerOriginString !== '') {
+      TKPReactAnalytics.trackEvent({
+        name: 'topadsios',
+        category:
+          this.props.selectedTabIndex === 0 ? 'ta - product' : 'ta - shop',
+        action: 'Click',
+        label:
+          this.state.selectedTabIndex === 0
+            ? `Date Period (${trackerOriginString}) - ${this.state
+                .momentPresetDateRanges[this.state.selectedCellIndex].title}`
+            : `Date Custom (${trackerOriginString})`,
+      })
+    }
+
     const actionId = this.props.changeDateActionId
     this.props.changeDateRange({
       actionId,

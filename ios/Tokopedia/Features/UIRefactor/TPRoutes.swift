@@ -703,7 +703,8 @@ class TPRoutes: NSObject {
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
             
-            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
+            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo":auth as AnyObject])
+
             viewController.hidesBottomBarWhenPushed = true
             UIApplication.topViewController()?
                 .navigationController?
