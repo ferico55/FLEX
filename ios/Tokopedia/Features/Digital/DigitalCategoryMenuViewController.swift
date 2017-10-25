@@ -13,6 +13,7 @@ import TPKeyboardAvoiding
 import HMSegmentedControl
 import CFAlertViewController
 import Moya
+import NSAttributedString_DDHTML
 
 extension Array where Element: DigitalOperator {
     func appropriateOperator(for text: String) -> DigitalOperator? {
@@ -523,12 +524,14 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
                             let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
                             let text = NSMutableAttributedString()
-                            text.append(NSMutableAttributedString(string: infoString + " "))
+                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string  + " "))
                             text.append(attributedString)
                             label.attributedText = text
                         } else {
-                            label.text = infoString
+                            label.text = NSAttributedString(fromHTML: infoString).string
                         }
+                    } else {
+                        label.text = ""
                     }
                 }
             ]),
