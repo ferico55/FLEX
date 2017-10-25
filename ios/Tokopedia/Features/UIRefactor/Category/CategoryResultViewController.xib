@@ -4,17 +4,14 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="CategoryResultViewController">
             <connections>
-                <outlet property="act" destination="Krz-rR-lZi" id="hgY-j8-hjo"/>
                 <outlet property="changeGridButton" destination="Toy-Rx-Qd7" id="VTh-MC-xu3"/>
                 <outlet property="containerView" destination="Hx3-PJ-Ox6" id="tBl-aP-vWL"/>
-                <outlet property="firstFooter" destination="gK5-Vd-Tcn" id="e1W-4z-Cjz"/>
                 <outlet property="fourButtonsToolbar" destination="a9N-KR-7yR" id="ZME-fD-IjR"/>
                 <outlet property="requestLoadingActivityIndicator" destination="hEK-Te-f7h" id="gKd-L6-32M"/>
                 <outlet property="threeButtonsToolbar" destination="f2G-rW-SNO" id="zn1-Lt-i1I"/>
@@ -639,21 +636,6 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <point key="canvasLocation" x="81.5" y="161.5"/>
-        </view>
-        <view contentMode="scaleToFill" id="gK5-Vd-Tcn">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-            <subviews>
-                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="Krz-rR-lZi">
-                    <rect key="frame" x="150" y="12" width="20" height="20"/>
-                </activityIndicatorView>
-            </subviews>
-            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
-            <constraints>
-                <constraint firstItem="Krz-rR-lZi" firstAttribute="centerX" secondItem="gK5-Vd-Tcn" secondAttribute="centerX" id="JgB-6P-mRo"/>
-                <constraint firstItem="Krz-rR-lZi" firstAttribute="centerY" secondItem="gK5-Vd-Tcn" secondAttribute="centerY" id="wVC-7B-XMP"/>
-            </constraints>
-            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
     </objects>
     <resources>

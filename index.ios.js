@@ -23,6 +23,7 @@ import logger from 'redux-logger'
 
 import Promo from './src/Promo'
 import PromoDetail from './src/PromoDetail'
+import CategoryResultPage from './src/category-result/CategoryResultPage'
 
 const middleware = applyMiddleware(thunk)
 const topAdsDashboardStore = createStore(topAdsDashboardReducer, middleware)
@@ -84,7 +85,7 @@ Navigator.registerScreen('AddCreditPage', () => props => (
 
 const container = HybridContainer({
   Hotlist: require('./src/Hotlist'),
-  CategoryResult: require('./src/category-result/CategoryResult'),
+  CategoryResultPage,
   Promo,
   PromoDetail,
   'Official Store': require('./src/official-store/setup'),

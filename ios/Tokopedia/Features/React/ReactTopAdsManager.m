@@ -19,4 +19,9 @@ RCT_EXPORT_METHOD(sendClickImpressionWithClickUrlString:(NSString*)clickUrlStrin
     [TopAdsService sendClickImpressionWithClickURLString:clickUrlString];
 }
 
+RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
+    TopAdsInfoActionSheet *topAdsInfoActionSheet = [TopAdsInfoActionSheet new];
+    [topAdsInfoActionSheet show];
+}
+
 @end

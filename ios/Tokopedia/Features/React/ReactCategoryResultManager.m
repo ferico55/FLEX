@@ -42,15 +42,11 @@ RCT_EXPORT_METHOD(getNextPageCategoryResultProductWithCategoryId:(NSString*)cate
     [paramsWithUpdatedPage setObject:page forKey:@"start"];
     
     [productAndWishlistNetworkManager requestSearchWithParams:paramsWithUpdatedPage andPath:@"/search/v2.5/product" withCompletionHandler:^(SearchProductWrapper *searchProductWrapperResult) {
+        [AnalyticsManager trackProductImpressions:searchProductWrapperResult.data.products];
         resolve([searchProductWrapperResult wrap]);
     } andErrorHandler:^(NSError *error) {
         reject(@(error.code).stringValue, error.localizedDescription, error);
     }];
-}
-
-RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
-    TopAdsInfoActionSheet *topAdsInfoActionSheet = [TopAdsInfoActionSheet new];
-    [topAdsInfoActionSheet show];
 }
 
 RCT_EXPORT_METHOD(showLoginModal) {

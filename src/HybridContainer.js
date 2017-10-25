@@ -68,7 +68,7 @@ const HybridContainer = (ReactScreens) => {
         screenKey,
         list: []
       };
-      if (name != 'CategoryResult'){
+      if (name != 'CategoryResultPage'){
       	HybridNavigationManager.setTitle(rootTag, title || name);
   	  }
     }

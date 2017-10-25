@@ -1,6 +1,4 @@
-import {
-	StyleSheet
-} from 'react-native'
+import { StyleSheet } from 'react-native'
 
 module.exports = StyleSheet.create({
   thumbnailImageGrid: {
@@ -10,7 +8,7 @@ module.exports = StyleSheet.create({
     marginLeft: 10,
     marginRight: 10,
     marginBottom: 4,
-    borderRadius: 3
+    borderRadius: 3,
   },
   thumbnailImageList: {
     resizeMode: 'cover',
@@ -20,37 +18,37 @@ module.exports = StyleSheet.create({
     marginLeft: 10,
     marginRight: 2,
     marginBottom: 4,
-    borderRadius: 3
+    borderRadius: 3,
   },
   productName: {
     color: 'rgba(0,0,0,0.7)',
     fontSize: 13,
     fontWeight: '600',
     marginLeft: 10,
-    marginRight: 10
+    marginRight: 10,
   },
   productPrice: {
     color: 'rgba(255,87,34,1)',
     fontSize: 13,
     fontWeight: '600',
     marginLeft: 10,
-    marginBottom: 4
+    marginBottom: 4,
   },
   shopName: {
     color: 'rgba(0,0,0,0.54)',
     fontSize: 11,
     marginLeft: 10,
-    marginBottom: 3.4
+    marginBottom: 3.4,
   },
   shopLocation: {
     color: 'rgba(0,0,0,0.38)',
     fontSize: 11,
-    marginLeft: 2
+    marginLeft: 2,
   },
-	discussion: {
-		alignSelf:'flex-end',
-		color: 'rgba(0,0,0,0.54)',
+  discussion: {
+    alignSelf: 'flex-end',
+    color: 'rgba(0,0,0,0.54)',
     fontSize: 11,
-    marginRight: 10
-	}
-});
+    marginRight: 10,
+  },
+})
