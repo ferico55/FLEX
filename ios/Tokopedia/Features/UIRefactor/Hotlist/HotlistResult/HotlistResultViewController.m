@@ -1004,7 +1004,8 @@ ProductCellDelegate
                             @"q" : _bannerResult.query.q?:@"",
                             @"type" : _bannerResult.query.type?:@"",
                             @"default_sc": _bannerResult.query.sc?:@"",
-                            @"shop_id" : _bannerResult.query.shop_id?:@""
+                            @"shop_id" : _bannerResult.query.shop_id?:@"",
+                            @"hot_id": _bannerResult.query.hot_id?:@""
                             };
     
     [params addEntriesFromDictionary:param];
