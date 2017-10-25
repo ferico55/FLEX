@@ -139,13 +139,13 @@ class ListBankViewController: UIViewController {
             accountBanks: [
                 DetailBank(
                     number: "037 701 000 435 301",
-                    branch: "BNI Kebon Jeruk",
+                    branch: "BRI Kebon Jeruk",
                     picture: "https://ecs7.tokopedia.net/img/icon-bri.png",
                     accountName: "a/n PT. Tokopedia"
                 ),
                 DetailBank(
                     number: "037 701 000 692 301",
-                    branch: "BNI Kebon Jeruk",
+                    branch: "BRI Kebon Jeruk",
                     picture: "https://ecs7.tokopedia.net/img/icon-bri.png",
                     accountName: "a/n PT. Tokopedia"
                 )
