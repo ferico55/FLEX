@@ -363,4 +363,17 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [keys objectForKey:TPUrlIndex];
 }
 
++ (NSString*)galadrielURL {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://galadriel.tokopedia.com",
+                           @(TPUrlStaging) : @"https://galadriel-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://galadriel-staging.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://galadriel-staging.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 @end

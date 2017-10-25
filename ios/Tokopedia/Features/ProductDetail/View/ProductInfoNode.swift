@@ -13,13 +13,15 @@ class ProductInfoNode: ContainerNode {
     fileprivate let state: ProductDetailState
     fileprivate let didTapCategory: (ProductCategory) -> Void
     fileprivate let didTapStorefront: (ProductUnbox) -> Void
+    fileprivate let didTapCatalog: (String) -> Void
     fileprivate let didTapReturnInfo: (String) -> Void
     
-    init(identifier: String, state: ProductDetailState, didTapCategory: @escaping (ProductCategory) -> Void, didTapStorefront: @escaping (ProductUnbox) -> Void, didTapReturnInfo: @escaping (String) -> Void) {
+    init(identifier: String, state: ProductDetailState, didTapCategory: @escaping (ProductCategory) -> Void, didTapStorefront: @escaping (ProductUnbox) -> Void, didTapReturnInfo: @escaping (String) -> Void, didTapCatalog: @escaping (String) -> Void) {
         self.state = state
         self.didTapCategory = didTapCategory
         self.didTapStorefront = didTapStorefront
         self.didTapReturnInfo = didTapReturnInfo
+        self.didTapCatalog = didTapCatalog
         
         super.init(identifier: identifier)
         guard let preorder = state.productDetail?.preorderDetail else { return }
@@ -33,14 +35,18 @@ class ProductInfoNode: ContainerNode {
                 preorder.isPreorder ? GlobalRenderComponent.horizontalLine(identifier: "Info-Line-2", marginLeft: 15) : NilNode(),
                 preorder.isPreorder ? productPreorderView() : NilNode(),
                 GlobalRenderComponent.horizontalLine(identifier: "Info-Line-3", marginLeft: 15),
-                productConditionView(),
+                productSuccessRate(),
                 GlobalRenderComponent.horizontalLine(identifier: "Info-Line-4", marginLeft: 15),
-                productMinOrderView(),
+                productConditionView(),
                 GlobalRenderComponent.horizontalLine(identifier: "Info-Line-5", marginLeft: 15),
-                productCategoryView(),
+                productMinOrderView(),
                 GlobalRenderComponent.horizontalLine(identifier: "Info-Line-6", marginLeft: 15),
+                productCategoryView(),
+                GlobalRenderComponent.horizontalLine(identifier: "Info-Line-7", marginLeft: 15),
                 productStorefrontView(),
-                GlobalRenderComponent.horizontalLine(identifier: "Info-Line-7", marginLeft: 0)
+                GlobalRenderComponent.horizontalLine(identifier: "Info-Line-8", marginLeft: 15),
+                productCatalogView(),
+                GlobalRenderComponent.horizontalLine(identifier: "Info-Line-9", marginLeft: 0)
                 ])
             ])
     }
@@ -227,6 +233,30 @@ class ProductInfoNode: ContainerNode {
                 ])
     }
     
+    private func productSuccessRate() -> NodeType {
+        guard let successRate = state.productDetail?.successRate, successRate != "0" else { return NilNode() }
+        
+        return Node { _, layout, _ in
+            layout.marginLeft = 15
+            layout.marginRight = 15
+            layout.marginTop = 22
+            layout.marginBottom = 22
+            layout.justifyContent = .spaceBetween
+            layout.flexDirection = .row
+            }.add(children: [
+                Node<UILabel>() { view, _, _ in
+                    view.text = "Transaksi Berhasil"
+                    view.font = .title1Theme()
+                    view.textColor = .tpSecondaryBlackText()
+                },
+                Node<UILabel>() { view, _, _ in
+                    view.text = "\(successRate) %"
+                    view.font = .title1Theme()
+                    view.textColor = .tpPrimaryBlackText()
+                }
+                ])
+    }
+    
     private func productMinOrderView() -> NodeType {
         guard let info = state.productDetail?.info else { return NilNode() }
         
@@ -319,6 +349,42 @@ class ProductInfoNode: ContainerNode {
                                                                             andHeight: 24)
                     layout.width = etalaseNameSize.width + 10
                     view.accessibilityLabel = "productEtalase"
+                    
+                }
+                ])
+    }
+    
+    private func productCatalogView() -> NodeType {
+        guard let catalogName = state.productDetail?.info.catalogName, let catalogId = state.productDetail?.info.catalogId, catalogId != "0"  else { return NilNode() }
+        
+        return Node { _, layout, _ in
+            layout.marginLeft = 15
+            layout.marginRight = 12
+            layout.marginTop = 22
+            layout.marginBottom = 22
+            layout.justifyContent = .spaceBetween
+            layout.flexDirection = .row
+            }.add(children: [
+                Node<UILabel>() { view, _, _ in
+                    view.text = "Katalog"
+                    view.font = .title1Theme()
+                    view.textColor = .tpSecondaryBlackText()
+                    
+                },
+                Node<UIButton>() { view, layout, size in
+                    view.titleLabel?.font = .title1Theme()
+                    view.setTitle(catalogName, for: .normal)
+                    view.titleLabel?.lineBreakMode = .byTruncatingMiddle
+                    view.setTitleColor(.tpGreen(), for: .normal)
+                    view.setTitleColor(.tpLightGreen(), for: .highlighted)
+                    _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
+                        self.didTapCatalog(catalogId)
+                    })
+                    
+                    let catalogNameSize = UIFont.title1Theme().sizeOfString(string: catalogName,
+                                                                            constrainedToWidth: Double(size.width * 0.6),
+                                                                            andHeight: 24)
+                    layout.width = catalogNameSize.width + 10
                     
                 }
                 ])

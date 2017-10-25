@@ -9,6 +9,7 @@
 import UIKit
 import Render
 import Lottie
+import NSAttributedString_DDHTML
 
 class ProductHeaderNode: ContainerNode {
     fileprivate var state: ProductDetailState
@@ -128,7 +129,7 @@ class ProductHeaderNode: ContainerNode {
                 layout.height = self.productImageHeightRatio * size.width
                 layout.justifyContent = .center
                 view.backgroundColor = .black
-                view.alpha = 0.7
+                view.alpha = 0.5
             },
             Node<UILabel>() { view, layout, _ in
                 layout.alignSelf = .center
@@ -388,6 +389,7 @@ class ProductHeaderNode: ContainerNode {
             }.add(children: [
                 productOriginalPriceView(),
                 productPriceView(),
+                productCashbackView(),
                 productComponentOfficialStoreTag(),
                 productPricePromoView()
                 ])
@@ -422,7 +424,6 @@ class ProductHeaderNode: ContainerNode {
             layout.marginBottom = marginBottom
         }.add(children: [
             productPriceLabel(),
-            productCashbackView(),
             productDiscountView()
         ])
     }
@@ -449,20 +450,32 @@ class ProductHeaderNode: ContainerNode {
             return NilNode()
         }
         
-        return Node<UILabel>(identifier: "Product-Cashback-View") { view, layout, _ in
-            layout.paddingLeft = 4
-            layout.paddingRight = 4
-            layout.height = 18
-            layout.marginLeft = 5
-            view.backgroundColor = .tpGreen()
-            view.textColor = .white
-            view.font = .microTheme()
-            view.layer.cornerRadius = 4
-            view.layer.masksToBounds = true
-            view.textAlignment = .center
-            view.text = "Cashback \(cashback)"
-            view.accessibilityLabel = "cashbackLabel"
-        }
+        return Node(identifier: "Product-Cashback-View") { _, layout, _ in
+                layout.flexDirection = .row
+                layout.paddingRight = 4
+                layout.height = 20
+                layout.marginLeft = 15
+                layout.marginBottom = 10
+            
+            }.add(children: [
+                Node<UILabel>(identifier: "Product-Cashback-Label") { view, layout, _ in
+                    view.textColor = .tpSecondaryBlackText()
+                    view.font = .microTheme()
+                    view.layer.cornerRadius = 4
+                    view.layer.masksToBounds = true
+                    view.textAlignment = .left
+                    view.attributedText = NSAttributedString(fromHTML: "Dapatkan <font color=\"#42b549\">Cashback \(cashback)</font> ke Tokocash", normalFont: UIFont.microTheme(),boldFont: UIFont.microThemeSemibold(), italicFont: UIFont.microThemeSemibold())
+                    view.accessibilityLabel = "cashbackLabel"
+                    
+                    layout.marginRight = 5
+                },
+                Node<UIImageView> { view, layout, _ in
+                    view.image = UIImage(named: "icon-wallet")
+                    layout.width = 20
+                    layout.height = 20
+                }
+            ])
+        
     }
     
     private func productDiscountView() -> NodeType {

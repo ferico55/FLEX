@@ -24,6 +24,7 @@ struct ProductUnbox {
     let isFreeReturned: Int
     let cashback: String
     let soldCount: String
+    let successRate: String
     let viewCount: String
     let reviewCount: String
     let talkCount: String
@@ -56,6 +57,7 @@ extension ProductUnbox: Unboxable {
         self.isFreeReturned = try unboxer.unbox(keyPath: "data.shop_info.shop_is_free_returns")
         self.cashback = try unboxer.unbox(keyPath: "data.cashback.product_cashback")
         self.soldCount = try unboxer.unbox(keyPath: "data.statistic.product_sold_count")
+        self.successRate = try unboxer.unbox(keyPath: "data.statistic.product_success_rate")
         self.viewCount = try unboxer.unbox(keyPath: "data.statistic.product_view_count")
         self.reviewCount = try unboxer.unbox(keyPath: "data.statistic.product_review_count")
         self.talkCount = try unboxer.unbox(keyPath: "data.statistic.product_talk_count")
@@ -99,6 +101,8 @@ struct ProductInfo {
     let returnInfo: ReturnInfo
     var etalaseName: String
     var etalaseId: String
+    var catalogName: String
+    var catalogId: String
     var status: ProductInfoStatus
     let statusTitle: String
     let statusMessage: String
@@ -117,6 +121,8 @@ extension ProductInfo: Unboxable {
         self.returnInfo = try unboxer.unbox(keyPath: "return_info")
         self.etalaseName = try unboxer.unbox(keyPath: "product_etalase")
         self.etalaseId = try unboxer.unbox(keyPath: "product_etalase_id")
+        self.catalogName = try unboxer.unbox(keyPath: "catalog_name")
+        self.catalogId = try unboxer.unbox(keyPath: "catalog_id")
         self.status = try unboxer.unbox(keyPath: "product_status")
         self.statusTitle = try unboxer.unbox(keyPath: "product_status_title")
         self.statusMessage = try unboxer.unbox(keyPath: "product_status_message")

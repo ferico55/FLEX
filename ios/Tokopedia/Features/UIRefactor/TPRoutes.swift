@@ -29,6 +29,16 @@ class TPRoutes: NSObject {
             return true
         }
         
+        JLRoutes.global().addRoute("/peluang") { (params: [String: Any]!) -> Bool in
+            openPeluang()
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/peluang.pl") { (params: [String: Any]!) -> Bool in
+            openPeluang()
+            return true
+        }
+        
         // MARK: Shop Etalase - (Native)
         JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String: Any]!) -> Bool in
             let shopId = params["shopId"] as! String
@@ -820,6 +830,19 @@ class TPRoutes: NSObject {
         } else {
             return ""
         }
+    }
+    
+    static func openPeluang() {
+        let userManager = UserAuthentificationManager()
+
+        if(userManager.isLogin) {
+            let controller = ReplacementListViewController()
+            controller.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(controller, animated: true)
+        }
+        
     }
     
     static func openWebView(_ url: URL, title: String = "") {

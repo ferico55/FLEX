@@ -19,6 +19,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     fileprivate var store: Store<ProductDetailState>!
     fileprivate var product: ProductUnbox?
+    fileprivate var promo: PromoDetail?
     fileprivate var productView: ProductDetailViewComponent!
     fileprivate var initialData: [String: String]?
     fileprivate var isReplacementMode: Bool!
@@ -178,6 +179,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                     self.store.dispatch(ProductDetailAction.updateWishlist((self.product?.isWishlisted)!))
                     
                     self.loadOtherProduct(product: product)
+                    self.loadPromo()
                     self.loadProductCampaign(product: product)
                     if product.shop.isGoldMerchant {
                         self.loadProductVideos(product: product)
@@ -490,5 +492,19 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         if let initialData = self.initialData {
             self.loadProductDetail(data: initialData)
         }
+    }
+    
+    //MARK: - PromoWidget
+    func loadPromo() {
+        let provider = NetworkProvider<GaladrielTarget>()
+        provider.request(.getPromoWidget())
+        .map(to: PromoUnbox.self)
+        .subscribe(onNext: { (promoUnbox) in
+            guard let data = promoUnbox.list.first else {
+                return
+            }
+            self.store.dispatch(ProductDetailAction.receivePromo(data))
+        })
+        .disposed(by: self.rx_disposeBag)
     }
 }

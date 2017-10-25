@@ -31,6 +31,7 @@ enum ProductDetailActivity {
 enum ProductDetailAction: Action {
     case begin([String: String])
     case receive(ProductUnbox, ProductDetailActivity?)
+    case receivePromo(PromoDetail)
     case tapVideo(ProductVideo?, Bool)
     case updateActivity(ProductDetailActivity)
     case updateWishlist(Bool)
@@ -53,6 +54,9 @@ struct ProductDetailReducer: Reducer {
         case let .receive(product, activity):
             return state.receive(productDetail: product, activity: activity)
             
+        case let .receivePromo(promoDetail):
+            return state.receivePromo(promoDetail: promoDetail)
+            
         case let .tapVideo(video, isPlay):
             return state.tapVideo(productVideo: video, isPlaying: isPlay)
             
@@ -72,6 +76,7 @@ struct ProductDetailState: Render.StateType, ReSwift.StateType {
     var currentPage: Int? = 0
     
     var productDetail: ProductUnbox?
+    var promoDetail: PromoDetail?
     var initialData: [String: String]?
     var nowPlayingVideo: ProductVideo?
     var isVideoLoading: Bool = false
@@ -93,6 +98,12 @@ struct ProductDetailState: Render.StateType, ReSwift.StateType {
             newState.productDetailActivity = activity
         }
         
+        return newState
+    }
+    
+    func receivePromo(promoDetail: PromoDetail) -> ProductDetailState {
+        var newState = self
+        newState.promoDetail = promoDetail
         return newState
     }
     
@@ -348,7 +359,20 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 view.addTarget(self, action: #selector(self.cartButtonDidTap(_:)), for: .touchUpInside)
                 view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                 view.imageView?.tintColor = isFullNavigation ? .black : .white
+                
+                if let imageView = view.imageView, !isFullNavigation {
+                    setIconImageShadow(imageView: imageView)
+                }
+                
             }.add(child: badgeView())
+        }
+        
+        func setIconImageShadow(imageView: UIImageView) -> Void {
+            imageView.layer.shadowColor = UIColor.black.cgColor
+            imageView.layer.shadowOffset = CGSize(width: 0.5, height: 0.5)
+            imageView.layer.shadowOpacity = 0.5
+            imageView.layer.shadowRadius = 0.5
+            imageView.clipsToBounds = false
         }
         
         func badgeView() -> NodeType {
@@ -390,7 +414,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     layout.alignSelf = .center
                     view.font = .microTheme()
                     view.textColor = .tpDisabledBlackText()
-                    view.text = "Perubahan Terakhir : \(productDetail.lastUpdated)"
+                    view.text = "Perubahan Harga Terakhir : \(productDetail.lastUpdated)"
                 }
             ])
         }
@@ -402,13 +426,12 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 if let initialData = self.state?.initialData,
                     let imageURL = initialData["imageURL"],
                     imageURL != "" {
-                    view.firstColor = .lightGray
+                    view.firstColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.160)
                 }
                 
                 if let _ = self.state?.productDetail {
-                    view.firstColor = .lightGray
+                    view.firstColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.160)
                 }
-                
                 view.secondColor = .clear
                 view.colorRatio = 0.5
                 view.fadeIntensity = 0.9
@@ -418,7 +441,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 layout.position = .absolute
                 layout.top = 0
                 layout.width = size.width
-                layout.height = 64
+                layout.height = 86
                 layout.justifyContent = .center
                 layout.flexDirection = .row
                 
@@ -433,6 +456,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .white
                     view.accessibilityLabel = "backButton"
+                    
+                    if let imageView = view.imageView {
+                        setIconImageShadow(imageView: imageView)
+                    }
+                    
                 },
                 Node { _, layout, _ in
                     layout.justifyContent = .spaceBetween
@@ -446,6 +474,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.addTarget(self, action: #selector(self.shareButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .white
+                    
+                    if let imageView = view.imageView {
+                        setIconImageShadow(imageView: imageView)
+                    }
                 },
                 cartButton(isFullNavigation: false),
                 Node<UIButton>() { view, layout, _ in
@@ -457,6 +489,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.addTarget(self, action: #selector(self.moreButtonDidTap(_:)), for: .touchUpInside)
                     view.imageEdgeInsets = UIEdgeInsetsMake(8, 8, 8, 8)
                     view.imageView?.tintColor = .white
+                    
+                    if let imageView = view.imageView {
+                        setIconImageShadow(imageView: imageView)
+                    }
                 }
             ])
         }
@@ -728,34 +764,54 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                     vc.strTitle = "Keterangan Pengembalian Barang"
                                     vc.strURL = url
                                     self.viewController.navigationController?.pushViewController(vc, animated: true)
-                }),
+                                },
+                                didTapCatalog: { [unowned self] catalogId in
+                                    let navigateViewController = NavigateViewController()
+
+                                    navigateViewController.navigateToCatalog(from: self.viewController, withCatalogID: catalogId, andCatalogKey: "")
+                                    
+                                }),
                 ProductDescriptionNode(identifier: "description",
                                        viewController: self.viewController,
                                        state: state,
                                        didTapDescription: { [unowned self] productInfo in
-                                           AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Product Description")
-                                           let vc = ProductDescriptionViewController(productInfo: productInfo)
-                                           self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                       },
+                                        AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Product Description")
+                                        let vc = ProductDescriptionViewController(productInfo: productInfo)
+                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
+                    },
                                        didTapVideo: { [unowned self] video in
-                                           let playerVars = [
-                                               "origin": "https://www.tokopedia.com",
-                                               "playsinline": "0"
-                                           ]
-                                           
-                                           if !state.isVideoLoading {
-                                               self.store.dispatch(ProductDetailAction.tapVideo(video, true))
-                                               self.youtubePlayerBackgroundView.isHidden = false
-                                               self.youtubePlayerView.isHidden = false
-                                               self.youtubePlayerView.load(withVideoId: video.url, playerVars: playerVars)
-                                           }
-                                       },
+                                        let playerVars = [
+                                            "origin": "https://www.tokopedia.com",
+                                            "playsinline": "0"
+                                        ]
+                                        
+                                        if !state.isVideoLoading {
+                                            self.store.dispatch(ProductDetailAction.tapVideo(video, true))
+                                            self.youtubePlayerBackgroundView.isHidden = false
+                                            self.youtubePlayerView.isHidden = false
+                                            self.youtubePlayerView.load(withVideoId: video.url, playerVars: playerVars)
+                                        }
+                    },
                                        didLongPressDescription: { view in
-                                           view.becomeFirstResponder()
-                                           let menuController = UIMenuController.shared
-                                           menuController.setTargetRect(view.frame, in: view)
-                                           menuController.setMenuVisible(true, animated: true)
+                                        view.becomeFirstResponder()
+                                        let menuController = UIMenuController.shared
+                                        menuController.setTargetRect(view.frame, in: view)
+                                        menuController.setMenuVisible(true, animated: true)
                 }),
+                ProductPromoNode(identifier: "promo", state: (self.state)!, promoDetail: state.promoDetail, didTapPromo: { promoCode in
+                        UIPasteboard.general.string = ""
+                        if promoCode != nil {
+                            UIPasteboard.general.string = promoCode
+                        }
+                    },
+                    didTapDescription: { targetURL in
+                        if targetURL != nil {
+                            if let url = URL(string: targetURL!) {
+                                TPRoutes.routeURL(url)
+                            }
+                        }
+                    }
+                ),
                 ProductSellerInfoNode(identifier: "seller",
                                       state: state,
                                       didTapShop: { [unowned self] shop in
@@ -1218,7 +1274,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
 }
 
 // MARK: - Custom Node
-class ContainerNode: NodeType {
+class ContainerNode: NSObject, NodeType {
     
     let node: NodeType
     

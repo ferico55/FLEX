@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2ADAC6471F99A4C700251993 /* ProductPromoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAC6461F99A4C700251993 /* ProductPromoNode.swift */; };
+		2ADAC6491F99A4F100251993 /* PromoUnbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAC6481F99A4F100251993 /* PromoUnbox.swift */; };
+		2ADAC64B1F99A51600251993 /* GaladrielTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ADAC64A1F99A51600251993 /* GaladrielTarget.swift */; };
 		3494586E1F306BDB00EEB628 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = 349458281F306BDB00EEB628 /* TokopediaDB.db */; };
 		3494586F1F306BDB00EEB628 /* activateWishlist.json in Resources */ = {isa = PBXBuildFile; fileRef = 3494582A1F306BDB00EEB628 /* activateWishlist.json */; };
 		349458701F306BDB00EEB628 /* badge_official_small.png in Resources */ = {isa = PBXBuildFile; fileRef = 3494582B1F306BDB00EEB628 /* badge_official_small.png */; };
@@ -2047,6 +2050,9 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2ADAC6461F99A4C700251993 /* ProductPromoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductPromoNode.swift; sourceTree = "<group>"; };
+		2ADAC6481F99A4F100251993 /* PromoUnbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PromoUnbox.swift; sourceTree = "<group>"; };
+		2ADAC64A1F99A51600251993 /* GaladrielTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GaladrielTarget.swift; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		349458281F306BDB00EEB628 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		3494582A1F306BDB00EEB628 /* activateWishlist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = activateWishlist.json; sourceTree = "<group>"; };
@@ -5412,6 +5418,7 @@
 		62C5DF501F826A2100EAE044 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				2ADAC6481F99A4F100251993 /* PromoUnbox.swift */,
 				62C5DF511F826A2100EAE044 /* ProductUnbox.swift */,
 			);
 			path = Model;
@@ -5420,6 +5427,7 @@
 		62C5DF521F826A2100EAE044 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				2ADAC6461F99A4C700251993 /* ProductPromoNode.swift */,
 				62C5DF531F826A2100EAE044 /* ProductInfoNode.swift */,
 				62C5DF541F826A2100EAE044 /* ProductDetailDiscussionNode.swift */,
 				62C5DF551F826A2100EAE044 /* ProductPriceNode.swift */,
@@ -10553,6 +10561,7 @@
 		62C5EB521F826A2700EAE044 /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				2ADAC64A1F99A51600251993 /* GaladrielTarget.swift */,
 				62C5EB531F826A2700EAE044 /* ReplacementTarget.swift */,
 				62C5EB541F826A2700EAE044 /* HadesTarget.swift */,
 				62C5EB551F826A2700EAE044 /* TalkTarget.swift */,
@@ -13086,6 +13095,7 @@
 				62C5ECB01F826A2700EAE044 /* CategoryIntermediaryCuratedProductSection.swift in Sources */,
 				62C5EBD91F826A2700EAE044 /* BankAccountRequest.m in Sources */,
 				62C5EF821F826A2900EAE044 /* PulsaRelationData.swift in Sources */,
+				2ADAC64B1F99A51600251993 /* GaladrielTarget.swift in Sources */,
 				62C5EF281F826A2900EAE044 /* DigitalGoodsDataSource.swift in Sources */,
 				DADB9F4D1F3C46CE002B1FAE /* FBTweakInline.m in Sources */,
 				62C5F2051F826A2C00EAE044 /* PromoProduct.m in Sources */,
@@ -13373,6 +13383,7 @@
 				62C5F1C21F826A2C00EAE044 /* ContactUsResponse.m in Sources */,
 				62C5F2151F826A2C00EAE044 /* DigitalCart.swift in Sources */,
 				62C5F09E1F826A2A00EAE044 /* EditResolutionForm.swift in Sources */,
+				2ADAC6491F99A4F100251993 /* PromoUnbox.swift in Sources */,
 				62C5F2621F826A2C00EAE044 /* ScroogeTarget.swift in Sources */,
 				62C5EDE11F826A2800EAE044 /* TKPInfoWindowMapView.swift in Sources */,
 				62C5F1971F826A2B00EAE044 /* GenerateHostResult.m in Sources */,
@@ -13618,6 +13629,7 @@
 				62C5EFDD1F826A2A00EAE044 /* Note.m in Sources */,
 				62C5F12F1F826A2B00EAE044 /* DetailReviewReputationViewModel.m in Sources */,
 				62C5F17E1F826A2B00EAE044 /* ClosedInfo.m in Sources */,
+				2ADAC6471F99A4C700251993 /* ProductPromoNode.swift in Sources */,
 				62C5F2121F826A2C00EAE044 /* DigitalCartViewController.swift in Sources */,
 				62C5EC9A1F826A2700EAE044 /* FilterCategoryViewController.m in Sources */,
 				62C5F08F1F826A2A00EAE044 /* HotlistBannerResult.m in Sources */,
