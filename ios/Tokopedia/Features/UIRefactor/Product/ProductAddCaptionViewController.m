@@ -8,8 +8,6 @@
 
 #import "ProductAddCaptionViewController.h"
 #import "NavigateViewController.h"
-#import "CameraCollectionViewController.h"
-#import "CameraAlbumListViewController.h"
 #import <QuartzCore/QuartzCore.h>
 #import "UIView+HVDLayout.h"
 #import "ReviewImageAttachment.h"

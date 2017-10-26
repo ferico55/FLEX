@@ -10,10 +10,8 @@ import UIKit
 import RSKPlaceholderTextView
 import RestKit
 
-@objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate, TKPDPhotoPickerDelegate {
-    
-    var imagePicker: TKPDPhotoPicker!
-    
+@objc(OpenShopViewController) class OpenShopViewController: UITableViewController, UITextFieldDelegate {
+        
     var shopDomain: String!
     var shopDomainError: [String] = []
     var shopImage: UIImage!
@@ -308,8 +306,57 @@ import RestKit
     }
     
     func didTapChangeImageButton(_ button: UIButton) -> Void {
-        imagePicker = TKPDPhotoPicker(parentViewController: self, pickerTransistionStyle: .coverVertical)
-        imagePicker.delegate = self
+        TKPImagePickerController.showImagePicker(self, assetType: .allPhotos, allowMultipleSelect: false, showCancel: true, showCamera: false, maxSelected: 1, selectedAssets: nil) { (assets) in
+            if (assets.count < 1) {
+                return
+            }
+            let asset = assets[0]
+            
+            asset.fetchFullScreenImageWithCompleteBlock({ [weak self] (image, dict) in
+                DispatchQueue.main.async {
+                    self?.shopImage = image
+                    
+                    self?.enableChangePhotoButton = false
+                    
+                    self?.tableView.reloadData()
+                    
+                    let nameFull = dict?["PHImageFileSandboxExtensionTokenKey"] as! String
+                    let nameOnly = (nameFull as NSString).lastPathComponent.lowercased()
+                    
+                    var uploadHost = ""
+                    if let theUploadHost = self?.generatedHost.upload_host {
+                        uploadHost = NSString(format: "https://%@", theUploadHost) as String
+                    }
+                    
+                    let requestObject: RequestObjectUploadImage = RequestObjectUploadImage()
+                    requestObject.server_id = self?.generatedHost.server_id
+                    requestObject.user_id = UserAuthentificationManager().getUserId();
+                    requestObject.add_new = "1"
+                    
+                    RequestUploadImage.requestUploadImage(
+                        self?.shopImage,
+                        withUploadHost:uploadHost,
+                        path: "/web-service/v4/action/upload-image/upload_shop_image.pl",
+                        name: "logo",
+                        fileName: nameOnly,
+                        request: requestObject,
+                        onSuccess: { imageResult in
+                            self?.uploadImageResponse = imageResult
+                            self?.enableChangePhotoButton = true
+                            self?.tableView.reloadData()
+                    },
+                        onFailure: { [weak self] error in
+                            if let error = error {
+                                let alert: StickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
+                                alert.show()
+                            }
+                            self?.shopImage = UIImage(named: "icon_default_shop")
+                            self?.enableChangePhotoButton = true
+                            self?.tableView.reloadData()
+                    })
+                }
+            })
+        }
     }
     
     @IBAction func didTapCheckDomainButton(_ sender: UIButton) {
@@ -340,53 +387,5 @@ import RestKit
         
                         })
 
-    }
-    
-    func photoPicker(_ picker: TKPDPhotoPicker!, didDismissCameraControllerWithUserInfo userInfo: [AnyHashable: Any]!) {
-        let photoDictionary = userInfo["photo"] as! [String: AnyObject];
-        
-        imageObject = [
-            "photo": [
-                "cameraimagedata": photoDictionary["cameraimagedata"],
-                "cameraimagename": photoDictionary["cameraimagename"]
-            ]
-        ]
-
-        shopImage = photoDictionary["photo"] as! UIImage
-        
-        enableChangePhotoButton = false
-        
-        tableView.reloadData()
-        
-        let name = photoDictionary["cameraimagename"] as! String
-        
-        let uploadHost = NSString(format: "https://%@", generatedHost.upload_host) as String
-        
-        let requestObject: RequestObjectUploadImage = RequestObjectUploadImage()
-        requestObject.server_id = generatedHost.server_id
-        requestObject.user_id = UserAuthentificationManager().getUserId();
-        requestObject.add_new = "1"
-        
-        RequestUploadImage.requestUploadImage(
-            shopImage,
-            withUploadHost:uploadHost,
-            path: "/web-service/v4/action/upload-image/upload_shop_image.pl",
-            name: "logo",
-            fileName: name,
-            request: requestObject,
-            onSuccess: { imageResult in
-                self.uploadImageResponse = imageResult
-                self.enableChangePhotoButton = true
-                self.tableView.reloadData()
-            },
-            onFailure: { error in
-                if let error = error {
-                    let alert: StickyAlertView = StickyAlertView(errorMessages: [error.localizedDescription], delegate: self)
-                    alert.show()
-                }
-                self.shopImage = UIImage(named: "icon_default_shop")
-                self.enableChangePhotoButton = true
-                self.tableView.reloadData()
-            })
     }
 }

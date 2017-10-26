@@ -587,22 +587,12 @@
 		62C5ED731F826A2800EAE044 /* DetailedImageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2551F826A2300EAE044 /* DetailedImageCell.xib */; };
 		62C5ED741F826A2800EAE044 /* GenerateHostRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2561F826A2300EAE044 /* GenerateHostRequest.m */; };
 		62C5ED751F826A2800EAE044 /* GenerateHostObservable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2571F826A2300EAE044 /* GenerateHostObservable.swift */; };
-		62C5ED761F826A2800EAE044 /* CameraCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2591F826A2300EAE044 /* CameraCollectionViewController.m */; };
-		62C5ED771F826A2800EAE044 /* CameraAlbumListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E25A1F826A2300EAE044 /* CameraAlbumListCell.xib */; };
-		62C5ED781F826A2800EAE044 /* CameraAlbumListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E25B1F826A2300EAE044 /* CameraAlbumListViewController.xib */; };
 		62C5ED791F826A2800EAE044 /* TPLiveCameraView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E25D1F826A2300EAE044 /* TPLiveCameraView.m */; };
-		62C5ED7A1F826A2800EAE044 /* CameraAlbumListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E25E1F826A2300EAE044 /* CameraAlbumListViewController.m */; };
-		62C5ED7B1F826A2800EAE044 /* CameraAlbumListCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2601F826A2300EAE044 /* CameraAlbumListCell.m */; };
-		62C5ED7C1F826A2800EAE044 /* CameraCollectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2611F826A2300EAE044 /* CameraCollectionViewController.xib */; };
-		62C5ED7D1F826A2800EAE044 /* TKPDLiveCameraTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2651F826A2300EAE044 /* TKPDLiveCameraTableViewCell.m */; };
-		62C5ED7E1F826A2800EAE044 /* CameraCollectionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2661F826A2300EAE044 /* CameraCollectionCell.xib */; };
-		62C5ED7F1F826A2800EAE044 /* CameraCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2681F826A2300EAE044 /* CameraCollectionCell.m */; };
 		62C5ED801F826A2800EAE044 /* TKPImagePickerCameraCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2691F826A2300EAE044 /* TKPImagePickerCameraCell.swift */; };
 		62C5ED811F826A2800EAE044 /* AddImageCaptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26A1F826A2300EAE044 /* AddImageCaptionViewController.swift */; };
 		62C5ED821F826A2800EAE044 /* DetailedImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26B1F826A2300EAE044 /* DetailedImageCell.swift */; };
 		62C5ED831F826A2800EAE044 /* RequestUploadImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26C1F826A2300EAE044 /* RequestUploadImage.m */; };
 		62C5ED841F826A2800EAE044 /* AddCaptionTextFieldCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26D1F826A2300EAE044 /* AddCaptionTextFieldCell.swift */; };
-		62C5ED851F826A2800EAE044 /* TKPDPhotoPicker.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26E1F826A2300EAE044 /* TKPDPhotoPicker.m */; };
 		62C5ED861F826A2800EAE044 /* TKPImagePickerController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E26F1F826A2300EAE044 /* TKPImagePickerController.swift */; };
 		62C5ED871F826A2800EAE044 /* TKPImagePickerUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2701F826A2300EAE044 /* TKPImagePickerUIDelegate.swift */; };
 		62C5ED881F826A2800EAE044 /* ImageThumbnailCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2721F826A2300EAE044 /* ImageThumbnailCell.swift */; };
@@ -2859,34 +2849,18 @@
 		62C5E24E1F826A2300EAE044 /* ResetPasswordSuccessViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordSuccessViewController.swift; sourceTree = "<group>"; };
 		62C5E24F1F826A2300EAE044 /* ForgotPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ForgotPasswordViewController.xib; sourceTree = "<group>"; };
 		62C5E2511F826A2300EAE044 /* UploadImageObserver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadImageObserver.swift; sourceTree = "<group>"; };
-		62C5E2521F826A2300EAE044 /* TKPDPhotoPicker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDPhotoPicker.h; sourceTree = "<group>"; };
 		62C5E2531F826A2300EAE044 /* RequestUploadImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestUploadImage.h; sourceTree = "<group>"; };
 		62C5E2541F826A2300EAE044 /* camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = camera.h; sourceTree = "<group>"; };
 		62C5E2551F826A2300EAE044 /* DetailedImageCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailedImageCell.xib; sourceTree = "<group>"; };
 		62C5E2561F826A2300EAE044 /* GenerateHostRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GenerateHostRequest.m; sourceTree = "<group>"; };
 		62C5E2571F826A2300EAE044 /* GenerateHostObservable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GenerateHostObservable.swift; sourceTree = "<group>"; };
-		62C5E2591F826A2300EAE044 /* CameraCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraCollectionViewController.m; sourceTree = "<group>"; };
-		62C5E25A1F826A2300EAE044 /* CameraAlbumListCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAlbumListCell.xib; sourceTree = "<group>"; };
-		62C5E25B1F826A2300EAE044 /* CameraAlbumListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraAlbumListViewController.xib; sourceTree = "<group>"; };
-		62C5E25C1F826A2300EAE044 /* TKPDLiveCameraTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPDLiveCameraTableViewCell.h; sourceTree = "<group>"; };
 		62C5E25D1F826A2300EAE044 /* TPLiveCameraView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TPLiveCameraView.m; sourceTree = "<group>"; };
-		62C5E25E1F826A2300EAE044 /* CameraAlbumListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAlbumListViewController.m; sourceTree = "<group>"; };
-		62C5E25F1F826A2300EAE044 /* CameraCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraCollectionCell.h; sourceTree = "<group>"; };
-		62C5E2601F826A2300EAE044 /* CameraAlbumListCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraAlbumListCell.m; sourceTree = "<group>"; };
-		62C5E2611F826A2300EAE044 /* CameraCollectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraCollectionViewController.xib; sourceTree = "<group>"; };
-		62C5E2621F826A2300EAE044 /* CameraCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraCollectionViewController.h; sourceTree = "<group>"; };
-		62C5E2631F826A2300EAE044 /* CameraAlbumListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAlbumListViewController.h; sourceTree = "<group>"; };
 		62C5E2641F826A2300EAE044 /* TPLiveCameraView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TPLiveCameraView.h; sourceTree = "<group>"; };
-		62C5E2651F826A2300EAE044 /* TKPDLiveCameraTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDLiveCameraTableViewCell.m; sourceTree = "<group>"; };
-		62C5E2661F826A2300EAE044 /* CameraCollectionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CameraCollectionCell.xib; sourceTree = "<group>"; };
-		62C5E2671F826A2300EAE044 /* CameraAlbumListCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraAlbumListCell.h; sourceTree = "<group>"; };
-		62C5E2681F826A2300EAE044 /* CameraCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraCollectionCell.m; sourceTree = "<group>"; };
 		62C5E2691F826A2300EAE044 /* TKPImagePickerCameraCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPImagePickerCameraCell.swift; sourceTree = "<group>"; };
 		62C5E26A1F826A2300EAE044 /* AddImageCaptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddImageCaptionViewController.swift; sourceTree = "<group>"; };
 		62C5E26B1F826A2300EAE044 /* DetailedImageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailedImageCell.swift; sourceTree = "<group>"; };
 		62C5E26C1F826A2300EAE044 /* RequestUploadImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestUploadImage.m; sourceTree = "<group>"; };
 		62C5E26D1F826A2300EAE044 /* AddCaptionTextFieldCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddCaptionTextFieldCell.swift; sourceTree = "<group>"; };
-		62C5E26E1F826A2300EAE044 /* TKPDPhotoPicker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDPhotoPicker.m; sourceTree = "<group>"; };
 		62C5E26F1F826A2300EAE044 /* TKPImagePickerController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPImagePickerController.swift; sourceTree = "<group>"; };
 		62C5E2701F826A2300EAE044 /* TKPImagePickerUIDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TKPImagePickerUIDelegate.swift; sourceTree = "<group>"; };
 		62C5E2711F826A2300EAE044 /* GenerateHostRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GenerateHostRequest.h; sourceTree = "<group>"; };
@@ -6742,7 +6716,6 @@
 			isa = PBXGroup;
 			children = (
 				62C5E2511F826A2300EAE044 /* UploadImageObserver.swift */,
-				62C5E2521F826A2300EAE044 /* TKPDPhotoPicker.h */,
 				62C5E2531F826A2300EAE044 /* RequestUploadImage.h */,
 				62C5E2541F826A2300EAE044 /* camera.h */,
 				62C5E2551F826A2300EAE044 /* DetailedImageCell.xib */,
@@ -6754,7 +6727,6 @@
 				62C5E26B1F826A2300EAE044 /* DetailedImageCell.swift */,
 				62C5E26C1F826A2300EAE044 /* RequestUploadImage.m */,
 				62C5E26D1F826A2300EAE044 /* AddCaptionTextFieldCell.swift */,
-				62C5E26E1F826A2300EAE044 /* TKPDPhotoPicker.m */,
 				62C5E26F1F826A2300EAE044 /* TKPImagePickerController.swift */,
 				62C5E2701F826A2300EAE044 /* TKPImagePickerUIDelegate.swift */,
 				62C5E2711F826A2300EAE044 /* GenerateHostRequest.h */,
@@ -6766,22 +6738,8 @@
 		62C5E2581F826A2300EAE044 /* CameraCustom */ = {
 			isa = PBXGroup;
 			children = (
-				62C5E2591F826A2300EAE044 /* CameraCollectionViewController.m */,
-				62C5E25A1F826A2300EAE044 /* CameraAlbumListCell.xib */,
-				62C5E25B1F826A2300EAE044 /* CameraAlbumListViewController.xib */,
-				62C5E25C1F826A2300EAE044 /* TKPDLiveCameraTableViewCell.h */,
 				62C5E25D1F826A2300EAE044 /* TPLiveCameraView.m */,
-				62C5E25E1F826A2300EAE044 /* CameraAlbumListViewController.m */,
-				62C5E25F1F826A2300EAE044 /* CameraCollectionCell.h */,
-				62C5E2601F826A2300EAE044 /* CameraAlbumListCell.m */,
-				62C5E2611F826A2300EAE044 /* CameraCollectionViewController.xib */,
-				62C5E2621F826A2300EAE044 /* CameraCollectionViewController.h */,
-				62C5E2631F826A2300EAE044 /* CameraAlbumListViewController.h */,
 				62C5E2641F826A2300EAE044 /* TPLiveCameraView.h */,
-				62C5E2651F826A2300EAE044 /* TKPDLiveCameraTableViewCell.m */,
-				62C5E2661F826A2300EAE044 /* CameraCollectionCell.xib */,
-				62C5E2671F826A2300EAE044 /* CameraAlbumListCell.h */,
-				62C5E2681F826A2300EAE044 /* CameraCollectionCell.m */,
 			);
 			path = CameraCustom;
 			sourceTree = "<group>";
@@ -11383,7 +11341,6 @@
 				62C5EFA91F826A2900EAE044 /* RegisterSocialMediaViewController.xib in Resources */,
 				62C5EFD41F826A2A00EAE044 /* FeedDetailViewController.graphql in Resources */,
 				62C5EC281F826A2700EAE044 /* GeneralProductCollectionViewCell.xib in Resources */,
-				62C5ED7E1F826A2800EAE044 /* CameraCollectionCell.xib in Resources */,
 				62C5EC921F826A2700EAE044 /* CategoryPageViewController.xib in Resources */,
 				62C5ECF21F826A2700EAE044 /* ProductQuantityViewController.xib in Resources */,
 				62C5EBC81F826A2700EAE044 /* TransactionCartCostView.xib in Resources */,
@@ -11418,7 +11375,6 @@
 				62C5EC051F826A2700EAE044 /* TokoCashSectionViewController.xib in Resources */,
 				62C5EE941F826A2900EAE044 /* TKPDTabBarController.xib in Resources */,
 				62C5EEA51F826A2900EAE044 /* SearchAutoCompleteCell.xib in Resources */,
-				62C5ED781F826A2800EAE044 /* CameraAlbumListViewController.xib in Resources */,
 				62C5EC7D1F826A2700EAE044 /* EditSolutionBuyerViewController.xib in Resources */,
 				62C5EE3A1F826A2800EAE044 /* GiveReviewDetailViewController.xib in Resources */,
 				62C5ECC51F826A2700EAE044 /* ShipmentStatusViewController.xib in Resources */,
@@ -11437,10 +11393,8 @@
 				62C5EC241F826A2700EAE044 /* GeneralList1GestureCell.xib in Resources */,
 				62C5ED901F826A2800EAE044 /* InboxRootViewController.xib in Resources */,
 				62C5EE381F826A2800EAE044 /* ProductEditWholesaleCell.xib in Resources */,
-				62C5ED7C1F826A2800EAE044 /* CameraCollectionViewController.xib in Resources */,
 				62C5ED931F826A2800EAE044 /* InboxMessageViewController.xib in Resources */,
 				62C5EE641F826A2800EAE044 /* ProductReputationTableViewCell.xib in Resources */,
-				62C5ED771F826A2800EAE044 /* CameraAlbumListCell.xib in Resources */,
 				62C5EF1F1F826A2900EAE044 /* TxOrderTransactionDetailViewController.xib in Resources */,
 				62C5EE391F826A2800EAE044 /* ProductEditImageViewController.xib in Resources */,
 				62C5ED181F826A2800EAE044 /* TrackOrderHistoryCell.xib in Resources */,
@@ -12373,7 +12327,6 @@
 				62C5EE3E1F826A2800EAE044 /* DetailReputationReviewComponent.mm in Sources */,
 				62C5F1201F826A2B00EAE044 /* DepositSummaryList.m in Sources */,
 				62C5F2451F826A2C00EAE044 /* TKPGooglePlaceDetailProductStore.m in Sources */,
-				62C5ED851F826A2800EAE044 /* TKPDPhotoPicker.m in Sources */,
 				62C5F0431F826A2A00EAE044 /* SearchProduct.swift in Sources */,
 				62C5EBB21F826A2700EAE044 /* RequestEditAddress.m in Sources */,
 				62C5F2591F826A2C00EAE044 /* URLCacheConnection.m in Sources */,
@@ -12498,7 +12451,6 @@
 				62C5EE0D1F826A2800EAE044 /* IntermediarySlide.swift in Sources */,
 				62C5EE881F826A2800EAE044 /* SalesViewController.m in Sources */,
 				62C5F08D1F826A2A00EAE044 /* DepartmentTree.m in Sources */,
-				62C5ED7B1F826A2800EAE044 /* CameraAlbumListCell.m in Sources */,
 				62C5EE161F826A2800EAE044 /* SmileyAndMedal.m in Sources */,
 				62C5EF891F826A2900EAE044 /* PulsaNavigator.swift in Sources */,
 				62C5ED3C1F826A2800EAE044 /* ReplacementDetailView.swift in Sources */,
@@ -12843,7 +12795,6 @@
 				62C5EEAE1F826A2900EAE044 /* ProductBadge.swift in Sources */,
 				62C5F10C1F826A2B00EAE044 /* SecurityQuestion.m in Sources */,
 				62C5EF311F826A2900EAE044 /* FilterViewController.m in Sources */,
-				62C5ED7F1F826A2800EAE044 /* CameraCollectionCell.m in Sources */,
 				62C5EE6B1F826A2800EAE044 /* ProductCellSize.swift in Sources */,
 				62C5EEA21F826A2900EAE044 /* SearchSuggestionItem.swift in Sources */,
 				62C5EBBD1F826A2700EAE044 /* TransactionCartCell.m in Sources */,
@@ -13020,7 +12971,6 @@
 				62C5F2401F826A2C00EAE044 /* TKPHomeProductsStore.m in Sources */,
 				62C5F13B1F826A2B00EAE044 /* ReplacementProduct.swift in Sources */,
 				62C5EF6E1F826A2900EAE044 /* PulsaStatus.swift in Sources */,
-				62C5ED7D1F826A2800EAE044 /* TKPDLiveCameraTableViewCell.m in Sources */,
 				62C5F1D31F826A2C00EAE044 /* LikeDislikePostResult.m in Sources */,
 				62C5EF871F826A2900EAE044 /* PulsaProduct.swift in Sources */,
 				62C5EB7F1F826A2700EAE044 /* NSString+URLEncoding.m in Sources */,
@@ -13295,7 +13245,6 @@
 				62C5ED6E1F826A2800EAE044 /* ForgotPasswordViewController.m in Sources */,
 				62C5F0E71F826A2B00EAE044 /* AnnouncementTicker.swift in Sources */,
 				62C5F0231F826A2A00EAE044 /* IndomaretData.m in Sources */,
-				62C5ED7A1F826A2800EAE044 /* CameraAlbumListViewController.m in Sources */,
 				62C5F04A1F826A2A00EAE044 /* InboxTicketDetailAttachment.m in Sources */,
 				62C5EF3D1F826A2900EAE044 /* ResolutionCenterCreateSolutionList.m in Sources */,
 				62C5EBD61F826A2700EAE044 /* SettingNotificationCell.m in Sources */,
@@ -13559,7 +13508,6 @@
 				62C5EE3F1F826A2800EAE044 /* SplitReputationViewController.m in Sources */,
 				62C5EC511F826A2700EAE044 /* NoResultReusableView.m in Sources */,
 				62C5F1CA1F826A2C00EAE044 /* ImageSearchResponseData.m in Sources */,
-				62C5ED761F826A2800EAE044 /* CameraCollectionViewController.m in Sources */,
 				62C5ED681F826A2800EAE044 /* CustomNotificationView.m in Sources */,
 				62C5EE081F826A2800EAE044 /* LoginTableViewController.swift in Sources */,
 				62C5EF771F826A2900EAE044 /* PulsaOperatorAttribute.swift in Sources */,

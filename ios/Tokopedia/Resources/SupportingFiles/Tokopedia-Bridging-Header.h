@@ -29,7 +29,6 @@
 #import "OpenShopImageViewCell.h"
 #import "OpenShopNameViewCell.h"
 #import "EditShopDescriptionViewCell.h"
-#import "TKPDPhotoPicker.h"
 
 #import "ShipmentViewController.h"
 

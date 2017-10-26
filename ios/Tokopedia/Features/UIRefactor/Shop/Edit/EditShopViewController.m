@@ -7,7 +7,6 @@
 //
 
 #import "EditShopViewController.h"
-#import "TKPDPhotoPicker.h"
 #import "GenerateHostRequest.h"
 #import "RequestUploadImage.h"
 
@@ -29,15 +28,14 @@
 #import "CloseShopViewController.h"
 
 #import "WebViewController.h"
+#import "Tokopedia-Swift.h"
 
 @interface EditShopViewController ()
 <
     EditShopDelegate,
-    TKPDPhotoPickerDelegate,
     CloseShopDelegate
 >
 
-@property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 @property (strong, nonatomic) EditShopDataSource *dataSource;
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 @property (strong, nonatomic) GeneratedHost *generatedHost;
@@ -283,40 +281,51 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITSHOPPOSTNOTIFICATIONNAMEKEY object:nil userInfo:nil];
 }
 
-#pragma mark - Photo picker delegate
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    NSDictionary* photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    NSString* imageName = [[photo objectForKey:DATA_CAMERA_IMAGENAME] lowercaseString]?:@"";
-    UIImage* image = photo[kTKPDCAMERA_DATAPHOTOKEY];
-    
-    UserAuthentificationManager *auth = [UserAuthentificationManager new];
-    RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
-    requestObject.server_id = _generatedHost.server_id;
-    requestObject.user_id = [auth getUserId];
-    
-    NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",_generatedHost.upload_host];
-    [RequestUploadImage requestUploadImage:image
-                            withUploadHost:uploadImageBaseURL
-                                      path:@"/web-service/v4/action/upload-image/upload_shop_image.pl"
-                                      name:@"logo"
-                                  fileName:imageName
-                             requestObject:requestObject
-                                 onSuccess:^(ImageResult *imageResult) {
-                                     
-                                     self.uploadImageObject = imageResult.image;
-                                     [self uploadShopImage];
-                                     
-                                 } onFailure:^(NSError *error) {
-                                     
-                                 }];
-}
 
 #pragma mark - Edit shop delegate
 
 - (void)didTapShopPhoto {
-    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
-    [_photoPicker setDelegate:self];
+    __weak typeof(self) wself = self;
+    [TKPImagePickerController showImagePicker:self
+                                    assetType:DKImagePickerControllerAssetTypeAllPhotos
+                          allowMultipleSelect:NO
+                                   showCancel:YES
+                                   showCamera:NO
+                                  maxSelected:(1)
+                               selectedAssets:nil
+                                   completion:^(NSArray<DKAsset *> *assets) {
+                                       if (assets.count < 1) {
+                                           return;
+                                       }
+                                       DKAsset* asset = assets[0];
+                                       [asset fetchFullScreenImageWithCompleteBlock:^(UIImage * image, NSDictionary * dict) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               NSString* imageNameFull = dict[@"PHImageFileSandboxExtensionTokenKey"];
+                                               NSString* imageNameOnly = imageNameFull.lastPathComponent.lowercaseString;
+                                               
+                                               UserAuthentificationManager *auth = [UserAuthentificationManager new];
+                                               RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
+                                               requestObject.server_id = wself.generatedHost.server_id;
+                                               requestObject.user_id = [auth getUserId];
+                                               
+                                               NSString *uploadImageBaseURL = [NSString stringWithFormat:@"https://%@",wself.generatedHost.upload_host];
+                                               [RequestUploadImage requestUploadImage:image
+                                                                       withUploadHost:uploadImageBaseURL
+                                                                                 path:@"/web-service/v4/action/upload-image/upload_shop_image.pl"
+                                                                                 name:@"logo"
+                                                                             fileName:imageNameOnly
+                                                                        requestObject:requestObject
+                                                                            onSuccess:^(ImageResult *imageResult) {
+                                                                                
+                                                                                wself.uploadImageObject = imageResult.image;
+                                                                                [wself uploadShopImage];
+                                                                                
+                                                                            } onFailure:^(NSError *error) {
+                                                                                
+                                                                            }];
+                                           });
+                                       }];
+                                   }];
 }
 
 - (void)didTapShopStatus {

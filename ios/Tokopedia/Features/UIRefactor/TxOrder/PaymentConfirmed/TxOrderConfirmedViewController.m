@@ -30,7 +30,6 @@
 #import "NavigateViewController.h"
 
 #import "TokopediaNetworkManager.h"
-#import "TKPDPhotoPicker.h"
 #import "LoadingView.h"
 
 #import "GalleryViewController.h"
@@ -43,7 +42,6 @@
     UITableViewDelegate,
     UITableViewDataSource,
     UIAlertViewDelegate,
-    TKPDPhotoPickerDelegate,
     LoadingViewDelegate,
     GalleryViewControllerDelegate
 >
@@ -60,7 +58,6 @@
     TxOrderConfirmedDetailOrder *_orderDetail;
     TxOrderConfirmedList *_selectedOrder;
     
-    TKPDPhotoPicker *_photoPicker;
     LoadingView *_loadingView;
     
     UIAlertView *_loadingAlert;
@@ -229,9 +226,45 @@
 {
     [_dataInput setObject:order forKey:DATA_SELECTED_ORDER_KEY];
     
-    _photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self
-                                              pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
-    _photoPicker.delegate = self;
+    __weak typeof(self) wself = self;
+    [TKPImagePickerController showImagePicker:self
+                                    assetType:DKImagePickerControllerAssetTypeAllPhotos
+                          allowMultipleSelect:NO
+                                   showCancel:YES
+                                   showCamera:NO
+                                  maxSelected:(1)
+                               selectedAssets:nil
+                                   completion:^(NSArray<DKAsset *> *assets) {
+                                       if (assets.count < 1) {
+                                           return;
+                                       }
+                                       DKAsset* asset = assets[0];
+                                       [asset fetchFullScreenImageWithCompleteBlock:^(UIImage * image, NSDictionary * dict) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               NSString* imageNameFull = dict[@"PHImageFileSandboxExtensionTokenKey"];
+                                               NSString* imageNameOnly = imageNameFull.lastPathComponent.lowercaseString;
+                                               
+                                               [_dataInput setObject:imageNameOnly forKey:API_FILE_NAME_KEY];
+                                               
+                                               [_loadingAlert show];
+                                               
+                                               TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
+                                               
+                                               [RequestOrderAction fetchUploadImageProof:image
+                                                                               imageName:imageNameOnly
+                                                                               paymentID:selectedConfirmation.payment_id
+                                                                                 success:^(TransactionActionResult *data) {
+                                                                                     
+                                                                                     [wself refreshRequest];
+                                                                                     
+                                                                                 } failure:^(NSError *error) {
+                                                                                     [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
+                                                                                     [_dataInput removeAllObjects];
+                                                                                     [_tableView reloadData];
+                                                                                 }];
+                                           });
+                                       }];
+                                   }];
 }
 
 -(void)pushToGallery
@@ -437,34 +470,6 @@
     } failure:^(NSError *error) {
         
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
-    }];
-}
-
-#pragma mark - TKPD Camera controller delegate
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo
-{
-    NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    NSString *imageName = [photo objectForKey:DATA_CAMERA_IMAGENAME]?:@"";
-
-    [_dataInput setObject:imageName forKey:API_FILE_NAME_KEY];
-
-    [_loadingAlert show];
-    
-    TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];
-    
-    __weak typeof(self) wself = self;
-    [RequestOrderAction fetchUploadImageProof:photo[@"photo"]
-                                 imageName:photo[@"cameraimagename"]
-                                 paymentID:selectedConfirmation.payment_id
-                                   success:^(TransactionActionResult *data) {
-
-                                       [wself refreshRequest];
-                                       
-    } failure:^(NSError *error) {
-        [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
-        [_dataInput removeAllObjects];
-        [_tableView reloadData];
     }];
 }
 

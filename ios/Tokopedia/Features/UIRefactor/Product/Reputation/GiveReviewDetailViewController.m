@@ -10,8 +10,6 @@
 #import "TKPDTextView.h"
 #import "DetailReputationReview.h"
 #import "ReviewSummaryViewController.h"
-#import "CameraAlbumListViewController.h"
-#import "CameraCollectionViewController.h"
 #import "ProductAddCaptionViewController.h"
 #import "ReviewImageAttachment.h"
 #import "Tokopedia-Swift.h"
@@ -20,7 +18,7 @@
 
 #import <QuartzCore/QuartzCore.h>
 
-@interface GiveReviewDetailViewController () <CameraCollectionViewControllerDelegate, ProductAddCaptionDelegate, UITextViewDelegate> {
+@interface GiveReviewDetailViewController () <ProductAddCaptionDelegate, UITextViewDelegate> {
     BOOL _hasImages;
     
     NSMutableArray *_uploadedPictures;

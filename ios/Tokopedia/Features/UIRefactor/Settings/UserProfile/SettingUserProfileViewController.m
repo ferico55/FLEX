@@ -21,7 +21,6 @@
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"
-#import "TKPDPhotoPicker.h"
 
 #import "UIImage+ImageEffects.h"
 #import "UIView+HVDLayout.h"
@@ -40,8 +39,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     UITextFieldDelegate,
     UITextViewDelegate,
     UIScrollViewDelegate,
-    TKPDAlertViewDelegate,
-    TKPDPhotoPickerDelegate
+    TKPDAlertViewDelegate
 >
 
 // Data
@@ -74,7 +72,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (weak, nonatomic) UITextField *activeTextField;
 
 // Photo picker
-@property (strong, nonatomic) TKPDPhotoPicker *photoPicker;
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
 @end
@@ -379,8 +376,41 @@ typedef NS_ENUM(NSInteger, PickerView) {
 #pragma mark - Action Button
 
 - (IBAction)didTapChangeProfilePicture:(UIButton *)sender {
-    self.photoPicker = [[TKPDPhotoPicker alloc] initWithParentViewController:self pickerTransistionStyle:UIModalTransitionStyleCoverVertical];
-    [self.photoPicker setDelegate:self];
+    __weak typeof(self) wself = self;
+    [TKPImagePickerController showImagePicker:self
+                                    assetType:DKImagePickerControllerAssetTypeAllPhotos
+                          allowMultipleSelect:NO
+                                   showCancel:YES
+                                   showCamera:NO
+                                  maxSelected:(1)
+                               selectedAssets:nil
+                                   completion:^(NSArray<DKAsset *> *assets) {
+                                       if (assets.count < 1) {
+                                           return;
+                                       }
+                                       DKAsset* asset = assets[0];
+                                       [asset fetchFullScreenImageWithCompleteBlock:^(UIImage * image, NSDictionary * dict) {
+                                           dispatch_async(dispatch_get_main_queue(), ^{
+                                               wself.profileImageView.image = image;
+                                               wself.profileImageView.alpha = 0.5;
+                                               [wself showLoadingBar];
+                                               
+                                               [SettingUserProfileRequest fetchUploadProfilePicture:image onSuccess:^(NSString * imageURLString) {
+                                                   
+                                                   wself.profileImageView.alpha = 1;
+                                                   [wself.profileImageView setImage:image];
+                                                   [wself showSaveButton];
+                                                   [wself notifySuccessEditProfileImageWithURLString:imageURLString];
+                                                   [wself.profileImageView setImage:image];
+                                                   
+                                               } onFailure:^{
+                                                   // Show user profile image
+                                                   [wself setUserProfilePicture];
+                                                   [wself showSaveButton];
+                                               }];
+                                           });
+                                       }];
+                                   }];
 }
 
 - (IBAction)didTapVerificationPhoneButton:(UIButton *)sender {
@@ -397,34 +427,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (void)didTapSaveButton:(UIBarButtonItem *)saveButton {
     [self requestSubmitData];
-}
-
-#pragma mark - Photo picker delegate
-
-- (void)photoPicker:(TKPDPhotoPicker *)picker didDismissCameraControllerWithUserInfo:(NSDictionary *)userInfo {
-    NSMutableDictionary *object = [NSMutableDictionary new];
-    [object setObject:userInfo forKey:DATA_SELECTED_PHOTO_KEY];
-    
-    NSDictionary *photo = [userInfo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-    UIImage *image = [photo objectForKey:kTKPDCAMERA_DATAPHOTOKEY];
-
-    self.profileImageView.image = image;
-    self.profileImageView.alpha = 0.5;
-    [self showLoadingBar];
-    
-    [SettingUserProfileRequest fetchUploadProfilePicture:image onSuccess:^(NSString * imageURLString) {
-        
-        self.profileImageView.alpha = 1;
-        [self.profileImageView setImage:image];
-        [self showSaveButton];
-        [self notifySuccessEditProfileImageWithURLString:imageURLString];
-        [self.profileImageView setImage:image];
-        
-    } onFailure:^{
-        // Show user profile image
-        [self setUserProfilePicture];
-        [self showSaveButton];
-    }];
 }
 
 -(void)notifySuccessEditProfileImageWithURLString:(NSString*)imageURLString{
