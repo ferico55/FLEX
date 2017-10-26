@@ -219,7 +219,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         if self.store.state.favourites.count > 0 {
                             view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
                                 guard let favourites = self?.store.state.favourites, let `self` = self else { return }
-                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID:self.categoryId, operatorID:self.store.state.selectedOperator?.id ?? "", productID:self.store.state.selectedOperator?.defaultProduct?.id ?? "", number:textInputState.text, inputType:textInput.type)
+                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.id ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
                                 viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
                                 viewController.title = "Nomor Favorit"
                                 self.viewController?.navigationController?.pushViewController(viewController, animated: true)
@@ -464,7 +464,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         button.setImage(#imageLiteral(resourceName: "icon_info_grey"), for: .normal)
                         button.rx.tap.subscribe(onNext: { [weak self] in
                             let closeButton = CFAlertAction.action(title: "Tutup", style: .Destructive, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white, handler: nil)
-                            let actionSheet = TooltipAlert.createAlert(title: "Bayar Instan", subtitle: "Selesaikan transaksi dengan 1 klik saja menggunakan TokoCash", image: #imageLiteral(resourceName:"icon_bayar_instan"), buttons: [closeButton])
+                            let actionSheet = TooltipAlert.createAlert(title: "Bayar Instan", subtitle: "Selesaikan transaksi dengan 1 klik saja menggunakan TokoCash", image: #imageLiteral(resourceName: "icon_bayar_instan"), buttons: [closeButton])
                             self?.viewController?.present(actionSheet, animated: true, completion: nil)
                         }).disposed(by: self.disposeBag)
                         
@@ -499,21 +499,21 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     create: {
                         let label = UILabel()
                         
-                        if let urlString = state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
-                            label.isUserInteractionEnabled = true
-                            let gestureRecognizer = UITapGestureRecognizer()
-                            gestureRecognizer.rx.event
-                                .subscribe(onNext: { _ in
+                        label.isUserInteractionEnabled = true
+                        let gestureRecognizer = UITapGestureRecognizer()
+                        gestureRecognizer.rx.event
+                            .subscribe(onNext: { _ in
+                                if let urlString = self.state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
                                     let webViewController = WKWebViewController(urlString: urlString)
                                     self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
-                                })
-                                .disposed(by: self.rx_disposeBag)
-                            
-                            label.addGestureRecognizer(gestureRecognizer)
-                        }
+                                }
+                            })
+                            .disposed(by: self.rx_disposeBag)
+                        
+                        label.addGestureRecognizer(gestureRecognizer)
                         
                         return label
-                }
+                    }
                 ) { label, _, _ in
                     label.numberOfLines = 0
                     label.font = .smallTheme()
@@ -524,7 +524,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
                             let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
                             let text = NSMutableAttributedString()
-                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string  + " "))
+                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
                             text.append(attributedString)
                             label.attributedText = text
                         } else {
