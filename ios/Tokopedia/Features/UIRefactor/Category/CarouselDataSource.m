@@ -17,7 +17,7 @@ const CGSize bannerIPadSize = {.width = 450, .height = 225};
 const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 
 @interface CarouselDataSource ()
-    
+
 @property(nullable, nonatomic, weak) StyledPageControl *pageControl;
 @end
 
@@ -74,7 +74,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
     self.didSelectBanner(banner, index);
-
+    
     NSURL *url = [NSURL URLWithString:banner.applinks];
     if (url) {
         [TPRoutes routeURL:url];
@@ -93,3 +93,4 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 }
 
 @end
+

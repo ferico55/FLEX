@@ -85,6 +85,7 @@
 - (void)navigateToFeedDetailFromViewController:(UIViewController *) viewController withFeedCardID:(NSString *) cardID;
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
+- (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
 
 
 #pragma mark - Inbox

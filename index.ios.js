@@ -146,6 +146,7 @@ const container = HybridContainer({
   Promo,
   PromoDetail,
   'Official Store': require('./src/official-store/setup'),
+  'OS Promo': require('./src/os-promo/setup'),
   NotFoundComponent,
 })
 

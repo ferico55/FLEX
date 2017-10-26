@@ -6,33 +6,33 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-#import "OfficialStoreBrandsViewController.h"
+#import "OfficialStorePromoViewController.h"
 #import <React/RCTRootView.h>
 #import "UIApplication+React.h"
 #import "Tokopedia-Swift.h"
 
-@interface OfficialStoreBrandsViewController ()
+@interface OfficialStorePromoViewController ()
 
 @end
 
-@implementation OfficialStoreBrandsViewController
+@implementation OfficialStorePromoViewController
 
 - (void) viewDidLoad {
     [super viewDidLoad];
-    
+
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"
-                                              initialProperties:@{@"name" : @"Official Store", @"params" : @{} }];
+                                              initialProperties:@{@"name" : @"OS Promo", @"params" : @{@"slug" : self.promoSlug} }];
     
     self.view = rootView;
     self.view.isAccessibilityElement = true;
-    self.view.accessibilityIdentifier = @"officialStoreBrands";
-    self.title = @"Official Store";
+    self.view.accessibilityIdentifier = @"officialStorePromo";
+    self.title = @"OS Promo";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    [AnalyticsManager trackScreenName:@"Official Store Page"];
+    [AnalyticsManager trackScreenName:@"Official Store Promo Page"];
 }
 
 - (void)didReceiveMemoryWarning {

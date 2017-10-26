@@ -1864,6 +1864,7 @@
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
+		7A0F13B91F97B525008B3653 /* OfficialStorePromoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F13B71F97B525008B3653 /* OfficialStorePromoViewController.m */; };
 		7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FD3121F2843A100ADF80D /* main.jsbundle */; };
 		7A466B911EB2FEAE00A72105 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */; };
 		7A466BC01EB2FEAE00A72105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FC81EB2FEA900A72105 /* Main.storyboard */; };
@@ -1911,7 +1912,6 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
-		9249B1961F8F65A800487C26 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 9249B1951F8F65A800487C26 /* assets */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		C08D08011F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C08D08001F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift */; };
@@ -4960,6 +4960,8 @@
 		62C5EB661F826A2700EAE044 /* Observable+JSONAble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+JSONAble.swift"; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
+		7A0F13B71F97B525008B3653 /* OfficialStorePromoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfficialStorePromoViewController.m; sourceTree = "<group>"; };
+		7A0F13B81F97B525008B3653 /* OfficialStorePromoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfficialStorePromoViewController.h; sourceTree = "<group>"; };
 		7A3FD3121F2843A100ADF80D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
 		7A465FC81EB2FEA900A72105 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -5010,7 +5012,6 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
-		9249B1951F8F65A800487C26 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		925BA62E1E518A54001CED3A /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -5224,7 +5225,6 @@
 		349458261F306BDB00EEB628 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				9249B1951F8F65A800487C26 /* assets */,
 				DADBB2331F3C62C1002B1FAE /* SupportingFiles */,
 				DADBB22C1F3C628B002B1FAE /* Language */,
 				349458271F306BDB00EEB628 /* Database */,
@@ -7875,6 +7875,8 @@
 		62C5E51B1F826A2400EAE044 /* OfficialStore */ = {
 			isa = PBXGroup;
 			children = (
+				7A0F13B71F97B525008B3653 /* OfficialStorePromoViewController.m */,
+				7A0F13B81F97B525008B3653 /* OfficialStorePromoViewController.h */,
 				62C5E51C1F826A2400EAE044 /* OfficialStoreBrandsViewController.h */,
 				62C5E51D1F826A2400EAE044 /* OfficialStoreBrandsViewController.m */,
 			);
@@ -11626,7 +11628,6 @@
 				62C5EDE51F826A2800EAE044 /* TKPInfoWindowMapView.xib in Resources */,
 				62C5ED5F1F826A2800EAE044 /* AlertListFilterView.xib in Resources */,
 				62C5EEE41F826A2900EAE044 /* UserContainerViewController.xib in Resources */,
-				9249B1961F8F65A800487C26 /* assets in Resources */,
 				62C5EFB01F826A2900EAE044 /* AccountActivationViewController.xib in Resources */,
 				62C5EDF71F826A2800EAE044 /* WebViewSignInViewController.xib in Resources */,
 				62C5ECEE1F826A2700EAE044 /* OrderDateView.xib in Resources */,
@@ -12298,7 +12299,7 @@
 		};
 		F92F2ADF1F7CD6660088D59D /* Bundling React Native Script */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			files = (
 			);
 			inputPaths = (
@@ -12306,7 +12307,7 @@
 			name = "Bundling React Native Script";
 			outputPaths = (
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 			shellPath = /bin/sh;
 			shellScript = "npm run bundling";
 		};
@@ -13494,6 +13495,7 @@
 				62C5F00B1F826A2A00EAE044 /* TxOrderConfirmedDetailOrder.m in Sources */,
 				62C5EFEF1F826A2A00EAE044 /* TxEmoney.m in Sources */,
 				62C5F0041F826A2A00EAE044 /* TxOrderStatusList.m in Sources */,
+				7A0F13B91F97B525008B3653 /* OfficialStorePromoViewController.m in Sources */,
 				62C5EE231F826A2800EAE044 /* DetailProductRequest.swift in Sources */,
 				62C5EE951F826A2900EAE044 /* TKPDTabViewController.m in Sources */,
 				62C5EE2E1F826A2800EAE044 /* DetailProductVideoLinks.swift in Sources */,

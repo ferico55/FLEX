@@ -483,6 +483,14 @@ class TPRoutes: NSObject {
             return true
         }
         
+        // MARK: Official Store Promo (Native)
+        JLRoutes.global().addRoute("/official-store/promo/:slug") { (params : [String: Any]!) -> Bool in
+            let slug = params["slug"] as! String
+            navigator.navigateToOfficialPromo(from: UIApplication.topViewController(), withSlug: slug)
+            
+            return true
+        }
+        
         // MARK: Official Store Brands (Native)
         JLRoutes.global().addRoute("/official-store/mobile") { (_: [String: Any]!) -> Bool in
             navigator.navigateToOfficialBrands(from: UIApplication.topViewController())

@@ -60,6 +60,7 @@
 #import "PromoDetailViewController.h"
 #import "TransactionATCViewController.h"
 #import "OfficialStoreBrandsViewController.h"
+#import "OfficialStorePromoViewController.h"
 #import "NavigationHelper.h"
 
 
@@ -965,6 +966,13 @@
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController {
     OfficialStoreBrandsViewController* controller = [OfficialStoreBrandsViewController new];
     controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug {
+    OfficialStorePromoViewController* controller = [OfficialStorePromoViewController new];
+    controller.hidesBottomBarWhenPushed = YES;
+    controller.promoSlug = slug;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
 
