@@ -27,6 +27,8 @@ def react_pods
     pod 'CodePush', :path => '../node_modules/react-native-code-push'
     pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
     pod 'RNSVG', :path => '../node_modules/react-native-svg'
+    pod 'react-native-maps', :path => '../node_modules/react-native-maps'
+    pod 'Interactable', :path => '../node_modules/react-native-interactable'
 end
 
 def common_pods
@@ -39,6 +41,7 @@ def common_pods
     pod 'FLEX', :git => 'https://github.com/Flipboard/FLEX.git', :commit => '99eccdf4c34af9b1042d96313ad9cf12dd30ff1f', :configurations => ['Debug']
     pod 'JLPermissions/Notification', '2.2.8'
     pod 'JLPermissions/Contacts', '2.2.8'
+    pod 'JLPermissions/Location', '2.2.8'
     pod 'JLRoutes', '~> 1.6.2'
     pod 'JSQMessagesViewController', :git => 'https://github.com/ferico55/JSQMessagesViewController', :branch => 'master'
     pod 'Masonry', '~> 1.0.1'
@@ -86,7 +89,8 @@ def common_pods
     pod 'GoogleSignIn', '~> 2.4.0'
     pod 'GoogleAppIndexing',  '~> 2.0.1'
     pod 'GoogleTagManager',  '~> 3.12.1'
-    pod 'GoogleMaps',  '~> 1.10.5'
+    pod 'GoogleMaps',  '~> 2.1.1'
+    pod 'GooglePlaces', '~> 2.1.1'
     pod 'FirebaseRemoteConfig', '~> 2.0.2'
     pod 'FirebasePerformance', '~> 1.0'
     

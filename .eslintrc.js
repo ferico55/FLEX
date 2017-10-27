@@ -27,7 +27,9 @@ module.exports = {
     'import/ignore': '.(scss|less|css|png|jpg|jpeg|bmp|gif|svg)$',
     'import/extensions': ['.js', '.jsx'],
   },
-  globals: {},
+  globals: {
+    parseInt: true,
+  },
   env: {
     commonjs: true,
     es6: true,

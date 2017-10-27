@@ -30,6 +30,7 @@
 #import "UIApplication+React.h"
 
 @import NativeNavigation;
+@import GooglePlaces;
 @import Fabric;
 @import Crashlytics;
 
@@ -180,6 +181,7 @@
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
         [GMSServices provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
+        [GMSPlacesClient provideAPIKey:@"AIzaSyBxw-YVxwb9BQ491BikmOO02TOnPIOuYYU"];
         
         [self preparePersistData];
         
@@ -247,30 +249,63 @@
     [Appsee start:@"f2c02b28ccd54635a7c73eb9dac5038f"];
 }
 
-- (void)didReceiveNotificationActiveState:(NSDictionary *)data {
-    if ([data objectForKey:@"url_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[data objectForKey:@"url_deeplink"]];
-        [TPRoutes routeURL:url];
-    } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
-        if (url) {
-            [TPRoutes routeURL:url];
-        }
+- (BOOL)handleDeeplinkFromDictionary:(NSDictionary *)data {
+    NSString *urlString = data[@"url_deeplink"] ?: data[@"app_extra"][@"moe_deeplink"];
+    NSURL *url = [NSURL URLWithString:urlString];
+    
+    if (url) {
+        [TPRoutes routeURL: url];
+        return YES;
     }
+    
+    NSURL *applinksURL = [NSURL URLWithString:data[@"data"][@"applinks"]];
+    JLRoutes *router = [JLRoutes new];
+    [router addRoute:@"/ride/uber/:requestId" handler:^BOOL(NSDictionary<NSString *,id> * _Nonnull parameters) {
+        NSString *descriptionJSONString = data[@"data"][@"desc"];
+        NSError *error = nil;
+        NSDictionary *json = [NSJSONSerialization JSONObjectWithData:[descriptionJSONString dataUsingEncoding:NSUTF8StringEncoding]
+                                                             options:0
+                                                               error:&error];
+        
+        NSString *status = json[@"status"];
+        
+        UILocalNotification *notification = [UILocalNotification new];
+        notification.category = @"ride-hailing";
+        
+        if ([status isEqualToString:@"processing"]) {
+            notification.alertTitle = @"Trip Started";
+            notification.alertBody = @"Track your ride";
+        } else if ([status isEqualToString:@"accepted"] || [status isEqualToString:@"arriving"]) {
+            notification.alertBody = @"Your Uber is arriving now";
+        } else if ([status isEqualToString:@"completed"]) {
+            notification.alertTitle = @"Trip Completed";
+            notification.alertBody = @"Tap to view trip details";
+        } else if ([status isEqualToString:@"driver_cancelled"]) {
+            notification.alertTitle = @"Driver canceled your booking";
+            notification.alertBody = @"Please book another Uber";
+        } else if ([status isEqualToString:@"no_drivers_available"]) {
+            notification.alertTitle = @"No Driver Found";
+            notification.alertBody = @"Sorry no driver found immediately, you can try again";
+        }
+        
+        [UIApplication.sharedApplication scheduleLocalNotification:notification];
+        
+        return YES;
+    }];
+    
+    [router routeURL:applinksURL];
+    
+    return NO;
+}
+
+- (void)didReceiveNotificationActiveState:(NSDictionary *)data {
+    [self handleDeeplinkFromDictionary:data];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationReload object:self];
 }
 
 - (void)didReceiveNotificationBackgroundState:(NSDictionary*)data {
-    if ([data objectForKey:@"url_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[data objectForKey:@"url_deeplink"]];
-        [TPRoutes routeURL:url];
-    } else if ([[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]) {
-        NSURL *url = [NSURL URLWithString:[[data objectForKey:@"app_extra"] objectForKey:@"moe_deeplink"]];
-        if (url) {
-            [TPRoutes routeURL:url];
-        }
-    } else {
+    if (![self handleDeeplinkFromDictionary:data]) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TokopediaNotificationRedirect object:nil userInfo:data];
     }
 }
@@ -418,13 +453,17 @@
 }
 
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification *)notification {
-    dispatch_async(dispatch_get_main_queue(), ^(void){
-        [UIViewController showNotificationWithMessage:notification.alertBody type:NotificationTypeError duration:10.0 buttonTitle:notification.userInfo[@"button_title"] dismissable:YES action:^{
-            [self didReceiveNotificationActiveState:notification.userInfo];
-        }];
-    });
-    
-    notification.fireDate = nil;
+    if ([notification.category isEqualToString:@"ride-hailing"]) {
+        
+    } else {
+        dispatch_async(dispatch_get_main_queue(), ^(void){
+            [UIViewController showNotificationWithMessage:notification.alertBody type:NotificationTypeError duration:10.0 buttonTitle:notification.userInfo[@"button_title"] dismissable:YES action:^{
+                [self didReceiveNotificationActiveState:notification.userInfo];
+            }];
+        });
+        
+        notification.fireDate = nil;
+    }
 }
 
 - (void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification completionHandler:(void(^)())completionHandler {

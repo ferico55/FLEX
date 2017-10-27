@@ -21,13 +21,13 @@ class ReactNetworkProviderObjcBridge: NSObject {
         encoding: String,
         onSuccess: @escaping (Any?) -> Void,
         onError: @escaping (NSError) -> Void
-        ) {
+    ) {
         
         let encodingObject: ParameterEncoding = encoding == "json" ? JSONEncoding.default : URLEncoding.default
         let target = ReactTarget(targetBaseUrl: url, targetPath: path, targetMethod: method, params: params, parameterEncoding: encodingObject)
         
         let endpointClosure = { (target: ReactTarget) in
-            return NetworkProvider<ReactTarget>.defaultEndpointCreator(for: target)
+            NetworkProvider<ReactTarget>.defaultEndpointCreator(for: target)
                 .adding(httpHeaderFields: headers ?? [:])
         }
         
@@ -48,7 +48,15 @@ class ReactNetworkProviderObjcBridge: NSObject {
                     }
                 },
                 onError: { error in
-                    onError(error as NSError)
+                    let realError: Swift.Error
+                    
+                    if case let MoyaError.underlying(underlyingError) = error {
+                        realError = underlyingError
+                    } else {
+                        realError = error
+                    }
+                    
+                    onError(realError as NSError)
                 }
             )
     }

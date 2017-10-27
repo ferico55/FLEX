@@ -365,6 +365,82 @@ class TPRoutes: NSObject {
             return true
         }
         
+        // MARK: Uber booking screen
+        JLRoutes.global().add(["/ride/uber", "/ride/uber/:requestId"]) { params in
+            guard let topViewController = UIApplication.topViewController() else {
+                return true
+            }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let viewController = ReactViewController(moduleName: "RideHailing")
+                viewController.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?.navigationController?.pushReactViewController(viewController, animated: true)
+                
+                NotificationCenter.default.rx.notification(Notification.Name("RideTokocashTopup"))
+                    .observeOn(MainScheduler.instance)
+                    .subscribe(onNext: { notification in
+                        
+                        guard let params = notification.userInfo,
+                            let categoryId = params["category_id"] as? String,
+                            let operatorId = params["operator_id"] as? String,
+                            let productId = params["product_id"] as? String
+                        else { return }
+                        
+                        let cart = DigitalService().purchase(categoryId: categoryId, operatorId: operatorId, productId: productId, textInputs: [:], instantCheckout: false)
+                        
+                        let vc = DigitalCartViewController(cart: cart)
+                        vc.hidesBottomBarWhenPushed = true
+                        
+                        vc.cartPayment.flatMap { cartPayment -> Observable<Void> in
+                            let webView = WebViewController()
+                            webView.hidesBottomBarWhenPushed = true
+                            webView.strURL = cartPayment.redirectUrl
+                            webView.strQuery = cartPayment.queryString
+                            webView.shouldAuthorizeRequest = false
+                            webView.strTitle = "Pembayaran"
+                            
+                            guard let navigationController = UIApplication.topViewController()?.navigationController
+                                , let viewController = UIApplication.topViewController() else {
+                                return Observable.empty()
+                            }
+                            
+                            webView.onTapBackButton = { _ in
+                                if let navigationController = UIApplication.topViewController()?.navigationController {
+                                    navigationController.popViewController(animated: true)
+                                }
+                            }
+                            
+                            webView.onTapLinkWithUrl = { url in
+                                if let openThanksPage = url?.absoluteString.contains("/thanks"), openThanksPage {
+                                    guard let navigationController = viewController.navigationController else {
+                                        return
+                                    }
+                                    var viewControllers = navigationController.childViewControllers
+                                    
+                                    let vcs = Array(viewControllers[0...viewControllers.count - 4]) + [webView]
+                                    viewController.navigationController?.setViewControllers(vcs, animated: false)
+                                }
+                                
+                                if url?.absoluteString == cartPayment.callbackUrlSuccess {
+                                    viewController.navigationController?.popViewController(animated: true)
+                                }
+                            }
+                            
+                            navigationController.pushViewController(webView, animated: true)
+                            return Observable.empty()
+                        }.subscribe(onError: { error in
+                            print(error)
+                        }).disposed(by: vc.rx_disposeBag)
+                        
+                        UIApplication.topViewController()?.navigationController?.pushViewController(vc, animated: true)
+                        
+                    })
+                    .disposed(by: viewController.rx_disposeBag)
+            }
+            
+            return true
+        }
+        
         // MARK: Contact Us (Webview)
         JLRoutes.global().addRoute("/contact-us.pl") { (_: [String: Any]!) -> Bool in
             redirectContactUs()

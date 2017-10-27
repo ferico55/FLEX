@@ -1,7 +1,7 @@
 {
   "name": "native-navigation",
   "version": "0.2.1",
-  "summary": "React Native Mapview component for iOS + Android",
+  "summary": "Native navigation library for React Native applications",
   "authors": {
     "intelligibabble": "leland.m.richardson@gmail.com"
   },

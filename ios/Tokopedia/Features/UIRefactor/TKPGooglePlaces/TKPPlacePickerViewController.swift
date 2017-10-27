@@ -9,6 +9,7 @@
 import UIKit
 import Foundation
 import GoogleMaps
+import GooglePlaces
 
 @objc public enum TypePlacePicker : Int{
     case typeEditPlace
@@ -84,8 +85,7 @@ import GoogleMaps
     var autoCompleteResults : [GMSAutocompletePrediction] = []
     var placeHistories = NSMutableArray()
     
-    var placePicker : GMSPlacePicker?
-    var placesClient : GMSPlacesClient!
+    var placesClient = GMSPlacesClient()
 
     var locationManager : CLLocationManager!
     var geocoder = GMSGeocoder()
@@ -103,9 +103,9 @@ import GoogleMaps
     
     var _previousY:CGFloat!
     var _infoTopConstraint:NSLayoutConstraint!
-
+    
     var infoAddress : AddressViewModel!
-
+    
     override func loadView() {
         var className:NSString = NSStringFromClass(self.classForCoder) as NSString
         className = className.components(separatedBy: ".").last! as NSString
@@ -119,7 +119,7 @@ import GoogleMaps
         locationManager = CLLocationManager()
         locationManager.delegate = self
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
-
+        
         locationManager.requestAlwaysAuthorization()
         locationManager.startUpdatingLocation()
     }
@@ -127,7 +127,6 @@ import GoogleMaps
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        placesClient = GMSPlacesClient()
         initLocationManager()
         adustBehaviorType(type)
         loadHistory()
@@ -173,34 +172,34 @@ import GoogleMaps
     }
     
     //MARK: - GMSMapView Delegate
-    func mapView(_ mapView: GMSMapView!, didChange position: GMSCameraPosition!) {
+    func mapView(_ mapView: GMSMapView, didChange position: GMSCameraPosition){
         self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
         self.mapView.updateAddress("Tandai lokasi Anda")
     }
     
-    func mapView(_ mapView: GMSMapView!, willMove gesture: Bool) {
+    func mapView(_ mapView: GMSMapView, willMove gesture: Bool) {
     }
     
-    func mapView(_ mapView: GMSMapView!, idleAt position: GMSCameraPosition!) {
+    func mapView(_ mapView: GMSMapView, idleAt position: GMSCameraPosition){
         if(type == TypePlacePicker.typeEditPlace.rawValue){
-            if(position != nil && mapView.selectedMarker != nil){
-                mapView.selectedMarker.position = position.target
+            if let selectedMarker = mapView.selectedMarker {
+                selectedMarker.position = position.target
                 updateAddressSaveHistory(false, addressSugestion: nil)
             }
         }
     }
     
-    func mapView(_ mapView: GMSMapView!, markerInfoWindow marker: GMSMarker!) -> UIView! {
+    func mapView(_ mapView: GMSMapView, markerInfoWindow marker: GMSMarker) -> UIView? {
         return self.mapView.infoWindowView;
     }
     
-    func didTapMyLocationButton(for mapView: GMSMapView!) -> Bool {
+    func didTapMyLocationButton(for mapView: GMSMapView) -> Bool {
         if (locationManager.location != nil){
             self.mapView.updateCameraPosition((locationManager.location?.coordinate)!)
         }
         return true
     }
-
+    
     //MARK: - Methods
     
     func createWarningLabel() -> Void {
@@ -245,9 +244,7 @@ import GoogleMaps
         mapView.updateCameraPosition(firstCoordinate)
         self.updateAddressSaveHistory(false, addressSugestion:nil)
         searchBar.placeholder = "Cari Alamat";
-        searchBar.tintColor = UIColor.white
         searchBar.delegate = self
-        searchBar.setBackgroundImage(UIImage(named: "NavBar"), for: .top, barMetrics: .default)
         if((infoAddress) != nil){
             _infoTopConstraint = NSLayoutConstraint(
                 item: self.infoAddressView,
@@ -273,7 +270,7 @@ import GoogleMaps
                 constant: 0.0)
             self.view .addConstraint(_infoTopConstraint)
             mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, 0.0, 0.0);
-
+            
         }
     }
     
@@ -286,12 +283,12 @@ import GoogleMaps
         receiverNameLabel.sizeToFit()
         addressNameLabel.setCustomAttributedText(address.addressName)
         addressNameLabel.sizeToFit()
-
+        
     }
     
     @IBAction func panInfoAddress(_ gestureRecognizer: UIPanGestureRecognizer) {
         infoViewConstraintHeight.constant = receiverNumberLabel.frame.origin.y + receiverNumberLabel.frame.size.height + 20
-
+        
         let touchPoint: CGPoint = gestureRecognizer.location(in: self.view)
         switch (gestureRecognizer.state){
         case .began:
@@ -326,8 +323,8 @@ import GoogleMaps
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .curveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
-            }) { (finished: Bool) -> Void in
-                
+        }) { (finished: Bool) -> Void in
+            
         }
     }
     
@@ -346,13 +343,16 @@ import GoogleMaps
     {
         self.addressLabel.setCustomAttributedText("Tandai lokasi Anda")
         self.mapView.updateAddress("Tandai lokasi Anda")
-        geocoder.reverseGeocodeCoordinate(mapView.selectedMarker.position) { (response, error) -> Void in
+        guard let position = mapView.selectedMarker?.position else { return }
+        geocoder.reverseGeocodeCoordinate(position) { (response, error) -> Void in
             if (error != nil){
                 return
             }
             
-            if (response != nil && (response?.results().count)! > 0){
-                let placemark :GMSAddress = response!.firstResult()
+            if let response = response,
+                let firstResult = response.firstResult() {
+                
+                let placemark :GMSAddress = firstResult
                 
                 self.address = placemark
                 self.addressLabel.setCustomAttributedText(self.addressString(placemark))
@@ -390,15 +390,15 @@ import GoogleMaps
     
     func addressString(_ address:GMSAddress)-> String{
         var strSnippet : String = ""
-        //MARK:: IBR-372 PO Wishes
-        if (address.thoroughfare != nil) {
-            strSnippet = TKPAddressStreet().getStreetAddress(address.thoroughfare)
+        if let thoroughfare = address.thoroughfare {
+            strSnippet = TKPAddressStreet().getStreetAddress(thoroughfare)
         }
         strSnippet = adjustStrSnippet(address.administrativeArea, strSnippet: strSnippet)
         strSnippet = adjustStrSnippet(address.postalCode, strSnippet: strSnippet)
         
-        if address.lines.count > 0 {
-            strSnippet = address.lines.last as! String
+        if let addressLines = address.lines,
+            let lastAddressLine = addressLines.last {
+            strSnippet = lastAddressLine
         }
         return strSnippet
     }
@@ -421,14 +421,16 @@ import GoogleMaps
         var documentsPath:String = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true).last!
         documentsPath += "/history_places.plist"
         
-        var addressString : String = ""
+        var addressString = ""
         
-        if (address.thoroughfare != nil) {
-            addressString = TKPAddressStreet().getStreetAddress(address.thoroughfare)
+        if let thoroughfare = address.thoroughfare {
+            addressString = TKPAddressStreet().getStreetAddress(thoroughfare)
         }
         
-        var postalCode : String!
-        if (address.postalCode == nil){ postalCode = ""} else{ postalCode = address.postalCode}
+        var postalCode = ""
+        if let addressPostal = address.postalCode {
+            postalCode = addressPostal
+        }
         
         var addressSugestionString:String = " "
         var placeID: String = " "
@@ -463,15 +465,16 @@ import GoogleMaps
         let filter : GMSAutocompleteFilter = GMSAutocompleteFilter()
         filter.type = GMSPlacesAutocompleteTypeFilter.noFilter
         
-        placesClient?.autocompleteQuery(searchString, bounds: bounds, filter: filter, callback: { (results, error) -> Void in
-            if (error != nil){
-                return
-            }
-            if(results!.count > 0){
-                self.autoCompleteResults = results as! Array
-                self.dataTableView[0]=[]
-                for index in 0 ..< self.autoCompleteResults.count-1{
-                    let place :GMSAutocompletePrediction = results![index] as! GMSAutocompletePrediction
+        placesClient.autocompleteQuery(searchString, bounds: bounds, filter: filter, callback: { (results, error) -> Void in
+            
+            guard error == nil else { return }
+            if let results = results,
+                results.count > 0 {
+                
+                self.autoCompleteResults = results
+                self.dataTableView[0] = []
+                for index in 0 ..< self.autoCompleteResults.count-1 {
+                    let place :GMSAutocompletePrediction = results[index]
                     self.dataTableView[0].insert(place.attributedFullText.string, at: index)
                 }
                 
@@ -507,7 +510,9 @@ import GoogleMaps
         setSearchBarActive(false, animated: true)
         
         if (indexPath.section == 0) {
-            doGeneratePlaceDetail(autoCompleteResults[indexPath.row].placeID, addressSuggestion: autoCompleteResults[indexPath.row])
+            if let placeID = autoCompleteResults[indexPath.row].placeID {
+                doGeneratePlaceDetail(placeID, addressSuggestion: autoCompleteResults[indexPath.row])
+            }
         } else {
             let coordinate : CLLocationCoordinate2D = CLLocationCoordinate2DMake((placeHistories[indexPath.row] as! NSDictionary)["latitude"]! as! CLLocationDegrees , (placeHistories[indexPath.row] as! NSDictionary)["longitude"]! as! CLLocationDegrees)
             mapView.updateCameraPosition(coordinate)
@@ -516,11 +521,11 @@ import GoogleMaps
         selectedSugestion = dataTableView[indexPath.section][indexPath.row]
         loadHistory()
     }
-
+    
     //MARK: - Place Detail Request
     func doGeneratePlaceDetail(_ placeID:String, addressSuggestion:(GMSAutocompletePrediction))
     {
-        placesClient?.lookUpPlaceID(placeID, callback: { (result, error) -> Void in
+        placesClient.lookUpPlaceID(placeID, callback: { (result, error) -> Void in
             if (error != nil){
                 return;
             }
@@ -552,7 +557,7 @@ import GoogleMaps
             dataTableView[0] = []
             tableView.reloadData()
         }
-
+        
         setSearchBarActive(true, animated: true)
     }
     
@@ -560,8 +565,7 @@ import GoogleMaps
         setSearchBarActive(false, animated: true)
     }
     
-    func setSearchBarActive(_ isActive:Bool, animated:Bool)
-    {
+    func setSearchBarActive(_ isActive:Bool, animated:Bool) {
         searchBar.setShowsCancelButton(isActive, animated: animated)
         self.navigationController?.setNavigationBarHidden(isActive, animated: animated)
         UIApplication.shared.setStatusBarHidden(isActive, with: UIStatusBarAnimation.slide)

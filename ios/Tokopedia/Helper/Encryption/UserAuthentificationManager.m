@@ -342,6 +342,11 @@
     NSString* isGoldMerchant = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"shop_is_gold"]];
     return [isGoldMerchant isEqualToString:@"1"];
 }
+
+- (NSString *)authenticationHeader {
+    return [NSString stringWithFormat:@"%@ %@", self.secureStorageDictionary[@"oAuthToken.tokenType"], self.secureStorageDictionary[@"oAuthToken.accessToken"]];
+}
+
 - (NSString *)getDOB {
     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"dob"]];
 }

@@ -116,6 +116,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HMSegmentedControl/HMSegmentedControl.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Interactable/Interactable.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JDStatusBarNotification/JDStatusBarNotification.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JLPermissions/JLPermissions.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JLRoutes/JLRoutes.framework"
@@ -170,6 +171,7 @@ if [[ "$CONFIGURATION" == "Debug" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
   install_framework "$BUILT_PRODUCTS_DIR/native-navigation/NativeNavigation.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/react-native-maps/react_native_maps.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [[ "$CONFIGURATION" == "Release" ]]; then
@@ -199,6 +201,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/GoogleToolboxForMac/GoogleToolboxForMac.framework"
   install_framework "$BUILT_PRODUCTS_DIR/HMSegmentedControl/HMSegmentedControl.framework"
   install_framework "$BUILT_PRODUCTS_DIR/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/Interactable/Interactable.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JDStatusBarNotification/JDStatusBarNotification.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JLPermissions/JLPermissions.framework"
   install_framework "$BUILT_PRODUCTS_DIR/JLRoutes/JLRoutes.framework"
@@ -253,6 +256,7 @@ if [[ "$CONFIGURATION" == "Release" ]]; then
   install_framework "$BUILT_PRODUCTS_DIR/lottie-ios/Lottie.framework"
   install_framework "$BUILT_PRODUCTS_DIR/nanopb/nanopb.framework"
   install_framework "$BUILT_PRODUCTS_DIR/native-navigation/NativeNavigation.framework"
+  install_framework "$BUILT_PRODUCTS_DIR/react-native-maps/react_native_maps.framework"
   install_framework "$BUILT_PRODUCTS_DIR/youtube-ios-player-helper/youtube_ios_player_helper.framework"
 fi
 if [ "${COCOAPODS_PARALLEL_CODE_SIGN}" == "true" ]; then

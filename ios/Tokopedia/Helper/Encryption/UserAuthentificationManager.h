@@ -21,6 +21,7 @@
 @property (nonatomic) BOOL isLogin;
 @property (readonly) ShopType shopType;
 @property (nonatomic, getter=isOfficialStore, readonly) BOOL officialStore;
+@property (nonatomic, readonly, nullable) NSString *authenticationHeader;
 
 - (null_unspecified NSDictionary *)getUserLoginData;
 - (null_unspecified NSString*)getUserId;

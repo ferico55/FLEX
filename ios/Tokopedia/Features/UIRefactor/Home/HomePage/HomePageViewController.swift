@@ -356,7 +356,7 @@ class HomePageViewController: UIViewController {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         isRequestingCategory = true
-        networkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/api/v1/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] mappingResult, _ in
+        networkManager.request(withBaseUrl: NSString.mojitoUrl(), path: "/api/v1.3/layout/category", method: .GET, parameter: nil, mapping: HomePageCategoryResponse.mapping(), onSuccess: { [unowned self] mappingResult, _ in
             self.isRequestingCategory = false
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let homePageCategoryResponse: HomePageCategoryResponse = result[""] as! HomePageCategoryResponse

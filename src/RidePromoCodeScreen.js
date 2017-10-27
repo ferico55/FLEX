@@ -1,0 +1,215 @@
+// @flow
+import React, { Component } from 'react'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TextInput,
+  ActivityIndicator,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native'
+
+import { connect } from 'react-redux'
+import Navigator from 'native-navigation'
+
+import { getAvailablePromos } from './api'
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: 10,
+    paddingTop: 10,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#dbdbdb',
+    marginTop: 10,
+  },
+})
+
+export class RidePromoCodeScreen extends Component {
+  state = { promos: [], text: this.props.promoCodeApplied }
+
+  componentDidMount() {
+    this.loadAvailablePromos()
+  }
+
+  componentWillReceiveProps(newProps) {
+    this.setState({ text: newProps.promoCodeApplied })
+    if (
+      this.state.isApplyingPromo &&
+      newProps.fareOverviewLoadStatus !== 'loading'
+    ) {
+      this.setState({ isApplyingPromo: false })
+    }
+  }
+
+  loadAvailablePromos = () => {
+    this.setState({ isLoading: true })
+
+    getAvailablePromos()
+      .then(promos => {
+        this.setState({ isLoading: false, promos })
+      })
+      .catch(() => this.setState({ isLoading: false }))
+  }
+
+  applyPromoCode = promoCode => {
+    // TODO didmount warning
+    this.setState({ isApplyingPromo: true, error: null })
+    this.props.applyPromoCode(promoCode)
+  }
+
+  removePromoCode = () => {
+    this.setState({ error: null })
+    this.props.removePromoCode()
+  }
+
+  render() {
+    const { error } = this.props
+    const { promos, text, isApplyingPromo, isLoading } = this.state
+    const buttonDisabled = !text || isApplyingPromo || text === this.props.promoCodeApplied
+    console.log('APPLY promocode', isApplyingPromo)
+
+    return (
+      <View style={styles.container}>
+        {text && text.toUpperCase() === this.props.promoCodeApplied ? (
+          <Navigator.Config
+            title="Apply Promo Code"
+            rightTitle={'Remove'}
+            onRightPress={() => this.removePromoCode()}
+          />
+        ) : (
+          <Navigator.Config
+            title="Apply Promo Code"
+            rightTitle={''}
+            onRightPress={() => {}}
+          />
+        )}
+
+        <View style={{ flexDirection: 'row' }}>
+          <TextInput
+            style={{
+              paddingLeft: 10,
+              fontSize: 14,
+              borderWidth: 1,
+              borderRadius: 3,
+              borderColor: '#42b549',
+              flex: 1,
+            }}
+            selectionColor="#42b549"
+            onChangeText={text => this.setState({ text })}
+            value={text}
+            placeholder="Enter Promo Code"
+          />
+
+          <View
+            style={{
+              marginLeft: 10,
+              backgroundColor: buttonDisabled ? '#e0e0e0' : '#42b549',
+              width: 80,
+              borderRadius: 3,
+            }}
+          >
+            <TouchableOpacity
+              onPress={() => this.applyPromoCode(text)}
+              disabled={buttonDisabled}
+              style={{
+                height: 40,
+                justifyContent: 'center',
+              }}
+            >
+              {isApplyingPromo ? (
+                <ActivityIndicator />
+              ) : (
+                <Text
+                  style={{
+                    color: 'white',
+                    backgroundColor: 'transparent',
+                    textAlign: 'center',
+                  }}
+                >
+                  Apply
+                </Text>
+              )}
+            </TouchableOpacity>
+          </View>
+        </View>
+
+        {error && (
+          <Text style={{ color: 'red', marginTop: 5, fontSize: 12 }}>
+            {error.description}
+          </Text>
+        )}
+
+        <View style={styles.separator} />
+
+        <Text style={{ marginTop: 15, marginBottom: 5 }}>
+          Choose from offers below
+        </Text>
+
+        <ScrollView keyboardDismissMode="on-drag">
+          {isLoading ? <ActivityIndicator />: null}
+          {promos.map(promo => (
+            <View key={promo.code}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.setState({ text: promo.code })
+                  this.applyPromoCode(promo.code)
+                }}
+                disabled={isApplyingPromo}
+              >
+                <View style={{ flexDirection: 'row', paddingTop: 20, }}>
+                  <View
+                    style={{
+                      backgroundColor: '#616161',
+                      width: 30,
+                      height: 30,
+                      marginRight: 20,
+                    }}
+                  />
+                  <View>
+                    <Text>{promo.offer}</Text>
+                    <Text style={{ marginVertical: 5 }}>
+                      <Text style={{ color: 'gray' }}>Promo Code:</Text>{' '}
+                      <Text style={{ color: '#42b549' }}>
+                        {promo.code.toUpperCase()}
+                      </Text>
+                    </Text>
+                    <TouchableOpacity
+                      onPress={() =>
+                        Navigator.push('RideWebViewScreen', { url: promo.url })}
+                      style={{ marginTop: 10 }}
+                      hitSlop={{ top: 10, bottom: 10 }}
+                    >
+                      <Text style={{ color: '#42b549', fontSize: 12 }}>
+                        Read offer details
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+              </TouchableOpacity>
+              <View style={styles.separator} />
+            </View>
+          ))}
+        </ScrollView>
+      </View>
+    )
+  }
+}
+
+const mapStateToProps = state => ({
+  promoCodeApplied: state.promoCodeApplied,
+  error: state.fareOverviewLoadStatus.error,
+})
+
+const mapDispatchToProps = dispatch => ({
+  onPromoCodeApplied: fareOverview =>
+    dispatch({ type: 'RIDE_SET_FARE_OVERVIEW', fareOverview }),
+  applyPromoCode: promoCode =>
+    dispatch({ type: 'RIDE_CHECK_PROMO_CODE', promoCode }),
+  removePromoCode: () => dispatch({ type: 'RIDE_REMOVE_PROMO_CODE' }),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(RidePromoCodeScreen)

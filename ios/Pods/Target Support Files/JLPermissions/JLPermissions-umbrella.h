@@ -13,6 +13,7 @@
 #import "JLContactsPermission.h"
 #import "JLPermissionsCore+Internal.h"
 #import "JLPermissionsCore.h"
+#import "JLLocationPermission.h"
 #import "JLNotificationPermission.h"
 
 FOUNDATION_EXPORT double JLPermissionsVersionNumber;

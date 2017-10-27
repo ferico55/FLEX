@@ -3,7 +3,7 @@ machine:
     XCODE_SCHEME: "Tokopedia"
 
   xcode:
-    version: 8.3
+    version: 8.3.3
 
 dependencies:
   override:
@@ -11,6 +11,7 @@ dependencies:
     - brew install node
     - brew install yarn
     - yarn
+    - yarn run postinstall
     - gem install fastlane
 
 test:
@@ -27,7 +28,7 @@ general:
 
 deployment:
   devel_distribution:
-    branch: [develop, /feature\/.*/, /release\/.*/]
+    branch: [develop, /feature\/.*/]
     commands:
       - fastlane devel
 

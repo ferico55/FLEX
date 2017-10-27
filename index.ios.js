@@ -163,4 +163,83 @@ const styles = StyleSheet.create({
   },
 })
 
-AppRegistry.registerComponent('Tokopedia', () => container)
+AppRegistry.registerComponent('Tokopedia', () => container);
+
+import { createEpicMiddleware } from 'redux-observable';
+
+import RideHailingScreen, { getVehicles } from './src/RideHailingScreen';
+import RidePlacesAutocompleteScreen from './src/RidePlacesAutocompleteScreen';
+import RideWebViewScreen from './src/RideWebViewScreen';
+import RideReceiptScreen from './src/RideReceiptScreen';
+import RideHistoryScreen from './src/RideHistoryScreen';
+import RideHistoryDetailScreen from './src/RideHistoryDetailScreen';
+import RideCancellationScreen from './src/RideCancellationScreen';
+import RidePromoCodeScreen from './src/RidePromoCodeScreen';
+import rideReducer from './src/redux/RideReducer';
+import RideTopupTokocashScreen from './src/RideTopupTokocashScreen'
+import { epic } from './src/redux/RideActions';
+
+let composer;
+if (__DEV__) {
+  const { composeWithDevTools } = require('remote-redux-devtools');
+  composer = composeWithDevTools({ name: 'Ridehailing', port: 8000, sendTo: "http://localhost:8000" });
+} else {
+  composer = id => id;
+}
+
+const rideStore = createStore(rideReducer, composer(applyMiddleware(thunk, createEpicMiddleware(epic))));
+rideStore.dispatch({ type: 'FOO' });
+
+Navigator.registerScreen('RideHailing', () => (props) => (
+  <Provider store={rideStore}>
+    <RideHailingScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RidePlacesAutocompleteScreen', () => () => (
+  <Provider store={rideStore}>
+    <RidePlacesAutocompleteScreen />
+  </Provider>
+));
+
+Navigator.registerScreen('RideWebViewScreen', () => (props) => (
+  <Provider store={rideStore}>
+    <RideWebViewScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RideReceiptScreen', () => (props) => (
+  <Provider store={rideStore}>
+    <RideReceiptScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RideHistoryScreen', () => (props) => (
+  <Provider store={rideStore}>
+    <RideHistoryScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RideHistoryDetailScreen', () => (props) => (
+  <Provider store={rideStore}>
+    <RideHistoryDetailScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RideCancellationScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideCancellationScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RidePromoCodeScreen', () => props => (
+  <Provider store={rideStore}>
+    <RidePromoCodeScreen {...props} />
+  </Provider>
+));
+
+Navigator.registerScreen('RideTopupTokocashScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideTopupTokocashScreen {...props} />
+  </Provider>
+))
