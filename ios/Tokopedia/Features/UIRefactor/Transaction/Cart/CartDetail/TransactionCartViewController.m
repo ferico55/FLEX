@@ -1457,7 +1457,7 @@ NoResultDelegate
                                        
                                        [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
                                        BranchAnalytics *branch = [BranchAnalytics new];
-                                       [branch sendCommerceEventWithParams:param revenue:revenue];
+                                       [branch sendCommerceEventWithParams:param];
                                        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
                                                                                                                  AFEventParamContentType : @"Product",
                                                                                                                  AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",

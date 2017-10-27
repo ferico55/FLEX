@@ -10,7 +10,8 @@ import Foundation
 import Branch
 
 class BranchAnalytics: NSObject {
-    func sendCommerceEvent(params:[String:Any], revenue: NSNumber) {
+    func sendCommerceEvent(params:[String:Any]) {
+        let revenue: NSNumber = (params["amount"] as? NSNumber) ?? 0
         let productItems: [[String:Any]] = (params["items"] as? [[String : Any]]) ?? []
         let currency = (params["currency"] as? String) ?? ""
         var products: [BNCProduct] = []
@@ -18,14 +19,14 @@ class BranchAnalytics: NSObject {
             let product = BNCProduct()
             product.sku = (pItem["id"] as? String) ?? ""
             product.name = (pItem["name"] as? String) ?? ""
-            product.price = (pItem["price"] as? NSDecimalNumber) ?? 0.0
+            let price = (pItem["price"] as? NSNumber) ?? 0
+            product.price = NSDecimalNumber(decimal: price.decimalValue)
             product.quantity = (pItem["quantity"] as? NSNumber) ?? 0.0
             products.append(product)
         }
         let commerceEvent = BNCCommerceEvent.init()
         commerceEvent.currency = currency
-        commerceEvent.shipping = 11.22
-        commerceEvent.revenue = (revenue as? NSDecimalNumber) ?? 0.0
+        commerceEvent.revenue = NSDecimalNumber(decimal: revenue.decimalValue)
         commerceEvent.products = products
         let metadata: [String: Any] = [:]
         Branch.getInstance().send(commerceEvent, metadata: metadata, withCompletion: { (response, error) in
