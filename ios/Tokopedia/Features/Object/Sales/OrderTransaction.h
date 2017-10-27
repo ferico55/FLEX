@@ -18,6 +18,7 @@
 #import "OrderDestination.h"
 #import "OrderSellerShop.h"
 #import "Tkpd.h"
+#import "DriverInfo.h"
 
 @interface OrderTransaction : NSObject <TKPObjectMapping>
 
@@ -35,6 +36,7 @@
 @property (strong, nonatomic, nonnull) OrderDestination *order_destination;
 @property (strong, nonatomic, nonnull) OrderSellerShop *order_shop;
 @property NSInteger order_is_pickup;
+@property (strong, nonatomic, nullable) DriverInfo *driver_info;
 @property NSInteger order_shipping_retry;
 
 @property (strong, nonatomic, nonnull) NSString *deadline_string;

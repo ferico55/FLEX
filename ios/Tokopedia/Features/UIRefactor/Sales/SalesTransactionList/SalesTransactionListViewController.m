@@ -152,6 +152,9 @@
         cell = [topLevelObjects objectAtIndex:0];
     }
     
+    cell.driverInfoContainerView.hidden = true;
+    [cell.driverInfoViewConst setConstant:0];
+    
     cell.delegate = self;
     cell.indexPath = indexPath;
 

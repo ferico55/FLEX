@@ -106,6 +106,10 @@
     _twoButtonsView.hidden = YES;
 }
 
+- (IBAction)tapContactDriver:(id)sender {
+    self.onTapDriverInfo();
+}
+
 - (void)hideDayLeftInformation
 {
     _dateFinishLabel.hidden = YES;

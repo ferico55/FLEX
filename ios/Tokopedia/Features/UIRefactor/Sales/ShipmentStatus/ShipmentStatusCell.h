@@ -44,6 +44,14 @@
 
 @property (strong, nonatomic) IBOutlet OrderTransaction *order;
 
+@property (weak, nonatomic) IBOutlet UIView *driverInfoContainerView;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *driverInfoViewConst;
+@property (weak, nonatomic) IBOutlet UIImageView *driverPhotoView;
+@property (weak, nonatomic) IBOutlet UILabel *driverNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *driverPhoneLicenseLabel;
+@property (weak, nonatomic) IBOutlet UIButton *contactDriverButton;
+@property (nonatomic, copy) void(^onTapDriverInfo)();
+
 - (void)hideDayLeftInformation;
 - (void)showTrackButtonOnTap:(void(^)(OrderTransaction *))onTap;
 - (void)showRetryButtonOnTap:(void(^)(OrderTransaction *))onTap;

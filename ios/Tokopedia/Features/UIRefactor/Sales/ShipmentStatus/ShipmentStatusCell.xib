@@ -1,21 +1,20 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11542" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11524"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
-        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShipmentStatusCell" rowHeight="218" id="KGk-i7-Jjw" userLabel="ShipmentStatusCell" customClass="ShipmentStatusCell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="218"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ShipmentStatusCell" rowHeight="424" id="KGk-i7-Jjw" userLabel="ShipmentStatusCell" customClass="ShipmentStatusCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="424"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="217"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="423.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pNe-LS-TvB" userLabel="Invoice View">
@@ -149,7 +148,7 @@
                         </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="l4E-3B-j63" userLabel="Price View">
-                        <rect key="frame" x="10" y="123" width="300" height="51"/>
+                        <rect key="frame" x="10" y="123" width="300" height="163.5"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Status terakhir" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uib-Qu-YYN">
                                 <rect key="frame" x="10" y="7" width="280" height="21"/>
@@ -161,7 +160,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ge6-wx-Ciw">
-                                <rect key="frame" x="10" y="28" width="256" height="15"/>
+                                <rect key="frame" x="10" y="28" width="256" height="127.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="14.5" id="BJK-Vp-Gp9"/>
                                 </constraints>
@@ -170,7 +169,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_arrow_right_grey.png" translatesAutoresizingMaskIntoConstraints="NO" id="8hz-Dq-4tu">
-                                <rect key="frame" x="272" y="16" width="18" height="18"/>
+                                <rect key="frame" x="272" y="72.5" width="18" height="18"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="18" id="sa4-Pc-BgE"/>
                                     <constraint firstAttribute="height" constant="18" id="yST-vK-leg"/>
@@ -191,8 +190,86 @@
                             <constraint firstAttribute="trailing" secondItem="uib-Qu-YYN" secondAttribute="trailing" constant="10" id="yMa-Fh-1fo"/>
                         </constraints>
                     </view>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="MjV-EB-UvP" userLabel="driver info">
+                        <rect key="frame" x="10" y="286.5" width="300" height="93"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="uwW-WB-ngD" userLabel="Horizontal Border">
+                                <rect key="frame" x="0.0" y="-0.5" width="300" height="1"/>
+                                <color key="backgroundColor" red="0.73699933289999997" green="0.73166358470000004" blue="0.75551497940000001" alpha="0.20000000000000001" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="ANl-EF-mBc"/>
+                                </constraints>
+                            </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="General Settings Icon" translatesAutoresizingMaskIntoConstraints="NO" id="U1A-8q-cwp" userLabel="driver photo">
+                                <rect key="frame" x="10" y="7" width="34" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="34" id="YF2-go-QAl"/>
+                                    <constraint firstAttribute="width" constant="34" id="bwu-Uf-P6g"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="17"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-name-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="R5F-tj-XWD" userLabel="driver name">
+                                <rect key="frame" x="57" y="7" width="42.5" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-phone license-" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ljy-93-qlg" userLabel="driver phone license">
+                                <rect key="frame" x="57" y="27" width="90" height="14.5"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" alpha="0.54000002145767212" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wtT-Dh-XlW" userLabel="contact driver">
+                                <rect key="frame" x="10" y="48" width="80" height="28"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="28" id="cE2-D2-6W5"/>
+                                    <constraint firstAttribute="width" constant="80" id="wUa-dY-Wo3"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                <state key="normal" title="Hubungi">
+                                    <color key="titleColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="tapContactDriver:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="AUy-dw-Jy0"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="wtT-Dh-XlW" secondAttribute="bottom" constant="17" id="1rN-Es-pjD"/>
+                            <constraint firstItem="Ljy-93-qlg" firstAttribute="bottom" secondItem="U1A-8q-cwp" secondAttribute="bottom" id="85i-9E-Of2"/>
+                            <constraint firstItem="U1A-8q-cwp" firstAttribute="leading" secondItem="MjV-EB-UvP" secondAttribute="leading" constant="10" id="8Mj-eB-B5r"/>
+                            <constraint firstAttribute="trailing" secondItem="uwW-WB-ngD" secondAttribute="trailing" id="Ilp-sx-H59"/>
+                            <constraint firstAttribute="height" relation="lessThanOrEqual" constant="93" id="XhU-JF-dbf"/>
+                            <constraint firstItem="uwW-WB-ngD" firstAttribute="leading" secondItem="MjV-EB-UvP" secondAttribute="leading" id="hB7-Ss-DIQ"/>
+                            <constraint firstItem="Ljy-93-qlg" firstAttribute="leading" secondItem="U1A-8q-cwp" secondAttribute="trailing" constant="13" id="jXZ-Xi-2uf"/>
+                            <constraint firstItem="R5F-tj-XWD" firstAttribute="top" secondItem="U1A-8q-cwp" secondAttribute="top" id="km5-NB-wq6"/>
+                            <constraint firstItem="R5F-tj-XWD" firstAttribute="leading" secondItem="U1A-8q-cwp" secondAttribute="trailing" constant="13" id="lLA-Q5-ozU"/>
+                            <constraint firstItem="wtT-Dh-XlW" firstAttribute="leading" secondItem="U1A-8q-cwp" secondAttribute="leading" id="u2w-Wa-TLR"/>
+                            <constraint firstItem="U1A-8q-cwp" firstAttribute="top" secondItem="MjV-EB-UvP" secondAttribute="top" constant="7" id="wyl-wT-fyY"/>
+                            <constraint firstItem="uwW-WB-ngD" firstAttribute="top" secondItem="MjV-EB-UvP" secondAttribute="top" id="xXm-aR-hxP"/>
+                            <constraint firstItem="wtT-Dh-XlW" firstAttribute="top" secondItem="U1A-8q-cwp" secondAttribute="bottom" constant="7" id="y8S-yf-3QK"/>
+                        </constraints>
+                    </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ve6-vG-gFR" userLabel="Buttons View" customClass="OrderButtonView" customModule="Tokopedia" customModuleProvider="target">
-                        <rect key="frame" x="10" y="174" width="300" height="43"/>
+                        <rect key="frame" x="10" y="379.5" width="300" height="44"/>
                         <color key="backgroundColor" red="0.97037827970000001" green="0.97034925220000001" blue="0.97036570310000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="height" relation="lessThanOrEqual" constant="44" id="wPY-x7-xVA"/>
@@ -211,17 +288,28 @@
                     <constraint firstAttribute="trailing" secondItem="RpZ-zw-C1g" secondAttribute="trailing" constant="10" id="ehO-Ny-b79"/>
                     <constraint firstItem="pNe-LS-TvB" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="10" id="h7d-DU-uyp"/>
                     <constraint firstItem="l4E-3B-j63" firstAttribute="top" secondItem="RpZ-zw-C1g" secondAttribute="bottom" id="ijb-1k-hNV"/>
-                    <constraint firstItem="ve6-vG-gFR" firstAttribute="top" secondItem="l4E-3B-j63" secondAttribute="bottom" id="nwX-he-3NE"/>
+                    <constraint firstItem="ve6-vG-gFR" firstAttribute="top" secondItem="MjV-EB-UvP" secondAttribute="bottom" id="jVx-nB-v3D"/>
                     <constraint firstAttribute="trailing" secondItem="l4E-3B-j63" secondAttribute="trailing" constant="10" id="pFh-HQ-OHW"/>
                     <constraint firstAttribute="trailing" secondItem="pNe-LS-TvB" secondAttribute="trailing" constant="10" id="rlE-xF-Kdd"/>
+                    <constraint firstItem="MjV-EB-UvP" firstAttribute="top" secondItem="l4E-3B-j63" secondAttribute="bottom" id="sBY-Cf-kWx"/>
                 </constraints>
             </tableViewCellContentView>
             <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="0.80000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="MjV-EB-UvP" firstAttribute="leading" secondItem="KGk-i7-Jjw" secondAttribute="leading" constant="10" id="BZh-q5-sLI"/>
+                <constraint firstAttribute="trailing" secondItem="MjV-EB-UvP" secondAttribute="trailing" constant="10" id="iPM-nC-XhV"/>
+            </constraints>
             <connections>
                 <outlet property="buttonsView" destination="ve6-vG-gFR" id="Hn0-FW-ucC"/>
                 <outlet property="buyerNameLabel" destination="WpT-5U-BVh" id="jKZ-mW-Ody"/>
                 <outlet property="buyerProfileImageView" destination="wX1-bF-tN8" id="FFE-Hu-tob"/>
+                <outlet property="contactDriverButton" destination="wtT-Dh-XlW" id="qfm-gP-M7O"/>
                 <outlet property="dateFinishLabel" destination="xlz-Gd-6D1" id="IEz-u2-j7N"/>
+                <outlet property="driverInfoContainerView" destination="MjV-EB-UvP" id="dTX-ao-oVt"/>
+                <outlet property="driverInfoViewConst" destination="XhU-JF-dbf" id="Iwo-3o-pPF"/>
+                <outlet property="driverNameLabel" destination="R5F-tj-XWD" id="QmG-V0-FKu"/>
+                <outlet property="driverPhoneLicenseLabel" destination="Ljy-93-qlg" id="IK3-8M-b8l"/>
+                <outlet property="driverPhotoView" destination="U1A-8q-cwp" id="GTd-Iq-U0P"/>
                 <outlet property="finishLabel" destination="M7n-Xq-FLP" id="bsJ-WI-BC8"/>
                 <outlet property="invoiceDateLabel" destination="dLS-pK-Cm4" id="xMR-HC-yHR"/>
                 <outlet property="invoiceNumberLabel" destination="PrC-Kp-7oA" id="jlO-Ox-RL1"/>
@@ -229,10 +317,11 @@
                 <outlet property="statusView" destination="l4E-3B-j63" id="M1V-cA-91V"/>
                 <outlet property="userView" destination="RpZ-zw-C1g" id="EqL-9h-Q65"/>
             </connections>
-            <point key="canvasLocation" x="366" y="342.5"/>
+            <point key="canvasLocation" x="366" y="445"/>
         </tableViewCell>
     </objects>
     <resources>
+        <image name="General Settings Icon" width="31" height="31"/>
         <image name="icon_arrow_right_grey.png" width="20" height="20"/>
         <image name="icon_profile_picture.jpeg" width="200" height="200"/>
     </resources>

@@ -234,7 +234,13 @@
     
     if (order.order_history.count > 0) {
         OrderHistory *history = [order.order_history objectAtIndex:0];
-        [cell setStatusLabelText:history.history_seller_status];
+        NSString *status = history.history_seller_status;
+        NSArray *arrStatus = [status componentsSeparatedByString: @"\n"];
+        if (arrStatus.count > 0) {
+            [cell setStatusLabelText:arrStatus[0]];
+        } else {
+            [cell setStatusLabelText:@"-"];
+        }
     } else {
         [cell setStatusLabelText:@"-"];
     }
@@ -246,9 +252,56 @@
     cell.dateFinishLabel.hidden = order.deadline_hidden;
     cell.finishLabel.backgroundColor = [UIColor fromHexString:order.order_deadline.deadline_color];
     
-    NSLog(@"%@  -  %ld", order.order_detail.detail_invoice,
-          (long)order.order_deadline.deadline_finish_day_left);
-    
+    if (order.driver_info!=nil && [order.driver_info.driver_name length]!=0) {
+        DriverInfo *driver = order.driver_info;
+        [cell.driverPhotoView setImageWithURL:[NSURL URLWithString: driver.driver_photo]];
+        cell.driverNameLabel.text = driver.driver_name;
+        NSString *license = [driver.license_number length]!=0 ? [@" | " stringByAppendingString:driver.license_number] : @"";
+        cell.driverPhoneLicenseLabel.text = [driver.driver_phone stringByAppendingString:license];
+        cell.driverInfoContainerView.hidden = false;
+        [cell.driverInfoViewConst setConstant:93];
+        
+        cell.onTapDriverInfo = ^(){
+            UIAlertController *popup = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *call = [UIAlertAction
+                                   actionWithTitle:@"Telepon"
+                                   style:UIAlertActionStyleDefault
+                                   handler:^(UIAlertAction * action) {
+                                       NSURL *phoneURL = [NSURL URLWithString:[NSString stringWithFormat:@"telprompt://%@", driver.driver_phone]];
+                                       if ([[UIApplication sharedApplication] canOpenURL:phoneURL]) {
+                                           [[UIApplication sharedApplication] openURL:phoneURL];
+                                       }
+                                   }];
+            
+            UIAlertAction *message = [UIAlertAction
+                                      actionWithTitle:@"Kirim Pesan"
+                                      style:UIAlertActionStyleDefault
+                                      handler:^(UIAlertAction * action) {
+                                          NSString *message = [NSString stringWithFormat:@"sms://%@", driver.driver_phone];
+                                          NSURL *messageURL = [NSURL URLWithString:[message stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLFragmentAllowedCharacterSet]]];
+                                          if ([[UIApplication sharedApplication] canOpenURL:messageURL]) {
+                                              [[UIApplication sharedApplication] openURL:messageURL];
+                                          }
+                                      }];
+            
+            UIAlertAction *cancel = [UIAlertAction
+                                     actionWithTitle:@"Batal"
+                                     style:UIAlertActionStyleCancel
+                                     handler:^(UIAlertAction * action) {
+                                         [popup dismissViewControllerAnimated:YES completion:nil];
+                                     }];
+            
+            [popup addAction: call];
+            [popup addAction: message];
+            [popup addAction: cancel];
+            
+            [self presentViewController:popup animated:YES completion:nil];
+        };
+    } else {
+        cell.driverInfoContainerView.hidden = true;
+        [cell.driverInfoViewConst setConstant:0];
+    }
+
     return cell;
 }
 
