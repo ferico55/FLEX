@@ -412,46 +412,13 @@
             }
             case 3:
             {
-                [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                        category:GA_EVENT_CATEGORY_NOTIFICATION
-                                          action:GA_EVENT_ACTION_CLICK
-                                           label:@"Help"];
-                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                    InboxTicketSplitViewController *controller = [InboxTicketSplitViewController new];
-                    
-                    [self.delegate pushViewController:controller]; 
-                } else {
-                    TKPDTabViewController *controller = [TKPDTabViewController new];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    controller.inboxType = InboxTypeTicket;
-                    
-                    InboxTicketViewController *allInbox = [InboxTicketViewController new];
-                    allInbox.inboxCustomerServiceType = InboxCustomerServiceTypeAll;
-                    allInbox.delegate = controller;
-                    allInbox.onTapContactUsButton = ^{
-                        [NavigateViewController navigateToContactUsFromViewController:controller];
-                    };
-                    
-                    InboxTicketViewController *unreadInbox = [InboxTicketViewController new];
-                    unreadInbox.inboxCustomerServiceType = InboxCustomerServiceTypeInProcess;
-                    unreadInbox.delegate = controller;
-                    unreadInbox.onTapContactUsButton = ^{
-                        [NavigateViewController navigateToContactUsFromViewController:controller];
-                    };
-                    
-                    InboxTicketViewController *closedInbox = [InboxTicketViewController new];
-                    closedInbox.inboxCustomerServiceType = InboxCustomerServiceTypeClosed;
-                    closedInbox.delegate = controller;
-                    closedInbox.onTapContactUsButton = ^{
-                        [NavigateViewController navigateToContactUsFromViewController:controller];
-                    };
-                    
-                    controller.viewControllers = @[allInbox, unreadInbox, closedInbox];
-                    controller.tabTitles = @[@"Semua", @"Dalam Proses", @"Ditutup"];
-                    controller.menuTitles = @[@"Semua Layanan Pengguna", @"Belum Dibaca"];
-                    
-                    [self.delegate pushViewController:controller];
-                }
+                UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+                WebViewController *webViewController = [WebViewController new];
+                webViewController.strURL = [userManager webViewUrlFromUrl:@"https://m.tokopedia.com/help/ticket-list/mobile"];
+                webViewController.strTitle = @"Help";
+                
+                [self.delegate pushViewController:webViewController];
+                
                 break;
             }
                 

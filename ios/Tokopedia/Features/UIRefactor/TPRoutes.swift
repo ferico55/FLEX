@@ -29,13 +29,30 @@ class TPRoutes: NSObject {
             return true
         }
         
-        JLRoutes.global().addRoute("/peluang") { (params: [String: Any]!) -> Bool in
-            openPeluang()
-            return true
-        }
-        
-        JLRoutes.global().addRoute("/peluang.pl") { (params: [String: Any]!) -> Bool in
-            openPeluang()
+        JLRoutes.global().add(["/peluang", "peluang.pl"]) { (params: [String: Any]!) -> Bool in
+            let userManager = UserAuthentificationManager()
+            
+            if(userManager.isLogin && userManager.userIsSeller()) {
+                AnalyticsManager.trackEventName("clickPeluang",
+                                                category: "Peluang filter",
+                                                action: "Click",
+                                                label: "order peluang")
+                
+                if(UI_USER_INTERFACE_IDIOM() == .pad) {
+                    let controller = ReplacementSplitViewController()
+                    controller.hidesBottomBarWhenPushed = true
+                    UIApplication.topViewController()?
+                        .navigationController?
+                        .pushViewController(controller, animated: true)
+                } else {
+                    let controller = ReplacementListViewController()
+                    controller.hidesBottomBarWhenPushed = true
+                    UIApplication.topViewController()?
+                        .navigationController?
+                        .pushViewController(controller, animated: true)
+                }
+                
+            }
             return true
         }
         
@@ -839,33 +856,6 @@ class TPRoutes: NSObject {
         } else {
             return ""
         }
-    }
-    
-    static func openPeluang() {
-        let userManager = UserAuthentificationManager()
-
-        if(userManager.isLogin && userManager.userIsSeller()) {
-            AnalyticsManager.trackEventName("clickPeluang",
-                                            category: "Peluang filter",
-                                            action: "Click",
-                                            label: "order peluang")
-
-            if(UI_USER_INTERFACE_IDIOM() == .pad) {
-                let controller = ReplacementSplitViewController()
-                controller.hidesBottomBarWhenPushed = true
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(controller, animated: true)
-            } else {
-                let controller = ReplacementListViewController()
-                controller.hidesBottomBarWhenPushed = true
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(controller, animated: true)
-            }
-            
-        }
-        
     }
     
     static func openWebView(_ url: URL, title: String = "") {
