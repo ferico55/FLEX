@@ -844,12 +844,26 @@ class TPRoutes: NSObject {
     static func openPeluang() {
         let userManager = UserAuthentificationManager()
 
-        if(userManager.isLogin) {
-            let controller = ReplacementListViewController()
-            controller.hidesBottomBarWhenPushed = true
-            UIApplication.topViewController()?
-                .navigationController?
-                .pushViewController(controller, animated: true)
+        if(userManager.isLogin && userManager.userIsSeller()) {
+            AnalyticsManager.trackEventName("clickPeluang",
+                                            category: "Peluang filter",
+                                            action: "Click",
+                                            label: "order peluang")
+
+            if(UI_USER_INTERFACE_IDIOM() == .pad) {
+                let controller = ReplacementSplitViewController()
+                controller.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(controller, animated: true)
+            } else {
+                let controller = ReplacementListViewController()
+                controller.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(controller, animated: true)
+            }
+            
         }
         
     }
