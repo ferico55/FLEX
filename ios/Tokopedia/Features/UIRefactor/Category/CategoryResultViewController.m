@@ -222,8 +222,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     [self requestSearch];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWishlist) name:TKPDUserDidLoginNotification object:nil];
-    
     _reactEventManager = [[UIApplication sharedApplication].reactBridge moduleForClass: [ReactEventManager class]];
 
 }

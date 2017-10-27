@@ -31,7 +31,6 @@ RCT_EXPORT_METHOD(showAddPromoTooltip) {
 RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
     TopAdsInfoActionSheet *topAdsInfoActionSheet = [TopAdsInfoActionSheet new];
     [topAdsInfoActionSheet show];
-
 }
 
 @end
