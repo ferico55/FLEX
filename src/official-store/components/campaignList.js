@@ -9,144 +9,10 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import { ReactTPRoutes } from 'NativeModules'
-import HTMLView from 'react-native-htmlview'
-import DeviceInfo from 'react-native-device-info'
-import WishListButton from '../common/Wishlist/WishlistButton'
+import ProductList from './ProductList'
 
 const renderCampaign = c => {
   const products = c.item.Products || []
-  const productGrid = []
-  let isDiscount = false
-  if (products.length > 0) {
-    for (let i = 0; i < products.length; i += DeviceInfo.isTablet() ? 4 : 2) {
-      const productRow = []
-      for (let j = i; j < i + (DeviceInfo.isTablet() ? 4 : 2); j += 1) {
-        if (!products[j]) {
-          break
-        }
-
-        if (products[j].data.discount_percentage) {
-          isDiscount = true
-        }
-
-        productRow.push(
-          <View style={styles.productCell} key={products[j].data.id}>
-            <TouchableWithoutFeedback
-              onPress={() => ReactTPRoutes.navigate(products[j].data.url_app)}
-            >
-              <View>
-                <View style={styles.productImageWrapper}>
-                  <Image
-                    style={styles.productImage}
-                    defaultSource={{ uri: 'grey-bg' }}
-                    source={{ uri: products[j].data.image_url }}
-                  />
-                </View>
-                <Text
-                  style={styles.productName}
-                  ellipsizeMode="tail"
-                  numberOfLines={2}
-                >
-                  {products[j].data.name}
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <View style={styles.productGridPrice}>
-              <View style={styles.productGridNormalPrice}>
-                {products[j].data.discount_percentage && (
-                  <View>
-                    <Text style={styles.productGridNormalPriceText}>
-                      {products[j].data.original_price}
-                    </Text>
-                  </View>
-                )}
-              </View>
-            </View>
-            <View style={styles.priceWrapper}>
-              <Text style={styles.price}>{products[j].data.price}</Text>
-              {products[j].data.discount_percentage && (
-                <View style={styles.productGridCampaignRate}>
-                  <Text style={styles.productGridCampaignRateText}>{`${products[
-                    j
-                  ].data.discount_percentage}% OFF`}</Text>
-                </View>
-              )}
-              {products[j].data.badges.map(
-                (b, k) =>
-                  b.title === 'Free Return' ? (
-                    <View key={k} style={styles.badgeImageContainer}>
-                      <Image
-                        source={{ uri: b.image_url }}
-                        style={styles.badgeImage}
-                      />
-                    </View>
-                  ) : null,
-              )}
-            </View>
-            <View style={styles.productBadgeWrapper}>
-              {products[j].data.labels.map((l, index) => {
-                let labelTitle = l.title
-                if (l.title.indexOf('Cashback') > -1) {
-                  labelTitle = 'Cashback'
-                }
-
-                switch (labelTitle) {
-                  case 'PO':
-                  case 'Grosir':
-                    return (
-                      <View style={styles.productLabel} key={index}>
-                        <Text style={styles.labelText}>{l.title}</Text>
-                      </View>
-                    )
-                  case 'Cashback':
-                    return (
-                      <View style={styles.productCashback} key={index}>
-                        <Text style={styles.cashbackText}>{l.title}</Text>
-                      </View>
-                    )
-                  default:
-                    return null
-                }
-              })}
-            </View>
-            <TouchableWithoutFeedback
-              onPress={() =>
-                ReactTPRoutes.navigate(products[j].data.shop.url_app)}
-            >
-              <View style={styles.shopSection}>
-                <View style={styles.shopImageWrapper}>
-                  <Image
-                    source={{ uri: products[j].brand_logo }}
-                    style={styles.shopImage}
-                  />
-                </View>
-                <View style={styles.shopNameWrapper}>
-                  <HTMLView
-                    value={products[j].data.shop.name}
-                    textComponentProps={{
-                      ellipsizeMode: 'tail',
-                      numberOfLines: 1,
-                    }}
-                    stylesheet={{ lineHeight: 15 }}
-                  />
-                </View>
-              </View>
-            </TouchableWithoutFeedback>
-            <WishListButton
-              isWishlist={products[j].data.is_wishlist || false}
-              productId={products[j].data.id}
-            />
-          </View>,
-        )
-      }
-      productGrid.push(
-        <View style={styles.productRow} key={i}>
-          {productRow}
-        </View>,
-      )
-    }
-  }
-
   return (
     <View
       style={{
@@ -173,7 +39,7 @@ const renderCampaign = c => {
           />
         </TouchableWithoutFeedback>
       }
-      {productGrid}
+      <ProductList products={products} />
       {c.item.html_id === 6 ? null : (
         <View style={styles.viewAll}>
           <Text
