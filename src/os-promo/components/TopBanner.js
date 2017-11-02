@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
 } from 'react-native'
+import { find } from 'lodash'
 import { ReactTPRoutes } from 'NativeModules'
 
 const { width } = Dimensions.get('window')
@@ -14,10 +15,12 @@ const { width } = Dimensions.get('window')
 const TopBanner = ({ navigation, dataTopBanners }) => {
   console.log(navigation, dataTopBanners)
   const banners = dataTopBanners
+  const bannerImages = banners.images || []
+  const topBanner = find(bannerImages, b => b.positions === 0)
   const renderBanner = () => (
     <View style={styles.topBannerContainer}>
       <Image
-        source={{ uri: banners.images[3].file_url }}
+        source={{ uri: topBanner.file_url }}
         style={styles.topBannerImage}
       />
     </View>

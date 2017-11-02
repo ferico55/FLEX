@@ -7,6 +7,7 @@ import {
   Platform,
   TouchableWithoutFeedback,
 } from 'react-native'
+import {sortBy} from 'lodash'
 import { ReactTPRoutes, TKPReactAnalytics } from 'NativeModules'
 
 const { width } = Dimensions.get('window')
@@ -39,11 +40,7 @@ const handleBannerTap = (banner, appUrl) => {
 
 const MainBanner = ({ dataMainBanners }) => {
   const bannersImage = dataMainBanners.images
-  // remapping array position
-  const arrImages = bannersImage.reduceRight(
-    (prev, curr) => prev.concat(curr),
-    [],
-  )
+  const arrImages = sortBy(bannersImage, 'positions')
 
   return (
     <View style={styles.mainBannerContainer}>

@@ -1,15 +1,16 @@
 import React from 'react'
-import { View, Image, StyleSheet, Text, Platform } from 'react-native'
+import { View, Image, StyleSheet, Text, Platform, Dimensions } from 'react-native'
 import unescape from 'lodash/unescape'
 import { ReactTPRoutes, TKPReactAnalytics } from 'NativeModules'
 import TKPTouchable from '../common/TKPTouchable'
 
+const { width } = Dimensions.get('window')
 const styles = StyleSheet.create({
   productCell: {
     borderRightWidth: 1,
     borderColor: '#e0e0e0',
     backgroundColor: '#FFF',
-    width: '50%',
+    width: width > 414 ? '25%' : '50%',
     borderTopWidth: 1,
   },
   productImageWrapper: {
@@ -92,6 +93,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     padding: 10,
     borderTopWidth: 1,
+    borderBottomWidth: 1,
     borderColor: '#e0e0e0',
     justifyContent: 'center',
   },
@@ -246,7 +248,7 @@ const Product = ({ product, index, category }) => (
           category.category_name,
           product.data.shop.name,
           product.data.name,
-          product.data.url_app,
+          product.data.shop.url_app,
         )}
     >
       <View style={styles.shopSection}>

@@ -1,11 +1,11 @@
 import axios from 'axios'
+import { TKPReactURLManager } from 'NativeModules'
+
+const MOJITO_HOSTNAME = TKPReactURLManager.mojitoUrl
 
 const BASE_API_URL = {
-    mojito: 'https://mojito.tokopedia.com/os/api/v1/ospromo'
+  mojito: `${MOJITO_HOSTNAME}/os/api/v1/ospromo`,
 }
-
-
-
 
 // =================== Reload State =================== //
 export const RELOADSTATE = 'RELOADSTATE'
@@ -37,9 +37,9 @@ fetchBanners = async (slug) => {
 
 export const FETCH_CATEGORIES = 'FETCH_CATEGORIES'
 export const fetchCategories = (slug, offset, limit) => {
-  const url = `${BASE_API_URL.mojito}/categories?promo=${slug}&device=mobile&limit=${limit}&offset=${offset}`
-  return {
-    type: FETCH_CATEGORIES,
-    payload: axios.get(url),
-  }
+    const url = `${BASE_API_URL.mojito}/categories?promo=${slug}&device=mobile&limit=${limit}&offset=${offset}`
+    return {
+        type: FETCH_CATEGORIES,
+        payload: axios.get(url),
+    }
 }

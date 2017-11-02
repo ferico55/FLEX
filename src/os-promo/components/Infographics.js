@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { View, StyleSheet, Image, Text, Dimensions } from 'react-native'
 import { icons } from '../lib/icons'
 
-const { height, width, fontScale } = Dimensions.get('window');
+const { width } = Dimensions.get('window')
 const scale = width / 375
 const infoContent = [
   {
@@ -30,11 +30,11 @@ const infoContent = [
 const Infographics = () => {
   return (
     <View style={styles.infoContainer}>
-      { 
+      {
         infoContent.map((content, idx) => (
           <View style={styles.contentContainer} key={idx}>
             <View style={styles.contentImageContainer}>
-              <Image source={{uri: content.img}} style={{width: 80, height: 80, resizeMode: 'contain'}} />
+              <Image source={{ uri: content.img }} style={styles.imageStyle} />
             </View>
 
             <View style={styles.contentTextContainer}>
@@ -49,6 +49,11 @@ const Infographics = () => {
 }
 
 const styles = StyleSheet.create({
+  imageStyle: {
+    width: width > 414 ? 120 : 80,
+    height: width > 414 ? 120 : 80,
+    resizeMode: 'contain',
+  },
   infoContainer: {
     width,
     marginTop: 20,
@@ -77,9 +82,9 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   contentDescription: {
-    lineHeight: 20,
+    lineHeight: width > 414 ? 40 : 20,
     fontSize: Math.round(scale * 12),
-  }
+  },
 })
 
 export default Infographics

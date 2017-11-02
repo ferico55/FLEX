@@ -22,6 +22,10 @@ const banners = (
       }
 
     case `${FETCH_TOPBANNER}_${FULFILLED}`:
+      if (!action.payload.data) {
+        return state
+      }
+
       return {
         ...state,
         isFetching: false,

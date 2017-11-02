@@ -49,7 +49,7 @@ class Categories extends PureComponent {
         renderItem={this.renderCategory}
         onEndReached={this.loadMore}
         onEndReachedThreshold={0.5}
-        ListFooterComponent={this.renderFooter}
+        // ListFooterComponent={this.renderFooter}
         ListHeaderComponent={this.renderHeader}
         style={{ backgroundColor: '#F8F8F8' }}
       />
