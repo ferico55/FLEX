@@ -18,6 +18,7 @@ const extractErrorMessage = error => {
   }
 
   throw {
+    code: error.code,
     description: errorMessageByCode[error.code],
   }
 }
@@ -232,7 +233,7 @@ export const getPriceEstimation = (startingPoint, destinationPoint) =>
     })
 
 export const placeDetailFromLocation = region =>
-  request({
+  rideNetworkRequest({
     baseUrl: 'https://maps.googleapis.com',
     path: '/maps/api/geocode/json',
     params: {

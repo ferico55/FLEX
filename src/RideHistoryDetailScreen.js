@@ -11,15 +11,15 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Keyboard,
 } from 'react-native'
-
 import Dash from 'react-native-dash'
 import Navigator from 'native-navigation'
 
 import { getStaticMapUrl, postReview } from './api'
 import PreAnimatedImage from './PreAnimatedImage'
 import RatingStars from './RatingStars'
-import { rupiahFormat, currencyFormat } from './RideHelper'
+import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
 
 import SourceIcon from './resources/ride-source.png'
 import DestinationIcon from './resources/ride-destination.png'
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   ratingContainer: {
     marginTop: 16,
     paddingTop: 16,
-    marginBottom: 64,
+    marginBottom: 35,
     backgroundColor: '#EFEFEF',
   },
   suggestionContainer: {
@@ -138,7 +138,33 @@ class RideHistoryDetailScreen extends Component {
       rating: trip.rating.stars,
       isLoading: false,
       comment: trip.rating.comment,
+      screenName: 'Ride Trip Detail Screen',
     }
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    )
+    this.keyboardDidHideSub = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    )
+  }
+
+  componentWillUnmount() {
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
+    this.keyboardDidShowSub.remove()
+    this.keyboardDidHideSub.remove()
+  }
+
+  keyboardDidShow = event => {
+    this.scrollView.scrollToEnd({ animated: true })
+  }
+
+  keyboardDidHide = event => {
+    this.scrollView.scrollToEnd({ animated: true })
   }
 
   handleRating = rating => {
@@ -221,12 +247,20 @@ class RideHistoryDetailScreen extends Component {
       rating,
       eligibleToSubmitRate,
       eligibleToRate,
+      screenName,
     } = this.state
     return (
       <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
         <Navigator.Config title="Trip Detail" />
 
-        <ScrollView style={{ flex: 1, backgroundColor: '#fafafa' }}>
+        <ScrollView
+          ref={ref => {
+            this.scrollView = ref
+          }}
+          style={{
+            backgroundColor: '#fafafa',
+          }}
+        >
           <View style={{ backgroundColor: '#fafafa' }}>
             <PreAnimatedImage
               aspectRatio={2}
@@ -238,8 +272,8 @@ class RideHistoryDetailScreen extends Component {
                   <Text>{trip.create_time}</Text>
                   {eligibleToRate ? (
                     <Text style={styles.subtitle}>
-                      {`${trip.vehicle.make} ${trip.vehicle.model} ${trip.vehicle
-                        .license_plate}`}
+                      {`${trip.vehicle.make} ${trip.vehicle.model} ${trip
+                        .vehicle.license_plate}`}
                     </Text>
                   ) : null}
                 </View>
@@ -441,6 +475,13 @@ class RideHistoryDetailScreen extends Component {
               url: trip.help_url,
               expectedCode: 'tos_confirmation_id',
             })
+            trackEvent(
+              'GenericUberEvent',
+              'click help for trip detail',
+              `${screenName} - ${trip.create_time} - ${currencyFormat(
+                trip.payment.currency_code,
+              )} ${rupiahFormat(trip.payment.total_amount)} - ${trip.status}`,
+            )
           }}
         >
           <View style={styles.footerContainer}>

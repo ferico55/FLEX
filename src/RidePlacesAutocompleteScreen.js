@@ -27,7 +27,7 @@ import PlaceIcon from './resources/icon-place.png'
 import PinIcon from './resources/icon-pin-drop.png'
 import LocationIcon from './resources/icon-location.png'
 import LocationIconTransparant from './resources/icon-location-transparant.png'
-import { rupiahFormat, currencyFormat, getCurrentLocation } from './RideHelper'
+import { getCurrentLocation, trackEvent } from './RideHelper'
 
 const blackColor = 'rgba(0,0,0, 0.7)'
 
@@ -112,10 +112,11 @@ const mapDispatchToProps = dispatch => ({
       region,
     })
   },
-  onPredictionSelected: prediction => {
+  onPredictionSelected: (prediction, trackAction) => {
     dispatch({
       type: 'RIDE_SELECT_SUGGESTION',
       placeId: prediction.location.placeId,
+      trackAction,
     })
   },
 
@@ -182,6 +183,10 @@ export class RidePlacesAutocompleteScreen extends Component {
     isSearchingWithMap: false,
     recentAddresses: [],
     readyToSubmitSelectedLocation: false,
+    screenName:
+      this.props.searchType === 'source'
+        ? 'Ride Source Change Screen'
+        : 'Ride Destination Change Screen',
   }
 
   componentDidMount() {
@@ -200,7 +205,7 @@ export class RidePlacesAutocompleteScreen extends Component {
     }
   }
 
-  componentWillReceiveProps (newProps) {
+  componentWillReceiveProps(newProps) {
     const { currentLocation } = newProps
     if (currentLocation && currentLocation.location && currentLocation.name) {
       this.setState({ readyToSubmitSelectedLocation: true })
@@ -209,21 +214,28 @@ export class RidePlacesAutocompleteScreen extends Component {
 
   componentWillUnmount() {
     this.props.onExitScreen()
-
     this.subscription.unsubscribe()
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
   handleOpenMapPress = () => {
     this.setState({ isSearchingWithMap: true })
+    const { searchType } = this.props
+    const { screenName } = this.state
+    trackEvent(
+      'GenericUberEvent',
+      `click ${searchType} open map`,
+      `${screenName}`,
+    )
   }
 
   handleSubmitButton = Keyboard.dismiss
 
-  handleonRegionChange = (region) => {
+  handleonRegionChange = region => {
     this.setState({ readyToSubmitSelectedLocation: false })
   }
 
-  handleOnRegionChangeComplete = (region) => {
+  handleOnRegionChangeComplete = region => {
     this.props.onRegionChanged(region)
   }
 
@@ -251,13 +263,19 @@ export class RidePlacesAutocompleteScreen extends Component {
   handleLocationButton = this.zoomToCurrentLocation
 
   renderRecentAddressItem = ({ item: address, index }) => {
-    const { recentAddresses } = this.state
+    const { recentAddresses, screenName } = this.state
+    const { searchType } = this.props
     return (
       <View key={`${address.latitude},${address.longitude}`} style={styles.row}>
         <AddressRow
           onPress={() => {
             this.props.handleAddressSelected(address)
             Keyboard.dismiss()
+            trackEvent(
+              'GenericUberEvent',
+              `click ${searchType} recent addresses`,
+              `${screenName} - ${address.addr_name}`,
+            )
           }}
           name={address.addr_name}
           description={address.description}
@@ -270,12 +288,16 @@ export class RidePlacesAutocompleteScreen extends Component {
   }
 
   renderPredictionItem = ({ item: prediction }) => {
-    const { onPredictionSelected } = this.props
+    const { onPredictionSelected, searchType } = this.props
+    const { screenName } = this.state
     return (
       <View key={prediction.location.placeId}>
         <AddressRow
           onPress={() => {
-            onPredictionSelected(prediction)
+            onPredictionSelected(
+              prediction,
+              `click ${searchType} recent addresses`,
+            )
             Keyboard.dismiss()
           }}
           name={prediction.name}
@@ -332,7 +354,7 @@ export class RidePlacesAutocompleteScreen extends Component {
           }}
         >
           <TextInput
-            ref={component => this._textInputFindAddress = component}
+            ref={component => (this._textInputFindAddress = component)}
             placeholder="Find Address"
             style={styles.textInput}
             clearButtonMode={!isSearchingWithMap ? 'always' : 'never'}
@@ -424,8 +446,12 @@ export class RidePlacesAutocompleteScreen extends Component {
               provider={PROVIDER_GOOGLE}
               style={{ flexGrow: 1 }}
               initialRegion={{
-                latitude: currentLocation ? currentLocation.location.coordinate.latitude : -6.1757247,
-                longitude: currentLocation ? currentLocation.location.coordinate.longitude : 106.8265106,
+                latitude: currentLocation
+                  ? currentLocation.location.coordinate.latitude
+                  : -6.1757247,
+                longitude: currentLocation
+                  ? currentLocation.location.coordinate.longitude
+                  : 106.8265106,
                 latitudeDelta: 0.0123,
                 longitudeDelta: 0.0123,
               }}
@@ -515,7 +541,12 @@ export class RidePlacesAutocompleteScreen extends Component {
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => onPredictionSelected(currentLocation)}
+                  onPress={() => {
+                    onPredictionSelected(
+                      currentLocation,
+                      `click done on ${searchType} map`,
+                    )
+                  }}
                   disabled={!readyToSubmitSelectedLocation}
                 >
                   {!readyToSubmitSelectedLocation ? (

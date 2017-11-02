@@ -402,7 +402,7 @@ export const interruptReducer = (state = null, action) => {
 export const promoCodeAppliedReducer = (state = null, action) => {
   switch (action.type) {
     case 'RIDE_CHECK_PROMO_CODE':
-      return null
+      return action.promoCode.toUpperCase()
     case 'RIDE_APPLY_PROMO_CODE':
       return action.promoCode.toUpperCase()
     case 'RIDE_REMOVE_PROMO_CODE':
@@ -420,6 +420,10 @@ export const selectedAddressReducer = (state = { status: 'idle' }, action) => {
       return { status: 'loading' }
     case 'RIDE_SELECT_ADDRESS':
       return { status: 'loaded' }
+    case 'RIDE_SELECT_SUGGESTION_ERROR':
+      return { status: 'idle' }
+    case 'RIDE_AUTO_DETECT_LOCATION_ERROR':
+      return { status: 'idle' }
     default:
       return state
   }

@@ -1,3 +1,5 @@
+import { TKPReactAnalytics } from 'NativeModules'
+
 export const rupiahFormat = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
 
 export const currencyFormat = x => (x === 'IDR' || x === 'Rp' ? 'Rp' : x)
@@ -37,3 +39,14 @@ export const getFollowLocation = () =>
       options,
     )
   })
+
+export const trackEvent = (name, action, label) => {
+  // console.log('TRACKER!')
+  // console.log(`${name} - digital uber - ${action} - ${label}`)
+  TKPReactAnalytics.trackEvent({
+    name: name || 'GenericUberEvent',
+    category: 'digital - uber',
+    action: action || '',
+    label: label || '',
+  })
+}

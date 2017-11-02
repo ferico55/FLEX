@@ -5,11 +5,9 @@ import {
   StyleSheet,
   Text,
   View,
-  Button,
   TextInput,
   TouchableWithoutFeedback,
   TouchableOpacity,
-  NativeModules,
   ActivityIndicator,
   Image,
   Animated,
@@ -19,24 +17,23 @@ import {
   Dimensions,
   ImageBackground,
 } from 'react-native'
-
 import { ReactInteractionHelper } from 'NativeModules'
-
 import Interactable from 'react-native-interactable'
-
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
-
 import Navigator from 'native-navigation'
-
 import last from 'lodash/last'
-
 import { connect } from 'react-redux'
-
 import Dash from 'react-native-dash'
 
 import { openCancelDialog } from './redux/RideActions'
-
 import NoResult from './unify/NoResult'
+import { expiryTime } from './selector'
+import {
+  rupiahFormat,
+  currencyFormat,
+  getCurrentLocation,
+  trackEvent,
+} from './RideHelper'
 
 import SourceIcon from './resources/ride-source.png'
 import DestinationIcon from './resources/ride-destination.png'
@@ -53,12 +50,7 @@ import IconUberThumbsUp from './resources/icon-uber-thumbs-up.png'
 import IconMessage from './resources/icon-message.png'
 import IconPhone from './resources/icon-phone.png'
 
-import { expiryTime } from './selector'
-
-import { rupiahFormat, currencyFormat, getCurrentLocation } from './RideHelper'
-
 const AnimatedTextInput = Animated.createAnimatedComponent(TextInput)
-
 const screenHeight = Dimensions.get('screen').height - 64
 
 const styles = StyleSheet.create({
@@ -128,6 +120,7 @@ export class RideHailingScreen extends Component {
     basePanelheight: 140,
     panelHeight: 140,
     snapIndex: 0,
+    screenName: 'Ride Home Page',
   }
 
   _shakeValue = new Animated.Value(0)
@@ -167,6 +160,51 @@ export class RideHailingScreen extends Component {
       },
       { text: 'No', style: 'cancel' },
     ])
+  }
+
+  _onRowSelected = productId => {
+    if (!this.props.routeSelection.destination) {
+      this._shakeDestination()
+    } else {
+      this.props.selectRide(productId)
+    }
+  }
+
+  componentDidMount() {
+    this.props.loadCurrentTrip()
+  }
+
+  componentWillReceiveProps(newProps) {
+    /* handle after cancel ride
+    source and destination still empty
+    need to update snapIndex to 0 and panelHeight to default
+    so the Interactable can fit to the bottom of screen
+    */
+    const {
+      routeSelection: { source, destination },
+      mode,
+      currentTrip,
+    } = newProps
+
+    // handle snapPanel
+    if (mode === 'select-route' && !source && !destination) {
+      this.setState({ snapIndex: 0, panelHeight: this.state.basePanelheight })
+    }
+
+    // handle change screenName
+    if (mode === 'riding') {
+      if (
+        currentTrip &&
+        currentTrip.data &&
+        currentTrip.data.status === 'in_progress'
+      ) {
+        this.setState({ screenName: 'Ride Booked Screen' })
+      } else {
+        this.setState({ screenName: 'Ride Booking Page' })
+      }
+    } else {
+      this.setState({ screenName: 'Ride Home Page' })
+    }
   }
 
   componentDidUpdate(previousProps) {
@@ -217,32 +255,9 @@ export class RideHailingScreen extends Component {
     }
   }
 
-  _onRowSelected = productId => {
-    if (!this.props.routeSelection.destination) {
-      this._shakeDestination()
-    } else {
-      this.props.selectRide(productId)
-    }
-  }
-
-  componentDidMount() {
-    this.props.loadCurrentTrip()
-  }
-
-  componentWillReceiveProps(newProps) {
-    /* handle after cancel ride
-    source and destination still empty
-    need to update snapIndex to 0 and panelHeight to default
-    so the Interactable can fit to the bottom of screen
-    */
-    const { routeSelection: { source, destination }, mode } = newProps
-    if (mode === 'select-route' && !source && !destination) {
-      this.setState({ snapIndex: 0, panelHeight: this.state.basePanelheight })
-    }
-  }
-
   componentWillUnmount() {
     this.props.onExitScreen()
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
   onPanelSnap = event => {
@@ -262,11 +277,9 @@ export class RideHailingScreen extends Component {
     }
   }
 
-  zoomToCurrentLocation = () => {
-    console.log('OI')
-    return getCurrentLocation()
+  zoomToCurrentLocation = () =>
+    getCurrentLocation()
       .then(({ latitude, longitude }) => {
-        console.log('HALO', latitude, longitude)
         if (this.mapView) {
           this.mapView.animateToRegion({
             latitude,
@@ -277,12 +290,12 @@ export class RideHailingScreen extends Component {
         }
       })
       .catch(error => console.log('geo error', error))
-    }
 
   handleLocationButton = this.zoomToCurrentLocation
 
   renderEstimatesContent = () => {
-    const { estimates, routeSelection: { source, destination } } = this.props
+    const { estimates, routeSelection: { destination } } = this.props
+    const { screenName } = this.state
 
     return (
       estimates &&
@@ -310,7 +323,17 @@ export class RideHailingScreen extends Component {
               />
             ) : null}
             <TouchableOpacity
-              onPress={() => this._onRowSelected(estimate.product.product_id)}
+              onPress={() => {
+                this._onRowSelected(estimate.product.product_id)
+                if (destination) {
+                  trackEvent(
+                    'GenericUberEvent',
+                    'select ride option',
+                    `${screenName} - ${estimate.product
+                      .display_name} - ${estimate.time} - ${estimate.priceRange}`,
+                  )
+                }
+              }}
               style={{
                 flexDirection: 'row',
                 paddingVertical: 8,
@@ -353,7 +376,9 @@ export class RideHailingScreen extends Component {
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ fontSize: 12, textAlign: 'center' }}>{estimate.time} min</Text>
+                <Text style={{ fontSize: 12, textAlign: 'center' }}>
+                  {estimate.time} min
+                </Text>
               </View>
 
               {destination ? (
@@ -385,8 +410,10 @@ export class RideHailingScreen extends Component {
       bookRide,
       mode,
     } = this.props
+    const { screenName } = this.state
     const fareOverview =
       fareOverviewLoadStatus && fareOverviewLoadStatus.fareOverview
+
     if (
       fareOverviewLoadStatus.status !== 'error' &&
       requestStatus.status !== 'error'
@@ -529,7 +556,14 @@ export class RideHailingScreen extends Component {
                 }}
               >
                 <TouchableOpacity
-                  onPress={() => bookRide(selectedProduct.product_id)}
+                  onPress={() => {
+                    bookRide(selectedProduct.product_id)
+                    trackEvent(
+                      'GenericUberEvent',
+                      `click request ${selectedProduct.display_name}`,
+                      `${screenName}`,
+                    )
+                  }}
                   style={{ paddingVertical: 10 }}
                   disabled={!fareOverview}
                 >
@@ -638,6 +672,7 @@ export class RideHailingScreen extends Component {
       destinationPlaceholderColor,
       panelHeight,
       basePanelheight,
+      screenName,
     } = this.state
 
     const coordinates = route && route.coordinates
@@ -679,7 +714,10 @@ export class RideHailingScreen extends Component {
           <Navigator.Config
             title={screenTitle}
             rightTitle="Your Trips"
-            onRightPress={() => Navigator.push('RideHistoryScreen')}
+            onRightPress={() => {
+              Navigator.push('RideHistoryScreen')
+              trackEvent('GenericUberEvent', 'click on your trips', screenName)
+            }}
           />
         ) : (
           <Navigator.Config
@@ -824,7 +862,12 @@ export class RideHailingScreen extends Component {
               />
             </View>
             <View style={styles.inputContainer}>
-              <TouchableWithoutFeedback onPress={sourceSearch}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  sourceSearch()
+                  trackEvent('GenericUberEvent', 'click source', screenName)
+                }}
+              >
                 <View style={styles.textInputWrapper}>
                   <TextInput
                     placeholder="Select Pickup"
@@ -838,7 +881,16 @@ export class RideHailingScreen extends Component {
 
               <View style={{ height: 1, backgroundColor: '#c6c6c6' }} />
 
-              <TouchableWithoutFeedback onPress={destinationSearch}>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  destinationSearch()
+                  trackEvent(
+                    'GenericUberEvent',
+                    'click destination',
+                    screenName,
+                  )
+                }}
+              >
                 <View style={styles.textInputWrapper}>
                   <AnimatedTextInput
                     placeholder="Select Destination"
@@ -870,7 +922,14 @@ export class RideHailingScreen extends Component {
                         paddingRight: 10,
                         paddingLeft: 30,
                       }}
-                      onPress={removeDestination}
+                      onPress={() => {
+                        removeDestination()
+                        trackEvent(
+                          'GenericUberEvent',
+                          'click delete destination',
+                          `${screenName} - ${destination.name}`,
+                        )
+                      }}
                     >
                       <Image
                         source={CancelIcon}
@@ -1008,9 +1067,9 @@ export class RideHailingScreen extends Component {
           {mode === 'booking-confirmation' &&
           (fareOverviewLoadStatus.status !== 'idle' ||
             requestStatus.status === 'error') ? (
-            <View>
+              <View>
               {fareOverviewLoadStatus.status === 'loaded' ? (
-                <View
+                  <View
                   style={[
                     styles.shadow,
                     {
@@ -1025,37 +1084,47 @@ export class RideHailingScreen extends Component {
                   ]}
                 >
                   {promoCodeApplied && fareOverview.code ? (
-                    <Image
+                      <Image
                       source={IconUberThumbsUp}
-                      style={{ height: 20, width: 20, marginVertical: 8, flex: 0.5 }}
+                      style={{
+                        height: 20,
+                        width: 20,
+                        marginVertical: 8,
+                        flex: 0.5,
+                      }}
                       resizeMode={'contain'}
                     />
                   ) : (
                     <Image
                       source={IconUberTag}
-                      style={{ height: 20, width: 20, marginVertical: 8, flex: 0.5 }}
+                      style={{
+                        height: 20,
+                        width: 20,
+                        marginVertical: 8,
+                        flex: 0.5,
+                      }}
                       resizeMode={'contain'}
                     />
                   )}
                   <Text style={{ flex: 6, padding: 8 }}>
-                    {promoCodeApplied && fareOverview.message_success ? (
+                      {promoCodeApplied && fareOverview.message_success ? (
                       fareOverview.message_success
                     ) : (
                       'Do you have a promocode?'
                     )}
-                  </Text>
+                    </Text>
                   {promoCodeApplied && fareOverview.code ? (
-                    <TouchableOpacity
+                      <TouchableOpacity
                       onPress={() => Navigator.push('RidePromoCodeScreen')}
                       style={{ justifyContent: 'center', paddingLeft: 20 }}
                     >
                       <Text
-                        style={{
+                          style={{
                           color: '#42b549',
                           fontSize: 14,
                           fontWeight: '500',
                         }}
-                      >
+                        >
                         Edit
                       </Text>
                     </TouchableOpacity>
@@ -1208,6 +1277,7 @@ export class RideHailingScreen extends Component {
                             Alert.alert('SMS not supported on this device')
                           }
                         })
+                        trackEvent('GenericUberEvent', 'click sms', screenName)
                       }}
                     >
                       <Image
@@ -1226,10 +1296,11 @@ export class RideHailingScreen extends Component {
                             Linking.openURL(url)
                           } else {
                             Alert.alert(
-                              'Phone call not supported on this device'
+                              'Phone call not supported on this device',
                             )
                           }
                         })
+                        trackEvent('GenericUberEvent', 'click call', screenName)
                       }}
                     >
                       <Image
@@ -1243,13 +1314,19 @@ export class RideHailingScreen extends Component {
               <View style={{ height: 1, backgroundColor: '#e6e6e6' }} />
               <View style={{ flexDirection: 'row', height: 51 }}>
                 <TouchableOpacity
-                  onPress={event =>
+                  onPress={event => {
                     ReactInteractionHelper.share(
                       loadShareUrlTrip.url,
                       '',
                       `Follow my Uber trip`,
                       event.target,
-                    )}
+                    )
+                    trackEvent(
+                      'GenericUberEvent',
+                      'click share eta',
+                      screenName,
+                    )
+                  }}
                   disabled={loadShareUrlTrip.status === 'loading'}
                   style={{
                     alignItems: 'center',
@@ -1298,7 +1375,14 @@ export class RideHailingScreen extends Component {
 
                     <TouchableOpacity
                       key="cancel"
-                      onPress={this._onCancelButtonTap}
+                      onPress={() => {
+                        this._onCancelButtonTap()
+                        trackEvent(
+                          'GenericUberEvent',
+                          'click cancel',
+                          screenName,
+                        )
+                      }}
                       style={{
                         flexDirection: 'row',
                         alignItems: 'center',
@@ -1337,7 +1421,14 @@ export class RideHailingScreen extends Component {
             <ActivityIndicator size="large" />
 
             <TouchableOpacity
-              onPress={() => this._onCancelButtonTap()}
+              onPress={() => {
+                this._onCancelButtonTap()
+                trackEvent(
+                  'GenericUberEvent',
+                  'click cancel request ride',
+                  screenName,
+                )
+              }}
               style={{
                 margin: 10,
                 padding: 10,

@@ -14,6 +14,7 @@ import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
 
 import { getAvailablePromos } from './api'
+import { trackEvent } from './RideHelper'
 
 const styles = StyleSheet.create({
   container: {
@@ -29,7 +30,11 @@ const styles = StyleSheet.create({
 })
 
 export class RidePromoCodeScreen extends Component {
-  state = { promos: [], text: this.props.promoCodeApplied }
+  state = {
+    promos: [],
+    text: this.props.promoCodeApplied,
+    screenName: 'Ride Promo Code Screen',
+  }
 
   componentDidMount() {
     this.loadAvailablePromos()
@@ -43,6 +48,10 @@ export class RidePromoCodeScreen extends Component {
     ) {
       this.setState({ isApplyingPromo: false })
     }
+  }
+
+  componentWillUnmount() {
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
   loadAvailablePromos = () => {
@@ -68,9 +77,9 @@ export class RidePromoCodeScreen extends Component {
 
   render() {
     const { error } = this.props
-    const { promos, text, isApplyingPromo, isLoading } = this.state
-    const buttonDisabled = !text || isApplyingPromo || text === this.props.promoCodeApplied
-    console.log('APPLY promocode', isApplyingPromo)
+    const { promos, text, isApplyingPromo, isLoading, screenName } = this.state
+    const buttonDisabled =
+      !text || isApplyingPromo || text === this.props.promoCodeApplied
 
     return (
       <View style={styles.container}>
@@ -78,7 +87,14 @@ export class RidePromoCodeScreen extends Component {
           <Navigator.Config
             title="Apply Promo Code"
             rightTitle={'Remove'}
-            onRightPress={() => this.removePromoCode()}
+            onRightPress={() => {
+              trackEvent(
+                'GenericUberEvent',
+                'delete promotion',
+                `${screenName} - ${this.props.promoCodeApplied}`,
+              )
+              this.removePromoCode()
+            }}
           />
         ) : (
           <Navigator.Config
@@ -113,7 +129,14 @@ export class RidePromoCodeScreen extends Component {
             }}
           >
             <TouchableOpacity
-              onPress={() => this.applyPromoCode(text)}
+              onPress={() => {
+                this.applyPromoCode(text)
+                trackEvent(
+                  'GenericUberEvent',
+                  'click apply promo search',
+                  `${screenName} - ${text}`,
+                )
+              }}
               disabled={buttonDisabled}
               style={{
                 height: 40,
@@ -150,17 +173,22 @@ export class RidePromoCodeScreen extends Component {
         </Text>
 
         <ScrollView keyboardDismissMode="on-drag">
-          {isLoading ? <ActivityIndicator />: null}
+          {isLoading ? <ActivityIndicator /> : null}
           {promos.map(promo => (
             <View key={promo.code}>
               <TouchableOpacity
                 onPress={() => {
                   this.setState({ text: promo.code })
                   this.applyPromoCode(promo.code)
+                  trackEvent(
+                    'GenericUberEvent',
+                    'click apply offers',
+                    `${screenName} - ${promo.code.toUpperCase()}`,
+                  )
                 }}
                 disabled={isApplyingPromo}
               >
-                <View style={{ flexDirection: 'row', paddingTop: 20, }}>
+                <View style={{ flexDirection: 'row', paddingTop: 20 }}>
                   <View
                     style={{
                       backgroundColor: '#616161',
@@ -178,8 +206,14 @@ export class RidePromoCodeScreen extends Component {
                       </Text>
                     </Text>
                     <TouchableOpacity
-                      onPress={() =>
-                        Navigator.push('RideWebViewScreen', { url: promo.url })}
+                      onPress={() => {
+                        Navigator.push('RideWebViewScreen', { url: promo.url })
+                        trackEvent(
+                          'GenericUberEvent',
+                          'click read offer details',
+                          `${screenName} - ${promo.code.toUpperCase()}`,
+                        )
+                      }}
                       style={{ marginTop: 10 }}
                       hitSlop={{ top: 10, bottom: 10 }}
                     >

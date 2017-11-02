@@ -6,6 +6,7 @@ import { Observable } from 'rxjs'
 import flatten from 'lodash/flatten'
 import Navigator from 'native-navigation'
 import DeviceInfo from 'react-native-device-info'
+import { ReactInteractionHelper } from 'NativeModules'
 
 import {
   getFareOverview,
@@ -24,7 +25,8 @@ import {
   extractInteruptCode,
   getShareUrl,
 } from '../api'
-import { getCurrentLocation } from './../RideHelper'
+
+import { getCurrentLocation, trackEvent } from './../RideHelper'
 
 export const openCancelDialog = () => Navigator.push('RideCancellationScreen')
 
@@ -268,12 +270,13 @@ const pickupEstimationEpic = (action$, store) =>
           products,
           priceEstimations,
         }))
-        .catch(error =>
-          Observable.of({
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return Observable.of({
             type: 'RIDE_ESTIMATES_ERROR',
-            error,
-          }),
-        )
+            error: error.code === 'no_internet' ? '' : error.description,
+          })
+        })
     })
 
 const mapZoomEpic = action$ =>
@@ -317,7 +320,7 @@ const currentTripStatusEpic = action$ =>
           destination,
         },
         {
-          type: 'RIDE_GET_CURRENT_LOCATION'
+          type: 'RIDE_GET_CURRENT_LOCATION',
         },
       ])
 
@@ -428,12 +431,13 @@ const selectVehicleEpic = (action$, store) =>
           promoCode: fareOverview.code,
         },
       ])
-      .catch(error =>
-        Observable.of({
+      .catch(error => {
+        ReactInteractionHelper.showErrorStickyAlert(error.description)
+        return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
-          error,
-        }),
-      )
+          error: error.code === 'no_internet' ? '' : error.description,
+        })
+      })
   })
 
 const fareOverviewEpic = (action$, store) =>
@@ -460,12 +464,13 @@ const fareOverviewEpic = (action$, store) =>
           promoCode: fareOverview.code,
         },
       ])
-      .catch(error =>
-        Observable.of({
+      .catch(error => {
+        ReactInteractionHelper.showErrorStickyAlert(error.description)
+        return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
-          error,
-        }),
-      )
+          error: error.code === 'no_internet' ? '' : error.description,
+        })
+      })
   })
 
 const pollStatusEpic = (action$, store) =>
@@ -582,9 +587,7 @@ const regionChangedEpic = (action, store) =>
           prediction: place,
         }))
         .catch(e => {
-          if (e.code === 'no_internet') {
-            Alert.alert('No internet access')
-          }
+          ReactInteractionHelper.showErrorStickyAlert(e.description)
           return ignoreError
         }),
     )
@@ -600,9 +603,7 @@ const autocompleteRegionChangedEpic = action$ =>
           location: place,
         }))
         .catch(e => {
-          if (e.code === 'no_internet') {
-            Alert.alert('No internet access')
-          }
+          ReactInteractionHelper.showErrorStickyAlert(e.description)
           return ignoreError
         }),
     )
@@ -624,11 +625,38 @@ const selectSuggestionEpic = (action$, store) =>
   action$
     .ofType('RIDE_SELECT_SUGGESTION')
     .debounceTime(250)
-    .switchMap(({ placeId }) =>
-      Observable.from(placeDetailFromId(placeId)).map(address => ({
-        type: 'RIDE_SELECT_ADDRESS',
-        address,
-      })),
+    .switchMap(({ placeId, trackAction, isAutoDetectLocation }) =>
+      Observable.from(placeDetailFromId(placeId))
+        .do(address => {
+          const searchType = store.getState().searchType
+          const screenName =
+            searchType === 'source'
+              ? 'Ride Source Change Screen'
+              : 'Ride Destination Change Screen'
+          if (isAutoDetectLocation && trackAction) {
+            trackEvent(
+              'GenericUberEvent',
+              `${trackAction}`,
+              `${screenName} - ${address.name}`,
+            )
+          } else if (!isAutoDetectLocation && trackAction) {
+            trackEvent(
+              'GenericUberEvent',
+              `${trackAction}`,
+              `${screenName} - ${address.name}`,
+            )
+          }
+        })
+        .map(address => ({
+          type: 'RIDE_SELECT_ADDRESS',
+          address,
+        }))
+        .catch(e => {
+          ReactInteractionHelper.showErrorStickyAlert(e.description)
+          return Observable.of({
+            type: 'RIDE_SELECT_SUGGESTION_ERROR',
+          })
+        }),
     )
 
 const selectAddressEpic = (action$, store) =>
@@ -749,11 +777,21 @@ const autoDetectLocationEpic = (action$, store) =>
   action$
     .ofType('RIDE_AUTO_DETECT_LOCATION')
     .filter(action => action.region)
-    .switchMap(({ region }) => placeDetailFromLocation(region))
-    .map(response => ({
-      type: 'RIDE_SELECT_SUGGESTION',
-      placeId: response.location.placeId,
-    }))
+    .switchMap(({ region }) =>
+      Observable.from(placeDetailFromLocation(region))
+        .map(response => ({
+          type: 'RIDE_SELECT_SUGGESTION',
+          placeId: response.location.placeId,
+          trackAction: 'click autodetect current location',
+          isAutoDetectLocation: true,
+        }))
+        .catch(e => {
+          ReactInteractionHelper.showErrorStickyAlert(e.description)
+          return Observable.of({
+            type: 'RIDE_AUTO_DETECT_LOCATION_ERROR',
+          })
+        }),
+    )
 
 const applyPromoCodeEpic = (action$, store) =>
   action$
@@ -829,6 +867,11 @@ const getShareUrlTripEpic = (action$, store) =>
       .catch(ignoreError)
   })
 
+const findPickupEstimationEpic = action$ =>
+  action$.ofType('RIDE_FIND_PICKUP_ESTIMATION').mapTo({
+    type: 'RIDE_SET_LOCATION',
+  })
+
 export const epic = combineEpics(
   bookVehicleEpic,
   rideInterruptEpic,
@@ -853,4 +896,5 @@ export const epic = combineEpics(
   applyPromoCodeEpic,
   getShareUrlTripEpic,
   checkShareUtlTropEpic,
+  findPickupEstimationEpic,
 )

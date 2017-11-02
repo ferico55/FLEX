@@ -6,16 +6,14 @@ import {
   FlatList,
   TouchableOpacity,
   ActivityIndicator,
-  Dimensions,
 } from 'react-native'
-
 import DeviceInfo from 'react-native-device-info'
 import Navigator from 'native-navigation'
 
 import { getHistory, getStaticMapUrl, getHistoryFromUri } from './api'
 import PreAnimatedImage from './PreAnimatedImage'
 import NoResult from './unify/NoResult'
-import { rupiahFormat, currencyFormat } from './RideHelper'
+import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
 
 const styles = StyleSheet.create({
   historyList: {
@@ -58,6 +56,7 @@ class RideHistoryScreen extends Component {
     this.state = {
       dataSource: [],
       loadProgress: 'idle',
+      screenName: 'Ride Your Trips Screen',
     }
   }
 
@@ -65,10 +64,15 @@ class RideHistoryScreen extends Component {
     this.loadData()
   }
 
-  handleRefresh = () => {
-    this.setState({
+  componentWillUnmount() {
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
+  }
+
+  handleRefresh = async () => {
+    await this.setState({
       loadProgress: 'loading',
       dataSource: [],
+      nextUri: null,
     })
 
     this.loadData()
@@ -120,7 +124,7 @@ class RideHistoryScreen extends Component {
     />
   )
 
-  renderStatus = (status) => {
+  renderStatus = status => {
     let newStatus
     let color = '#7F7F7F'
     switch (status) {
@@ -156,6 +160,14 @@ class RideHistoryScreen extends Component {
       style={{ flex: 1 }}
       onPress={() => {
         Navigator.push('RideHistoryDetailScreen', { trip: item.item })
+        trackEvent(
+          'GenericUberEvent',
+          'click receipt',
+          `${this.state.screenName} - ${item.item.create_time} - ${currencyFormat(
+            item.item.payment.currency_code,
+          )} ${rupiahFormat(item.item.payment.total_amount)} - ${item.item
+            .status}`,
+        )
       }}
     >
       <View
@@ -179,7 +191,9 @@ class RideHistoryScreen extends Component {
           </View>
           <View style={styles.subtitleContainerRight}>
             <Text style={styles.alignRight}>
-              {`${currencyFormat(item.item.payment.currency_code)} ${rupiahFormat(item.item.payment.total_amount)}`}
+              {`${currencyFormat(
+                item.item.payment.currency_code,
+              )} ${rupiahFormat(item.item.payment.total_amount)}`}
             </Text>
             {this.renderStatus(item.item.status.toUpperCase())}
           </View>

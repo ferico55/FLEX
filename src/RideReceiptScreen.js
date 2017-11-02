@@ -10,14 +10,15 @@ import {
   TextInput,
   Button,
   Alert,
-  TouchableOpacity,
+  Keyboard,
+  KeyboardAvoidingView,
 } from 'react-native'
 import Navigator from 'native-navigation'
 import HTMLView from 'react-native-htmlview'
 import Dash from 'react-native-dash'
 import RatingStars from './RatingStars'
-import { getHistoryDetail, getReceipt, postReview } from './api'
-import { rupiahFormat, currencyFormat } from './RideHelper'
+import { getReceipt, postReview } from './api'
+import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
 
 const {
   ReactNetworkManager,
@@ -33,7 +34,19 @@ export default class RideReceiptScreen extends Component {
       rating: 0,
       eligibleToRate: true,
       shouldHighlight: false,
+      screenName: 'Ride Completed Screen',
     }
+  }
+
+  componentWillMount() {
+    this.keyboardDidShowSub = Keyboard.addListener(
+      'keyboardDidShow',
+      this.keyboardDidShow,
+    )
+    this.keyboardDidHideSub = Keyboard.addListener(
+      'keyboardDidHide',
+      this.keyboardDidHide,
+    )
   }
 
   componentDidMount() {
@@ -47,6 +60,20 @@ export default class RideReceiptScreen extends Component {
         rating: 0,
       })
     })
+  }
+
+  componentWillUnmount() {
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
+    this.keyboardDidShowSub.remove()
+    this.keyboardDidHideSub.remove()
+  }
+
+  keyboardDidShow = event => {
+    this.scrollView.scrollToEnd({ animated: true })
+  }
+
+  keyboardDidHide = event => {
+    this.scrollView.scrollToEnd({ animated: true })
   }
 
   _handleRating = rating => {
@@ -127,6 +154,7 @@ export default class RideReceiptScreen extends Component {
       rating,
       eligibleToRate,
       comment,
+      screenName,
     } = this.state
 
     if (isLoading) {
@@ -144,8 +172,13 @@ export default class RideReceiptScreen extends Component {
     totalAmount = totalAmount.replace(currencyCode, '')
 
     return (
-      <View style={{ flex: 1 }}>
-        <ScrollView style={{ marginBottom: 36 }}>
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+        <ScrollView
+          ref={ref => {
+            this.scrollView = ref
+          }}
+          style={{ marginBottom: 36 }}
+        >
           <Navigator.Config title="Trip Completed" />
           <View style={styles.topViewContainer}>
             <Text
@@ -339,7 +372,14 @@ export default class RideReceiptScreen extends Component {
                     title="Submit"
                     color="#3AB539"
                     disabled={rating === 0 || !eligibleToRate}
-                    onPress={this._submitRating}
+                    onPress={() => {
+                      this._submitRating()
+                      trackEvent(
+                        'GenericUberEvent',
+                        'click submit',
+                        `${screenName} - ${rating} - ${comment}`,
+                      )
+                    }}
                   />
                 )}
               </View>
@@ -361,10 +401,12 @@ export default class RideReceiptScreen extends Component {
               RootComponent={Text}
             />
             <Text
-              onPress={() =>
+              onPress={() => {
                 Navigator.push('RideWebViewScreen', {
                   url: receipt.ride_offer.terms,
-                })}
+                })
+                trackEvent('GenericUberEvent', 'click tnc', `${screenName}`)
+              }}
               style={[styles.smallText, { color: '#3AB539' }]}
             >
               {' '}
@@ -372,7 +414,7 @@ export default class RideReceiptScreen extends Component {
             </Text>
           </Text>
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
   }
 }

@@ -15,6 +15,7 @@ import { Observable, Subject } from 'rxjs'
 import NoResult from './unify/NoResult'
 
 import { getCancellationReasons } from './api'
+import { trackEvent } from './RideHelper'
 
 const styles = StyleSheet.create({
   container: {
@@ -50,7 +51,10 @@ const styles = StyleSheet.create({
 })
 
 export class RideCancellationScreen extends Component {
-  state = { loadReasonProgress: { status: 'loading' } }
+  state = {
+    loadReasonProgress: { status: 'loading' },
+    screenName: 'Ride Cancel Reason Screen',
+  }
 
   componentDidMount() {
     this._loadReasonsSubscription = this._loadReasons$
@@ -80,6 +84,7 @@ export class RideCancellationScreen extends Component {
   componentWillUnmount() {
     this._timerSubscription.unsubscribe()
     this._loadReasonsSubscription.unsubscribe()
+    trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
   _loadReasons$ = new Subject()
@@ -92,7 +97,12 @@ export class RideCancellationScreen extends Component {
   }
 
   _renderContent = () => {
-    const { loadReasonProgress, reasons, selectedReason } = this.state
+    const {
+      loadReasonProgress,
+      reasons,
+      selectedReason,
+      screenName,
+    } = this.state
 
     const {
       submitCancellation,
@@ -187,9 +197,18 @@ export class RideCancellationScreen extends Component {
             { flexDirection: 'row', justifyContent: 'center' },
           ]}
           disabled={isButtonDisabled}
-          onPress={this._onSubmitPress}
+          onPress={() => {
+            this._onSubmitPress()
+            trackEvent(
+              'GenericUberEvent',
+              'click cancel request ride',
+              `${screenName} - ${selectedReason}`,
+            )
+          }}
         >
-          <Text style={{ color: 'white', fontSize: 15, margin: 10 }}>Submit</Text>
+          <Text style={{ color: 'white', fontSize: 15, margin: 10 }}>
+            Submit
+          </Text>
           {cancellationProgress.status === 'loading' ? (
             <ActivityIndicator
               color="white"
@@ -230,8 +249,6 @@ export class RideCancellationScreen extends Component {
     )
   }
 }
-
-
 
 const expiryTime = dateString => {
   if (!dateString) {
