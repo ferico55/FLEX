@@ -47,12 +47,7 @@ class VersionChecker : NSObject {
         remoteConfig.fetch(withExpirationDuration: expirationDuration){
         (status, error) -> Void in
             if status == .success {
-                print("Config fetched!")
                 self.remoteConfig.activateFetched()
-            }
-            else{
-                print("not Fetched")
-                print("Error \(error!.localizedDescription)")
             }
             
             let forceUpdate = self.remoteConfig[remoteKey.forceUpdate.rawValue].boolValue
