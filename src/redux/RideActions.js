@@ -289,6 +289,7 @@ const currentTripStatusEpic = action$ =>
   action$.ofType('RIDE_LOAD_CURRENT_TRIP').switchMap(() => {
     const currentTrip$ = Observable.fromPromise(getCurrentTrip()).shareReplay(1)
     const products$ = currentTrip$
+      .filter(currentTrip => currentTrip.data.product_id)
       .map(currentTrip => currentTrip.data.product_id)
       .switchMap(productId => getProductDetail(productId))
       .map(product => [
@@ -303,6 +304,7 @@ const currentTripStatusEpic = action$ =>
       ])
 
     const location$ = currentTrip$
+      .filter(currentTrip => currentTrip.data.product_id)
       .map(currentTrip => [
         currentTrip.data.pickup,
         currentTrip.data.destination,
