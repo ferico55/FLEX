@@ -97,18 +97,35 @@ platform :ios do
       scheme: "Tokopedia - Debug"
     )
 
+    cert(development: true)
+    
+    sigh(
+      development: true,
+      provisioning_name: 'Hockeyapp Devel',
+      ignore_profiles_with_different_name: true,
+    )
+    
+    sigh(
+      development: true, 
+      app_identifier: 'com.tokopedia.Tokopedia.ServiceExtension',
+      provisioning_name: 'Hockeyapp Devel ServiceExtension',
+      ignore_profiles_with_different_name: true,
+    )
+
     disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
 
+    # we're not supposed to use update_project_provisioning since we're already using sigh
+    # but we use it for now since the build always fail.
     update_project_provisioning(
       xcodeproj: ENV["APP_XCODEPROJ"],
       target_filter: 'Tokopedia',
-      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/aca02343-7cce-45de-94b7-b9c041b62f18.mobileprovision'
+      profile: './Development_com.tokopedia.Tokopedia.mobileprovision'
     )
 
     update_project_provisioning(
       xcodeproj: ENV["APP_XCODEPROJ"],
       target_filter: 'ServiceExtension',
-      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/fd65611d-d1d3-4126-97b9-380727b99d22.mobileprovision'
+      profile: './Development_com.tokopedia.Tokopedia.ServiceExtension.mobileprovision'
     )
 
     gym(
