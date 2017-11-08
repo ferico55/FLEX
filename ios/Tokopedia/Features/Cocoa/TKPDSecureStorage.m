@@ -58,68 +58,25 @@
     OSStatus status = noErr;
     CFTypeRef values;
     
-    NSDictionary* savedKeychainDictData = nil;
-    NSMutableDictionary* savedKeychainDict = nil;
-    
     status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
     
     if(status)
     {
-        savedKeychainDictData = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)(values)];
+        NSDictionary *savedKeychainDictData = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)(values)];
+        NSInteger size = savedKeychainDictData.allKeys.count;
         
-        NSMutableArray* allKeys = [[savedKeychainDictData allKeys]mutableCopy];
-        NSMutableArray* allValues = [[savedKeychainDictData allValues]mutableCopy];
+        NSArray* allKeys = savedKeychainDictData.allKeys;
+        NSArray* allValues = savedKeychainDictData.allValues;
+        NSMutableDictionary *dictionary = [[NSMutableDictionary alloc] initWithCapacity:size];
         
-        for(int i =0;i<[allKeys count];i++)
-        {
-            id key = allKeys[i];
+        for (int i = 0; i< size; i++) {
+            NSString *key = [[NSString alloc] initWithData:allKeys[i] encoding:NSUTF8StringEncoding];
+            NSString *value = [[NSString alloc] initWithData:allValues[i] encoding:NSUTF8StringEncoding];
             
-            if([key isKindOfClass:[NSData class]])
-            {
-                NSString* string = [[NSString alloc] initWithBytes:[key bytes] length:[key length] encoding:NSUTF8StringEncoding];
-                
-                NSInteger indexOfKeys = [allKeys indexOfObjectIdenticalTo:key];
-                
-                [allKeys replaceObjectAtIndex:indexOfKeys withObject:string];
-            }
-            
+            dictionary[key] = value;
         }
         
-        for(int i =0;i<[allValues count];i++)
-        {
-            id value = allValues[i];
-            
-            if([value isKindOfClass:[NSData class]])
-            {
-                NSString* string = [[NSString alloc] initWithBytes:[value bytes] length:[value length] encoding:NSUTF8StringEncoding];
-                
-                NSNumberFormatter* formatter =  [NSNumberFormatter new];
-                
-                NSInteger indexOfValue = [allValues indexOfObjectIdenticalTo:value];
-                
-                if([formatter numberFromString:string])
-                {
-                    NSNumber *number = [formatter numberFromString:string];
-                    
-                    [allValues replaceObjectAtIndex:indexOfValue withObject:number];
-                }
-                else
-                {
-                    [allValues replaceObjectAtIndex:indexOfValue withObject:string];
-                }
-            }
-        }
-        
-        
-        savedKeychainDict = [[NSMutableDictionary alloc]initWithCapacity:[allKeys count]];
-        
-        
-        for(int i =0;i<[allKeys count];i++)
-        {
-            [savedKeychainDict setObject:[allValues objectAtIndex:i] forKey:[allKeys objectAtIndex:i]];
-        }
-        
-        return savedKeychainDict;
+        return dictionary;
     }
     else
     {
