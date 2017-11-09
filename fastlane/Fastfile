@@ -2,7 +2,6 @@ fastlane_version "1.90.0"
 
 default_platform :ios
 
-
 def build_app
   #increment_build_number(xcodeproj: project_file)
   build_number = Time.new.strftime("%Y%m%d%H%M")
@@ -47,18 +46,33 @@ platform :ios do
       force: true
     )
 
+    cert
+    
+    sigh(
+      provisioning_name: 'com.tokopedia.Tokopedia AppStore',
+      ignore_profiles_with_different_name: true,
+      filename: 'main.mobileprovision'
+    )
+    
+    sigh(
+      app_identifier: 'com.tokopedia.Tokopedia.ServiceExtension',
+      provisioning_name: 'com.tokopedia.Tokopedia.ServiceExtension AppStore',
+      ignore_profiles_with_different_name: true,
+      filename: 'service.mobileprovision'
+    )
+
     disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
 
     update_project_provisioning(
         xcodeproj: ENV["APP_XCODEPROJ"],
         target_filter: 'Tokopedia',
-        profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/fb16c214-33e1-49ec-804f-4898ddbd00f3.mobileprovision'
+        profile: './main.mobileprovision'
       )
 
     update_project_provisioning(
       xcodeproj: ENV["APP_XCODEPROJ"],
       target_filter: 'ServiceExtension',
-      profile: '/Users/distiller/Library/MobileDevice/Provisioning Profiles/ba284250-6569-4c05-a1d7-d9d03bcfe1fc.mobileprovision'
+      profile: './service.mobileprovision'
     )
 
     gym(
@@ -88,13 +102,15 @@ platform :ios do
   end
 
   lane :devel do
+    scheme = 'Tokopedia'
+
     current_version = get_version_number_from_plist(xcodeproj: ENV["APP_XCODEPROJ"],
-                                        scheme: "Tokopedia - Debug")
+                                        scheme: scheme)
 
     increment_version_number_in_plist(
       version_number: current_version + "-" + ENV['CIRCLE_BRANCH'] + "." + ENV['CIRCLE_BUILD_NUM'],
       xcodeproj: ENV["APP_XCODEPROJ"],
-      scheme: "Tokopedia - Debug"
+      scheme: scheme
     )
 
     cert(development: true)
@@ -114,8 +130,6 @@ platform :ios do
 
     disable_automatic_code_signing(path: ENV["APP_XCODEPROJ"])
 
-    # we're not supposed to use update_project_provisioning since we're already using sigh
-    # but we use it for now since the build always fail.
     update_project_provisioning(
       xcodeproj: ENV["APP_XCODEPROJ"],
       target_filter: 'Tokopedia',
@@ -131,7 +145,8 @@ platform :ios do
     gym(
       clean: true,
       workspace: 'ios/Tokopedia.xcworkspace',
-      scheme: "Tokopedia - Debug",
+      scheme: scheme,
+      configuration: 'Debug',
       sdk: "iphoneos",
       codesigning_identity: "iPhone Developer: Melissa Juminto (TT6A3N9KTC)",
       export_method: "development"
