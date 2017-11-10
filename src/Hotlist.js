@@ -129,7 +129,7 @@ class Hotlist extends PureComponent {
   }
 
   backToTop = flatList => {
-    if (typeof flatList !== 'undefined' && flatList !== null) {
+    if (typeof flatList !== 'undefined' && flatList !== null && !this.state.isLoadingPullRefresh) {
       this.flatList.scrollToIndex({ index: 0 })
     }
   }
@@ -280,6 +280,9 @@ class Hotlist extends PureComponent {
             }
           }
         }}
+        getItemLayout={(data, index) => (
+          {length: 100, offset: 100 * index, index}
+        )}
         ListFooterComponent={this.loadingIndicator.bind(this)}
         keyExtractor={(item, index) => index}
         data={this.state.dataSource}
