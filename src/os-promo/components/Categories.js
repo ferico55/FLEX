@@ -7,6 +7,9 @@ import BannerContainer from '../containers/BannerContainer'
 
 class Categories extends PureComponent {
   componentDidMount() {
+    // For resetting previous promo data
+    this.props.resetReduxState()
+
     const { offset, limit } = this.props.categories.pagination
     const slug = this.props.slug
     this.props.getCategories(slug, offset, limit)

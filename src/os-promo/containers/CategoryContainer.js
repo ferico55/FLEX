@@ -1,6 +1,6 @@
 import { connect } from 'react-redux'
 import Categories from '../components/Categories'
-import { fetchCategories } from '../actions/index'
+import { fetchCategories, reloadState } from '../actions/index'
 
 const mapStateToProps = (state, ownProps) => ({
   categories: state.categories,
@@ -12,6 +12,9 @@ const mapStateToProps = (state, ownProps) => ({
 const mapDispatchToProps = dispatch => ({
   getCategories: (slug, offset, limit) => {
     dispatch(fetchCategories(slug, offset, limit))
+  },
+  resetReduxState: () => {
+    dispatch(reloadState())
   },
 })
 
