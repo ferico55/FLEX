@@ -88,13 +88,12 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - Protobuf (~> 3.1)
   - FLEX (2.4.0)
-  - GoogleAnalytics (3.13.0)
-  - GoogleAppIndexing (2.0.1)
+  - GoogleAnalytics (3.17.0)
   - GoogleAppUtilities (1.1.2):
     - GoogleSymbolUtilities (~> 1.1)
-  - GoogleAuthUtilities (1.0.1):
-    - GoogleNetworkingUtilities (~> 1.0)
-    - GoogleSymbolUtilities (~> 1.0)
+  - GoogleAuthUtilities (2.0.2):
+    - GoogleNetworkingUtilities (~> 1.2)
+    - GoogleSymbolUtilities (~> 1.1)
   - GoogleMaps (2.1.1):
     - GoogleMaps/Maps (= 2.1.1)
   - GoogleMaps/Base (2.1.1)
@@ -104,14 +103,14 @@ PODS:
     - GoogleSymbolUtilities (~> 1.1)
   - GooglePlaces (2.1.1):
     - GoogleMaps/Base (= 2.1.1)
-  - GoogleSignIn (2.4.0):
+  - GoogleSignIn (3.0.0):
     - GoogleAppUtilities (~> 1.0)
-    - GoogleAuthUtilities (~> 1.0)
+    - GoogleAuthUtilities (~> 2.0)
     - GoogleNetworkingUtilities (~> 1.0)
     - GoogleUtilities (~> 1.0)
   - GoogleSymbolUtilities (1.1.2)
-  - GoogleTagManager (3.12.1):
-    - GoogleAnalytics (~> 3.13.0)
+  - GoogleTagManager (3.15.2):
+    - GoogleAnalytics (= 3.17.0)
   - GoogleToolboxForMac/Defines (2.1.1)
   - GoogleToolboxForMac/Logger (2.1.1):
     - GoogleToolboxForMac/Defines (= 2.1.1)
@@ -310,11 +309,10 @@ DEPENDENCIES:
   - FirebasePerformance (~> 1.0)
   - FirebaseRemoteConfig (~> 2.0.2)
   - FLEX (from `https://github.com/Flipboard/FLEX.git`, commit `99eccdf4c34af9b1042d96313ad9cf12dd30ff1f`)
-  - GoogleAppIndexing (~> 2.0.1)
   - GoogleMaps (~> 2.1.1)
   - GooglePlaces (~> 2.1.1)
-  - GoogleSignIn (~> 2.4.0)
-  - GoogleTagManager (~> 3.12.1)
+  - GoogleSignIn (~> 3.0.0)
+  - GoogleTagManager (~> 3.15.2)
   - HMSegmentedControl (from `https://github.com/billionssg/HMSegmentedControl`)
   - Interactable (from `../node_modules/react-native-interactable`)
   - JDStatusBarNotification (~> 1.5.5)
@@ -474,16 +472,15 @@ SPEC CHECKSUMS:
   FirebasePerformance: 36bdb0500213b459ae991766801d5dc5399ff231
   FirebaseRemoteConfig: 5b3e3301ef2f237b1b588e8ef3211b5a22e9e15d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
-  GoogleAnalytics: fcf1f1cad57ae1a9a53520018f0f680ceeeb8b49
-  GoogleAppIndexing: aa25aeb2eed109032529e88f99fd3f512cdfc685
+  GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
-  GoogleAuthUtilities: '049ffd3a297cdffd271451b82fd4e75304f15ef3'
+  GoogleAuthUtilities: ccad2e0a9284699973ff57c0dd24c3893657fda4
   GoogleMaps: a5b5bbe47734e2443bde781a6aa64e69fdb6d785
   GoogleNetworkingUtilities: 3edd3a8161347494f2da60ea0deddc8a472d94cb
   GooglePlaces: 35636d86e5020cba3856eb988c09a5491de0a65a
-  GoogleSignIn: 79929b51e6299c69f1197bbd9c7a1367d523ecd8
+  GoogleSignIn: 3d571172b8603be39dcb1705d8217146bb76fe62
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
-  GoogleTagManager: d93ce3ea323b5989f07c7cf24a59e69ed36841b6
+  GoogleTagManager: 43b61f634e42e4b9566ab41e9fd6aa0f6adf47a5
   GoogleToolboxForMac: 8e329f1b599f2512c6b10676d45736bcc2cbbeb0
   GoogleUtilities: 8bbc733218aad26306f9d4a253823986110e3358
   GTMSessionFetcher: 5ad62e8200fa00ed011fe5e08d27fef72c5b1429
@@ -550,6 +547,6 @@ SPEC CHECKSUMS:
   Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 1970fd013c8ca4eed93afea9728025faf5c1b0a2
+PODFILE CHECKSUM: a237165236a8dceb3c11a911060e8f2144ba665a
 
 COCOAPODS: 1.2.1

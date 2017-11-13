@@ -11,7 +11,6 @@
 #import "MainViewController.h"
 #import "TKPDSecureStorage.h"
 #import <AppsFlyer/AppsFlyer.h>
-#import <GoogleAppIndexing/GoogleAppIndexing.h>
 #import "NavigateViewController.h"
 #import <GoogleMaps/GoogleMaps.h>
 #import "FBTweakShakeWindow.h"

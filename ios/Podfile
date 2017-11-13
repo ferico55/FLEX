@@ -86,9 +86,8 @@ def common_pods
     pod 'FBSDKShareKit', '~>4.19.0'
     
     #Google Pod
-    pod 'GoogleSignIn', '~> 2.4.0'
-    pod 'GoogleAppIndexing',  '~> 2.0.1'
-    pod 'GoogleTagManager',  '~> 3.12.1'
+    pod 'GoogleSignIn', '~> 3.0.0'
+    pod 'GoogleTagManager',  '~> 3.15.2'
     pod 'GoogleMaps',  '~> 2.1.1'
     pod 'GooglePlaces', '~> 2.1.1'
     pod 'FirebaseRemoteConfig', '~> 2.0.2'
@@ -145,12 +144,7 @@ end
 post_install do |installer|
     
     installer.pods_project.targets.each do |target|
-        installer.pods_project.build_configurations.each do |config|
-            config.build_settings['ENABLE_BITCODE'] = 'NO'
-        end
-        
         target.build_configurations.each do |config|
-            config.build_settings['ENABLE_BITCODE'] = 'NO'
             if target.name == "MoEngage-iOS-SDK"
                 config.build_settings["OTHER_LDFLAGS"] = '$(inherited) "-ObjC"'
             end

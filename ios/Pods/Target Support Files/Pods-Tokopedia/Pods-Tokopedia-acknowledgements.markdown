@@ -818,11 +818,7 @@ Copyright 2017 Google
 
 ## GoogleAnalytics
 
-Copyright 2015 Google Inc.
-
-## GoogleAppIndexing
-
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## GoogleAppUtilities
 
@@ -830,7 +826,7 @@ Copyright 2016 Google
 
 ## GoogleAuthUtilities
 
-Copyright 2015 Google Inc.
+Copyright 2016 Google
 
 ## GoogleMaps
 
