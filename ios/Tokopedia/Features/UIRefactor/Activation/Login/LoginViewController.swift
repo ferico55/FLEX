@@ -51,6 +51,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
                 if TouchIDHelper.sharedInstance.isTouchIDAvailable() {
                     self.handleLoginWithTouchId()
                 } else {
+                    LoginAnalytics().trackLoginSuccessEvent(label: "Email")
                     self.loginSuccess(login: login)
                 }
             }
@@ -127,6 +128,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
             LoginAnalytics().trackLoginSuccessEvent(label: "Email")
             self.loginSuccess(login: loginResult)
         } else {
+            LoginAnalytics().trackLoginSuccessEvent(label: "Email")
             self.requestToActivateTouchIDForLogin()
         }
     }

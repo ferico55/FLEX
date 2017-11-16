@@ -20,6 +20,7 @@ class AuthTokenRequest {
         }
         let header = ["Authorization": "Basic dzFIWXBpZFNocmU6dllYdmQwcXRxVUFSSnNmajRWSWdTeFNrckF5NHBjeXE="]
         self.configureForTokenFrom()
+        self.networkManager.isUsingHmac = true
         self.networkManager.request(withBaseUrl: NSString.accountsUrl(),
                                     path: "/token",
                                     method: RKRequestMethod.POST,

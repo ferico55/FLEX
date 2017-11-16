@@ -18,6 +18,7 @@ class UserInfoRequest {
             return
         }
         let header = ["Authorization": token.tokenType + " " + token.accessToken]
+        self.networkManager.isUsingHmac = true
         self.networkManager.request(withBaseUrl: NSString.accountsUrl(),
                                     path: "/info",
                                     method: RKRequestMethod.GET,

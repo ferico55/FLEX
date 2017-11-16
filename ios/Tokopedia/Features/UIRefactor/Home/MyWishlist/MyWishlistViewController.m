@@ -161,8 +161,8 @@ typedef enum TagRequest {
     _notLoggedInView.delegate = self;
     [_notLoggedInView generateAllElements:@"icon_no_data_grey.png"
                                  title:@"Anda belum login"
-                                  desc:@"Belum punya akun Tokopedia ?"
-                              btnTitle:@"Daftar disini!"];
+                                  desc:@"Belum punya akun Tokopedia?"
+                              btnTitle:@"Daftar di sini!"];
     _notLoggedInView.button.backgroundColor = [UIColor tpGreen];
     _notLoggedInView.onButtonTap = ^(NoResultReusableView *noResultView) {
         

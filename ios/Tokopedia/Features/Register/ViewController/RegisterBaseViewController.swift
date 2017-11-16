@@ -167,6 +167,7 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     }
     
     @IBAction func onTapLogin(_ sender: Any) {
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "navigateToPageInTabBar"), object: "4")
         self.navigationController?.popViewController(animated: true)
     }
     
