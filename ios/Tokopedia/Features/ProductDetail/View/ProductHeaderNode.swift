@@ -295,6 +295,9 @@ class ProductHeaderNode: ContainerNode {
                 
                 let tapGestureRecognizer = UITapGestureRecognizer()
                 _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                    if view.isAnimationPlaying {
+                        return
+                    }
                     let userAuthManager = UserAuthentificationManager()
                     if let _ = userAuthManager.getUserId(),
                         userAuthManager.isLogin {
@@ -324,6 +327,9 @@ class ProductHeaderNode: ContainerNode {
             
             let tapGestureRecognizer = UITapGestureRecognizer()
             _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
+                if view.isAnimationPlaying {
+                    return
+                }
                 let userAuthManager = UserAuthentificationManager()
                 if let _ = userAuthManager.getUserId(),
                     userAuthManager.isLogin {
