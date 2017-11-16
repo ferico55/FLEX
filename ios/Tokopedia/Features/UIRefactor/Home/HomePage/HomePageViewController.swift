@@ -115,7 +115,9 @@ class HomePageViewController: UIViewController {
             if self.userManager.isLogin {
                 self.requestTokocash()
             } else {
-                self.tokocashPlaceholder.isHidden = true
+                DispatchQueue.main.async {
+                    self.tokocashPlaceholder.isHidden = true
+                }
             }
             
             if self.isRequestingBanner == false {
