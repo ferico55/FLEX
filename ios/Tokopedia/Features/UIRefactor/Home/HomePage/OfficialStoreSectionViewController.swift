@@ -101,19 +101,27 @@ class OfficialStoreSectionViewController: UIViewController {
             })
 
             if shop.isNew {
-                let newText = UITextView()
-                newText.text = "BARU"
-                newText.textColor = .white
-                newText.font = UIFont.superMicroTheme()
-                newText.backgroundColor = .tpRed()
-                newText.textContainerInset = UIEdgeInsetsMake(2, 0, 2, 0)
-                newText.cornerRadius = 2
-                view.addSubview(newText)
-
-                newText.mas_makeConstraints { make in
+                let holder = UIView()
+                holder.backgroundColor = .tpRed()
+                holder.cornerRadius = 2
+                view.addSubview(holder)
+                
+                holder.mas_makeConstraints { make in
                     make?.left.top().equalTo()(view)?.offset()(5)
                     make?.width.equalTo()(36)
                     make?.height.equalTo()(15)
+                }
+                
+                let newText = UILabel()
+                newText.isUserInteractionEnabled = false
+                newText.text = "BARU"
+                newText.textColor = .white
+                newText.font = UIFont.superMicroTheme()
+                holder.addSubview(newText)
+
+                newText.mas_makeConstraints { make in
+                    make?.left.equalTo()(holder)?.offset()(5)
+                    make?.top.equalTo()(holder)?.offset()(2.5)
                 }
             }
         }
