@@ -290,7 +290,7 @@ static NSInteger const MAX_PHOTO_COUNT = 5;
     }
     
     NSDictionary *keyboardInfo = [notification userInfo];
-    NSValue *keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    NSValue *keyboardFrameBegin = [keyboardInfo valueForKey:UIKeyboardFrameEndUserInfoKey];
     _keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     CGFloat height = _keyboardFrameBeginRect.size.height;
     self.attachmentButtonBottomConstraint.constant = height;

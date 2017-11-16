@@ -235,7 +235,7 @@
 #pragma mark - Keyboard Notification
 
 - (void)keyboardWillShow:(NSNotification *)notification {
-    NSValue *keyboardFrameBegin = [[notification userInfo] valueForKey:UIKeyboardFrameBeginUserInfoKey];
+    NSValue *keyboardFrameBegin = [[notification userInfo] valueForKey:UIKeyboardFrameEndUserInfoKey];
     CGRect keyboardFrameBeginRect = [keyboardFrameBegin CGRectValue];
     self.tableView.contentInset = UIEdgeInsetsMake(22, 0, keyboardFrameBeginRect.size.height + 15, 0);
 }

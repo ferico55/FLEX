@@ -120,7 +120,7 @@
 {
     if (UI_USER_INTERFACE_IDIOM() != UIUserInterfaceIdiomPad){
         NSDictionary* info = [aNotification userInfo];
-        CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+        CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
         UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height, 0.0);
         _scrollView.contentInset = contentInsets;
         _scrollView.scrollIndicatorInsets = contentInsets;

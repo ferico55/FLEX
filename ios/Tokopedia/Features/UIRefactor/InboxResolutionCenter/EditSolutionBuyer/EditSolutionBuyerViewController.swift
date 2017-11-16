@@ -250,7 +250,7 @@ import DownPicker
     
     @objc fileprivate func keyboardWillShow(_ notification: Notification){
         
-        if let keyboardSize = (notification.userInfo![UIKeyboardFrameBeginUserInfoKey] as? NSValue)?.cgRectValue {
+        if let keyboardSize = (notification.userInfo![UIKeyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             let contentInset = UIEdgeInsets(top: 0.0, left: 0.0, bottom: keyboardSize.height, right: 0.0)
             tableView.contentInset = contentInset
         }

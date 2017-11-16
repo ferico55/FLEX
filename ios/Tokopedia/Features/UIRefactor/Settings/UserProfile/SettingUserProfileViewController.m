@@ -280,7 +280,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (void)keyboardWillShow:(NSNotification*)aNotification {
     NSDictionary *info = [aNotification userInfo];
-    CGSize kbSize = [[info objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
+    CGSize kbSize = [[info objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
     
     UIEdgeInsets contentInsets = UIEdgeInsetsMake(0.0, 0.0, kbSize.height + 30, 0.0);
     self.scrollView.contentInset = contentInsets;

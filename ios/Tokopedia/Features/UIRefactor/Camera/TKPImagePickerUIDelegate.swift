@@ -43,9 +43,6 @@ open class TKPImagePickerUIDelegate: DKImagePickerControllerDefaultUIDelegate {
                                                               style: .plain,
                                                               target: imagePickerController,
                                                               action:  #selector(imagePickerController.dismiss as (Void) -> Void))
-        
-        vc.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: self.createDoneButtonIfNeeded())
-        
     }
     
     override open func updateDoneButtonTitle(_ button: UIButton) {

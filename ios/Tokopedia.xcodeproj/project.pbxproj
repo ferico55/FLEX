@@ -1855,7 +1855,6 @@
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		7A0F13B91F97B525008B3653 /* OfficialStorePromoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A0F13B71F97B525008B3653 /* OfficialStorePromoViewController.m */; };
-		7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 7A3FD3121F2843A100ADF80D /* main.jsbundle */; };
 		7A466B911EB2FEAE00A72105 /* Tokopedia-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */; };
 		7A466BC01EB2FEAE00A72105 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FC81EB2FEA900A72105 /* Main.storyboard */; };
 		7A466BC11EB2FEAE00A72105 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */; };
@@ -1991,6 +1990,7 @@
 		E525181A1F838DA7008FDBCF /* RegisterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180F1F838DA7008FDBCF /* RegisterTest.swift */; };
 		E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518111F838DA7008FDBCF /* WishlistTest.swift */; };
 		E56A634B1F8789F400F86F15 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A634A1F8789F400F86F15 /* Page.swift */; };
+		E576A0A01FB172E7007EDE27 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E576A09F1FB172E7007EDE27 /* main.jsbundle */; };
 		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
 		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
 		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
@@ -4956,7 +4956,6 @@
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A0F13B71F97B525008B3653 /* OfficialStorePromoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfficialStorePromoViewController.m; sourceTree = "<group>"; };
 		7A0F13B81F97B525008B3653 /* OfficialStorePromoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfficialStorePromoViewController.h; sourceTree = "<group>"; };
-		7A3FD3121F2843A100ADF80D /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
 		7A465FC81EB2FEA900A72105 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LaunchScreen.xib; sourceTree = "<group>"; };
@@ -5166,6 +5165,7 @@
 		E525180F1F838DA7008FDBCF /* RegisterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTest.swift; sourceTree = "<group>"; };
 		E52518111F838DA7008FDBCF /* WishlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistTest.swift; sourceTree = "<group>"; };
 		E56A634A1F8789F400F86F15 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
+		E576A09F1FB172E7007EDE27 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
 		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
 		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
 		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
@@ -10622,8 +10622,8 @@
 				62C5EB4F1F826A2700EAE044 /* Networking */,
 				DADB9ED71F3C46CE002B1FAE /* ThirdParty */,
 				349458261F306BDB00EEB628 /* Resources */,
-				7A3FD3121F2843A100ADF80D /* main.jsbundle */,
 				F9662B501F570858009CD692 /* GoogleService-Info.plist */,
+				E576A09F1FB172E7007EDE27 /* main.jsbundle */,
 				6202EF1B1EE4F07200AE68B5 /* API.swift */,
 				7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */,
 				7A465FC81EB2FEA900A72105 /* Main.storyboard */,
@@ -11486,6 +11486,7 @@
 				62C5ECF01F826A2700EAE044 /* OrderDetailReceiverView.xib in Resources */,
 				62C5ED101F826A2800EAE044 /* RejectReasonCloseShopViewController.xib in Resources */,
 				62C5EC9F1F826A2700EAE044 /* HeaderIntermediaryCollectionReusableView.xib in Resources */,
+				E576A0A01FB172E7007EDE27 /* main.jsbundle in Resources */,
 				62C5ED651F826A2800EAE044 /* AlertDatePickerView.xib in Resources */,
 				62C5EC051F826A2700EAE044 /* TokoCashSectionViewController.xib in Resources */,
 				62C5EE941F826A2900EAE044 /* TKPDTabBarController.xib in Resources */,
@@ -11764,7 +11765,6 @@
 				62C5EF9F1F826A2900EAE044 /* PromoInfoAlertView.xib in Resources */,
 				62C5EC811F826A2700EAE044 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				62C5ECD71F826A2700EAE044 /* SubmitShipmentConfirmationViewController.xib in Resources */,
-				7A3FD3131F2843A100ADF80D /* main.jsbundle in Resources */,
 				3494588E1F306BDB00EEB628 /* icon_wishlist_active.png in Resources */,
 				DADB9F671F3C46CF002B1FAE /* vt-iOSlib-1.0.1.tar.gz in Resources */,
 				62C5EBE01F826A2700EAE044 /* SettingBankNameViewController.xib in Resources */,
