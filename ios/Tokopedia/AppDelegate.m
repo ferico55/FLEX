@@ -335,7 +335,6 @@
     //Google Analytics init
     self.tracker = [[GAI sharedInstance] trackerWithTrackingId:[self getGAPropertyID]];
     [GAI sharedInstance].trackUncaughtExceptions = YES;
-    [[GAI sharedInstance].logger setLogLevel:kGAILogLevelVerbose];
     [GAI sharedInstance].dispatchInterval = 60;
     [[GAI sharedInstance] setDryRun:NO];
     [[[GAI sharedInstance] trackerWithTrackingId:[self getGAPropertyID]] setAllowIDFACollection:YES];
@@ -354,7 +353,20 @@
 - (void)configureGTMInApplication:(UIApplication *)application withOptions:(NSDictionary *)launchOptions {
     //GTM init
     _tagManager = [TAGManager instance];
-    [_tagManager.logger setLogLevel:kTAGLoggerLogLevelVerbose];
+    
+    FBTweakBind(TAGManager.instance.logger,
+                logLevel,
+                @"Others",
+                @"Google Tag Manager",
+                @"Log Level",
+                kTAGLoggerLogLevelError,
+                (@{
+                   @(kTAGLoggerLogLevelNone): @"None",
+                   @(kTAGLoggerLogLevelVerbose): @"Verbose",
+                   @(kTAGLoggerLogLevelInfo): @"Info",
+                   @(kTAGLoggerLogLevelWarning): @"Warning",
+                   @(kTAGLoggerLogLevelError): @"Error"
+                   }));
     
     NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
     if(url != nil) {
