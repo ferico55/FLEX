@@ -16,13 +16,13 @@ enum GaladrielTarget {
 extension GaladrielTarget: TargetType {
     /// The target's base `URL`.
     var baseURL: URL {
-        return URL(string: NSString.galadrielURL())! //URL(string: "https://private-7a9b0-galadriel.apiary-mock.com")! //
+        return URL(string: NSString.galadrielURL())!
     }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
     var path: String {
         switch self {
-        case .getPromoWidget: return "/promo-suggestions/v1/widget" //"promo-suggestions/widget?user_id=123&device_type=android&target_type=guest&placeholder=pdp_widget&lang=id" //
+        case .getPromoWidget: return "/promo-suggestions/v1/widget"
         }
     }
     
@@ -37,7 +37,9 @@ extension GaladrielTarget: TargetType {
     var parameters: [String: Any]? {
         switch self {
         case .getPromoWidget():
-            return [:]
+            return [
+                "target_type": getUserType()
+            ]
         }
     }
     
@@ -53,4 +55,17 @@ extension GaladrielTarget: TargetType {
     
     /// The type of HTTP task to be performed.
     var task: Task { return .request }
+}
+
+func getUserType() -> (String) {
+    let userAuth = UserAuthentificationManager()
+    if userAuth.userIsGoldMerchant() {
+        return "gold_merchant"
+    } else if userAuth.userIsSeller() {
+        return "merchant"
+    } else if userAuth.isLogin {
+        return "login_user"
+    } else {
+        return "guest"
+    }
 }
