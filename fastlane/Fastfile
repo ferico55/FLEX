@@ -89,6 +89,7 @@ platform :ios do
     pilot(
        skip_submission: false,
        distribute_external: false,
+       changelog: changelogs
       )
   end
 
@@ -103,9 +104,6 @@ platform :ios do
 
   lane :devel do
     scheme = 'Tokopedia'
-
-    current_version = get_version_number_from_plist(xcodeproj: ENV["APP_XCODEPROJ"],
-                                        scheme: scheme)
 
     increment_version_number_in_plist(
       version_number: current_version + "-" + ENV['CIRCLE_BRANCH'] + "." + ENV['CIRCLE_BUILD_NUM'],
@@ -157,11 +155,21 @@ platform :ios do
 
   # Push to Hockey
   def hockeyapp
-    ENV['COMMIT_MESSAGE'] = changelog_from_git_commits(commits_count: 10, pretty: '• %s')
     hockey(
       api_token: ENV['HOCKEY_API_TOKEN'],
-      notes: ENV['CIRCLE_BRANCH'] + '•' + ENV['COMMIT_MESSAGE']
+      notes: changelogs
     )
+  end
+
+  def current_version
+    get_version_number_from_plist(xcodeproj: ENV["APP_XCODEPROJ"], scheme: 'Tokopedia')
+  end
+
+  def changelogs
+    [
+      ENV['CIRCLE_BRANCH'],
+      changelog_from_git_commits(commits_count: 10, pretty: "\r\n• %s")
+    ].join("\r\n")
   end
 
   after_all do |lane|
