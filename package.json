@@ -27,6 +27,8 @@
     "eslint-plugin-prettier": "2.2.0",
     "eslint-plugin-promise": "3.5.0",
     "eslint-plugin-react": "7.1.0",
+    "glamorous-native": "^1.2.0",
+    "html-entities": "^1.2.1",
     "lodash": "4.17.4",
     "moment": "^2.8.1",
     "native-navigation": "airbnb/native-navigation#0bbf9d845b0263f30d180e4c751470f9f4f543ce",
@@ -40,8 +42,8 @@
     "react-native-device-info": "^0.10.2",
     "react-native-htmlview": "^0.11.1",
     "react-native-interactable": "0.1.3",
-    "react-native-maps": "0.15.3",
     "react-native-keyboard-aware-scroll-view": "^0.3.0",
+    "react-native-maps": "0.15.3",
     "react-native-masked-text": "^1.6.2",
     "react-native-modal-datetime-picker": "^4.8.0",
     "react-native-page-control": "^1.1.0",
@@ -61,8 +63,7 @@
     "rlite-router": "2.0.1",
     "rxjs": "^5.4.2",
     "url-parse": "1.1.9",
-    "victory-native": "^0.14.0",
-    "html-entities": "^1.2.1"
+    "victory-native": "^0.14.0"
   },
   "devDependencies": {
     "danger": "1.0.0"

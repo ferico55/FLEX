@@ -1,9 +1,6 @@
 import { combineReducers } from 'redux'
 import { PENDING, FULFILLED, REJECTED } from 'redux-promise-middleware'
-import {
-  FETCH_TOPBANNER,
-  FETCH_CATEGORIES,
-} from '../actions/index'
+import { FETCH_TOPBANNER, FETCH_CATEGORIES } from '../actions/index'
 
 const banners = (
   state = {
@@ -21,9 +18,15 @@ const banners = (
         status: 'PROCESSING',
       }
 
-    case `${FETCH_TOPBANNER}_${FULFILLED}`:
-      if (!action.payload.data) {
-        return state
+    case `${FETCH_TOPBANNER}_${FULFILLED}`: {
+      const bannerData = action.payload.data.data
+      if (bannerData.promo_status === 3) {
+        return {
+          ...state,
+          isFetching: false,
+          status: 'EXPIRED',
+          items: action.payload.data.data,
+        }
       }
 
       return {
@@ -32,6 +35,7 @@ const banners = (
         status: 'SUCCESS',
         items: action.payload.data.data,
       }
+    }
 
     case `${FETCH_TOPBANNER}_${REJECTED}`:
       return {

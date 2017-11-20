@@ -11,7 +11,7 @@ const btnStyle = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 3,
     borderColor: '#42b549',
-    backgroundColor: '#42b549'
+    backgroundColor: '#42b549',
   },
   medium: {
     height: 40,
