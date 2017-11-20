@@ -104,7 +104,7 @@ class Hotlist extends PureComponent {
   componentDidMount() {
     this.loadData()
     this.subscription = nativeTabEmitter.addListener('HotlistScrollToTop', () =>
-      this.backToTop(this.flatList),
+      this.backToTop(this.flatList)
     )
     this.subscriptionLoadData = this.loadData$
       .debounceTime(1000)
@@ -129,9 +129,13 @@ class Hotlist extends PureComponent {
   }
 
   backToTop = flatList => {
-    if (typeof flatList !== 'undefined' && flatList !== null && !this.state.isLoadingPullRefresh) {
-      this.flatList.scrollToIndex({ index: 0 })
+    let error = null
+    try {
+      flatList.scrollToIndex({ index: 0 })
+    } catch (err) {
+      error = err
     }
+    return error
   }
 
   loadingIndicator = () => {
@@ -280,9 +284,6 @@ class Hotlist extends PureComponent {
             }
           }
         }}
-        getItemLayout={(data, index) => (
-          {length: 100, offset: 100 * index, index}
-        )}
         ListFooterComponent={this.loadingIndicator.bind(this)}
         keyExtractor={(item, index) => index}
         data={this.state.dataSource}
