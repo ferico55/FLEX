@@ -971,8 +971,9 @@ ProductCellDelegate
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
     
-//    if (![self isInitialRequest] && [_bannerResult.query.shop_id isEqualToString:@""])
+    if (_bannerResult.disableTopAds == 0){
         [self requestPromo];
+    }
     
     [_collectionView reloadData];
     

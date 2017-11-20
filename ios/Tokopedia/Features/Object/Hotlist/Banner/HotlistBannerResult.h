@@ -14,5 +14,6 @@
 
 @property (nonatomic, strong) HotlistBannerInfo *info;
 @property (nonatomic, strong) HotlistBannerQuery *query;
+@property (nonatomic) NSInteger disableTopAds;
 
 @end

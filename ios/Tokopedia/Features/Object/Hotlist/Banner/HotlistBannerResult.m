@@ -21,6 +21,7 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"info" toKeyPath:@"info" withMapping:[HotlistBannerInfo mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"query" toKeyPath:@"query" withMapping:[HotlistBannerQuery mapping]]];
+    [mapping addAttributeMappingsFromDictionary:@{@"disable_topads" : @"disableTopAds"}];
     return mapping;
 }
 
