@@ -23,7 +23,7 @@
     }
 
     +(UIColor *)tpOrange{
-        return [UIColor fromHexString:@"#ff5732"];
+        return [UIColor fromHexString:@"#ff5722"];
     }
 
     +(UIColor *)tpRed{
