@@ -13,7 +13,6 @@
 #import "Payment.h"
 #import "StarsRateView.h"
 #import "ShopInfoShipmentCell.h"
-#import "ShopInfoPaymentCell.h"
 #import "ShopInfoAddressCell.h"
 #import "ShopInfoAddressView.h"
 #import "SmileyAndMedal.h"
@@ -23,7 +22,6 @@
 #import "ClosedInfo.h"
 #import "Owner.h"
 #import "Shipment.h"
-#import "Payment.h"
 #import "Address.h"
 #import "ShopInfo.h"
 #import "ShopStats.h"
@@ -54,7 +52,6 @@
     NSMutableArray *_shipments;
     NSMutableArray *_tempNameShipments;
 }
-@property (strong, nonatomic) IBOutlet UITableViewCell *paymentHeaderCell;
 @property (weak, nonatomic) IBOutlet UIImageView *arrowImage;
 @property (strong, nonatomic) IBOutlet UITableViewCell *ownerCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *topCell;
@@ -328,7 +325,7 @@
 #pragma mark - Table View Data Source
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4+_shipments.count+_shop.result.payment.count+_shop.result.address.count;
+    return 3+_shipments.count+_shop.result.address.count;
 }
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -358,15 +355,6 @@
         newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-_shop.result.address.count-2 inSection:newSection];
         
         cell = [self shipmentCellIndexPath:newIndexPath];
-    }
-    else if (indexPath.row==_shipments.count+_shop.result.address.count+2)
-    {
-        cell = _paymentHeaderCell;
-    }
-    else if (indexPath.row<=_shop.result.payment.count+_shipments.count+_shop.result.address.count+2)
-    {
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-_shop.result.address.count-_shipments.count-3 inSection:indexPath.section];
-        cell = [self paymentCellIndexPath:newIndexPath];
     }
     else
     {
@@ -407,15 +395,6 @@
     {
         NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-_shop.result.address.count-2 inSection:indexPath.section];
         cell = [self shipmentCellIndexPath:newIndexPath];
-    }
-    else if (indexPath.row==_shipments.count+_shop.result.address.count+2)
-    {
-        cell = _paymentHeaderCell;
-    }
-    else if (indexPath.row<=_shop.result.payment.count+_shipments.count+_shop.result.address.count+2)
-    {
-        NSIndexPath *newIndexPath = [NSIndexPath indexPathForRow:indexPath.row-_shop.result.address.count-_shipments.count-3 inSection:indexPath.section];
-        cell = [self paymentCellIndexPath:newIndexPath];
     }
     else
     {
@@ -462,44 +441,6 @@
     cell.labelshipment.text = _tempNameShipments[indexPath.row];
     cell.labelshipment.hidden = ([cell.labelshipment.text isEqualToString:@""]);
 
-    return cell;
-}
-
--(UITableViewCell*)paymentCellIndexPath:(NSIndexPath*)indexPath
-{
-    NSString *cellid = kTKPDSHOPINFOPAYMENTCELL_IDENTIFIER;
-    
-    ShopInfoPaymentCell* cell = (ShopInfoPaymentCell*)[_tableView dequeueReusableCellWithIdentifier:cellid];
-    if (cell == nil) {
-        cell = [ShopInfoPaymentCell newcell];
-    }
-    
-        Payment *payment = _shop.result.payment[indexPath.row];
-        cell.labelpayment.text = payment.payment_name;
-        
-        NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:payment.payment_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        //request.URL = url;
-        
-        UIImageView *thumb = cell.image;
-        thumb.image = nil;
-        //thumb.hidden = YES;	//@prepareforreuse then @reset
-        
-        //[((ShopInfoPaymentCell*)cell).act startAnimating];
-        
-        [thumb setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-#pragma clang diagnostic push
-#pragma clang diagnostic ignored "-Warc-retain-cycles"
-            //NSLOG(@"thumb: %@", thumb);
-            [thumb setImage:image];
-            thumb.contentMode = UIViewContentModeScaleAspectFit;
-            
-            //[((ShopInfoPaymentCell*)cell).act stopAnimating];
-#pragma clang diagnostic pop
-            
-        } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-            //[((ShopInfoPaymentCell*)cell).act stopAnimating];
-        }];
-    
     return cell;
 }
 
@@ -588,17 +529,16 @@
     UIImageView *thumb = _thumb;
     thumb.image = nil;
     
-    //[((ShopInfoPaymentCell*)cell).act startAnimating];
     [thumb setImageWithURLRequest:request placeholderImage:[UIImage imageNamed:@"icon_default_shop.jpg"] success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Warc-retain-cycles"
         //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
-        //[((ShopInfoPaymentCell*)cell).act stopAnimating];
+        
 #pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        //[((ShopInfoPaymentCell*)cell).act stopAnimating];
+        
     }];
     
     request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:_shop.result.owner.owner_image] cachePolicy:NSURLRequestUseProtocolCachePolicy timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
@@ -613,11 +553,11 @@
         //NSLOG(@"thumb: %@", thumb);
         [thumb setImage:image];
         
-        //[((ShopInfoPaymentCell*)cell).act stopAnimating];
+        
 #pragma clang diagnostic pop
         
     } failure:^(NSURLRequest *request, NSHTTPURLResponse *response, NSError *error) {
-        //[((ShopInfoPaymentCell*)cell).act stopAnimating];
+        
     }];
     
     for (Shipment *shipment in _shop.result.shipment) {

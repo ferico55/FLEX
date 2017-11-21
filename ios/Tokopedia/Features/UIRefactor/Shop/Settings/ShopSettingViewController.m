@@ -15,7 +15,6 @@
 #import "ShipmentViewController.h"
 #import "MyShopNoteViewController.h"
 #import "EditShopViewController.h"
-#import "ShopPaymentViewController.h"
 
 @interface ShopSettingViewController ()
 <
@@ -38,7 +37,7 @@
     [super viewDidLoad];
     self.title = @"Pengaturan Toko";
     _shop = [_data objectForKey:kTKPDDETAIL_DATAINFOSHOPSKEY];
-    _menus = @[@"Informasi", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Pembayaran", @"Catatan"];
+    _menus = @[@"Informasi", @"Etalase", @"Produk", @"Lokasi", @"Pengiriman", @"Catatan"];
     
     UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStylePlain
@@ -59,7 +58,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 7;
+    return 6;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -143,17 +142,6 @@
             break;
         }
         case 5:
-        {
-            //Payment
-            [AnalyticsManager trackEventName:@"clickManageShop"
-                                    category:GA_EVENT_CATEGORY_MANAGE_SHOP
-                                      action:GA_EVENT_ACTION_CLICK
-                                       label:@"Payment"];
-            ShopPaymentViewController *controller = [ShopPaymentViewController new];
-            [self.navigationController pushViewController:controller animated:YES];
-            break;
-        }
-        case 6:
         {
             //Notes
             [AnalyticsManager trackEventName:@"clickManageShop"

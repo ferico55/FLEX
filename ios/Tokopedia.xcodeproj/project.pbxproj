@@ -631,7 +631,6 @@
 		62C5EDA91F826A2800EAE044 /* ShopSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2A81F826A2300EAE044 /* ShopSettingViewController.m */; };
 		62C5EDAA1F826A2800EAE044 /* ShopSettingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2A91F826A2300EAE044 /* ShopSettingViewController.xib */; };
 		62C5EDAB1F826A2800EAE044 /* ShopInfoShipmentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2AE1F826A2300EAE044 /* ShopInfoShipmentCell.xib */; };
-		62C5EDAC1F826A2800EAE044 /* ShopInfoPaymentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2AF1F826A2300EAE044 /* ShopInfoPaymentCell.xib */; };
 		62C5EDAD1F826A2800EAE044 /* ShopInfoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2B01F826A2300EAE044 /* ShopInfoViewController.xib */; };
 		62C5EDAE1F826A2800EAE044 /* ShopInfoAddressView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2B31F826A2300EAE044 /* ShopInfoAddressView.m */; };
 		62C5EDAF1F826A2800EAE044 /* ShopInfoAddressCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2B41F826A2300EAE044 /* ShopInfoAddressCell.m */; };
@@ -640,7 +639,6 @@
 		62C5EDB21F826A2800EAE044 /* ShopInfoAddressView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2B91F826A2300EAE044 /* ShopInfoAddressView.xib */; };
 		62C5EDB31F826A2800EAE044 /* DetailStatisticViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2BA1F826A2300EAE044 /* DetailStatisticViewController.m */; };
 		62C5EDB41F826A2800EAE044 /* DetailStatisticViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2BB1F826A2300EAE044 /* DetailStatisticViewController.xib */; };
-		62C5EDB51F826A2800EAE044 /* ShopInfoPaymentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2BD1F826A2300EAE044 /* ShopInfoPaymentCell.m */; };
 		62C5EDB61F826A2800EAE044 /* ShopInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2BE1F826A2300EAE044 /* ShopInfoViewController.m */; };
 		62C5EDB71F826A2800EAE044 /* EditShopTypeViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E2C21F826A2300EAE044 /* EditShopTypeViewCell.xib */; };
 		62C5EDB81F826A2800EAE044 /* EditShopDescriptionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E2C31F826A2300EAE044 /* EditShopDescriptionViewCell.m */; };
@@ -844,7 +842,6 @@
 		62C5EE7F1F826A2800EAE044 /* ReportProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E4051F826A2400EAE044 /* ReportProductViewController.xib */; };
 		62C5EE801F826A2800EAE044 /* ProductListMyShopFilterViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E4071F826A2400EAE044 /* ProductListMyShopFilterViewController.m */; };
 		62C5EE811F826A2800EAE044 /* RequestMoveTo.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E4081F826A2400EAE044 /* RequestMoveTo.m */; };
-		62C5EE821F826A2800EAE044 /* ShopPaymentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E40B1F826A2400EAE044 /* ShopPaymentViewController.m */; };
 		62C5EE831F826A2800EAE044 /* MyShopPaymentCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E40C1F826A2400EAE044 /* MyShopPaymentCell.m */; };
 		62C5EE841F826A2800EAE044 /* MyShopPaymentCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62C5E40D1F826A2400EAE044 /* MyShopPaymentCell.xib */; };
 		62C5EE851F826A2800EAE044 /* MoreNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C5E4121F826A2400EAE044 /* MoreNavigationViewController.m */; };
@@ -2939,21 +2936,18 @@
 		62C5E2AB1F826A2300EAE044 /* detail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = detail.h; sourceTree = "<group>"; };
 		62C5E2AC1F826A2300EAE044 /* string_shop.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_shop.h; sourceTree = "<group>"; };
 		62C5E2AE1F826A2300EAE044 /* ShopInfoShipmentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoShipmentCell.xib; sourceTree = "<group>"; };
-		62C5E2AF1F826A2300EAE044 /* ShopInfoPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoPaymentCell.xib; sourceTree = "<group>"; };
 		62C5E2B01F826A2300EAE044 /* ShopInfoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoViewController.xib; sourceTree = "<group>"; };
 		62C5E2B11F826A2300EAE044 /* ShopInfoShipmentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoShipmentCell.h; sourceTree = "<group>"; };
 		62C5E2B21F826A2300EAE044 /* DetailStatisticViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DetailStatisticViewController.h; sourceTree = "<group>"; };
 		62C5E2B31F826A2300EAE044 /* ShopInfoAddressView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoAddressView.m; sourceTree = "<group>"; };
 		62C5E2B41F826A2300EAE044 /* ShopInfoAddressCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoAddressCell.m; sourceTree = "<group>"; };
 		62C5E2B51F826A2300EAE044 /* ShopInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoViewController.h; sourceTree = "<group>"; };
-		62C5E2B61F826A2300EAE044 /* ShopInfoPaymentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoPaymentCell.h; sourceTree = "<group>"; };
 		62C5E2B71F826A2300EAE044 /* ShopInfoShipmentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoShipmentCell.m; sourceTree = "<group>"; };
 		62C5E2B81F826A2300EAE044 /* ShopInfoAddressCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoAddressCell.xib; sourceTree = "<group>"; };
 		62C5E2B91F826A2300EAE044 /* ShopInfoAddressView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopInfoAddressView.xib; sourceTree = "<group>"; };
 		62C5E2BA1F826A2300EAE044 /* DetailStatisticViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DetailStatisticViewController.m; sourceTree = "<group>"; };
 		62C5E2BB1F826A2300EAE044 /* DetailStatisticViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DetailStatisticViewController.xib; sourceTree = "<group>"; };
 		62C5E2BC1F826A2300EAE044 /* ShopInfoAddressView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoAddressView.h; sourceTree = "<group>"; };
-		62C5E2BD1F826A2300EAE044 /* ShopInfoPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoPaymentCell.m; sourceTree = "<group>"; };
 		62C5E2BE1F826A2300EAE044 /* ShopInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopInfoViewController.m; sourceTree = "<group>"; };
 		62C5E2BF1F826A2300EAE044 /* ShopInfoAddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopInfoAddressCell.h; sourceTree = "<group>"; };
 		62C5E2C11F826A2300EAE044 /* EditShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditShopViewController.h; sourceTree = "<group>"; };
@@ -3253,10 +3247,8 @@
 		62C5E4071F826A2400EAE044 /* ProductListMyShopFilterViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductListMyShopFilterViewController.m; sourceTree = "<group>"; };
 		62C5E4081F826A2400EAE044 /* RequestMoveTo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestMoveTo.m; sourceTree = "<group>"; };
 		62C5E4091F826A2400EAE044 /* ProductEditImageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductEditImageViewController.h; sourceTree = "<group>"; };
-		62C5E40B1F826A2400EAE044 /* ShopPaymentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopPaymentViewController.m; sourceTree = "<group>"; };
 		62C5E40C1F826A2400EAE044 /* MyShopPaymentCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopPaymentCell.m; sourceTree = "<group>"; };
 		62C5E40D1F826A2400EAE044 /* MyShopPaymentCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopPaymentCell.xib; sourceTree = "<group>"; };
-		62C5E40E1F826A2400EAE044 /* ShopPaymentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopPaymentViewController.h; sourceTree = "<group>"; };
 		62C5E40F1F826A2400EAE044 /* MyShopPaymentCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopPaymentCell.h; sourceTree = "<group>"; };
 		62C5E4111F826A2400EAE044 /* PurchaseViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PurchaseViewController.h; sourceTree = "<group>"; };
 		62C5E4121F826A2400EAE044 /* MoreNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreNavigationViewController.m; sourceTree = "<group>"; };
@@ -6907,21 +6899,18 @@
 			isa = PBXGroup;
 			children = (
 				62C5E2AE1F826A2300EAE044 /* ShopInfoShipmentCell.xib */,
-				62C5E2AF1F826A2300EAE044 /* ShopInfoPaymentCell.xib */,
 				62C5E2B01F826A2300EAE044 /* ShopInfoViewController.xib */,
 				62C5E2B11F826A2300EAE044 /* ShopInfoShipmentCell.h */,
 				62C5E2B21F826A2300EAE044 /* DetailStatisticViewController.h */,
 				62C5E2B31F826A2300EAE044 /* ShopInfoAddressView.m */,
 				62C5E2B41F826A2300EAE044 /* ShopInfoAddressCell.m */,
 				62C5E2B51F826A2300EAE044 /* ShopInfoViewController.h */,
-				62C5E2B61F826A2300EAE044 /* ShopInfoPaymentCell.h */,
 				62C5E2B71F826A2300EAE044 /* ShopInfoShipmentCell.m */,
 				62C5E2B81F826A2300EAE044 /* ShopInfoAddressCell.xib */,
 				62C5E2B91F826A2300EAE044 /* ShopInfoAddressView.xib */,
 				62C5E2BA1F826A2300EAE044 /* DetailStatisticViewController.m */,
 				62C5E2BB1F826A2300EAE044 /* DetailStatisticViewController.xib */,
 				62C5E2BC1F826A2300EAE044 /* ShopInfoAddressView.h */,
-				62C5E2BD1F826A2300EAE044 /* ShopInfoPaymentCell.m */,
 				62C5E2BE1F826A2300EAE044 /* ShopInfoViewController.m */,
 				62C5E2BF1F826A2300EAE044 /* ShopInfoAddressCell.h */,
 			);
@@ -7469,10 +7458,8 @@
 		62C5E40A1F826A2400EAE044 /* MyShopPayment */ = {
 			isa = PBXGroup;
 			children = (
-				62C5E40B1F826A2400EAE044 /* ShopPaymentViewController.m */,
 				62C5E40C1F826A2400EAE044 /* MyShopPaymentCell.m */,
 				62C5E40D1F826A2400EAE044 /* MyShopPaymentCell.xib */,
-				62C5E40E1F826A2400EAE044 /* ShopPaymentViewController.h */,
 				62C5E40F1F826A2400EAE044 /* MyShopPaymentCell.h */,
 			);
 			path = MyShopPayment;
@@ -11610,7 +11597,6 @@
 				62C5EBAF1F826A2700EAE044 /* TransactionATCViewController.xib in Resources */,
 				62C5EC421F826A2700EAE044 /* InboxTicketSplitViewController.xib in Resources */,
 				62C5EC851F826A2700EAE044 /* InboxResolSplitViewController.xib in Resources */,
-				62C5EDAC1F826A2800EAE044 /* ShopInfoPaymentCell.xib in Resources */,
 				62C5ED491F826A2800EAE044 /* AlertShipmentCodeView.xib in Resources */,
 				349458751F306BDB00EEB628 /* icon_snap@2x.png in Resources */,
 				62C5EC8C1F826A2700EAE044 /* ResolutionCenterSystemCell.xib in Resources */,
@@ -11871,8 +11857,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests-resources.sh",
-				"${PODS_ROOT}/GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle",
-				"${PODS_ROOT}/GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleAuthUtilities/Frameworks/frameworks/GoogleAuthUtilities.framework/Resources/GTMOAuth2ViewTouch.xib",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -11891,8 +11878,9 @@
 			);
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia-resources.sh",
-				"${PODS_ROOT}/GoogleAppIndexing/Resources/GoogleAppIndexingResources.bundle",
-				"${PODS_ROOT}/GoogleMaps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GoogleAuthUtilities/Frameworks/frameworks/GoogleAuthUtilities.framework/Resources/GTMOAuth2ViewTouch.xib",
+				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
+				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -11918,6 +11906,7 @@
 				"${BUILT_PRODUCTS_DIR}/BEMCheckBox/BEMCheckBox.framework",
 				"${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/CFAlertViewController/CFAlertViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/CodePush/CodePush.framework",
 				"${BUILT_PRODUCTS_DIR}/ComponentKit/ComponentKit.framework",
@@ -11937,6 +11926,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/HMSegmentedControl/HMSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework",
+				"${BUILT_PRODUCTS_DIR}/Interactable/Interactable.framework",
 				"${BUILT_PRODUCTS_DIR}/JDStatusBarNotification/JDStatusBarNotification.framework",
 				"${BUILT_PRODUCTS_DIR}/JLPermissions/JLPermissions.framework",
 				"${BUILT_PRODUCTS_DIR}/JLRoutes/JLRoutes.framework",
@@ -11986,10 +11976,12 @@
 				"${BUILT_PRODUCTS_DIR}/UITableView+FDTemplateLayoutCell/UITableView_FDTemplateLayoutCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Unbox/Unbox.framework",
 				"${BUILT_PRODUCTS_DIR}/VMaskTextField/VMaskTextField.framework",
+				"${BUILT_PRODUCTS_DIR}/Wrap/Wrap.framework",
 				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/native-navigation/NativeNavigation.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-maps/react_native_maps.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -12001,6 +11993,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BEMCheckBox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BlocksKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CFAlertViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CodePush.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ComponentKit.framework",
@@ -12020,6 +12013,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HMSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ISO8601DateFormatterValueTransformer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Interactable.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JDStatusBarNotification.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JLPermissions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JLRoutes.framework",
@@ -12069,10 +12063,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITableView_FDTemplateLayoutCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VMaskTextField.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Wrap.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NativeNavigation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_maps.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12108,6 +12104,7 @@
 				"${BUILT_PRODUCTS_DIR}/BEMCheckBox/BEMCheckBox.framework",
 				"${BUILT_PRODUCTS_DIR}/BlocksKit/BlocksKit.framework",
 				"${BUILT_PRODUCTS_DIR}/Bolts/Bolts.framework",
+				"${BUILT_PRODUCTS_DIR}/Branch/Branch.framework",
 				"${BUILT_PRODUCTS_DIR}/CFAlertViewController/CFAlertViewController.framework",
 				"${BUILT_PRODUCTS_DIR}/CodePush/CodePush.framework",
 				"${BUILT_PRODUCTS_DIR}/ComponentKit/ComponentKit.framework",
@@ -12127,6 +12124,7 @@
 				"${BUILT_PRODUCTS_DIR}/GoogleToolboxForMac/GoogleToolboxForMac.framework",
 				"${BUILT_PRODUCTS_DIR}/HMSegmentedControl/HMSegmentedControl.framework",
 				"${BUILT_PRODUCTS_DIR}/ISO8601DateFormatterValueTransformer/ISO8601DateFormatterValueTransformer.framework",
+				"${BUILT_PRODUCTS_DIR}/Interactable/Interactable.framework",
 				"${BUILT_PRODUCTS_DIR}/JDStatusBarNotification/JDStatusBarNotification.framework",
 				"${BUILT_PRODUCTS_DIR}/JLPermissions/JLPermissions.framework",
 				"${BUILT_PRODUCTS_DIR}/JLRoutes/JLRoutes.framework",
@@ -12176,10 +12174,12 @@
 				"${BUILT_PRODUCTS_DIR}/UITableView+FDTemplateLayoutCell/UITableView_FDTemplateLayoutCell.framework",
 				"${BUILT_PRODUCTS_DIR}/Unbox/Unbox.framework",
 				"${BUILT_PRODUCTS_DIR}/VMaskTextField/VMaskTextField.framework",
+				"${BUILT_PRODUCTS_DIR}/Wrap/Wrap.framework",
 				"${BUILT_PRODUCTS_DIR}/Yoga/yoga.framework",
 				"${BUILT_PRODUCTS_DIR}/lottie-ios/Lottie.framework",
 				"${BUILT_PRODUCTS_DIR}/nanopb/nanopb.framework",
 				"${BUILT_PRODUCTS_DIR}/native-navigation/NativeNavigation.framework",
+				"${BUILT_PRODUCTS_DIR}/react-native-maps/react_native_maps.framework",
 				"${BUILT_PRODUCTS_DIR}/youtube-ios-player-helper/youtube_ios_player_helper.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -12191,6 +12191,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BEMCheckBox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/BlocksKit.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Bolts.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Branch.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CFAlertViewController.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CodePush.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ComponentKit.framework",
@@ -12210,6 +12211,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GoogleToolboxForMac.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/HMSegmentedControl.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ISO8601DateFormatterValueTransformer.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Interactable.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JDStatusBarNotification.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JLPermissions.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/JLRoutes.framework",
@@ -12259,10 +12261,12 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UITableView_FDTemplateLayoutCell.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Unbox.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/VMaskTextField.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Wrap.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/yoga.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Lottie.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/nanopb.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/NativeNavigation.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/react_native_maps.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/youtube_ios_player_helper.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -12313,7 +12317,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A8DB3E016682453708179B99 /* [CP] Check Pods Manifest.lock */ = {
@@ -12331,7 +12335,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		D593009643BED8682DB62BA4 /* [CP] Copy Pods Resources */ = {
@@ -12364,7 +12368,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n";
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F92F2ADF1F7CD6660088D59D /* Bundling React Native Script */ = {
@@ -12941,7 +12945,6 @@
 				62C5EF261F826A2900EAE044 /* MappingLDExtension.m in Sources */,
 				62C5F1A41F826A2B00EAE044 /* NotificationFormResult.m in Sources */,
 				62C5EB781F826A2700EAE044 /* NSDictionaryCategory.m in Sources */,
-				62C5EE821F826A2800EAE044 /* ShopPaymentViewController.m in Sources */,
 				C08D08011F8B1EF300E827B6 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
 				62C5EC071F826A2700EAE044 /* OfficialStoreHomeItem.swift in Sources */,
 				62C5ECE01F826A2700EAE044 /* OrderDetailViewController.m in Sources */,
@@ -12990,7 +12993,6 @@
 				62C5EE221F826A2800EAE044 /* DetailProductVideoTableViewCell.swift in Sources */,
 				62C5EB7C1F826A2700EAE044 /* NSArray+PerformSelector.m in Sources */,
 				62C5F1BF1F826A2C00EAE044 /* TicketCategory.m in Sources */,
-				62C5EDB51F826A2800EAE044 /* ShopInfoPaymentCell.m in Sources */,
 				62C5F0621F826A2A00EAE044 /* AdvanceReview.m in Sources */,
 				62C5EE891F826A2800EAE044 /* WebViewController.m in Sources */,
 				62C5EBF11F826A2700EAE044 /* SettingUserProfileRequest.swift in Sources */,
@@ -14302,10 +14304,7 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

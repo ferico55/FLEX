@@ -11,7 +11,6 @@
 #import "GeneralTableViewController.h"
 #import "NavigateViewController.h"
 #import "ShipmentWebViewController.h"
-#import "ShopPaymentViewController.h"
 
 #import "Tokopedia-Swift.h"
 
@@ -113,13 +112,13 @@
 #pragma mark - Bar button items
 
 - (UIBarButtonItem *)saveButton {
-    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Lanjut": @"Simpan";
+    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Selesai": @"Simpan";
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
     return button;
 }
 
 - (UIBarButtonItem *)disabledSaveButton {
-    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Lanjut": @"Simpan";
+    NSString *title = self.shipmentType == ShipmentTypeOpenShop? @"Selesai": @"Simpan";
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithTitle:title style:UIBarButtonItemStyleDone target:self action:@selector(saveLogisticData)];
     button.enabled = NO;
     button.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
@@ -132,7 +131,7 @@
 }
 
 - (UIBarButtonItem *)loadingView {
-    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleWhite];
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
     [indicatorView startAnimating];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
     return button;
@@ -655,15 +654,8 @@
     }
     
     if (self.shipmentType == ShipmentTypeOpenShop) {
-        ShopPaymentViewController *controller = [ShopPaymentViewController new];
-        controller.openShop = YES;
-        controller.parameters = [self parameters];
-        controller.loc = self.loc;
-        controller.paymentOptions = self.paymentOptions;
-        controller.shopLogo = self.shopLogo;
-        controller.generatedHost = self.generatedHost;
-        [self.navigationController pushViewController:controller animated:YES];
         [AnalyticsManager trackEventName:@"clickCreateShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_CLICK label:@"Save Logistic"];
+        [self validateShop];
         return;
     }
     
@@ -706,6 +698,111 @@
 - (void)didReceiveSuccessMessages:(NSArray *)successMessages {
     StickyAlertView *alert = [[StickyAlertView alloc] initWithSuccessMessages:successMessages delegate:self];
     [alert show];
+}
+
+- (void)validateShop {
+    [AnalyticsManager trackEventName:@"clickCreateShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_CLICK label:@"Create"];
+    self.navigationItem.rightBarButtonItem = self.loadingBarButton;
+    // WS asked if longitude and latitude is 0.000000 then change it to empty string
+    if ([[[self parameters] objectForKey:@"longitude"]  isEqual: @"0.000000"] && [[[self parameters] objectForKey:@"latitude"]  isEqual: @"0.000000"]) {
+        [[self parameters] setValue:@"" forKey:@"longitude"];
+        [[self parameters] setValue:@"" forKey:@"latitude"];
+    }
+    NSString *path = @"/v4/action/myshop/open_shop_validation.pl";
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
+                                     method:RKRequestMethodPOST
+                                  parameter:[self parameters]
+                                    mapping:[AddShop mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult, RKObjectRequestOperation *operation) {
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                      AddShop *response = mappingResult.dictionary[@""];
+                                      if (response.message_status) {
+                                          [self didReceiveSuccessMessages:response.message_status];
+                                      }
+                                      if(response.message_error) {
+                                          [self didReceiveErrorMessages:response.message_error];
+                                      } else {
+                                          self.postKey = response.result.post_key;
+                                          if (self.shopLogo && self.postKey) {
+                                              [self openShopPicture];
+                                          } else {
+                                              TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                              [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                              [secureStorage setKeychainWithValue:[[self parameters] objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
+                                              [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+                                              
+                                              [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
+                                              
+                                              [AnalyticsManager trackEventName:@"createShop" category:GA_EVENT_CATEGORY_CREATE_SHOP action:GA_EVENT_ACTION_SUCCESS label:@"Shop Created"];
+                                              
+                                              OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];
+                                              controller.shopName = [[self parameters] objectForKey:@"shop_name"];
+                                              controller.shopDomain = [[self parameters] objectForKey:@"shop_domain"];
+                                              controller.shopUrl = response.result.shop_url;
+                                              [self.navigationController pushViewController:controller animated:YES];
+                                          }
+                                      }
+                                  }
+                                  onFailure:^(NSError *errorResult) {
+                                      if (errorResult) {
+                                          [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                      } else {
+                                          [self didReceiveErrorMessages:@[@"Mohon maaf sedang terjadi gangguan."]];
+                                      }
+                                      self.navigationItem.rightBarButtonItem = self.saveButton;
+                                  }];
+}
+
+- (void)openShopPicture {
+    NSString *baseURL = [NSString stringWithFormat:@"https://%@", self.generatedHost.upload_host];
+    NSString *path = @"/web-service/v4/action/upload-image-helper/open_shop_picture.pl";
+    NSString *serverId = self.generatedHost.server_id;
+    NSDictionary *parameters = @{@"shop_logo": _shopLogo?:@"", @"server_id": serverId?:@""};
+    [self.networkManager requestWithBaseUrl:baseURL
+                                       path:path
+                                     method:RKRequestMethodPOST
+                                  parameter:parameters
+                                    mapping:[ImageResult mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      ImageResult *response = [mappingResult.dictionary objectForKey:@""];
+                                      if ([response.data.is_success boolValue]) {
+                                          self.fileUploaded = response.data.file_uploaded;
+                                          [self submitShop];
+                                      }
+                                  } onFailure:^(NSError *errorResult) {
+                                      [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                  }];
+}
+
+- (void)submitShop {
+    NSString *path = @"/v4/action/myshop/open_shop_submit.pl";
+    NSDictionary *parameters = @{@"post_key": _postKey?:@"", @"file_uploaded": _fileUploaded?:@""};
+    [self.networkManager requestWithBaseUrl:[NSString v4Url]
+                                       path:path
+                                     method:RKRequestMethodPOST
+                                  parameter:parameters
+                                    mapping:[AddShop mapping]
+                                  onSuccess:^(RKMappingResult *mappingResult,
+                                              RKObjectRequestOperation *operation) {
+                                      AddShop *response = [mappingResult.dictionary objectForKey:@""];
+                                      if ([response.result.is_success boolValue]) {
+                                          TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
+                                          [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
+                                          [secureStorage setKeychainWithValue:[[self parameters] objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
+                                          [secureStorage setKeychainWithValue:self.shopLogo withKey:kTKPD_SHOPIMAGEKEY];
+                                          [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+                                          [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
+                                          OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];
+                                          controller.shopName = [[self parameters] objectForKey:@"shop_name"];
+                                          controller.shopDomain = [[self parameters] objectForKey:@"shop_domain"];
+                                          controller.shopUrl = response.result.shop_url;
+                                          [self.navigationController pushViewController:controller animated:YES];
+                                      }
+                                  } onFailure:^(NSError *errorResult) {
+                                      [self didReceiveErrorMessages:@[errorResult.localizedDescription]];
+                                  }];
 }
 
 #pragma mark - General table delegate
@@ -858,6 +955,15 @@
         _shop = [ShipmentShopData new];
     }
     return _shop;
+}
+
+#pragma mark - Bar button items
+
+- (UIBarButtonItem *)loadingBarButton {
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [indicatorView startAnimating];
+    UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
+    return button;
 }
 
 @end

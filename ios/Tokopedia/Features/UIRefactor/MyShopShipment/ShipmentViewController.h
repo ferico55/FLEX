@@ -25,6 +25,9 @@ typedef NS_ENUM(NSInteger, ShipmentType) {
 @property (strong, nonatomic) NSString *shopTagline;
 @property (strong, nonatomic) NSString *shopShortDescription;
 
+@property (strong, nonatomic) NSString *postKey;
+@property (strong, nonatomic) NSString *fileUploaded;
+
 @property (strong, nonatomic) GeneratedHost *generatedHost;
 
 - (id)initWithShipmentType:(ShipmentType)type;
