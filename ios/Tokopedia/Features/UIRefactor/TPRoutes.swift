@@ -716,7 +716,9 @@ class TPRoutes: NSObject {
             if pathComponent.count > 0 {
                 let categoryDataForCategoryResultVC = CategoryDataForCategoryResultVC(pathComponent: pathComponent)
                 
-                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: categoryDataForCategoryResultVC)
+                let filterParams = getFilterParams(params: params)
+                
+                navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: categoryDataForCategoryResultVC, withFilterParams: filterParams)
             }
             
             return true
@@ -1004,5 +1006,16 @@ class TPRoutes: NSObject {
         urlComponents?.queryItems?.append(queryItem)
         
         return urlComponents?.url
+    }
+    
+    static func getFilterParams(params: [String : Any]) -> [String : Any] {
+        var newParams: [String : Any] = params
+        
+        newParams[kJLRouteNamespaceKey] = nil
+        newParams[kJLRouteWildcardComponentsKey] = nil
+        newParams[kJLRouteURLKey] = nil
+        newParams[kJLRoutePatternKey] = nil
+        
+        return newParams
     }
 }

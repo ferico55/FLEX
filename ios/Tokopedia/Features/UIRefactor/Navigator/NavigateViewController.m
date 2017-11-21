@@ -698,11 +698,13 @@
     [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
 }
 
-- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data {
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams{
     CategoryResultViewController *vc = [CategoryResultViewController new];
     vc.isIntermediary = YES;
-    vc.data = [self addDataTypeFromData: [data mapToDictionary]];
-    vc.title = [self getTitleFromData: [data mapToDictionary]];
+    NSMutableDictionary *dataDictionaryWithFilterParams = [[self addDataTypeFromData: [data mapToDictionary]] mutableCopy];
+    [dataDictionaryWithFilterParams addEntriesFromDictionary:filterParams];
+    vc.data = [dataDictionaryWithFilterParams copy];
+    vc.title = [self getTitleFromData: dataDictionaryWithFilterParams];
     vc.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:vc animated:YES];
 }

@@ -327,7 +327,18 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
         _rootCategoryID = data[@"sc"]?:@"";
         [self adjustSelectedFilterFromData:_params];
         [self adjustSelectedSortFromData:_params];
-        [self setDefaultSort];
+        // if sort not set before
+        if ([self isSortEmpty]) {
+            [self setDefaultSort];
+        }
+    }
+}
+
+- (BOOL) isSortEmpty {
+    if (!_params[@"ob"]) {
+        return YES;
+    } else {
+        return NO;
     }
 }
 
