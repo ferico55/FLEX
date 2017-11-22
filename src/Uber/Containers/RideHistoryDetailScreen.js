@@ -16,13 +16,13 @@ import {
 import Dash from 'react-native-dash'
 import Navigator from 'native-navigation'
 
-import { getStaticMapUrl, postReview } from './api'
-import PreAnimatedImage from './PreAnimatedImage'
-import RatingStars from './RatingStars'
-import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
+import { getStaticMapUrl, postReview } from '../Services/api'
+import PreAnimatedImage from '../../PreAnimatedImage'
+import RatingStars from '../../RatingStars'
+import { rupiahFormat, currencyFormat, trackEvent } from '../Lib/RideHelper'
 
-import SourceIcon from './resources/ride-source.png'
-import DestinationIcon from './resources/ride-destination.png'
+import SourceIcon from '../Resources/ride-source.png'
+import DestinationIcon from '../Resources/ride-destination.png'
 
 const styles = StyleSheet.create({
   tripOverviewContainer: {
@@ -197,6 +197,11 @@ class RideHistoryDetailScreen extends Component {
           this.setState({
             isLoading: false,
           })
+          trackEvent(
+            'GenericUberEvent',
+            'click submit',
+            `Ride Trip Detail Screen - ${rating} - ${comment}`,
+          )
           Alert.alert('Your Review has been saved!')
         } else {
           this.setState({

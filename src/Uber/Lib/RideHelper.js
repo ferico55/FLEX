@@ -1,3 +1,4 @@
+import moment from 'moment'
 import { TKPReactAnalytics } from 'NativeModules'
 
 export const rupiahFormat = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, '.')
@@ -49,4 +50,14 @@ export const trackEvent = (name, action, label) => {
     action: action || '',
     label: label || '',
   })
+}
+
+export const expiryTime = dateString => {
+  if (!dateString) {
+    return moment()
+      .add(10, 'years')
+      .valueOf()
+  }
+
+  return moment(dateString, 'YYYY-MM-DD hh:mm:ss').valueOf()
 }

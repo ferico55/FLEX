@@ -31,6 +31,7 @@ export const extractInteruptCode = code => {
     'wallet_activation',
     'wallet_topup',
     'interrupt',
+    'pending_fare',
   ]
   return interuptCode.includes(code)
 }
@@ -40,11 +41,30 @@ const rideNetworkRequest = (params, intercept = identity) =>
     .then(intercept)
     .catch(extractErrorMessage)
     .then(result => {
+      // detect code error on the resposnse
+      if (result.message_error && result.data && result.data.code) {
+        // if error code is not include on registered interupt code
+        if (!extractInteruptCode(result.data.code)) {
+          return Promise.reject({
+            description: result.data.message,
+          })
+        } else if (extractInteruptCode(result.data.code)) {
+          // if error code is include on registered interupt code
+          return result
+        }
+      }
+
+      // if any error message but have not interupt code
       if (result.message_error) {
         return Promise.reject({
-          description: result.message_error[0],
+          description:
+            result.data && result.data.message
+              ? result.data.message
+              : result.message_error[0],
         })
       }
+
+      // by pass response
       return result
     })
 
@@ -79,14 +99,38 @@ export const getFareOverview = (
       product_id: productId,
       ...promoCode, // handle if promoCode is null, then should not sent promoCode
     },
-  }).then(response => response.data)
+  })
+    .then(response => response.data)
+    .then(data => {
+      if (!data) {
+        return Promise.reject({
+          description: 'Unable to process fare estimation.',
+        })
+      }
+      return data
+    })
 
 export const getAvailablePromos = () =>
   rideNetworkRequest({
     baseUrl: serverUrl,
     method: 'GET',
     path: '/uber/offers',
-  }).then(response => response.data)
+  })
+    .then(response => response.data)
+    .then(data => {
+      if (!data) {
+        return Promise.reject({
+          description: 'No promo available.',
+        })
+      }
+
+      if (data && data.length <= 0) {
+        return Promise.reject({
+          description: 'No promo available.',
+        })
+      }
+      return data
+    })
 
 export const getHistoryFromUri = uri => {
   const params = {}
@@ -179,7 +223,17 @@ export const getProducts = ({ latitude, longitude }) =>
       longitude,
       latitude,
     },
-  }).then(response => response.data.products)
+  })
+    .then(response => response.data)
+    .then(data => {
+      if (!data || !data.products || data.products.length <= 0) {
+        return Promise.reject({
+          description: 'No products available.',
+        })
+      }
+
+      return data.products
+    })
 
 export const getPickupEstimation = startingPlace =>
   Promise.resolve(startingPlace.location.coordinate)
@@ -193,21 +247,22 @@ export const getPickupEstimation = startingPlace =>
         },
       }),
     )
-    .then(response => response.data.times)
-    .then(estimations => {
-      if (estimations.length <= 0) {
+    .then(response => response.data)
+    .then(data => {
+      if (!data || !data.times || data.times.length <= 0) {
         return Promise.reject({
           description: 'Unable to process time estimation.',
         })
       }
-      return estimations.map(estimation => ({
+
+      return data.times.map(estimation => ({
         ...estimation,
         time: estimation.estimate / 60,
       }))
     })
 
 export const getPriceEstimation = (startingPoint, destinationPoint) =>
-  request({
+  rideNetworkRequest({
     baseUrl: serverUrl,
     path: '/uber/estimates/price',
     params: {
@@ -217,19 +272,15 @@ export const getPriceEstimation = (startingPoint, destinationPoint) =>
       end_latitude: destinationPoint.latitude,
     },
   })
-    .catch(extractErrorMessage)
-    .then(result => {
-      if (result.message_error) {
-        return Promise.reject({
-          description: result.data.message,
-        })
-      }
-      if (result.data.prices.length <= 0) {
+    .then(response => response.data)
+    .then(data => {
+      if (!data || !data.prices || data.prices.length <= 0) {
         return Promise.reject({
           description: 'Unable to process price estimation.',
         })
       }
-      return result.data.prices
+
+      return data.prices
     })
 
 export const placeDetailFromLocation = region =>
@@ -240,9 +291,19 @@ export const placeDetailFromLocation = region =>
       latlng: `${region.latitude},${region.longitude}`,
       key: googleapisKey,
     },
-  })
-    .then(response => response.results[0])
-    .then(result => ({
+  }).then(response => {
+    if (
+      response.results &&
+      Array.isArray(response.results) &&
+      response.results.length <= 0
+    ) {
+      return Promise.reject({
+        description: 'Location not found',
+      })
+    }
+
+    const result = response.results[0]
+    return {
       name: result.formatted_address,
       location: {
         placeId: result.place_id,
@@ -251,7 +312,8 @@ export const placeDetailFromLocation = region =>
           longitude: region.longitude,
         },
       },
-    }))
+    }
+  })
 
 export const placeDetailFromId = placeId =>
   rideNetworkRequest({
@@ -281,6 +343,14 @@ export const getAutocomplete = query =>
       input: query,
     },
   })
+    .then(response => {
+      if (response.message_error) {
+        return Promise.reject({
+          description: response.message_error,
+        })
+      }
+      return response
+    })
     .then(response => response.data)
     .then(response => response.predictions)
     .then(predictions =>
@@ -316,7 +386,7 @@ export const bookRide = ({
   endAddress,
   deviceType,
 }) =>
-  request({
+  rideNetworkRequest({
     baseUrl: serverUrl,
     method: 'POST',
     path: '/uber/request',
@@ -340,15 +410,6 @@ export const bookRide = ({
       ...deviceType,
     },
   })
-    .catch(extractErrorMessage)
-    .then(result => {
-      if (result.message_error && !extractInteruptCode(result.data.code)) {
-        return Promise.reject({
-          description: result.data.message,
-        })
-      }
-      return result
-    })
 
 export const getProductDetail = productId =>
   rideNetworkRequest({
@@ -411,19 +472,22 @@ export const getTripStatus = requestId =>
       data,
     }))
 
+// need special call request
+// why? in this case, if response is not_found, it needs by pass result
 export const getCurrentTrip = () =>
-  rideNetworkRequest(
-    {
-      baseUrl: serverUrl,
-      method: 'GET',
-      path: 'uber/request/current',
-      authorizationMode: 'token',
-    },
-    result =>
-      !result.data || result.data.code === 'not_found'
-        ? { ...result, message_error: undefined }
-        : result,
-  )
+  request({
+    baseUrl: serverUrl,
+    method: 'GET',
+    path: 'uber/request/current',
+    authorizationMode: 'token',
+  })
+    .catch(extractErrorMessage)
+    .then(
+      result =>
+        !result.data || result.data.code === 'not_found'
+          ? { ...result, message_error: undefined }
+          : result,
+    )
 
 export const cancelBooking = reason =>
   rideNetworkRequest({

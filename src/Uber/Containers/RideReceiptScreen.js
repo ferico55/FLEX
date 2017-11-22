@@ -16,9 +16,11 @@ import {
 import Navigator from 'native-navigation'
 import HTMLView from 'react-native-htmlview'
 import Dash from 'react-native-dash'
-import RatingStars from './RatingStars'
-import { getReceipt, postReview } from './api'
-import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
+
+import RatingStars from '../../RatingStars'
+
+import { getReceipt, postReview } from '../Services/api'
+import { rupiahFormat, currencyFormat, trackEvent } from '../Lib/RideHelper'
 
 const {
   ReactNetworkManager,
@@ -165,7 +167,7 @@ export default class RideReceiptScreen extends Component {
       payment: { total_amount: tokocashCharged },
       total_fare: totalFare,
       currency_code: currencyCode,
-      cashback_top_cash_amount: cashbackTopCashAmount,
+      cashback_amount: cashbackAmount,
     } = receipt
 
     let totalAmount = totalFare.replace(/,/g, '')
@@ -254,7 +256,7 @@ export default class RideReceiptScreen extends Component {
                 </Text>
                 <Text style={{ fontSize: 12 }}>
                   {`${currencyFormat(currencyCode)} ${rupiahFormat(
-                    cashbackTopCashAmount,
+                    cashbackAmount,
                   )}`}
                 </Text>
               </View>
@@ -390,10 +392,16 @@ export default class RideReceiptScreen extends Component {
         <View style={styles.footerView}>
           <Text
             style={styles.smallText}
-            onPress={() =>
+            onPress={() => {
               Navigator.push('RideWebViewScreen', {
                 url: receipt.ride_offer.url,
-              })}
+              })
+              trackEvent(
+                'GenericUberEvent',
+                'click sign up uber',
+                `${screenName}`,
+              )
+            }}
           >
             <HTMLView
               value={receipt.ride_offer.html}

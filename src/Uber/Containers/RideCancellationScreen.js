@@ -6,16 +6,15 @@ import {
   StyleSheet,
   ActivityIndicator,
   TouchableOpacity,
-  Button,
 } from 'react-native'
-
 import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
 import { Observable, Subject } from 'rxjs'
-import NoResult from './unify/NoResult'
 
-import { getCancellationReasons } from './api'
-import { trackEvent } from './RideHelper'
+import NoResult from '../../unify/NoResult'
+
+import { getCancellationReasons } from '../Services/api'
+import { trackEvent } from '../Lib/RideHelper'
 
 const styles = StyleSheet.create({
   container: {
@@ -115,14 +114,14 @@ export class RideCancellationScreen extends Component {
       ? styles.buttonEnabled
       : styles.buttonDisabled
     const isButtonDisabled =
-      !selectedReason || cancellationProgress.status == 'loading'
+      !selectedReason || cancellationProgress.status === 'loading'
     const showCancellationFee = cancelGracePeriod < Date.now()
     const cancellationFee =
       selectedProduct &&
       `${selectedProduct.price_details.currency_code} ${selectedProduct
         .price_details.cancellation_fee}`
 
-    if (loadReasonProgress.status == 'loading') {
+    if (loadReasonProgress.status === 'loading') {
       return (
         <View style={{ flex: 1, justifyContent: 'center' }}>
           <ActivityIndicator />
@@ -130,7 +129,7 @@ export class RideCancellationScreen extends Component {
       )
     }
 
-    if (loadReasonProgress.status == 'error') {
+    if (loadReasonProgress.status === 'error') {
       return (
         <NoResult
           title={loadReasonProgress.error.description}
@@ -166,7 +165,7 @@ export class RideCancellationScreen extends Component {
           >
             <Text
               style={{
-                color: selectedReason == reason ? '#42b549' : '#ababab',
+                color: selectedReason === reason ? '#42b549' : '#ababab',
                 fontWeight: '500',
               }}
             >
@@ -185,7 +184,7 @@ export class RideCancellationScreen extends Component {
 
         <View style={styles.separator} />
 
-        {cancellationProgress.status == 'error' ? (
+        {cancellationProgress.status === 'error' ? (
           <Text style={styles.error}>
             {cancellationProgress.error.description}
           </Text>
@@ -234,7 +233,7 @@ export class RideCancellationScreen extends Component {
       ? styles.buttonEnabled
       : styles.buttonDisabled
     const isButtonDisabled =
-      !selectedReason || cancellationProgress.status == 'loading'
+      !selectedReason || cancellationProgress.status === 'loading'
     const showCancellationFee = cancelGracePeriod < Date.now()
     const cancellationFee =
       selectedProduct &&
@@ -269,7 +268,7 @@ const mapStateToProps = state => ({
     state.currentTrip && state.currentTrip.data.cancel_grace_period,
   ),
   selectedProduct: state.products.find(
-    product => product.product_id == state.selectedProductId,
+    product => product.product_id === state.selectedProductId,
   ),
 })
 

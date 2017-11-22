@@ -24,9 +24,9 @@ import {
   cancelBooking,
   extractInteruptCode,
   getShareUrl,
-} from '../api'
-
-import { getCurrentLocation, trackEvent } from './../RideHelper'
+  getRecentAddresses,
+} from '../Services/api'
+import { getCurrentLocation, trackEvent } from '../Lib/RideHelper'
 
 export const openCancelDialog = () => Navigator.push('RideCancellationScreen')
 
@@ -72,8 +72,8 @@ const bookVehicleEpic = (action$, store) =>
           )[0]
           const startAddressName = { start_address_name: source.name }
           const endAddressName = { end_address_name: destination.name }
-          const startAddress = { start_address: source.name }
-          const endAddress = { end_address: destination.name }
+          const startAddress = { start_address: source.formatted_address }
+          const endAddress = { end_address: destination.formatted_address }
           const deviceType = { device_type: DeviceInfo.getModel() }
 
           return bookRide({
@@ -96,6 +96,11 @@ const bookVehicleEpic = (action$, store) =>
             case 'interrupt':
               Navigator.push('RideTopupTokocashScreen', {
                 uri: result.data.meta.interrupt.href,
+              })
+              break
+            case 'pending_fare':
+              Navigator.push('RideTopupTokocashScreen', {
+                uri: result.data.meta.pending_fare.href,
               })
               break
             case 'surge_confirmation':
@@ -171,12 +176,20 @@ const bookVehicleEpic = (action$, store) =>
           type: 'RIDE_BOOKING_RESULT',
           result,
         }))
-        .catch(error =>
-          Observable.of({
+        .catch(error => {
+          // when get connection timeout in prev request
+          // we will get this error for next request
+          // this happens when timeout but uber data laready updated
+          if (error.description === 'Ride is in progress') {
+            return Observable.of({ type: 'RIDE_LOAD_CURRENT_TRIP' })
+          }
+
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return Observable.of({
             type: 'RIDE_BOOK_ERROR',
             error,
-          }),
-        )
+          })
+        })
     })
 
 const getInterrupt = bookingResult => {
@@ -230,7 +243,10 @@ const findRouteEpic = (action$, store) =>
             })
           }
         })
-        .catch(ignoreError)
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return ignoreError
+        })
         .concat(zoom)
     })
 
@@ -274,7 +290,7 @@ const pickupEstimationEpic = (action$, store) =>
           ReactInteractionHelper.showErrorStickyAlert(error.description)
           return Observable.of({
             type: 'RIDE_ESTIMATES_ERROR',
-            error: error.code === 'no_internet' ? '' : error.description,
+            error: error.code === 'no_internet' ? { description: '' } : error,
           })
         })
     })
@@ -289,7 +305,7 @@ const currentTripStatusEpic = action$ =>
   action$.ofType('RIDE_LOAD_CURRENT_TRIP').switchMap(() => {
     const currentTrip$ = Observable.fromPromise(getCurrentTrip()).shareReplay(1)
     const products$ = currentTrip$
-      .filter(currentTrip => currentTrip.data.product_id)
+      .filter(currentTrip => currentTrip.data && currentTrip.data.product_id)
       .map(currentTrip => currentTrip.data.product_id)
       .switchMap(productId => getProductDetail(productId))
       .map(product => [
@@ -304,7 +320,12 @@ const currentTripStatusEpic = action$ =>
       ])
 
     const location$ = currentTrip$
-      .filter(currentTrip => currentTrip.data.product_id)
+      .filter(
+        currentTrip =>
+          currentTrip.data &&
+          currentTrip.data.pickup &&
+          currentTrip.data.destination,
+      )
       .map(currentTrip => [
         currentTrip.data.pickup,
         currentTrip.data.destination,
@@ -327,6 +348,7 @@ const currentTripStatusEpic = action$ =>
       ])
 
     const currentTripAction$ = currentTrip$
+      .filter(currentTrip => currentTrip.data)
       .mergeMap(currentTrip =>
         Observable.fromPromise(getCurrentLocation()).map(location => {
           const userLocation = {
@@ -366,7 +388,7 @@ const currentTripStatusEpic = action$ =>
       .toArray()
 
     return currentTrip$
-      .filter(result => result.data && !extractInteruptCode(result.data.code))
+      .filter(currentTrip => currentTrip.data)
       .do(currentTrip => {
         AsyncStorage.getItem('ride-request-id')
           .then(requestId => {
@@ -385,7 +407,27 @@ const currentTripStatusEpic = action$ =>
               Navigator.push('RideReceiptScreen', { requestId })
             }
           })
-          .then(() => AsyncStorage.removeItem('ride-request-id'))
+          .then(() => {
+            const currentStatusToRemoveRequestId = [
+              'completed',
+              'driver_canceled',
+              'rider_canceled',
+              'no_drivers_available',
+            ]
+            if (
+              currentStatusToRemoveRequestId.includes(currentTrip.data.status)
+            ) {
+              AsyncStorage.removeItem('ride-request-id')
+            } else {
+              // always to add to AsyncStorage
+              // it's to handle when prev request is connection timeout but
+              // on the server ride is in progress
+              AsyncStorage.setItem(
+                'ride-request-id',
+                currentTrip.data.request_id,
+              )
+            }
+          })
       })
       .filter(
         currentTrip =>
@@ -437,7 +479,7 @@ const selectVehicleEpic = (action$, store) =>
         ReactInteractionHelper.showErrorStickyAlert(error.description)
         return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
-          error: error.code === 'no_internet' ? '' : error.description,
+          error: error.code === 'no_internet' ? { description: '' } : error,
         })
       })
   })
@@ -470,7 +512,7 @@ const fareOverviewEpic = (action$, store) =>
         ReactInteractionHelper.showErrorStickyAlert(error.description)
         return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
-          error: error.code === 'no_internet' ? '' : error.description,
+          error: error.code === 'no_internet' ? { description: '' } : error,
         })
       })
   })
@@ -526,7 +568,17 @@ const driverRouteEpic = (action, store) =>
     .ofType('RIDE_CURRENT_TRIP_STATUS')
     .switchMap(({ currentTrip, shouldZoom }) =>
       Observable.of(currentTrip)
-        .filter(currentTrip => currentTrip.data.status !== 'processing')
+        .filter(() => {
+          const statusTripNoNeedToRideDirection = [
+            'processing',
+            'driver_canceled',
+            'rider_canceled',
+            'no_drivers_available',
+          ]
+          return !statusTripNoNeedToRideDirection.includes(
+            currentTrip.data.status,
+          )
+        })
         .switchMap(() => {
           const dropoffLocation = {
             location: {
@@ -580,47 +632,85 @@ const driverRouteEpic = (action, store) =>
 const regionChangedEpic = (action, store) =>
   action
     .ofType('RIDE_REGION_CHANGE')
-    .filter(() => !store.getState().routeSelection.destination)
+    .filter(
+      () =>
+        !store.getState().routeSelection.destination &&
+        store.getState().locationSource.source === 'map',
+    )
     .switchMap(({ region }) =>
-      Observable.from(placeDetailFromLocation(region))
-        .map(place => ({
-          type: 'RIDE_SET_LOCATION',
-          searchType: 'source',
-          prediction: place,
-        }))
-        .catch(e => {
-          ReactInteractionHelper.showErrorStickyAlert(e.description)
-          return ignoreError
+      Observable.fromPromise(placeDetailFromLocation(region))
+        .mergeMap(place =>
+          Observable.fromPromise(
+            placeDetailFromId(place.location.placeId),
+          ).map(prediction => ({
+            type: 'RIDE_SET_LOCATION',
+            searchType: 'source',
+            prediction,
+          })),
+        )
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return Observable.of({
+            type: 'RIDE_REGION_CHANGE_ERROR',
+          })
         }),
     )
+
+const regionChangeSourceEpic = (action$, store) =>
+  action$
+    .ofType('RIDE_REGION_CHANGE')
+    .filter(() => store.getState().locationSource.source !== 'map')
+    .map(() => ({
+      type: 'RIDE_REGION_CHANGE_SOURCE',
+      source: 'map',
+    }))
 
 const autocompleteRegionChangedEpic = action$ =>
   action$
     .ofType('RIDE_AUTOCOMPLETE_REGION_CHANGE')
     .filter(action => action.region)
     .switchMap(({ region }) =>
-      Observable.from(placeDetailFromLocation(region))
-        .map(place => ({
-          type: 'RIDE_AUTOCOMPLETE_SET_LOCATION',
-          location: place,
-        }))
-        .catch(e => {
-          ReactInteractionHelper.showErrorStickyAlert(e.description)
+      Observable.fromPromise(placeDetailFromLocation(region))
+        .mergeMap(place =>
+          Observable.fromPromise(
+            placeDetailFromId(place.location.placeId),
+          ).map(location => ({
+            type: 'RIDE_AUTOCOMPLETE_SET_LOCATION',
+            location,
+          })),
+        )
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
           return ignoreError
         }),
     )
 
-const autocompleteEpic = action$ =>
+const autocompleteEpic = (action$, store) =>
   action$
     .ofType('RIDE_TYPE_AUTOCOMPLETE')
     .debounceTime(250)
+    .do(({ query }) => {
+      if (!query) {
+        store.dispatch({
+          type: 'RECEIVE_PREDICTIONS_ERROR',
+          error: { description: 'Address is required' },
+        })
+      }
+    })
+    .filter(({ query }) => query)
     .switchMap(({ query }) =>
       Observable.from(getAutocomplete(query))
         .map(predictions => ({
           type: 'RECEIVE_PREDICTIONS',
           predictions,
         }))
-        .catch(ignoreError),
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return Observable.of({
+            type: 'RECEIVE_PREDICTIONS_ERROR',
+            error: error.code === 'no_internet' ? { description: '' } : error,
+          })
+        }),
     )
 
 const selectSuggestionEpic = (action$, store) =>
@@ -653,8 +743,8 @@ const selectSuggestionEpic = (action$, store) =>
           type: 'RIDE_SELECT_ADDRESS',
           address,
         }))
-        .catch(e => {
-          ReactInteractionHelper.showErrorStickyAlert(e.description)
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
           return Observable.of({
             type: 'RIDE_SELECT_SUGGESTION_ERROR',
           })
@@ -732,7 +822,7 @@ const openReceiptEpic = (action$, store) =>
     .filter(
       ({ currentTrip }) =>
         currentTrip.data.payment.receipt_ready ||
-        currentTrip.data.status == 'rider_canceled',
+        currentTrip.data.status === 'rider_canceled',
     )
     .do(({ currentTrip }) => {
       removeStoredRequestId()
@@ -744,7 +834,7 @@ const openReceiptEpic = (action$, store) =>
 const showDriverCancelEpic = action$ =>
   action$
     .ofType('RIDE_CURRENT_TRIP_STATUS')
-    .filter(({ currentTrip }) => currentTrip.data.status == 'driver_canceled')
+    .filter(({ currentTrip }) => currentTrip.data.status === 'driver_canceled')
     .do(() => {
       removeStoredRequestId()
 
@@ -771,7 +861,7 @@ const cancelBookingEpic = action$ =>
 const searchEpic = (action$, store) =>
   action$
     .ofType('RIDE_SEARCH')
-    .filter(() => store.getState().mode != 'riding')
+    .filter(() => store.getState().mode !== 'riding')
     .do(() => Navigator.push('RidePlacesAutocompleteScreen'))
     .ignoreElements()
 
@@ -787,8 +877,8 @@ const autoDetectLocationEpic = (action$, store) =>
           trackAction: 'click autodetect current location',
           isAutoDetectLocation: true,
         }))
-        .catch(e => {
-          ReactInteractionHelper.showErrorStickyAlert(e.description)
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
           return Observable.of({
             type: 'RIDE_AUTO_DETECT_LOCATION_ERROR',
           })
@@ -803,6 +893,7 @@ const applyPromoCodeEpic = (action$, store) =>
       const { source, destination } = store.getState().routeSelection
       const previousFareOverview = store.getState().fareOverviewLoadStatus
         .fareOverview
+
       // generate object to post on getFareOverview
       // if null then should generate empty object, so API will not sent null promoCode
       const promoCode = promocode ? { promocode } : {}
@@ -828,13 +919,14 @@ const applyPromoCodeEpic = (action$, store) =>
             promoCode: promocode,
           },
         ])
-        .catch(error =>
-          Observable.of({
+        .catch(error => {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          return Observable.of({
             type: 'RIDE_APPLY_PROMO_CODE_ERROR',
-            error,
+            error: error.code === 'no_internet' ? { description: '' } : error,
             fareOverview: previousFareOverview,
-          }),
-        )
+          })
+        })
     })
 
 const checkShareUtlTropEpic = (action$, store) =>
@@ -874,6 +966,22 @@ const findPickupEstimationEpic = action$ =>
     type: 'RIDE_SET_LOCATION',
   })
 
+const getRecentAddressesEpic = action$ =>
+  action$.ofType('RIDE_GET_RECENT_ADDRESSES').switchMap(() =>
+    Observable.from(getRecentAddresses())
+      .map(recentAddresses => ({
+        type: 'RIDE_RECEIVE_RECENT_ADDRESSES',
+        recentAddresses,
+      }))
+      .catch(error => {
+        ReactInteractionHelper.showErrorStickyAlert(error.description)
+        return Observable.of({
+          type: 'RIDE_GET_RECENT_ADDRESSES_ERROR',
+          error,
+        })
+      }),
+  )
+
 export const epic = combineEpics(
   bookVehicleEpic,
   rideInterruptEpic,
@@ -899,4 +1007,6 @@ export const epic = combineEpics(
   getShareUrlTripEpic,
   checkShareUtlTropEpic,
   findPickupEstimationEpic,
+  getRecentAddressesEpic,
+  regionChangeSourceEpic,
 )

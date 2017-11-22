@@ -1,20 +1,47 @@
 import { combineReducers } from 'redux'
 
-export const predictionReducer = (state = [], action) => {
+export const predictionReducer = (
+  state = { data: [], status: 'idle' },
+  action,
+) => {
   switch (action.type) {
     case 'RECEIVE_PREDICTIONS':
-      return action.predictions
+      return { data: action.predictions, status: 'loaded' }
+    case 'RIDE_TYPE_AUTOCOMPLETE':
+      return { data: [], status: 'loading' }
     case 'RIDE_EXIT_AUTOCOMPLETE_SCREEN':
-      return []
+      return { data: [], status: 'idle' }
     case 'RIDE_AUTOCOMPLETE_TYPE_MODE':
-      return []
+      return { data: [], status: 'loading' }
+    case 'RECEIVE_PREDICTIONS_ERROR':
+      return { data: [], status: 'error', error: action.error }
+    default:
+      return state
+  }
+}
+
+export const recentAddressesReducer = (
+  state = { data: [], status: 'idle' },
+  action,
+) => {
+  switch (action.type) {
+    case 'RIDE_GET_RECENT_ADDRESSES':
+      return { data: [], status: 'loading' }
+    case 'RIDE_RECEIVE_RECENT_ADDRESSES':
+      return { data: action.recentAddresses, status: 'loaded' }
+    case 'RIDE_GET_RECENT_ADDRESSES_ERROR':
+      return { data: [], status: 'idle' }
+    case 'RIDE_EXIT_AUTOCOMPLETE_SCREEN':
+      return { data: [], status: 'idle' }
+    case 'RIDE_AUTOCOMPLETE_TYPE_MODE':
+      return { data: [], status: 'idle' }
     default:
       return state
   }
 }
 
 export const endpointReducer = (
-  state = { source: null, destination: null },
+  state = { source: null, destination: null, status: 'idle' },
   action,
 ) => {
   switch (action.type) {
@@ -27,6 +54,7 @@ export const endpointReducer = (
           action.searchType === 'destination'
             ? action.prediction
             : state.destination,
+        status: 'loaded',
       }
 
     case 'RIDE_REMOVE_DESTINATION':
@@ -36,8 +64,8 @@ export const endpointReducer = (
       }
 
     case 'RIDE_REGION_CHANGE':
-      if (state.destination) {
-        return state
+      if (state.destination || action.locationSource.source !== 'map') {
+        return { ...state, status: 'loading' }
       }
 
       return {
@@ -47,13 +75,19 @@ export const endpointReducer = (
             coordinate: action.region,
           },
         },
+        status: 'loading',
       }
 
     case 'RIDE_CURRENT_TRIP_LOCATION':
       return {
         source: action.source,
         destination: action.destination,
+        status: 'loaded',
       }
+    case 'RIDE_REGION_CHANGE_ERROR':
+      return { ...state, status: 'loaded' }
+    case 'RIDE_REGION_CHANGE_SOURCE':
+      return { ...state, status: 'loaded' }
     default:
       return state
   }
@@ -82,6 +116,14 @@ export const searchTypeReducer = (state = null, action) => {
 export const currentTripReducer = (state = null, action) => {
   switch (action.type) {
     case 'RIDE_CURRENT_TRIP_STATUS':
+      if (
+        action.currentTrip &&
+        (action.currentTrip.status === 'rider_canceled' ||
+          action.currentTrip.status === 'driver_canceled' ||
+          action.currentTrip.status === 'no_drivers_available')
+      ) {
+        return null
+      }
       return action.currentTrip
     default:
       return state
@@ -105,6 +147,11 @@ export const rideRequestReducer = (state = { status: 'idle' }, action) => {
       return {
         status: 'error',
         error: action.error,
+      }
+    case 'RIDE_SET_LOCATION':
+    case 'RIDE_REMOVE_DESTINATION':
+      return {
+        status: 'idle',
       }
     default:
       return state
@@ -216,12 +263,17 @@ export const fareOverviewReducer = (state = { status: 'idle' }, action) => {
         error: action.error,
       }
     case 'RIDE_CHECK_PROMO_CODE':
-      return { status: 'loading' }
+      return { ...state, status: 'loading', error: null }
     case 'RIDE_APPLY_PROMO_CODE_ERROR':
       return {
-        status: 'error',
-        error: action.error,
+        status: 'loaded',
         fareOverview: action.fareOverview,
+        error: action.error,
+      }
+    case 'RIDE_SET_LOCATION':
+    case 'RIDE_REMOVE_DESTINATION':
+      return {
+        status: 'idle',
       }
     default:
       return state
@@ -319,6 +371,8 @@ export const rideModeReducer = (state = 'select-route', action) => {
     case 'RIDE_BOOK_VEHICLE':
       return 'riding'
     case 'RIDE_REMOVE_DESTINATION':
+      return 'select-route'
+    case 'RIDE_SET_LOCATION':
       return state === 'booking-confirmation'
         ? 'booking-confirmation'
         : 'select-route'
@@ -345,7 +399,6 @@ export const rideModeReducer = (state = 'select-route', action) => {
       return 'riding'
     case 'RIDE_ESTIMATES_ERROR':
       return 'select-route'
-
     default:
       return state
   }
@@ -407,6 +460,8 @@ export const promoCodeAppliedReducer = (state = null, action) => {
       return action.promoCode.toUpperCase()
     case 'RIDE_REMOVE_PROMO_CODE':
       return null
+    case 'RIDE_APPLY_PROMO_CODE_ERROR':
+      return null
     default:
       return state
   }
@@ -443,11 +498,34 @@ export const loadShareUrlTripReducer = (
   }
 }
 
+// detect is location from suggestion place / recent address or map
+// affect on map region change
+// when map region chaneg and locationsource != map, then location should not update again
+export const locationSourceReducer = (
+  state = { source: 'map', status: 'idle' },
+  action,
+) => {
+  switch (action.type) {
+    case 'RIDE_SELECT_SUGGESTION':
+    case 'RIDE_SELECT_ADDRESS':
+      return { source: 'suggestion', status: 'loading' }
+    case 'RIDE_REMOVE_DESTINATION':
+      return { source: 'suggestion', status: 'loading' }
+    case 'RIDE_SET_LOCATION':
+      return { ...state, status: 'loaded' }
+    case 'RIDE_REGION_CHANGE_SOURCE':
+      return { source: action.source, status: 'loaded' }
+    default:
+      return state
+  }
+}
+
 export default resetReducer(
   combineReducers({
     predictions: predictionReducer,
     routeSelection: endpointReducer,
     searchType: searchTypeReducer,
+    locationSource: locationSourceReducer,
     directions: directionReducer,
     timeEstimations: timeEstimationReducer,
     selectedTripOption: selectedTripOptionReducer,
@@ -471,5 +549,6 @@ export default resetReducer(
     promoCodeApplied: promoCodeAppliedReducer,
     loadSelectedAddress: selectedAddressReducer,
     loadShareUrlTrip: loadShareUrlTripReducer,
+    recentAddresses: recentAddressesReducer,
   }),
 )

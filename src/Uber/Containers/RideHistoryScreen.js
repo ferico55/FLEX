@@ -10,10 +10,10 @@ import {
 import DeviceInfo from 'react-native-device-info'
 import Navigator from 'native-navigation'
 
-import { getHistory, getStaticMapUrl, getHistoryFromUri } from './api'
-import PreAnimatedImage from './PreAnimatedImage'
-import NoResult from './unify/NoResult'
-import { rupiahFormat, currencyFormat, trackEvent } from './RideHelper'
+import { getHistory, getStaticMapUrl, getHistoryFromUri } from '../Services/api'
+import PreAnimatedImage from '../../PreAnimatedImage'
+import NoResult from '../../unify/NoResult'
+import { rupiahFormat, currencyFormat, trackEvent } from '../Lib/RideHelper'
 
 const styles = StyleSheet.create({
   historyList: {
@@ -212,6 +212,7 @@ class RideHistoryScreen extends Component {
           title="Oops!"
           subtitle={this.state.error.description}
           style={{ marginTop: 100 }}
+          onButtonPress={() => this.loadData()}
         />
       )
     }

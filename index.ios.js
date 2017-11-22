@@ -50,17 +50,17 @@ import PromoDetail from './src/PromoDetail'
 import CategoryResultPage from './src/category-result/CategoryResultPage'
 import { createEpicMiddleware } from 'redux-observable'
 
-import RideHailingScreen, { getVehicles } from './src/RideHailingScreen'
-import RidePlacesAutocompleteScreen from './src/RidePlacesAutocompleteScreen'
-import RideWebViewScreen from './src/RideWebViewScreen'
-import RideReceiptScreen from './src/RideReceiptScreen'
-import RideHistoryScreen from './src/RideHistoryScreen'
-import RideHistoryDetailScreen from './src/RideHistoryDetailScreen'
-import RideCancellationScreen from './src/RideCancellationScreen'
-import RidePromoCodeScreen from './src/RidePromoCodeScreen'
-import rideReducer from './src/redux/RideReducer'
-import RideTopupTokocashScreen from './src/RideTopupTokocashScreen'
-import { epic } from './src/redux/RideActions'
+import RideHailingScreen, { getVehicles } from './src/Uber/Containers/RideHailingScreen'
+import RidePlacesAutocompleteScreen from './src/Uber/Containers/RidePlacesAutocompleteScreen'
+import RideWebViewScreen from './src/Uber/Containers/RideWebViewScreen'
+import RideReceiptScreen from './src/Uber/Containers/RideReceiptScreen'
+import RideHistoryScreen from './src/Uber/Containers/RideHistoryScreen'
+import RideHistoryDetailScreen from './src/Uber/Containers/RideHistoryDetailScreen'
+import RideCancellationScreen from './src/Uber/Containers/RideCancellationScreen'
+import RidePromoCodeScreen from './src/Uber/Containers/RidePromoCodeScreen'
+import rideReducer from './src/Uber/Reducers/RideReducer'
+import RideTopupTokocashScreen from './src/Uber/Components/RideTopupTokocashScreen'
+import { epic } from './src/Uber/Actions/RideActions'
 
 let composer
 if (__DEV__) {
@@ -77,6 +77,11 @@ if (__DEV__) {
 const middleware = applyMiddleware(thunk)
 const topAdsDashboardStore = createStore(topAdsDashboardReducer, middleware)
 const inboxReviewStore = createStore(inboxReviewReducer, middleware)
+const rideStore = createStore(
+  rideReducer,
+  composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
+)
+rideStore.dispatch({ type: 'FOO' })
 
 const styles = StyleSheet.create({
   container: {
@@ -102,12 +107,6 @@ const NotFoundComponent = () => (
     <Text style={styles.welcome}>Screen not found!</Text>
   </View>
 )
-
-const rideStore = createStore(
-  rideReducer,
-  composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
-)
-rideStore.dispatch({ type: 'FOO' })
 
 Navigator.registerScreen('RideHailing', () => props => (
   <Provider store={rideStore}>
@@ -162,6 +161,7 @@ Navigator.registerScreen('RideTopupTokocashScreen', () => props => (
     <RideTopupTokocashScreen {...props} />
   </Provider>
 ))
+
 moment.relativeTimeThreshold('ss', 1)
 moment.relativeTimeThreshold('s', 60)
 moment.relativeTimeThreshold('m', 60)

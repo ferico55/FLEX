@@ -9,12 +9,11 @@ import {
   TouchableOpacity,
   ScrollView,
 } from 'react-native'
-
 import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
 
-import { getAvailablePromos } from './api'
-import { trackEvent } from './RideHelper'
+import { getAvailablePromos } from '../Services/api'
+import { trackEvent } from '../Lib/RideHelper'
 
 const styles = StyleSheet.create({
   container: {
@@ -66,12 +65,11 @@ export class RidePromoCodeScreen extends Component {
 
   applyPromoCode = promoCode => {
     // TODO didmount warning
-    this.setState({ isApplyingPromo: true, error: null })
+    this.setState({ isApplyingPromo: true })
     this.props.applyPromoCode(promoCode)
   }
 
   removePromoCode = () => {
-    this.setState({ error: null })
     this.props.removePromoCode()
   }
 
@@ -174,6 +172,18 @@ export class RidePromoCodeScreen extends Component {
 
         <ScrollView keyboardDismissMode="on-drag">
           {isLoading ? <ActivityIndicator /> : null}
+
+          {!isLoading &&
+          promos &&
+          Array.isArray(promos) &&
+          promos.length <= 0 && (
+            <View>
+              <Text style={{ color: 'rgba(0, 0, 0, 0.54)' }}>
+                No promo available.
+              </Text>
+            </View>
+          )}
+
           {promos.map(promo => (
             <View key={promo.code}>
               <TouchableOpacity
@@ -207,7 +217,9 @@ export class RidePromoCodeScreen extends Component {
                     </Text>
                     <TouchableOpacity
                       onPress={() => {
-                        Navigator.push('RideWebViewScreen', { url: promo.url })
+                        Navigator.push('RideWebViewScreen', {
+                          url: promo.url,
+                        })
                         trackEvent(
                           'GenericUberEvent',
                           'click read offer details',

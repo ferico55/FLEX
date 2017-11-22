@@ -1,6 +1,6 @@
-//@flow
+// @flow
 import React, { Component } from 'react'
-import { View, StyleSheet, WebView, NativeModules, TouchableOpacity, Text, Image } from 'react-native'
+import { View, StyleSheet, WebView, NativeModules } from 'react-native'
 import { connect } from 'react-redux'
 import rlite from 'rlite-router'
 import Navigator from 'native-navigation'
@@ -9,7 +9,6 @@ import parse from 'url-parse'
 const { TKPReactURLManager } = NativeModules
 
 export class RideWebViewScreen extends Component {
-
   constructor(props) {
     super(props)
     this.state = {
@@ -53,7 +52,7 @@ export class RideWebViewScreen extends Component {
         >
           <View style={styles.container}>
             <WebView
-              ref={component => this._webview = component}
+              ref={component => (this._webview = component)}
               onLoadStart={onLoadStart}
               style={styles.container}
               source={{ uri: url }}
@@ -92,13 +91,13 @@ const styles = StyleSheet.create({
 
 import { acceptedTermsOfService } from './RideHailingScreen'
 
-const mapStateToProps = state => state;
+const mapStateToProps = state => state
 const mapDispatchToProps = (dispatch, ownProps) => ({
-  onLoadStart: (event) => {
+  onLoadStart: event => {
     // console.log("webview event", event.nativeEvent.url);
     const url = parse(event.nativeEvent.url)
     const router = rlite(() => {}, {
-      'toko://redirect-url': (params) => {
+      'toko://redirect-url': params => {
         event.preventDefault()
         // console.log("hit!", params);
         dispatch(
@@ -120,4 +119,4 @@ const mapDispatchToProps = (dispatch, ownProps) => ({
   },
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RideWebViewScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(RideWebViewScreen)

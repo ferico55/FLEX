@@ -20,14 +20,13 @@ import noop from 'lodash/noop'
 import Navigator from 'native-navigation'
 import { Observable } from 'rxjs'
 
-import { getRecentAddresses } from './api'
+import MapIcon from '../Resources/icon-map.png'
+import PlaceIcon from '../Resources/icon-place.png'
+import PinIcon from '../Resources/icon-pin-drop.png'
+import LocationIcon from '../Resources/icon-location.png'
+import LocationIconTransparant from '../Resources/icon-location-transparant.png'
 
-import MapIcon from './resources/icon-map.png'
-import PlaceIcon from './resources/icon-place.png'
-import PinIcon from './resources/icon-pin-drop.png'
-import LocationIcon from './resources/icon-location.png'
-import LocationIconTransparant from './resources/icon-location-transparant.png'
-import { getCurrentLocation, trackEvent } from './RideHelper'
+import { getCurrentLocation, trackEvent } from '../Lib/RideHelper'
 
 const blackColor = 'rgba(0,0,0, 0.7)'
 
@@ -119,7 +118,6 @@ const mapDispatchToProps = dispatch => ({
       trackAction,
     })
   },
-
   onQueryChanged: event =>
     dispatch({
       type: 'RIDE_TYPE_AUTOCOMPLETE',
@@ -137,6 +135,12 @@ const mapDispatchToProps = dispatch => ({
   onCancelTapped: () => {
     dispatch({ type: 'RIDE_AUTOCOMPLETE_TYPE_MODE' })
     dispatch({ type: 'RIDE_AUTOCOMPLETE_REGION_CHANGE', region: null })
+  },
+
+  getRecentAddresses: () => {
+    dispatch({
+      type: 'RIDE_GET_RECENT_ADDRESSES',
+    })
   },
 
   handleAddressSelected: address =>
@@ -181,7 +185,6 @@ const AddressRow = ({ onPress, name, description }) => (
 export class RidePlacesAutocompleteScreen extends Component {
   state = {
     isSearchingWithMap: false,
-    recentAddresses: [],
     readyToSubmitSelectedLocation: false,
     screenName:
       this.props.searchType === 'source'
@@ -190,10 +193,14 @@ export class RidePlacesAutocompleteScreen extends Component {
   }
 
   componentDidMount() {
-    this.subscription = Observable.from(
-      getRecentAddresses().catch(noop),
-    ).subscribe(recentAddresses => this.setState({ recentAddresses }))
-    // this._textInputFindAddress.focus()
+    this.props.getRecentAddresses()
+  }
+
+  componentWillReceiveProps(newProps) {
+    const { currentLocation } = newProps
+    if (currentLocation && currentLocation.location && currentLocation.name) {
+      this.setState({ readyToSubmitSelectedLocation: true })
+    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -205,16 +212,8 @@ export class RidePlacesAutocompleteScreen extends Component {
     }
   }
 
-  componentWillReceiveProps(newProps) {
-    const { currentLocation } = newProps
-    if (currentLocation && currentLocation.location && currentLocation.name) {
-      this.setState({ readyToSubmitSelectedLocation: true })
-    }
-  }
-
   componentWillUnmount() {
     this.props.onExitScreen()
-    this.subscription.unsubscribe()
     trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
@@ -263,7 +262,8 @@ export class RidePlacesAutocompleteScreen extends Component {
   handleLocationButton = this.zoomToCurrentLocation
 
   renderRecentAddressItem = ({ item: address, index }) => {
-    const { recentAddresses, screenName } = this.state
+    const { recentAddresses } = this.props
+    const { screenName } = this.state
     const { searchType } = this.props
     return (
       <View key={`${address.latitude},${address.longitude}`} style={styles.row}>
@@ -280,7 +280,7 @@ export class RidePlacesAutocompleteScreen extends Component {
           name={address.addr_name}
           description={address.description}
         />
-        {index !== recentAddresses.length - 1 ? (
+        {index !== recentAddresses.data.length - 1 ? (
           <View style={styles.separator} />
         ) : null}
       </View>
@@ -308,6 +308,100 @@ export class RidePlacesAutocompleteScreen extends Component {
     )
   }
 
+  renderPredictions = () => {
+    const { predictions } = this.props
+    if (predictions && predictions.status === 'loading') {
+      return (
+        <View style={{ backgroundColor: 'white', padding: 10 }}>
+          <ActivityIndicator size="small" />
+        </View>
+      )
+    } else if (predictions && predictions.status === 'loaded') {
+      return (
+        <View style={{ backgroundColor: 'white' }}>
+          <FlatList
+            style={{ paddingVertical: 8, backgroundColor: 'white' }}
+            data={predictions.data}
+            renderItem={item => this.renderPredictionItem(item)}
+            keyExtractor={item => `${item.location.placeId}`}
+            keyboardShouldPersistTaps={'handled'}
+          />
+        </View>
+      )
+    } else if (predictions && predictions.status === 'error') {
+      return (
+        <View style={{ backgroundColor: 'white' }}>
+          <Text style={{ margin: 10, color: 'rgba(0, 0, 0, 0.54)' }}>{predictions.error.description}</Text>
+        </View>
+      )
+    }
+
+    return null
+  }
+
+  renderRecentAddresses = () => {
+    const { recentAddresses, predictions } = this.props
+
+    if (predictions && predictions.status && predictions.status !== 'idle') {
+      return null
+    }
+
+    if (recentAddresses && recentAddresses.status === 'loading') {
+      return (
+        <View>
+          <Text
+            style={{
+              fontWeight: '500',
+              marginLeft: 10,
+              marginVertical: 10,
+              color: blackColor,
+            }}
+          >
+            Recent Addresses
+          </Text>
+          <ActivityIndicator size="small" />
+        </View>
+      )
+    }
+
+    if (recentAddresses && recentAddresses.status === 'loaded') {
+      return (
+        <View>
+          <Text
+            style={{
+              fontWeight: '500',
+              marginLeft: 10,
+              marginVertical: 10,
+              color: blackColor,
+            }}
+          >
+            Recent Addresses
+          </Text>
+          {recentAddresses &&
+          recentAddresses.data &&
+          Array.isArray(recentAddresses.data) &&
+          recentAddresses.data.length > 0 ? (
+            <FlatList
+              style={{ paddingVertical: 8, backgroundColor: 'white' }}
+              data={recentAddresses.data}
+              renderItem={item => this.renderRecentAddressItem(item)}
+              keyExtractor={item => `${item.latitude},${item.longitude}`}
+              keyboardShouldPersistTaps={'handled'}
+            />
+          ) : (
+            <View style={{ paddingVertical: 8, backgroundColor: 'white' }}>
+              <Text style={{ margin: 10, color: 'rgba(0, 0, 0, 0.54)' }}>
+                No recent address
+              </Text>
+            </View>
+          )}
+        </View>
+      )
+    }
+
+    return null
+  }
+
   render() {
     const {
       predictions,
@@ -322,7 +416,6 @@ export class RidePlacesAutocompleteScreen extends Component {
 
     const {
       isSearchingWithMap,
-      recentAddresses,
       readyToSubmitSelectedLocation,
     } = this.state
 
@@ -400,42 +493,9 @@ export class RidePlacesAutocompleteScreen extends Component {
               </Text>
             </TouchableOpacity>
 
-            {predictions && Array.isArray(predictions) && predictions.length ? (
-              <View style={{ backgroundColor: 'white' }}>
-                <FlatList
-                  style={{ paddingVertical: 8, backgroundColor: 'white' }}
-                  data={predictions}
-                  renderItem={item => this.renderPredictionItem(item)}
-                  keyExtractor={item => `${item.location.placeId}`}
-                  keyboardShouldPersistTaps={'handled'}
-                />
-              </View>
-            ) : (
-              <View>
-                <Text
-                  style={{
-                    fontWeight: '500',
-                    marginLeft: 10,
-                    marginVertical: 10,
-                    color: blackColor,
-                  }}
-                >
-                  Recent Addresses
-                </Text>
+            {this.renderPredictions()}
 
-                {recentAddresses &&
-                Array.isArray(recentAddresses) &&
-                recentAddresses.length ? (
-                  <FlatList
-                    style={{ paddingVertical: 8, backgroundColor: 'white' }}
-                    data={recentAddresses}
-                    renderItem={item => this.renderRecentAddressItem(item)}
-                    keyExtractor={item => `${item.latitude},${item.longitude}`}
-                    keyboardShouldPersistTaps={'handled'}
-                  />
-                ) : null}
-              </View>
-            )}
+            {this.renderRecentAddresses()}
           </ScrollView>
         )}
 
@@ -516,6 +576,7 @@ export class RidePlacesAutocompleteScreen extends Component {
                     this.setState({ isSearchingWithMap: false })
                     onCancelTapped()
                   }}
+                  disabled={!readyToSubmitSelectedLocation}
                 >
                   <Text
                     style={{
@@ -550,7 +611,7 @@ export class RidePlacesAutocompleteScreen extends Component {
                   disabled={!readyToSubmitSelectedLocation}
                 >
                   {!readyToSubmitSelectedLocation ? (
-                    <View style={{ paddingVertical: 8 }}>
+                    <View style={{ paddingBottom: 8, paddingTop: 9 }}>
                       <ActivityIndicator size="small" color="white" />
                     </View>
                   ) : (
