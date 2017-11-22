@@ -46,7 +46,7 @@ class OrderButtonView: UIView {
     
     func addChangeCourierButton(_ onTap:(() -> Void)?) {
         onTapChangeCourier = onTap
-        self.addButtonWithTitle("Ubah Kurir", imageName:"icon_truck", action:#selector(self.tapChangeCourier(_:)))
+        self.addButtonWithTitle("Ganti Kurir", imageName:"icon_truck", action:#selector(self.tapChangeCourier(_:)))
     }
     
     func addConfirmButton(_ onTap:(() -> Void)?) {

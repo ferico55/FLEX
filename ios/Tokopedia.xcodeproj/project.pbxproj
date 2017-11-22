@@ -60,6 +60,10 @@
 		9246FC111FC5797B0038D99B /* Redirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC091FC5797B0038D99B /* Redirection.swift */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		C0E50F771FC5C48D0069403C /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F761FC5C48D0069403C /* ReactOrderManager.m */; };
+		C0E50F7E1FC5C4BC0069403C /* RCTToolTipText.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F791FC5C4BC0069403C /* RCTToolTipText.m */; };
+		C0E50F7F1FC5C4BC0069403C /* RCTToolTipTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F7B1FC5C4BC0069403C /* RCTToolTipTextManager.m */; };
+		C0E50F801FC5C4BC0069403C /* ToolTipMenu.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F7D1FC5C4BC0069403C /* ToolTipMenu.m */; };
 		D8404B7C1FA1EEAA0039A972 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D8404B571FA1EEAA0039A972 /* AIRGMSMarker.m */; };
 		D8404B7D1FA1EEAB0039A972 /* AIRGMSPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = D8404B591FA1EEAA0039A972 /* AIRGMSPolygon.m */; };
 		D8404B7E1FA1EEAB0039A972 /* AIRGMSPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = D8404B5B1FA1EEAA0039A972 /* AIRGMSPolyline.m */; };
@@ -533,8 +537,6 @@
 		F954BED41FC55B66008C0B30 /* FilterShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954B38F1FC55B61008C0B30 /* FilterShipmentConfirmationViewController.xib */; };
 		F954BED51FC55B66008C0B30 /* ShipmentConfirmationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954B3901FC55B61008C0B30 /* ShipmentConfirmationViewController.xib */; };
 		F954BED61FC55B66008C0B30 /* ShipmentConfirmationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B3911FC55B61008C0B30 /* ShipmentConfirmationViewController.m */; };
-		F954BED71FC55B66008C0B30 /* ChangeCourierViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B3931FC55B61008C0B30 /* ChangeCourierViewController.m */; };
-		F954BED81FC55B66008C0B30 /* ChangeCourierViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954B3941FC55B61008C0B30 /* ChangeCourierViewController.xib */; };
 		F954BED91FC55B66008C0B30 /* BarCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B3951FC55B61008C0B30 /* BarCodeViewController.m */; };
 		F954BEDA1FC55B66008C0B30 /* CancelShipmentViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954B3961FC55B61008C0B30 /* CancelShipmentViewController.xib */; };
 		F954BEDB1FC55B66008C0B30 /* ShipmentRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954B3981FC55B61008C0B30 /* ShipmentRequest.swift */; };
@@ -2078,6 +2080,14 @@
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C0E50F751FC5C48D0069403C /* ReactOrderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOrderManager.h; sourceTree = "<group>"; };
+		C0E50F761FC5C48D0069403C /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
+		C0E50F781FC5C4BC0069403C /* RCTToolTipText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTToolTipText.h; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/RCTToolTipText.h"; sourceTree = "<group>"; };
+		C0E50F791FC5C4BC0069403C /* RCTToolTipText.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTToolTipText.m; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/RCTToolTipText.m"; sourceTree = "<group>"; };
+		C0E50F7A1FC5C4BC0069403C /* RCTToolTipTextManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTToolTipTextManager.h; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/RCTToolTipTextManager.h"; sourceTree = "<group>"; };
+		C0E50F7B1FC5C4BC0069403C /* RCTToolTipTextManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTToolTipTextManager.m; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/RCTToolTipTextManager.m"; sourceTree = "<group>"; };
+		C0E50F7C1FC5C4BC0069403C /* ToolTipMenu.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ToolTipMenu.h; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/ToolTipMenu.h"; sourceTree = "<group>"; };
+		C0E50F7D1FC5C4BC0069403C /* ToolTipMenu.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ToolTipMenu.m; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/ToolTipMenu.m"; sourceTree = "<group>"; };
 		C8A1445074FECD393EA18C17 /* Pods-TokopediaTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.debug.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		D8404B561FA1EEAA0039A972 /* AIRGMSMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSMarker.h; sourceTree = "<group>"; };
@@ -2765,8 +2775,6 @@
 		F954B3901FC55B61008C0B30 /* ShipmentConfirmationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShipmentConfirmationViewController.xib; sourceTree = "<group>"; };
 		F954B3911FC55B61008C0B30 /* ShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShipmentConfirmationViewController.m; sourceTree = "<group>"; };
 		F954B3921FC55B61008C0B30 /* CancelShipmentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CancelShipmentViewController.h; sourceTree = "<group>"; };
-		F954B3931FC55B61008C0B30 /* ChangeCourierViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChangeCourierViewController.m; sourceTree = "<group>"; };
-		F954B3941FC55B61008C0B30 /* ChangeCourierViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeCourierViewController.xib; sourceTree = "<group>"; };
 		F954B3951FC55B61008C0B30 /* BarCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BarCodeViewController.m; sourceTree = "<group>"; };
 		F954B3961FC55B61008C0B30 /* CancelShipmentViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CancelShipmentViewController.xib; sourceTree = "<group>"; };
 		F954B3971FC55B61008C0B30 /* FilterShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FilterShipmentConfirmationViewController.h; sourceTree = "<group>"; };
@@ -2778,7 +2786,6 @@
 		F954B39D1FC55B61008C0B30 /* ShipmentConfirmationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShipmentConfirmationViewController.h; sourceTree = "<group>"; };
 		F954B39E1FC55B61008C0B30 /* FilterShipmentConfirmationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FilterShipmentConfirmationViewController.m; sourceTree = "<group>"; };
 		F954B39F1FC55B61008C0B30 /* BarCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BarCodeViewController.h; sourceTree = "<group>"; };
-		F954B3A01FC55B61008C0B30 /* ChangeCourierViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChangeCourierViewController.h; sourceTree = "<group>"; };
 		F954B3A21FC55B61008C0B30 /* OrderDetailProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderDetailProductCell.xib; sourceTree = "<group>"; };
 		F954B3A31FC55B61008C0B30 /* OrderDetailDropshipView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OrderDetailDropshipView.swift; sourceTree = "<group>"; };
 		F954B3A41FC55B61008C0B30 /* OrderDetailDropshipView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OrderDetailDropshipView.xib; sourceTree = "<group>"; };
@@ -5176,6 +5183,19 @@
 			path = ServiceExtension;
 			sourceTree = "<group>";
 		};
+		C0E50F811FC5C4C60069403C /* Tooltip */ = {
+			isa = PBXGroup;
+			children = (
+				C0E50F781FC5C4BC0069403C /* RCTToolTipText.h */,
+				C0E50F791FC5C4BC0069403C /* RCTToolTipText.m */,
+				C0E50F7A1FC5C4BC0069403C /* RCTToolTipTextManager.h */,
+				C0E50F7B1FC5C4BC0069403C /* RCTToolTipTextManager.m */,
+				C0E50F7C1FC5C4BC0069403C /* ToolTipMenu.h */,
+				C0E50F7D1FC5C4BC0069403C /* ToolTipMenu.m */,
+			);
+			name = Tooltip;
+			sourceTree = "<group>";
+		};
 		CC986A6F2F7B402EAE979B0E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
@@ -6778,8 +6798,6 @@
 				F954B3901FC55B61008C0B30 /* ShipmentConfirmationViewController.xib */,
 				F954B3911FC55B61008C0B30 /* ShipmentConfirmationViewController.m */,
 				F954B3921FC55B61008C0B30 /* CancelShipmentViewController.h */,
-				F954B3931FC55B61008C0B30 /* ChangeCourierViewController.m */,
-				F954B3941FC55B61008C0B30 /* ChangeCourierViewController.xib */,
 				F954B3951FC55B61008C0B30 /* BarCodeViewController.m */,
 				F954B3961FC55B61008C0B30 /* CancelShipmentViewController.xib */,
 				F954B3971FC55B61008C0B30 /* FilterShipmentConfirmationViewController.h */,
@@ -6791,7 +6809,6 @@
 				F954B39D1FC55B61008C0B30 /* ShipmentConfirmationViewController.h */,
 				F954B39E1FC55B61008C0B30 /* FilterShipmentConfirmationViewController.m */,
 				F954B39F1FC55B61008C0B30 /* BarCodeViewController.h */,
-				F954B3A01FC55B61008C0B30 /* ChangeCourierViewController.h */,
 			);
 			path = ShipmentConfirmation;
 			sourceTree = "<group>";
@@ -10511,6 +10528,9 @@
 		F954BC8F1FC55B65008C0B30 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				C0E50F811FC5C4C60069403C /* Tooltip */,
+				C0E50F751FC5C48D0069403C /* ReactOrderManager.h */,
+				C0E50F761FC5C48D0069403C /* ReactOrderManager.m */,
 				9246FBF81FC576F90038D99B /* ReactDynamicFilterBridge.swift */,
 				9246FBF91FC576F90038D99B /* ReactDynamicFilterModule.h */,
 				9246FBFA1FC576F90038D99B /* ReactDynamicFilterModule.m */,
@@ -11188,7 +11208,6 @@
 				F954BDD71FC55B66008C0B30 /* SettingPrivacyCell.xib in Resources */,
 				F954BFEA1FC55B67008C0B30 /* ChangePhoneNumberSQViewController.xib in Resources */,
 				F954BFAE1FC55B67008C0B30 /* ShopInfoAddressView.xib in Resources */,
-				F954BED81FC55B66008C0B30 /* ChangeCourierViewController.xib in Resources */,
 				F954BF611FC55B67008C0B30 /* AlertInfoView.xib in Resources */,
 				F954BDC01FC55B66008C0B30 /* TransactionCartViewController.xib in Resources */,
 				F954BFDD1FC55B67008C0B30 /* TKPMapView.xib in Resources */,
@@ -12169,7 +12188,6 @@
 				F954BFA01FC55B67008C0B30 /* CatalogShopCell.m in Sources */,
 				F954C3BC1FC55B6C008C0B30 /* PromoShop.m in Sources */,
 				F954BF841FC55B67008C0B30 /* TKPImagePickerUIDelegate.swift in Sources */,
-				F954BED71FC55B66008C0B30 /* ChangeCourierViewController.m in Sources */,
 				F954C1D01FC55B69008C0B30 /* TxOrderPaymentEditOrder.m in Sources */,
 				F954C2441FC55B6A008C0B30 /* V4Response.m in Sources */,
 				F954C3431FC55B6B008C0B30 /* AddProductValidation.m in Sources */,
@@ -12265,7 +12283,9 @@
 				F954C2AD1FC55B6A008C0B30 /* NotificationResult.m in Sources */,
 				F954C4351FC55B6C008C0B30 /* DigitalTarget.swift in Sources */,
 				F954BDB91FC55B66008C0B30 /* RequestATC.m in Sources */,
+				C0E50F771FC5C48D0069403C /* ReactOrderManager.m in Sources */,
 				F954C12D1FC55B68008C0B30 /* ShopTalkPageViewController.m in Sources */,
+				C0E50F7E1FC5C4BC0069403C /* RCTToolTipText.m in Sources */,
 				F954C2F71FC55B6A008C0B30 /* ReplacementProduct.swift in Sources */,
 				F954C18E1FC55B69008C0B30 /* NSUserDefaultCategory.m in Sources */,
 				F954C35C1FC55B6B008C0B30 /* ProfileSettings.m in Sources */,
@@ -13035,6 +13055,7 @@
 				D8404B871FA1EEAB0039A972 /* AIRGoogleMapPolygon.m in Sources */,
 				F954C1841FC55B69008C0B30 /* TopAlignedLabel.m in Sources */,
 				F954C07D1FC55B68008C0B30 /* SpellCheckResponse.m in Sources */,
+				C0E50F7F1FC5C4BC0069403C /* RCTToolTipTextManager.m in Sources */,
 				F954C42C1FC55B6C008C0B30 /* GaladrielTarget.swift in Sources */,
 				F954BE9F1FC55B66008C0B30 /* FilterCategoryViewCell.m in Sources */,
 				F954C2AA1FC55B6A008C0B30 /* NotificationInbox.m in Sources */,
@@ -13410,6 +13431,7 @@
 				F954C0F91FC55B68008C0B30 /* FilterConditionViewController.m in Sources */,
 				F954BF211FC55B67008C0B30 /* MiniSlideData.m in Sources */,
 				F954C2DB1FC55B6A008C0B30 /* ImageSizeValidation.swift in Sources */,
+				C0E50F801FC5C4BC0069403C /* ToolTipMenu.m in Sources */,
 				F954BFF51FC55B67008C0B30 /* AuthTokenSource.swift in Sources */,
 				F954C0761FC55B68008C0B30 /* SearchAutoCompleteShopCell.m in Sources */,
 				F954C1FF1FC55B69008C0B30 /* PromoSuggestion.swift in Sources */,
@@ -13972,10 +13994,7 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
-					"$(inherited)",
-					"$(PROJECT_DIR)",
-				);
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

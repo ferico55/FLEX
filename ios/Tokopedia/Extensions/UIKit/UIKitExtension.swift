@@ -148,6 +148,10 @@ extension UIApplication {
         }
         return base
     }
+    
+    class func topViewController() -> UIViewController? {
+        return topViewController(UIApplication.shared.keyWindow?.rootViewController)
+    }
 }
 
 extension UIScreen {

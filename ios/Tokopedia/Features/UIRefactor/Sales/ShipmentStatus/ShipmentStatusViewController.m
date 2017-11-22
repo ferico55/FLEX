@@ -24,6 +24,7 @@
 #import "UITableView+IndexPath.h"
 
 #import "Tokopedia-Swift.h"
+#import "ReactOrderManager.h"
 
 @interface ShipmentStatusViewController ()
 <
@@ -479,19 +480,11 @@
     [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Invoice"];
     OrderTransaction *order = [self.orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
-    
     _selectedIndexPath = indexPath;
-
-    DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
-    controller.order = _selectedOrder;
-    controller.delegate = self;
-    controller.is_allow_manage_tx = _order.is_allow_manage_tx;
-    controller.onSuccessRetry = ^ (BOOL isSuccess) {
-        if (isSuccess) {
-            [_tableView reloadData];
-        }
-    };
-    [self.navigationController pushViewController:controller animated:YES];
+    
+    [ReactOrderManager setCurrentOrder:_selectedOrder];
+    NSString* urlString = [NSString stringWithFormat:@"tokopedia://order/detail/%@/2", _selectedOrder.order_detail.detail_order_id];
+    [TPRoutes routeURL:[NSURL URLWithString: urlString]];
 }
 
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath {

@@ -744,17 +744,18 @@ class TPRoutes: NSObject {
             return true
         }
         
-        //user detail
-        JLRoutes.global().addRoute("/user/:userId") { (params: [String: Any]!) -> Bool in
-            if let userId = params["userId"] as? String {
-                let userController = UserContainerViewController()
-                userController.profileUserID = userId
-                
-                userController.hidesBottomBarWhenPushed = true
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(userController, animated: true)
+        //order detail (REACT LOCAL ONLY)
+        JLRoutes.global().addRoute("/order/detail/:orderID/:type") { (params: [String: Any]!) -> Bool in
+            guard let orderID = params["orderID"], let type = params["type"] else {
+                return true
             }
+            
+            let userManager = UserAuthentificationManager()
+            
+            let viewController = ReactViewController(moduleName: "OrderDetailPage", props: ["user_id": userManager.getUserId() as AnyObject, "order_id": orderID as AnyObject, "type": type as AnyObject])
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushReactViewController(viewController, animated: true)
             
             return true
         }

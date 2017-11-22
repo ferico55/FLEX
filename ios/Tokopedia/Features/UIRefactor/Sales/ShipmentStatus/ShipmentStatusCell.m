@@ -94,6 +94,12 @@
     }
 }
 
+-(void)showChangeCourierButtonOnTap:(void (^)(OrderTransaction *))onTap{
+    [_buttonsView addChangeCourierButton:^{
+        onTap(_order);
+    }];
+}
+
 - (void)showAllButton
 {
     _twoButtonsView.hidden = NO;

@@ -12,6 +12,8 @@
 #import <BlocksKit/BlocksKit.h>
 #import "UIBarButtonItem+BlocksKit.h"
 #import "RejectOrderRequest.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 @interface OrderRejectExplanationViewController ()
 
@@ -39,6 +41,8 @@
                                                                onSuccess:^(GeneralAction *result) {
                                                                    if([result.data.is_success boolValue]){
                                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                                       ReactEventManager *eventManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+                                                                       [eventManager popNavigation];
                                                                        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                                    }else{
                                                                        StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:welf];

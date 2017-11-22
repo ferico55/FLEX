@@ -18,6 +18,7 @@
 - (void)didRemoveWishlistProduct:(NSString*)productId;
 - (void)changeLayoutCell:(NSInteger)cellType;
 - (void)navBarButtonTapped:(id)index;
+- (void)popNavigation;
 - (void)sendRefreshEvent;
 
 @end

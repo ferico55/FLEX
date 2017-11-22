@@ -29,6 +29,8 @@ import AddPromoPageStep2 from './src/TopAds/Page/AddPromoPageStep2'
 import AddPromoPageStep3 from './src/TopAds/Page/AddPromoPageStep3'
 import EditPromoPage from './src/TopAds/Page/EditPromoPage'
 import EditPromoGroupNamePage from './src/TopAds/Page/EditPromoGroupNamePage'
+import OrderHistoryPage from './src/Order/Page/HistoryPage'
+import OrderDetailPage from './src/Order/Page/OrderDetailPage'
 import FeedKOLActivityScreen from './src/Feed/KOL'
 import TopChatMain from '@containers/main/MainContainers'
 import TopChatDetail from '@containers/detail/DetailContainers'
@@ -265,6 +267,10 @@ Navigator.registerScreen('AddCreditPage', () => props => (
     <AddCreditPage {...props} />
   </Provider>
 ))
+
+// Order Management Screen
+Navigator.registerScreen('HistoryPage', () => OrderHistoryPage)
+Navigator.registerScreen('OrderDetailPage', () => OrderDetailPage)
 
 // Inbox Review screen
 Navigator.registerScreen('InboxReview', () => props => (

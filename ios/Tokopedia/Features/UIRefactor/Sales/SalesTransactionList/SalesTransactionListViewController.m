@@ -24,6 +24,7 @@
 #import "UITableView+IndexPath.h"
 #import "SendMessageViewController.h"
 #import "Tokopedia-Swift.h"
+#import "ReactOrderManager.h"
 
 @interface SalesTransactionListViewController ()
 <
@@ -45,6 +46,7 @@
 @property (strong, nonatomic) NSMutableArray *orders;
 @property (strong, nonatomic) Order *response;
 @property (strong, nonatomic) OrderTransaction *selectedOrder;
+@property (strong, nonatomic) NSArray *shipmentCouriers;
 
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 
@@ -58,6 +60,7 @@
 
 @property (strong, nonatomic) TokopediaNetworkManager *networkManager;
 @property (strong, nonatomic) TokopediaNetworkManager *actionNetworkManager;
+@property (strong, nonatomic) TokopediaNetworkManager *courierNetworkManager;
 
 @end
 
@@ -100,6 +103,10 @@
     self.endDate = @"";
     
     self.orders = [NSMutableArray new];
+    
+    self.courierNetworkManager = [TokopediaNetworkManager new];
+    self.courierNetworkManager.isUsingHmac = YES;
+    [self requestShipmentCouriers];
 
     [self request];
     [self initNoResultView];
@@ -110,6 +117,15 @@
     
     _tableView.estimatedRowHeight = 218;
     _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:@"refreshDataOnShipmentConfirmation" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:@"refreshNewOrderList" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:@"applyRejectOperation" object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (UIBarButtonItem *)backBarButton {
@@ -271,10 +287,10 @@
     OrderTransaction *order = [_orders objectAtIndex:indexPath.row];
     _selectedOrder = order;
     
-    DetailShipmentStatusViewController *controller = [DetailShipmentStatusViewController new];
-    controller.order = order;
-    controller.is_allow_manage_tx = _response.result.order.is_allow_manage_tx;
-    [self.navigationController pushViewController:controller animated:YES];
+    [ReactOrderManager setCurrentOrder:[_orders objectAtIndex:indexPath.row]];
+    [ReactOrderManager setCurrentShipmentCouriers:self.shipmentCouriers];
+    NSString* urlString = [NSString stringWithFormat:@"tokopedia://order/detail/%@/2", _selectedOrder.order_detail.detail_order_id];
+    [TPRoutes routeURL:[NSURL URLWithString: urlString]];
 }
 
 - (void)didTapUserAtIndexPath:(NSIndexPath *)indexPath {
@@ -284,6 +300,19 @@
 }
 
 #pragma mark - Rest Kit Methods
+
+- (void)requestShipmentCouriers {
+    [self.courierNetworkManager requestWithBaseUrl:[NSString v4Url]
+                                              path:@"/v4/myshop-order/get_edit_shipping_form.pl"
+                                            method:RKRequestMethodGET
+                                         parameter:@{}
+                                           mapping:[ShipmentOrder mapping]
+                                         onSuccess:^(RKMappingResult *mappingResult,
+                                                     RKObjectRequestOperation *operation) {
+                                             ShipmentOrder *shipment = [mappingResult.dictionary objectForKey:@""];
+                                             self.shipmentCouriers = shipment.data.shipment;
+                                         } onFailure:nil];
+}
 
 - (void)request {
     if (self.networkManager == nil) {

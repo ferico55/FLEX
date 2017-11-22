@@ -1,5 +1,17 @@
 import { TKPReactURLManager, ReactNetworkManager } from 'NativeModules'
 
+const extractErrorMessage = error => {
+  const errorMessageByCode = {
+    no_internet: 'No internet connection',
+    timeout: 'Connection timeout',
+    unknown_error: 'Unknown error, please try again later',
+  }
+
+  throw {
+    message: errorMessageByCode[error.code],
+  }
+}
+
 // Dashboard
 export const requestCreditInfo = shopId =>
   ReactNetworkManager.request({
@@ -7,7 +19,7 @@ export const requestCreditInfo = shopId =>
     baseUrl: TKPReactURLManager.topAdsUrl,
     path: '/v1.1/dashboard/deposit',
     params: { shop_id: shopId },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestDashboardInfo = ({ shopId, type, startDate, endDate }) =>
   ReactNetworkManager.request({
@@ -20,7 +32,7 @@ export const requestDashboardInfo = ({ shopId, type, startDate, endDate }) =>
       start_date: startDate,
       end_date: endDate,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestShopTopAdsInfo = ({ shopId, startDate, endDate }) =>
   ReactNetworkManager.request({
@@ -32,7 +44,7 @@ export const requestShopTopAdsInfo = ({ shopId, startDate, endDate }) =>
       start_date: startDate,
       end_date: endDate,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestTotalAds = shopId =>
   ReactNetworkManager.request({
@@ -40,7 +52,7 @@ export const requestTotalAds = shopId =>
     baseUrl: TKPReactURLManager.topAdsUrl,
     path: '/v1.1/dashboard/total_ad',
     params: { shop_id: shopId },
-  })
+  }).catch(extractErrorMessage)
 
 // Add credit page
 export const requestPromoCreditList = () =>
@@ -49,7 +61,7 @@ export const requestPromoCreditList = () =>
     baseUrl: TKPReactURLManager.topAdsUrl,
     path: '/v1/tkpd_products',
     params: {},
-  })
+  }).catch(extractErrorMessage)
 
 // Promo list page
 export const requestGroupAds = ({
@@ -74,7 +86,7 @@ export const requestGroupAds = ({
       page,
       group_id: groupId,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestProductAds = ({
   shopId,
@@ -100,7 +112,7 @@ export const requestProductAds = ({
       page,
       ad_id: adId,
     },
-  })
+  }).catch(extractErrorMessage)
 
 // Filter group page
 export const requestGroupList = (shopId, keyword) =>
@@ -112,7 +124,7 @@ export const requestGroupList = (shopId, keyword) =>
       keyword,
       shop_id: shopId,
     },
-  })
+  }).catch(extractErrorMessage)
 
 // Product detail page
 export const requestPatchToggleStatus = (toggleOn, shopId, adId) => {
@@ -133,7 +145,7 @@ export const requestPatchToggleStatus = (toggleOn, shopId, adId) => {
         ],
       },
     },
-  })
+  }).catch(extractErrorMessage)
 }
 
 export const requestPatchToggleStatusGroup = (toggleOn, shopId, groupId) => {
@@ -154,7 +166,7 @@ export const requestPatchToggleStatusGroup = (toggleOn, shopId, groupId) => {
         ],
       },
     },
-  })
+  }).catch(extractErrorMessage)
 }
 
 // Add Promo Page
@@ -179,7 +191,7 @@ export const requestProductList = ({
       etalase: etalase.menu_id,
       is_promoted: promotedStatus,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPostCreateGroupAds = params =>
   ReactNetworkManager.request({
@@ -206,7 +218,7 @@ export const requestPostCreateGroupAds = params =>
         ads: params.ads,
       },
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPostCreateAds = dataArray =>
   ReactNetworkManager.request({
@@ -217,7 +229,7 @@ export const requestPostCreateAds = dataArray =>
     params: {
       data: dataArray,
     },
-  })
+  }).catch(extractErrorMessage)
 
 // Edit Promo
 
@@ -229,7 +241,7 @@ export const requestGetGroupDetail = groupId =>
     params: {
       group_id: groupId,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestEtalaseList = shopId =>
   ReactNetworkManager.request({
@@ -239,7 +251,7 @@ export const requestEtalaseList = shopId =>
     params: {
       shop_id: shopId,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestGetProductAdDetail = adId =>
   ReactNetworkManager.request({
@@ -249,7 +261,7 @@ export const requestGetProductAdDetail = adId =>
     params: {
       ad_id: `${adId}`,
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPatchMoveProductAd = (shopId, groupId, adId) =>
   ReactNetworkManager.request({
@@ -269,7 +281,7 @@ export const requestPatchMoveProductAd = (shopId, groupId, adId) =>
         ],
       },
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPatchGroupAds = params =>
   ReactNetworkManager.request({
@@ -295,7 +307,7 @@ export const requestPatchGroupAds = params =>
         toggle: params.toggleString,
       },
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPatchProductAds = params =>
   ReactNetworkManager.request({
@@ -323,7 +335,7 @@ export const requestPatchProductAds = params =>
         },
       ],
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPatchDeleteGroup = (shopId, groupId) =>
   ReactNetworkManager.request({
@@ -342,7 +354,7 @@ export const requestPatchDeleteGroup = (shopId, groupId) =>
         ],
       },
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestPatchDeleteProductAd = (shopId, adId) =>
   ReactNetworkManager.request({
@@ -361,7 +373,7 @@ export const requestPatchDeleteProductAd = (shopId, adId) =>
         ],
       },
     },
-  })
+  }).catch(extractErrorMessage)
 
 export const requestGetSuggestionPrice = (shopId, isGroup, idArray) =>
   ReactNetworkManager.request({
@@ -382,4 +394,4 @@ export const requestGetSuggestionPrice = (shopId, isGroup, idArray) =>
         rounding: true,
       },
     },
-  })
+  }).catch(extractErrorMessage)

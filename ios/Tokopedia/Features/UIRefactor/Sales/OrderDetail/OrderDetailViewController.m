@@ -16,7 +16,6 @@
 #import "ShipmentStatusViewController.h"
 #import "CancelShipmentViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
-#import "ChangeCourierViewController.h"
 #import "NavigateViewController.h"
 #import "AlertInfoView.h"
 #import "OrderBookingData.h"
@@ -32,8 +31,7 @@
 @interface OrderDetailViewController ()
 <
     SubmitShipmentConfirmationDelegate,
-    CancelShipmentConfirmationDelegate,
-    ChangeCourierDelegate
+    CancelShipmentConfirmationDelegate
 >
 
 @property (strong, nonatomic) AlertShipmentCodeView *alert;
@@ -360,16 +358,6 @@
                 [wself.navigationController presentViewController:navigationController animated:YES completion:nil];
             }];
             
-        } else if (_transaction.order_shipment.isIDrop) {
-            [buttonView addChangeCourierButton:^{
-                ChangeCourierViewController *controller = [ChangeCourierViewController new];
-                controller.delegate = wself;
-                controller.shipmentCouriers = _shipmentCouriers;
-                controller.order = _transaction;
-                
-                UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-                [wself.navigationController presentViewController:navigationController animated:YES completion:nil];
-            }];
         } else {
             [buttonView addConfirmButton:^{
                 SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];

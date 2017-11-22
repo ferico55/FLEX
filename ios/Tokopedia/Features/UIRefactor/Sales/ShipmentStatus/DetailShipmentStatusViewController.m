@@ -130,19 +130,8 @@
         UIButton *button = (UIButton *)sender;
         if (button.tag == 1) {
             [AnalyticsManager trackEventName:@"clickStatus" category:GA_EVENT_CATEGORY_ORDER_STATUS action:GA_EVENT_ACTION_CLICK label:@"Detail"];
-            self.title = @"";
-            OrderDetailViewController *controller = [OrderDetailViewController new];
-            controller.transaction = _order;
-            controller.delegate = self;
-            controller.onSuccessRetry = ^ (BOOL isSuccess) {
-                if (isSuccess) {
-                    [self hideRetry];
-                    if (_onSuccessRetry) {
-                        _onSuccessRetry(isSuccess);
-                    }
-                }
-            };
-            [self.navigationController pushViewController:controller animated:YES];
+            NSString* urlString = [NSString stringWithFormat:@"tokopedia://order/history/%@/2", _order.order_detail.detail_order_id];
+            [TPRoutes routeURL:[NSURL URLWithString: urlString]];
 
         } else if (button.tag == 2) {
 

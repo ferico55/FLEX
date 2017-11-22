@@ -38,6 +38,7 @@
 #import "UIColor+Theme.h"
 #import "SendMessageViewController.h"
 #import "Tokopedia-Swift.h"
+#import "ReactOrderManager.h"
 
 @interface SalesNewOrderViewController ()
 <
@@ -136,6 +137,8 @@
     
     _tableView.estimatedRowHeight = 237;
     _tableView.rowHeight = UITableViewAutomaticDimension;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshNewOrderList) name:@"refreshNewOrderList" object:nil];
 }
 
 -(void)viewWillAppear:(BOOL)animated{
@@ -154,6 +157,11 @@
     }
 }
 
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
@@ -165,6 +173,11 @@
     }else{        
         [self performSelector:@selector(removeFinishedCell) withObject:nil afterDelay:0.5];
     }
+}
+
+-(void) refreshNewOrderList
+{
+    [self refreshData];
 }
 
 -(void)removeFinishedCell{
@@ -380,17 +393,10 @@
                             category:GA_EVENT_CATEGORY_NEW_ORDER
                               action:GA_EVENT_ACTION_CLICK
                                label:@"Order Detail"];
-    OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
-    controller.transaction = [_orders objectAtIndex:indexPath.row];
-    controller.delegate = self;
-    controller.isDetailNewOrder = YES;
-
-    __weak typeof(self) wself = self;
-    controller.didAcceptOrder = ^(){
-        [wself refreshOrderList];
-    };
     
-    [self.navigationController pushViewController:controller animated:YES];
+    [ReactOrderManager setCurrentOrder:[_orders objectAtIndex:indexPath.row]];
+    NSString* urlString = [NSString stringWithFormat:@"tokopedia://order/detail/%@/2", _selectedOrder.order_detail.detail_order_id];
+    [TPRoutes routeURL:[NSURL URLWithString: urlString]];
 }
 
 -(void)refreshOrderList{

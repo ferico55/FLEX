@@ -398,9 +398,13 @@
     [ShipmentRequest fetchProceedShipping:[self proceedShippingObjectRequest] onSuccess:^{
         
         [self.navigationController dismissViewControllerAnimated:YES completion:nil];
-        
+        ReactEventManager *eventManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+        [eventManager popNavigation];
+
         if ([self.delegate respondsToSelector:@selector(successConfirmOrder:)]) {
             [self.delegate successConfirmOrder:self.order];
+        }else {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshDataOnShipmentConfirmation" object:nil];
         }
         
     } onFailure:^{

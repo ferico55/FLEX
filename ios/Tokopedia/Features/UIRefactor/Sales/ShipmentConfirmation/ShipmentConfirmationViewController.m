@@ -14,7 +14,6 @@
 #import "OrderDetailViewController.h"
 #import "FilterShipmentConfirmationViewController.h"
 #import "SubmitShipmentConfirmationViewController.h"
-#import "ChangeCourierViewController.h"
 #import "CancelShipmentViewController.h"
 #import "NavigateViewController.h"
 #import "ActionOrder.h"
@@ -24,6 +23,7 @@
 #import "UITableView+IndexPath.h"
 #import "Tokopedia-Swift.h"
 #import "UIColor+Theme.h"
+#import "ReactOrderManager.h"
 #define IDropShipmentPackageID @"19"
 
 @interface ShipmentConfirmationViewController ()
@@ -35,7 +35,6 @@
     OrderDetailDelegate,
     FilterShipmentConfirmationDelegate,
     SubmitShipmentConfirmationDelegate,
-    ChangeCourierDelegate,
     CancelShipmentConfirmationDelegate
 >
 
@@ -125,6 +124,12 @@
     
     [self fetchShipmentConfirmationData];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshData) name:@"refreshDataOnShipmentConfirmation" object:nil];
+}
+
+- (void)dealloc
+{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -249,16 +254,6 @@
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
             [self.navigationController presentViewController:navigationController animated:YES completion:nil];
         }];
-    } else if ([transaction.order_shipment.shipment_package_id isEqualToString:@"19"]) {
-        [cell showChangeCourierButtonOnTap:^(OrderTransaction *order) {
-            ChangeCourierViewController *controller = [ChangeCourierViewController new];
-            controller.delegate = wself;
-            controller.shipmentCouriers = _shipmentCouriers;
-            controller.order = order;
-            
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
-            [wself.navigationController presentViewController:navigationController animated:YES completion:nil];
-        }];
     } else {
         [cell showConfirmButtonOnTap:^(OrderTransaction *order) {
             SubmitShipmentConfirmationViewController *controller = [SubmitShipmentConfirmationViewController new];
@@ -291,15 +286,10 @@
     _selectedOrder = [_orders objectAtIndex:indexPath.row];
     _selectedIndexPath = indexPath;
     
-    OrderDetailViewController *controller = [[OrderDetailViewController alloc] init];
-    controller.transaction = _selectedOrder;
-    controller.delegate = self;
-    controller.shipmentCouriers = _shipmentCouriers;
-    controller.booking = _orderBooking;
-    controller.shouldRequestIDropCode = [_selectedOrder.order_shipment.shipment_package_id isEqualToString:IDropShipmentPackageID];
-    controller.isDetailShipmentConfirmation = YES;
-    
-    [self.navigationController pushViewController:controller animated:YES];
+    [ReactOrderManager setCurrentOrder:[_orders objectAtIndex:indexPath.row]];
+    [ReactOrderManager setCurrentShipmentCouriers:self.shipmentCouriers];
+    NSString* urlString = [NSString stringWithFormat:@"tokopedia://order/detail/%@/2", _selectedOrder.order_detail.detail_order_id];
+    [TPRoutes routeURL:[NSURL URLWithString: urlString]];
 }
 
 - (void)tableViewCell:(UITableViewCell *)cell didSelectUserAtIndexPath:(NSIndexPath *)indexPath {

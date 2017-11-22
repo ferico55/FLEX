@@ -11,6 +11,8 @@
 #import "RejectOrderRequest.h"
 #import <BlocksKit/BlocksKit.h>
 #import "NSArray+BlocksKit.h"
+#import "ReactEventManager.h"
+#import "UIApplication+React.h"
 
 @interface RejectReasonEmptyStockViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -112,6 +114,8 @@
                                                        onSuccess:^(GeneralAction *result) {
                                                            if([result.data.is_success boolValue]){
                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"applyRejectOperation" object:nil];
+                                                               ReactEventManager *eventManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+                                                               [eventManager popNavigation];
                                                                [self.navigationController dismissViewControllerAnimated:YES completion:nil];
                                                            }else{
                                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:result.message_error delegate:self];

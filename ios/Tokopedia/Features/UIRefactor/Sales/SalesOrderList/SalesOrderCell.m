@@ -67,12 +67,6 @@
     }];
 }
 
--(void)showChangeCourierButtonOnTap:(void (^)(OrderTransaction *))onTap{
-    [_buttonsView addChangeCourierButton:^{
-        onTap(_order);
-    }];
-}
-
 -(void)showConfirmButtonOnTap:(void (^)(OrderTransaction *))onTap{
     [_buttonsView addConfirmButton:^{
         onTap(_order);

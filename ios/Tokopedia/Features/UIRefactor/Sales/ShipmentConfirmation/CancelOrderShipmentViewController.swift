@@ -157,6 +157,10 @@ import RSKGrowingTextView
         
         ShipmentRequest.fetchProceedShipping(object, onSuccess: { [weak self] in
             guard let `self` = self else { return }
+            if let eventManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
+                eventManager.popNavigation()
+            }
+            
             self.onFinishRequestCancel?(true)
             self.navigationController?.dismiss(animated: true, completion: nil)
             }, onFailure: { [weak self] in
