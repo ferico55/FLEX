@@ -385,15 +385,8 @@
 }
 
 -(void)doAskBuyer{
-    SendMessageViewController *messageController = [SendMessageViewController new];
-    messageController.data = @{
-                               @"user_id":_transaction.order_customer.customer_id?:@"",
-                               @"shop_name":_transaction.order_customer.customer_name?:@""
-                               };
-    messageController.subject = _transaction.order_detail.detail_invoice?:@"";
-    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",_transaction.order_detail.detail_pdf_uri];
-    messageController.source = @"tx_ask_buyer";
-    [self.navigationController pushViewController:messageController animated:YES];
+    SendChatViewController *vc = [[SendChatViewController alloc] initWithUserID:_transaction.order_customer.customer_id shopID:nil name:_transaction.order_customer.customer_name imageURL:_transaction.order_customer.customer_image invoiceURL:_transaction.order_detail.detail_pdf_uri productURL:nil source:@"tx_ask_buyer"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(BOOL)showInfoView{

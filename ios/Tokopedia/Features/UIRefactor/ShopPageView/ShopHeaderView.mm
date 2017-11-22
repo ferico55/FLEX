@@ -405,7 +405,7 @@
                      .flexShrink = YES
                  },
                  {
-                     !isMyShop?[self actionButtonWithTitle:@"Kirim Pesan" action:@selector(didTapMessageButton)]: nil,
+                     !isMyShop?[self actionButtonWithTitle:@"Chat Penjual" action:@selector(didTapMessageButton)]: nil,
                      .flexBasis = CKRelativeDimension::Percent(0.5),
                      .flexShrink = YES
                  },

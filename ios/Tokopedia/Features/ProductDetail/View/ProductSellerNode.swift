@@ -275,7 +275,7 @@ class ProductSellerInfoNode: ContainerNode {
                 view.layer.borderWidth = 1
                 view.layer.borderColor = UIColor.tpLine().cgColor
                 view.titleLabel?.font = .microTheme()
-                view.setTitle("Kirim Pesan", for: .normal)
+                view.setTitle("Chat Penjual", for: .normal)
                 view.setTitleColor(.tpPrimaryBlackText(), for: .normal)
                 _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                     self.didTapMessage()

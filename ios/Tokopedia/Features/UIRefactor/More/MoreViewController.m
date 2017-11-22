@@ -689,6 +689,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if(indexPath.row == 4) {
+            [AnalyticsManager trackClickNavigateFromMore:@"TopAds Dashboard"];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }
         
@@ -696,8 +697,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Message"];
-            [_navigate navigateToInboxMessageFromViewController:wrapperController];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopChat"];
+            [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topchat"]];
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Product Discussion"];
             [_navigate navigateToInboxTalkFromViewController:wrapperController];

@@ -19,7 +19,7 @@
 @optional
 - (void)didReceiveNotification:(Notification *)notification;
 - (void)notificationManager:(id)notificationManager pushViewController:(id)viewController;
-
+- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager;
 @end
 
 @interface NotificationManager : NSObject  {

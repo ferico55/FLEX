@@ -275,6 +275,15 @@ NoResultDelegate
     [self.navigationController pushViewController:viewController animated:YES];
 }
 
+- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
+}
+
+- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
+    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+}
+
 -(void)initAllNoResult{
     _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultScrollView.userInteractionEnabled = true;

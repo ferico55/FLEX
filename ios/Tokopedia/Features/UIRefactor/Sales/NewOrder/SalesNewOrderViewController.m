@@ -345,16 +345,9 @@
     }
 }
 
--(void)doAskBuyerWithOrder:(OrderTransaction*)order{
-    SendMessageViewController *messageController = [SendMessageViewController new];
-    messageController.data = @{
-                               @"user_id":order.order_customer.customer_id?:@"",
-                               @"shop_name":order.order_customer.customer_name?:@""
-                               };
-    messageController.subject = order.order_detail.detail_invoice?:@"";
-    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
-    messageController.source = @"tx_ask_buyer";
-    [self.navigationController pushViewController:messageController animated:YES];
+-(void)doAskBuyerWithOrder:(OrderTransaction*)order {
+    SendChatViewController *vc = [[SendChatViewController alloc] initWithUserID:order.order_customer.customer_id shopID:nil name:order.order_customer.customer_name imageURL:order.order_customer.customer_image invoiceURL:order.order_detail.detail_pdf_uri productURL:nil source:@"tx_ask_buyer"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {

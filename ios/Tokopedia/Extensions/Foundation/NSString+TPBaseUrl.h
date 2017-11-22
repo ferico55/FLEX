@@ -36,6 +36,9 @@
 + (nonnull NSString*)creditCardSecretKey;
 + (nonnull NSString*)paymentURL;
 + (nonnull NSString*)rideHailingUrl;
++ (nonnull NSString*)topChatURL;
 + (nonnull NSString*)galadrielURL;
++ (nonnull NSString*)ajaxAppUrl;
++ (nonnull NSString*)webSocketUrl;
 
 @end

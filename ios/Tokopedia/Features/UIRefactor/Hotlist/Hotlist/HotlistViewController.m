@@ -150,6 +150,15 @@
     self.hidesBottomBarWhenPushed = NO;
 }
 
+- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
+}
+
+- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
+    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+}
+
 - (void)scrollToTop {
     ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
     [tabManager sendScrollToTopEvent];

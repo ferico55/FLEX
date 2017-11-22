@@ -14,7 +14,7 @@
 
 @optional
 - (void)pushViewController:(id)viewController;
-
+- (void)navigateUsingTPRoutes:(NSString *)urlString;
 @end
 
 @interface NotificationViewController : UITableViewController

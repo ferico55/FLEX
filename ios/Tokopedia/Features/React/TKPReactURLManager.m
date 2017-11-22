@@ -38,6 +38,12 @@ RCT_EXPORT_MODULE();
              @"topAdsUrl" : NSString.topAdsUrl,
              @"rideHailingUrl": NSString.rideHailingUrl,
              @"tomeUrl" : NSString.tomeUrl,
+             @"topChatURL": NSString.topChatURL,
+             @"kunyitURL": NSString.kunyitUrl,
+             @"aceUrl" : NSString.aceUrl,
+             @"ajaxAppUrl" : NSString.ajaxAppUrl,
+             @"webSocketUrl" : NSString.webSocketUrl,
+             @"mobileSiteUrl" : NSString.mobileSiteUrl,
              @"graphQLURL": NSString.graphQLURL
              };
 }

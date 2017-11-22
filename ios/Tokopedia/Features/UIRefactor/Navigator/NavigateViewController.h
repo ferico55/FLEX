@@ -87,7 +87,6 @@
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
 
-
 #pragma mark - Inbox
 - (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;

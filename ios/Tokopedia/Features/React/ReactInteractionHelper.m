@@ -32,14 +32,14 @@ static UIView *lastNotificationView;
 
 RCT_EXPORT_METHOD(showTooltip:(NSString*) title subtitle:(NSString*)subtitle imageName:(NSString*) imageName dismissLabel:(NSString*) dismissLabel) {
     CFAlertAction* closeAction = [CFAlertAction actionWithTitle:dismissLabel style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-    
+
     CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:title subtitle:subtitle image:[UIImage imageNamed:imageName] buttons: @[closeAction] isAlternative: NO];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(showAlternativeTooltip:(NSString*) title subtitle:(NSString*)subtitle imageName:(NSString*) imageName dismissLabel:(NSString*) dismissLabel) {
     CFAlertAction* closeAction = [CFAlertAction actionWithTitle:dismissLabel style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-    
+
     CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:title subtitle:subtitle image:[UIImage imageNamed:imageName] buttons: @[closeAction] isAlternative: YES];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
 }
@@ -59,7 +59,7 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink capti
 
 RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
-    
+
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeSuccess
                                                                 duration:4.0
@@ -68,9 +68,22 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
                                                                   action:nil];
 }
 
+RCT_EXPORT_METHOD(showErrorStickyAlertWithCallback:(NSString*) message callback:(RCTResponseSenderBlock)callback) {
+  [self destroyLastNotificationView];
+  
+  lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                  type:NotificationTypeError
+                                                              duration:6.0
+                                                           buttonTitle:@"Coba Lagi"
+                                                           dismissable:YES
+                                                                action:^{
+                                                                    callback(@[[NSNull null]]);
+                                                                }];
+}
+
 RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
-    
+
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeError
                                                                 duration:4.0
@@ -101,14 +114,14 @@ RCT_EXPORT_METHOD(showSuccessAlert:(NSString*) message){
 
 RCT_EXPORT_METHOD(showBuyerBadge: (nonnull NSNumber*) negative neutral:(nonnull NSNumber*) neutral positive:(nonnull NSNumber*) positive) {
     CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-    
+
     CFAlertViewController *alertViewController = [TooltipAlert createReputationAlertWithNegative: negative.intValue neutral: neutral.intValue positive: positive.intValue buttons: @[closeAction]];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(showSellerBadge: (NSString*) imageUrl point:(nonnull NSNumber*) point) {
     CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-    
+
     CFAlertViewController *alertViewController = [TooltipAlert createSellerReputationAlertWithImageUrl: imageUrl point: point.intValue buttons: @[closeAction]];
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
 }
@@ -117,7 +130,7 @@ RCT_EXPORT_METHOD(showPopover:(NSArray<NSString*>*) options anchor:(nonnull NSNu
     dispatch_async(dispatch_get_main_queue(), ^{
         RCTView* view = (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
         UIViewController *rootViewController =[UIApplication sharedApplication].keyWindow.rootViewController;
-        
+
         ReactPopoverOptionViewController *vc = [[ReactPopoverOptionViewController alloc] initWithOptions:options anchorView:view presentingViewController:rootViewController callback:^(NSInteger selectedIndex){
             callback(@[@(selectedIndex)]);
         }];
@@ -128,7 +141,7 @@ RCT_EXPORT_METHOD(showPopover:(NSArray<NSString*>*) options anchor:(nonnull NSNu
 RCT_EXPORT_METHOD(hideNavigationBar) {
     UIViewController *topMostViewController = [self topMostViewController];
     [topMostViewController.navigationController setNavigationBarHidden:YES animated:YES];
-    
+
     if([topMostViewController isKindOfClass:[ReactSplitViewController class]]) {
         ReactSplitViewController *reactSplitViewController = (ReactSplitViewController*) topMostViewController;
         UIViewController *rightViewController = reactSplitViewController.splitVC.viewControllers[1];
@@ -143,7 +156,7 @@ RCT_EXPORT_METHOD(shareToFacebook:(NSString*) message productID:(NSString*) prod
     FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
     fbShareContent.contentURL = [NSURL URLWithString:url];
     fbShareContent.quote = message;
-    
+
     [FBSDKShareDialog showFromViewController: [UIApplication sharedApplication].keyWindow.rootViewController
                                  withContent:fbShareContent
                                     delegate:self];
@@ -165,7 +178,7 @@ RCT_EXPORT_METHOD(ensureLogin: (RCTResponseSenderBlock)callback) {
 
 RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RCTResponseSenderBlock)callback) {
     UIViewController *topMostViewController = [self topMostViewController];
-    
+
     [[TKPImagePickerController class] showImagePicker:topMostViewController assetType:DKImagePickerControllerAssetTypeAllPhotos allowMultipleSelect:YES showCancel:YES showCamera:YES maxSelected:maxSelected.intValue selectedAssets:nil completion:^(NSArray<DKAsset*>* result){
         NSMutableArray<NSString*>* resultUri = [NSMutableArray new];
         __block int count = (int) result.count;

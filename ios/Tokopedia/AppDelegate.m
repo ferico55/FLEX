@@ -27,7 +27,6 @@
 #import "HybridNavigationManager.h"
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
-#import "ReactOnboardingHelper.h"
 
 @import NativeNavigation;
 @import GooglePlaces;
@@ -384,7 +383,6 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 #ifdef DEBUG
     [FLEXManager.sharedManager showExplorer];
-    [ReactOnboardingHelper resetOnboarding];
 #endif
     
     [FBSDKAppEvents activateApp];
@@ -617,22 +615,11 @@
 }
 
 - (UIViewController *)rootViewControllerForCoordinator:(ReactNavigationCoordinator *)coordinator {
-    UIViewController *rootViewController = _window.rootViewController;
-    if([rootViewController isKindOfClass:[UITabBarController class]]) {
-        UIViewController *topMostViewController = [rootViewController topMostViewController];
-        if([topMostViewController isKindOfClass:[ReactSplitViewController class]]) {
-            ReactSplitViewController* reactSplitVC = (ReactSplitViewController*) topMostViewController;
+    if([_window.rootViewController isKindOfClass:[UITabBarController class]]) {
+        UITabBarController *vc = (UITabBarController*) _window.rootViewController;
+        if ([[vc topMostViewController] isKindOfClass: [ReactSplitViewController class]]) {
+            ReactSplitViewController* reactSplitVC = (ReactSplitViewController*) [vc topMostViewController];
             return reactSplitVC.splitVC.viewControllers[1];
-        }
-        
-        UIViewController *parentViewController = [topMostViewController parentViewController];
-        if([parentViewController isKindOfClass:[MXSegmentedPagerController class]]) {
-            NSArray<UIViewController*> *childViewControllers = [(MXSegmentedPagerController *) parentViewController childViewControllers];
-            for (UIViewController *childViewController in childViewControllers) {
-                if([childViewController isKindOfClass:[ReactViewController class]]) {
-                    return childViewController;
-                }
-            }
         }
     }
     return _window.rootViewController;

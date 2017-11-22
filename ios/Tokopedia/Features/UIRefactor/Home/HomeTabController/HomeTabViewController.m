@@ -402,6 +402,15 @@
     [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
+- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
+}
+
+- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
+    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+}
+
 - (void)goToInboxMessage {
     [_navigate navigateToInboxMessageFromViewController:self];
 }

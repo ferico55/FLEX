@@ -9,7 +9,7 @@
 import UIKit
 import FirebaseRemoteConfig
 
-private enum remoteKey: String {
+private enum RemoteConfigKey: String {
     case latestVersion = "iosapp_latest_version_code"
     case needUpdate = "iosapp_is_need_update"
     case forceUpdate = "iosapp_is_force_update"
@@ -17,29 +17,31 @@ private enum remoteKey: String {
     case alertMessage = "iosapp_update_message"
     case updateLink = "iosapp_update_link"
     case isQaTesting = "iosapp_qa_now_testing"
+    case topChat = "enable_topchat"
 }
 
 @objc (VersionChecker)
 class VersionChecker : NSObject {
     private let remoteConfig: RemoteConfig
     private var expirationDuration: TimeInterval = 10800; //3 hours
-    
+
     override init(){
         remoteConfig = RemoteConfig.remoteConfig()
         let versionCheckerConfig : VersionCheckerConfig = VersionCheckerConfig()
-        
+
         if versionCheckerConfig.isUsingDevMode == true {
             expirationDuration = 0
             remoteConfig.configSettings = RemoteConfigSettings(developerModeEnabled: true)!
         }
-        
+
         let appDefaults : [String : NSObject]  = [
             "iosapp_update_link":"https://itunes.apple.com/id/app/tokopedia-jual-beli-online/id1001394201?mt=8" as NSObject,
             "iosapp_update_title":"Tersedia Versi Terbaru" as NSObject,
             "iosapp_update_message":"Update tokopedia versi terbaru untuk medapatkan pengalaman berbelanja yang lebih baik" as NSObject,
-            "iosapp_is_force_update":"false" as NSObject
+            "iosapp_is_force_update":"false" as NSObject,
+            "enable_topchat":"true" as NSObject,
         ]
-        
+
         remoteConfig.setDefaults(appDefaults)
     }
 
@@ -49,19 +51,18 @@ class VersionChecker : NSObject {
             if status == .success {
                 self.remoteConfig.activateFetched()
             }
-            
-            let forceUpdate = self.remoteConfig[remoteKey.forceUpdate.rawValue].boolValue
 
-            let alertTitle = self.remoteConfig[remoteKey.alertTitle.rawValue].stringValue ?? ""
-            let alertMessage = self.remoteConfig[remoteKey.alertMessage.rawValue].stringValue ?? ""
-            let updateLink = self.remoteConfig[remoteKey.updateLink.rawValue].stringValue ?? ""
+            let forceUpdate = self.remoteConfig[RemoteConfigKey.forceUpdate.rawValue].boolValue
+            let alertTitle = self.remoteConfig[RemoteConfigKey.alertTitle.rawValue].stringValue ?? ""
+            let alertMessage = self.remoteConfig[RemoteConfigKey.alertMessage.rawValue].stringValue ?? ""
+            let updateLink = self.remoteConfig[RemoteConfigKey.updateLink.rawValue].stringValue ?? ""
 
             if forceUpdate {
                 self.presentAlert(title: alertTitle, message: alertMessage, link: updateLink)
             }
         }
     }
-    
+
     private func presentAlert(title: String, message: String, link: String){
         AnalyticsManager.trackEventName("impressionAppUpdate", category: GA_EVENT_CATEGORY_FORCE_UPDATE_ALERT, action: GA_EVENT_ACTION_VIEW, label: "Alert Force Update Appear")
 

@@ -551,6 +551,10 @@
     }
 }
 
+- (void)navigateToTopChatFromViewController:(UIViewController *)viewController {
+    
+}
+
 //-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId
 //{
 //    UserAuthentificationManager *userMng = [UserAuthentificationManager new];

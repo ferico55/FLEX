@@ -749,6 +749,14 @@ typedef enum TagRequest {
     self.hidesBottomBarWhenPushed = NO;
 }
 
+- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
+    [notificationManager tapWindowBar];
+    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
+}
+
+- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
+    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+}
 #pragma - Scroll to Top
 - (void)scrollToTop
 {

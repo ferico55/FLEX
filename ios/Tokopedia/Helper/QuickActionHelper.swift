@@ -35,14 +35,14 @@ class QuickActionHelper: NSObject {
         let shopId = userAuthenticationManager.getShopId()
         guard shopId != "0" else {
             let searchProductItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.searchProduct.rawValue, localizedTitle: "Cari Produk", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .search), userInfo: nil)
-            let readInboxItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.readInbox.rawValue, localizedTitle: "Baca Inbox", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .message), userInfo: nil)
+            let readInboxItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.readInbox.rawValue, localizedTitle: "Lihat Chat", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .message), userInfo: nil)
             UIApplication.shared.shortcutItems = [searchProductItem, readInboxItem]
             
             return
         }
        
         let searchProductItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.searchProduct.rawValue, localizedTitle: "Cari Produk", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .search), userInfo: nil)
-        let readInboxItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.readInbox.rawValue, localizedTitle: "Baca Inbox", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .message), userInfo: nil)
+        let readInboxItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.readInbox.rawValue, localizedTitle: "Lihat Chat", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .message), userInfo: nil)
         let addProductItem = UIApplicationShortcutItem(type: bundleID + "." + ShortcutItemType.addProduct.rawValue, localizedTitle: "Tambahkan Produk", localizedSubtitle: nil, icon: UIApplicationShortcutIcon(type: .add), userInfo: nil)
         UIApplication.shared.shortcutItems = [searchProductItem, readInboxItem, addProductItem]
     }
@@ -60,8 +60,7 @@ class QuickActionHelper: NSObject {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "tokopedia.kTKPD_REDIRECT_TO_HOME"), object: nil, userInfo: nil)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: "activateSearch"), object: nil, userInfo: nil)
             case .readInbox:
-                let navigator = NavigateViewController()
-                navigator.navigateToInboxMessage(from: UIApplication.topViewController())
+                TPRoutes.routeURL(URL(string: "tokopedia://topchat")!)
             }
             
             // send analytics

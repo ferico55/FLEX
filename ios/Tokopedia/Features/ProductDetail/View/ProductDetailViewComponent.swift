@@ -1262,14 +1262,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             return
         }
         
-        AnalyticsManager.trackEventName("clickShopHome", category: GA_EVENT_CATEGORY_SHOP_HOME, action: GA_EVENT_ACTION_CLICK, label: "Send Message")
+        AnalyticsManager.trackEventName("ClickProductInformation", category: "product page", action: "click on kirim pesan", label: "")
         
-        let data = [
-            "shop_id": productDetail.shop.id,
-            "shop_name": productDetail.shop.name
-        ]
-        let vc = SendMessageViewController(data: data)!
-        vc.source = "product"
+        let vc = SendChatViewController(userID: nil, shopID: productDetail.shop.id, name: productDetail.shop.name, imageURL: productDetail.shop.avatarURL, invoiceURL: nil, productURL: productDetail.url, source: "pdp")
+        
         self.viewController.navigationController?.pushViewController(vc, animated: true)
     }
     

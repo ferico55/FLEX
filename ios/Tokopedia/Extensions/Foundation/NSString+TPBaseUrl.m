@@ -376,6 +376,19 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString *)topChatURL {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://chat.tokopedia.com",
+                           @(TPUrlStaging) : @"https://chat-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://chat-alpha.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 + (NSString*)galadrielURL {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
@@ -389,4 +402,25 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)ajaxAppUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://js.tokopedia.com",
+                           @(TPUrlStaging) : @"https://js-staging.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
++ (NSString*)webSocketUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"wss://chat.tokopedia.com",
+                           @(TPUrlStaging) : @"wss://chat-staging.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
 @end

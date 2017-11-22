@@ -33,7 +33,7 @@ class ShopViewController: UIViewController {
     fileprivate var headerHeight: CGFloat!
     fileprivate var isOfficial: Bool = false
     
-    var delegate:ShopViewControllerDelegate?
+    var delegate: ShopViewControllerDelegate?
     var productFilter: ShopProductFilter?
     
     init() {
@@ -293,7 +293,7 @@ class ShopViewController: UIViewController {
         }
     }
     
-    func minimizeHeader(_ animated:Bool) {
+    func minimizeHeader(_ animated: Bool) {
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = 0
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
     }
@@ -336,7 +336,7 @@ class ShopViewController: UIViewController {
         if let currentViewController = tabChildren[segmentedPagerController.segmentedPager.pager.indexForSelectedPage].viewController
             as? ShopTabChild {
             currentViewController.refreshContent()
-        } else  if let _ = tabChildren[segmentedPagerController.segmentedPager.pager.indexForSelectedPage].viewController as? ReactViewController {
+        } else if let _ = tabChildren[segmentedPagerController.segmentedPager.pager.indexForSelectedPage].viewController as? ReactViewController {
             if let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
                 tabManager.sendRefreshEvent()
             }
@@ -447,14 +447,15 @@ class ShopViewController: UIViewController {
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
         AnalyticsManager.trackEventName(
-            "clickShopHome",
-            category: GA_EVENT_CATEGORY_SHOP_HOME,
-            action: GA_EVENT_ACTION_CLICK,
-            label: "Send Message"
+            "ClickMessageRoom",
+            category: "send message room",
+            action: "click on kirim",
+            label: ""
         )
-        let viewController = SendMessageViewController(to: shop)
-        viewController?.source = "shop"
-        viewController?.display(from: self)
+        
+        let vc = SendChatViewController(userID: nil, shopID: shop.result.info.shop_id, name: shop.result.info.shop_name, imageURL: shop.result.info.shop_avatar, invoiceURL: nil, productURL: nil, source: "shop")
+        
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     fileprivate func openShopInfo(_ shop: Shop) {

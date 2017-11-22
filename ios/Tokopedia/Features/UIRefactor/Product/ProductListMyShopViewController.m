@@ -59,29 +59,29 @@ NoResultDelegate
 {
     NSInteger _page;
     NSInteger _limit;
-    
+
     BOOL _isrefreshview;
-    
+
     UIRefreshControl *_refreshControl;
-    
+
     NSMutableDictionary *_dataInput;
     NSMutableDictionary *_dataFilter;
-    
+
     NoResultReusableView *_noResultView;
-    
+
     NSDictionary *_auth;
     RequestMoveTo *_requestMoveTo;
-    
+
     NavigateViewController *_TKPDNavigator;
     LoadingView *_loadingView;
-    
+
     BOOL _isNeedToSearch;
-    
+
     SortViewController *_sortViewController;
     ProductListMyShopFilterViewController *_filterViewController;
-    
+
     NSIndexPath *_sortIndexPath;
-    
+
     TokopediaNetworkManager *_networkManager;
     NSIndexPath *selectedIndexPath;
 }
@@ -124,73 +124,73 @@ NoResultDelegate
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+
     _tableView.estimatedRowHeight = 86;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-    
+
     _isNeedToSearch = YES;
-    
+
     _products = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _dataFilter = [NSMutableDictionary new];
-    
+
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
-    
+
     _TKPDNavigator = [NavigateViewController new];
-    
+
     _page = 1;
     _limit = 8;
-    
+
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     [self fetchProductData];
-    
+
     /// adjust refresh control
     _refreshControl = [[UIRefreshControl alloc] init];
     _refreshControl.attributedTitle = [[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE];
     [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
     [self.tableView addSubview:_refreshControl];
-    
+
     UIBarButtonItem *barButtonItem = [[UIBarButtonItem alloc] initWithTitle:@""
                                                                       style:UIBarButtonItemStylePlain
                                                                      target:self action:@selector(tap:)];
     barButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = barButtonItem;
-    
+
     UIBarButtonItem *addBarButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd
                                                                                   target:self
                                                                                   action:@selector(tap:)];
     addBarButton.tag = 11;
     self.navigationItem.rightBarButtonItem = addBarButton;
-    
+
     //Add observer
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     [center addObserver:self
                selector:@selector(updateView:)
                    name:ADD_PRODUCT_POST_NOTIFICATION_NAME
                  object:nil];
-    
+
     [center addObserver:self
                selector:@selector(adjustOnProcessProduct)
                    name:@"RefreshOnProcessAddProduct"
                  object:nil];
-    
-    
-    
+
+
+
     [self initNoResultView];
-    
+
     TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
     _auth = [secureStorage keychainDictionary];
-    
+
     _sortViewController = [SortViewController new];
     _sortViewController.delegate = self;
     _sortViewController.sortType = SortManageProduct;
-    
+
     _filterViewController = [ProductListMyShopFilterViewController new];
-    
+
     [self adjustOnProcessProduct];
-    
+
     if(self.delegate != nil) {
         self.navigationItem.rightBarButtonItem = nil;
         UIBarButtonItem* leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"icon_close"] style: UIBarButtonItemStylePlain target:self action:@selector(popBack)];
@@ -225,15 +225,15 @@ NoResultDelegate
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     UITableViewCell* cell = nil;
-    
+
     NSString *cellid = kTKPDSETTINGPRODUCTCELL_IDENTIFIER;
-    
+
     cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
     if (cell == nil) {
         cell = [ProductListMyShopCell newcell];
         ((ProductListMyShopCell*)cell).delegate = self;
     }
-    
+
     if (_products.count > indexPath.row ) {
         ManageProductList *list = _products[indexPath.row];
         [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
@@ -246,16 +246,16 @@ NoResultDelegate
                                                             list.product_currency_symbol,
                                                             price]
                                                   animated:YES];
-        
+
         ((ProductListMyShopCell*)cell).indexpath = indexPath;
-        
+
         UIActivityIndicatorView *act = ((ProductListMyShopCell*)cell).act;
         [act startAnimating];
-        
+
         NSURLRequest* request = [[NSURLRequest alloc] initWithURL:[NSURL URLWithString:list.product_image_300]
                                                       cachePolicy:NSURLRequestUseProtocolCachePolicy
                                                   timeoutInterval:kTKPDREQUEST_TIMEOUTINTERVAL];
-        
+
         UIImageView *thumb = ((ProductListMyShopCell*)cell).thumb;
         thumb.image = [UIImage imageNamed:@"icon_toped_loading_grey-02.png"];
         thumb.contentMode = UIViewContentModeCenter;
@@ -275,7 +275,7 @@ NoResultDelegate
                                   [act stopAnimating];
                                   [act setHidden:YES];
                               }];
-        
+
         if (list.onProcessUploading){
             cell.accessoryType = UITableViewCellAccessoryNone;
             cell.userInteractionEnabled = NO;
@@ -302,14 +302,14 @@ NoResultDelegate
     [AnalyticsManager trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_VIEW label:@"Product"];
     _isNeedToSearch = NO;
     [_searchbar resignFirstResponder];
-    
+
     ManageProductList *list = _products[indexPath.row];
     if(self.delegate != nil) {
         [self.navigationController popViewControllerAnimated:YES];
         [self.delegate productSelectedWithURL: list.product_url];
         return;
     }
-    
+
     [NavigateViewController navigateToProductFromViewController:self
                                                   withProductID:[NSString stringWithFormat:@"%ld", (long)list.product_id]
                                                         andName:list.product_name
@@ -348,7 +348,7 @@ NoResultDelegate
             vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
             UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
             nav.navigationBar.translucent = NO;
-            
+
             [self.navigationController presentViewController:nav animated:YES completion:nil];
         }
     }
@@ -358,27 +358,27 @@ NoResultDelegate
             case BUTTON_FILTER_TYPE_SORT:
             {
                 _sortViewController.selectedIndexPath = _sortIndexPath;
-                
+
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:_sortViewController];
                 nav.navigationBar.translucent = NO;
-                
+
                 [self.navigationController presentViewController:nav animated:YES completion:nil];
-                
+
                 break;
             }
             case BUTTON_FILTER_TYPE_FILTER:
             {
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
-                
+
                 _filterViewController.delegate = self;
                 _filterViewController.breadcrumb = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
                 _filterViewController.shopID = [auth getShopId];
-                
+
                 UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:_filterViewController];
                 navigation.navigationBar.translucent = NO;
-                
+
                 [self.navigationController presentViewController:navigation animated:YES completion:nil];
-                
+
                 break;
             }
             default:
@@ -498,14 +498,14 @@ NoResultDelegate
     NSString *orderByID = [_dataFilter objectForKey:kTKPDFILTER_APIORDERBYKEY]?:[self defaultOrderByValue];
     NSString *etalase = [_dataFilter objectForKey:API_PRODUCT_ETALASE_ID_KEY]?:@"";
     NSString *keyword = [_dataFilter objectForKey:API_KEYWORD_KEY]?:@"";
-    
+
     Breadcrumb *department = [_dataFilter objectForKey:DATA_DEPARTMENT_KEY]?:[Breadcrumb new];
-    
+
     NSString *departmentID = department.department_id?:@"";
     NSString *catalogID = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CATALOG_ID_KEY]?:@"";
     NSString *pictureStatus = [_dataFilter objectForKey:API_MANAGE_PRODUCT_PICTURE_STATUS_KEY]?:@"";
     NSString *productCondition = [_dataFilter objectForKey:API_MANAGE_PRODUCT_CONDITION_KEY]?:@"";
-    
+
     NSDictionary *parameters = @{
                                  @"shop_id": @(shopID),
                                  @"limit": @(_limit),
@@ -633,31 +633,31 @@ NoResultDelegate
    swipeButtonsForDirection:(MGSwipeDirection)direction
               swipeSettings:(MGSwipeSettings *)swipeSettings
           expansionSettings:(MGSwipeExpansionSettings *) expansionSettings {
-    
+
     _isNeedToSearch = NO;
-    
+
     [_searchbar resignFirstResponder];
-    
+
     swipeSettings.transition = MGSwipeTransitionStatic;
-    
+
     //-1 not expand, 0 expand
     expansionSettings.buttonIndex = -1;
-    
+
     if (direction == MGSwipeDirectionRightToLeft) {
         expansionSettings.fillOnTrigger = YES;
         expansionSettings.threshold = 1.1;
-        
+
         NSIndexPath *indexPath = [self.tableView indexPathForCell:cell];
         ManageProductList *product = _products[indexPath.row];
         [_dataInput setObject:@(product.product_id) forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
-        
+
         MGSwipeButton *deleteButton = [self deleteButtonForRowAtIndexPath:indexPath];
         MGSwipeButton *etalaseButton = [self etalaseButtonForRowAtIndexPath:indexPath];
         MGSwipeButton *duplicateButton = [self duplicateButtonForRowAtIndexPath:indexPath];
-        
+
         MGSwipeButton *warehouseButton = [self warehouseButtonForRowAtIndexPath:indexPath];
         warehouseButton.frame = etalaseButton.frame;
-        
+
         if ([product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {
             return @[deleteButton, duplicateButton, etalaseButton];
         } else {
@@ -665,7 +665,7 @@ NoResultDelegate
         }
     }
     return nil;
-    
+
 }
 
 - (MGSwipeButton *)deleteButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -723,8 +723,8 @@ NoResultDelegate
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       welf.lastActionIndexPath = indexPath;
-                                                      
-                                                      
+
+
                                                       UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini tersedia?"
                                                                                                      message:nil
                                                                                                     delegate:welf
@@ -734,8 +734,8 @@ NoResultDelegate
                                                       welf.isMovingToGudang = NO;
                                                       [alert show];
                                                       selectedIndexPath = indexPath;
-                                                      
-                                                      
+
+
                                                       return YES;
                                                   }];
     [button.titleLabel setFont:[UIFont largeTheme]];
@@ -798,19 +798,19 @@ NoResultDelegate
         if(buttonIndex == 1){
             // Move To Etalase
             UserAuthentificationManager *userAuthentificationManager = [UserAuthentificationManager new];
-            
+
             EtalaseViewController *controller = [EtalaseViewController new];
             controller.delegate = self;
             controller.shopId =[userAuthentificationManager getShopId];
             controller.isEditable = NO;
             controller.showOtherEtalase = NO;
             controller.enableAddEtalase = YES;
-            
+
             EtalaseList *selectedEtalase = [EtalaseList new];
             selectedEtalase.etalase_id = selectedProduct.product_etalase_id;
             selectedEtalase.etalase_name = selectedProduct.product_etalase;
             controller.initialSelectedEtalase = selectedEtalase;
-            
+
             [self.navigationController pushViewController:controller animated:YES];
         }
     }
@@ -854,7 +854,7 @@ NoResultDelegate
     vc.type = TYPE_ADD_EDIT_PRODUCT_ADD;
     UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];
     nav.navigationBar.translucent = NO;
-    
+
     [self.navigationController presentViewController:nav animated:YES completion:nil];
 }
 

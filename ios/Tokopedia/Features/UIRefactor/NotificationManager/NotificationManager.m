@@ -273,6 +273,13 @@
     }
 }
 
+- (void)navigateUsingTPRoutes:(NSString *)urlString {
+    if ([self.delegate respondsToSelector:@selector(navigateUsingTPRoutesWithString:onNotificationManager:)]) {
+        [self.delegate navigateUsingTPRoutesWithString:urlString onNotificationManager:self];
+    }
+}
+
+
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));

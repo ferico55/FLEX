@@ -78,11 +78,6 @@
     
     // Inbox section
     
-    if ([_notification.result.inbox.inbox_message integerValue] > 0) {
-        _messageCountLabel.text = _notification.result.inbox.inbox_message;
-        [self updateLabelAppearance:_messageCountLabel];
-    }
-    
     if ([_notification.result.inbox.inbox_talk integerValue] > 0) {
         _discussionCountLabel.text = _notification.result.inbox.inbox_talk;
         [self updateLabelAppearance:_discussionCountLabel];
@@ -308,31 +303,7 @@
                                         category:GA_EVENT_CATEGORY_NOTIFICATION
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Message"];
-                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                    InboxRootViewController *controller = [InboxRootViewController new];
-                    [self.delegate pushViewController:controller];
-                    
-                } else {
-                    InboxMessageViewController *vc = [InboxMessageViewController new];
-                    vc.data=@{@"nav":@"inbox-message"};
-                    
-                    InboxMessageViewController *vc1 = [InboxMessageViewController new];
-                    vc1.data=@{@"nav":@"inbox-message-sent"};
-                    
-                    InboxMessageViewController *vc2 = [InboxMessageViewController new];
-                    vc2.data=@{@"nav":@"inbox-message-archive"};
-                    
-                    InboxMessageViewController *vc3 = [InboxMessageViewController new];
-                    vc3.data=@{@"nav":@"inbox-message-trash"};
-                    NSArray *vcs = @[vc,vc1, vc2, vc3];
-                    
-                    TKPDTabInboxMessageNavigationController *controller = [TKPDTabInboxMessageNavigationController new];
-                    [controller setSelectedIndex:2];
-                    [controller setViewControllers:vcs];
-                    controller.hidesBottomBarWhenPushed = YES;
-                    [self.delegate pushViewController:controller];
-                }
-
+                [self.delegate navigateUsingTPRoutes:@"tokopedia://topchat"];
                 break;
             }
             case 1 : {

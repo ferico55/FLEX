@@ -340,15 +340,8 @@
 }
 
 -(void)tapAskSellerOrder:(TxOrderStatusList *)order{
-    SendMessageViewController *messageController = [SendMessageViewController new];
-    messageController.data = @{
-                               @"shop_id":order.order_shop.shop_id?:@"",
-                               @"shop_name":order.order_shop.shop_name?:@""
-                               };
-    messageController.source = @"tx_ask_seller";
-    messageController.subject = order.order_detail.detail_invoice?:@"";
-    messageController.message = [NSString stringWithFormat:@"INVOICE:\n%@\n\n\n",order.order_detail.detail_pdf_uri];
-    [self.navigationController pushViewController:messageController animated:YES];
+    SendChatViewController *vc = [[SendChatViewController alloc] initWithUserID:nil shopID:order.order_shop.shop_id name:order.order_shop.shop_name imageURL:order.order_shop.shop_pic invoiceURL:order.order_detail.detail_pdf_uri productURL:nil source:@"tx_ask_seller"];
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 -(void)tapRequestCancelOrder:(TxOrderStatusList *)order{

@@ -144,6 +144,9 @@
 		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
 		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
 		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
+		E5F071041FC5899F00C1C41C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F071021FC5899F00C1C41C /* RemoteConfig.swift */; };
+		E5F071081FC589D200C1C41C /* SendChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F071061FC589D200C1C41C /* SendChatViewController.swift */; };
+		E5F071091FC589D200C1C41C /* SendChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5F071071FC589D200C1C41C /* SendChatViewController.xib */; };
 		F954BD561FC55B66008C0B30 /* UIViewController+Swizzling.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B1321FC55B60008C0B30 /* UIViewController+Swizzling.m */; };
 		F954BD571FC55B66008C0B30 /* UIApplication+React.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B1341FC55B60008C0B30 /* UIApplication+React.m */; };
 		F954BD581FC55B66008C0B30 /* UIViewController+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954B1361FC55B60008C0B30 /* UIViewController+Presentation.swift */; };
@@ -2216,6 +2219,9 @@
 		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
 		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
 		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
+		E5F071021FC5899F00C1C41C /* RemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
+		E5F071061FC589D200C1C41C /* SendChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendChatViewController.swift; sourceTree = "<group>"; };
+		E5F071071FC589D200C1C41C /* SendChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendChatViewController.xib; sourceTree = "<group>"; };
 		F954B1301FC55B60008C0B30 /* UIFont+Theme.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIFont+Theme.h"; sourceTree = "<group>"; };
 		F954B1311FC55B60008C0B30 /* UIImageEffects.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UIImageEffects.h; sourceTree = "<group>"; };
 		F954B1321FC55B60008C0B30 /* UIViewController+Swizzling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+Swizzling.m"; sourceTree = "<group>"; };
@@ -5561,6 +5567,14 @@
 			path = Wishlist;
 			sourceTree = "<group>";
 		};
+		E5F071011FC5899F00C1C41C /* TopChat */ = {
+			isa = PBXGroup;
+			children = (
+				E5F071021FC5899F00C1C41C /* RemoteConfig.swift */,
+			);
+			path = TopChat;
+			sourceTree = "<group>";
+		};
 		F954B12E1FC55B60008C0B30 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
@@ -5646,19 +5660,20 @@
 		F954B16C1FC55B60008C0B30 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				F954B16D1FC55B60008C0B30 /* Referral */,
-				F954B1861FC55B60008C0B30 /* ProductDetail */,
+				F954B7C51FC55B63008C0B30 /* Cocoa */,
+				F954BC6A1FC55B65008C0B30 /* Digital */,
+				F954B7C21FC55B63008C0B30 /* EmptyState */,
+				F954B7E61FC55B63008C0B30 /* Feed+ */,
+				F954BC891FC55B65008C0B30 /* Main */,
+				F954B8021FC55B63008C0B30 /* Object */,
 				F954B19A1FC55B60008C0B30 /* Payment */,
 				F954B1AF1FC55B60008C0B30 /* Popover */,
-				F954B1B11FC55B60008C0B30 /* UIRefactor */,
-				F954B7B31FC55B63008C0B30 /* Register */,
-				F954B7C21FC55B63008C0B30 /* EmptyState */,
-				F954B7C51FC55B63008C0B30 /* Cocoa */,
-				F954B7E61FC55B63008C0B30 /* Feed+ */,
-				F954B8021FC55B63008C0B30 /* Object */,
-				F954BC6A1FC55B65008C0B30 /* Digital */,
-				F954BC891FC55B65008C0B30 /* Main */,
+				F954B1861FC55B60008C0B30 /* ProductDetail */,
 				F954BC8F1FC55B65008C0B30 /* React */,
+				F954B16D1FC55B60008C0B30 /* Referral */,
+				F954B7B31FC55B63008C0B30 /* Register */,
+				E5F071011FC5899F00C1C41C /* TopChat */,
+				F954B1B11FC55B60008C0B30 /* UIRefactor */,
 			);
 			path = Features;
 			sourceTree = "<group>";
@@ -5849,87 +5864,87 @@
 		F954B1B11FC55B60008C0B30 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
-				9246FC001FC5797B0038D99B /* Fuzzy Search */,
-				F954B1B21FC55B60008C0B30 /* HVDLayout */,
-				F954B1B51FC55B60008C0B30 /* Handler */,
-				F954B1B81FC55B60008C0B30 /* InboxReview */,
-				F954B1BA1FC55B60008C0B30 /* Transaction */,
-				F954B1F91FC55B60008C0B30 /* Settings */,
-				F954B23B1FC55B61008C0B30 /* Home */,
-				F954B27C1FC55B61008C0B30 /* GeneralCell */,
-				F954B2941FC55B61008C0B30 /* LoginSecurity.h */,
-				F954B2951FC55B61008C0B30 /* ViewModels */,
-				F954B2B41FC55B61008C0B30 /* InboxTicket */,
-				F954B2C51FC55B61008C0B30 /* TopAds */,
-				F954B2CB1FC55B61008C0B30 /* ReusableView */,
-				F954B2D81FC55B61008C0B30 /* Deposit */,
-				F954B2ED1FC55B61008C0B30 /* TokopediaNetworkManager */,
-				F954B2F51FC55B61008C0B30 /* MiniSlideObject.h */,
-				F954B2F61FC55B61008C0B30 /* ProductDataSource.swift */,
-				F954B2F71FC55B61008C0B30 /* Hotlist */,
-				F954B30B1FC55B61008C0B30 /* InboxResolutionCenter */,
-				F954B33F1FC55B61008C0B30 /* Category */,
-				F954B36F1FC55B61008C0B30 /* Sales */,
-				F954B3FA1FC55B61008C0B30 /* TrackingOrder */,
-				F954B4041FC55B61008C0B30 /* MiniSlideData.m */,
-				F954B4051FC55B61008C0B30 /* GeneralViewController */,
-				F954B40C1FC55B61008C0B30 /* MyShopShipment */,
-				F954B42E1FC55B61008C0B30 /* ItemReplacement */,
-				F954B43B1FC55B61008C0B30 /* NotificationManager */,
-				F954B4451FC55B61008C0B30 /* Alert */,
-				F954B4841FC55B61008C0B30 /* ForgotPassword */,
-				F954B48A1FC55B61008C0B30 /* Camera */,
-				F954B49D1FC55B61008C0B30 /* MiniSlide.m */,
-				F954B49E1FC55B61008C0B30 /* InboxMessage */,
-				F954B4B21FC55B61008C0B30 /* Catalog */,
-				F954B4CF1FC55B61008C0B30 /* LogoutRequest.swift */,
-				F954B4D01FC55B61008C0B30 /* Shop */,
-				F954B52C1FC55B62008C0B30 /* TKPGooglePlaces */,
-				F954B5351FC55B62008C0B30 /* GoogleTagManager */,
 				F954B5381FC55B62008C0B30 /* Activation */,
+				F954B6941FC55B62008C0B30 /* Address */,
+				F954B4451FC55B61008C0B30 /* Alert */,
+				F954B48A1FC55B61008C0B30 /* Camera */,
+				F954B4B21FC55B61008C0B30 /* Catalog */,
+				F954B33F1FC55B61008C0B30 /* Category */,
+				F954B5F71FC55B62008C0B30 /* Controller */,
+				F954B6551FC55B62008C0B30 /* CustomViews */,
+				F954B2D81FC55B61008C0B30 /* Deposit */,
+				F954B6F21FC55B62008C0B30 /* DigitalGoodsDataSource.swift */,
+				F954B6A31FC55B62008C0B30 /* FilterController */,
+				F954B4841FC55B61008C0B30 /* ForgotPassword */,
+				9246FC001FC5797B0038D99B /* Fuzzy Search */,
+				F954B27C1FC55B61008C0B30 /* GeneralCell */,
+				F954B6401FC55B62008C0B30 /* GeneralReport */,
+				F954B4051FC55B61008C0B30 /* GeneralViewController */,
+				F954B5351FC55B62008C0B30 /* GoogleTagManager */,
+				F954B1B51FC55B60008C0B30 /* Handler */,
+				F954B23B1FC55B61008C0B30 /* Home */,
 				F954B56B1FC55B62008C0B30 /* HomeSlider */,
+				F954B2F71FC55B61008C0B30 /* Hotlist */,
+				F954B1B21FC55B60008C0B30 /* HVDLayout */,
+				F954B49E1FC55B61008C0B30 /* InboxMessage */,
+				F954B30B1FC55B61008C0B30 /* InboxResolutionCenter */,
+				F954B1B81FC55B60008C0B30 /* InboxReview */,
+				F954B78A1FC55B63008C0B30 /* InboxTalk */,
+				F954B2B41FC55B61008C0B30 /* InboxTicket */,
+				F954B42E1FC55B61008C0B30 /* ItemReplacement */,
+				F954B2941FC55B61008C0B30 /* LoginSecurity.h */,
+				F954B63B1FC55B62008C0B30 /* LoginSecurity.m */,
+				F954B4CF1FC55B61008C0B30 /* LogoutRequest.swift */,
+				F954B7471FC55B63008C0B30 /* MiniSlide.h */,
+				F954B49D1FC55B61008C0B30 /* MiniSlide.m */,
+				F954B6531FC55B62008C0B30 /* MiniSlideData.h */,
+				F954B4041FC55B61008C0B30 /* MiniSlideData.m */,
+				F954B2F51FC55B61008C0B30 /* MiniSlideObject.h */,
+				F954B69F1FC55B62008C0B30 /* MiniSlideObject.m */,
+				F954B5E21FC55B62008C0B30 /* More */,
+				F954B6441FC55B62008C0B30 /* MyShopAddress */,
 				F954B5731FC55B62008C0B30 /* MyShopEtalase */,
-				F954B57B1FC55B62008C0B30 /* TopPicksWidgetViewController.swift */,
+				F954B7931FC55B63008C0B30 /* MyShopNote */,
+				F954B5DE1FC55B62008C0B30 /* MyShopPayment */,
+				F954B40C1FC55B61008C0B30 /* MyShopShipment */,
+				F954B6A01FC55B62008C0B30 /* Navigator */,
+				F954B43B1FC55B61008C0B30 /* NotificationManager */,
+				F954B6ED1FC55B62008C0B30 /* OfficialStore */,
+				F954B79C1FC55B63008C0B30 /* Onboarding */,
+				F954B5831FC55B62008C0B30 /* Product */,
+				F954B2F61FC55B61008C0B30 /* ProductDataSource.swift */,
+				F954B64E1FC55B62008C0B30 /* Profile */,
+				F954B79F1FC55B63008C0B30 /* Promo */,
+				F954B7651FC55B63008C0B30 /* Pulsa */,
+				F954B70E1FC55B63008C0B30 /* ResolutionCenter */,
+				F954B2CB1FC55B61008C0B30 /* ReusableView */,
+				F954B36F1FC55B61008C0B30 /* Sales */,
+				F954B6061FC55B62008C0B30 /* Search */,
+				F954B1F91FC55B60008C0B30 /* Settings */,
+				F954B4D01FC55B61008C0B30 /* Shop */,
+				F954B7481FC55B63008C0B30 /* ShopPageView */,
+				F954B57F1FC55B62008C0B30 /* Smiley */,
+				F954B6F41FC55B63008C0B30 /* SortFilterShare */,
+				F954B7621FC55B63008C0B30 /* TagHandlers */,
+				F954B7A91FC55B63008C0B30 /* Talk */,
+				F954B52C1FC55B62008C0B30 /* TKPGooglePlaces */,
+				F954B63C1FC55B62008C0B30 /* TokoCash */,
+				F954B2ED1FC55B61008C0B30 /* TokopediaNetworkManager */,
+				F954B2C51FC55B61008C0B30 /* TopAds */,
+				F954B6541FC55B62008C0B30 /* TopPick.swift */,
 				F954B57C1FC55B62008C0B30 /* TopPickItem.swift */,
 				F954B57D1FC55B62008C0B30 /* TopPicksGroup.swift */,
-				F954B57E1FC55B62008C0B30 /* TPNotification.swift */,
-				F954B57F1FC55B62008C0B30 /* Smiley */,
-				F954B5831FC55B62008C0B30 /* Product */,
-				F954B5DE1FC55B62008C0B30 /* MyShopPayment */,
-				F954B5E21FC55B62008C0B30 /* More */,
-				F954B5F71FC55B62008C0B30 /* Controller */,
-				F954B6061FC55B62008C0B30 /* Search */,
-				F954B63A1FC55B62008C0B30 /* WalletService.swift */,
-				F954B63B1FC55B62008C0B30 /* LoginSecurity.m */,
-				F954B63C1FC55B62008C0B30 /* TokoCash */,
-				F954B6401FC55B62008C0B30 /* GeneralReport */,
-				F954B6441FC55B62008C0B30 /* MyShopAddress */,
-				F954B64E1FC55B62008C0B30 /* Profile */,
-				F954B6531FC55B62008C0B30 /* MiniSlideData.h */,
-				F954B6541FC55B62008C0B30 /* TopPick.swift */,
-				F954B6551FC55B62008C0B30 /* CustomViews */,
-				F954B6711FC55B62008C0B30 /* UserPageView */,
-				F954B6931FC55B62008C0B30 /* TopPicksResponseData.swift */,
-				F954B6941FC55B62008C0B30 /* Address */,
-				F954B69F1FC55B62008C0B30 /* MiniSlideObject.m */,
-				F954B6A01FC55B62008C0B30 /* Navigator */,
-				F954B6A31FC55B62008C0B30 /* FilterController */,
-				F954B6B11FC55B62008C0B30 /* TxOrder */,
-				F954B6ED1FC55B62008C0B30 /* OfficialStore */,
-				F954B6F21FC55B62008C0B30 /* DigitalGoodsDataSource.swift */,
 				F954B6F31FC55B63008C0B30 /* TopPicksResponse.swift */,
-				F954B6F41FC55B63008C0B30 /* SortFilterShare */,
+				F954B6931FC55B62008C0B30 /* TopPicksResponseData.swift */,
+				F954B57B1FC55B62008C0B30 /* TopPicksWidgetViewController.swift */,
+				F954B57E1FC55B62008C0B30 /* TPNotification.swift */,
 				F954B70D1FC55B63008C0B30 /* TPRoutes.swift */,
-				F954B70E1FC55B63008C0B30 /* ResolutionCenter */,
-				F954B7471FC55B63008C0B30 /* MiniSlide.h */,
-				F954B7481FC55B63008C0B30 /* ShopPageView */,
-				F954B7621FC55B63008C0B30 /* TagHandlers */,
-				F954B7651FC55B63008C0B30 /* Pulsa */,
-				F954B78A1FC55B63008C0B30 /* InboxTalk */,
-				F954B7931FC55B63008C0B30 /* MyShopNote */,
-				F954B79C1FC55B63008C0B30 /* Onboarding */,
-				F954B79F1FC55B63008C0B30 /* Promo */,
-				F954B7A91FC55B63008C0B30 /* Talk */,
+				F954B3FA1FC55B61008C0B30 /* TrackingOrder */,
+				F954B1BA1FC55B60008C0B30 /* Transaction */,
+				F954B6B11FC55B62008C0B30 /* TxOrder */,
+				F954B6711FC55B62008C0B30 /* UserPageView */,
+				F954B2951FC55B61008C0B30 /* ViewModels */,
+				F954B63A1FC55B62008C0B30 /* WalletService.swift */,
 			);
 			path = UIRefactor;
 			sourceTree = "<group>";
@@ -7267,6 +7282,8 @@
 		F954B50B1FC55B62008C0B30 /* SendMessage */ = {
 			isa = PBXGroup;
 			children = (
+				E5F071061FC589D200C1C41C /* SendChatViewController.swift */,
+				E5F071071FC589D200C1C41C /* SendChatViewController.xib */,
 				F954B50C1FC55B62008C0B30 /* SendMessageViewController.h */,
 				F954B50D1FC55B62008C0B30 /* SendMessageViewController.xib */,
 				F954B50E1FC55B62008C0B30 /* SendMessageViewController.m */,
@@ -8432,14 +8449,14 @@
 		F954B7E61FC55B63008C0B30 /* Feed+ */ = {
 			isa = PBXGroup;
 			children = (
+				F954B8001FC55B63008C0B30 /* FeedDetailViewController.graphql */,
+				F954B7E91FC55B63008C0B30 /* FeedViewController.graphql */,
+				F954B7FF1FC55B63008C0B30 /* FeedEmptyState.json */,
 				F954B7E71FC55B63008C0B30 /* FeedDetailViewController.swift */,
 				F954B7E81FC55B63008C0B30 /* FeedService.swift */,
-				F954B7E91FC55B63008C0B30 /* FeedViewController.graphql */,
-				F954B7EA1FC55B63008C0B30 /* Objects */,
-				F954B7EF1FC55B63008C0B30 /* Components */,
-				F954B7FF1FC55B63008C0B30 /* FeedEmptyState.json */,
-				F954B8001FC55B63008C0B30 /* FeedDetailViewController.graphql */,
 				F954B8011FC55B63008C0B30 /* FeedViewController.swift */,
+				F954B7EF1FC55B63008C0B30 /* Components */,
+				F954B7EA1FC55B63008C0B30 /* Objects */,
 			);
 			path = "Feed+";
 			sourceTree = "<group>";
@@ -8447,10 +8464,10 @@
 		F954B7EA1FC55B63008C0B30 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
-				F954B7EB1FC55B63008C0B30 /* FeedCardKOLRecommendationState.swift */,
 				F954B7EC1FC55B63008C0B30 /* FeedCardKOLPostState.swift */,
-				F954B7ED1FC55B63008C0B30 /* FeedState.swift */,
+				F954B7EB1FC55B63008C0B30 /* FeedCardKOLRecommendationState.swift */,
 				F954B7EE1FC55B63008C0B30 /* FeedDetailState.swift */,
+				F954B7ED1FC55B63008C0B30 /* FeedState.swift */,
 			);
 			path = Objects;
 			sourceTree = "<group>";
@@ -8458,21 +8475,21 @@
 		F954B7EF1FC55B63008C0B30 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				F954B7F01FC55B63008C0B30 /* FeedOfficialStoreComponentView.swift */,
-				F954B7F11FC55B63008C0B30 /* FeedKOLActivityComponentView.swift */,
-				F954B7F21FC55B63008C0B30 /* FeedToppicksComponentView.swift */,
-				F954B7F31FC55B63008C0B30 /* FeedDetailProductCellComponentView.swift */,
-				F954B7F41FC55B63008C0B30 /* FeedInspirationComponentView.swift */,
-				F954B7F51FC55B63008C0B30 /* FeedEmptyStateComponentView.swift */,
-				F954B7F61FC55B63008C0B30 /* FeedKOLRecommendationComponentView.swift */,
-				F954B7F71FC55B63008C0B30 /* ProductCellComponentView.swift */,
-				F954B7F81FC55B63008C0B30 /* FeedDetailHeaderComponentView.swift */,
-				F954B7F91FC55B63008C0B30 /* FeedNextPageErrorComponentView.swift */,
 				F954B7FA1FC55B63008C0B30 /* FeedActivityComponentView.swift */,
-				F954B7FB1FC55B63008C0B30 /* FeedDetailActionComponentView.swift */,
 				F954B7FC1FC55B63008C0B30 /* FeedComponentView.swift */,
+				F954B7FB1FC55B63008C0B30 /* FeedDetailActionComponentView.swift */,
+				F954B7F81FC55B63008C0B30 /* FeedDetailHeaderComponentView.swift */,
+				F954B7F31FC55B63008C0B30 /* FeedDetailProductCellComponentView.swift */,
+				F954B7F51FC55B63008C0B30 /* FeedEmptyStateComponentView.swift */,
 				F954B7FD1FC55B63008C0B30 /* FeedHeaderComponentView.swift */,
+				F954B7F41FC55B63008C0B30 /* FeedInspirationComponentView.swift */,
+				F954B7F11FC55B63008C0B30 /* FeedKOLActivityComponentView.swift */,
+				F954B7F61FC55B63008C0B30 /* FeedKOLRecommendationComponentView.swift */,
+				F954B7F91FC55B63008C0B30 /* FeedNextPageErrorComponentView.swift */,
+				F954B7F01FC55B63008C0B30 /* FeedOfficialStoreComponentView.swift */,
 				F954B7FE1FC55B63008C0B30 /* FeedPromotionComponentView.swift */,
+				F954B7F21FC55B63008C0B30 /* FeedToppicksComponentView.swift */,
+				F954B7F71FC55B63008C0B30 /* ProductCellComponentView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -11205,6 +11222,7 @@
 				F954BE541FC55B66008C0B30 /* RetryCollectionReusableView.xib in Resources */,
 				F954BF141FC55B67008C0B30 /* RejectReasonEditPriceViewController.xib in Resources */,
 				F954BF901FC55B67008C0B30 /* InboxMessageViewController.xib in Resources */,
+				E5F071091FC589D200C1C41C /* SendChatViewController.xib in Resources */,
 				F954C01A1FC55B67008C0B30 /* DetailProductWholesaleTableCell.xib in Resources */,
 				F954C16C1FC55B69008C0B30 /* PromoCollectionReusableView.xib in Resources */,
 				F954C0B91FC55B68008C0B30 /* ProfileFavoriteShopCell.xib in Resources */,
@@ -12780,6 +12798,7 @@
 				F954C2CF1FC55B6A008C0B30 /* CreatePasswordUserProfile.swift in Sources */,
 				F954BFC01FC55B67008C0B30 /* CloseShopViewController.m in Sources */,
 				F954C3441FC55B6B008C0B30 /* AddProductValidationResult.m in Sources */,
+				E5F071041FC5899F00C1C41C /* RemoteConfig.swift in Sources */,
 				F954BE051FC55B66008C0B30 /* HomePageCategoryLayoutSection.swift in Sources */,
 				F954BD581FC55B66008C0B30 /* UIViewController+Presentation.swift in Sources */,
 				F954C2A61FC55B6A008C0B30 /* TrackOrderHistory.m in Sources */,
@@ -13426,6 +13445,7 @@
 				F954C20A1FC55B69008C0B30 /* GoogleDistanceMatrix.m in Sources */,
 				F954C2931FC55B6A008C0B30 /* CatalogMarketPlace.m in Sources */,
 				F954BFB31FC55B67008C0B30 /* EditShopDescriptionViewCell.m in Sources */,
+				E5F071081FC589D200C1C41C /* SendChatViewController.swift in Sources */,
 				F954C2A91FC55B6A008C0B30 /* DepositForm.m in Sources */,
 				F954BE0F1FC55B66008C0B30 /* AnnouncementTickerView.m in Sources */,
 				F954C1101FC55B68008C0B30 /* ResolutionCenterCreatePOSTProduct.m in Sources */,

@@ -30,6 +30,11 @@ import AddPromoPageStep3 from './src/TopAds/Page/AddPromoPageStep3'
 import EditPromoPage from './src/TopAds/Page/EditPromoPage'
 import EditPromoGroupNamePage from './src/TopAds/Page/EditPromoGroupNamePage'
 import FeedKOLActivityScreen from './src/Feed/KOL'
+import TopChatMain from '@containers/main/MainContainers'
+import TopChatDetail from '@containers/detail/DetailContainers'
+import TopChatStore from './src/TopChat/Store'
+import SendChatView from '@SendChatContainers/SendChatView'
+import ProductAttachTopChat from '@containers/product/ProductContainers'
 
 // Inbox review pages
 import InboxReview from './src/InboxReview/Page/InboxReview'
@@ -297,6 +302,7 @@ Navigator.registerScreen('ImageDetailPage', () => props => (
     <ImageDetailPage {...props} />
   </Provider>
 ))
+
 Navigator.registerScreen('ProductReviewPage', () => props => (
   <Provider store={inboxReviewStore}>
     <ProductReviewPage {...props} />
@@ -309,6 +315,28 @@ Navigator.registerScreen('ShopReviewPage', () => props => (
 ))
 
 Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)
+
+/* TOPCHAT */
+Navigator.registerScreen('TopChatMain', () => props => (
+  <Provider store={TopChatStore}>
+    <TopChatMain {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('TopChatDetail', () => props => (
+  <Provider store={TopChatStore}>
+    <TopChatDetail {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('SendChat', () => props => <SendChatView {...props} />)
+
+Navigator.registerScreen('ProductAttachTopChat', () => props => (
+  <Provider store={TopChatStore}>
+    <ProductAttachTopChat {...props} />
+  </Provider>
+))
+/* TOPCHAT */
 
 Navigator.registerScreen('SearchFilterScreen',() => props =>(
 <SearchFilterScreen {...props}/>
