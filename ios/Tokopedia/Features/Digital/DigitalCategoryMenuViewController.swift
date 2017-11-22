@@ -83,15 +83,15 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "Daftar Produk", style: .default) { _ in
-                openWebView("\(NSString.pulsaUrl())/products/")
+                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/products")!)
             })
             
             alertController.addAction(UIAlertAction(title: "Daftar Transaksi", style: .default) { _ in
-                openWebView("\(NSString.pulsaUrl())/order-list/")
+                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list")!)
             })
             
             alertController.addAction(UIAlertAction(title: "Langganan", style: .default) { _ in
-                openWebView("\(NSString.pulsaUrl())/subscribe/")
+                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe")!)
             })
             
             alertController.addAction(UIAlertAction(title: "Batal", style: .cancel) { _ in
@@ -287,11 +287,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     
     func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
         unowned let `self` = self
-        
+        guard let `state` = state, let `form` = state.form else { return NilNode() }
         let operatorSelector = { () -> NodeType in
-            switch state!.form!.operatorSelectonStyle {
+            switch form.operatorSelectonStyle {
             case let .prefixChecking(textInput):
-                let textInputState = state!.textInputStates[textInput.id] ?? DigitalTextInputState(text: "", failedValidation: nil)
+                let textInputState = state.textInputStates[textInput.id] ?? DigitalTextInputState(text: "", failedValidation: nil)
                 
                 return textInputNode(for: textInput, with: textInputState)
                 
@@ -302,7 +302,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     layout.marginTop = 15
                 }.add(children: [
                     Node<UILabel>() { label, layout, _ in
-                        label.text = "Pilih Produk \(state!.form!.name)"
+                        label.text = "Pilih Produk \(form.name)"
                         label.font = .smallTheme()
                         label.textColor = UIColor.black.withAlphaComponent(0.38)
                         layout.marginBottom = 5
@@ -310,14 +310,14 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     Node<UIButton> { [unowned self] button, layout, _ in
                         layout.height = 25
                         layout.marginBottom = 5
-                        button.setTitle(state?.selectedOperator?.name ?? "- Pilih -", for: .normal)
+                        button.setTitle(state.selectedOperator?.name ?? "- Pilih -", for: .normal)
                         button.contentHorizontalAlignment = .left
                         button.setTitleColor(UIColor.black.withAlphaComponent(0.54), for: .normal)
                         button.titleLabel?.font = .title2Theme()
                         
                         button.rx.tap
                             .flatMap { () -> Observable<DigitalOperator> in
-                                let viewController = DigitalOperatorSelectionViewController(operators: state!.form!.operators)
+                                let viewController = DigitalOperatorSelectionViewController(operators: form.operators, title:form.operatorLabel, categoryName: form.name)
                                 
                                 self.viewController?.navigationController?.pushViewController(viewController, animated: true)
                                 
@@ -350,8 +350,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             }
         }()
         
-        let shouldShowProductButton = state?.selectedOperator?.shouldShowProductSelection ?? false
-        let isSelectProduct = state?.selectedProduct != nil ? true : false
+        let shouldShowProductButton = state.selectedOperator?.shouldShowProductSelection ?? false
+        let isSelectProduct = state.selectedProduct != nil ? true : false
         
         let productButton = Node(identifier: "product button") { _, layout, _ in
             layout.paddingVertical = 5
@@ -359,7 +359,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             layout.marginTop = 15
         }.add(children: [
             Node<UILabel>() { label, layout, _ in
-                label.text = state?.selectedOperator?.productSelectionTitle
+                label.text = state.selectedOperator?.productSelectionTitle
                 label.font = .smallTheme()
                 label.textColor = UIColor.black.withAlphaComponent(0.38)
                 layout.marginBottom = 5
@@ -367,13 +367,12 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node<UIButton> { [unowned self] button, layout, _ in
                 layout.height = 25
                 
-                button.setTitle(state?.selectedProduct?.name ?? "- Pilih -", for: .normal)
+                button.setTitle(state.selectedProduct?.name ?? "- Pilih -", for: .normal)
                 button.contentHorizontalAlignment = .left
                 button.setTitleColor(UIColor.black.withAlphaComponent(0.54), for: .normal)
                 button.titleLabel?.font = .title2Theme()
                 
-                guard let state = state,
-                    let viewController = self.viewController,
+                guard let viewController = self.viewController,
                     let selectedOperator = state.selectedOperator else { return }
                 
                 button
@@ -409,13 +408,13 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node<UILabel>() { label, _, _ in
                 label.font = .smallTheme()
                 label.textColor = .red
-                label.text = state!.showErrors && state!.selectedProduct == nil ? "Pilih terlebih dahulu" : nil
+                label.text = state.showErrors && state.selectedProduct == nil ? "Pilih terlebih dahulu" : nil
                 
             }
         ])
         
-        let operatorInputs = state?.selectedOperator?.textInputs.map { textInput in
-            return textInputNode(for: textInput, with: state!.textInputStates[textInput.id] ?? DigitalTextInputState(text: "", failedValidation: nil))
+        let operatorInputs = state.selectedOperator?.textInputs.map { textInput in
+            return textInputNode(for: textInput, with: state.textInputStates[textInput.id] ?? DigitalTextInputState(text: "", failedValidation: nil))
         }
         
         let infoBox = Node<UIView>() { view, layout, _ in
@@ -425,7 +424,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             layout.padding = 0
             layout.marginBottom = 0
             layout.marginTop = 0
-            if let text = state?.selectedProduct?.detail, !text.isEmpty {
+            if let text = state.selectedProduct?.detail, !text.isEmpty {
                 view.backgroundColor = UIColor.tpLightGreen().withAlphaComponent(0.12)
                 view.layer.borderWidth = 1
                 view.layer.borderColor = UIColor.tpGreen().withAlphaComponent(0.12).cgColor
@@ -440,7 +439,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node<UILabel>(identifier: "keterangan_title") { label, layout, _ in
                 label.font = .smallThemeMedium()
                 label.textColor = .tpGreen()
-                if let text = state?.selectedProduct?.detail, !text.isEmpty {
+                if let text = state.selectedProduct?.detail, !text.isEmpty {
                     label.text = "Keterangan"
                     layout.marginBottom = 10
                 } else {
@@ -472,8 +471,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 label.numberOfLines = 0
                 label.font = .smallTheme()
                 label.textColor = .tpSecondaryBlackText()
-                if let infoString = state?.selectedProduct?.detail,
-                    let detailString = state?.selectedProduct?.urlText, !infoString.isEmpty {
+                if let infoString = state.selectedProduct?.detail,
+                    let detailString = state.selectedProduct?.urlText, !infoString.isEmpty {
                     if !detailString.isEmpty {
                         let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
                         let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
@@ -496,7 +495,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }.add(children: [
             operatorSelector,
             
-            Node(identifier: "operator_\(state?.selectedOperator?.name ?? "empty")")
+            Node(identifier: "operator_\(state.selectedOperator?.name ?? "empty")")
                 .add(children: operatorInputs ?? [Node()]),
             
             shouldShowProductButton ? productButton as NodeType : NilNode(),
@@ -510,7 +509,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             
             isSelectProduct ? Node<UIView> { view, layout, _ in
                 layout.flexDirection = .row
-                if let text = state?.selectedProduct?.priceText, text.isEmpty {
+                if let text = state.selectedProduct?.priceText, text.isEmpty {
                     layout.marginTop = 0
                     layout.marginBottom = 0
                     view.backgroundColor = .white
@@ -523,7 +522,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 Node<UILabel>(identifier: "harga_title") { label, _, _ in
                     label.font = .largeTheme()
                     label.textColor = .tpSecondaryBlackText()
-                    if let text = state?.selectedProduct?.priceText, text.isEmpty {
+                    if let text = state.selectedProduct?.priceText, text.isEmpty {
                         label.text = ""
                     } else {
                         label.text = "Harga"
@@ -535,22 +534,22 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     label.font = .largeThemeMedium()
                     label.textColor = .tpOrange()
                     label.textAlignment = .right
-                    if state?.selectedProduct?.promoPriceText != state?.selectedProduct?.priceText {
-                        label.text = state?.selectedProduct?.promoPriceText
+                    if state.selectedProduct?.promoPriceText != state.selectedProduct?.priceText {
+                        label.text = state.selectedProduct?.promoPriceText
                     } else {
                         label.text = ""
                     }
                 },
                 Node<UILabel>(identifier: "harga") { label, _, _ in
                     label.textColor = .tpSecondaryBlackText()
-                    if state?.selectedProduct?.promoPriceText != state?.selectedProduct?.priceText {
+                    if state.selectedProduct?.promoPriceText != state.selectedProduct?.priceText {
                         label.font = .microTheme()
-                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state?.selectedProduct?.priceText)!)
+                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state.selectedProduct?.priceText)!)
                         attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
                         label.attributedText = attributeString
                     } else {
                         label.font = .largeTheme()
-                        label.text = state?.selectedProduct?.priceText
+                        label.text = state.selectedProduct?.priceText
                     }
                 }
             ]) : Node<UIView> { view, layout, _ in
@@ -561,7 +560,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 layout.marginBottom = 0
             },
             {
-                guard state!.form!.isInstantPaymentAvailable else { return NilNode() }
+                guard state.form!.isInstantPaymentAvailable else { return NilNode() }
                 
                 return Node { _, layout, _ in
                     layout.flexDirection = .row
@@ -574,7 +573,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         layout.height = 18
                         
                         checkbox.delegate = self
-                        checkbox.on = state!.isInstantPaymentEnabled
+                        checkbox.on = state.isInstantPaymentEnabled
                         checkbox.boxType = .square
                         checkbox.lineWidth = 1
                         checkbox.onTintColor = .white
@@ -618,13 +617,13 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     return button
                 }
             ) { button, layout, _ in
-                let addToCartProgress = state!.addToCartProgress
+                let addToCartProgress = state.addToCartProgress
                 
                 let title = addToCartProgress == .idle ? "Beli" : "Sedang proses..."
                 
                 button.setTitle(title, for: .normal)
                 
-                button.isEnabled = addToCartProgress != .onProgress && state!.canAddToCart
+                button.isEnabled = addToCartProgress != .onProgress && state.canAddToCart
                 
                 layout.height = 52
                 layout.flexDirection = .row
@@ -632,7 +631,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 layout.marginTop = 10
                 button.rx.tap
                     .subscribe(onNext: {
-                        guard let state = state, let form = state.form, state.passesTextValidations && state.selectedProduct != nil else {
+                        guard state.passesTextValidations && state.selectedProduct != nil else {
                             self.store.dispatch(DigitalWidgetAction.buyButtonTap)
                             return
                         }
@@ -687,7 +686,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             .disposed(by: self.rx_disposeBag)
                     })
                     .disposed(by: self.disposeBag)
-            }.add(child: state!.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
+            }.add(child: state.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
                 indicator.activityIndicatorViewStyle = .white
                 indicator.startAnimating()
                 

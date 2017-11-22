@@ -34,6 +34,7 @@ final class DigitalBanner: Unboxable {
 struct DigitalForm {
     let name: String
     let title: String
+    let operatorLabel: String
     let operatorSelectonStyle: DigitalOperatorSelectionStyle
     let operators: [DigitalOperator]
     let isInstantPaymentAvailable: Bool
@@ -46,6 +47,7 @@ extension DigitalForm: Unboxable {
     init(unboxer: Unboxer) throws {
         self.name = try unboxer.unbox(keyPath: "data.attributes.name")
         self.title = try unboxer.unbox(keyPath: "data.attributes.title")
+        self.operatorLabel = try unboxer.unbox(keyPath: "data.attributes.operator_label")
         self.operatorSelectonStyle = {
             let operatorStyleString: String = try! unboxer.unbox(keyPath: "data.attributes.operator_style")
             
