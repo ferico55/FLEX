@@ -166,12 +166,11 @@
 }
 
 -(NSString*)lastStatusString{
-    
+    NSString *statusString = @"-";
     NSString *lastStatus = [NSString convertHTML:self.order_last.last_buyer_status];
-    NSArray *arrLastStatus = [lastStatus componentsSeparatedByString:@"\n"];
-    
-    NSString *statusString = arrLastStatus.count>0 ? arrLastStatus[0] : @"";
-    
+    if (lastStatus &&![lastStatus isEqualToString:@""]&&![lastStatus isEqualToString:@"0"]) {
+        statusString = lastStatus;
+    }
     return statusString;
 }
 

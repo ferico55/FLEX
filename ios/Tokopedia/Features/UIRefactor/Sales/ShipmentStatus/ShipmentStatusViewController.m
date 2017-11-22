@@ -261,6 +261,7 @@
         cell.driverInfoContainerView.hidden = false;
         [cell.driverInfoViewConst setConstant:93];
         
+        __weak typeof(self) weakself = self;
         cell.onTapDriverInfo = ^(){
             UIAlertController *popup = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *call = [UIAlertAction
@@ -295,7 +296,7 @@
             [popup addAction: message];
             [popup addAction: cancel];
             
-            [self presentViewController:popup animated:YES completion:nil];
+            [weakself presentViewController:popup animated:YES completion:nil];
         };
     } else {
         cell.driverInfoContainerView.hidden = true;
