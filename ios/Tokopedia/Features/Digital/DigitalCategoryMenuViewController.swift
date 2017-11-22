@@ -351,6 +351,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }()
         
         let shouldShowProductButton = state?.selectedOperator?.shouldShowProductSelection ?? false
+        let isSelectProduct = state?.selectedProduct != nil ? true : false
         
         let productButton = Node(identifier: "product button") { _, layout, _ in
             layout.paddingVertical = 5
@@ -417,6 +418,78 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             return textInputNode(for: textInput, with: state!.textInputStates[textInput.id] ?? DigitalTextInputState(text: "", failedValidation: nil))
         }
         
+        let infoBox = Node<UIView>() { view, layout, _ in
+            view.backgroundColor = UIColor.tpLightGreen().withAlphaComponent(0.12)
+            view.backgroundColor = .white
+            view.layer.borderWidth = 0
+            layout.padding = 0
+            layout.marginBottom = 0
+            layout.marginTop = 0
+            if let text = state?.selectedProduct?.detail, !text.isEmpty {
+                view.backgroundColor = UIColor.tpLightGreen().withAlphaComponent(0.12)
+                view.layer.borderWidth = 1
+                view.layer.borderColor = UIColor.tpGreen().withAlphaComponent(0.12).cgColor
+                view.layer.cornerRadius = 2
+                layout.flexDirection = .column
+                layout.alignItems = .flexStart
+                layout.padding = 10
+                layout.marginBottom = 10
+                layout.marginTop = 10
+            }
+        }.add(children: [
+            Node<UILabel>(identifier: "keterangan_title") { label, layout, _ in
+                label.font = .smallThemeMedium()
+                label.textColor = .tpGreen()
+                if let text = state?.selectedProduct?.detail, !text.isEmpty {
+                    label.text = "Keterangan"
+                    layout.marginBottom = 10
+                } else {
+                    label.text = ""
+                    layout.marginBottom = 0
+                }
+            },
+            Node<UILabel>(
+                identifier: "keterangan_detail",
+                create: {
+                    let label = UILabel()
+                    
+                    label.isUserInteractionEnabled = true
+                    let gestureRecognizer = UITapGestureRecognizer()
+                    gestureRecognizer.rx.event
+                        .subscribe(onNext: { _ in
+                            if let urlString = self.state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
+                                let webViewController = WKWebViewController(urlString: urlString)
+                                self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
+                            }
+                        })
+                        .disposed(by: self.rx_disposeBag)
+                    
+                    label.addGestureRecognizer(gestureRecognizer)
+                    
+                    return label
+                }
+            ) { label, _, _ in
+                label.numberOfLines = 0
+                label.font = .smallTheme()
+                label.textColor = .tpSecondaryBlackText()
+                if let infoString = state?.selectedProduct?.detail,
+                    let detailString = state?.selectedProduct?.urlText, !infoString.isEmpty {
+                    if !detailString.isEmpty {
+                        let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
+                        let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
+                        let text = NSMutableAttributedString()
+                        text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
+                        text.append(attributedString)
+                        label.attributedText = text
+                    } else {
+                        label.text = NSAttributedString(fromHTML: infoString).string
+                    }
+                } else {
+                    label.text = ""
+                }
+            }
+        ])
+        
         return Node<UIView>(identifier: "widget") { view, layout, _ in
             view.backgroundColor = .white
             layout.padding = 15
@@ -426,7 +499,68 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node(identifier: "operator_\(state?.selectedOperator?.name ?? "empty")")
                 .add(children: operatorInputs ?? [Node()]),
             
-            shouldShowProductButton ? productButton as NodeType : NilNode(), {
+            shouldShowProductButton ? productButton as NodeType : NilNode(),
+            
+            isSelectProduct ? infoBox as NodeType : Node<UIView> { view, layout, _ in
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0
+                layout.padding = 0
+                layout.margin = 0
+            },
+            
+            isSelectProduct ? Node<UIView> { view, layout, _ in
+                layout.flexDirection = .row
+                if let text = state?.selectedProduct?.priceText, text.isEmpty {
+                    layout.marginTop = 0
+                    layout.marginBottom = 0
+                    view.backgroundColor = .white
+                    view.layer.borderWidth = 0
+                } else {
+                    layout.marginTop = 10
+                    layout.marginBottom = 5
+                }
+            }.add(children: [
+                Node<UILabel>(identifier: "harga_title") { label, _, _ in
+                    label.font = .largeTheme()
+                    label.textColor = .tpSecondaryBlackText()
+                    if let text = state?.selectedProduct?.priceText, text.isEmpty {
+                        label.text = ""
+                    } else {
+                        label.text = "Harga"
+                    }
+                },
+                Node<UILabel>(identifier: "harga_promo") { label, layout, _ in
+                    layout.flexGrow = 1
+                    layout.marginRight = 10
+                    label.font = .largeThemeMedium()
+                    label.textColor = .tpOrange()
+                    label.textAlignment = .right
+                    if state?.selectedProduct?.promoPriceText != state?.selectedProduct?.priceText {
+                        label.text = state?.selectedProduct?.promoPriceText
+                    } else {
+                        label.text = ""
+                    }
+                },
+                Node<UILabel>(identifier: "harga") { label, _, _ in
+                    label.textColor = .tpSecondaryBlackText()
+                    if state?.selectedProduct?.promoPriceText != state?.selectedProduct?.priceText {
+                        label.font = .microTheme()
+                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state?.selectedProduct?.priceText)!)
+                        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+                        label.attributedText = attributeString
+                    } else {
+                        label.font = .largeTheme()
+                        label.text = state?.selectedProduct?.priceText
+                    }
+                }
+            ]) : Node<UIView> { view, layout, _ in
+                view.backgroundColor = .white
+                view.layer.borderWidth = 0
+                layout.padding = 0
+                layout.marginTop = 0
+                layout.marginBottom = 0
+            },
+            {
                 guard state!.form!.isInstantPaymentAvailable else { return NilNode() }
                 
                 return Node { _, layout, _ in
@@ -472,70 +606,6 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 ])
             }(),
             
-            Node<UIView>() { view, layout, _ in
-                view.backgroundColor = UIColor.tpLightGreen().withAlphaComponent(0.12)
-                view.layer.borderWidth = 1
-                view.layer.borderColor = UIColor.tpGreen().withAlphaComponent(0.12).cgColor
-                view.layer.cornerRadius = 2
-                if let text = state?.selectedProduct?.detail, !text.isEmpty {
-                    layout.padding = 10
-                } else {
-                    layout.padding = 0
-                }
-            }.add(children: [
-                Node<UILabel>(identifier: "keterangan_title") { label, layout, _ in
-                    label.font = .smallThemeMedium()
-                    label.textColor = .tpGreen()
-                    if let text = state?.selectedProduct?.detail, !text.isEmpty {
-                        label.text = "Keterangan"
-                        layout.marginBottom = 10
-                    } else {
-                        label.text = ""
-                        layout.marginBottom = 0
-                    }
-                },
-                Node<UILabel>(
-                    identifier: "keterangan_detail",
-                    create: {
-                        let label = UILabel()
-                        
-                        label.isUserInteractionEnabled = true
-                        let gestureRecognizer = UITapGestureRecognizer()
-                        gestureRecognizer.rx.event
-                            .subscribe(onNext: { _ in
-                                if let urlString = self.state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
-                                    let webViewController = WKWebViewController(urlString: urlString)
-                                    self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
-                                }
-                            })
-                            .disposed(by: self.rx_disposeBag)
-                        
-                        label.addGestureRecognizer(gestureRecognizer)
-                        
-                        return label
-                    }
-                ) { label, _, _ in
-                    label.numberOfLines = 0
-                    label.font = .smallTheme()
-                    label.textColor = .tpSecondaryBlackText()
-                    if let infoString = state?.selectedProduct?.detail,
-                        let detailString = state?.selectedProduct?.urlText {
-                        if !detailString.isEmpty {
-                            let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
-                            let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
-                            let text = NSMutableAttributedString()
-                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
-                            text.append(attributedString)
-                            label.attributedText = text
-                        } else {
-                            label.text = NSAttributedString(fromHTML: infoString).string
-                        }
-                    } else {
-                        label.text = ""
-                    }
-                }
-            ]),
-            
             Node<UIButton>(
                 identifier: "buy",
                 create: {
@@ -559,7 +629,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 layout.height = 52
                 layout.flexDirection = .row
                 layout.marginBottom = 40
-                layout.marginTop = 20
+                layout.marginTop = 10
                 button.rx.tap
                     .subscribe(onNext: {
                         guard let state = state, let form = state.form, state.passesTextValidations && state.selectedProduct != nil else {
@@ -890,56 +960,6 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     ])
                 }
         )
-    }
-    
-    func digitalTabBar() -> NodeType {
-        unowned let `self` = self
-        
-        guard let state = state else { return NilNode() }
-        
-        let tabBar = Node<HMSegmentedControl>(identifier: "tabBar", create: {
-            let view = HMSegmentedControl()
-            
-            view.bk_addEventHandler({ [weak self] (control: Any) in
-                guard let control = control as? HMSegmentedControl else { return }
-                self?.newState(state: state.selectedTab(tab: control.selectedSegmentIndex))
-            }, for: .valueChanged)
-            
-            return view
-        }, configure: {
-            view, layout, _ in
-            layout.height = 40
-            view.sectionTitles = ["Nomor Favorit", "Promo"]
-            view.segmentWidthStyle = .fixed
-            view.selectionIndicatorBoxOpacity = 0
-            view.selectionStyle = .box
-            view.selectedSegmentIndex = state.selectedTab
-            view.type = .text
-            view.selectionIndicatorLocation = .down
-            view.selectionIndicatorHeight = 2
-            view.selectionIndicatorColor = .tpGreen()
-            view.selectedTitleTextAttributes = [NSForegroundColorAttributeName: UIColor.tpGreen(), NSFontAttributeName: UIFont.smallThemeMedium()]
-            view.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.tpGray(), NSFontAttributeName: UIFont.smallTheme()]
-        })
-        
-        return tabBar
-    }
-    
-    func favourite() -> NodeType {
-        return Node<UIView> {
-            view, layout, _ in
-            layout.height = 100
-            view.backgroundColor = .tpGreen()
-        }
-    }
-    
-    func digitalTabContent() -> NodeType {
-        guard let state = state else { return Node() }
-        if state.selectedTab == 1 {
-            return self.promo()
-        } else {
-            return self.favourite()
-        }
     }
     
     private func verifyOtp(_ needOtp: Bool, cartId: String) -> Observable<Void> {
