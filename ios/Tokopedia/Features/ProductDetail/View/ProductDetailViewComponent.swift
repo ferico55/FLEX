@@ -658,12 +658,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                       AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Review")
                                       
                                       AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
-                                      
-                                      let vc = ProductReputationViewController()
-                                      vc.strShopDomain = productDetail.shop.domain
-                                      vc.strProductID = productDetail.id
-                                      
-                                      self.viewController.navigationController?.pushViewController(vc, animated: true)
+
+                                    if let url = URL(string: "tokopedia://product/review/\(productDetail.id)/") {
+                                        TPRoutes.routeURL(url)
+                                        return
+                                    }
                                   },
                                   didTapDiscussion: { [unowned self] productDetail in
                                       AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Talk")
@@ -853,11 +852,10 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                             
                                             AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
                                             
-                                            let vc = ProductReputationViewController()
-                                            vc.strShopDomain = productDetail.shop.domain
-                                            vc.strProductID = productDetail.id
-                                            
-                                            self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                            if let url = URL(string: "tokopedia://product/review/\(productDetail.id)/") {
+                                                TPRoutes.routeURL(url)
+                                                return
+                                            }
                 }),
                 ProductDetailDiscussionNode(identifier: "discussion",
                                             state: state,

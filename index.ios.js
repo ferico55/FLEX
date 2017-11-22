@@ -6,7 +6,13 @@ import React from 'react'
 import CodePush from 'react-native-code-push'
 import { AppRegistry, StyleSheet, Text, View } from 'react-native'
 import Navigator from 'native-navigation'
+import { applyMiddleware, createStore } from 'redux'
+import { Provider } from 'react-redux'
+import thunk from 'redux-thunk'
 import HybridContainer from './src/HybridContainer'
+import moment from 'moment'
+
+// top ads pages
 import TopAdsDashboard from './src/TopAds/Page/TopAdsDashboard'
 import AddCreditPage from './src/TopAds/Page/AddCreditPage'
 import DateSettingsPage from './src/TopAds/Page/DateSettingsPage'
@@ -24,20 +30,65 @@ import EditPromoPage from './src/TopAds/Page/EditPromoPage'
 import EditPromoGroupNamePage from './src/TopAds/Page/EditPromoGroupNamePage'
 import FeedKOLActivityScreen from './src/Feed/KOL'
 
+// Inbox review pages
+import InboxReview from './src/InboxReview/Page/InboxReview'
+import ReviewFilterPage from './src/InboxReview/Page/ReviewFilterPage'
+import InvoiceDetailPage from './src/InboxReview/Page/InvoiceDetailPage'
+import ProductReviewFormPage from './src/InboxReview/Page/ProductReviewFormPage'
+import ImageUploadPage from './src/InboxReview/Page/ImageUploadPage'
+import ReportReviewPage from './src/InboxReview/Page/ReportReviewPage'
+import ImageDetailPage from './src/InboxReview/Page/ImageDetailPage'
+import ProductReviewPage from './src/InboxReview/Page/ProductReviewPage'
+import ShopReviewPage from './src/InboxReview/Page/ShopReviewPage'
+
 import topAdsDashboardReducer from './src/TopAds/Redux/Reducers/GeneralReducer'
-import { applyMiddleware, createStore } from 'redux'
-import { Provider } from 'react-redux'
-import thunk from 'redux-thunk'
-import logger from 'redux-logger'
-import moment from 'moment'
+import inboxReviewReducer from './src/InboxReview/Redux/Reducer'
 
 import Promo from './src/Promo'
 import PromoDetail from './src/PromoDetail'
 import CategoryResultPage from './src/category-result/CategoryResultPage'
+import { createEpicMiddleware } from 'redux-observable'
 
+import RideHailingScreen, { getVehicles } from './src/RideHailingScreen'
+import RidePlacesAutocompleteScreen from './src/RidePlacesAutocompleteScreen'
+import RideWebViewScreen from './src/RideWebViewScreen'
+import RideReceiptScreen from './src/RideReceiptScreen'
+import RideHistoryScreen from './src/RideHistoryScreen'
+import RideHistoryDetailScreen from './src/RideHistoryDetailScreen'
+import RideCancellationScreen from './src/RideCancellationScreen'
+import RidePromoCodeScreen from './src/RidePromoCodeScreen'
+import rideReducer from './src/redux/RideReducer'
+import RideTopupTokocashScreen from './src/RideTopupTokocashScreen'
+import { epic } from './src/redux/RideActions'
+
+let composer
+if (__DEV__) {
+  const { composeWithDevTools } = require('remote-redux-devtools')
+  composer = composeWithDevTools({
+    name: 'Ridehailing',
+    port: 8000,
+    sendTo: 'http://localhost:8000',
+  })
+} else {
+  composer = id => id
+}
 
 const middleware = applyMiddleware(thunk)
 const topAdsDashboardStore = createStore(topAdsDashboardReducer, middleware)
+const inboxReviewStore = createStore(inboxReviewReducer, middleware)
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+})
 
 try {
   CodePush.sync()
@@ -51,6 +102,65 @@ const NotFoundComponent = () => (
   </View>
 )
 
+const rideStore = createStore(
+  rideReducer,
+  composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
+)
+rideStore.dispatch({ type: 'FOO' })
+
+Navigator.registerScreen('RideHailing', () => props => (
+  <Provider store={rideStore}>
+    <RideHailingScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RidePlacesAutocompleteScreen', () => () => (
+  <Provider store={rideStore}>
+    <RidePlacesAutocompleteScreen />
+  </Provider>
+))
+
+Navigator.registerScreen('RideWebViewScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideWebViewScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RideReceiptScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideReceiptScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RideHistoryScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideHistoryScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RideHistoryDetailScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideHistoryDetailScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RideCancellationScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideCancellationScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RidePromoCodeScreen', () => props => (
+  <Provider store={rideStore}>
+    <RidePromoCodeScreen {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('RideTopupTokocashScreen', () => props => (
+  <Provider store={rideStore}>
+    <RideTopupTokocashScreen {...props} />
+  </Provider>
+))
 moment.relativeTimeThreshold('ss', 1)
 moment.relativeTimeThreshold('s', 60)
 moment.relativeTimeThreshold('m', 60)
@@ -150,115 +260,64 @@ Navigator.registerScreen('AddCreditPage', () => props => (
   </Provider>
 ))
 
+// Inbox Review screen
+Navigator.registerScreen('InboxReview', () => props => (
+  <Provider store={inboxReviewStore}>
+    <InboxReview {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ReviewFilterPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ReviewFilterPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('InvoiceDetailPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <InvoiceDetailPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ProductReviewFormPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ProductReviewFormPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ImageUploadPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ImageUploadPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ReportReviewPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ReportReviewPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ImageDetailPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ImageDetailPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ProductReviewPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ProductReviewPage {...props} />
+  </Provider>
+))
+Navigator.registerScreen('ShopReviewPage', () => props => (
+  <Provider store={inboxReviewStore}>
+    <ShopReviewPage {...props} />
+  </Provider>
+))
+
+Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)
+
 const container = HybridContainer({
   Hotlist: require('./src/Hotlist'),
   CategoryResultPage,
   Promo,
   PromoDetail,
+  ProductReview: require('./src/Review/ProductReview'),
   'Official Store': require('./src/official-store/setup'),
   'Official Store Promo': require('./src/os-promo/setup'),
   NotFoundComponent,
 })
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-})
-
 AppRegistry.registerComponent('Tokopedia', () => container)
-
-import { createEpicMiddleware } from 'redux-observable'
-
-import RideHailingScreen, { getVehicles } from './src/RideHailingScreen'
-import RidePlacesAutocompleteScreen from './src/RidePlacesAutocompleteScreen'
-import RideWebViewScreen from './src/RideWebViewScreen'
-import RideReceiptScreen from './src/RideReceiptScreen'
-import RideHistoryScreen from './src/RideHistoryScreen'
-import RideHistoryDetailScreen from './src/RideHistoryDetailScreen'
-import RideCancellationScreen from './src/RideCancellationScreen'
-import RidePromoCodeScreen from './src/RidePromoCodeScreen'
-import rideReducer from './src/redux/RideReducer'
-import RideTopupTokocashScreen from './src/RideTopupTokocashScreen'
-import { epic } from './src/redux/RideActions'
-
-let composer
-if (__DEV__) {
-  const { composeWithDevTools } = require('remote-redux-devtools')
-  composer = composeWithDevTools({
-    name: 'Ridehailing',
-    port: 8000,
-    sendTo: 'http://localhost:8000',
-  })
-} else {
-  composer = id => id
-}
-
-const rideStore = createStore(
-  rideReducer,
-  composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
-)
-rideStore.dispatch({ type: 'FOO' })
-
-Navigator.registerScreen('RideHailing', () => props => (
-  <Provider store={rideStore}>
-    <RideHailingScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RidePlacesAutocompleteScreen', () => () => (
-  <Provider store={rideStore}>
-    <RidePlacesAutocompleteScreen />
-  </Provider>
-))
-
-Navigator.registerScreen('RideWebViewScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideWebViewScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideReceiptScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideReceiptScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideHistoryScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideHistoryScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideHistoryDetailScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideHistoryDetailScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideCancellationScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideCancellationScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RidePromoCodeScreen', () => props => (
-  <Provider store={rideStore}>
-    <RidePromoCodeScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideTopupTokocashScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideTopupTokocashScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)

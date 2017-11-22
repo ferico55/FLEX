@@ -18,7 +18,8 @@ def react_pods
         'RCTActionSheet',
         'RCTSettings',
         'RCTLinkingIOS',
-        'BatchedBridge'
+        'BatchedBridge',
+        'RCTCameraRoll'
     ]
     
     pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'

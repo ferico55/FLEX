@@ -8,8 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <React/RCTBridgeModule.h>
+#import <UIKit/UIKit.h>
+#import "FBSDKShareKit.h"
 
-@interface ReactInteractionHelper : NSObject<RCTBridgeModule>
+@interface ReactInteractionHelper : NSObject<RCTBridgeModule, FBSDKSharingDelegate>
 
 @property (nonatomic, weak, readonly) RCTBridge *bridge;
 

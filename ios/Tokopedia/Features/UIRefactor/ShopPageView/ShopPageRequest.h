@@ -10,7 +10,6 @@
 @class ShopProductPageResponse;
 @class ShopProductPageResult;
 #import "Talk.h"
-#import "Review.h"
 #import "Shop.h"
 
 @class Notes;
@@ -36,12 +35,6 @@
                                           page:(NSInteger)page
                                    shop_domain:(NSString*)shopDomain
                                      onSuccess:(void (^)(Talk*))successCallback
-                                     onFailure:(void (^)(NSError *))errorCallback;
-
--(void)requestForShopReviewPageListingWithShopId:(NSString*)shopId
-                                          page:(NSInteger)page
-                                   shop_domain:(NSString*)shopDomain
-                                     onSuccess:(void (^)(Review*))successCallback
                                      onFailure:(void (^)(NSError *))errorCallback;
 
 -(void)requestForShopNotesPageListingWithShopId:(NSString*)shopId

@@ -14,7 +14,7 @@ RCT_EXPORT_MODULE(EventManager)
 
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped"];
+    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped", @"shouldRefresh"];
 }
 
 - (void)sendScrollToTopEvent {
@@ -43,6 +43,10 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)navBarButtonTapped:(id)index {
     [self sendEventWithName:@"navBarButtonTapped" body:index];
+}
+
+- (void)sendRefreshEvent {
+    [self sendEventWithName:@"shouldRefresh" body:nil];
 }
 
 @end

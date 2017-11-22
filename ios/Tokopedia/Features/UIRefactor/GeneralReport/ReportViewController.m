@@ -7,15 +7,11 @@
 //
 #import "InboxTalkViewController.h"
 #import "ReportViewController.h"
-#import "ProductReputationViewController.h"
 #import "ProductTalkViewController.h"
 #import "string.h"
-#import "ShopReviewPageViewController.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "GeneralAction.h"
-#import "MyReviewDetailViewController.h"
-#import "ReviewRequest.h"
 #import "TKPDTabViewController.h"
 #import "Tokopedia-Swift.h"
 

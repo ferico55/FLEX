@@ -11,7 +11,6 @@
 
 #import "WebViewInvoiceViewController.h"
 #import "string_more.h"
-#import "SegmentedReviewReputationViewController.h"
 #import "UserContainerViewController.h"
 #import "ProfileContactViewController.h"
 #import "ProfileFavoriteShopViewController.h"
@@ -29,7 +28,6 @@
 #import "InboxTalkSplitViewController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
-#import "SplitReputationViewController.h"
 
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
@@ -48,7 +46,6 @@
 
 #import "InboxMessageDetailViewController.h"
 #import "ProductTalkDetailViewController.h"
-#import "ProductReputationViewController.h"
 #import "TransactionCartViewController.h"
 #import "SalesNewOrderViewController.h"
 #import "ShipmentConfirmationViewController.h"
@@ -62,9 +59,10 @@
 #import "OfficialStoreBrandsViewController.h"
 #import "OfficialStorePromoViewController.h"
 #import "NavigationHelper.h"
+@import NativeNavigation;
 
 
-@interface NavigateViewController()<SplitReputationVcProtocol, GalleryViewControllerDelegate>
+@interface NavigateViewController()<GalleryViewControllerDelegate>
 
 @end
 
@@ -156,9 +154,8 @@
 
 -(void)navigateToShopReviewFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ShopReviewPageViewController *review = [ShopReviewPageViewController new];
-    review.data = @{@"shop_id" : shopID?:@""};
-    [viewController.navigationController pushViewController:review animated:YES];
+    ReactViewController* reviewViewController = [[ReactViewController alloc] initWithModuleName:@"ShopReviewPage" props:@{@"shopID": shopID}];
+    [viewController.navigationController pushViewController:reviewViewController animated:YES];
 }
 
 -(void)navigateToShopNoteFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
@@ -174,10 +171,8 @@
 }
 
 -(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID {
-    ProductReputationViewController *review = [ProductReputationViewController new];
-    review.strProductID = productID;
-    review.hidesBottomBarWhenPushed = YES;
-    [viewController.navigationController pushViewController:review animated:YES];
+    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"tokopedia://product/review/%@", productID]];
+    [TPRoutes routeURL:url];
 }
 
 //seller
@@ -585,45 +580,37 @@
 -(void)navigateToInboxReviewFromViewController:(UIViewController *)viewController
 {
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSDictionary* userData = [auth getUserLoginData];
     
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {        
-        splitViewController = [UISplitViewController new];
-        
-        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
-        splitReputationViewController.splitViewController = splitViewController;
-        splitReputationViewController.del = self;
-        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
-        
+    UIViewController *reviewReactViewController;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules: @{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}}];
     } else {
-        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
-        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-        segmentedReputationViewController.selectedIndex = CTagSemua;
-        segmentedReputationViewController.userHasShop = [auth userHasShop];
-        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
+        reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }
+    
+    reviewReactViewController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:reviewReactViewController animated:YES];
+    return;
 }
 
 
 
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster
 {
-    NSDictionary *auth = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
-    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-        splitViewController = [UISplitViewController new];
-        
-        SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
-        splitReputationViewController.splitViewController = splitViewController;
-        splitReputationViewController.del = self;
-        [viewController.navigationController pushViewController:splitReputationViewController animated:YES];
-        
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    NSDictionary* userData = [auth getUserLoginData];
+    
+    UIViewController *reviewReactViewController;
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules: @{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}}];
     } else {
-        SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
-        segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-        segmentedReputationViewController.getDataFromMasterDB = getDataFromMaster;
-        segmentedReputationViewController.selectedIndex = CTagReviewSaya;
-        segmentedReputationViewController.userHasShop = ([auth objectForKey:@"shop_id"] && [[auth objectForKey:@"shop_id"] integerValue] > 0);
-        [viewController.navigationController pushViewController:segmentedReputationViewController animated:YES];
+        reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }
+    
+    reviewReactViewController.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:reviewReactViewController animated:YES];
+    return;
 }
 
 -(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController

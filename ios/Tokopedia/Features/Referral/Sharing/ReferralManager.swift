@@ -12,12 +12,10 @@ import Branch
 //    MARK:- Public
     func share(object:Any, from viewController: UIViewController, anchor: UIView?) {
         guard let referable = object as? Referable else { return }
-        if ReferralRemoteConfig.shared.isBranchLinkActive == false {
-            if let anchor = anchor {
-                BranchInactiveSharing().share(object: referable, from: viewController, anchor: anchor)
-            }
-            return
+        if let anchor = anchor {
+            BranchInactiveSharing().share(object: referable, from: viewController, anchor: anchor)
         }
+        return
         let linkProperties = self.linkProperties(object: referable)
         let buo = BranchUniversalObject(canonicalIdentifier: referable.utm_campaign)
         buo.title = referable.title

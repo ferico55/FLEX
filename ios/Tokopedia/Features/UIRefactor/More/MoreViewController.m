@@ -5,9 +5,6 @@
 //  Created by Tokopedia PT on 12/12/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "SplitReputationViewController.h"
-#import "MyReviewReputationViewController.h"
-#import "SegmentedReviewReputationViewController.h"
 #import "detail.h"
 #import "MoreViewController.h"
 #import "more.h"
@@ -66,7 +63,7 @@
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
-@interface MoreViewController () <NotificationManagerDelegate, SplitReputationVcProtocol, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
+@interface MoreViewController () <NotificationManagerDelegate, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -706,20 +703,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [_navigate navigateToInboxTalkFromViewController:wrapperController];
         } else if (indexPath.row == 2) {
             [AnalyticsManager trackClickNavigateFromMore:@"Review"];
-            if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                splitViewController = [UISplitViewController new];
-                
-                SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
-                splitReputationViewController.splitViewController = splitViewController;
-                splitReputationViewController.del = self;
-                [wrapperController.navigationController pushViewController:splitReputationViewController animated:YES];
-            }
-            else  {
-                SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
-                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-                segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
-                [wrapperController.navigationController pushViewController:segmentedReputationViewController animated:YES];
-            }
+            
+            [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://review"]];
+            _wrapperViewController.hidesBottomBarWhenPushed = NO;
+            return;
         } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Help"];
             

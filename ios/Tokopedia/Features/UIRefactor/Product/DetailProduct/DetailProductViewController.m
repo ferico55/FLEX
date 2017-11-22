@@ -8,7 +8,6 @@
 #define CgapTitleAndContentDesc 20
 #define CTagNoteCanReture 7
 
-#import "ProductReputationViewController.h"
 #import "CMPopTipView.h"
 #import "LabelMenu.h"
 #import "GalleryViewController.h"
@@ -497,16 +496,8 @@ TTTAttributedLabelDelegate
         switch (btn.tag) {
             case 12:
             {
-                if(_product.data.shop_info.shop_domain != nil) {
-                    ProductReputationViewController *productReputationViewController = [ProductReputationViewController new];
-                    productReputationViewController.strShopDomain = _product.data.shop_info.shop_domain;
-                    productReputationViewController.strProductID = _product.data.info.product_id;
-                    [self.navigationController pushViewController:productReputationViewController animated:YES];
-                    [AnalyticsManager trackEventName:@"clickPDP"
-                                            category:GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE
-                                              action:GA_EVENT_ACTION_CLICK
-                                               label:@"Review"];
-                }
+                NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"tokopedia://product/review/%@", _product.data.product.product_id]];
+                [TPRoutes routeURL:url];
                 break;
             }
             case 13:

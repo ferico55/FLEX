@@ -272,7 +272,6 @@
     [super viewDidAppear:animated];
     _isViewLoaded = YES;
     [self initNotificationManager];
-    
 }
 
 - (void)setArrow {

@@ -25,6 +25,7 @@ export default class GridProductCell extends React.PureComponent {
       <TouchableOpacity
         key={viewModel.productId}
         onPress={() => {
+          debugger
           this.props.tracker()
           ReactTPRoutes.navigate(`tokopedia://product/${viewModel.productId}`)
         }}

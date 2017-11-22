@@ -8,7 +8,6 @@
 #import "UserContainerViewController.h"
 #import "ShopTalkPageViewController.h"
 #import "ShopProductPageViewController.h"
-#import "ShopReviewPageViewController.h"
 #import "ShopNotesPageViewController.h"
 #import "ShopInfoViewController.h"
 #import "SendMessageViewController.h"

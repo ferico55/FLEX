@@ -133,7 +133,13 @@ class TPRoutes: NSObject {
         
         // MARK: Inbox Review (Native)
         JLRoutes.global().addRoute("/review") { (_: [String: Any]!) -> Bool in
-            navigator.navigateToInboxReview(from: UIApplication.topViewController())
+            navigateToInboxReview()
+            return true
+        }
+        
+        // need to handle one with parameter, it will goes to the last route (/:shopId/:productId) if this doesn't implemented
+        JLRoutes.global().addRoute("/review/:reviewId") { (_: [String: Any]!) -> Bool in
+            navigateToInboxReview()
             return true
         }
         
@@ -801,6 +807,21 @@ class TPRoutes: NSObject {
             return true
         }
         
+        //user detail
+        JLRoutes.global().addRoute("/user/:userId") { (params: [String: Any]!) -> Bool in
+            if let userId = params["userId"] as? String {
+                let userController = UserContainerViewController()
+                userController.profileUserID = userId
+                
+                userController.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(userController, animated: true)
+            }
+            
+            return true
+        }
+        
         //topAds dashboard
         JLRoutes.global().addRoute("/topads/dashboard") { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
@@ -850,6 +871,20 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/product/:productId") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
             NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/product/review/:productId") { (params: [String: Any]!) -> Bool in
+            let productId = params["productId"] as! String
+            let userManager = UserAuthentificationManager()
+            let auth = userManager.getUserLoginData()
+            
+            let viewController = ReactViewController(moduleName: "ProductReviewPage", props: ["productID":productId as AnyObject, "authInfo": auth as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            
             return true
         }
         
@@ -965,6 +1000,16 @@ class TPRoutes: NSObject {
     @discardableResult
     static func routeURL(_ url: URL) -> Bool {
         AnalyticsManager.trackCampaign(url)
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController;
+        if let topMostViewController = rootViewController?.topMostViewController() {
+            if topMostViewController.isKind(of: OnboardingViewController.self) {
+                topMostViewController.dismiss(animated: true, completion: {
+                    JLRoutes.routeURL(url)
+                })
+                return true
+            }
+        }
+        
         return JLRoutes.routeURL(url)
     }
     
@@ -993,6 +1038,23 @@ class TPRoutes: NSObject {
         }) { _ in
             shopExists(false)
         }
+    }
+    
+    static func navigateToInboxReview() {
+        let userManager = UserAuthentificationManager()
+        let auth = userManager.getUserLoginData()
+        
+        var viewController:UIViewController
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            viewController = ReactSplitViewController(modules: ["InboxReview": ["authInfo": auth as AnyObject], "InvoiceDetailPage": ["authInfo": auth]])
+        } else {
+            viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo":auth as AnyObject])
+        }
+        
+        viewController.hidesBottomBarWhenPushed = true
+        UIApplication.topViewController()?
+            .navigationController?
+            .pushViewController(viewController, animated: true)
     }
     
     static func addFlagApp(urlString: String) -> URL? {

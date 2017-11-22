@@ -11,6 +11,7 @@ import Foundation
 import OAStackView
 import RestKit
 import JLPermissions
+import Moya
 
 @IBDesignable
 @objc
@@ -127,7 +128,6 @@ class HomePageViewController: UIViewController {
                 self.requestTicker()
             }
         }
-        
     }
     
     func userDidLogin(notification: NSNotification) {
@@ -596,7 +596,7 @@ class HomePageViewController: UIViewController {
     }
     
     private func requestTokocashWithNewToken() {
-        AuthenticationService.shared.getNewToken { (token: OAuthToken?, _: Error?) in
+        AuthenticationService.shared.getNewToken { (token: OAuthToken?, _: Any?) in
             if token != nil {
                 self.requestTokocash()
             } else {

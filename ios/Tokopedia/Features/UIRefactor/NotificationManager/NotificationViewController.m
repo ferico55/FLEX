@@ -12,8 +12,6 @@
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
-#import "SegmentedReviewReputationViewController.h"
-#import "SplitReputationViewController.h"
 #import "SalesTransactionListViewController.h"
 #import "SalesNewOrderViewController.h"
 #import "ShipmentStatusViewController.h"
@@ -30,8 +28,9 @@
 #import "InboxTicketSplitViewController.h"
 #import "NavigateViewController.h"
 #import "Tokopedia-Swift.h"
+@import NativeNavigation;
 
-@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate, SplitReputationVcProtocol> {
+@interface NotificationViewController () <NewOrderDelegate, ShipmentConfirmationDelegate> {
     NSDictionary *_auth;
 }
 
@@ -394,20 +393,18 @@
                                         category:GA_EVENT_CATEGORY_NOTIFICATION
                                           action:GA_EVENT_ACTION_CLICK
                                            label:@"Review"];
-                if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                    splitViewController = [UISplitViewController new];
-                    
-                    SplitReputationViewController *splitReputationViewController = [SplitReputationViewController new];
-                    splitReputationViewController.splitViewController = splitViewController;
-                    splitReputationViewController.isFromNotificationView = YES;
-                    splitReputationViewController.del = self;
-                    [self.delegate pushViewController:splitReputationViewController];
+                
+                UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+                NSDictionary* auth = [userManager getUserLoginData];
+                
+                UIViewController *reviewReactViewController;
+                if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+                    reviewReactViewController = [[ReactSplitViewController alloc] initWithModules: @{@"InboxReview": @{@"authInfo": auth}, @"InvoiceDetailPage": @{@"authInfo": auth}}];
                 } else {
-                    SegmentedReviewReputationViewController *segmentedReputationViewController = [SegmentedReviewReputationViewController new];
-	                segmentedReputationViewController.hidesBottomBarWhenPushed = YES;
-                    segmentedReputationViewController.userHasShop = ([_auth objectForKey:@"shop_id"] && [[_auth objectForKey:@"shop_id"] integerValue] > 0);
-    	            [self.delegate pushViewController:segmentedReputationViewController];
+                    reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : auth }];
                 }
+                reviewReactViewController.hidesBottomBarWhenPushed = YES;
+                [self.delegate pushViewController:reviewReactViewController];
                 break;
             }
             case 3:

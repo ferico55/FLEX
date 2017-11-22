@@ -11,10 +11,15 @@ import MXSegmentedPager
 import BlocksKit
 import TTTAttributedLabel
 import SwiftOverlays
+import NativeNavigation
 
 private struct TabChild {
     let title: String
     let viewController: UIViewController
+}
+
+@objc public protocol ShopViewControllerDelegate: NSObjectProtocol {
+    func didDisplayReviewPage()
 }
 
 class ShopViewController: UIViewController {
@@ -25,7 +30,10 @@ class ShopViewController: UIViewController {
     fileprivate var tabChildren: [TabChild] = []
     fileprivate var segmentedPagerController: MXSegmentedPagerController!
     fileprivate var header: ShopHeaderView!
+    fileprivate var headerHeight: CGFloat!
+    fileprivate var isOfficial: Bool = false
     
+    var delegate:ShopViewControllerDelegate?
     var productFilter: ShopProductFilter?
     
     init() {
@@ -163,11 +171,13 @@ class ShopViewController: UIViewController {
             self.toggleFavoriteForShop(shop)
         }
         
-        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.header.sizeThatFits(self.view.bounds.size).height
+        self.headerHeight = self.header.sizeThatFits(self.view.bounds.size).height
+        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
     }
     
     fileprivate func displayShop(_ shop: Shop) {
         guard self.segmentedPagerController == nil else { return }
+        self.isOfficial = shop.result.info.isOfficial
         
         let viewController = MXSegmentedPagerController()
         segmentedPagerController = viewController
@@ -214,8 +224,9 @@ class ShopViewController: UIViewController {
         let discussionViewController = ShopTalkPageViewController()
         discussionViewController.data = data
         
-        let reviewViewController = ShopReviewPageViewController(shop: shop)
-        reviewViewController?.data = data
+        let userManager = UserAuthentificationManager()
+        let auth = userManager.getUserLoginData()
+        let reviewViewController = ReactViewController(moduleName: "ShopReviewPage", props: ["authInfo": auth as AnyObject, "shopDomain": shop.result.info.shop_domain! as AnyObject, "shopID": shop.result.info.shop_id! as AnyObject])
         
         let noteViewController = ShopNotesPageViewController()
         noteViewController.data = data
@@ -243,7 +254,7 @@ class ShopViewController: UIViewController {
             TabChild(title: "Home", viewController: homeViewController),
             TabChild(title: "Produk", viewController: productViewController),
             TabChild(title: "Diskusi", viewController: discussionViewController),
-            TabChild(title: "Ulasan", viewController: reviewViewController!),
+            TabChild(title: "Ulasan", viewController: reviewViewController),
             TabChild(title: "Catatan", viewController: noteViewController)
         ]
         
@@ -267,6 +278,24 @@ class ShopViewController: UIViewController {
                 self.segmentedPagerController.segmentedPager.pager.showPage(at: index, animated: true)
             }
         }
+    }
+    
+    func getCurrentPageIndex() -> Int {
+        return self.segmentedPagerController.segmentedPager.pager.indexForSelectedPage
+    }
+    
+    func isDisplayingReviewPage() -> Bool {
+        let currentIndex = self.segmentedPagerController.segmentedPager.pager.indexForSelectedPage
+        if self.isOfficial {
+            return currentIndex == 3
+        } else {
+            return currentIndex == 2
+        }
+    }
+    
+    func minimizeHeader(_ animated:Bool) {
+        self.segmentedPagerController.segmentedPager.parallaxHeader.height = 0
+        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
     }
     
     // used by product detail review
@@ -307,6 +336,10 @@ class ShopViewController: UIViewController {
         if let currentViewController = tabChildren[segmentedPagerController.segmentedPager.pager.indexForSelectedPage].viewController
             as? ShopTabChild {
             currentViewController.refreshContent()
+        } else  if let _ = tabChildren[segmentedPagerController.segmentedPager.pager.indexForSelectedPage].viewController as? ReactViewController {
+            if let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
+                tabManager.sendRefreshEvent()
+            }
         }
     }
     
@@ -474,6 +507,10 @@ extension ShopViewController: MXSegmentedPagerDelegate {
         tabChildren.forEach { child in
             let tabChild = child.viewController as? ShopTabChild
             tabChild?.tabWillChange?(to: tabChildren[index].viewController)
+        }
+        
+        if self.isDisplayingReviewPage() {
+            self.delegate?.didDisplayReviewPage()
         }
     }
 }
