@@ -205,10 +205,6 @@
     for (OrderProduct *product in _products) {
         for (NSDictionary *dict in _productQuantity) {
             if ([dict objectForKey:@"order_detail_id"] == product.order_detail_id) {
-                if ([[dict objectForKey:@"product_quantity"] integerValue] == 0) {
-                    valid = NO;
-                    errorMessage = @"Jumlah barang yang akan dikirim harus diisi";
-                }
                 if ([[dict objectForKey:@"product_quantity"] integerValue] > product.product_quantity) {
                     valid = NO;
                     errorMessage = @"Anda memasukkan jumlah terlalu banyak";
