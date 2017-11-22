@@ -272,12 +272,12 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
-+ (NSString*)feedsMobileSiteUrl {
++ (NSString*)graphQLURL {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
     NSDictionary* urls = @{
-                           @(TPUrlProduction) : @"https://m.tokopedia.com",
-                           @(TPUrlStaging) : @"https://8-feature-m-staging.tokopedia.com",
+                           @(TPUrlProduction) : @"https://gql.tokopedia.com",
+                           @(TPUrlStaging) : @"https://18-feature-m-staging.tokopedia.com/graphql",
                            @(TPUrlAlpha) : @"http://192.168.100.151:9096",
                            @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
                            };

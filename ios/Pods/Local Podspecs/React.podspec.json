@@ -1,6 +1,6 @@
 {
   "name": "React",
-  "version": "0.46.4",
+  "version": "0.48.4",
   "summary": "A framework for building native apps using React",
   "description": "React Native apps are built using the React JS\nframework, and render directly to native UIKit\nelements using a fully asynchronous architecture.\nThere is no browser and no HTML. We have picked what\nwe think is the best set of features from these and\nother technologies to build what we hope to become\nthe best product development framework available,\nwith an emphasis on iteration speed, developer\ndelight, continuity of technology, and absolutely\nbeautiful and fast products with no compromises in\nquality or capability.",
   "homepage": "http://facebook.github.io/react-native/",
@@ -8,12 +8,13 @@
   "authors": "Facebook",
   "source": {
     "git": "https://github.com/facebook/react-native.git",
-    "tag": "v0.46.4"
+    "tag": "v0.48.4"
   },
   "default_subspecs": "Core",
   "requires_arc": true,
   "platforms": {
-    "ios": "8.0"
+    "ios": "8.0",
+    "tvos": "9.2"
   },
   "pod_target_xcconfig": {
     "CLANG_CXX_LANGUAGE_STANDARD": "c++14"
@@ -30,7 +31,7 @@
       "name": "Core",
       "dependencies": {
         "Yoga": [
-          "0.46.4.React"
+          "0.48.4.React"
         ]
       },
       "source_files": "React/**/*.{c,h,m,mm,S}",
@@ -38,12 +39,27 @@
         "**/__tests__/*",
         "IntegrationTests/*",
         "React/DevSupport/*",
-        "React/**/RCTTVView.*",
+        "React/Inspector/*",
         "ReactCommon/yoga/*",
         "React/Cxx*/*",
         "React/Base/RCTBatchedBridge.mm",
         "React/Executors/*"
       ],
+      "ios": {
+        "exclude_files": "React/**/RCTTVView.*"
+      },
+      "tvos": {
+        "exclude_files": [
+          "React/Modules/RCTClipboard*",
+          "React/Views/RCTDatePicker*",
+          "React/Views/RCTPicker*",
+          "React/Views/RCTRefreshControl*",
+          "React/Views/RCTSlider*",
+          "React/Views/RCTSwitch*",
+          "React/Views/RCTWebView*"
+        ]
+      },
+      "header_dir": "React",
       "frameworks": "JavaScriptCore",
       "libraries": "stdc++",
       "pod_target_xcconfig": {
@@ -92,7 +108,10 @@
 
         ]
       },
-      "source_files": "React/DevSupport/*"
+      "source_files": [
+        "React/DevSupport/*",
+        "React/Inspector/*"
+      ]
     },
     {
       "name": "tvOS",
@@ -106,10 +125,10 @@
     {
       "name": "jschelpers_legacy",
       "source_files": [
-        "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper}.{cpp,h}",
+        "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper,InspectorInterfaces}.{cpp,h}",
         "ReactCommon/jschelpers/systemJSCWrapper.cpp"
       ],
-      "private_header_files": "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper}.h",
+      "private_header_files": "ReactCommon/jschelpers/{JavaScriptCore,JSCWrapper,InspectorInterfaces}.h",
       "pod_target_xcconfig": {
         "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\""
       },
@@ -158,10 +177,10 @@
       },
       "compiler_flags": "-DFOLLY_NO_CONFIG -DFOLLY_MOBILE=1 -DFOLLY_USE_LIBCPP=1",
       "source_files": "ReactCommon/cxxreact/*.{cpp,h}",
-      "exclude_files": "ReactCommon/cxxreact/{JSCTracing,SampleCxxModule}.*",
+      "exclude_files": "ReactCommon/cxxreact/SampleCxxModule.*",
       "private_header_files": "ReactCommon/cxxreact/*.h",
       "pod_target_xcconfig": {
-        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_ROOT)/boost\" \"$(PODS_ROOT)/DoubleConversion\""
+        "HEADER_SEARCH_PATHS": "\"$(PODS_TARGET_SRCROOT)/ReactCommon\" \"$(PODS_ROOT)/boost\" \"$(PODS_ROOT)/DoubleConversion\" \"$(PODS_ROOT)/Folly\""
       }
     },
     {
@@ -200,6 +219,16 @@
       },
       "source_files": "Libraries/NativeAnimation/{Drivers/*,Nodes/*,*}.{h,m}",
       "header_dir": "RCTAnimation"
+    },
+    {
+      "name": "RCTBlob",
+      "dependencies": {
+        "React/Core": [
+
+        ]
+      },
+      "source_files": "Libraries/Blob/*.{h,m}",
+      "preserve_paths": "Libraries/Blob/*.js"
     },
     {
       "name": "RCTCameraRoll",
@@ -284,6 +313,9 @@
       "dependencies": {
         "React/Core": [
 
+        ],
+        "React/RCTBlob": [
+
         ]
       },
       "source_files": "Libraries/WebSocket/*.{h,m}"
@@ -306,6 +338,17 @@
       },
       "source_files": "Libraries/RCTTest/**/*.{h,m}",
       "frameworks": "XCTest"
+    },
+    {
+      "name": "_ignore_me_subspec_for_linting_",
+      "dependencies": {
+        "React/Core": [
+
+        ],
+        "React/CxxBridge": [
+
+        ]
+      }
     }
   ]
 }

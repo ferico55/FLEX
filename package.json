@@ -11,6 +11,9 @@
     "postinstall": "sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./node_modules/react-native/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h"
   },
   "dependencies": {
+    "apollo-client-preset": "^1.0.1",
+    "apollo-link-context": "^1.0.0",
+    "apollo-link-error": "^1.0.1",
     "axios": "0.16.1",
     "babel-eslint": "7.2.3",
     "babel-plugin-module-resolver": "^2.7.1",
@@ -27,6 +30,9 @@
     "eslint-plugin-prettier": "2.2.0",
     "eslint-plugin-promise": "3.5.0",
     "eslint-plugin-react": "7.1.0",
+    "graphql": "^0.11.7",
+    "graphql-tag": "^2.5.0",
+    "html-entities": "^1.2.1",
     "glamorous-native": "^1.2.0",
     "html-entities": "^1.2.1",
     "lodash": "4.17.4",
@@ -36,7 +42,8 @@
     "prettier": "1.6.1",
     "prop-types": "15.5.10",
     "react": "16.0.0-alpha.12",
-    "react-native": "0.46.4",
+    "react-apollo": "^2.0.0",
+    "react-native": "0.48.4",
     "react-native-code-push": "^3.0.1-beta",
     "react-native-dash": "0.0.7",
     "react-native-device-info": "^0.10.2",
@@ -49,6 +56,7 @@
     "react-native-page-control": "^1.1.0",
     "react-native-svg": "^5.3.2",
     "react-native-swipeable": "^0.6.0",
+    "react-native-swipeout": "^2.3.1",
     "react-native-swiper": "^1.5.4",
     "react-native-vector-icons": "^4.2.0",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
@@ -66,6 +74,6 @@
     "victory-native": "^0.14.0"
   },
   "devDependencies": {
-    "danger": "1.0.0"
+    "danger": "2.0.1"
   }
 }

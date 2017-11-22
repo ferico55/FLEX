@@ -247,7 +247,7 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
         })
     }
     
-    private func seeAll(redirectURL: String, isBrand: Bool, page:Int, row:Int) -> NodeType {
+    private func seeAll(redirectURL: String, isBrand: Bool, page: Int, row: Int) -> NodeType {
         let cont = Node<UIView>() { view, layout, _ in
             view.backgroundColor = .white
             view.borderWidth = 1

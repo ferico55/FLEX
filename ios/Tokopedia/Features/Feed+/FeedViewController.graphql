@@ -1,4 +1,4 @@
-query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
+query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 	feed(limit: $limit, cursor: $cursor, userID: $userID) {
 		data {
 			id
@@ -64,14 +64,6 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 					image_landscape_url
 					is_parent
 				}
-				seller_story {
-					id
-					title
-					date
-					link
-					image
-					youtube
-				}
 				redirect_url_app
 				official_store {
 					shop_id
@@ -116,10 +108,95 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 						}
 					}
 				}
+				inspirasi {
+					source
+					title
+					foreign_title
+					pagination {
+						current_page
+						next_page
+						prev_page
+					}
+					recommendation {
+						id
+						name
+						url
+						click_url
+						app_url
+						image_url
+						price
+						recommendation_type
+					}
+				}
+				kolpost {
+					id
+					headerTitle
+					description
+					commentCount
+					likeCount
+					isLiked
+					isFollowed
+					createTime
+					userId
+					userName
+					userInfo
+					userPhoto
+					userUrl
+					content {
+						imageurl
+						tags {
+							id
+							type
+							url
+							link
+							price
+							caption
+						}
+					}
+				}
+				followedkolpost {
+					id
+					headerTitle
+					description
+					commentCount
+					likeCount
+					isLiked
+					isFollowed
+					createTime
+					userId
+					userName
+					userInfo
+					userPhoto
+					userUrl
+					content {
+						imageurl
+						tags {
+							id
+							type
+							url
+							link
+							price
+							caption
+						}
+					}
+				}
+				kolrecommendation {
+					index
+					headerTitle
+	    			exploreLink
+					kols {
+						userName
+						userId
+						userPhoto
+						isFollowed
+						info
+						url
+					}
+				}
 			}
 		}
 		links {
-			pagination{
+			pagination {
 				has_next_page
 			}
 		}
@@ -127,23 +204,56 @@ query Feeds ($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {
 			total_data
 		}
 	}
-	inspiration(userID: $userID, page: $page) {
+}
+
+mutation DoLikeKOLPost($idPost: Int!, $action: Int!) {
+	do_like_kol_post(idPost: $idPost, action: $action) {
+        error
+        data {
+            success
+        }
+    }
+}
+
+mutation DoFollowKOL($userID: Int!, $action: Int!) {
+	do_follow_kol(userID: $userID, action: $action) {
+		error
 		data {
-			source
-			title 
-			foreign_title
-			pagination {
-				current_page
-				next_page
-				prev_page
-			}
-			recommendation {
+			status
+		}
+	}
+}
+
+mutation CreateCommentKOL($idPost: Int!, $comment: String) {
+	create_comment_kol(idPost: $idPost, comment: $comment) {
+		error
+		data {
+			id
+			user {
+				iskol
 				id
 				name
-				url
-				app_url
-				image_url
-				price
+				photo
+			}
+			comment
+			create_time
+		}
+	}
+}
+
+query GetKOLListComment($idPost: Int!, $cursor: String, $limit: Int!) {
+	get_kol_list_comment(idPost: $idPost, cursor: $cursor, limit: $limit) {
+		error
+		data {
+			lastcursor
+			total_data
+			comment {
+				id
+				userID
+				userName
+				userPhoto
+				isKol
+				comment
 			}
 		}
 	}

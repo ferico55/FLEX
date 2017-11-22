@@ -10,12 +10,12 @@ import UIKit
 import Render
 import RxSwift
 
-class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
-    override func construct(state: FeedInspirationState?, size: CGSize) -> NodeType {
+class FeedInspirationComponentView: ComponentView<FeedCardInspirationState> {
+    override func construct(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
         return self.inspirationCard(state: state, size: size)
     }
     
-    func inspirationCard(state: FeedInspirationState?, size: CGSize) -> NodeType {
+    func inspirationCard(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
         let titleView = Node<UIView>(identifier: "title-view") { view, layout, size in
             view.backgroundColor = .white
             
@@ -60,7 +60,7 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
         return card
     }
     
-    func productCellLayout(state: FeedInspirationState?, size: CGSize) -> NodeType {
+    func productCellLayout(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
         guard let state = state else { return NilNode() }
         
         let mainContent: NodeType = Node<UIView>(identifier: "main-content") { _, layout, size in
@@ -68,7 +68,7 @@ class FeedInspirationComponentView: ComponentView<FeedInspirationState> {
             layout.width = size.width
         }
         
-        if state.oniPad {
+        if state.onPad {
             mainContent.add(children: [
                 Node<UIView>(identifier: "main-content") { _, layout, _ in
                     layout.flexDirection = .row

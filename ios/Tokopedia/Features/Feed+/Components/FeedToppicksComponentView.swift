@@ -39,7 +39,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             }.add(children: [
                 self.titleView(),
                 self.phoneItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page:state.page, row:state.row)
+                self.seeAll(page: state.page, row: state.row)
             ]),
             self.blankSpace()
         ])
@@ -64,7 +64,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
                 self.titleView(),
                 self.horizontalLine(size: size),
                 self.padItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page:state.page, row:state.row)
+                self.seeAll(page: state.page, row: state.row)
             ]),
             self.blankSpace()
         ])
@@ -203,7 +203,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         })
     }
     
-    private func seeAll(page:Int, row:Int) -> NodeType {
+    private func seeAll(page: Int, row: Int) -> NodeType {
         return Node<UIView>() { view, layout, _ in
             view.backgroundColor = .white
             view.borderWidth = 1

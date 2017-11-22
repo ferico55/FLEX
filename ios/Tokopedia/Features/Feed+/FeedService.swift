@@ -22,11 +22,15 @@ class FeedService: NSObject {
         let createdDate = dateFormatter.date(from: createdTime)
         let currentDate = Date()
         
-        let currentYear = calendar.component(.year, from: currentDate)
-        let createdYear = calendar.component(.year, from: createdDate!)
+        guard let dateCreated = createdDate else {
+            return ""
+        }
         
-        var secondsAgo = Int(currentDate.timeIntervalSince(createdDate!))
-        let second = Int(currentDate.timeIntervalSince(createdDate!))
+        let currentYear = calendar.component(.year, from: currentDate)
+        let createdYear = calendar.component(.year, from: dateCreated)
+        
+        var secondsAgo = Int(currentDate.timeIntervalSince(dateCreated))
+        let second = Int(currentDate.timeIntervalSince(dateCreated))
         
         let daysAgo = Int(floor(Double(secondsAgo / (3600 * 24))))
         if daysAgo != 0 {
@@ -49,20 +53,20 @@ class FeedService: NSObject {
             formatted = "\(minutesAgo) menit lalu"
         } else if daysAgo == 0 && hoursAgo >= 1 && hoursAgo < 24 {
             formatted = "\(hoursAgo) jam lalu"
-        } else if calendar.isDateInYesterday(createdDate!) && hoursAgo < 24 {
+        } else if calendar.isDateInYesterday(dateCreated) && hoursAgo < 24 {
             let newFormat = DateFormatter()
             newFormat.dateFormat = "'Kemarin pukul' HH:mm"
-            formatted = newFormat.string(from: createdDate!)
+            formatted = newFormat.string(from: dateCreated)
         } else if (currentYear == createdYear) && daysAgo >= 1 {
             let newFormat = DateFormatter()
             newFormat.dateFormat = "dd MMMM 'pukul' HH:mm"
             newFormat.locale = NSLocale(localeIdentifier: "id_ID") as Locale!
-            formatted = newFormat.string(from: createdDate!)
+            formatted = newFormat.string(from: dateCreated)
         } else {
             let newFormat = DateFormatter()
             newFormat.dateFormat = "dd MMMM yyyy"
             newFormat.locale = NSLocale(localeIdentifier: "id_ID") as Locale!
-            formatted = newFormat.string(from: createdDate!)
+            formatted = newFormat.string(from: dateCreated)
         }
         
         return formatted

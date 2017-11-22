@@ -187,44 +187,47 @@ PODS:
   - Popover (1.0.6)
   - Protobuf (3.3.0)
   - RATreeView (2.1.2)
-  - React (0.46.4):
-    - React/Core (= 0.46.4)
+  - React (0.48.4):
+    - React/Core (= 0.48.4)
   - react-native-maps (0.15.3):
     - React
-  - React/BatchedBridge (0.46.4):
+  - React/BatchedBridge (0.48.4):
     - React/Core
     - React/cxxreact_legacy
-  - React/Core (0.46.4):
-    - Yoga (= 0.46.4.React)
-  - React/cxxreact_legacy (0.46.4):
+  - React/Core (0.48.4):
+    - Yoga (= 0.48.4.React)
+  - React/cxxreact_legacy (0.48.4):
     - React/jschelpers_legacy
-  - React/DevSupport (0.46.4):
+  - React/DevSupport (0.48.4):
     - React/Core
     - React/RCTWebSocket
-  - React/jschelpers_legacy (0.46.4)
-  - React/RCTActionSheet (0.46.4):
+  - React/jschelpers_legacy (0.48.4)
+  - React/RCTActionSheet (0.48.4):
     - React/Core
-  - React/RCTAdSupport (0.46.4):
+  - React/RCTAdSupport (0.48.4):
     - React/Core
-  - React/RCTAnimation (0.46.4):
+  - React/RCTAnimation (0.48.4):
     - React/Core
-  - React/RCTGeolocation (0.46.4):
+  - React/RCTBlob (0.48.4):
     - React/Core
-  - React/RCTImage (0.46.4):
+  - React/RCTGeolocation (0.48.4):
+    - React/Core
+  - React/RCTImage (0.48.4):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.46.4):
+  - React/RCTLinkingIOS (0.48.4):
     - React/Core
-  - React/RCTNetwork (0.46.4):
+  - React/RCTNetwork (0.48.4):
     - React/Core
-  - React/RCTSettings (0.46.4):
+  - React/RCTSettings (0.48.4):
     - React/Core
-  - React/RCTText (0.46.4):
+  - React/RCTText (0.48.4):
     - React/Core
-  - React/RCTVibration (0.46.4):
+  - React/RCTVibration (0.48.4):
     - React/Core
-  - React/RCTWebSocket (0.46.4):
+  - React/RCTWebSocket (0.48.4):
     - React/Core
+    - React/RCTBlob
   - Render (2.1.1)
   - RestKit (0.27.0):
     - RestKit/Core (= 0.27.0)
@@ -280,7 +283,7 @@ PODS:
   - Unbox (2.4.0)
   - VMaskTextField (1.0.8)
   - Wrap (2.1.1)
-  - Yoga (0.46.4.React)
+  - Yoga (0.48.4.React)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -513,7 +516,7 @@ SPEC CHECKSUMS:
   Popover: f811ed4eb4c4843d7bfff357816ed0d97c4ba69e
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   RATreeView: 380cde0090cfde21dc6ac29137f49d3b768fdd28
-  React: 596d8774642d10fea20b1f24cc591fcf633f73ad
+  React: 6d68659481a8a56e0f6b3dbecd984d5b9bb2d6c5
   react-native-maps: 6a886202fb8af8568615501c0f9f933ca282a7a3
   Render: bb3ec7d0956ea409263fbfda5ff60b8ba16c9579
   RestKit: a0244db34e14ed9cf059fcee2be6733cc162c34a
@@ -544,7 +547,7 @@ SPEC CHECKSUMS:
   Unbox: c8b2ab69d3337597b4a3f47a0538807dc12db670
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   Wrap: 9cc7da7551bb81d0846cb3df9fb624c6c32d267d
-  Yoga: 98e24da91afe33bb43fedaf27dafede269c04fe8
+  Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
 PODFILE CHECKSUM: a237165236a8dceb3c11a911060e8f2144ba665a

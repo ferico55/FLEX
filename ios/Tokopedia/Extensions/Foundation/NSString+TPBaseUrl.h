@@ -28,7 +28,7 @@
 + (nonnull NSString*)tokopediaUrl;
 + (nonnull NSString*)walletUrl;
 + (nonnull NSString*)mobileSiteUrl;
-+ (nonnull NSString*)feedsMobileSiteUrl;
++ (nonnull NSString*)graphQLURL;
 + (nonnull NSString*)tokocashUrl;
 + (nonnull NSString*)tomeUrl;
 + (nonnull NSString*)oneClickURL;

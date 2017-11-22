@@ -354,7 +354,7 @@ class UserRequest: NSObject {
 
             configuration.httpAdditionalHeaders = headers
 
-            let url = URL(string: NSString.feedsMobileSiteUrl() + "/graphql")!
+            let url = URL(string: NSString.graphQLURL())!
 
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()

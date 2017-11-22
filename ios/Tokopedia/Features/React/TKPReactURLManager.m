@@ -37,7 +37,8 @@ RCT_EXPORT_MODULE();
              @"mojitoUrl" : NSString.mojitoUrl,
              @"topAdsUrl" : NSString.topAdsUrl,
              @"rideHailingUrl": NSString.rideHailingUrl,
-             @"tomeUrl" : NSString.tomeUrl
+             @"tomeUrl" : NSString.tomeUrl,
+             @"graphQLURL": NSString.graphQLURL
              };
 }
 

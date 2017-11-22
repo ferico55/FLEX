@@ -764,7 +764,7 @@ public final class FeedDetailQuery: GraphQLQuery {
 
 public final class FeedsQuery: GraphQLQuery {
   public static let operationString =
-    "query Feeds($userID: Int!, $limit: Int!, $cursor: String, $page: Int!) {" +
+    "query Feeds($userID: Int!, $limit: Int!, $cursor: String) {" +
     "  feed(limit: $limit, cursor: $cursor, userID: $userID) {" +
     "    __typename" +
     "    data {" +
@@ -840,15 +840,6 @@ public final class FeedsQuery: GraphQLQuery {
     "          image_landscape_url" +
     "          is_parent" +
     "        }" +
-    "        seller_story {" +
-    "          __typename" +
-    "          id" +
-    "          title" +
-    "          date" +
-    "          link" +
-    "          image" +
-    "          youtube" +
-    "        }" +
     "        redirect_url_app" +
     "        official_store {" +
     "          __typename" +
@@ -899,6 +890,102 @@ public final class FeedsQuery: GraphQLQuery {
     "            }" +
     "          }" +
     "        }" +
+    "        inspirasi {" +
+    "          __typename" +
+    "          source" +
+    "          title" +
+    "          foreign_title" +
+    "          pagination {" +
+    "            __typename" +
+    "            current_page" +
+    "            next_page" +
+    "            prev_page" +
+    "          }" +
+    "          recommendation {" +
+    "            __typename" +
+    "            id" +
+    "            name" +
+    "            url" +
+    "            click_url" +
+    "            app_url" +
+    "            image_url" +
+    "            price" +
+    "            recommendation_type" +
+    "          }" +
+    "        }" +
+    "        kolpost {" +
+    "          __typename" +
+    "          id" +
+    "          headerTitle" +
+    "          description" +
+    "          commentCount" +
+    "          likeCount" +
+    "          isLiked" +
+    "          isFollowed" +
+    "          createTime" +
+    "          userId" +
+    "          userName" +
+    "          userInfo" +
+    "          userPhoto" +
+    "          userUrl" +
+    "          content {" +
+    "            __typename" +
+    "            imageurl" +
+    "            tags {" +
+    "              __typename" +
+    "              id" +
+    "              type" +
+    "              url" +
+    "              link" +
+    "              price" +
+    "              caption" +
+    "            }" +
+    "          }" +
+    "        }" +
+    "        followedkolpost {" +
+    "          __typename" +
+    "          id" +
+    "          headerTitle" +
+    "          description" +
+    "          commentCount" +
+    "          likeCount" +
+    "          isLiked" +
+    "          isFollowed" +
+    "          createTime" +
+    "          userId" +
+    "          userName" +
+    "          userInfo" +
+    "          userPhoto" +
+    "          userUrl" +
+    "          content {" +
+    "            __typename" +
+    "            imageurl" +
+    "            tags {" +
+    "              __typename" +
+    "              id" +
+    "              type" +
+    "              url" +
+    "              link" +
+    "              price" +
+    "              caption" +
+    "            }" +
+    "          }" +
+    "        }" +
+    "        kolrecommendation {" +
+    "          __typename" +
+    "          index" +
+    "          headerTitle" +
+    "          exploreLink" +
+    "          kols {" +
+    "            __typename" +
+    "            userName" +
+    "            userId" +
+    "            userPhoto" +
+    "            isFollowed" +
+    "            info" +
+    "            url" +
+    "          }" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -913,46 +1000,20 @@ public final class FeedsQuery: GraphQLQuery {
     "      total_data" +
     "    }" +
     "  }" +
-    "  inspiration(userID: $userID, page: $page) {" +
-    "    __typename" +
-    "    data {" +
-    "      __typename" +
-    "      source" +
-    "      title" +
-    "      foreign_title" +
-    "      pagination {" +
-    "        __typename" +
-    "        current_page" +
-    "        next_page" +
-    "        prev_page" +
-    "      }" +
-    "      recommendation {" +
-    "        __typename" +
-    "        id" +
-    "        name" +
-    "        url" +
-    "        app_url" +
-    "        image_url" +
-    "        price" +
-    "      }" +
-    "    }" +
-    "  }" +
     "}"
 
   public var userID: Int
   public var limit: Int
   public var cursor: String?
-  public var page: Int
 
-  public init(userID: Int, limit: Int, cursor: String? = nil, page: Int) {
+  public init(userID: Int, limit: Int, cursor: String? = nil) {
     self.userID = userID
     self.limit = limit
     self.cursor = cursor
-    self.page = page
   }
 
   public var variables: GraphQLMap? {
-    return ["userID": userID, "limit": limit, "cursor": cursor, "page": page]
+    return ["userID": userID, "limit": limit, "cursor": cursor]
   }
 
   public struct Data: GraphQLSelectionSet {
@@ -960,7 +1021,6 @@ public final class FeedsQuery: GraphQLQuery {
 
     public static let selections: [GraphQLSelection] = [
       GraphQLField("feed", arguments: ["limit": Variable("limit"), "cursor": Variable("cursor"), "userID": Variable("userID")], type: .object(Feed.self)),
-      GraphQLField("inspiration", arguments: ["userID": Variable("userID"), "page": Variable("page")], type: .object(Inspiration.self)),
     ]
 
     public var snapshot: Snapshot
@@ -969,8 +1029,8 @@ public final class FeedsQuery: GraphQLQuery {
       self.snapshot = snapshot
     }
 
-    public init(feed: Feed? = nil, inspiration: Inspiration? = nil) {
-      self.init(snapshot: ["__typename": "Query", "feed": feed, "inspiration": inspiration])
+    public init(feed: Feed? = nil) {
+      self.init(snapshot: ["__typename": "Query", "feed": feed])
     }
 
     public var feed: Feed? {
@@ -979,15 +1039,6 @@ public final class FeedsQuery: GraphQLQuery {
       }
       set {
         snapshot.updateValue(newValue?.snapshot, forKey: "feed")
-      }
-    }
-
-    public var inspiration: Inspiration? {
-      get {
-        return (snapshot["inspiration"]! as! Snapshot?).flatMap { Inspiration(snapshot: $0) }
-      }
-      set {
-        snapshot.updateValue(newValue?.snapshot, forKey: "inspiration")
       }
     }
 
@@ -1309,9 +1360,12 @@ public final class FeedsQuery: GraphQLQuery {
             GraphQLField("status_activity", type: .scalar(String.self)),
             GraphQLField("new_status_activity", type: .object(NewStatusActivity.self)),
             GraphQLField("top_picks", type: .list(.object(TopPick.self))),
-            GraphQLField("seller_story", type: .object(SellerStory.self)),
             GraphQLField("redirect_url_app", type: .scalar(String.self)),
             GraphQLField("official_store", type: .list(.object(OfficialStore.self))),
+            GraphQLField("inspirasi", type: .list(.object(Inspirasi.self))),
+            GraphQLField("kolpost", type: .object(Kolpost.self)),
+            GraphQLField("followedkolpost", type: .object(Followedkolpost.self)),
+            GraphQLField("kolrecommendation", type: .object(Kolrecommendation.self)),
           ]
 
           public var snapshot: Snapshot
@@ -1320,8 +1374,8 @@ public final class FeedsQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, sellerStory: SellerStory? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil) {
-            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "seller_story": sellerStory, "redirect_url_app": redirectUrlApp, "official_store": officialStore])
+          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil) {
+            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation])
           }
 
           public var __typename: String {
@@ -1396,15 +1450,6 @@ public final class FeedsQuery: GraphQLQuery {
             }
           }
 
-          public var sellerStory: SellerStory? {
-            get {
-              return (snapshot["seller_story"]! as! Snapshot?).flatMap { SellerStory(snapshot: $0) }
-            }
-            set {
-              snapshot.updateValue(newValue?.snapshot, forKey: "seller_story")
-            }
-          }
-
           public var redirectUrlApp: String? {
             get {
               return snapshot["redirect_url_app"]! as! String?
@@ -1420,6 +1465,42 @@ public final class FeedsQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "official_store")
+            }
+          }
+
+          public var inspirasi: [Inspirasi?]? {
+            get {
+              return (snapshot["inspirasi"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Inspirasi(snapshot: $0) } } }
+            }
+            set {
+              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "inspirasi")
+            }
+          }
+
+          public var kolpost: Kolpost? {
+            get {
+              return (snapshot["kolpost"]! as! Snapshot?).flatMap { Kolpost(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "kolpost")
+            }
+          }
+
+          public var followedkolpost: Followedkolpost? {
+            get {
+              return (snapshot["followedkolpost"]! as! Snapshot?).flatMap { Followedkolpost(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "followedkolpost")
+            }
+          }
+
+          public var kolrecommendation: Kolrecommendation? {
+            get {
+              return (snapshot["kolrecommendation"]! as! Snapshot?).flatMap { Kolrecommendation(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "kolrecommendation")
             }
           }
 
@@ -1874,93 +1955,6 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "is_parent")
-              }
-            }
-          }
-
-          public struct SellerStory: GraphQLSelectionSet {
-            public static let possibleTypes = ["FeedsSellerStory"]
-
-            public static let selections: [GraphQLSelection] = [
-              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-              GraphQLField("id", type: .scalar(GraphQLID.self)),
-              GraphQLField("title", type: .scalar(String.self)),
-              GraphQLField("date", type: .scalar(String.self)),
-              GraphQLField("link", type: .scalar(String.self)),
-              GraphQLField("image", type: .scalar(String.self)),
-              GraphQLField("youtube", type: .scalar(String.self)),
-            ]
-
-            public var snapshot: Snapshot
-
-            public init(snapshot: Snapshot) {
-              self.snapshot = snapshot
-            }
-
-            public init(id: GraphQLID? = nil, title: String? = nil, date: String? = nil, link: String? = nil, image: String? = nil, youtube: String? = nil) {
-              self.init(snapshot: ["__typename": "FeedsSellerStory", "id": id, "title": title, "date": date, "link": link, "image": image, "youtube": youtube])
-            }
-
-            public var __typename: String {
-              get {
-                return snapshot["__typename"]! as! String
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "__typename")
-              }
-            }
-
-            public var id: GraphQLID? {
-              get {
-                return snapshot["id"]! as! GraphQLID?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "id")
-              }
-            }
-
-            public var title: String? {
-              get {
-                return snapshot["title"]! as! String?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "title")
-              }
-            }
-
-            public var date: String? {
-              get {
-                return snapshot["date"]! as! String?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "date")
-              }
-            }
-
-            public var link: String? {
-              get {
-                return snapshot["link"]! as! String?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "link")
-              }
-            }
-
-            public var image: String? {
-              get {
-                return snapshot["image"]! as! String?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "image")
-              }
-            }
-
-            public var youtube: String? {
-              get {
-                return snapshot["youtube"]! as! String?
-              }
-              set {
-                snapshot.updateValue(newValue, forKey: "youtube")
               }
             }
           }
@@ -2486,6 +2480,1003 @@ public final class FeedsQuery: GraphQLQuery {
               }
             }
           }
+
+          public struct Inspirasi: GraphQLSelectionSet {
+            public static let possibleTypes = ["FeedInpirationData"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("source", type: .scalar(String.self)),
+              GraphQLField("title", type: .scalar(String.self)),
+              GraphQLField("foreign_title", type: .scalar(String.self)),
+              GraphQLField("pagination", type: .object(Pagination.self)),
+              GraphQLField("recommendation", type: .list(.object(Recommendation.self))),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(source: String? = nil, title: String? = nil, foreignTitle: String? = nil, pagination: Pagination? = nil, recommendation: [Recommendation?]? = nil) {
+              self.init(snapshot: ["__typename": "FeedInpirationData", "source": source, "title": title, "foreign_title": foreignTitle, "pagination": pagination, "recommendation": recommendation])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var source: String? {
+              get {
+                return snapshot["source"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "source")
+              }
+            }
+
+            public var title: String? {
+              get {
+                return snapshot["title"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "title")
+              }
+            }
+
+            public var foreignTitle: String? {
+              get {
+                return snapshot["foreign_title"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "foreign_title")
+              }
+            }
+
+            public var pagination: Pagination? {
+              get {
+                return (snapshot["pagination"]! as! Snapshot?).flatMap { Pagination(snapshot: $0) }
+              }
+              set {
+                snapshot.updateValue(newValue?.snapshot, forKey: "pagination")
+              }
+            }
+
+            public var recommendation: [Recommendation?]? {
+              get {
+                return (snapshot["recommendation"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Recommendation(snapshot: $0) } } }
+              }
+              set {
+                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "recommendation")
+              }
+            }
+
+            public struct Pagination: GraphQLSelectionSet {
+              public static let possibleTypes = ["FeedInspirationPagination"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("current_page", type: .scalar(Int.self)),
+                GraphQLField("next_page", type: .scalar(Int.self)),
+                GraphQLField("prev_page", type: .scalar(Int.self)),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(currentPage: Int? = nil, nextPage: Int? = nil, prevPage: Int? = nil) {
+                self.init(snapshot: ["__typename": "FeedInspirationPagination", "current_page": currentPage, "next_page": nextPage, "prev_page": prevPage])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var currentPage: Int? {
+                get {
+                  return snapshot["current_page"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "current_page")
+                }
+              }
+
+              public var nextPage: Int? {
+                get {
+                  return snapshot["next_page"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "next_page")
+                }
+              }
+
+              public var prevPage: Int? {
+                get {
+                  return snapshot["prev_page"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "prev_page")
+                }
+              }
+            }
+
+            public struct Recommendation: GraphQLSelectionSet {
+              public static let possibleTypes = ["FeedInspirationItem"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("id", type: .scalar(GraphQLID.self)),
+                GraphQLField("name", type: .scalar(String.self)),
+                GraphQLField("url", type: .scalar(String.self)),
+                GraphQLField("click_url", type: .scalar(String.self)),
+                GraphQLField("app_url", type: .scalar(String.self)),
+                GraphQLField("image_url", type: .scalar(String.self)),
+                GraphQLField("price", type: .scalar(String.self)),
+                GraphQLField("recommendation_type", type: .scalar(String.self)),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(id: GraphQLID? = nil, name: String? = nil, url: String? = nil, clickUrl: String? = nil, appUrl: String? = nil, imageUrl: String? = nil, price: String? = nil, recommendationType: String? = nil) {
+                self.init(snapshot: ["__typename": "FeedInspirationItem", "id": id, "name": name, "url": url, "click_url": clickUrl, "app_url": appUrl, "image_url": imageUrl, "price": price, "recommendation_type": recommendationType])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var id: GraphQLID? {
+                get {
+                  return snapshot["id"]! as! GraphQLID?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "id")
+                }
+              }
+
+              public var name: String? {
+                get {
+                  return snapshot["name"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "name")
+                }
+              }
+
+              public var url: String? {
+                get {
+                  return snapshot["url"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "url")
+                }
+              }
+
+              public var clickUrl: String? {
+                get {
+                  return snapshot["click_url"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "click_url")
+                }
+              }
+
+              public var appUrl: String? {
+                get {
+                  return snapshot["app_url"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "app_url")
+                }
+              }
+
+              public var imageUrl: String? {
+                get {
+                  return snapshot["image_url"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "image_url")
+                }
+              }
+
+              public var price: String? {
+                get {
+                  return snapshot["price"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "price")
+                }
+              }
+
+              public var recommendationType: String? {
+                get {
+                  return snapshot["recommendation_type"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "recommendation_type")
+                }
+              }
+            }
+          }
+
+          public struct Kolpost: GraphQLSelectionSet {
+            public static let possibleTypes = ["FeedKolType"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .scalar(Int.self)),
+              GraphQLField("headerTitle", type: .scalar(String.self)),
+              GraphQLField("description", type: .scalar(String.self)),
+              GraphQLField("commentCount", type: .scalar(Int.self)),
+              GraphQLField("likeCount", type: .scalar(Int.self)),
+              GraphQLField("isLiked", type: .scalar(Bool.self)),
+              GraphQLField("isFollowed", type: .scalar(Bool.self)),
+              GraphQLField("createTime", type: .scalar(String.self)),
+              GraphQLField("userId", type: .scalar(Int.self)),
+              GraphQLField("userName", type: .scalar(String.self)),
+              GraphQLField("userInfo", type: .scalar(String.self)),
+              GraphQLField("userPhoto", type: .scalar(String.self)),
+              GraphQLField("userUrl", type: .scalar(String.self)),
+              GraphQLField("content", type: .list(.object(Content.self))),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
+              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var id: Int? {
+              get {
+                return snapshot["id"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "id")
+              }
+            }
+
+            public var headerTitle: String? {
+              get {
+                return snapshot["headerTitle"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "headerTitle")
+              }
+            }
+
+            public var description: String? {
+              get {
+                return snapshot["description"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "description")
+              }
+            }
+
+            public var commentCount: Int? {
+              get {
+                return snapshot["commentCount"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "commentCount")
+              }
+            }
+
+            public var likeCount: Int? {
+              get {
+                return snapshot["likeCount"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "likeCount")
+              }
+            }
+
+            public var isLiked: Bool? {
+              get {
+                return snapshot["isLiked"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "isLiked")
+              }
+            }
+
+            public var isFollowed: Bool? {
+              get {
+                return snapshot["isFollowed"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "isFollowed")
+              }
+            }
+
+            public var createTime: String? {
+              get {
+                return snapshot["createTime"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "createTime")
+              }
+            }
+
+            public var userId: Int? {
+              get {
+                return snapshot["userId"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userId")
+              }
+            }
+
+            public var userName: String? {
+              get {
+                return snapshot["userName"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userName")
+              }
+            }
+
+            public var userInfo: String? {
+              get {
+                return snapshot["userInfo"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userInfo")
+              }
+            }
+
+            public var userPhoto: String? {
+              get {
+                return snapshot["userPhoto"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userPhoto")
+              }
+            }
+
+            public var userUrl: String? {
+              get {
+                return snapshot["userUrl"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userUrl")
+              }
+            }
+
+            public var content: [Content?]? {
+              get {
+                return (snapshot["content"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Content(snapshot: $0) } } }
+              }
+              set {
+                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "content")
+              }
+            }
+
+            public struct Content: GraphQLSelectionSet {
+              public static let possibleTypes = ["contentFeedKol"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("imageurl", type: .scalar(String.self)),
+                GraphQLField("tags", type: .list(.object(Tag.self))),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(imageurl: String? = nil, tags: [Tag?]? = nil) {
+                self.init(snapshot: ["__typename": "contentFeedKol", "imageurl": imageurl, "tags": tags])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var imageurl: String? {
+                get {
+                  return snapshot["imageurl"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "imageurl")
+                }
+              }
+
+              public var tags: [Tag?]? {
+                get {
+                  return (snapshot["tags"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Tag(snapshot: $0) } } }
+                }
+                set {
+                  snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "tags")
+                }
+              }
+
+              public struct Tag: GraphQLSelectionSet {
+                public static let possibleTypes = ["tagsFeedKol"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("id", type: .scalar(Int.self)),
+                  GraphQLField("type", type: .scalar(String.self)),
+                  GraphQLField("url", type: .scalar(String.self)),
+                  GraphQLField("link", type: .scalar(String.self)),
+                  GraphQLField("price", type: .scalar(String.self)),
+                  GraphQLField("caption", type: .scalar(String.self)),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(id: Int? = nil, type: String? = nil, url: String? = nil, link: String? = nil, price: String? = nil, caption: String? = nil) {
+                  self.init(snapshot: ["__typename": "tagsFeedKol", "id": id, "type": type, "url": url, "link": link, "price": price, "caption": caption])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var id: Int? {
+                  get {
+                    return snapshot["id"]! as! Int?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "id")
+                  }
+                }
+
+                public var type: String? {
+                  get {
+                    return snapshot["type"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "type")
+                  }
+                }
+
+                public var url: String? {
+                  get {
+                    return snapshot["url"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                public var link: String? {
+                  get {
+                    return snapshot["link"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "link")
+                  }
+                }
+
+                public var price: String? {
+                  get {
+                    return snapshot["price"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "price")
+                  }
+                }
+
+                public var caption: String? {
+                  get {
+                    return snapshot["caption"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "caption")
+                  }
+                }
+              }
+            }
+          }
+
+          public struct Followedkolpost: GraphQLSelectionSet {
+            public static let possibleTypes = ["FeedKolType"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .scalar(Int.self)),
+              GraphQLField("headerTitle", type: .scalar(String.self)),
+              GraphQLField("description", type: .scalar(String.self)),
+              GraphQLField("commentCount", type: .scalar(Int.self)),
+              GraphQLField("likeCount", type: .scalar(Int.self)),
+              GraphQLField("isLiked", type: .scalar(Bool.self)),
+              GraphQLField("isFollowed", type: .scalar(Bool.self)),
+              GraphQLField("createTime", type: .scalar(String.self)),
+              GraphQLField("userId", type: .scalar(Int.self)),
+              GraphQLField("userName", type: .scalar(String.self)),
+              GraphQLField("userInfo", type: .scalar(String.self)),
+              GraphQLField("userPhoto", type: .scalar(String.self)),
+              GraphQLField("userUrl", type: .scalar(String.self)),
+              GraphQLField("content", type: .list(.object(Content.self))),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
+              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var id: Int? {
+              get {
+                return snapshot["id"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "id")
+              }
+            }
+
+            public var headerTitle: String? {
+              get {
+                return snapshot["headerTitle"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "headerTitle")
+              }
+            }
+
+            public var description: String? {
+              get {
+                return snapshot["description"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "description")
+              }
+            }
+
+            public var commentCount: Int? {
+              get {
+                return snapshot["commentCount"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "commentCount")
+              }
+            }
+
+            public var likeCount: Int? {
+              get {
+                return snapshot["likeCount"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "likeCount")
+              }
+            }
+
+            public var isLiked: Bool? {
+              get {
+                return snapshot["isLiked"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "isLiked")
+              }
+            }
+
+            public var isFollowed: Bool? {
+              get {
+                return snapshot["isFollowed"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "isFollowed")
+              }
+            }
+
+            public var createTime: String? {
+              get {
+                return snapshot["createTime"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "createTime")
+              }
+            }
+
+            public var userId: Int? {
+              get {
+                return snapshot["userId"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userId")
+              }
+            }
+
+            public var userName: String? {
+              get {
+                return snapshot["userName"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userName")
+              }
+            }
+
+            public var userInfo: String? {
+              get {
+                return snapshot["userInfo"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userInfo")
+              }
+            }
+
+            public var userPhoto: String? {
+              get {
+                return snapshot["userPhoto"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userPhoto")
+              }
+            }
+
+            public var userUrl: String? {
+              get {
+                return snapshot["userUrl"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "userUrl")
+              }
+            }
+
+            public var content: [Content?]? {
+              get {
+                return (snapshot["content"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Content(snapshot: $0) } } }
+              }
+              set {
+                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "content")
+              }
+            }
+
+            public struct Content: GraphQLSelectionSet {
+              public static let possibleTypes = ["contentFeedKol"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("imageurl", type: .scalar(String.self)),
+                GraphQLField("tags", type: .list(.object(Tag.self))),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(imageurl: String? = nil, tags: [Tag?]? = nil) {
+                self.init(snapshot: ["__typename": "contentFeedKol", "imageurl": imageurl, "tags": tags])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var imageurl: String? {
+                get {
+                  return snapshot["imageurl"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "imageurl")
+                }
+              }
+
+              public var tags: [Tag?]? {
+                get {
+                  return (snapshot["tags"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Tag(snapshot: $0) } } }
+                }
+                set {
+                  snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "tags")
+                }
+              }
+
+              public struct Tag: GraphQLSelectionSet {
+                public static let possibleTypes = ["tagsFeedKol"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("id", type: .scalar(Int.self)),
+                  GraphQLField("type", type: .scalar(String.self)),
+                  GraphQLField("url", type: .scalar(String.self)),
+                  GraphQLField("link", type: .scalar(String.self)),
+                  GraphQLField("price", type: .scalar(String.self)),
+                  GraphQLField("caption", type: .scalar(String.self)),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(id: Int? = nil, type: String? = nil, url: String? = nil, link: String? = nil, price: String? = nil, caption: String? = nil) {
+                  self.init(snapshot: ["__typename": "tagsFeedKol", "id": id, "type": type, "url": url, "link": link, "price": price, "caption": caption])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var id: Int? {
+                  get {
+                    return snapshot["id"]! as! Int?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "id")
+                  }
+                }
+
+                public var type: String? {
+                  get {
+                    return snapshot["type"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "type")
+                  }
+                }
+
+                public var url: String? {
+                  get {
+                    return snapshot["url"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "url")
+                  }
+                }
+
+                public var link: String? {
+                  get {
+                    return snapshot["link"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "link")
+                  }
+                }
+
+                public var price: String? {
+                  get {
+                    return snapshot["price"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "price")
+                  }
+                }
+
+                public var caption: String? {
+                  get {
+                    return snapshot["caption"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "caption")
+                  }
+                }
+              }
+            }
+          }
+
+          public struct Kolrecommendation: GraphQLSelectionSet {
+            public static let possibleTypes = ["KolRecommendedDataType"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("index", type: .scalar(Int.self)),
+              GraphQLField("headerTitle", type: .scalar(String.self)),
+              GraphQLField("exploreLink", type: .scalar(String.self)),
+              GraphQLField("kols", type: .list(.object(Kol.self))),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(index: Int? = nil, headerTitle: String? = nil, exploreLink: String? = nil, kols: [Kol?]? = nil) {
+              self.init(snapshot: ["__typename": "KolRecommendedDataType", "index": index, "headerTitle": headerTitle, "exploreLink": exploreLink, "kols": kols])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var index: Int? {
+              get {
+                return snapshot["index"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "index")
+              }
+            }
+
+            public var headerTitle: String? {
+              get {
+                return snapshot["headerTitle"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "headerTitle")
+              }
+            }
+
+            public var exploreLink: String? {
+              get {
+                return snapshot["exploreLink"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "exploreLink")
+              }
+            }
+
+            public var kols: [Kol?]? {
+              get {
+                return (snapshot["kols"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Kol(snapshot: $0) } } }
+              }
+              set {
+                snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "kols")
+              }
+            }
+
+            public struct Kol: GraphQLSelectionSet {
+              public static let possibleTypes = ["FeedKolRecommendedType"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("userName", type: .scalar(String.self)),
+                GraphQLField("userId", type: .scalar(Int.self)),
+                GraphQLField("userPhoto", type: .scalar(String.self)),
+                GraphQLField("isFollowed", type: .scalar(Bool.self)),
+                GraphQLField("info", type: .scalar(String.self)),
+                GraphQLField("url", type: .scalar(String.self)),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(userName: String? = nil, userId: Int? = nil, userPhoto: String? = nil, isFollowed: Bool? = nil, info: String? = nil, url: String? = nil) {
+                self.init(snapshot: ["__typename": "FeedKolRecommendedType", "userName": userName, "userId": userId, "userPhoto": userPhoto, "isFollowed": isFollowed, "info": info, "url": url])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var userName: String? {
+                get {
+                  return snapshot["userName"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "userName")
+                }
+              }
+
+              public var userId: Int? {
+                get {
+                  return snapshot["userId"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "userId")
+                }
+              }
+
+              public var userPhoto: String? {
+                get {
+                  return snapshot["userPhoto"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "userPhoto")
+                }
+              }
+
+              public var isFollowed: Bool? {
+                get {
+                  return snapshot["isFollowed"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "isFollowed")
+                }
+              }
+
+              public var info: String? {
+                get {
+                  return snapshot["info"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "info")
+                }
+              }
+
+              public var url: String? {
+                get {
+                  return snapshot["url"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "url")
+                }
+              }
+            }
+          }
         }
       }
 
@@ -2600,13 +3591,67 @@ public final class FeedsQuery: GraphQLQuery {
         }
       }
     }
+  }
+}
 
-    public struct Inspiration: GraphQLSelectionSet {
-      public static let possibleTypes = ["Inspirations"]
+public final class DoLikeKolPostMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation DoLikeKOLPost($idPost: Int!, $action: Int!) {" +
+    "  do_like_kol_post(idPost: $idPost, action: $action) {" +
+    "    __typename" +
+    "    error" +
+    "    data {" +
+    "      __typename" +
+    "      success" +
+    "    }" +
+    "  }" +
+    "}"
+
+  public var idPost: Int
+  public var action: Int
+
+  public init(idPost: Int, action: Int) {
+    self.idPost = idPost
+    self.action = action
+  }
+
+  public var variables: GraphQLMap? {
+    return ["idPost": idPost, "action": action]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("do_like_kol_post", arguments: ["idPost": Variable("idPost"), "action": Variable("action")], type: .object(DoLikeKolPost.self)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(doLikeKolPost: DoLikeKolPost? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "do_like_kol_post": doLikeKolPost])
+    }
+
+    public var doLikeKolPost: DoLikeKolPost? {
+      get {
+        return (snapshot["do_like_kol_post"]! as! Snapshot?).flatMap { DoLikeKolPost(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "do_like_kol_post")
+      }
+    }
+
+    public struct DoLikeKolPost: GraphQLSelectionSet {
+      public static let possibleTypes = ["DoLikePostType"]
 
       public static let selections: [GraphQLSelection] = [
         GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-        GraphQLField("data", type: .list(.object(Datum.self))),
+        GraphQLField("error", type: .scalar(String.self)),
+        GraphQLField("data", type: .object(Datum.self)),
       ]
 
       public var snapshot: Snapshot
@@ -2615,8 +3660,8 @@ public final class FeedsQuery: GraphQLQuery {
         self.snapshot = snapshot
       }
 
-      public init(data: [Datum?]? = nil) {
-        self.init(snapshot: ["__typename": "Inspirations", "data": data])
+      public init(error: String? = nil, data: Datum? = nil) {
+        self.init(snapshot: ["__typename": "DoLikePostType", "error": error, "data": data])
       }
 
       public var __typename: String {
@@ -2628,25 +3673,30 @@ public final class FeedsQuery: GraphQLQuery {
         }
       }
 
-      public var data: [Datum?]? {
+      public var error: String? {
         get {
-          return (snapshot["data"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Datum(snapshot: $0) } } }
+          return snapshot["error"]! as! String?
         }
         set {
-          snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "data")
+          snapshot.updateValue(newValue, forKey: "error")
+        }
+      }
+
+      public var data: Datum? {
+        get {
+          return (snapshot["data"]! as! Snapshot?).flatMap { Datum(snapshot: $0) }
+        }
+        set {
+          snapshot.updateValue(newValue?.snapshot, forKey: "data")
         }
       }
 
       public struct Datum: GraphQLSelectionSet {
-        public static let possibleTypes = ["InpirationData"]
+        public static let possibleTypes = ["DataLikePostType"]
 
         public static let selections: [GraphQLSelection] = [
           GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-          GraphQLField("source", type: .scalar(String.self)),
-          GraphQLField("title", type: .scalar(String.self)),
-          GraphQLField("foreign_title", type: .scalar(String.self)),
-          GraphQLField("pagination", type: .object(Pagination.self)),
-          GraphQLField("recommendation", type: .list(.object(Recommendation.self))),
+          GraphQLField("success", type: .scalar(Int.self)),
         ]
 
         public var snapshot: Snapshot
@@ -2655,8 +3705,8 @@ public final class FeedsQuery: GraphQLQuery {
           self.snapshot = snapshot
         }
 
-        public init(source: String? = nil, title: String? = nil, foreignTitle: String? = nil, pagination: Pagination? = nil, recommendation: [Recommendation?]? = nil) {
-          self.init(snapshot: ["__typename": "InpirationData", "source": source, "title": title, "foreign_title": foreignTitle, "pagination": pagination, "recommendation": recommendation])
+        public init(success: Int? = nil) {
+          self.init(snapshot: ["__typename": "DataLikePostType", "success": success])
         }
 
         public var __typename: String {
@@ -2668,119 +3718,337 @@ public final class FeedsQuery: GraphQLQuery {
           }
         }
 
-        public var source: String? {
+        public var success: Int? {
           get {
-            return snapshot["source"]! as! String?
+            return snapshot["success"]! as! Int?
           }
           set {
-            snapshot.updateValue(newValue, forKey: "source")
+            snapshot.updateValue(newValue, forKey: "success")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class DoFollowKolMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation DoFollowKOL($userID: Int!, $action: Int!) {" +
+    "  do_follow_kol(userID: $userID, action: $action) {" +
+    "    __typename" +
+    "    error" +
+    "    data {" +
+    "      __typename" +
+    "      status" +
+    "    }" +
+    "  }" +
+    "}"
+
+  public var userID: Int
+  public var action: Int
+
+  public init(userID: Int, action: Int) {
+    self.userID = userID
+    self.action = action
+  }
+
+  public var variables: GraphQLMap? {
+    return ["userID": userID, "action": action]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("do_follow_kol", arguments: ["userID": Variable("userID"), "action": Variable("action")], type: .object(DoFollowKol.self)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(doFollowKol: DoFollowKol? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "do_follow_kol": doFollowKol])
+    }
+
+    public var doFollowKol: DoFollowKol? {
+      get {
+        return (snapshot["do_follow_kol"]! as! Snapshot?).flatMap { DoFollowKol(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "do_follow_kol")
+      }
+    }
+
+    public struct DoFollowKol: GraphQLSelectionSet {
+      public static let possibleTypes = ["FollowerType"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("error", type: .scalar(String.self)),
+        GraphQLField("data", type: .object(Datum.self)),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(error: String? = nil, data: Datum? = nil) {
+        self.init(snapshot: ["__typename": "FollowerType", "error": error, "data": data])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var error: String? {
+        get {
+          return snapshot["error"]! as! String?
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "error")
+        }
+      }
+
+      public var data: Datum? {
+        get {
+          return (snapshot["data"]! as! Snapshot?).flatMap { Datum(snapshot: $0) }
+        }
+        set {
+          snapshot.updateValue(newValue?.snapshot, forKey: "data")
+        }
+      }
+
+      public struct Datum: GraphQLSelectionSet {
+        public static let possibleTypes = ["DataFollowerType"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("status", type: .scalar(Int.self)),
+        ]
+
+        public var snapshot: Snapshot
+
+        public init(snapshot: Snapshot) {
+          self.snapshot = snapshot
+        }
+
+        public init(status: Int? = nil) {
+          self.init(snapshot: ["__typename": "DataFollowerType", "status": status])
+        }
+
+        public var __typename: String {
+          get {
+            return snapshot["__typename"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "__typename")
           }
         }
 
-        public var title: String? {
+        public var status: Int? {
           get {
-            return snapshot["title"]! as! String?
+            return snapshot["status"]! as! Int?
           }
           set {
-            snapshot.updateValue(newValue, forKey: "title")
+            snapshot.updateValue(newValue, forKey: "status")
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class CreateCommentKolMutation: GraphQLMutation {
+  public static let operationString =
+    "mutation CreateCommentKOL($idPost: Int!, $comment: String) {" +
+    "  create_comment_kol(idPost: $idPost, comment: $comment) {" +
+    "    __typename" +
+    "    error" +
+    "    data {" +
+    "      __typename" +
+    "      id" +
+    "      user {" +
+    "        __typename" +
+    "        iskol" +
+    "        id" +
+    "        name" +
+    "        photo" +
+    "      }" +
+    "      comment" +
+    "      create_time" +
+    "    }" +
+    "  }" +
+    "}"
+
+  public var idPost: Int
+  public var comment: String?
+
+  public init(idPost: Int, comment: String? = nil) {
+    self.idPost = idPost
+    self.comment = comment
+  }
+
+  public var variables: GraphQLMap? {
+    return ["idPost": idPost, "comment": comment]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Mutation"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("create_comment_kol", arguments: ["idPost": Variable("idPost"), "comment": Variable("comment")], type: .object(CreateCommentKol.self)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(createCommentKol: CreateCommentKol? = nil) {
+      self.init(snapshot: ["__typename": "Mutation", "create_comment_kol": createCommentKol])
+    }
+
+    public var createCommentKol: CreateCommentKol? {
+      get {
+        return (snapshot["create_comment_kol"]! as! Snapshot?).flatMap { CreateCommentKol(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "create_comment_kol")
+      }
+    }
+
+    public struct CreateCommentKol: GraphQLSelectionSet {
+      public static let possibleTypes = ["CreateCommentType"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("error", type: .scalar(String.self)),
+        GraphQLField("data", type: .object(Datum.self)),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(error: String? = nil, data: Datum? = nil) {
+        self.init(snapshot: ["__typename": "CreateCommentType", "error": error, "data": data])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var error: String? {
+        get {
+          return snapshot["error"]! as! String?
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "error")
+        }
+      }
+
+      public var data: Datum? {
+        get {
+          return (snapshot["data"]! as! Snapshot?).flatMap { Datum(snapshot: $0) }
+        }
+        set {
+          snapshot.updateValue(newValue?.snapshot, forKey: "data")
+        }
+      }
+
+      public struct Datum: GraphQLSelectionSet {
+        public static let possibleTypes = ["DataCreateCommentType"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("id", type: .scalar(Int.self)),
+          GraphQLField("user", type: .object(User.self)),
+          GraphQLField("comment", type: .scalar(String.self)),
+          GraphQLField("create_time", type: .scalar(String.self)),
+        ]
+
+        public var snapshot: Snapshot
+
+        public init(snapshot: Snapshot) {
+          self.snapshot = snapshot
+        }
+
+        public init(id: Int? = nil, user: User? = nil, comment: String? = nil, createTime: String? = nil) {
+          self.init(snapshot: ["__typename": "DataCreateCommentType", "id": id, "user": user, "comment": comment, "create_time": createTime])
+        }
+
+        public var __typename: String {
+          get {
+            return snapshot["__typename"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "__typename")
           }
         }
 
-        public var foreignTitle: String? {
+        public var id: Int? {
           get {
-            return snapshot["foreign_title"]! as! String?
+            return snapshot["id"]! as! Int?
           }
           set {
-            snapshot.updateValue(newValue, forKey: "foreign_title")
+            snapshot.updateValue(newValue, forKey: "id")
           }
         }
 
-        public var pagination: Pagination? {
+        public var user: User? {
           get {
-            return (snapshot["pagination"]! as! Snapshot?).flatMap { Pagination(snapshot: $0) }
+            return (snapshot["user"]! as! Snapshot?).flatMap { User(snapshot: $0) }
           }
           set {
-            snapshot.updateValue(newValue?.snapshot, forKey: "pagination")
+            snapshot.updateValue(newValue?.snapshot, forKey: "user")
           }
         }
 
-        public var recommendation: [Recommendation?]? {
+        public var comment: String? {
           get {
-            return (snapshot["recommendation"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Recommendation(snapshot: $0) } } }
+            return snapshot["comment"]! as! String?
           }
           set {
-            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "recommendation")
+            snapshot.updateValue(newValue, forKey: "comment")
           }
         }
 
-        public struct Pagination: GraphQLSelectionSet {
-          public static let possibleTypes = ["InspirationPagination"]
+        public var createTime: String? {
+          get {
+            return snapshot["create_time"]! as! String?
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "create_time")
+          }
+        }
+
+        public struct User: GraphQLSelectionSet {
+          public static let possibleTypes = ["UserCreateCommentType"]
 
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("current_page", type: .scalar(Int.self)),
-            GraphQLField("next_page", type: .scalar(Int.self)),
-            GraphQLField("prev_page", type: .scalar(Int.self)),
-          ]
-
-          public var snapshot: Snapshot
-
-          public init(snapshot: Snapshot) {
-            self.snapshot = snapshot
-          }
-
-          public init(currentPage: Int? = nil, nextPage: Int? = nil, prevPage: Int? = nil) {
-            self.init(snapshot: ["__typename": "InspirationPagination", "current_page": currentPage, "next_page": nextPage, "prev_page": prevPage])
-          }
-
-          public var __typename: String {
-            get {
-              return snapshot["__typename"]! as! String
-            }
-            set {
-              snapshot.updateValue(newValue, forKey: "__typename")
-            }
-          }
-
-          public var currentPage: Int? {
-            get {
-              return snapshot["current_page"]! as! Int?
-            }
-            set {
-              snapshot.updateValue(newValue, forKey: "current_page")
-            }
-          }
-
-          public var nextPage: Int? {
-            get {
-              return snapshot["next_page"]! as! Int?
-            }
-            set {
-              snapshot.updateValue(newValue, forKey: "next_page")
-            }
-          }
-
-          public var prevPage: Int? {
-            get {
-              return snapshot["prev_page"]! as! Int?
-            }
-            set {
-              snapshot.updateValue(newValue, forKey: "prev_page")
-            }
-          }
-        }
-
-        public struct Recommendation: GraphQLSelectionSet {
-          public static let possibleTypes = ["InspirationItem"]
-
-          public static let selections: [GraphQLSelection] = [
-            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
-            GraphQLField("id", type: .scalar(GraphQLID.self)),
+            GraphQLField("iskol", type: .scalar(Bool.self)),
+            GraphQLField("id", type: .scalar(Int.self)),
             GraphQLField("name", type: .scalar(String.self)),
-            GraphQLField("url", type: .scalar(String.self)),
-            GraphQLField("app_url", type: .scalar(String.self)),
-            GraphQLField("image_url", type: .scalar(String.self)),
-            GraphQLField("price", type: .scalar(String.self)),
+            GraphQLField("photo", type: .scalar(String.self)),
           ]
 
           public var snapshot: Snapshot
@@ -2789,8 +4057,8 @@ public final class FeedsQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(id: GraphQLID? = nil, name: String? = nil, url: String? = nil, appUrl: String? = nil, imageUrl: String? = nil, price: String? = nil) {
-            self.init(snapshot: ["__typename": "InspirationItem", "id": id, "name": name, "url": url, "app_url": appUrl, "image_url": imageUrl, "price": price])
+          public init(iskol: Bool? = nil, id: Int? = nil, name: String? = nil, photo: String? = nil) {
+            self.init(snapshot: ["__typename": "UserCreateCommentType", "iskol": iskol, "id": id, "name": name, "photo": photo])
           }
 
           public var __typename: String {
@@ -2802,9 +4070,18 @@ public final class FeedsQuery: GraphQLQuery {
             }
           }
 
-          public var id: GraphQLID? {
+          public var iskol: Bool? {
             get {
-              return snapshot["id"]! as! GraphQLID?
+              return snapshot["iskol"]! as! Bool?
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "iskol")
+            }
+          }
+
+          public var id: Int? {
+            get {
+              return snapshot["id"]! as! Int?
             }
             set {
               snapshot.updateValue(newValue, forKey: "id")
@@ -2820,39 +4097,268 @@ public final class FeedsQuery: GraphQLQuery {
             }
           }
 
-          public var url: String? {
+          public var photo: String? {
             get {
-              return snapshot["url"]! as! String?
+              return snapshot["photo"]! as! String?
             }
             set {
-              snapshot.updateValue(newValue, forKey: "url")
+              snapshot.updateValue(newValue, forKey: "photo")
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+public final class GetKolListCommentQuery: GraphQLQuery {
+  public static let operationString =
+    "query GetKOLListComment($idPost: Int!, $cursor: String, $limit: Int!) {" +
+    "  get_kol_list_comment(idPost: $idPost, cursor: $cursor, limit: $limit) {" +
+    "    __typename" +
+    "    error" +
+    "    data {" +
+    "      __typename" +
+    "      lastcursor" +
+    "      total_data" +
+    "      comment {" +
+    "        __typename" +
+    "        id" +
+    "        userID" +
+    "        userName" +
+    "        userPhoto" +
+    "        isKol" +
+    "        comment" +
+    "      }" +
+    "    }" +
+    "  }" +
+    "}"
+
+  public var idPost: Int
+  public var cursor: String?
+  public var limit: Int
+
+  public init(idPost: Int, cursor: String? = nil, limit: Int) {
+    self.idPost = idPost
+    self.cursor = cursor
+    self.limit = limit
+  }
+
+  public var variables: GraphQLMap? {
+    return ["idPost": idPost, "cursor": cursor, "limit": limit]
+  }
+
+  public struct Data: GraphQLSelectionSet {
+    public static let possibleTypes = ["Query"]
+
+    public static let selections: [GraphQLSelection] = [
+      GraphQLField("get_kol_list_comment", arguments: ["idPost": Variable("idPost"), "cursor": Variable("cursor"), "limit": Variable("limit")], type: .object(GetKolListComment.self)),
+    ]
+
+    public var snapshot: Snapshot
+
+    public init(snapshot: Snapshot) {
+      self.snapshot = snapshot
+    }
+
+    public init(getKolListComment: GetKolListComment? = nil) {
+      self.init(snapshot: ["__typename": "Query", "get_kol_list_comment": getKolListComment])
+    }
+
+    public var getKolListComment: GetKolListComment? {
+      get {
+        return (snapshot["get_kol_list_comment"]! as! Snapshot?).flatMap { GetKolListComment(snapshot: $0) }
+      }
+      set {
+        snapshot.updateValue(newValue?.snapshot, forKey: "get_kol_list_comment")
+      }
+    }
+
+    public struct GetKolListComment: GraphQLSelectionSet {
+      public static let possibleTypes = ["ListCommentType"]
+
+      public static let selections: [GraphQLSelection] = [
+        GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+        GraphQLField("error", type: .scalar(String.self)),
+        GraphQLField("data", type: .object(Datum.self)),
+      ]
+
+      public var snapshot: Snapshot
+
+      public init(snapshot: Snapshot) {
+        self.snapshot = snapshot
+      }
+
+      public init(error: String? = nil, data: Datum? = nil) {
+        self.init(snapshot: ["__typename": "ListCommentType", "error": error, "data": data])
+      }
+
+      public var __typename: String {
+        get {
+          return snapshot["__typename"]! as! String
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "__typename")
+        }
+      }
+
+      public var error: String? {
+        get {
+          return snapshot["error"]! as! String?
+        }
+        set {
+          snapshot.updateValue(newValue, forKey: "error")
+        }
+      }
+
+      public var data: Datum? {
+        get {
+          return (snapshot["data"]! as! Snapshot?).flatMap { Datum(snapshot: $0) }
+        }
+        set {
+          snapshot.updateValue(newValue?.snapshot, forKey: "data")
+        }
+      }
+
+      public struct Datum: GraphQLSelectionSet {
+        public static let possibleTypes = ["DataCommentType"]
+
+        public static let selections: [GraphQLSelection] = [
+          GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+          GraphQLField("lastcursor", type: .scalar(String.self)),
+          GraphQLField("total_data", type: .scalar(Int.self)),
+          GraphQLField("comment", type: .list(.object(Comment.self))),
+        ]
+
+        public var snapshot: Snapshot
+
+        public init(snapshot: Snapshot) {
+          self.snapshot = snapshot
+        }
+
+        public init(lastcursor: String? = nil, totalData: Int? = nil, comment: [Comment?]? = nil) {
+          self.init(snapshot: ["__typename": "DataCommentType", "lastcursor": lastcursor, "total_data": totalData, "comment": comment])
+        }
+
+        public var __typename: String {
+          get {
+            return snapshot["__typename"]! as! String
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "__typename")
+          }
+        }
+
+        public var lastcursor: String? {
+          get {
+            return snapshot["lastcursor"]! as! String?
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "lastcursor")
+          }
+        }
+
+        public var totalData: Int? {
+          get {
+            return snapshot["total_data"]! as! Int?
+          }
+          set {
+            snapshot.updateValue(newValue, forKey: "total_data")
+          }
+        }
+
+        public var comment: [Comment?]? {
+          get {
+            return (snapshot["comment"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Comment(snapshot: $0) } } }
+          }
+          set {
+            snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "comment")
+          }
+        }
+
+        public struct Comment: GraphQLSelectionSet {
+          public static let possibleTypes = ["CommentDetailType"]
+
+          public static let selections: [GraphQLSelection] = [
+            GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+            GraphQLField("id", type: .scalar(Int.self)),
+            GraphQLField("userID", type: .scalar(Int.self)),
+            GraphQLField("userName", type: .scalar(String.self)),
+            GraphQLField("userPhoto", type: .scalar(String.self)),
+            GraphQLField("isKol", type: .scalar(Bool.self)),
+            GraphQLField("comment", type: .scalar(String.self)),
+          ]
+
+          public var snapshot: Snapshot
+
+          public init(snapshot: Snapshot) {
+            self.snapshot = snapshot
+          }
+
+          public init(id: Int? = nil, userId: Int? = nil, userName: String? = nil, userPhoto: String? = nil, isKol: Bool? = nil, comment: String? = nil) {
+            self.init(snapshot: ["__typename": "CommentDetailType", "id": id, "userID": userId, "userName": userName, "userPhoto": userPhoto, "isKol": isKol, "comment": comment])
+          }
+
+          public var __typename: String {
+            get {
+              return snapshot["__typename"]! as! String
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "__typename")
             }
           }
 
-          public var appUrl: String? {
+          public var id: Int? {
             get {
-              return snapshot["app_url"]! as! String?
+              return snapshot["id"]! as! Int?
             }
             set {
-              snapshot.updateValue(newValue, forKey: "app_url")
+              snapshot.updateValue(newValue, forKey: "id")
             }
           }
 
-          public var imageUrl: String? {
+          public var userId: Int? {
             get {
-              return snapshot["image_url"]! as! String?
+              return snapshot["userID"]! as! Int?
             }
             set {
-              snapshot.updateValue(newValue, forKey: "image_url")
+              snapshot.updateValue(newValue, forKey: "userID")
             }
           }
 
-          public var price: String? {
+          public var userName: String? {
             get {
-              return snapshot["price"]! as! String?
+              return snapshot["userName"]! as! String?
             }
             set {
-              snapshot.updateValue(newValue, forKey: "price")
+              snapshot.updateValue(newValue, forKey: "userName")
+            }
+          }
+
+          public var userPhoto: String? {
+            get {
+              return snapshot["userPhoto"]! as! String?
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "userPhoto")
+            }
+          }
+
+          public var isKol: Bool? {
+            get {
+              return snapshot["isKol"]! as! Bool?
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "isKol")
+            }
+          }
+
+          public var comment: String? {
+            get {
+              return snapshot["comment"]! as! String?
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "comment")
             }
           }
         }

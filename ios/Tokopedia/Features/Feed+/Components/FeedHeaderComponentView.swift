@@ -45,6 +45,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             imageView.borderWidth = 1.0
             imageView.borderColor = UIColor.fromHexString("#e0e0e0")
             imageView.cornerRadius = 3.0
+            imageView.clipsToBounds = true
             
             if state.source.fromTokopedia {
                 imageView.image = #imageLiteral(resourceName: "icon_source_tokopedia")
@@ -113,7 +114,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
                 .subscribe(onNext: {
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Feed")
                     if let viewController = UIApplication.topViewController() {
-                        ReferralManager().share(object:state.source.shopState, from:viewController, anchor: button)
+                        ReferralManager().share(object: state.source.shopState, from: viewController, anchor: button)
                     }
                 })
                 .disposed(by: self.rx_disposeBag)
