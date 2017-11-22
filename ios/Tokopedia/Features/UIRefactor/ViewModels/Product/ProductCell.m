@@ -129,7 +129,7 @@
     
     if ([self isHasReview:viewModel.productRate]) {
         _ratingContainerView.hidden = NO;
-        [_starsRateView setStarscount: round([viewModel.productRate doubleValue] / 20.0)];
+        [_starsRateView setStarscount: [viewModel.productRate integerValue]];
         _totalReviewLabel.text = [NSString stringWithFormat: @"(%@)", viewModel.totalReview];
     } else {
         _ratingContainerView.hidden = YES;
@@ -189,9 +189,7 @@
         return;
     }
     
-    BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
-    [AuthenticationService.shared ensureLoggedInFromViewController:self.parentViewController onSuccess:^{
-        if(!isLoggedIn) return;
+    [AuthenticationService.shared ensureLoggedInFromViewController:[UIApplication topViewController:nil] onSuccess:^{
         if(self.setWishlistAnimationView == nil) {
             [self setupWishlistButton];
             [self setWishlistButtonState:self.viewModel.isOnWishlist];
@@ -407,7 +405,7 @@
 }
 
 - (BOOL) isHasReview: (NSString*) productRate {
-    if ([productRate isEqualToString:@"0"] || productRate == nil) {
+    if ([productRate integerValue] == 0 || productRate == nil) {
         return NO;
     }
     

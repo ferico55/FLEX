@@ -21,6 +21,7 @@ import PromoDetailPage from './src/TopAds/Page/PromoDetailPage'
 import FilterPage from './src/TopAds/Page/FilterPage'
 import FilterDetailPage from './src/TopAds/Page/FilterDetailPage'
 import StatDetailPage from './src/TopAds/Page/StatDetailPage'
+import SearchFilterScreen from './src/search/'
 import AddPromoPage from './src/TopAds/Page/AddPromoPage'
 import AddPromoPageStep1 from './src/TopAds/Page/AddPromoPageStep1'
 import ChooseProductPage from './src/TopAds/Page/ChooseProductPage'
@@ -308,6 +309,10 @@ Navigator.registerScreen('ShopReviewPage', () => props => (
 ))
 
 Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)
+
+Navigator.registerScreen('SearchFilterScreen',() => props =>(
+<SearchFilterScreen {...props}/>
+))
 
 const container = HybridContainer({
   Hotlist: require('./src/Hotlist'),

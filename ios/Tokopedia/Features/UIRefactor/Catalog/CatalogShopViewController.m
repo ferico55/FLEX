@@ -39,7 +39,11 @@
 #import "detail.h"
 #import "NoResultReusableView.h"
 
+#import "ReactDynamicFilterModule.h"
+
 #import "Tokopedia-Swift.h"
+
+@import NativeNavigation;
 
 @interface CatalogShopViewController ()
 <
@@ -92,6 +96,8 @@
     ListOption *_selectedSort;
     NSDictionary *_selectedSortParam;
     NSArray<ListOption*> *_selectedCategories;
+    
+    ReactDynamicFilterBridge *_dynamicFilterBridge;
 }
 
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
@@ -109,7 +115,8 @@
     
     _navigator = [NavigateViewController new];
     _catalog_shops = [[NSMutableArray alloc]init];
- 
+    _dynamicFilterBridge = [ReactDynamicFilterBridge new];
+    
     self.title = @"Daftar Toko";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
@@ -375,24 +382,42 @@
 
 
 -(void)searchWithDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceCatalogProduct filterResponse:_filterResponse?:[FilterData new] rootCategoryID:@"" selectedFilters:_selectedFilters presentedVC:self onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-        
-        _selectedFilters = selectedFilters;
-        _selectedFilterParam = paramFilters;
-        
-        [self setActiveFilter:[self isActiveFilter]];
-        
-        [_catalog_shops removeAllObjects];
-        [_tableView reloadData];
-        [_tableView setTableFooterView:_footerView];
-        [_activityIndicatorView startAnimating];
-        _page = 0;
-        
-        [self fetchDataCatalog];
-        
-    } onReceivedFilterDataOption:^(FilterData * filterResponse){
-        _filterResponse = filterResponse;
+    __weak typeof(self) weakSelf = self;
+    
+    [_dynamicFilterBridge
+     openFilterScreenFrom:self
+     parameters:@{
+                  @"source": @"catalog_product",
+                  @"searchParams":self.parameterDynamicFilter}
+     onFilterSelected:^(NSArray *filters) {
+         [weakSelf filterDidSelected:filters];
+     }];
+}
+
+- (void)filterDidSelected:(NSArray *)filters {
+    _selectedFilters = [filters mutableCopy];
+    
+    NSArray *selectedCategories = [_selectedFilters bk_select:^BOOL(ListOption *obj) {
+        return ![obj.key isEqualToString:@"sc"];
     }];
+    
+    NSMutableDictionary *paramFilters = [NSMutableDictionary new];
+    [_selectedFilters bk_each:^(ListOption *option) {
+        paramFilters[option.key] = option.value;
+    }];
+    
+    _selectedFilterParam = paramFilters;
+    
+    
+    [self setActiveFilter:[self isActiveFilter]];
+    
+    [_catalog_shops removeAllObjects];
+    [_tableView reloadData];
+    [_tableView setTableFooterView:_footerView];
+    [_activityIndicatorView startAnimating];
+    _page = 0;
+    
+    [self fetchDataCatalog];
 }
 
 -(BOOL)isActiveFilter{
@@ -665,7 +690,5 @@
     controller.product_list = catalogShop.products;
     [self.navigationController pushViewController:controller animated:YES];
 }
-
-
 
 @end

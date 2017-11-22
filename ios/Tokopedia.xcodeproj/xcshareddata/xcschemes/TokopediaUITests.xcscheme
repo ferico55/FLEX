@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E512F6541F62390500593C1D"
+               BlueprintIdentifier = "E52517BA1F83840F008FDBCF"
                BuildableName = "TokopediaUITests.xctest"
                BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">
@@ -46,7 +46,7 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E512F6541F62390500593C1D"
+               BlueprintIdentifier = "E52517BA1F83840F008FDBCF"
                BuildableName = "TokopediaUITests.xctest"
                BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">
@@ -70,7 +70,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E512F6541F62390500593C1D"
+            BlueprintIdentifier = "E52517BA1F83840F008FDBCF"
             BuildableName = "TokopediaUITests.xctest"
             BlueprintName = "TokopediaUITests"
             ReferencedContainer = "container:Tokopedia.xcodeproj">
@@ -92,7 +92,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E512F6541F62390500593C1D"
+            BlueprintIdentifier = "E52517BA1F83840F008FDBCF"
             BuildableName = "TokopediaUITests.xctest"
             BlueprintName = "TokopediaUITests"
             ReferencedContainer = "container:Tokopedia.xcodeproj">

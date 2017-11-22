@@ -22,7 +22,7 @@
 #import <MoEngage_iOS_SDK/MoEngage.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
-#import "ReactViewController.h"
+#import "ReactHybridViewController.h"
 #import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
 #import "ProcessingAddProducts.h"
@@ -103,7 +103,7 @@
         return;
     }
     
-    ReactViewController *reactView = [[ReactViewController alloc]
+    ReactHybridViewController *reactView = [[ReactHybridViewController alloc]
                                       initWithDelegate:self
                                       bridge:[UIApplication sharedApplication].reactBridge
                                       viewName:name

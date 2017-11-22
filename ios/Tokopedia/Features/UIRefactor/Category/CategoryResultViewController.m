@@ -49,6 +49,10 @@
 #import <React/RCTRootView.h>
 #import "ReactEventManager.h"
 
+#import "ReactDynamicFilterModule.h"
+
+@import NativeNavigation;
+
 #pragma mark - Search Result View Controller
 
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
@@ -148,6 +152,8 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     
     NSString *_defaultSearchCategory;
     ProductAndWishlistNetworkManager *moyaNetworkManager;
+    
+    ReactDynamicFilterBridge *_dynamicFilterBridge;
 }
 
 #pragma mark - Initialization
@@ -172,6 +178,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    _dynamicFilterBridge = [ReactDynamicFilterBridge new];
+    
     _userManager = [UserAuthentificationManager new];
     _products = [NSMutableArray new];
     _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
@@ -522,25 +531,33 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 -(void)searchWithDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:[self getSourceSearchData]
-                                                                        filterResponse:_filterResponse?:[FilterData new]
-                                                                        rootCategoryID:_rootCategoryID
-                                                                       selectedFilters:_selectedFilters
-                                                                           presentedVC:self onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-                                                                    
-           _selectedFilters = selectedFilters;
-           _selectedFilterParam = paramFilters;
-                                                                               
-           [self showFilterIsActive:(_selectedFilters.count > 0)];
-           [_params removeObjectForKey:@"sc"];
+    __weak typeof(self) weakSelf = self;
+    
+    [_dynamicFilterBridge
+     openFilterScreenFrom:self
+     parameters:@{
+                  @"searchParams": self.parameterDynamicFilter,
+                  @"rootCategoryId": _rootCategoryID,
+                  @"source": @"directory"
+                  }
+     onFilterSelected:^(NSArray *filters) {
+         [weakSelf filterSelected:filters];
+     }];
+}
 
-           [self refreshView:nil];
-           
-       } onReceivedFilterDataOption:^(FilterData * filterDataOption){
-           
-           _filterResponse = filterDataOption;
-           
-       }];
+- (void)filterSelected:(NSArray *)filters {
+    _selectedFilters = filters;
+    
+    NSMutableDictionary *paramFilters = [NSMutableDictionary new];
+    [_selectedFilters bk_each:^(ListOption *option) {
+        paramFilters[option.key] = option.value;
+    }];
+    
+    _selectedFilterParam = paramFilters;
+    [self showFilterIsActive:(_selectedFilters.count > 0)];
+    [_params removeObjectForKey:@"sc"];
+    
+    [self refreshView:nil];
 }
 
 

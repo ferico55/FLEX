@@ -10,7 +10,8 @@
 #import "AppNavigationDelegate.h"
 #import <React/RCTRootView.h>
 
-@interface ReactViewController : UIViewController {
+__attribute__((deprecated("Use NativeNavigation's ReactViewControllerInstead")))
+@interface ReactHybridViewController : UIViewController {
     id<AppNavigationDelegate> navigation;
     NSString* name;
     NSDictionary* params;

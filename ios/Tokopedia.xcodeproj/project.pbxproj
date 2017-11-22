@@ -44,6 +44,17 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		9246FBFD1FC576F90038D99B /* ReactDynamicFilterBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FBF81FC576F90038D99B /* ReactDynamicFilterBridge.swift */; };
+		9246FBFE1FC576F90038D99B /* ReactDynamicFilterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 9246FBFA1FC576F90038D99B /* ReactDynamicFilterModule.m */; };
+		9246FBFF1FC576F90038D99B /* ReactHybridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9246FBFC1FC576F90038D99B /* ReactHybridViewController.m */; };
+		9246FC0A1FC5797B0038D99B /* FuzzySearchCatalog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC021FC5797B0038D99B /* FuzzySearchCatalog.swift */; };
+		9246FC0B1FC5797B0038D99B /* FuzzySearchData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC031FC5797B0038D99B /* FuzzySearchData.swift */; };
+		9246FC0C1FC5797B0038D99B /* FuzzySearchDataSuggestion.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC041FC5797B0038D99B /* FuzzySearchDataSuggestion.swift */; };
+		9246FC0D1FC5797B0038D99B /* FuzzySearchDataSuggestionInstead.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC051FC5797B0038D99B /* FuzzySearchDataSuggestionInstead.swift */; };
+		9246FC0E1FC5797B0038D99B /* FuzzySearchDataSuggestionText.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC061FC5797B0038D99B /* FuzzySearchDataSuggestionText.swift */; };
+		9246FC0F1FC5797B0038D99B /* FuzzySearchProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC071FC5797B0038D99B /* FuzzySearchProduct.swift */; };
+		9246FC101FC5797B0038D99B /* FuzzySearchWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC081FC5797B0038D99B /* FuzzySearchWrapper.swift */; };
+		9246FC111FC5797B0038D99B /* Redirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC091FC5797B0038D99B /* Redirection.swift */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
 		D8404B7C1FA1EEAA0039A972 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D8404B571FA1EEAA0039A972 /* AIRGMSMarker.m */; };
@@ -935,8 +946,6 @@
 		F954C0761FC55B68008C0B30 /* SearchAutoCompleteShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B61B1FC55B62008C0B30 /* SearchAutoCompleteShopCell.m */; };
 		F954C0771FC55B68008C0B30 /* SearchAutoCompleteCategoryCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954B61C1FC55B62008C0B30 /* SearchAutoCompleteCategoryCell.swift */; };
 		F954C0781FC55B68008C0B30 /* SpellCheckRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B61F1FC55B62008C0B30 /* SpellCheckRequest.m */; };
-		F954C0791FC55B68008C0B30 /* ImagePickerCategoryController.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B6221FC55B62008C0B30 /* ImagePickerCategoryController.m */; };
-		F954C07A1FC55B68008C0B30 /* ImagePickerCategoryController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954B6241FC55B62008C0B30 /* ImagePickerCategoryController.xib */; };
 		F954C07B1FC55B68008C0B30 /* ProductBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954B6261FC55B62008C0B30 /* ProductBadge.swift */; };
 		F954C07C1FC55B68008C0B30 /* SearchResultShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B6271FC55B62008C0B30 /* SearchResultShopCell.m */; };
 		F954C07D1FC55B68008C0B30 /* SpellCheckResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F954B6281FC55B62008C0B30 /* SpellCheckResponse.m */; };
@@ -1715,9 +1724,6 @@
 		F954C3821FC55B6B008C0B30 /* AddressProvince.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBDC1FC55B65008C0B30 /* AddressProvince.m */; };
 		F954C3831FC55B6B008C0B30 /* AddressResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBDD1FC55B65008C0B30 /* AddressResult.m */; };
 		F954C3841FC55B6B008C0B30 /* AddressObj.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBDE1FC55B65008C0B30 /* AddressObj.m */; };
-		F954C3851FC55B6B008C0B30 /* ImageSearchProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBE41FC55B65008C0B30 /* ImageSearchProduct.m */; };
-		F954C3861FC55B6B008C0B30 /* ImageSearchResponseData.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBE61FC55B65008C0B30 /* ImageSearchResponseData.m */; };
-		F954C3871FC55B6B008C0B30 /* ImageSearchResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BBE71FC55B65008C0B30 /* ImageSearchResponse.m */; };
 		F954C3881FC55B6B008C0B30 /* WalletCashBack.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954BBEB1FC55B65008C0B30 /* WalletCashBack.swift */; };
 		F954C3891FC55B6B008C0B30 /* WalletCashBackResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954BBEC1FC55B65008C0B30 /* WalletCashBackResponse.swift */; };
 		F954C38A1FC55B6B008C0B30 /* WalletStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954BBED1FC55B65008C0B30 /* WalletStore.swift */; };
@@ -1827,7 +1833,6 @@
 		F954C3F21FC55B6C008C0B30 /* ReactCategoryResultManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BCA21FC55B65008C0B30 /* ReactCategoryResultManager.m */; };
 		F954C3F31FC55B6C008C0B30 /* ReactFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BCA31FC55B65008C0B30 /* ReactFileUploader.m */; };
 		F954C3F41FC55B6C008C0B30 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F954BCA61FC55B65008C0B30 /* OnboardingViewController.swift */; };
-		F954C3F51FC55B6C008C0B30 /* ReactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BCA91FC55B65008C0B30 /* ReactViewController.m */; };
 		F954C3F61FC55B6C008C0B30 /* ReactUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F954BCAA1FC55B65008C0B30 /* ReactUserManager.m */; };
 		F954C3F71FC55B6C008C0B30 /* ReactPopoverOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954BCAD1FC55B65008C0B30 /* ReactPopoverOptionViewController.xib */; };
 		F954C3F81FC55B6C008C0B30 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F954BCAE1FC55B65008C0B30 /* OptionCell.xib */; };
@@ -2044,6 +2049,19 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		9246FBF81FC576F90038D99B /* ReactDynamicFilterBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactDynamicFilterBridge.swift; sourceTree = "<group>"; };
+		9246FBF91FC576F90038D99B /* ReactDynamicFilterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactDynamicFilterModule.h; sourceTree = "<group>"; };
+		9246FBFA1FC576F90038D99B /* ReactDynamicFilterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactDynamicFilterModule.m; sourceTree = "<group>"; };
+		9246FBFB1FC576F90038D99B /* ReactHybridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactHybridViewController.h; sourceTree = "<group>"; };
+		9246FBFC1FC576F90038D99B /* ReactHybridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactHybridViewController.m; sourceTree = "<group>"; };
+		9246FC021FC5797B0038D99B /* FuzzySearchCatalog.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchCatalog.swift; sourceTree = "<group>"; };
+		9246FC031FC5797B0038D99B /* FuzzySearchData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchData.swift; sourceTree = "<group>"; };
+		9246FC041FC5797B0038D99B /* FuzzySearchDataSuggestion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchDataSuggestion.swift; sourceTree = "<group>"; };
+		9246FC051FC5797B0038D99B /* FuzzySearchDataSuggestionInstead.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchDataSuggestionInstead.swift; sourceTree = "<group>"; };
+		9246FC061FC5797B0038D99B /* FuzzySearchDataSuggestionText.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchDataSuggestionText.swift; sourceTree = "<group>"; };
+		9246FC071FC5797B0038D99B /* FuzzySearchProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchProduct.swift; sourceTree = "<group>"; };
+		9246FC081FC5797B0038D99B /* FuzzySearchWrapper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FuzzySearchWrapper.swift; sourceTree = "<group>"; };
+		9246FC091FC5797B0038D99B /* Redirection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Redirection.swift; sourceTree = "<group>"; };
 		925BA62E1E518A54001CED3A /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
@@ -3337,9 +3355,6 @@
 		F954B61D1FC55B62008C0B30 /* SearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchViewController.h; sourceTree = "<group>"; };
 		F954B61F1FC55B62008C0B30 /* SpellCheckRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpellCheckRequest.m; sourceTree = "<group>"; };
 		F954B6201FC55B62008C0B30 /* SpellCheckRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SpellCheckRequest.h; sourceTree = "<group>"; };
-		F954B6221FC55B62008C0B30 /* ImagePickerCategoryController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerCategoryController.m; sourceTree = "<group>"; };
-		F954B6231FC55B62008C0B30 /* ImagePickerCategoryController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerCategoryController.h; sourceTree = "<group>"; };
-		F954B6241FC55B62008C0B30 /* ImagePickerCategoryController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ImagePickerCategoryController.xib; sourceTree = "<group>"; };
 		F954B6261FC55B62008C0B30 /* ProductBadge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductBadge.swift; sourceTree = "<group>"; };
 		F954B6271FC55B62008C0B30 /* SearchResultShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchResultShopCell.m; sourceTree = "<group>"; };
 		F954B6281FC55B62008C0B30 /* SpellCheckResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SpellCheckResponse.m; sourceTree = "<group>"; };
@@ -4664,12 +4679,6 @@
 		F954BBE01FC55B65008C0B30 /* AddressCity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCity.h; sourceTree = "<group>"; };
 		F954BBE11FC55B65008C0B30 /* AddressProvince.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressProvince.h; sourceTree = "<group>"; };
 		F954BBE21FC55B65008C0B30 /* AddressResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressResult.h; sourceTree = "<group>"; };
-		F954BBE41FC55B65008C0B30 /* ImageSearchProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSearchProduct.m; sourceTree = "<group>"; };
-		F954BBE51FC55B65008C0B30 /* ImageSearchResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSearchResponse.h; sourceTree = "<group>"; };
-		F954BBE61FC55B65008C0B30 /* ImageSearchResponseData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSearchResponseData.m; sourceTree = "<group>"; };
-		F954BBE71FC55B65008C0B30 /* ImageSearchResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImageSearchResponse.m; sourceTree = "<group>"; };
-		F954BBE81FC55B65008C0B30 /* ImageSearchProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSearchProduct.h; sourceTree = "<group>"; };
-		F954BBE91FC55B65008C0B30 /* ImageSearchResponseData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImageSearchResponseData.h; sourceTree = "<group>"; };
 		F954BBEB1FC55B65008C0B30 /* WalletCashBack.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBack.swift; sourceTree = "<group>"; };
 		F954BBEC1FC55B65008C0B30 /* WalletCashBackResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletCashBackResponse.swift; sourceTree = "<group>"; };
 		F954BBED1FC55B65008C0B30 /* WalletStore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WalletStore.swift; sourceTree = "<group>"; };
@@ -4821,7 +4830,6 @@
 		F954BC901FC55B65008C0B30 /* ReactSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactSplitViewController.swift; sourceTree = "<group>"; };
 		F954BC911FC55B65008C0B30 /* TKPReactAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactAnalytics.m; sourceTree = "<group>"; };
 		F954BC921FC55B65008C0B30 /* ReactTPRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTPRoutes.m; sourceTree = "<group>"; };
-		F954BC931FC55B65008C0B30 /* ReactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactViewController.h; sourceTree = "<group>"; };
 		F954BC941FC55B65008C0B30 /* ReactUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactUserManager.h; sourceTree = "<group>"; };
 		F954BC951FC55B65008C0B30 /* HybridNavigationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HybridNavigationManager.m; sourceTree = "<group>"; };
 		F954BC961FC55B65008C0B30 /* ReactBannerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBannerManager.m; sourceTree = "<group>"; };
@@ -4843,7 +4851,6 @@
 		F954BCA61FC55B65008C0B30 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		F954BCA71FC55B65008C0B30 /* AppNavigationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppNavigationDelegate.h; sourceTree = "<group>"; };
 		F954BCA81FC55B65008C0B30 /* HybridNavigationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HybridNavigationManager.h; sourceTree = "<group>"; };
-		F954BCA91FC55B65008C0B30 /* ReactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactViewController.m; sourceTree = "<group>"; };
 		F954BCAA1FC55B65008C0B30 /* ReactUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactUserManager.m; sourceTree = "<group>"; };
 		F954BCAB1FC55B65008C0B30 /* ReactTPRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTPRoutes.h; sourceTree = "<group>"; };
 		F954BCAC1FC55B65008C0B30 /* TKPReactAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactAnalytics.h; sourceTree = "<group>"; };
@@ -5112,6 +5119,29 @@
 				7A466B751EB2FEAE00A72105 /* AppDelegate.h */,
 			);
 			path = Tokopedia;
+			sourceTree = "<group>";
+		};
+		9246FC001FC5797B0038D99B /* Fuzzy Search */ = {
+			isa = PBXGroup;
+			children = (
+				9246FC011FC5797B0038D99B /* Model */,
+			);
+			path = "Fuzzy Search";
+			sourceTree = "<group>";
+		};
+		9246FC011FC5797B0038D99B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9246FC021FC5797B0038D99B /* FuzzySearchCatalog.swift */,
+				9246FC031FC5797B0038D99B /* FuzzySearchData.swift */,
+				9246FC041FC5797B0038D99B /* FuzzySearchDataSuggestion.swift */,
+				9246FC051FC5797B0038D99B /* FuzzySearchDataSuggestionInstead.swift */,
+				9246FC061FC5797B0038D99B /* FuzzySearchDataSuggestionText.swift */,
+				9246FC071FC5797B0038D99B /* FuzzySearchProduct.swift */,
+				9246FC081FC5797B0038D99B /* FuzzySearchWrapper.swift */,
+				9246FC091FC5797B0038D99B /* Redirection.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
@@ -5817,6 +5847,7 @@
 		F954B1B11FC55B60008C0B30 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				9246FC001FC5797B0038D99B /* Fuzzy Search */,
 				F954B1B21FC55B60008C0B30 /* HVDLayout */,
 				F954B1B51FC55B60008C0B30 /* Handler */,
 				F954B1B81FC55B60008C0B30 /* InboxReview */,
@@ -7673,7 +7704,6 @@
 			children = (
 				F954B6071FC55B62008C0B30 /* SearchHistory */,
 				F954B61E1FC55B62008C0B30 /* SearchRequest */,
-				F954B6211FC55B62008C0B30 /* ImageSearch */,
 				F954B6251FC55B62008C0B30 /* SearchResult */,
 				F954B6391FC55B62008C0B30 /* search.h */,
 			);
@@ -7716,16 +7746,6 @@
 				F954B6201FC55B62008C0B30 /* SpellCheckRequest.h */,
 			);
 			path = SearchRequest;
-			sourceTree = "<group>";
-		};
-		F954B6211FC55B62008C0B30 /* ImageSearch */ = {
-			isa = PBXGroup;
-			children = (
-				F954B6221FC55B62008C0B30 /* ImagePickerCategoryController.m */,
-				F954B6231FC55B62008C0B30 /* ImagePickerCategoryController.h */,
-				F954B6241FC55B62008C0B30 /* ImagePickerCategoryController.xib */,
-			);
-			path = ImageSearch;
 			sourceTree = "<group>";
 		};
 		F954B6251FC55B62008C0B30 /* SearchResult */ = {
@@ -8510,7 +8530,6 @@
 				F954BB821FC55B65008C0B30 /* Profile */,
 				F954BBC71FC55B65008C0B30 /* ContactUs */,
 				F954BBD81FC55B65008C0B30 /* Address */,
-				F954BBE31FC55B65008C0B30 /* SearchImage */,
 				F954BBEA1FC55B65008C0B30 /* Wallet */,
 				F954BBF01FC55B65008C0B30 /* ProductEditImages.swift */,
 				F954BBF11FC55B65008C0B30 /* TKPString.h */,
@@ -10192,19 +10211,6 @@
 			path = Address;
 			sourceTree = "<group>";
 		};
-		F954BBE31FC55B65008C0B30 /* SearchImage */ = {
-			isa = PBXGroup;
-			children = (
-				F954BBE41FC55B65008C0B30 /* ImageSearchProduct.m */,
-				F954BBE51FC55B65008C0B30 /* ImageSearchResponse.h */,
-				F954BBE61FC55B65008C0B30 /* ImageSearchResponseData.m */,
-				F954BBE71FC55B65008C0B30 /* ImageSearchResponse.m */,
-				F954BBE81FC55B65008C0B30 /* ImageSearchProduct.h */,
-				F954BBE91FC55B65008C0B30 /* ImageSearchResponseData.h */,
-			);
-			path = SearchImage;
-			sourceTree = "<group>";
-		};
 		F954BBEA1FC55B65008C0B30 /* Wallet */ = {
 			isa = PBXGroup;
 			children = (
@@ -10473,10 +10479,14 @@
 		F954BC8F1FC55B65008C0B30 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				9246FBF81FC576F90038D99B /* ReactDynamicFilterBridge.swift */,
+				9246FBF91FC576F90038D99B /* ReactDynamicFilterModule.h */,
+				9246FBFA1FC576F90038D99B /* ReactDynamicFilterModule.m */,
+				9246FBFB1FC576F90038D99B /* ReactHybridViewController.h */,
+				9246FBFC1FC576F90038D99B /* ReactHybridViewController.m */,
 				F954BC901FC55B65008C0B30 /* ReactSplitViewController.swift */,
 				F954BC911FC55B65008C0B30 /* TKPReactAnalytics.m */,
 				F954BC921FC55B65008C0B30 /* ReactTPRoutes.m */,
-				F954BC931FC55B65008C0B30 /* ReactViewController.h */,
 				F954BC941FC55B65008C0B30 /* ReactUserManager.h */,
 				F954BC951FC55B65008C0B30 /* HybridNavigationManager.m */,
 				F954BC961FC55B65008C0B30 /* ReactBannerManager.m */,
@@ -10498,7 +10508,6 @@
 				F954BCA61FC55B65008C0B30 /* OnboardingViewController.swift */,
 				F954BCA71FC55B65008C0B30 /* AppNavigationDelegate.h */,
 				F954BCA81FC55B65008C0B30 /* HybridNavigationManager.h */,
-				F954BCA91FC55B65008C0B30 /* ReactViewController.m */,
 				F954BCAA1FC55B65008C0B30 /* ReactUserManager.m */,
 				F954BCAB1FC55B65008C0B30 /* ReactTPRoutes.h */,
 				F954BCAC1FC55B65008C0B30 /* TKPReactAnalytics.h */,
@@ -11132,7 +11141,6 @@
 				F954C17C1FC55B69008C0B30 /* AccountActivationViewController.xib in Resources */,
 				F954BEDA1FC55B66008C0B30 /* CancelShipmentViewController.xib in Resources */,
 				F954BDB51FC55B66008C0B30 /* TransactionATCViewController.xib in Resources */,
-				F954C07A1FC55B68008C0B30 /* ImagePickerCategoryController.xib in Resources */,
 				F954BFA31FC55B67008C0B30 /* CatalogViewController.xib in Resources */,
 				F954BE171FC55B66008C0B30 /* MyWishlistSearchCollectionReusableView.xib in Resources */,
 				F954C17E1FC55B69008C0B30 /* EmptyStateView.xib in Resources */,
@@ -12207,6 +12215,7 @@
 				F954C2F81FC55B6A008C0B30 /* TakeReplacementResult.swift in Sources */,
 				F954BFEB1FC55B67008C0B30 /* SecurityQuestionViewController.swift in Sources */,
 				F954C35B1FC55B6B008C0B30 /* ProfileSettingsResult.m in Sources */,
+				9246FC0A1FC5797B0038D99B /* FuzzySearchCatalog.swift in Sources */,
 				F954C4041FC55B6C008C0B30 /* UserData.m in Sources */,
 				F954C39D1FC55B6B008C0B30 /* SendMessageResult.m in Sources */,
 				F954C24C1FC55B6A008C0B30 /* Deposit.m in Sources */,
@@ -12250,6 +12259,7 @@
 				F954C2191FC55B69008C0B30 /* SearchProductWrapper.swift in Sources */,
 				F954C3FC1FC55B6C008C0B30 /* ReactEventManager.m in Sources */,
 				F954C33B1FC55B6B008C0B30 /* Payment.m in Sources */,
+				9246FC0B1FC5797B0038D99B /* FuzzySearchData.swift in Sources */,
 				F954C1B41FC55B69008C0B30 /* RateData.m in Sources */,
 				F954C42B1FC55B6C008C0B30 /* TalkTarget.swift in Sources */,
 				F954BD8F1FC55B66008C0B30 /* ProductRecommendationNode.swift in Sources */,
@@ -12434,6 +12444,7 @@
 				F954C3E41FC55B6C008C0B30 /* MainViewController.m in Sources */,
 				DADB9F661F3C46CF002B1FAE /* UIImageView%2BAFNetworking.swift in Sources */,
 				F954C3811FC55B6B008C0B30 /* AddressDistrict.m in Sources */,
+				9246FC0D1FC5797B0038D99B /* FuzzySearchDataSuggestionInstead.swift in Sources */,
 				F954C3E11FC55B6C008C0B30 /* DigitalAnalyticsManager.swift in Sources */,
 				F954C2521FC55B6A008C0B30 /* HotlistData.m in Sources */,
 				F954BE861FC55B66008C0B30 /* EditSolutionBuyerViewController.swift in Sources */,
@@ -12507,6 +12518,8 @@
 				F954BE531FC55B66008C0B30 /* TopAdsComponentView.swift in Sources */,
 				DADB9F5C1F3C46CF002B1FAE /* MHVerticalTabBar.m in Sources */,
 				F954C3C61FC55B6C008C0B30 /* DigitalOperator.swift in Sources */,
+				9246FBFF1FC576F90038D99B /* ReactHybridViewController.m in Sources */,
+				9246FC111FC5797B0038D99B /* Redirection.swift in Sources */,
 				F954C3251FC55B6B008C0B30 /* ShippingInfoShipmentPackage.m in Sources */,
 				F954BEFF1FC55B66008C0B30 /* ProductQuantityViewController.m in Sources */,
 				F954BFF11FC55B67008C0B30 /* ChangePhoneNumberViewController.swift in Sources */,
@@ -12599,7 +12612,6 @@
 				F954C28D1FC55B6A008C0B30 /* OrderSellerShop.m in Sources */,
 				F954BD591FC55B66008C0B30 /* UIKitCategory.m in Sources */,
 				F954C2321FC55B69008C0B30 /* Product.m in Sources */,
-				F954C3851FC55B6B008C0B30 /* ImageSearchProduct.m in Sources */,
 				F954C01C1FC55B67008C0B30 /* DetailProductVideoTableViewCell.swift in Sources */,
 				F954C21F1FC55B69008C0B30 /* InboxTicketDetail.m in Sources */,
 				F954C3521FC55B6B008C0B30 /* GenerateHost.m in Sources */,
@@ -12878,7 +12890,6 @@
 				F954C11D1FC55B68008C0B30 /* ResolutionProductData.m in Sources */,
 				F954BE3A1FC55B66008C0B30 /* ProductModelView.m in Sources */,
 				F954BFF81FC55B67008C0B30 /* UserInfoRequest.swift in Sources */,
-				F954C3871FC55B6B008C0B30 /* ImageSearchResponse.m in Sources */,
 				F954C0E61FC55B68008C0B30 /* UIColor+TextColor.m in Sources */,
 				F954BF3C1FC55B67008C0B30 /* ReplacementDetailViewModel.swift in Sources */,
 				F954C0CD1FC55B68008C0B30 /* ListFilter.swift in Sources */,
@@ -12925,6 +12936,7 @@
 				F954BF431FC55B67008C0B30 /* ReplacementDetailView.swift in Sources */,
 				F954BF481FC55B67008C0B30 /* NotificationViewController.m in Sources */,
 				F954C1571FC55B68008C0B30 /* PulsaCategoryRoot.swift in Sources */,
+				9246FC0F1FC5797B0038D99B /* FuzzySearchProduct.swift in Sources */,
 				F954C1421FC55B68008C0B30 /* PulsaProductViewController.swift in Sources */,
 				F954C3541FC55B6B008C0B30 /* Upload.m in Sources */,
 				F954C3881FC55B6B008C0B30 /* WalletCashBack.swift in Sources */,
@@ -13048,7 +13060,6 @@
 				F954BDF41FC55B66008C0B30 /* SettingUserPhoneViewController.m in Sources */,
 				F954C1B21FC55B69008C0B30 /* TransactionCalculatePrice.m in Sources */,
 				F954BFBE1FC55B67008C0B30 /* EditShopViewController.m in Sources */,
-				F954C3861FC55B6B008C0B30 /* ImageSearchResponseData.m in Sources */,
 				F954C2C21FC55B6A008C0B30 /* ShopReputation.m in Sources */,
 				F954BEC31FC55B66008C0B30 /* FilterSalesTransactionListViewController.m in Sources */,
 				F954BEC81FC55B66008C0B30 /* RetryPickupRequest.swift in Sources */,
@@ -13068,6 +13079,7 @@
 				F954C0E41FC55B68008C0B30 /* TxOrderStatusDetailViewController.m in Sources */,
 				F954BF5A1FC55B67008C0B30 /* AlertPickerView.m in Sources */,
 				F954C42E1FC55B6C008C0B30 /* WalletTarget.swift in Sources */,
+				9246FC0E1FC5797B0038D99B /* FuzzySearchDataSuggestionText.swift in Sources */,
 				F954BF361FC55B67008C0B30 /* CourierInfoViewCell.m in Sources */,
 				DADB9F491F3C46CE002B1FAE /* _FBTweakTableViewCell.m in Sources */,
 				F954C2AC1FC55B6A008C0B30 /* NotificationPurchase.m in Sources */,
@@ -13310,7 +13322,6 @@
 				F954C3981FC55B6B008C0B30 /* GeneralActionResult.m in Sources */,
 				F954BDB41FC55B66008C0B30 /* ShippingOptionsViewController.m in Sources */,
 				F954C26D1FC55B6A008C0B30 /* ResolutionTroubleSolution.swift in Sources */,
-				F954C0791FC55B68008C0B30 /* ImagePickerCategoryController.m in Sources */,
 				F954C1211FC55B68008C0B30 /* ResolutionCenterCreateViewController.m in Sources */,
 				F954BE181FC55B66008C0B30 /* MyWishlistWholesalePrice.swift in Sources */,
 				F954BDB01FC55B66008C0B30 /* TransactionShipmentATCViewController.m in Sources */,
@@ -13333,7 +13344,6 @@
 				F954C1AE1FC55B69008C0B30 /* InboxReview.m in Sources */,
 				F954C25F1FC55B6A008C0B30 /* ResolutionCustomer.m in Sources */,
 				F954C0CF1FC55B68008C0B30 /* FilterResponse.swift in Sources */,
-				F954C3F51FC55B6C008C0B30 /* ReactViewController.m in Sources */,
 				F954C2A81FC55B6A008C0B30 /* DepositFormResult.m in Sources */,
 				F954BF051FC55B66008C0B30 /* RejectReasonEmptyStockCell.m in Sources */,
 				F954BE251FC55B66008C0B30 /* PromoDetailViewController.m in Sources */,
@@ -13415,6 +13425,7 @@
 				F954C2A91FC55B6A008C0B30 /* DepositForm.m in Sources */,
 				F954BE0F1FC55B66008C0B30 /* AnnouncementTickerView.m in Sources */,
 				F954C1101FC55B68008C0B30 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
+				9246FC101FC5797B0038D99B /* FuzzySearchWrapper.swift in Sources */,
 				F954C0CA1FC55B68008C0B30 /* RequestFilterCategory.swift in Sources */,
 				F954C1A81FC55B69008C0B30 /* FeedViewController.swift in Sources */,
 				F954C1CE1FC55B69008C0B30 /* TxOrderPaymentEditForm.m in Sources */,
@@ -13423,6 +13434,7 @@
 				F954BEA81FC55B66008C0B30 /* CategoryIntermediaryResponse.swift in Sources */,
 				F954BDA31FC55B66008C0B30 /* OneClickCell.swift in Sources */,
 				F954BEE81FC55B66008C0B30 /* PickupAddressView.swift in Sources */,
+				9246FBFD1FC576F90038D99B /* ReactDynamicFilterBridge.swift in Sources */,
 				F954C19B1FC55B69008C0B30 /* FeedInspirationComponentView.swift in Sources */,
 				F954BEB41FC55B66008C0B30 /* CategoryNavigationTableViewCell.swift in Sources */,
 				F954C36D1FC55B6B008C0B30 /* ProfileInfoResult.m in Sources */,
@@ -13451,6 +13463,7 @@
 				F954C0491FC55B67008C0B30 /* ProductEditWholesaleCell.m in Sources */,
 				F954BE141FC55B66008C0B30 /* MyWishlistShop.swift in Sources */,
 				F954C3B91FC55B6C008C0B30 /* InboxTalk.m in Sources */,
+				9246FC0C1FC5797B0038D99B /* FuzzySearchDataSuggestion.swift in Sources */,
 				F954C3121FC55B6B008C0B30 /* Etalase.m in Sources */,
 				F954C1951FC55B69008C0B30 /* FeedState.swift in Sources */,
 				F954BFD11FC55B67008C0B30 /* ShopTagDescriptionViewCell.swift in Sources */,
@@ -13511,6 +13524,7 @@
 				F954C3CC1FC55B6C008C0B30 /* DigitalProductSelectionViewController.swift in Sources */,
 				D8404B841FA1EEAB0039A972 /* AIRGoogleMapManager.m in Sources */,
 				F954C2101FC55B69008C0B30 /* GooglePlaceDetailGeometry.m in Sources */,
+				9246FBFE1FC576F90038D99B /* ReactDynamicFilterModule.m in Sources */,
 				F954C14F1FC55B68008C0B30 /* PulsaOperatorRoot.swift in Sources */,
 				F954C3FB1FC55B6C008C0B30 /* RNSearchBarManager.m in Sources */,
 				F954BDBD1FC55B66008C0B30 /* NoLoginView.swift in Sources */,

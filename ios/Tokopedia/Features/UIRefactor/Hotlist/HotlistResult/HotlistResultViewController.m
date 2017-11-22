@@ -62,6 +62,10 @@
 #define CProductThumbView @"ProductThumbCell"
 #define CProductThumbIdentifier @"ProductThumbCellIdentifier"
 
+#import "ReactDynamicFilterModule.h"
+
+@import NativeNavigation;
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -126,6 +130,8 @@ ProductCellDelegate
     NSArray<ListOption*> *_selectedCategories;
     
     NSString *_rootCategoryID;
+    
+    ReactDynamicFilterBridge *_dynamicFilterBridge;
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
@@ -168,6 +174,8 @@ ProductCellDelegate
 
 - (void) viewDidLoad {
     [super viewDidLoad];
+    
+    _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     
     _page = 0;
     
@@ -308,11 +316,6 @@ ProductCellDelegate
     [_collectionView reloadData];
 }
 
-#pragma mark - Memory Management
--(void)dealloc {
-    NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
-}
-
 
 #pragma mark - Action View
 - (void)didTapFilterSubCategoryButton {
@@ -365,22 +368,39 @@ ProductCellDelegate
 }
 
 -(void)searchWithDynamicFilter{
-    __unused FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceHotlist
-                                                                        filterResponse:_filterResponse?:[FilterData new]
-                                                                        rootCategoryID:@""
-                                                                       selectedFilters:_selectedFilters
-                                                                           presentedVC:self
-                                                                          onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-        
-        _selectedFilterParam = paramFilters;
-        _selectedFilters = selectedFilters;
-        
-        [self isShowFilterIsActive:[self filterIsActive]];
-        [self refreshView:nil];
-        
-    } onReceivedFilterDataOption:^(FilterData * filterResponse){
-        _filterResponse = filterResponse;
+    __weak typeof(self) weakSelf = self;
+    
+    [_dynamicFilterBridge
+     openFilterScreenFrom:self
+     parameters:@{
+                  @"searchParams": self.parametersDynamicFilter,
+                  @"source": @"hot_product"
+                  }
+     onFilterSelected:^(NSArray *filters) {
+         [weakSelf filterDidSelected:filters];
+     }];
+}
+
+- (void)filterDidSelected:(NSArray *)filters {
+    _selectedFilters = [filters mutableCopy];
+    
+    NSArray *selectedCategories = [_selectedFilters bk_select:^BOOL(ListOption *obj) {
+        return ![obj.key isEqualToString:@"sc"];
     }];
+    if(selectedCategories.count == 0) {
+        _rootCategoryID = @"";
+    }
+    
+    NSMutableDictionary *paramFilters = [NSMutableDictionary new];
+    [_selectedFilters bk_each:^(ListOption *option) {
+        paramFilters[option.key] = option.value;
+    }];
+    
+    _selectedFilterParam = paramFilters;
+    [self isShowFilterIsActive:[self filterIsActive]];
+    [_detailfilter removeObjectForKey:@"sc"];
+    
+    [self refreshView:nil];
 }
 
 -(BOOL)filterIsActive{

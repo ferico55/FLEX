@@ -26,6 +26,10 @@
 #import "Tokopedia-Swift.h"
 #import "SpellCheckRequest.h"
 
+#import "ReactDynamicFilterModule.h"
+
+@import NativeNavigation;
+
 static NSString const *rows = @"12";
 
 @interface SearchResultShopViewController ()<UITableViewDelegate, UITableViewDataSource, FilterViewControllerDelegate, LoadingViewDelegate>
@@ -60,6 +64,17 @@ static NSString const *rows = @"12";
     FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
+    
+    ReactDynamicFilterBridge *_dynamicFilterBridge;
+}
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil {
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        _params = [NSMutableDictionary new];
+        _selectedFilters = [NSMutableArray new];
+    }
+    return self;
 }
 
 - (void)initNoResultView{
@@ -76,6 +91,7 @@ static NSString const *rows = @"12";
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     _shops = [NSMutableArray new];
     _params = [NSMutableDictionary new];
     _start = 0;
@@ -260,21 +276,30 @@ static NSString const *rows = @"12";
 }
 
 -(void)searchWithDynamicFilter{
-    FiltersController *controller = [[FiltersController alloc]initWithSearchDataSource:SourceShop
-                                                                        filterResponse:_filterResponse?:[FilterData new]
-                                                                        rootCategoryID:@""
-                                                                       selectedFilters:_selectedFilters
-                                                                           presentedVC:self
-                                                                          onCompletion:^(NSArray<ListOption *> * selectedFilters, NSDictionary* paramFilters) {
-        
-        _selectedFilters = selectedFilters;
-        _selectedFilterParam = paramFilters;
-        [self getFilterIsActive];
-        [self refreshView:nil];
-        
-    } onReceivedFilterDataOption:^(FilterData * filterResponse){
-        _filterResponse = filterResponse;
+    __weak typeof(self) weakSelf = self;
+    
+    [_dynamicFilterBridge
+     openFilterScreenFrom:self
+     parameters:@{
+                  @"searchParams": self.parameterDynamicFilter,
+                  @"source": @"search_shop"
+                  }
+     onFilterSelected:^(NSArray *filters) {
+         [weakSelf filterDidSelected:filters];
+     }];
+}
+
+- (void)filterDidSelected:(NSArray *)filters {
+    _selectedFilters = [filters mutableCopy];
+    NSMutableDictionary *paramFilters = [NSMutableDictionary new];
+    [_selectedFilters bk_each:^(ListOption *option) {
+        paramFilters[option.key] = option.value;
     }];
+    
+    _selectedFilterParam = paramFilters;
+    [self getFilterIsActive];
+    
+    [self refreshView:nil];
 }
 
 -(BOOL)getFilterIsActive{

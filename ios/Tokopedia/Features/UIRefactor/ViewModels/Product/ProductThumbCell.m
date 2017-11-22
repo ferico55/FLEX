@@ -269,11 +269,11 @@
         [self.shopLocation setHidden:NO];
     }
     
-    if (![viewModel.productRate isEqualToString: @"0"] && viewModel.productRate != nil) {
+    if (([viewModel.productRate integerValue] > 0) && viewModel.productRate != nil) {
         [_ratingContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {
             make.height.mas_equalTo(16);
         }];
-        [_qualityRateValue setStarscount:round([viewModel.productRate doubleValue] / 20.0)];
+        [_qualityRateValue setStarscount:[viewModel.productRate integerValue]];
         [_totalReviewLabel setText:[NSString stringWithFormat:@"(%@)", viewModel.totalReview]];
     } else {
         [_ratingContainerView mas_remakeConstraints:^(MASConstraintMaker *make) {

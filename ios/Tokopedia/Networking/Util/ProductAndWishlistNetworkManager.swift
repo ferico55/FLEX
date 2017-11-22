@@ -8,7 +8,6 @@
 
 import Foundation
 import RxSwift
-import NSObject_Rx
 
 @objc(ProductAndWishlistNetworkManager)
 class ProductAndWishlistNetworkManager: NSObject {
@@ -16,7 +15,7 @@ class ProductAndWishlistNetworkManager: NSObject {
     
     func requestSearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(SearchProductWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:SearchProductWrapper?
-        NetworkProvider<AceTarget>()
+        AceProvider()
             .request(.searchProductWith(params: params, path: path))
             .map(to: SearchProductWrapper.self)
             .flatMap { searchResult -> Observable<SearchProductWrapper> in
@@ -113,7 +112,7 @@ class ProductAndWishlistNetworkManager: NSObject {
     
     func checkWishlistStatusFor(products:[[SearchProduct]], withCompletionHandler completionHandler: @escaping([[SearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         
-//        var productIds:[String] = []
+        //        var productIds:[String] = []
         let productIds:[String] = products.reduce([]) { allIds, productList in
             return allIds + productList.map { $0.product_id }
         }
@@ -129,6 +128,30 @@ class ProductAndWishlistNetworkManager: NSObject {
                     }
                 }
                 completionHandler(products)
+            },
+                       onError: { [] error in
+                        errorHandler(error)
+            }
+            ).disposed(by: self.rx_disposeBag)
+    }
+    
+    func checkWishlistStatusFor(fuzzyProduct:[FuzzySearchProduct], withCompletionHandler completionHandler: @escaping([FuzzySearchProduct]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+        
+        var productIds: [String] = []
+        for product in fuzzyProduct {
+            productIds.append(product.productId)
+        }
+        
+        NetworkProvider<MojitoTarget>()
+            .request(.getProductWishStatus(productIds: productIds))
+            .map(to: ProductWishlistCheckResult.self)
+            .subscribe(onNext: { checkResult in
+                zip(checkResult.ids, fuzzyProduct).forEach({
+                    if $0 == $1.productId {
+                        $1.isOnWishlist = true
+                    }
+                })
+                completionHandler(fuzzyProduct)
             },
                        onError: { [] error in
                         errorHandler(error)
@@ -227,5 +250,45 @@ class ProductAndWishlistNetworkManager: NSObject {
                 errorHandler(error);
             })
             .disposed(by: self.rx_disposeBag)
+    }
+    
+    func requestFuzzySearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(FuzzySearchWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+        var outerResult:FuzzySearchWrapper?
+        AceProvider()
+            .request(.fuzzySearch(params: params, path: path))
+            .map(to: FuzzySearchWrapper.self)
+            .flatMap { searchResult -> Observable<FuzzySearchWrapper> in
+                outerResult = searchResult
+                var productIds:[String] = []
+                if let products = searchResult.data.products {
+                    let ids:[String] = products.map { $0.productId }
+                    productIds.append(contentsOf: ids)
+                }
+                
+                let userManager = UserAuthentificationManager()
+                if !userManager.isLogin {
+                    return Observable<FuzzySearchWrapper>.just(searchResult)
+                }
+                
+                return NetworkProvider<MojitoTarget>()
+                    .request(.getProductWishStatus(productIds: productIds))
+                    .map(to: ProductWishlistCheckResult.self)
+                    .map { checkResult in
+                        if let products = searchResult.data.products {
+                            zip(checkResult.ids, products).forEach({
+                                if $0 == $1.productId {
+                                    $1.isOnWishlist = true
+                                }
+                            })
+                        }
+                        return searchResult
+                }
+            }
+            .subscribe(onNext: { result in
+                completionHandler(result)
+            }, onError: { [] error in
+                guard let searchResult = outerResult else { errorHandler(error); return }
+                completionHandler(searchResult)
+            }).disposed(by: self.rx_disposeBag)
     }
 }

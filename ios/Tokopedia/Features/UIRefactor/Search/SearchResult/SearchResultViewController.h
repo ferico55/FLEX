@@ -25,7 +25,6 @@
 @property (strong,nonatomic) NSDictionary *data;
 @property (strong,nonatomic) NSDictionary* imageQueryInfo;
 @property (strong,nonatomic) NSString* image_url;
-@property (nonatomic) BOOL isFromImageSearch;
 @property (nonatomic) BOOL isFromAutoComplete;
 @property (nonatomic) BOOL isFromDirectory;
 @property (weak, nonatomic) id<SearchResultDelegate> delegate;

@@ -249,7 +249,16 @@ extension UIView {
         get {
             return UIColor(cgColor: layer.borderColor!)
         } set {
-            layer.borderColor = newValue.cgColor
+            // FIXME: this hack needs to be done because React also
+            // has borderColor method which receives a CGColor
+            // to fix this, this method either needs to be renamed or removed
+            let newColor: Any = newValue
+            
+            if !newValue.responds(to: #selector(getter: UIColor.cgColor)) {
+                layer.borderColor = (newColor as! CGColor)
+            } else {
+                layer.borderColor = newValue.cgColor
+            }
         }
     }
     

@@ -68,7 +68,7 @@ final class SearchProduct:NSObject, Unboxable {
             vm.productLargeUrl = self.product_image_700
             vm.isOnWishlist = self.isOnWishlist
             vm.productId = self.product_id
-            vm.productRate = "\(self.rate)"
+            vm.productRate = String(round(Double(self.rate) / 20.0))
             vm.totalReview = String(self.product_review_count)
             return vm
         }

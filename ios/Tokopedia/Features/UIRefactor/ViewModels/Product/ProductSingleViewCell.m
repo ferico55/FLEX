@@ -237,7 +237,7 @@
     self.shopLocation.text = viewModel.shopLocation;
     self.grosirPosition.constant = viewModel.isProductPreorder ? 10 : -64;
 
-    [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Diskusi - %@ Ulasan", viewModel.productTalk, viewModel.productReview]];
+    [self.productInfoLabel setText:[NSString stringWithFormat:@"%@ Ulasan", viewModel.productReview]];
     
     [self.productImage setImageWithURL:[NSURL URLWithString:viewModel.singleGridImageUrl] placeholderImage:[UIImage imageNamed:@"grey-bg.png"]];
     [self.productImage setContentMode:UIViewContentModeScaleAspectFill];

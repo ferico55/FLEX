@@ -229,3 +229,5 @@
 #import "UserContainerViewController.h"
 
 #import "string_alert.h"
+
+#import "ReactDynamicFilterModule.h"

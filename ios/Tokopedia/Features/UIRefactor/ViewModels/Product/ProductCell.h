@@ -39,7 +39,7 @@
 
 @property (strong, nonatomic) IBOutlet OAStackView *badgesView;
 @property (strong, nonatomic) IBOutlet OAStackView *labelsView;
-@property (strong, nonatomic) UIViewController *parentViewController;
+@property (weak, nonatomic) UIViewController *parentViewController;
 @property (weak, nonatomic) id<ProductCellDelegate> delegate;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceLabelTopConstraint;
 @property (strong, nonatomic) IBOutlet UILabel *originalPriceLabel;

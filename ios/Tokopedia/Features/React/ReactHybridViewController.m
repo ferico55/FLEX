@@ -6,12 +6,12 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-#import "ReactViewController.h"
+#import "ReactHybridViewController.h"
 #import <React/RCTRootView.h>
 
-@interface ReactViewController ()
+@interface ReactHybridViewController ()
 @end
-@implementation ReactViewController
+@implementation ReactHybridViewController
 
 - (id)initWithDelegate:(id<AppNavigationDelegate>)delegate bridge:(RCTBridge *)inBridge viewName:(NSString *)inName viewParams:(NSDictionary *)inParams
 {

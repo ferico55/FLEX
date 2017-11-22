@@ -29,6 +29,7 @@ module.exports = {
   },
   globals: {
     parseInt: true,
+  __DEV__: true,
   },
   env: {
     commonjs: true,
@@ -97,7 +98,6 @@ module.exports = {
     camelcase: [0, 'never'],
     'import/extensions': [2, 'never'],
     'max-len': [2, 120, 2],
-    'flowtype/boolean-style': [2, 'bool'],
     'react/no-unused-prop-types': [0, { skipShapeProps: true }],
     'jsx-a11y/no-static-element-interactions': 0,
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],

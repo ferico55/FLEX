@@ -8,9 +8,9 @@
 
 import Foundation
 class SearchProductWrapperReferable:NSObject, Referable {
-    var wrapper: SearchProductWrapper?
+    var shareUrl: String?
     var desktopUrl: String {
-        let desktopUrl = (self.wrapper?.data.shareUrl ?? NSString.tokopediaUrl())
+        let desktopUrl = (shareUrl ?? NSString.tokopediaUrl())
         return desktopUrl
     }
     var deeplinkPath: String {

@@ -9,11 +9,24 @@
 import MoyaUnbox
 import Moya
 
+class AceProvider: NetworkProvider<AceTarget> {
+    init() {
+        super.init(endpointClosure: AceProvider.endpointClosure,
+                   manager: DefaultAlamofireManager.sharedManager,
+                   plugins: [NetworkLoggerPlugin(verbose: true),NetworkPlugin()])
+    }
+    
+    fileprivate class func endpointClosure(for target: AceTarget) -> Endpoint<AceTarget> {
+        return NetworkProvider.defaultEndpointCreator(for: target)
+    }
+}
+
 enum AceTarget{
     case getHotList(forCategory: String, perPage:Int)
     case getOtherProduct(withProductID: String, shopID: String)
     case searchProduct(selectedCategoryString: String, rows: String, start: String, q: String, uniqueID: String, source:String, departmentName:String)
     case searchProductWith(params:[String:Any], path:String)
+    case fuzzySearch(params:[String:Any], path:String)
 }
 
 extension AceTarget : TargetType {
@@ -27,6 +40,7 @@ extension AceTarget : TargetType {
             case .getOtherProduct: return "/search/v2.3/product"
             case .searchProduct: return "/search/v2.5/product"
             case let .searchProductWith(_, path): return path
+            case let .fuzzySearch(_, path): return path
         }
     }
     
@@ -37,6 +51,7 @@ extension AceTarget : TargetType {
         case .getOtherProduct: return .get
         case .searchProduct: return .get
         case .searchProductWith: return .get
+        case .fuzzySearch: return .get
         }
     }
     
@@ -68,8 +83,8 @@ extension AceTarget : TargetType {
                 "department_name": departmentName
             ]
         case let .searchProductWith(params, _): return params
+        case let .fuzzySearch(params, _): return params
         }
-        
     }
     
     /// The method used for parameter encoding.
