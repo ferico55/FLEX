@@ -199,7 +199,11 @@
                                                  if([wself.webView.request.URL.path containsString:@"thanks"]) {
                                                      [wself.navigationController popToRootViewControllerAnimated:YES];
                                                  } else {
-                                                     [wself.webView stringByEvaluatingJavaScriptFromString:@"handlePop()"];
+                                                     if ([wself.webView.request.URL.absoluteString containsString:@"pay.tokopedia.com"]) {
+                                                         [wself.webView stringByEvaluatingJavaScriptFromString:@"handlePop()"];
+                                                     } else {
+                                                         [wself.navigationController popViewControllerAnimated:YES];
+                                                     }
                                                  }
                                              }];
 

@@ -40,6 +40,7 @@
     [super viewDidLoad];
     
     _shouldAuthorizeRequest = YES;
+    _isThankYouPage = NO;
     
     self.navigationItem.title = strTitle;
     
@@ -91,9 +92,13 @@
 
 - (void) backButtonDidTapped {
     if (self.webView.canGoBack) {
-        [self.webView goBack];
-        if(self.onTapBackButton) {
-            self.onTapBackButton(self.webView.request.URL);
+        if (_isThankYouPage) {
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } else {
+            [self.webView goBack];
+            if(self.onTapBackButton) {
+                self.onTapBackButton(self.webView.request.URL);
+            }
         }
     } else {
         [self.navigationController popViewControllerAnimated:YES];
@@ -111,6 +116,9 @@
     if (documentTitle && ![documentTitle isEqualToString:@""] &&
         (!self.strTitle || [self.strTitle isEqualToString:@""])) {
         self.navigationItem.title = documentTitle;
+    }
+    if ([webView.request.URL.path containsString:@"thank"]) {
+        _isThankYouPage = YES;
     }
 }
 
