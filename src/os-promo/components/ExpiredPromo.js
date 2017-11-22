@@ -1,36 +1,35 @@
 import React from 'react'
-import { View, Dimensions } from 'react-native'
-import glamorous from 'glamorous-native'
+import { View, Dimensions, StyleSheet, Image, Text } from 'react-native'
 import { ReactTPRoutes, TKPReactAnalytics } from 'NativeModules'
 import ActionButton from '../common/TKPButton'
 
 const { width } = Dimensions.get('window')
 
-const Expiredpromo = () => {
-  const EmptyView = glamorous.view({
+const styles = StyleSheet.create({
+  emptyView: {
     alignItems: 'center',
     paddingVertical: 30,
-  })
-
-  const HeaderText = glamorous.text({
+  },
+  headerText: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
     color: '#4a4a4a',
-  })
-
-  const SubHeaderText = glamorous.text({
+  },
+  subHeaderText: {
     fontSize: 13,
     textAlign: 'center',
     color: '#606060',
-  })
-
-  const EmptyBagImage = glamorous.image({
+    paddingTop: 15,
+  },
+  emptyBagImage: {
     width: width > 414 ? 250 : 200,
     height: width > 414 ? 250 : 200,
     resizeMode: 'contain',
-  })
+  },
+})
 
+const Expiredpromo = () => {
   const onActionTap = () => {
     TKPReactAnalytics.trackEvent({
       name: 'clickOSMicrosite',
@@ -48,16 +47,16 @@ const Expiredpromo = () => {
 
   return (
     <View>
-      <EmptyView>
-        <EmptyBagImage source={emptyBagImage} />
-        <HeaderText>Promo telah berakhir</HeaderText>
-        <SubHeaderText style={{ paddingTop: 15 }}>
+      <View style={styles.emptyView}>
+        <Image source={emptyBagImage} style={styles.emptyBagImage} />
+        <Text style={styles.headerText}>Promo telah berakhir</Text>
+        <Text style={styles.subHeaderText}>
           Temukan promo menarik lainnya di Official Store
-        </SubHeaderText>
+        </Text>
         <View style={{ paddingTop: 30 }}>
           <ActionButton type="big" content="Cek Sekarang" onTap={onActionTap} />
         </View>
-      </EmptyView>
+      </View>
     </View>
   )
 }
