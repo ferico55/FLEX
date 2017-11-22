@@ -10,6 +10,7 @@
 #import "Slide.h"
 #import "WebViewController.h"
 #import "Tokopedia-Swift.h"
+#import "iCarousel.h"
 
 @import SwiftOverlays;
 
@@ -19,13 +20,17 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 @interface CarouselDataSource ()
 
 @property(nullable, nonatomic, weak) StyledPageControl *pageControl;
+@property(nonatomic) BannerType bannerType;
+@property(nonatomic, strong) NSMutableArray<NSNumber *> *usedBannerIndex;
+@property(nullable, nonatomic, weak) NSTimer *timer;
+@property(nonatomic, weak) iCarousel * slider;
 @end
 
 @implementation CarouselDataSource {
-    NSArray *_banners;
+    NSArray<Slide *> *_banners;
 }
 
-- (instancetype)initWithBanner:(NSArray <Slide*>*)banners withPageControl: (StyledPageControl*) pageControl{
+- (instancetype)initWithBanner:(NSArray <Slide*>*_Nonnull)banners pageControl: (StyledPageControl*_Nonnull) pageControl type:(BannerType) type slider:(iCarousel * _Nonnull) slider {
     self = [super init];
     if(!self) {
         return nil;
@@ -33,6 +38,9 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
     
     _banners = banners;
     _pageControl = pageControl;
+    _bannerType = type;
+    _usedBannerIndex = [NSMutableArray new];
+    _slider = slider;
     return self;
 }
 
@@ -42,16 +50,12 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
     
-    CGSize bannerSize = IS_IPAD && (_isCategoryBanner == NO) ? bannerIPadSize : bannerIPhoneSize;
+    CGSize bannerSize = IS_IPAD && (_bannerType == BannerTypeHome) ? bannerIPadSize : bannerIPhoneSize;
     
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
     
     Slide *banner = _banners[index];
     [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
-    
-    if(!_isCategoryBanner) {
-        [AnalyticsManager trackHomeBanner:banner index:index type:HomeBannerPromotionTrackerTypeView];
-    }
     
     return view;
 }
@@ -88,8 +92,35 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 }
 
 - (void)carouselDidEndDragging:(iCarousel *)carousel willDecelerate:(BOOL)decelerate {
-    [_timer invalidate];
-    _timer = nil;
+    [self endBannerAutoScroll];
+}
+
+- (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
+    NSNumber *currentItemIndex = [NSNumber numberWithInteger:carousel.currentItemIndex];
+    if(_bannerType == BannerTypeHome  && ![_usedBannerIndex containsObject:currentItemIndex]) {
+        [AnalyticsManager trackHomeBanner:[_banners objectAtIndex:carousel.currentItemIndex] index:carousel.currentItemIndex type: HomeBannerPromotionTrackerTypeView];
+        [_usedBannerIndex addObject:currentItemIndex];
+    }
+}
+
+#pragma mark - Banner control for tracking purpose
+
+- (void)endBannerAutoScroll {
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+}
+
+- (void)startBannerAutoScroll {
+    [self endBannerAutoScroll];
+    _timer = [TKPDBannerTimer getTimerWithSlider:_slider];
+}
+
+- (void)resetBannerCounter {
+    if (_usedBannerIndex) {
+        [_usedBannerIndex removeAllObjects];
+    }
 }
 
 @end

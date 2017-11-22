@@ -614,23 +614,19 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         pageControl.gapWidth = 5
         
         pageControl.numberOfPages = categoryIntermediaryResult.banner!.images.count
+        let slider = iCarousel(frame: .zero)
         
-        self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, with: pageControl)
-        carouselDataSource.isCategoryBanner = true
+        self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, pageControl: pageControl, type: .category, slider: slider)
         carouselDataSource.didSelectBanner = { [unowned self] banner, index in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.bannerTitle)
         }
         self.carouselDataSource.navigationDelegate = navigationController
-        let slider = iCarousel(frame: .zero)
+        
         slider.dataSource = self.carouselDataSource
         slider.delegate = self.carouselDataSource
         slider.decelerationRate = 0.5
         
-        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { _ in
-            slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
-        }, repeats: true)
-        RunLoop.main.add(timer!, forMode: RunLoopMode.commonModes)
-        self.carouselDataSource.timer = timer
+        self.carouselDataSource.startBannerAutoScroll()
         
         intermediaryView = IntermediaryViewComponent()
         intermediaryView.state = IntermediaryState(intermediaryViewController: self, categoryIntermediaryResult: categoryIntermediaryResult, categoryIntermediaryNonHiddenChildren: categoryIntermediaryResult.nonHiddenChildren, categoryIntermediaryNotExpandedChildren: categoryIntermediaryResult.nonExpandedChildren, isCategorySubviewExpanded: false, categoryIntermediaryHotListItems: [], ads: [], banner: slider, pageControl: pageControl, officialStoreHomeItems: [])

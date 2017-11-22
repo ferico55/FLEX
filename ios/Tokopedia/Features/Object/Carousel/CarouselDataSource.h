@@ -9,19 +9,20 @@
 #import <Foundation/Foundation.h>
 #import "iCarousel.h"
 #import "StyledPageControl.h"
+#import "BannerType.h"
 
-@class BannerList;
 @class Slide;
-@class HomeSliderView;
 
 @interface CarouselDataSource : NSObject <iCarouselDataSource, iCarouselDelegate>
 
-- (instancetype _Nonnull )initWithBanner:(NSArray <Slide*>*_Nonnull)banners withPageControl: (StyledPageControl*_Nonnull) pageControl;
+- (instancetype _Nonnull )initWithBanner:(NSArray <Slide*>*_Nonnull)banners pageControl: (StyledPageControl*_Nonnull) pageControl type:(BannerType) type slider:(iCarousel *_Nonnull) slider;
+
+- (void)endBannerAutoScroll;
+- (void)startBannerAutoScroll;
+- (void)resetBannerCounter;
 
 @property(nullable, nonatomic, weak) UINavigationController *navigationDelegate;
-@property(nullable, nonatomic, weak) NSTimer *timer;
 
 @property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide, NSInteger index);
-@property (nonatomic) BOOL isCategoryBanner;
 
 @end

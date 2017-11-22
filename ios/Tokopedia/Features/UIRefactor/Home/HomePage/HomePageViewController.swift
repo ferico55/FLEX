@@ -11,6 +11,7 @@ import Foundation
 import OAStackView
 import RestKit
 import JLPermissions
+import RxCocoa
 import Moya
 
 @IBDesignable
@@ -64,6 +65,7 @@ class HomePageViewController: UIViewController {
     private let officialStorePlaceholder = UIView()
     fileprivate let authenticationService = AuthenticationService.shared
     fileprivate let userManager = UserAuthentificationManager()
+    fileprivate var homeSliderView: HomeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! HomeSliderView
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -76,6 +78,7 @@ class HomePageViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.homePageScrollView.keyboardDismissMode = .onDrag
+        self.homePageScrollView.delegate = self
         self.initOuterStackView()
         self.initViewLayout()
         
@@ -93,6 +96,10 @@ class HomePageViewController: UIViewController {
             self.requestOfficialStore()
         }
         
+        if self.isRequestingBanner == false {
+            self.requestBanner()
+        }
+        
         if self.isTopPicksDataEmpty {
             let topPicksWidgetViewController = TopPicksWidgetViewController()
             topPicksWidgetViewController.didGetTopPicksData = { [unowned self] in
@@ -107,10 +114,20 @@ class HomePageViewController: UIViewController {
         AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status": UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
         
+        NotificationCenter.default.rx.notification(Notification.Name(rawValue: "didSwipeHomeTab")).subscribe(onNext: {[weak self] (notification) in
+            guard let weakSelf = self, let page = notification.userInfo?["tag"] as? Int else { return }
+            if weakSelf.isHomePage(page: page) {
+                weakSelf.handleBannerAutoScroll(needResetTrackerIndex: true)
+            } else {
+                weakSelf.homeSliderView.endBannerAutoScroll()
+            }
+        }).addDisposableTo(rx_disposeBag)
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        
+        handleBannerAutoScroll(needResetTrackerIndex: true)
         
         DispatchQueue.global(qos: .default).async {
             if self.userManager.isLogin {
@@ -121,13 +138,15 @@ class HomePageViewController: UIViewController {
                 }
             }
             
-            if self.isRequestingBanner == false {
-                self.requestBanner()
-            }
             if self.canRequestTicker == true {
                 self.requestTicker()
             }
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        self.homeSliderView.endBannerAutoScroll()
     }
     
     func userDidLogin(notification: NSNotification) {
@@ -136,6 +155,7 @@ class HomePageViewController: UIViewController {
     
     func userDidLogout(notification: NSNotification) {
         self.requestPulsaWidget()
+        self.homeSliderView.endBannerAutoScroll()
     }
     
     // MARK: Setup StackView
@@ -375,22 +395,22 @@ class HomePageViewController: UIViewController {
     private func requestBanner() {
         let bannersStore = self.storeManager.homeBannerStore
         
-        let backgroundColor = self.backgroundColor
         isRequestingBanner = true
+        
         bannersStore?.fetchBanner(completion: { [unowned self] banner, _ in
             self.isRequestingBanner = false
             guard banner != nil else {
                 return
             }
-            let homeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! HomeSliderView
-            homeSliderView.generateSliderView(withBanner: banner!, withNavigationController: self.navigationController!)
+            self.homeSliderView.generateSliderView(withBanner: banner!, withNavigationController: self.navigationController!)
             
-            self.sliderPlaceholder.addSubview(homeSliderView)
+            self.sliderPlaceholder.addSubview(self.homeSliderView)
             
-            homeSliderView.mas_makeConstraints { make in
+            self.homeSliderView.mas_makeConstraints { make in
                 make?.edges.mas_equalTo()(self.sliderPlaceholder)
             }
             
+            self.homeSliderView.startBannerAutoScroll()
         })
     }
     
@@ -681,5 +701,37 @@ class HomePageViewController: UIViewController {
                 TPRoutes.routeURL(url)
             }
         }
+    }
+    
+    // MARK: Banner Function
+    fileprivate func isBannerSeenOnScreen() -> Bool {
+        let scrollViewOffsetY = homePageScrollView.contentOffset.y
+        let sliderPoint = self.homeSliderView.convert(CGPoint.zero, to: self.homePageScrollView)
+        if scrollViewOffsetY < sliderPoint.y + self.sliderHeight {
+            return true
+        }
+        
+        return false
+    }
+    
+    fileprivate func handleBannerAutoScroll(needResetTrackerIndex: Bool) {
+        if needResetTrackerIndex {
+            self.homeSliderView.resetBannerCounter()
+        }
+        if self.isBannerSeenOnScreen() {
+            self.homeSliderView.startBannerAutoScroll()
+        } else {
+            self.homeSliderView.endBannerAutoScroll()
+        }
+    }
+    
+    private func isHomePage(page: Int) -> Bool {
+        return page == 0 ? true : false
+    }
+}
+
+extension HomePageViewController: UIScrollViewDelegate {
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        handleBannerAutoScroll(needResetTrackerIndex: false)
     }
 }

@@ -12,6 +12,7 @@
 #import "WebViewController.h"
 #import "Tokopedia-Swift.h"
 #import "CarouselDataSource.h"
+#import "BannerType.h"
 
 @interface HeaderIntermediaryCollectionReusableView ()
 <
@@ -321,8 +322,7 @@ UICollectionViewDelegate
             _slider.scrollEnabled = NO;
         }
     
-        _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.images withPageControl:pageControl];
-        _carouselDataSource.isCategoryBanner = YES;
+        _carouselDataSource = [[CarouselDataSource alloc] initWithBanner:banner.images pageControl:pageControl type: BannerTypeCategory slider:_slider];
         _carouselDataSource.didSelectBanner = ^(Slide * _Nonnull slide, NSInteger index) {
             didSelectBanner(slide);
         };
@@ -332,7 +332,7 @@ UICollectionViewDelegate
         _slider.decelerationRate = 0.5;
         _slider.type = iCarouselTypeLinear;
         
-        self.carouselDataSource.timer = [TKPDBannerTimer getTimerWithSlider: _slider];
+        [self.carouselDataSource startBannerAutoScroll];
     }
 }
 

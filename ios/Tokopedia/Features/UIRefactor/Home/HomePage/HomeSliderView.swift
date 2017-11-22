@@ -14,15 +14,16 @@ class HomeSliderView: UIView {
     @IBOutlet fileprivate var seeAllPromoButton: UIButton!
     fileprivate var pageControlHeight: Int = 12
     fileprivate var customPageControl: StyledPageControl!
+    fileprivate let slider = iCarousel(frame: CGRect.zero)
     
     @IBOutlet fileprivate var homeSliderAddOnView: UIView!
-    fileprivate var carouselDataSource: CarouselDataSource!
+    fileprivate var carouselDataSource: CarouselDataSource?
     
     override func awakeFromNib() {
         setupCustomPageControl()
         setupSliderAddOnPromoButton()
-        self.isAccessibilityElement = true
-        self.accessibilityIdentifier = "bannerSliderView"
+        isAccessibilityElement = true
+        accessibilityIdentifier = "bannerSliderView"
     }
     
     fileprivate func setupCustomPageControl() {
@@ -32,17 +33,17 @@ class HomeSliderView: UIView {
         customPageControl.coreSelectedColor = .tpGreen()
         customPageControl.diameter = 11
         customPageControl.gapWidth = 5
-        self.addSubview(customPageControl)
+        addSubview(customPageControl)
     }
     
     fileprivate func setupSliderAddOnPromoButton() {
         let userAuthManager = UserAuthentificationManager()
-        self.seeAllPromoButton.bk_(whenTapped: {
-            var userInfo: [String : Int]!
+        seeAllPromoButton.bk_(whenTapped: {
+            var userInfo: [String: Int]!
             if userAuthManager.isLogin {
-                userInfo = ["page" : 3]
+                userInfo = ["page": 3]
             } else {
-                userInfo = ["page" : 2]
+                userInfo = ["page": 2]
             }
             
             NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: userInfo)
@@ -50,32 +51,48 @@ class HomeSliderView: UIView {
     }
     
     func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
-        let slider = iCarousel(frame: CGRect.zero)
         slider.backgroundColor = backgroundColor
-        self.carouselPlaceholder.addSubview(slider)
-        slider.mas_makeConstraints{ make in
+        carouselPlaceholder.addSubview(slider)
+        slider.mas_makeConstraints { make in
             make?.edges.mas_equalTo()(self.carouselPlaceholder)
         }
         
-        self.carouselDataSource = CarouselDataSource(banner: banner, with: self.customPageControl)
-        self.carouselDataSource.navigationDelegate = navigationController
-        
+        self.carouselDataSource = CarouselDataSource(banner: banner,
+                                                     pageControl: customPageControl,
+                                                     type: .home,
+                                                     slider: slider)
+        guard let carouselDataSource = self.carouselDataSource else { return }
+        carouselDataSource.navigationDelegate = navigationController
         carouselDataSource.didSelectBanner = { banner, index in
             AnalyticsManager.trackHomeBanner(banner, index: index, type: .click)
         }
+        
         slider.type = .linear
         slider.dataSource = self.carouselDataSource
         slider.delegate = self.carouselDataSource
         slider.decelerationRate = 0.5
         
-        self.carouselDataSource.timer = TKPDBannerTimer.getTimer(slider: slider)
-        
         customPageControl.numberOfPages = banner.count
-        customPageControl.mas_makeConstraints { (make) in
+        customPageControl.mas_makeConstraints { make in
             make?.centerY.mas_equalTo()(self.homeSliderAddOnView)
             make?.left.mas_equalTo()(self.homeSliderAddOnView)?.with().offset()(20)
             make?.height.mas_equalTo()(self.pageControlHeight)
-            make?.width.mas_equalTo()(self.pageControlHeight*Int(self.customPageControl.numberOfPages))
+            make?.width.mas_equalTo()(self.pageControlHeight * Int(self.customPageControl.numberOfPages))
         }
+    }
+    
+    func endBannerAutoScroll() {
+        carouselDataSource?.endBannerAutoScroll()
+    }
+    
+    func startBannerAutoScroll() {
+        guard let carouselDataSource = self.carouselDataSource else { return }
+        // refresh banner first with endBannerAutoScroll
+        carouselDataSource.endBannerAutoScroll()
+        carouselDataSource.startBannerAutoScroll()
+    }
+    
+    func resetBannerCounter() {
+        carouselDataSource?.resetBannerCounter()
     }
 }
