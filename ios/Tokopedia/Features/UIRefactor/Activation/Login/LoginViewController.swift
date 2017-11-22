@@ -94,6 +94,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
             if self.loadingUIHandler != nil {
                 self.loadingUIHandler!(toShow)
             }
+            self.view.isUserInteractionEnabled = !toShow
         }
     }
     //    MARK: - Actions
@@ -238,7 +239,14 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String) {
         self.isUsingTouchID = true
         self.emailId = email
-        self.password = password
+        self.password = password        
+        for viewController in self.childViewControllers {
+            if let tableController = viewController as? LoginTableViewController {
+                tableController.setField(email: email)
+                tableController.setField(password: password)
+                break
+            }
+        }
         self.doLoginWithEmail(email: email, password: password)
     }
     func touchIDHelperLoadFailed(_ helper: TouchIDHelper) {

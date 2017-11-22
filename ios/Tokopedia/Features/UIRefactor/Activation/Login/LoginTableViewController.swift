@@ -19,7 +19,7 @@ class LoginTableViewController: UITableViewController {
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet private weak var eyeButton: UIButton!
     @IBOutlet private weak var loginButton: UIButton!
-    weak var parentController: LoginViewController!
+    weak var parentController: LoginViewController?
     var isPasswordVisible = false
     var providersListViewHeight: CGFloat = 0.0 {
         didSet {
@@ -33,7 +33,7 @@ class LoginTableViewController: UITableViewController {
         if let parent = parent as? LoginViewController {
             self.parentController = parent
             self.setupUI()
-            self.parentController.loadingUIHandler = { (isLoading: Bool) in
+            parent.loadingUIHandler = { (isLoading: Bool) in
                 self.makeActivityIndicator(toShow: isLoading)
             }
         }
@@ -71,7 +71,9 @@ class LoginTableViewController: UITableViewController {
             })
             return
         }
-        self.parentController.doLoginWithEmail(email: self.emailTextField.text!, password: self.passwordTextField.text!)
+        if let parent = self.parentController, let emailId = self.emailTextField.text, let password = self.passwordTextField.text {
+            parent.doLoginWithEmail(email: emailId, password: password)
+        }
     }
     @IBAction func showHidePassword(sender: UIButton) {
         self.isPasswordVisible = !self.isPasswordVisible

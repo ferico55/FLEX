@@ -11,7 +11,7 @@ import FBSDKLoginKit
 
 class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet private weak var providersListView: SignInProviderListView!
-    weak var parentController: LoginTableViewController!
+    weak var parentController: LoginTableViewController?
     let kClientId = "692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com"
     //    MARK: - Lifecycle
     override func viewDidLoad() {
@@ -29,7 +29,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         super.didMove(toParentViewController: parent)
         if let parent = parent as? LoginTableViewController {
             self.parentController = parent
-            self.parentController.providersListViewHeight = CGFloat(self.providersListView.buttons.count * 54) - 10.0
+            parent.providersListViewHeight = CGFloat(self.providersListView.buttons.count * 54) - 10.0
         }
     }
     deinit {
@@ -94,7 +94,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         let controller = WebViewSignInViewController(provider: provider)
         controller.onReceiveToken = { (token: String) in
             let service = AuthenticationService.shared
-            service.loginDelegate = self.parentController.parentController
+            guard let parent = self.parentController?.parentController else {return}
+            service.loginDelegate = parent
             service.onLoginComplete = { (_ login: Login?, _ error: Error?) -> Void in
                 if let error = error {
                     SecureStorageManager().resetKeychain()
@@ -103,7 +104,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                 } else if let login = login {
                     login.medium = provider.name
                     LoginAnalytics().trackLoginSuccessEvent(label: provider.name)
-                    self.parentController.parentController.loginSuccess(login: login)
+                    parent.loginSuccess(login: login)
                 }
             }
             service.login(withUserProfile: CreatePasswordUserProfile.fromYahoo(token: token))
@@ -140,12 +141,14 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         })
     }
     func doLoginWithUser(profile: CreatePasswordUserProfile) {
-        self.parentController.parentController.makeActivityIndicator(toShow: false)
+        guard let parent = self.parentController?.parentController else {return}
+        parent.makeActivityIndicator(toShow: true)
         let service = AuthenticationService.shared
-        service.loginDelegate = self.parentController.parentController
+        service.loginDelegate = parent
         service.onLoginComplete = { (_ login: Login?, _ error: Error?) -> Void in
             if let error = error {
-                DispatchQueue.main.async { self.parentController.parentController.makeActivityIndicator(toShow: false)
+                DispatchQueue.main.async {
+                    parent.makeActivityIndicator(toShow: false)
                     let message = error.localizedDescription
                     StickyAlertView.showErrorMessage([message])
                 }
@@ -154,17 +157,18 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                 GIDSignIn.sharedInstance().disconnect()
 
                 login.medium = profile.providerName
-                self.parentController.parentController.loginSuccess(login: login)
+                parent.loginSuccess(login: login)
             }
         }
         service.login(withUserProfile: profile)
     }
     //    MARK: - Facebook Login
     func facebookLoginCompleted(result: FBSDKLoginManagerLoginResult?, error: Error?) {
+        guard let parent = self.parentController?.parentController else {return}
         guard error == nil else {
             StickyAlertView.showErrorMessage([error!.localizedDescription])
             SecureStorageManager().resetKeychain()
-            self.parentController.parentController.makeActivityIndicator(toShow: false)
+            parent.makeActivityIndicator(toShow: false)
             return
         }
         if let accessToken = FBSDKAccessToken.current() {
@@ -172,7 +176,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             FBSDKGraphRequest(graphPath: "me", parameters: parameters).start { [unowned self] (_: FBSDKGraphRequestConnection?, result: Any?, error2: Error?) in
                 if let error3 = error2 {
                     DispatchQueue.main.async {
-                        self.parentController.parentController.makeActivityIndicator(toShow: false)
+                        parent.makeActivityIndicator(toShow: false)
                         StickyAlertView.showErrorMessage([error3.localizedDescription])
                     }
                 } else {
@@ -184,13 +188,14 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                 }
             }
         } else {
-            self.parentController.parentController.makeActivityIndicator(toShow: false)
+            parent.makeActivityIndicator(toShow: false)
         }
     }
     func didReceiveFacebookUserData(userData: [String: String]?) {
+        guard let parent = self.parentController?.parentController else {return}
         guard userData != nil else {
             debugPrint("Error: Failed to laod facebook user data")
-            self.parentController.parentController.makeActivityIndicator(toShow: false)
+            parent.makeActivityIndicator(toShow: false)
             return
         }
         let profile = CreatePasswordUserProfile.fromFacebook(userData: userData!)
@@ -198,10 +203,11 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     }
     //    MARK: - GIDSignInDelegate
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+        guard let parent = self.parentController?.parentController else {return}
         if let error = error {
             SecureStorageManager().resetKeychain()
             StickyAlertView.showErrorMessage([error.localizedDescription])
-            self.parentController.parentController.makeActivityIndicator(toShow: false)
+            parent.makeActivityIndicator(toShow: false)
             debugPrint(error.localizedDescription)
             return
         }
