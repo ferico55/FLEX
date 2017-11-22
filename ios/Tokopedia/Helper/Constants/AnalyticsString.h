@@ -12,9 +12,17 @@
 #pragma mark - Event
 #define GA_EVENT_CLICK_CATEGORY @"clickKategori"
 #define GA_EVENT_CLICK_INTERMEDIARY @"clickIntermediary"
+#define GA_EVENT_NAME_EVENT_TOP_NAV @"eventTopNav"
+#define GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE @"userInteractionHomePage"
 
 #pragma mark - Event Category
 #define GA_EVENT_CATEGORY_HOMEPAGE @"Homepage"
+#define GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL @"homepage"
+#define GA_EVENT_CATEGORY_HOMEPAGE_TAB @"homepage tab"
+#define GA_EVENT_CATEGORY_HOMEPAGE_BANNER @"homepage banner"
+#define GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET @"homepage digital widget"
+#define GA_EVENT_CATEGORY_HOMEPAGE_OFFICIAL_STORE_WIDGET @"homepage official store widget"
+#define GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV @"homepage bottom nav"
 #define GA_EVENT_CATEGORY_SEARCH @"Search"
 #define GA_EVENT_CATEGORY_SEARCH_RESULT @"Search Result"
 #define GA_EVENT_CATEGORY_NO_SEARCH_RESULT @"No Search Result"
@@ -85,6 +93,7 @@
 #define GA_EVENT_CATEGORY_SETUP_TOUCHID @"Set Up Touch ID"
 #define GA_EVENT_CATEGORY_ACTIVATION @"Activation"
 #define GA_EVENT_CATEGORY_REPLACEMENT @"Peluang Filter"
+#define GA_EVENT_CATEGORY_TOP_NAV @"top nav"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"
@@ -116,5 +125,19 @@
 #define GA_EVENT_ACTION_VERIFY_FAILED @"Verify Failed"
 #define GA_EVENT_ACTION_HOTLIST @"Hotlist"
 #define GA_EVENT_ACTION_IMPRESSION @"Impression"
+#define GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON @"click notification icon"
+#define GA_EVENT_ACTION_CLICK_VIEW_ALL @"click view all"
+#define GA_EVENT_ACTION_FAVORITE_FAVE_PROMOTED_SHOP @"favorite - fave promoted shop"
+#define GA_EVENT_ACTION_FAVORITE_CLICK_SHOP @"favorite - click shop"
+#define GA_EVENT_ACTION_FEED_COPY_CODE @"feed - copy code"
+#define GA_EVENT_ACTION_WISHLIST_SEARCH_ITEM @"wishlist - search item"
+#define GA_EVENT_ACTION_WISHLIST_REMOVE_ITEM @"wishlist - remove item"
+#define GA_EVENT_ACTION_WISHLIST_CLICK_EMPTY_CARI_PRODUK @"wishlist - click empty cari produk"
+
+#pragma mark - More Section
+#define MORE_SECTION_2 @"Profil Saya"
+#define MORE_SECTION_3 @"Toko Saya"
+#define MORE_SECTION_5 @"Kotak Masuk"
+#define MORE_SECTION_OTHERS @"Others"
 
 #endif /* AnalyticsString_h */

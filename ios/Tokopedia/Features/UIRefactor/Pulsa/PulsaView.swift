@@ -163,7 +163,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     var selectedCategory = PulsaCategory()
     var selectedProduct = PulsaProduct() {
         didSet {
-            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Product from Widget")
+            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select product - \(selectedCategory.attributes.name) - \(selectedProduct.attributes.desc)", label: "")
         }
     }
     
@@ -241,7 +241,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         pulsaCategoryControl.bk_addEventHandler({[unowned self] (control: Any) in
             self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
             guard let control = control as? HMSegmentedControl else { return }
-            self.buildViewByCategory(categories[control.selectedSegmentIndex])
+            let selectedCategory = categories[control.selectedSegmentIndex]
+            self.buildViewByCategory(selectedCategory)
             }, for: .valueChanged)
         
         let categoryControlUnderline = UIView()
@@ -336,7 +337,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             self.selectedOperator = selectedOperator
             if (self.operatorButton != nil) {
                 self.operatorButton.setTitle(self.selectedOperator.attributes.name, for: .normal)
-                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Select Operator from Widget")
+                 AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select operator - \(selectedCategory.attributes.name) - \(selectedOperator.attributes.name)", label: "")
             }
         }
     }
@@ -381,7 +382,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
-        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Widget Bar")
+        AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "click \(selectedCategory.attributes.name)", label: "")
         self.resetPulsaOperator()
         self.buildAllView(category)
         self.getLastOrder(category: category.id!)

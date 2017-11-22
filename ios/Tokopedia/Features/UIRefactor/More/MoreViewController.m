@@ -598,7 +598,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 DepositSummaryViewController *depositController = [DepositSummaryViewController new];
                 depositController.data = @{@"total_saldo":_depositLabel.text};
                 [wrapperController.navigationController pushViewController:depositController animated:YES];
-                [AnalyticsManager trackClickNavigateFromMore:@"Saldo"];
+                [AnalyticsManager trackClickNavigateFromMore:@"Saldo" parent:@"Header Saldo"];
             }
         } else if (indexPath.row == 1) {
             if (!_isWalletActive) {
@@ -614,6 +614,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             } else {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
             }
+            [AnalyticsManager trackClickNavigateFromMore:@"TokoCash" parent:@"Header TokoCash"];
+
         }
     }
     if (indexPath.section == 1 && indexPath.row == 0) {
@@ -625,20 +627,20 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
         webViewController.strTitle = @"TopPoints";
         [AnalyticsManager trackScreenName:@"Top Points Page"];
-        [AnalyticsManager trackClickNavigateFromMore:@"TopPoints"];
         [wrapperController.navigationController pushViewController:webViewController animated:YES];
     }
     if (indexPath.section == 2) {
         switch (indexPath.row) {
             case 0: {
                 NavigateViewController *navigateController = [NavigateViewController new];
-                [AnalyticsManager trackClickNavigateFromMore:@"Profile"];
+                [AnalyticsManager trackClickNavigateFromMore:@"Profile" parent:MORE_SECTION_2];
+
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
             }
                 break;
             case 1: {
-                [AnalyticsManager trackClickNavigateFromMore:@"Buy"];
+                [AnalyticsManager trackClickNavigateFromMore:@"Pembelian" parent:MORE_SECTION_2];
                 PurchaseViewController *purchaseController = [PurchaseViewController new];
                 purchaseController.notification = _notifManager.notification;
                 purchaseController.hidesBottomBarWhenPushed = YES;
@@ -646,7 +648,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }
                 break;
             case 2:
-                [AnalyticsManager trackClickNavigateFromMore:@"Wishlist"];
+                [AnalyticsManager trackClickNavigateFromMore:@"Wishlist" parent:MORE_SECTION_2];
                 [wrapperController.tabBarController setSelectedIndex:2];
                 break;
             default:
@@ -657,7 +659,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         if(indexPath.row == 0) {
             UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
             
-            [AnalyticsManager trackClickNavigateFromMore:@"Shop"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Shop" parent:MORE_SECTION_3];
             ShopViewController *container = [[ShopViewController alloc] init];
             container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
                                MORE_AUTH : _auth,
@@ -665,19 +667,19 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Sales"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Penjualan" parent:MORE_SECTION_3];
             SalesViewController *salesController = [SalesViewController new];
             salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Product List"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Daftar Produk" parent:MORE_SECTION_3];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Etalase"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_3];
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
             vc.isEditable = YES;
@@ -689,7 +691,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if(indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"TopAds Dashboard"];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_3];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }
         
@@ -697,19 +699,18 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     else if (indexPath.section == 5) {
         if(indexPath.row == 0) {
-            [AnalyticsManager trackClickNavigateFromMore:@"TopChat"];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopChat" parent: MORE_SECTION_5];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topchat"]];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Product Discussion"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Diskusi" parent:MORE_SECTION_5];
             [_navigate navigateToInboxTalkFromViewController:wrapperController];
         } else if (indexPath.row == 2) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Review"];
-            
+            [AnalyticsManager trackClickNavigateFromMore:@"Ulasan" parent:MORE_SECTION_5];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://review"]];
             _wrapperViewController.hidesBottomBarWhenPushed = NO;
             return;
         } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Help"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Layanan Pengguna" parent:MORE_SECTION_5];
             
             UserAuthentificationManager* userManager = [UserAuthentificationManager new];
             WebViewController *webViewController = [WebViewController new];
@@ -718,7 +719,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             
             [wrapperController.navigationController pushViewController:webViewController animated:YES];
         } else if (indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Resolution Center"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_5];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
@@ -734,13 +735,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     else if (indexPath.section == 6) {
         if (indexPath.row == 0) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Share ke teman"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Share ke Teman" parent:MORE_SECTION_OTHERS];
             [self shareToFriend];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Contact Us"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Hubungi Kami" parent:MORE_SECTION_OTHERS];
             [NavigateViewController navigateToContactUsFromViewController:wrapperController];
         } else if(indexPath.row == 2) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Privacy"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Kebijakan & Privasi" parent:MORE_SECTION_OTHERS];
             [AnalyticsManager trackScreenName:@"Privacy Policy"];
             
             WebViewController *webViewController = [WebViewController new];
@@ -748,7 +749,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             webViewController.strTitle = kTKPDMORE_PRIVACY_TITLE;
             [wrapperController.navigationController pushViewController:webViewController animated:YES];
         } else if(indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Share Application"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Bagikan Aplikasi" parent:MORE_SECTION_OTHERS];
             [AnalyticsManager trackScreenName:@"Share App"];
             
             NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
@@ -760,15 +761,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [wrapperController presentViewController:controller animated:YES completion:nil];
         }
     }
-    
+
     else if (indexPath.section == 7) {
-        [AnalyticsManager trackClickNavigateFromMore:@"Push Notification"];
+        [AnalyticsManager trackClickNavigateFromMore:@"Push Notifikasi" parent:MORE_SECTION_OTHERS];
         [self activatePushNotification];
     }
     
     else if (indexPath.section == 8) {
         if(indexPath.row == 0) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Sign Out"];
+            [AnalyticsManager trackClickNavigateFromMore:@"Keluar" parent:MORE_SECTION_OTHERS];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
             [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGOUTNOTIFICATION
                                                                 object:nil

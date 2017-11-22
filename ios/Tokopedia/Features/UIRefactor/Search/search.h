@@ -124,5 +124,6 @@
 #define kTKPDSEARCH_SEARCHHISTORYPATHKEY @"history_search.plist"
 
 #define kTKPDSEARCH_IN_CATEGORY @"in_category"
+#define kTKPDSEARCH_AUTOCOMPLETE @"autocomplete"
 
 #endif

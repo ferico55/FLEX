@@ -299,17 +299,17 @@
     if([indexPath section] == 0) {
         switch ([indexPath row]) {
             case 0:{
-                [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                        category:GA_EVENT_CATEGORY_NOTIFICATION
-                                          action:GA_EVENT_ACTION_CLICK
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                        category:GA_EVENT_CATEGORY_TOP_NAV
+                                          action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                            label:@"Message"];
                 [self.delegate navigateUsingTPRoutes:@"tokopedia://topchat"];
                 break;
             }
             case 1 : {
-                [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                        category:GA_EVENT_CATEGORY_NOTIFICATION
-                                          action:GA_EVENT_ACTION_CLICK
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                        category:GA_EVENT_CATEGORY_TOP_NAV
+                                          action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                            label:@"Product Discussion"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxTalkSplitViewController *controller = [InboxTalkSplitViewController new];
@@ -360,9 +360,9 @@
             }
                 
             case 2 : {
-                [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                        category:GA_EVENT_CATEGORY_NOTIFICATION
-                                          action:GA_EVENT_ACTION_CLICK
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                        category:GA_EVENT_CATEGORY_TOP_NAV
+                                          action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                            label:@"Review"];
                 
                 UserAuthentificationManager* userManager = [UserAuthentificationManager new];
@@ -380,6 +380,10 @@
             }
             case 3:
             {
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                        category:GA_EVENT_CATEGORY_TOP_NAV
+                                          action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
+                                           label:@"Layanan Pengguna"];
                 UserAuthentificationManager* userManager = [UserAuthentificationManager new];
                 WebViewController *webViewController = [WebViewController new];
                 webViewController.strURL = [userManager webViewUrlFromUrl:@"https://m.tokopedia.com/help/ticket-list/mobile"];
@@ -391,9 +395,9 @@
             }
                 
             case 4 : {
-                [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                        category:GA_EVENT_CATEGORY_NOTIFICATION
-                                          action:GA_EVENT_ACTION_CLICK
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                        category:GA_EVENT_CATEGORY_TOP_NAV
+                                          action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                            label:@"Resolution Center"];
                 if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                     InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
@@ -415,35 +419,35 @@
     
     if([indexPath section] == 1) {
         if([indexPath row] == 0) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"New Order"];
             SalesNewOrderViewController *controller = [[SalesNewOrderViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 1) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Delivery Confirmation"];
             ShipmentConfirmationViewController *controller = [[ShipmentConfirmationViewController alloc] init];
             controller.delegate = self;
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if ([indexPath row] == 2) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Delivery Status"];
             ShipmentStatusViewController *controller = [[ShipmentStatusViewController alloc] init];
             controller.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:controller];
         } else if([indexPath row] == 3) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Sales Transaction List"];
             SalesTransactionListViewController *controller = [SalesTransactionListViewController new];
             controller.hidesBottomBarWhenPushed = YES;
@@ -453,9 +457,9 @@
     
     if([indexPath section] == 2) {
         if([indexPath row] == 0) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Canceled Order"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.action = @"get_tx_order_list";
@@ -464,17 +468,17 @@
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 1) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Order Status"];
             TxOrderConfirmedViewController *vc = [TxOrderConfirmedViewController new];
             vc.hidesBottomBarWhenPushed = YES;
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 2) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Order Status"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
@@ -482,9 +486,9 @@
             vc.viewControllerTitle = @"Status Pemesanan";
             [self.delegate pushViewController:vc];
         } else if ([indexPath row] == 3) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Receive Confirmation"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.hidesBottomBarWhenPushed = YES;
@@ -492,9 +496,9 @@
             vc.viewControllerTitle = @"Konfirmasi Penerimaan";
             [self.delegate pushViewController:vc];
         } else if([indexPath row] == 4) {
-            [AnalyticsManager trackEventName:@"clickTopedIcon"
-                                    category:GA_EVENT_CATEGORY_NOTIFICATION
-                                      action:GA_EVENT_ACTION_CLICK
+            [AnalyticsManager trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV
+                                    category:GA_EVENT_CATEGORY_TOP_NAV
+                                      action:GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON
                                        label:@"Order Transaction List"];
             TxOrderStatusViewController *vc =[TxOrderStatusViewController new];
             vc.action = @"get_tx_order_list";

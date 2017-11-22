@@ -38,8 +38,9 @@ class HomeSliderView: UIView {
     
     fileprivate func setupSliderAddOnPromoButton() {
         let userAuthManager = UserAuthentificationManager()
-        seeAllPromoButton.bk_(whenTapped: {
-            var userInfo: [String: Int]!
+        self.seeAllPromoButton.bk_(whenTapped: {
+            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_BANNER, action: GA_EVENT_ACTION_CLICK_VIEW_ALL, label: "")
+            var userInfo: [String : Int]!
             if userAuthManager.isLogin {
                 userInfo = ["page": 3]
             } else {

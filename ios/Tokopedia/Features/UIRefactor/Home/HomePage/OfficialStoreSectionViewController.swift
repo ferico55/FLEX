@@ -96,6 +96,7 @@ class OfficialStoreSectionViewController: UIViewController {
             })
             
             buttonSeeAll.bk_(whenTapped: { [unowned self] in
+                AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_OFFICIAL_STORE_WIDGET, action: GA_EVENT_ACTION_CLICK_VIEW_ALL, label: "")
                 let controller = OfficialStoreBrandsViewController()
                 self.navigationController?.pushViewController(controller, animated: true)
             })

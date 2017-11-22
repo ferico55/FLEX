@@ -23,6 +23,13 @@ import {
 
 import NoResult from './unify/NoResult'
 
+import {
+  GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+  GA_EVENT_CATEGORY_HOMEPAGE,
+  GA_EVENT_ACTION_PROMO_CLICK_COPY_CODE,
+  GA_EVENT_ACTION_HOTLIST_LOAD_SEE_MORE,
+} from './analytics/AnalyticsString'
+
 const nativeTabEmitter = new NativeEventEmitter(EventManager)
 
 const styles = StyleSheet.create({
@@ -279,6 +286,12 @@ class Hotlist extends PureComponent {
                 // debounce
                 this.loadData$.next(this.state.page)
               } else {
+                TKPReactAnalytics.trackEvent({
+                  name: GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+                  category: GA_EVENT_CATEGORY_HOMEPAGE,
+                  action: GA_EVENT_ACTION_HOTLIST_LOAD_SEE_MORE,
+                  label: '',
+                })
                 this.loadData(this.state.page)
               }
             }

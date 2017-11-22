@@ -170,10 +170,10 @@
         name = [buttonNameByTagNotLogin objectForKey:@(button.tag)];
     }
     
-    [AnalyticsManager trackEventName:@"clickHomepage"
-                            category:GA_EVENT_CATEGORY_HOMEPAGE
-                              action:GA_EVENT_ACTION_CLICK
-                               label:name];
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                            category:GA_EVENT_CATEGORY_HOMEPAGE_TAB
+                              action:[NSString stringWithFormat:@"click %@ tab", name]
+                               label:@""];
     NSDictionary *userInfo = @{@"page" : @(button.tag)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];

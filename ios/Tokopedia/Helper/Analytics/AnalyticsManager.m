@@ -655,19 +655,17 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 }
 
 + (NSString *)searchActionWithID:(NSString *)searchID {
-    NSString *actionForTracker = @"Search";
-    if ([searchID isEqualToString:@"autocomplete"]) {
-        actionForTracker = @"Search Autocomplete";
+    NSString *actionForTracker = @"search product";
+    if ([self isSearchIDEqualToSearchSuggestion: searchID]) {
+        actionForTracker = @"search product - suggestion";
     } else if ([searchID isEqualToString:@"recent_search"]) {
-        actionForTracker = @"Search History";
+        actionForTracker = @"search product - recent";
     } else if ([searchID isEqualToString:@"popular_search"]) {
-        actionForTracker = @"Popular Search";
+        actionForTracker = @"search product - popular";
     } else if ([searchID isEqualToString:@"hotlist"]) {
         actionForTracker = @"Search Hotlist";
     } else if ([searchID isEqualToString:@"shop"]) {
-        actionForTracker = @"Search Shop";
-    } else if ([searchID isEqualToString:kTKPDSEARCH_IN_CATEGORY]) {
-        actionForTracker = @"Autocomplete in Category";
+        actionForTracker = @"search shop";
     }
     
     return actionForTracker;
@@ -675,15 +673,15 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 + (void)trackSearch:(NSString *)type keyword:(NSString *)keyword {
     NSString *searchAction = [self searchActionWithID:type];
-    [self trackEventName:@"clickSearch" category:GA_EVENT_CATEGORY_SEARCH action:searchAction label:keyword];
+    [self trackEventName:GA_EVENT_NAME_EVENT_TOP_NAV category:GA_EVENT_CATEGORY_TOP_NAV action:searchAction label:keyword];
 }
 
 + (void)trackClickSales:(NSString *)label {
     [self trackEventName:@"clickSales" category:GA_EVENT_CATEGORY_SALES action:GA_EVENT_ACTION_CLICK label:label];
 }
 
-+ (void)trackClickNavigateFromMore:(NSString *)page {
-    [self trackEventName:@"clickMore" category:@"More" action:GA_EVENT_ACTION_CLICK label:page];
++ (void)trackClickNavigateFromMore:(NSString *)page parent:(NSString *)parent {
+    [self trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL action:[NSString stringWithFormat: @"other - click %@ item", parent] label:page];
 }
 
 + (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type {
@@ -718,6 +716,14 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:eventDataLayer];
     [manager.dataLayer push:ecommercePromoDataLayer];
 
+}
+
++ (BOOL) isSearchIDEqualToSearchSuggestion: (NSString *) searchID {
+    if ([searchID isEqualToString:kTKPDSEARCH_AUTOCOMPLETE] || [searchID isEqualToString:kTKPDSEARCH_IN_CATEGORY]) {
+        return YES;
+    }
+    
+    return NO;
 }
 
 @end

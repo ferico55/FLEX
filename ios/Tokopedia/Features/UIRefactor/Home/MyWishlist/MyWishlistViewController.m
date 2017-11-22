@@ -149,6 +149,11 @@ typedef enum TagRequest {
                                         desc:@"Produk tidak ditemukan di Wishlist"
                                     btnTitle:@"Lihat semua Wishlist"];
     _searchNoResultView.onButtonTap = ^(NoResultReusableView *noResultView) {
+        [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                                category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL
+                                  action:GA_EVENT_ACTION_WISHLIST_CLICK_EMPTY_CARI_PRODUK
+                                   label:@""];
+
         [weakSelf showWaitOverlay];
         [weakSelf refreshView:nil];
     };
@@ -366,6 +371,11 @@ typedef enum TagRequest {
                              otherButtonTitles:@[@"Hapus"]
                                        handler:^(UIAlertView *alertView, NSInteger buttonIndex) {
                                            if(buttonIndex == 1) {
+                                               [AnalyticsManager
+                                                trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                                                category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL
+                                                action:GA_EVENT_ACTION_WISHLIST_REMOVE_ITEM
+                                                label:@""];
                                                [self requestRemoveWishlist:list];
                                            }
                                        }];
@@ -768,6 +778,10 @@ typedef enum TagRequest {
 - (void) setupSearchTextFieldBlocksKit {
     __weak typeof(self) weakSelf = self;
     _searchWishlistTextField.bk_shouldReturnBlock = ^BOOL(UITextField *textField) {
+        [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                                category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL
+                                  action:GA_EVENT_ACTION_WISHLIST_SEARCH_ITEM
+                                   label:textField.text];
         if (weakSelf.isRequestingData == NO) {
             _page = 1;
             [weakSelf showWaitOverlay];

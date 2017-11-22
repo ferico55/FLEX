@@ -105,6 +105,7 @@ class TopPicksWidgetViewController: UIViewController {
         seeAllButton.setTitleColor(UIColor.tpGreen(), for: UIControlState())
         seeAllButton.titleLabel!.font = UIFont.largeThemeMedium()
         seeAllButton.bk_(whenTapped: { [unowned self] in
+            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL, action: "home - toppicks click view all", label: "")
             self.goToWebView("https://www.tokopedia.com/toppicks?flag_app=1")
         })
         seeAllViewContainer.addSubview(seeAllButton)

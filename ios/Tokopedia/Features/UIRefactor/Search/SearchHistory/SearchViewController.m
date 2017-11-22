@@ -384,7 +384,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     SearchSuggestionItem *searchSuggestionItem = [searchSuggestionData.items objectAtIndex:indexPath.item];
     
-    NSString *trackKeyword = [searchSuggestionData.id  isEqual: kTKPDSEARCH_IN_CATEGORY] ? [NSString stringWithFormat:@"%@ | %@", searchSuggestionItem.sc, searchSuggestionItem.keyword] : searchSuggestionItem.keyword;
+    NSString *trackKeyword = [AnalyticsManager isSearchIDEqualToSearchSuggestion: searchSuggestionData.id] ? [NSString stringWithFormat:@"%@ - %@ - %@ - %@", _searchBar.text, searchSuggestionItem.keyword, searchSuggestionItem.recom, searchSuggestionItem.sc] : searchSuggestionItem.keyword;
     [AnalyticsManager trackSearch:searchSuggestionData.id keyword:trackKeyword];
 
     NSString *url = searchSuggestionItem.redirectUrl;

@@ -323,10 +323,10 @@ FavoriteShopRequestDelegate
     }
     
     NSString *eventLabel = [NSString stringWithFormat:@"Add to Favorite - %@", promoResult.shop.name];
-    [AnalyticsManager trackEventName:@"clickFavorite"
-                            category:GA_EVENT_CATEGORY_FAVORITE
-                              action:GA_EVENT_ACTION_CLICK
-                               label:eventLabel];
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                            category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL
+                              action:GA_EVENT_ACTION_FAVORITE_FAVE_PROMOTED_SHOP
+                               label:@""];
 }
 
 -(void)pressFavoriteAction:(PromoResult *)promoResult {
@@ -444,7 +444,10 @@ FavoriteShopRequestDelegate
 -(void)FavoritedShopCell:(UITableViewCell *)cell withindexpath:(NSIndexPath *)indexpath withimageview:(UIImageView *)imageview {
     
     ShopViewController *container = [[ShopViewController alloc] init];
-    
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                            category:GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL
+                              action:GA_EVENT_ACTION_FAVORITE_CLICK_SHOP
+                               label:@""];
     if (indexpath.section == 0 && _promoShops.count > 0) {
         PromoResult *promoResult = [_promoShops objectAtIndex:indexpath.row];
         container.data = @{
@@ -454,18 +457,10 @@ FavoriteShopRequestDelegate
                            };
         NSString *eventLabel = [NSString stringWithFormat:@"Add to Favorite - %@", promoResult.shop.name];
         [TopAdsService sendClickImpressionWithClickURLString:promoResult.shop_click_url];
-        [AnalyticsManager trackEventName:@"clickFavorite"
-                                category:GA_EVENT_CATEGORY_FAVORITE
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:eventLabel];
     } else {
         id shopTemp = [_shops objectAtIndex:indexpath.row];
         FavoritedShopList* favShop;
         favShop = (FavoritedShopList*)shopTemp;
-        [AnalyticsManager trackEventName:@"clickFavorite"
-                                category:GA_EVENT_CATEGORY_FAVORITE
-                                  action:GA_EVENT_ACTION_VIEW
-                                   label:favShop.shop_name];
         container.data = @{
                            kTKPDDETAIL_APISHOPIDKEY:favShop.shop_id?:@0,
                            kTKPDDETAIL_APISHOPNAMEKEY:favShop.shop_name?:@"",

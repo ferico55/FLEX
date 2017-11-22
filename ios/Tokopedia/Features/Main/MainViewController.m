@@ -272,10 +272,10 @@ typedef enum TagRequest {
     A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
     __block NSUInteger idx = 0;
     [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
-        [AnalyticsManager trackEventName:@"clickTabBar"
-                                category:GA_EVENT_CATEGORY_TAB_BAR
-                                  action:GA_EVENT_ACTION_CLICK
-                                   label:tabBarController.tabBar.selectedItem.title];
+        [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                                category:GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV
+                                  action:[NSString stringWithFormat:@"click %@ nav", tabBarController.tabBar.selectedItem.title]
+                                   label:@""];
         if (idx == tabBarController.selectedIndex) {
             if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
                 [viewControllers[tabBarController.selectedIndex] scrollToTop];

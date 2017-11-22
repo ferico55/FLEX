@@ -75,7 +75,8 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 + (void)trackInboxMessageClick:(NSString *)label;
 + (void)trackSearch:(NSString *)type keyword:(NSString *)keyword;
 + (void)trackClickSales:(NSString *)label;
-+ (void)trackClickNavigateFromMore:(NSString *)page;
++ (void)trackClickNavigateFromMore:(NSString *)page parent:(NSString *)parent;
 + (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type;
++ (BOOL) isSearchIDEqualToSearchSuggestion: (NSString *) searchID;
 
 @end

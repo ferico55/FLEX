@@ -394,9 +394,8 @@ class FeedPromotionComponentView: ComponentView<FeedCardState> {
                 button.rx.tap
                     .subscribe(onNext: {
                         let eventLabel = "\(state.page).\(state.row) Promotion - \(state.promoName)"
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: "Copy Code", label: eventLabel)
+                        AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL, action: GA_EVENT_ACTION_FEED_COPY_CODE, label: "promotion - general promotion - \(state.voucherCode)")
                         UIPasteboard.general.string = state.voucherCode
-                        
                         StickyAlertView.showSuccessMessage(["Kode promo tersalin"])
                     })
                     .disposed(by: self.disposeBag)

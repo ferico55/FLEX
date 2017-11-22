@@ -18,11 +18,20 @@ import {
   ReactNetworkManager,
   EventManager,
   ReactInteractionHelper,
+  TKPReactAnalytics,
 } from 'NativeModules'
 import Rx from 'rxjs/Rx'
 
 import PreAnimatedImage from './PreAnimatedImage'
 import NoResultView from './NoResultView'
+import {
+  GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+  GA_EVENT_CATEGORY_HOMEPAGE,
+  GA_EVENT_ACTION_PROMO_CLICK_COPY_CODE,
+  GA_EVENT_ACTION_PROMO_FILTER_PROMO,
+  GA_EVENT_ACTION_PROMO_CLICK_PROMO_INFO,
+  GA_EVENT_ACTION_PROMO_LOAD_SEE_MORE,
+} from './analytics/AnalyticsString'
 
 const nativeTabEmitter = new NativeEventEmitter(EventManager)
 
@@ -227,6 +236,12 @@ class Promo extends React.PureComponent {
   }
 
   copyPromoCode = kodepromo => {
+    TKPReactAnalytics.trackEvent({
+      name: GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+      category: GA_EVENT_CATEGORY_HOMEPAGE,
+      action: GA_EVENT_ACTION_PROMO_CLICK_COPY_CODE,
+      label: kodepromo,
+    })
     Clipboard.setString(kodepromo)
     ReactInteractionHelper.showStickyAlert('Kode Promo berhasil disalin')
   }
@@ -256,22 +271,29 @@ class Promo extends React.PureComponent {
   }
 
   showDropdown = _ => {
+    const options = [
+      'Semua Promo',
+      'Jual Beli Online',
+      'Official Store',
+      'Pulsa',
+      'Tiket',
+      'Batal',
+    ]
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: [
-          'Semua Promo',
-          'Jual Beli Online',
-          'Official Store',
-          'Pulsa',
-          'Tiket',
-          'Batal',
-        ],
+        options: options,
         cancelButtonIndex: 5,
       },
       index => {
         if (index >= 5) {
           return
         }
+        TKPReactAnalytics.trackEvent({
+          name: GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+          category: GA_EVENT_CATEGORY_HOMEPAGE,
+          action: GA_EVENT_ACTION_PROMO_FILTER_PROMO,
+          label: options[index],
+        })
         this.setState({
           selectedCategory: index,
           page: 1,
@@ -472,13 +494,19 @@ class Promo extends React.PureComponent {
                   </Text>
                   {item.item.meta.promo_code !== '' && (
                     <TouchableOpacity
-                      onPress={() =>
+                      onPress={() => {
+                        TKPReactAnalytics.trackEvent({
+                          name: GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+                          category: GA_EVENT_CATEGORY_HOMEPAGE,
+                          action: GA_EVENT_ACTION_PROMO_CLICK_PROMO_INFO,
+                          label: item.item.meta.promo_code,
+                        })
                         ReactInteractionHelper.showTooltip(
                           'Kode Promo',
                           'Masukan Kode Promo di halaman pembayaran',
                           'icon_promo',
                           'Tutup',
-                        )}
+                        )}}
                     >
                       <Image
                         source={{ uri: 'icon_information' }}
@@ -547,6 +575,12 @@ class Promo extends React.PureComponent {
                 if (this.state.isErrorOnScroll) {
                   this.loadData$.next(this.state.page)
                 } else {
+                  TKPReactAnalytics.trackEvent({
+                    name: GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE,
+                    category: GA_EVENT_CATEGORY_HOMEPAGE,
+                    action: GA_EVENT_ACTION_PROMO_LOAD_SEE_MORE,
+                    label: '',
+                  })
                   this.loadData(this.state.page)
                 }
               }

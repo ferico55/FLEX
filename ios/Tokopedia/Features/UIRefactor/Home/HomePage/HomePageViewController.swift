@@ -227,15 +227,15 @@ class HomePageViewController: UIViewController {
         return categoryNameContainer
     }
     
-    private func setTapGestureRecognizerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow) {
+    private func setTapGestureRecognizerToIconStackView(_ iconStackView: OAStackView, withLayoutRow layoutRow: HomePageCategoryLayoutRow, sectionTitle: String) {
         let tapGestureRecognizer = UITapGestureRecognizer.bk_recognizer(handler: { _, _, _ in
-            self.didTapCategory(layoutRow: layoutRow)
+            self.didTapCategory(layoutRow: layoutRow, sectionTitle: sectionTitle)
         }) as! UITapGestureRecognizer
         
         iconStackView.addGestureRecognizer(tapGestureRecognizer)
     }
     
-    private func setHorizontalCategoryLayoutWithLayoutSections(_ layoutRows: [HomePageCategoryLayoutRow]) {
+    private func setHorizontalCategoryLayout(layoutRows: [HomePageCategoryLayoutRow], sectionTitle: String) {
         var horizontalStackView = refreshHorizontalStackView()
         for (index, layoutRow) in layoutRows.enumerated() {
             let iconStackView = OAStackView()
@@ -243,7 +243,7 @@ class HomePageViewController: UIViewController {
             self.setIconImageContainerToIconStackView(iconStackView, withLayoutRow: layoutRow)
             let categoryNameContainer = self.setCategoryNameLabelContainerToIconStackView(iconStackView, withLayoutRow: layoutRow)
             horizontalStackView.addArrangedSubview(iconStackView)
-            self.setTapGestureRecognizerToIconStackView(iconStackView, withLayoutRow: layoutRow)
+            self.setTapGestureRecognizerToIconStackView(iconStackView, withLayoutRow: layoutRow, sectionTitle: sectionTitle)
             
             if index % self.totalColumnInOneRow() == self.numberNeededToChangeRow() {
                 self.categoryVerticalView.addArrangedSubview(horizontalStackView)
@@ -316,7 +316,7 @@ class HomePageViewController: UIViewController {
             
             self.setCategoryUpperSeparator()
             
-            self.setHorizontalCategoryLayoutWithLayoutSections(layout_section.layout_rows)
+            self.setHorizontalCategoryLayout(layoutRows: layout_section.layout_rows, sectionTitle: layout_section.title)
             
             self.categoryPlaceholder.addArrangedSubview(self.categoryVerticalView)
         }
@@ -637,11 +637,13 @@ class HomePageViewController: UIViewController {
     
     // MARK: Method
     
-    private func didTapCategory(layoutRow: HomePageCategoryLayoutRow) {
+    private func didTapCategory(layoutRow: HomePageCategoryLayoutRow, sectionTitle: String) {
         
         let categoryName = layoutRow.name
         
-        AnalyticsManager.trackEventName("clickCategory", category: GA_EVENT_CATEGORY_HOMEPAGE, action: GA_EVENT_ACTION_CLICK, label: categoryName)
+        if let layoutRowType = layoutRow.type, let categoryName = categoryName {
+            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL, action: "click home \(sectionTitle) - \(layoutRowType) item", label: "\(sectionTitle) - \(categoryName)")
+        }
         AnalyticsManager.moEngageTrackEvent(withName: "Maincategory_Icon_Tapped", attributes: ["category": categoryName ?? ""])
         
         if layoutRow.type == LayoutRowType.Marketplace.rawValue {
