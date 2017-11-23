@@ -165,6 +165,9 @@ TKPPlacePickerDelegate
         if (self.provinces.count > 0) {
             numberOfSections += 2;
         }
+        if (self.selectedDistrict != nil) {
+            numberOfSections += self.couriers.count;
+        }
     } else {
         if (self.couriers.count > 0) {
             numberOfSections += 2; // add 2 sections for locations and pickup
