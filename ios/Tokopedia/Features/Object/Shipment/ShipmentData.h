@@ -11,6 +11,7 @@
 #import "ShipmentCourierData.h"
 #import "ShipmentProvinceData.h"
 #import "Payment.h"
+#import "Tokopedia-Swift.h"
 
 @interface ShipmentData : NSObject
 
@@ -21,6 +22,7 @@
 
 @property (strong, nonatomic) NSDictionary *loc;
 @property (strong, nonatomic) NSArray *paymentOptions;
+@property (strong, nonatomic) ShipmentKeroToken *token;
 
 + (RKObjectMapping *)mapping;
 

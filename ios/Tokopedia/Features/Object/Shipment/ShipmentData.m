@@ -16,6 +16,9 @@
     
     RKRelationshipMapping *dataRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"shop_shipping" toKeyPath:@"shop" withMapping:[ShipmentShopData mapping]];
     [mapping addPropertyMapping:dataRelationship];
+    
+    RKRelationshipMapping *keroToken = [RKRelationshipMapping relationshipMappingFromKeyPath:@"token" toKeyPath:@"token" withMapping:[ShipmentKeroToken mapping]];
+    [mapping addPropertyMapping:keroToken];
 
     RKRelationshipMapping *courierRelationship = [RKRelationshipMapping relationshipMappingFromKeyPath:@"courier" toKeyPath:@"courier" withMapping:[ShipmentCourierData mapping]];
     [mapping addPropertyMapping:courierRelationship];

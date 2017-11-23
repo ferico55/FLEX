@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2A1AE4281FC5E578003E7EF8 /* DistrictService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1AE4271FC5E578003E7EF8 /* DistrictService.swift */; };
+		2A1AE42D1FC5E5D2003E7EF8 /* DistrictRecommendation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1AE4291FC5E5D2003E7EF8 /* DistrictRecommendation.swift */; };
+		2A1AE42E1FC5E5D2003E7EF8 /* DistrictViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1AE42A1FC5E5D2003E7EF8 /* DistrictViewController.swift */; };
+		2A1AE42F1FC5E5D2003E7EF8 /* DistrictViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2A1AE42B1FC5E5D2003E7EF8 /* DistrictViewController.xib */; };
+		2A1AE4301FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1AE42C1FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift */; };
+		2ABF048B1FC5E69500757B85 /* ShipmentKeroToken.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABF048A1FC5E69500757B85 /* ShipmentKeroToken.swift */; };
+		2ABF048D1FC5E9BF00757B85 /* KeroTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2ABF048C1FC5E9BF00757B85 /* KeroTarget.swift */; };
 		342394F61FC5ABF6003DE70D /* CarouselDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 342394F51FC5ABF6003DE70D /* CarouselDataSource.m */; };
 		342394F81FC5D3D7003DE70D /* MerlinTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394F71FC5D3D7003DE70D /* MerlinTarget.swift */; };
 		342394FE1FC5D46F003DE70D /* MerlinProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FB1FC5D46F003DE70D /* MerlinProductCategory.swift */; };
@@ -2020,6 +2027,13 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A1AE4271FC5E578003E7EF8 /* DistrictService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistrictService.swift; sourceTree = "<group>"; };
+		2A1AE4291FC5E5D2003E7EF8 /* DistrictRecommendation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistrictRecommendation.swift; sourceTree = "<group>"; };
+		2A1AE42A1FC5E5D2003E7EF8 /* DistrictViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DistrictViewController.swift; sourceTree = "<group>"; };
+		2A1AE42B1FC5E5D2003E7EF8 /* DistrictViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DistrictViewController.xib; sourceTree = "<group>"; };
+		2A1AE42C1FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ZipcodeRecommendationTableView.swift; sourceTree = "<group>"; };
+		2ABF048A1FC5E69500757B85 /* ShipmentKeroToken.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShipmentKeroToken.swift; sourceTree = "<group>"; };
+		2ABF048C1FC5E9BF00757B85 /* KeroTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeroTarget.swift; sourceTree = "<group>"; };
 		2D733D9158C7BF957D514506 /* Pods-TokopediaTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TokopediaTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-TokopediaTests/Pods-TokopediaTests.release.xcconfig"; sourceTree = "<group>"; };
 		342394F31FC5ABF6003DE70D /* BannerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerType.h; sourceTree = "<group>"; };
 		342394F41FC5ABF6003DE70D /* CarouselDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselDataSource.h; sourceTree = "<group>"; };
@@ -5118,6 +5132,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A1AE4261FC5E578003E7EF8 /* DistrictRecomendation */ = {
+			isa = PBXGroup;
+			children = (
+				2A1AE4291FC5E5D2003E7EF8 /* DistrictRecommendation.swift */,
+				2A1AE42A1FC5E5D2003E7EF8 /* DistrictViewController.swift */,
+				2A1AE42B1FC5E5D2003E7EF8 /* DistrictViewController.xib */,
+				2A1AE42C1FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift */,
+				2A1AE4271FC5E578003E7EF8 /* DistrictService.swift */,
+			);
+			path = DistrictRecomendation;
+			sourceTree = "<group>";
+		};
 		342394EE1FC5A829003DE70D /* Carousel */ = {
 			isa = PBXGroup;
 			children = (
@@ -5714,6 +5740,7 @@
 		F954B16C1FC55B60008C0B30 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				2A1AE4261FC5E578003E7EF8 /* DistrictRecomendation */,
 				F954B7C51FC55B63008C0B30 /* Cocoa */,
 				F954BC6A1FC55B65008C0B30 /* Digital */,
 				F954B7C21FC55B63008C0B30 /* EmptyState */,
@@ -6980,39 +7007,39 @@
 		F954B40C1FC55B61008C0B30 /* MyShopShipment */ = {
 			isa = PBXGroup;
 			children = (
-				F954B40D1FC55B61008C0B30 /* CourierOptionViewCell.xib */,
-				F954B40E1FC55B61008C0B30 /* CourierNoteViewCell.h */,
-				F954B40F1FC55B61008C0B30 /* ShipmentViewController.h */,
-				F954B4101FC55B61008C0B30 /* ShipmentPostalCodeViewCell.h */,
-				F954B4111FC55B61008C0B30 /* ShipmentPostalCodeViewCell.xib */,
-				F954B4121FC55B61008C0B30 /* ShipmentWebViewController.h */,
-				F954B4131FC55B61008C0B30 /* CourierProductViewCell.h */,
-				F954B4141FC55B61008C0B30 /* ShipmentLocationViewCell.m */,
-				F954B4151FC55B61008C0B30 /* CourierInfoViewCell.xib */,
-				F954B4161FC55B61008C0B30 /* CourierViewCell.h */,
 				F954B4171FC55B61008C0B30 /* CourierAvailabilityViewCell.h */,
-				F954B4181FC55B61008C0B30 /* CourierInfoViewController.h */,
-				F954B4191FC55B61008C0B30 /* CourierInfoViewCell.h */,
-				F954B41A1FC55B61008C0B30 /* CourierOptionViewCell.m */,
-				F954B41B1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.m */,
-				F954B41C1FC55B61008C0B30 /* ShipmentLocationViewCell.xib */,
-				F954B41D1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.xib */,
-				F954B41E1FC55B61008C0B30 /* CourierAvailabilityViewCell.xib */,
-				F954B41F1FC55B61008C0B30 /* CourierProductViewCell.m */,
-				F954B4201FC55B61008C0B30 /* ShipmentWebViewController.m */,
-				F954B4211FC55B61008C0B30 /* CourierProductViewCell.xib */,
-				F954B4221FC55B61008C0B30 /* ShipmentViewController.m */,
-				F954B4231FC55B61008C0B30 /* ShipmentPostalCodeViewCell.m */,
-				F954B4241FC55B61008C0B30 /* CourierNoteViewCell.xib */,
-				F954B4251FC55B61008C0B30 /* CourierNoteViewCell.m */,
-				F954B4261FC55B61008C0B30 /* CourierInfoViewCell.m */,
-				F954B4271FC55B61008C0B30 /* CourierInfoViewController.m */,
 				F954B4281FC55B61008C0B30 /* CourierAvailabilityViewCell.m */,
-				F954B4291FC55B61008C0B30 /* CourierViewCell.m */,
-				F954B42A1FC55B61008C0B30 /* ShipmentLocationViewCell.h */,
-				F954B42B1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.h */,
+				F954B41E1FC55B61008C0B30 /* CourierAvailabilityViewCell.xib */,
+				F954B4191FC55B61008C0B30 /* CourierInfoViewCell.h */,
+				F954B4261FC55B61008C0B30 /* CourierInfoViewCell.m */,
+				F954B4151FC55B61008C0B30 /* CourierInfoViewCell.xib */,
+				F954B4181FC55B61008C0B30 /* CourierInfoViewController.h */,
+				F954B4271FC55B61008C0B30 /* CourierInfoViewController.m */,
+				F954B40E1FC55B61008C0B30 /* CourierNoteViewCell.h */,
+				F954B4251FC55B61008C0B30 /* CourierNoteViewCell.m */,
+				F954B4241FC55B61008C0B30 /* CourierNoteViewCell.xib */,
 				F954B42C1FC55B61008C0B30 /* CourierOptionViewCell.h */,
+				F954B41A1FC55B61008C0B30 /* CourierOptionViewCell.m */,
+				F954B40D1FC55B61008C0B30 /* CourierOptionViewCell.xib */,
+				F954B4131FC55B61008C0B30 /* CourierProductViewCell.h */,
+				F954B41F1FC55B61008C0B30 /* CourierProductViewCell.m */,
+				F954B4211FC55B61008C0B30 /* CourierProductViewCell.xib */,
+				F954B4161FC55B61008C0B30 /* CourierViewCell.h */,
+				F954B4291FC55B61008C0B30 /* CourierViewCell.m */,
 				F954B42D1FC55B61008C0B30 /* CourierViewCell.xib */,
+				F954B42B1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.h */,
+				F954B41B1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.m */,
+				F954B41D1FC55B61008C0B30 /* ShipmentLocationPickupViewCell.xib */,
+				F954B42A1FC55B61008C0B30 /* ShipmentLocationViewCell.h */,
+				F954B4141FC55B61008C0B30 /* ShipmentLocationViewCell.m */,
+				F954B41C1FC55B61008C0B30 /* ShipmentLocationViewCell.xib */,
+				F954B4101FC55B61008C0B30 /* ShipmentPostalCodeViewCell.h */,
+				F954B4231FC55B61008C0B30 /* ShipmentPostalCodeViewCell.m */,
+				F954B4111FC55B61008C0B30 /* ShipmentPostalCodeViewCell.xib */,
+				F954B40F1FC55B61008C0B30 /* ShipmentViewController.h */,
+				F954B4221FC55B61008C0B30 /* ShipmentViewController.m */,
+				F954B4121FC55B61008C0B30 /* ShipmentWebViewController.h */,
+				F954B4201FC55B61008C0B30 /* ShipmentWebViewController.m */,
 			);
 			path = MyShopShipment;
 			sourceTree = "<group>";
@@ -8547,75 +8574,75 @@
 		F954B8021FC55B63008C0B30 /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				342394EE1FC5A829003DE70D /* Carousel */,
-				F954B8031FC55B63008C0B30 /* InboxReview */,
-				F954B8121FC55B63008C0B30 /* Note */,
-				F954B8151FC55B63008C0B30 /* Transaction */,
-				F954B8CD1FC55B64008C0B30 /* GooglePlaces */,
-				F954B8E81FC55B64008C0B30 /* SearchAWS */,
-				F954B8F51FC55B64008C0B30 /* InboxTicket */,
-				F954B9121FC55B64008C0B30 /* DetailProduct */,
-				F954B9441FC55B64008C0B30 /* ProductEditInfo.swift */,
-				F954B9451FC55B64008C0B30 /* PriceAlert */,
-				F954B94C1FC55B64008C0B30 /* V4Response.m */,
-				F954B94D1FC55B64008C0B30 /* ToppersLocation.m */,
-				F954B94E1FC55B64008C0B30 /* FavoriteShopAction */,
-				F954B9531FC55B64008C0B30 /* Preorder */,
-				F954B9571FC55B64008C0B30 /* EnvelopeResponse.swift */,
-				F954B9581FC55B64008C0B30 /* TKPString.m */,
-				F954B9591FC55B64008C0B30 /* Deposit */,
-				F954B95F1FC55B64008C0B30 /* ProductTalkForm */,
-				F954B9641FC55B64008C0B30 /* ProductEditResult.swift */,
-				F954B9651FC55B64008C0B30 /* Hotlist */,
-				F954B9801FC55B64008C0B30 /* InboxResolutionCenter */,
-				F954B9B01FC55B64008C0B30 /* Category */,
-				F954B9B81FC55B64008C0B30 /* Sales */,
-				F954B9E71FC55B64008C0B30 /* DetailCatalog */,
-				F954BA001FC55B64008C0B30 /* HistoryProduct */,
-				F954BA071FC55B64008C0B30 /* TrackingOrder */,
-				F954BA121FC55B64008C0B30 /* TKPObjectMapping.h */,
-				F954BA131FC55B64008C0B30 /* DepositForm */,
-				F954BA1A1FC55B64008C0B30 /* RequestObject.h */,
-				F954BA1B1FC55B64008C0B30 /* Notification */,
-				F954BA271FC55B64008C0B30 /* EnvelopeData.swift */,
-				F954BA281FC55B64008C0B30 /* Promote */,
-				F954BA2D1FC55B64008C0B30 /* AnnouncementTicker */,
-				F954BA321FC55B64008C0B30 /* InboxMessage */,
-				F954BA491FC55B64008C0B30 /* Reputation */,
-				F954BA541FC55B64008C0B30 /* Catalog */,
-				F954BA611FC55B64008C0B30 /* EnvelopeHeader.swift */,
-				F954BA621FC55B64008C0B30 /* ProductTalkCommentAction */,
 				F954BA671FC55B64008C0B30 /* Activation */,
-				F954BAA11FC55B64008C0B30 /* DepositSummary */,
-				F954BAAA1FC55B64008C0B30 /* ResponseSpeed */,
-				F954BAAF1FC55B64008C0B30 /* ManageProduct */,
-				F954BAB61FC55B64008C0B30 /* Replacement */,
-				F954BABF1FC55B64008C0B30 /* SearchItem */,
-				F954BADB1FC55B64008C0B30 /* Shops */,
-				F954BB581FC55B65008C0B30 /* V4Response.h */,
-				F954BB591FC55B65008C0B30 /* ToppersLocation.h */,
-				F954BB5A1FC55B65008C0B30 /* ProductEdit.swift */,
-				F954BB5B1FC55B65008C0B30 /* Paging */,
-				F954BB5D1FC55B65008C0B30 /* UploadImage */,
-				F954BB821FC55B65008C0B30 /* Profile */,
-				F954BBC71FC55B65008C0B30 /* ContactUs */,
 				F954BBD81FC55B65008C0B30 /* Address */,
-				F954BBEA1FC55B65008C0B30 /* Wallet */,
-				F954BBF01FC55B65008C0B30 /* ProductEditImages.swift */,
-				F954BBF11FC55B65008C0B30 /* TKPString.h */,
-				F954BBF21FC55B65008C0B30 /* LikeDislikeReview */,
+				F954BA2D1FC55B64008C0B30 /* AnnouncementTicker */,
+				342394EE1FC5A829003DE70D /* Carousel */,
+				F954BA541FC55B64008C0B30 /* Catalog */,
+				F954B9B01FC55B64008C0B30 /* Category */,
+				F954BBC71FC55B65008C0B30 /* ContactUs */,
+				F954B9591FC55B64008C0B30 /* Deposit */,
+				F954BA131FC55B64008C0B30 /* DepositForm */,
+				F954BAA11FC55B64008C0B30 /* DepositSummary */,
+				F954B9E71FC55B64008C0B30 /* DetailCatalog */,
+				F954B9121FC55B64008C0B30 /* DetailProduct */,
+				F954BA271FC55B64008C0B30 /* EnvelopeData.swift */,
+				F954BA611FC55B64008C0B30 /* EnvelopeHeader.swift */,
+				F954B9571FC55B64008C0B30 /* EnvelopeResponse.swift */,
+				F954BC3E1FC55B65008C0B30 /* Error */,
 				F954BC011FC55B65008C0B30 /* Favorited */,
+				F954BC331FC55B65008C0B30 /* FavoritedShop */,
+				F954B94E1FC55B64008C0B30 /* FavoriteShopAction */,
 				F954BC061FC55B65008C0B30 /* GeneralAction */,
+				F954B8CD1FC55B64008C0B30 /* GooglePlaces */,
+				F954BA001FC55B64008C0B30 /* HistoryProduct */,
+				F954B9651FC55B64008C0B30 /* Hotlist */,
+				F954BA321FC55B64008C0B30 /* InboxMessage */,
+				F954B9801FC55B64008C0B30 /* InboxResolutionCenter */,
+				F954B8031FC55B63008C0B30 /* InboxReview */,
+				F954BC4B1FC55B65008C0B30 /* InboxTalk */,
+				F954B8F51FC55B64008C0B30 /* InboxTicket */,
+				F954BBF21FC55B65008C0B30 /* LikeDislikeReview */,
+				F954BC401FC55B65008C0B30 /* LoyaltyPoint */,
+				F954BAAF1FC55B64008C0B30 /* ManageProduct */,
+				F954B8121FC55B63008C0B30 /* Note */,
+				F954BA1B1FC55B64008C0B30 /* Notification */,
+				F954BB5B1FC55B65008C0B30 /* Paging */,
+				F954B9531FC55B64008C0B30 /* Preorder */,
+				F954B9451FC55B64008C0B30 /* PriceAlert */,
+				F954BB5A1FC55B65008C0B30 /* ProductEdit.swift */,
+				F954BC521FC55B65008C0B30 /* ProductEditDetail.swift */,
+				F954BBF01FC55B65008C0B30 /* ProductEditImages.swift */,
+				F954B9441FC55B64008C0B30 /* ProductEditInfo.swift */,
+				F954B9641FC55B64008C0B30 /* ProductEditResult.swift */,
 				F954BC0C1FC55B65008C0B30 /* ProductFeed */,
+				F954BA621FC55B64008C0B30 /* ProductTalkCommentAction */,
+				F954B95F1FC55B64008C0B30 /* ProductTalkForm */,
+				F954BB821FC55B65008C0B30 /* Profile */,
+				F954BC531FC55B65008C0B30 /* Promo */,
+				F954BA281FC55B64008C0B30 /* Promote */,
+				F954BAB61FC55B64008C0B30 /* Replacement */,
+				F954BA491FC55B64008C0B30 /* Reputation */,
+				F954BA1A1FC55B64008C0B30 /* RequestObject.h */,
+				F954BC321FC55B65008C0B30 /* RequestObject.m */,
+				F954BAAA1FC55B64008C0B30 /* ResponseSpeed */,
+				F954B9B81FC55B64008C0B30 /* Sales */,
+				F954B8E81FC55B64008C0B30 /* SearchAWS */,
+				F954BABF1FC55B64008C0B30 /* SearchItem */,
 				F954BC131FC55B65008C0B30 /* SendMessage */,
 				F954BC181FC55B65008C0B30 /* Shipment */,
-				F954BC321FC55B65008C0B30 /* RequestObject.m */,
-				F954BC331FC55B65008C0B30 /* FavoritedShop */,
-				F954BC3E1FC55B65008C0B30 /* Error */,
-				F954BC401FC55B65008C0B30 /* LoyaltyPoint */,
-				F954BC4B1FC55B65008C0B30 /* InboxTalk */,
-				F954BC521FC55B65008C0B30 /* ProductEditDetail.swift */,
-				F954BC531FC55B65008C0B30 /* Promo */,
+				F954BADB1FC55B64008C0B30 /* Shops */,
+				F954BA121FC55B64008C0B30 /* TKPObjectMapping.h */,
+				F954BBF11FC55B65008C0B30 /* TKPString.h */,
+				F954B9581FC55B64008C0B30 /* TKPString.m */,
+				F954BB591FC55B65008C0B30 /* ToppersLocation.h */,
+				F954B94D1FC55B64008C0B30 /* ToppersLocation.m */,
+				F954BA071FC55B64008C0B30 /* TrackingOrder */,
+				F954B8151FC55B63008C0B30 /* Transaction */,
+				F954BB5D1FC55B65008C0B30 /* UploadImage */,
+				F954BB581FC55B65008C0B30 /* V4Response.h */,
+				F954B94C1FC55B64008C0B30 /* V4Response.m */,
+				F954BBEA1FC55B65008C0B30 /* Wallet */,
 				F954BC621FC55B65008C0B30 /* WishList */,
 			);
 			path = Object;
@@ -10364,31 +10391,32 @@
 		F954BC181FC55B65008C0B30 /* Shipment */ = {
 			isa = PBXGroup;
 			children = (
-				F954BC191FC55B65008C0B30 /* ShipmentShopData.h */,
-				F954BC1A1FC55B65008C0B30 /* ShipmentResult.h */,
-				F954BC1B1FC55B65008C0B30 /* ShipmentCourierData.h */,
-				F954BC1C1FC55B65008C0B30 /* ShipmentOrder.m */,
-				F954BC1D1FC55B65008C0B30 /* ShipmentServiceData.h */,
-				F954BC1E1FC55B65008C0B30 /* ShipmentResponse.m */,
-				F954BC1F1FC55B65008C0B30 /* ShipmentProvinceData.h */,
-				F954BC201FC55B65008C0B30 /* ShipmentCourierPackage.h */,
-				F954BC211FC55B65008C0B30 /* ShipmentDistrictData.m */,
+				F954BC301FC55B65008C0B30 /* ShipmentCityData.h */,
 				F954BC221FC55B65008C0B30 /* ShipmentCityData.m */,
-				F954BC231FC55B65008C0B30 /* string_shipment.h */,
-				F954BC241FC55B65008C0B30 /* ShipmentData.h */,
+				F954BC2E1FC55B65008C0B30 /* ShipmentCourier.h */,
 				F954BC251FC55B65008C0B30 /* ShipmentCourier.m */,
+				F954BC1B1FC55B65008C0B30 /* ShipmentCourierData.h */,
 				F954BC261FC55B65008C0B30 /* ShipmentCourierData.m */,
-				F954BC271FC55B65008C0B30 /* ShipmentResult.m */,
-				F954BC281FC55B65008C0B30 /* ShipmentShopData.m */,
-				F954BC291FC55B65008C0B30 /* ShipmentServiceData.m */,
-				F954BC2A1FC55B65008C0B30 /* ShipmentOrder.h */,
+				F954BC201FC55B65008C0B30 /* ShipmentCourierPackage.h */,
 				F954BC2B1FC55B65008C0B30 /* ShipmentCourierPackage.m */,
+				F954BC241FC55B65008C0B30 /* ShipmentData.h */,
+				F954BC2F1FC55B65008C0B30 /* ShipmentData.m */,
+				F954BC311FC55B65008C0B30 /* ShipmentDistrictData.h */,
+				F954BC211FC55B65008C0B30 /* ShipmentDistrictData.m */,
+				2ABF048A1FC5E69500757B85 /* ShipmentKeroToken.swift */,
+				F954BC2A1FC55B65008C0B30 /* ShipmentOrder.h */,
+				F954BC1C1FC55B65008C0B30 /* ShipmentOrder.m */,
+				F954BC1F1FC55B65008C0B30 /* ShipmentProvinceData.h */,
 				F954BC2C1FC55B65008C0B30 /* ShipmentProvinceData.m */,
 				F954BC2D1FC55B65008C0B30 /* ShipmentResponse.h */,
-				F954BC2E1FC55B65008C0B30 /* ShipmentCourier.h */,
-				F954BC2F1FC55B65008C0B30 /* ShipmentData.m */,
-				F954BC301FC55B65008C0B30 /* ShipmentCityData.h */,
-				F954BC311FC55B65008C0B30 /* ShipmentDistrictData.h */,
+				F954BC1E1FC55B65008C0B30 /* ShipmentResponse.m */,
+				F954BC1A1FC55B65008C0B30 /* ShipmentResult.h */,
+				F954BC271FC55B65008C0B30 /* ShipmentResult.m */,
+				F954BC1D1FC55B65008C0B30 /* ShipmentServiceData.h */,
+				F954BC291FC55B65008C0B30 /* ShipmentServiceData.m */,
+				F954BC191FC55B65008C0B30 /* ShipmentShopData.h */,
+				F954BC281FC55B65008C0B30 /* ShipmentShopData.m */,
+				F954BC231FC55B65008C0B30 /* string_shipment.h */,
 			);
 			path = Shipment;
 			sourceTree = "<group>";
@@ -10777,6 +10805,7 @@
 				F954BD1A1FC55B65008C0B30 /* DigitalTarget.swift */,
 				F954BD1B1FC55B65008C0B30 /* MojitoTarget.swift */,
 				F954BD1C1FC55B65008C0B30 /* AccountTarget.swift */,
+				2ABF048C1FC5E9BF00757B85 /* KeroTarget.swift */,
 				F954BD1D1FC55B65008C0B30 /* V4Target.swift */,
 				F954BD1E1FC55B65008C0B30 /* AceTarget.swift */,
 			);
@@ -11180,6 +11209,7 @@
 				F954BEEA1FC55B66008C0B30 /* OrderInfoView.xib in Resources */,
 				7A4672021EB2FEB400A72105 /* Images.xcassets in Resources */,
 				F954BF091FC55B66008C0B30 /* RejectReasonEmptyVariantCell.xib in Resources */,
+				2A1AE42F1FC5E5D2003E7EF8 /* DistrictViewController.xib in Resources */,
 				F954BF531FC55B67008C0B30 /* AlertListBankView.xib in Resources */,
 				F954BF171FC55B67008C0B30 /* RejectReasonCloseShopViewController.xib in Resources */,
 				F954C14A1FC55B68008C0B30 /* PulsaOperatorCell.xib in Resources */,
@@ -12505,6 +12535,7 @@
 				F954C2CE1FC55B6A008C0B30 /* DiscoverResponse.swift in Sources */,
 				F954BF9B1FC55B67008C0B30 /* CatalogProductCell.m in Sources */,
 				F954BF2A1FC55B67008C0B30 /* CourierOptionViewCell.m in Sources */,
+				2A1AE4301FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift in Sources */,
 				F954BD631FC55B66008C0B30 /* UITableView+IndexPath.m in Sources */,
 				F954BED91FC55B66008C0B30 /* BarCodeViewController.m in Sources */,
 				F954C1121FC55B68008C0B30 /* ResolutionCenterCreateTroubleList.m in Sources */,
@@ -12540,6 +12571,7 @@
 				F954C1F31FC55B69008C0B30 /* TransactionATCFormResult.m in Sources */,
 				F954C32F1FC55B6B008C0B30 /* Shipment.m in Sources */,
 				F954C2851FC55B6A008C0B30 /* OrderDestination.m in Sources */,
+				2A1AE42D1FC5E5D2003E7EF8 /* DistrictRecommendation.swift in Sources */,
 				F954C1711FC55B69008C0B30 /* ProductTalkDetailViewController.m in Sources */,
 				F954BF6A1FC55B67008C0B30 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				F954C2B71FC55B6A008C0B30 /* InboxMessageAction.m in Sources */,
@@ -12571,6 +12603,7 @@
 				F954C2281FC55B69008C0B30 /* InboxTicketReply.m in Sources */,
 				F954C0691FC55B68008C0B30 /* GetSearchSuggestionGeneralResponse.swift in Sources */,
 				F954C0D31FC55B68008C0B30 /* ListBankViewController.swift in Sources */,
+				2A1AE4281FC5E578003E7EF8 /* DistrictService.swift in Sources */,
 				F954C2691FC55B6A008C0B30 /* ResolutionBy.m in Sources */,
 				D89EA9021FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m in Sources */,
 				F954C0271FC55B67008C0B30 /* DetailProductViewController.m in Sources */,
@@ -12840,6 +12873,7 @@
 				F954BF3F1FC55B67008C0B30 /* NetworkManager.swift in Sources */,
 				DADB9F531F3C46CE002B1FAE /* iCarousel.m in Sources */,
 				F954C1EA1FC55B69008C0B30 /* TxOrderConfirmPaymentFormForm.m in Sources */,
+				2A1AE42E1FC5E5D2003E7EF8 /* DistrictViewController.swift in Sources */,
 				F954BE351FC55B66008C0B30 /* CatalogModelView.m in Sources */,
 				F954BF6E1FC55B67008C0B30 /* AlertListBankCell.m in Sources */,
 				F954C0EE1FC55B68008C0B30 /* PaymentConfirmation.swift in Sources */,
@@ -13105,6 +13139,7 @@
 				F954C4321FC55B6C008C0B30 /* TokocashTarget.swift in Sources */,
 				F954C3A91FC55B6C008C0B30 /* ShipmentProvinceData.m in Sources */,
 				F954C23E1FC55B69008C0B30 /* TalkComment.m in Sources */,
+				2ABF048B1FC5E69500757B85 /* ShipmentKeroToken.swift in Sources */,
 				F954C2DC1FC55B6A008C0B30 /* LogoutResult.m in Sources */,
 				F954C4101FC55B6C008C0B30 /* TKPHomeBannerStore.m in Sources */,
 				F954C3FE1FC55B6C008C0B30 /* FoundationHelper.swift in Sources */,
@@ -13172,6 +13207,7 @@
 				F954BFF71FC55B67008C0B30 /* AuthTokenRequest.swift in Sources */,
 				F954C2071FC55B69008C0B30 /* GoogleDistanceMatrixRows.m in Sources */,
 				DADB9F631F3C46CF002B1FAE /* StyledPageControl.m in Sources */,
+				2ABF048D1FC5E9BF00757B85 /* KeroTarget.swift in Sources */,
 				F954BDC91FC55B66008C0B30 /* Donation.swift in Sources */,
 				F954C0961FC55B68008C0B30 /* TopPick.swift in Sources */,
 				F954BED21FC55B66008C0B30 /* SubmitShipmentConfirmationViewController.m in Sources */,
