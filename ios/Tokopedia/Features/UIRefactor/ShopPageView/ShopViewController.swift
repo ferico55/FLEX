@@ -447,9 +447,9 @@ class ShopViewController: UIViewController {
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
         AnalyticsManager.trackEventName(
-            "ClickMessageRoom",
-            category: "send message room",
-            action: "click on kirim",
+            "ClickShopPage",
+            category: "shop page",
+            action: "click on kirim pesan",
             label: ""
         )
         

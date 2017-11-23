@@ -175,6 +175,11 @@ class DetailView extends Component {
         ]).role
       }
 
+      //reset page to 1
+      if(!nextProps.chatDetail.paging_next){
+        this.page = 1
+      }
+
       this.setState({
         isLoading: false,
         isError: false,
