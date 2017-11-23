@@ -14,6 +14,10 @@
 		<string>applinks:tokopedia-alternate.app.link</string>
 		<string>applinks:tokopedia.test-app.link</string>
 		<string>applinks:tokopedia-alternate.test-app.link</string>
+		<string>applinks:test-tokopedia.link</string>
+		<string>applinks:alternate.test-tokopedia.link</string>
+		<string>applinks:tokopedia.link</string>
+		<string>applinks:alternate.tokopedia.link</string>
 	</array>
 </dict>
 </plist>
