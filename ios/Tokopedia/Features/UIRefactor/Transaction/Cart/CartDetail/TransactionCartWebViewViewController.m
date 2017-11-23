@@ -26,10 +26,14 @@
 }
 
 @property (weak, nonatomic) IBOutlet UIWebView *webView;
+@property PaymentTouchIDServiceBridging *service;
 
 @end
 
-@implementation TransactionCartWebViewViewController
+@implementation TransactionCartWebViewViewController{
+    NSURLRequest *_OTPRequest;
+    BOOL _canUseTouchID;
+}
 
 +(void)pushToppayFrom:(UIViewController*)vc data:(TransactionActionResult*)data {
     
@@ -78,6 +82,14 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+     FBTweakAction(@"Others", @"TouchID", @"Reset Payment TouchID", ^{
+         PaymentTouchIDServiceBridging *service = [PaymentTouchIDServiceBridging new];
+         [service doResetAllPaymentTouchID];
+     });
+    
+    _canUseTouchID = YES;
+    _service = [PaymentTouchIDServiceBridging new];
+    
     __weak typeof(self) wself = self;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                                              bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
@@ -90,10 +102,6 @@
     [self loadRequest];
 }
 
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-    
-}
 -(IBAction)didTapSuccess:(id)sender
 {
     [self.navigationController dismissViewControllerAnimated:YES completion:nil];
@@ -142,14 +150,11 @@
 }
 
 
--(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType
-{
-    NSLog(@"URL shouldStartLoadWithRequest: %@", webView.request.URL.absoluteString);
-    NSLog(@"URL shouldStartLoadWithRequest: %@", request.URL.absoluteString);
-    
+-(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
+
     NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
     if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
-        NSDictionary *paramURL = [self dictionaryFromURLString:request.URL.absoluteString];
+        NSDictionary *paramURL = [request.URL parameters];
         if ([paramURL objectForKey:@"id"]) {
             NSString *paymentID = [paramURL objectForKey:@"id"]?:_toppayParam[@"transaction_id"]?:@"";
             [[NSNotificationCenter defaultCenter] postNotificationName:@"updateSaldoTokopedia" object:nil userInfo:nil];
@@ -165,32 +170,129 @@
         } else {
             [self.navigationController popViewControllerAnimated:YES];
         }
+        
         return NO;
     }
     
+    BOOL isCreditCardOTPPage = ([request.URL.path containsString:@"/v2/3dsecure/cc/veritrans/"] || [request.URL.path containsString:@"/v2/3dsecure/sprintasia"]);
+    if (isCreditCardOTPPage) {
+        
+        NSData *data = request.HTTPBody;
+        NSString *string = [[NSString alloc] initWithData:data encoding:NSASCIIStringEncoding];
+        NSDictionary *parameter = [self dictionaryFromQueryString: string];
+        
+        if(_canUseTouchID && [parameter[@"enable_fingerprint"] boolValue]) {
+
+            _OTPRequest = request;
+            __weak typeof(self) weakSelf = self;
+            [self.service validateTouchIDPaymentWithParameter:parameter onSuccess:^(NSString* urlString, NSString* parameterString) {
+                
+                NSMutableURLRequest *requestOTP = [[NSMutableURLRequest alloc] init];
+                NSData *postData = [parameterString dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES];
+                [requestOTP setHTTPBody:postData];
+                [requestOTP setHTTPMethod:@"POST"];
+                NSURL *url = [NSURL URLWithString: urlString];
+                [requestOTP setURL:url];
+                
+                [weakSelf.webView loadRequest: requestOTP];
+                
+                _canUseTouchID = NO;
+
+            } onError:^(NSString * errorMessage) {
+                if (errorMessage) {
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [weakSelf showTouchIDAlertError:errorMessage OTPRequest:_OTPRequest];
+                    });
+                } else {
+                    [weakSelf.webView loadRequest: _OTPRequest];
+                }
+                _canUseTouchID = NO;
+            }];
+            
+            return !_canUseTouchID;
+        }
+    }
+    
+    BOOL isSaveFingerprint = ([request.URL.absoluteString containsString:@"/fingerprint/save"]);
+    if (isSaveFingerprint) {
+        NSDictionary *parameters = [request.URL parameters];
+        NSString *transactionID = parameters[@"transaction_id"];
+        NSString *ccHash = parameters[@"cc_hashed"];
+        [self registerTouchIDTransactionID:transactionID ccHash:ccHash];
+        
+        return NO;
+    }
+
     return YES;
 }
 
--(NSDictionary *)dictionaryFromURLString:(NSString *)urlString
-{
-    NSURL *url = [NSURL URLWithString:urlString];
-    NSString * q = [url query];
-    NSArray * pairs = [q componentsSeparatedByString:@"&"];
+-(void)showTouchIDAlertError:(NSString*)message OTPRequest:(NSURLRequest*)otpRequest {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *option = [UIAlertAction actionWithTitle:@"Ok"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * _Nonnull action) {
+                                                       [self.webView loadRequest: otpRequest];
+                                                   }];
+    [alertController addAction:option];
+    
+    [self presentViewController:alertController
+                                        animated:YES
+                                      completion:nil];
+}
+
+-(void)showRegisterTouchIDAlertError:(NSString*)message transactionID:(NSString*)transactionID ccHash:(NSString*)ccHash {
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:message
+                                                                             message:nil
+                                                                      preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *close = [UIAlertAction actionWithTitle:@"Tutup"
+                                                     style:UIAlertActionStyleCancel
+                                                   handler:nil];
+    [alertController addAction:close];
+    
+    __weak typeof(self) weakSelf = self;
+    UIAlertAction *tryAgain = [UIAlertAction actionWithTitle:@"Coba lagi"
+                                                     style:UIAlertActionStyleDefault
+                                                   handler:^(UIAlertAction * _Nonnull action) {
+                                                       [weakSelf registerTouchIDTransactionID:transactionID ccHash:ccHash];
+                                                   }];
+    [alertController addAction:tryAgain];
+    
+    [self presentViewController:alertController
+                       animated:YES
+                     completion:nil];
+}
+
+-(void)registerTouchIDTransactionID:(NSString*)transactionID ccHash:(NSString*)ccHash {
+    __weak typeof(self) wself = self;
+    [self.service registerPublicKeyWithTransactionID:transactionID ccHash:ccHash onSuccess:^(NSString * _Nonnull successMessage) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [StickyAlertView showSuccessMessage:@[successMessage]];
+        });
+    } onError:^(NSString * _Nullable error) {
+        if (error != nil) {
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [wself showRegisterTouchIDAlertError:error transactionID:transactionID ccHash:ccHash];
+            });
+        }
+    }];
+}
+
+-(NSDictionary *)dictionaryFromQueryString:(NSString *)queryString {
+    NSArray * pairs = [queryString componentsSeparatedByString:@"&"];
     NSMutableDictionary * dictionary = [NSMutableDictionary dictionary];
     for (NSString * pair in pairs) {
         NSArray * bits = [pair componentsSeparatedByString:@"="];
-        NSString * key = [[bits objectAtIndex:0] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-        NSString * value = [[bits objectAtIndex:1] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+        NSString * key = [[bits objectAtIndex:0] stringByRemovingPercentEncoding];
+        NSString * value = [[bits objectAtIndex:1] stringByRemovingPercentEncoding];
         [dictionary setObject:value forKey:key];
     }
     
     return [dictionary copy];
 }
 -(void)webViewDidFinishLoad:(UIWebView *)webView {
-    NSString *html = [webView stringByEvaluatingJavaScriptFromString:@"document.body.innerHTML"];
-    NSLog(@"html String WebView %@", html);
-    NSLog(@"URL webViewDidFinishLoad: %@", webView.request.URL.absoluteString);
-
+    
     __weak typeof(self) wself = self;
     self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                                              bk_initWithImage:[UIImage imageNamed:@"icon_arrow_white"]

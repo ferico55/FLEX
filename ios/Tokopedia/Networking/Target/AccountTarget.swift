@@ -39,6 +39,8 @@ enum AccountTarget {
     case editProfile(withBirthday: Date?, gender: Int?)
     case register(email: String, fullName: String, phoneNumber: String, password: String)
     case resendActivationEmail(email: String)
+    case verifyOTP(withParams: [String : Any]?)
+    case registerPublicKey(withKey: String)
 }
 
 extension AccountTarget: TargetType {
@@ -54,6 +56,8 @@ extension AccountTarget: TargetType {
         case .editProfile: return "/api/v1/user/profile-edit"
         case .register: return "/api/register"
         case .resendActivationEmail: return "/api/v1/resend"
+        case .verifyOTP(_): return "/otp/verify"
+        case .registerPublicKey(_): return "/otp/fingerprint/add"
         }
     }
 
@@ -63,7 +67,7 @@ extension AccountTarget: TargetType {
         case .getInfo: return .get
         case .editProfile: return .post
         case .register: return .post
-        case .resendActivationEmail: return .post
+        case .resendActivationEmail, .verifyOTP, .registerPublicKey : return .post
         }
     }
 
@@ -95,7 +99,13 @@ extension AccountTarget: TargetType {
             return [
                 "email": email
             ]
+        case let .verifyOTP(params):
+            return params
+        case let .registerPublicKey(key) :
+            let user = UserAuthentificationManager()
+            return ["public_key" : key, "user_id" : user.getUserId()]
         }
+
     }
 
     /// The method used for parameter encoding.

@@ -15,6 +15,8 @@
 
 #define CICILAN_KARTU_KREDIT_GATEWAY_ID @"12"
 
+@import LocalAuthentication;
+
 @implementation RequestCart
 
 +(void)fetchCartData:(void(^)(TransactionCartResult *data))success error:(void (^)(NSError *error))error{
@@ -62,10 +64,11 @@
     }
     
     NSString * dropshipString = [[tempDropshipStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-    
     NSString * partialString = [[tempPartialStringList valueForKey:@"description"] componentsJoinedByString:@"*~*"];
-
     
+    TouchIDHelper *touchIDHelper = [TouchIDHelper new];
+    BOOL hasTouchID = [touchIDHelper isTouchIDAvailable];
+    PaymentTouchIDServiceBridging *service = [PaymentTouchIDServiceBridging new];
     NSMutableDictionary *param = [NSMutableDictionary new];
     NSDictionary* paramDictionary = @{@"step"           :@(STEP_CHECKOUT),
                                       @"token"          :token,
@@ -75,6 +78,8 @@
                                       @"lp_flag"        :@"1",
                                       @"donation_amt"   :donationAmount?:@"0",
                                       @"client_id"      :clientID?:@"",
+                                      @"fingerprint_support": @(hasTouchID),
+                                      @"fingerprint_publickey": [service getPublicKey]
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -85,6 +90,7 @@
     [param addEntriesFromDictionary:partialDetail];
     [param addEntriesFromDictionary:cartListRate];
     
+    
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     networkManager.isUsingDefaultError = NO;
@@ -93,37 +99,38 @@
                                 method:RKRequestMethodPOST
                              parameter:param
                                mapping:[TransactionAction mapping]
-     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
-         NSDictionary *result = successResult.dictionary;
-         TransactionAction *cart = [result objectForKey:@""];
-         
-         if (cart.message_error.count > 0 || cart.data.parameter == nil) {
-             [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
-                                                      type:NotificationTypeError
-                                                  duration:4.0
-                                               buttonTitle:[cart.errors[0].name isEqualToString:@"minimum-payment"]?@"Belanja Lagi":nil
-                                               dismissable:YES
-                                                    action:[cart.errors[0].name isEqualToString:@"minimum-payment"]?^{
-                                                        [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
-                                                    }:nil];
-             error(nil);
-         } else {
-             NSArray *successMessages = cart.message_status;
-             if (successMessages.count > 0) {
-                 [StickyAlertView showSuccessMessage:successMessages];
-                 [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
-                                                          type:NotificationTypeSuccess
-                                                      duration:4.0
-                                                   buttonTitle:nil
-                                                   dismissable:YES
-                                                        action:nil];
-             }
-             success(cart.data);
-         }
-         
-     } onFailure:^(NSError *errorResult) {
-         error(errorResult);
-     }];
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionAction *cart = [result objectForKey:@""];
+                                 
+                                 if (cart.message_error.count > 0 || cart.data.parameter == nil) {
+                                     BOOL isMinimumPaymentError = [cart.errors[0].name isEqualToString:@"minimum-payment"];
+                                     [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error?:@[@"Error"]]
+                                                                              type:NotificationTypeError
+                                                                          duration:4.0
+                                                                       buttonTitle:isMinimumPaymentError?@"Belanja Lagi":nil
+                                                                       dismissable:YES
+                                                                            action:isMinimumPaymentError?^{
+                                                                                [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"1"];
+                                                                            }:nil];
+                                     error(nil);
+                                 } else {
+                                     NSArray *successMessages = cart.message_status;
+                                     if (successMessages.count > 0) {
+                                         [StickyAlertView showSuccessMessage:successMessages];
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
+                                     success(cart.data);
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
 }
 
 

@@ -21,15 +21,6 @@ class ScroogeProvider: NetworkProvider<ScroogeTarget> {
         let userID = UserAuthentificationManager().getUserId() ?? ""
         let appVersion = UIApplication.getAppVersionString()
 
-        let defaultHeaders = [
-            "Accept": "application/json",
-            "X-APP-VERSION": appVersion,
-            "X-Device": "ios-\(appVersion)",
-            "Accept-Language": "id-ID",
-            "Accept-Encoding": "gzip",
-            "X-Tkpd-UserId": userID
-        ]
-
         let jsonHeaders = target.method == .get ? [:] : [
             "Accept": "application/json",
             "X-APP-VERSION": appVersion,
@@ -40,7 +31,7 @@ class ScroogeProvider: NetworkProvider<ScroogeTarget> {
             "Content-Type": "application/json"
         ]
 
-        let headers = target.parameterEncoding is Moya.JSONEncoding ? jsonHeaders : defaultHeaders
+        let headers = target.parameterEncoding is Moya.JSONEncoding ? jsonHeaders : [:]
 
         return NetworkProvider.defaultEndpointCreator(for: target)
             .adding(
@@ -57,6 +48,8 @@ enum ScroogeTarget {
     case deleteOneClick(String)
     case getListCreditCard()
     case deleteCreditCard(String)
+    case register(PublicKey: String, signature: String, transactionID: String, ccHash: String, dateString: String)
+    case validatePayment(PublicKey: String, signature: String, parameter: [String: Any], dateString: String)
 }
 
 extension String {
@@ -87,7 +80,7 @@ extension ScroogeTarget: TargetType {
 
         let string: String
         switch self {
-        case .getListCreditCard, .deleteCreditCard:
+        case .getListCreditCard, .deleteCreditCard, .register, .validatePayment:
             string = NSString.creditCardURL()
         default:
             string = NSString.oneClickURL()
@@ -106,20 +99,14 @@ extension ScroogeTarget: TargetType {
         case .deleteOneClick: return "/ws/oneclick"
         case .getListCreditCard: return "/v2/ccvault/metadata"
         case .deleteCreditCard: return "/v2/ccvault/delete"
+        case .register: return "/v2/fingerprint/publickey/save"
+        case .validatePayment: return "/v2/payment/cc/fingerprint"
         }
     }
 
     /// The HTTP method used in the request.
     var method: Moya.Method {
-        switch self {
-        case .getListOneClick: return .post
-        case .getOneClickAccessToken: return .post
-        case .registerOneClick: return .post
-        case .editOneClick: return .post
-        case .deleteOneClick: return .post
-        case .getListCreditCard: return .post
-        case .deleteCreditCard: return .post
-        }
+        return .post
     }
 
     /// The parameters to be incoded in the request.
@@ -197,6 +184,33 @@ extension ScroogeTarget: TargetType {
                 "user_id": userID,
                 "signature": signatureString.hmac(key: NSString.creditCardSecretKey())
             ]
+        case let .register(publicKey, signature, transactionID, ccHash, dateString):
+
+            let auth = UserAuthentificationManager()
+            
+            return [
+                "public_key": publicKey,
+                "date": dateString,
+                "account_signature": signature,
+                "user_id": auth.getUserId(),
+                "os": "2",
+                "transaction_id": transactionID,
+                "cc_hashed": ccHash
+            ]
+
+        case let .validatePayment(publicKey, signature, parameter, dateString):
+
+            let auth = UserAuthentificationManager()
+            
+            let param = parameter.combineWith(values: [
+                "public_key": publicKey,
+                "date": dateString,
+                "account_signature": signature,
+                "user_id": auth.getUserId(),
+                "os": "2"
+                ])
+            
+            return param
         }
     }
 

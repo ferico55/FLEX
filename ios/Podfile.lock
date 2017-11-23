@@ -259,9 +259,9 @@ PODS:
   - RKValueTransformers (1.1.3)
   - RNDeviceInfo (0.9.3):
     - React
-  - RNSVG (5.4.1):
+  - RNSVG (5.5.1):
     - React
-  - RNVectorIcons (4.3.0):
+  - RNVectorIcons (4.4.2):
     - React
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
@@ -530,8 +530,8 @@ SPEC CHECKSUMS:
   RichEditorView: e5990b1a092539559def9df135e064b29ab97e68
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
   RNDeviceInfo: dc3cbee96cd2392cf03d6ff6191dc15f1606a166
-  RNSVG: 9350bab6cf5e9f3073c65ce9802f1ee093726651
-  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
+  RNSVG: c850931093bcdd4fb13f95e58d989379fa2643ec
+  RNVectorIcons: c1821d56c775cc5a3bca66c77dfc8cb4a90d27e2
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6

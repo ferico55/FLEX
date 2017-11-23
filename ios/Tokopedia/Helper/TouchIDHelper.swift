@@ -14,12 +14,14 @@ import LocalAuthentication
 struct KeychainAccessService {
     static let account = "Account"
     static let touchAccount = "TouchAccount"
+    static let creditCard = "CreditCard"
 }
 
 struct KeychainAccessKey {
     static let numberAccounts = "NumberAccounts"
     static let email = "Email"
     static let password = "Password"
+    static let creditCard = "CreditCardDatas"
 }
 
 var GlobalPriorityDefaultQueue: DispatchQueue {
@@ -160,14 +162,6 @@ class TouchIDHelper: NSObject {
     func isTouchIDAvailable() -> Bool {
         let context = LAContext()
         var error: NSError?
-        
-        guard #available(iOS 9.0, *) else {
-            if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
-                return true
-            }
-            self.removeAll()
-            return false
-        }
         
         if context.canEvaluatePolicy(LAPolicy.deviceOwnerAuthenticationWithBiometrics, error: &error) {
             return true
