@@ -14,27 +14,24 @@ class ReactSplitViewController: UIViewController {
     let modules: [String: Any]
     let splitVC: UISplitViewController
 
-    init(modules: [String: Any]) {
+    init(modules: [String: Any], masterViewKey: String, detailViewKey: String) {
         self.modules = modules
         self.splitVC = UISplitViewController()
         super.init(nibName: nil, bundle: nil)
 
-        let firstKey = Array(modules.keys)[0]
-        let secondKey = Array(modules.keys)[1]
-
-        guard let firstProps = modules[firstKey] as? [String: AnyObject], let secondProps = modules[secondKey] as? [String:AnyObject] else {
+        guard let firstProps = modules[masterViewKey] as? [String: AnyObject], let secondProps = modules[detailViewKey] as? [String:AnyObject] else {
             return
         }
 
-        let leftViewController = ReactViewController(moduleName: firstKey, props: firstProps)
+        let leftViewController = ReactViewController(moduleName: masterViewKey, props: firstProps)
         let masterViewController = UINavigationController(rootViewController: leftViewController)
         masterViewController.navigationBar.isTranslucent = false
 
-        let rightViewController = ReactViewController(moduleName: secondKey, props: secondProps)
+        let rightViewController = ReactViewController(moduleName: detailViewKey, props: secondProps)
         let detailViewController = UINavigationController(rootViewController: rightViewController)
         detailViewController.navigationBar.isTranslucent = false
 
-        self.splitVC.viewControllers = [detailViewController,masterViewController]
+        self.splitVC.viewControllers = [masterViewController, detailViewController]
         self.splitVC.delegate = self
         self.view.addSubview(splitVC.view)
     }

@@ -588,7 +588,7 @@
     
     UIViewController *reviewReactViewController;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules: @{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}}];
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules:@{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}} masterViewKey:@"InboxReview" detailViewKey:@"InvoiceDetailPage"];
     } else {
         reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }
@@ -607,7 +607,7 @@
     
     UIViewController *reviewReactViewController;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules: @{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}}];
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules:@{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}} masterViewKey:@"InboxReview" detailViewKey:@"InvoiceDetailPage"];
     } else {
         reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }

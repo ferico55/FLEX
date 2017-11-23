@@ -812,7 +812,7 @@ class TPRoutes: NSObject {
                       ]
                   ]
 
-                  viewController = ReactSplitViewController(modules: modulesAndProps)
+                  viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
               } else {
                   viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject])
               }
@@ -854,7 +854,7 @@ class TPRoutes: NSObject {
                       ]
                   ]
 
-                  viewController = ReactSplitViewController(modules: modulesAndProps)
+                  viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
               } else {
                   viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
               }
@@ -1094,7 +1094,7 @@ class TPRoutes: NSObject {
         
         var viewController:UIViewController
         if UIDevice.current.userInterfaceIdiom == .pad {
-            viewController = ReactSplitViewController(modules: ["InboxReview": ["authInfo": auth as AnyObject], "InvoiceDetailPage": ["authInfo": auth]])
+            viewController = ReactSplitViewController(modules: ["InboxReview": ["authInfo": auth as AnyObject], "InvoiceDetailPage": ["authInfo": auth]], masterViewKey: "InboxReview", detailViewKey: "InvoiceDetailPage")
         } else {
             viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo":auth as AnyObject])
         }

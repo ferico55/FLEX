@@ -1,4 +1,5 @@
 import { TKPReactURLManager, ReactNetworkManager } from 'NativeModules'
+import { Image } from 'react-native'
 
 export const requestReviewList = params => {
   if (params.page < 1) {
@@ -32,11 +33,19 @@ export const setFilter = (params, updatedParams, pageIndex) => dispatch => {
 
   requestReviewList(newParams)
     .then(result => {
-      const inboxReputations = result.data.inbox_reputation.map(reputation => ({
-        ...reputation,
-        shop_id: `${reputation.shop_id}`,
-        user_id: `${reputation.user_id}`,
-      }))
+      const inboxReputations = result.data.inbox_reputation.map(reputation => {
+        Image.prefetch(reputation.reviewee_data.reviewee_picture)
+        if (reputation.reviewee_data.reviewee_shop_badge) {
+          Image.prefetch(
+            reputation.reviewee_data.reviewee_shop_badge.reputation_badge_url,
+          )
+        }
+        return {
+          ...reputation,
+          shop_id: `${reputation.shop_id}`,
+          user_id: `${reputation.user_id}`,
+        }
+      })
       const response = {
         ...result,
         data: {
@@ -72,11 +81,19 @@ export const updateParams = (params, updatedParams, pageIndex) => dispatch => {
 
   requestReviewList(newParams)
     .then(result => {
-      const inboxReputations = result.data.inbox_reputation.map(reputation => ({
-        ...reputation,
-        shop_id: `${reputation.shop_id}`,
-        user_id: `${reputation.user_id}`,
-      }))
+      const inboxReputations = result.data.inbox_reputation.map(reputation => {
+        Image.prefetch(reputation.reviewee_data.reviewee_picture)
+        if (reputation.reviewee_data.reviewee_shop_badge) {
+          Image.prefetch(
+            reputation.reviewee_data.reviewee_shop_badge.reputation_badge_url,
+          )
+        }
+        return {
+          ...reputation,
+          shop_id: `${reputation.shop_id}`,
+          user_id: `${reputation.user_id}`,
+        }
+      })
       const response = {
         ...result,
         data: {
@@ -112,11 +129,19 @@ export const setParams = (params, pageIndex) => dispatch => {
 
   requestReviewList(p)
     .then(result => {
-      const inboxReputations = result.data.inbox_reputation.map(reputation => ({
-        ...reputation,
-        shop_id: `${reputation.shop_id}`,
-        user_id: `${reputation.user_id}`,
-      }))
+      const inboxReputations = result.data.inbox_reputation.map(reputation => {
+        Image.prefetch(reputation.reviewee_data.reviewee_picture)
+        if (reputation.reviewee_data.reviewee_shop_badge) {
+          Image.prefetch(
+            reputation.reviewee_data.reviewee_shop_badge.reputation_badge_url,
+          )
+        }
+        return {
+          ...reputation,
+          shop_id: `${reputation.shop_id}`,
+          user_id: `${reputation.user_id}`,
+        }
+      })
       const response = {
         ...result,
         data: {
