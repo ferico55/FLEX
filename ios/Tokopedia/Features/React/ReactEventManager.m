@@ -49,4 +49,8 @@ RCT_EXPORT_MODULE(EventManager)
     [self sendEventWithName:@"shouldRefresh" body:nil];
 }
 
+- (void)popNavigation {
+    [self sendEventWithName:@"popNavigation" body:nil];
+}
+
 @end

@@ -25,7 +25,6 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
-		523EFC311FC5D76B00A3128D /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 523EFC301FC5D76B00A3128D /* assets */; };
 		525B5AF51FC57047004195FE /* DigitalOperatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
@@ -72,6 +71,7 @@
 		9246FC111FC5797B0038D99B /* Redirection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9246FC091FC5797B0038D99B /* Redirection.swift */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		C05A0FD41FC6A251000A95FB /* assets in Resources */ = {isa = PBXBuildFile; fileRef = C05A0FD31FC6A251000A95FB /* assets */; };
 		C0E50F771FC5C48D0069403C /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F761FC5C48D0069403C /* ReactOrderManager.m */; };
 		C0E50F7E1FC5C4BC0069403C /* RCTToolTipText.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F791FC5C4BC0069403C /* RCTToolTipText.m */; };
 		C0E50F7F1FC5C4BC0069403C /* RCTToolTipTextManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C0E50F7B1FC5C4BC0069403C /* RCTToolTipTextManager.m */; };
@@ -2049,7 +2049,6 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
-		523EFC301FC5D76B00A3128D /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperatorTableViewCell.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -2104,6 +2103,7 @@
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05A0FD31FC6A251000A95FB /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		C0E50F751FC5C48D0069403C /* ReactOrderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOrderManager.h; sourceTree = "<group>"; };
 		C0E50F761FC5C48D0069403C /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
 		C0E50F781FC5C4BC0069403C /* RCTToolTipText.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTToolTipText.h; path = "../../../../node_modules/react-native-tooltip/ToolTipMenu/RCTToolTipText.h"; sourceTree = "<group>"; };
@@ -10815,7 +10815,7 @@
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				523EFC301FC5D76B00A3128D /* assets */,
+				C05A0FD31FC6A251000A95FB /* assets */,
 				F954BD241FC55B65008C0B30 /* Database */,
 				F954BD261FC55B65008C0B30 /* Images */,
 				F954BD4C1FC55B66008C0B30 /* Language */,
@@ -11460,7 +11460,6 @@
 				F954C08E1FC55B68008C0B30 /* MyShopAddressViewController.xib in Resources */,
 				F954C4461FC55B6C008C0B30 /* icon_home_active@3x.png in Resources */,
 				F954C4421FC55B6C008C0B30 /* loading-icon.gif in Resources */,
-				523EFC311FC5D76B00A3128D /* assets in Resources */,
 				F954C1261FC55B68008C0B30 /* ResolutionCenterSellerEditProductCell.xib in Resources */,
 				F954BF781FC55B67008C0B30 /* ForgotPasswordViewController.xib in Resources */,
 				F954C4491FC55B6C008C0B30 /* icon_login@3x.png in Resources */,
@@ -11594,6 +11593,7 @@
 				F954BE2A1FC55B66008C0B30 /* GeneralList1GestureCell.xib in Resources */,
 				F954C3F11FC55B6C008C0B30 /* OnboardingViewController.xib in Resources */,
 				F954C0A91FC55B68008C0B30 /* UserPageHeader.xib in Resources */,
+				C05A0FD41FC6A251000A95FB /* assets in Resources */,
 				F954C4521FC55B6D008C0B30 /* icon_login_active@3x.png in Resources */,
 				F954C4471FC55B6C008C0B30 /* icon_more_active.png in Resources */,
 				F954BF521FC55B67008C0B30 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
@@ -13987,7 +13987,7 @@
 				CURRENT_PROJECT_VERSION = 201709061025;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YQP4A2M94J;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				ENABLE_TESTABILITY = YES;
@@ -14046,7 +14046,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				CURRENT_PROJECT_VERSION = 201709061025;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YQP4A2M94J;
 				EMBEDDED_CONTENT_CONTAINS_SWIFT = YES;
 				ENABLE_BITCODE = YES;
 				ENABLE_TESTABILITY = YES;
