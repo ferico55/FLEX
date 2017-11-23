@@ -359,8 +359,7 @@ class TopAdsView: UIView {
             view.removeFromSuperview()
         }
         
-        let topAdsComponent = TopAdsComponentView(ads: ads)
-        topAdsComponent.isSimple = true
+        let topAdsComponent = TopAdsFeedPlusComponentView(ads: ads)
         self.addSubview(topAdsComponent)
         topAdsComponent.render(in: self.frame.size)
         

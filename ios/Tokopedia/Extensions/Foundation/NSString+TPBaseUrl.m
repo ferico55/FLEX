@@ -402,6 +402,18 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)merlinUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://merlin.tokopedia.com",
+                           @(TPUrlStaging) : @"https://merlin.tokopedia.com",
+                           @(TPUrlAlpha) :@"https://merlin.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://merlin.tokopedia.com"
+                           };
+     return [urls objectForKey:TPUrlIndex];
+}
+
 + (NSString*)ajaxAppUrl {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
@@ -423,4 +435,5 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     return [urls objectForKey:TPUrlIndex];
 }
+
 @end

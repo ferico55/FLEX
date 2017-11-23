@@ -9,6 +9,11 @@
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
 		342394F61FC5ABF6003DE70D /* CarouselDataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = 342394F51FC5ABF6003DE70D /* CarouselDataSource.m */; };
+		342394F81FC5D3D7003DE70D /* MerlinTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394F71FC5D3D7003DE70D /* MerlinTarget.swift */; };
+		342394FE1FC5D46F003DE70D /* MerlinProductCategory.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FB1FC5D46F003DE70D /* MerlinProductCategory.swift */; };
+		342394FF1FC5D46F003DE70D /* MerlinRecommendationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FC1FC5D46F003DE70D /* MerlinRecommendationData.swift */; };
+		342395001FC5D46F003DE70D /* MerlinRecommendationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FD1FC5D46F003DE70D /* MerlinRecommendationResponse.swift */; };
+		342395021FC5D52A003DE70D /* ProductCategoryPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342395011FC5D52A003DE70D /* ProductCategoryPrediction.swift */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
@@ -2019,6 +2024,11 @@
 		342394F31FC5ABF6003DE70D /* BannerType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerType.h; sourceTree = "<group>"; };
 		342394F41FC5ABF6003DE70D /* CarouselDataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CarouselDataSource.h; sourceTree = "<group>"; };
 		342394F51FC5ABF6003DE70D /* CarouselDataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CarouselDataSource.m; sourceTree = "<group>"; };
+		342394F71FC5D3D7003DE70D /* MerlinTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinTarget.swift; sourceTree = "<group>"; };
+		342394FB1FC5D46F003DE70D /* MerlinProductCategory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinProductCategory.swift; sourceTree = "<group>"; };
+		342394FC1FC5D46F003DE70D /* MerlinRecommendationData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinRecommendationData.swift; sourceTree = "<group>"; };
+		342394FD1FC5D46F003DE70D /* MerlinRecommendationResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinRecommendationResponse.swift; sourceTree = "<group>"; };
+		342395011FC5D52A003DE70D /* ProductCategoryPrediction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCategoryPrediction.swift; sourceTree = "<group>"; };
 		450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BCAXCOWidget.framework; path = Tokopedia/ThirdParty/BCAXCOWidget.framework; sourceTree = "<group>"; };
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
@@ -5118,6 +5128,17 @@
 			path = Carousel;
 			sourceTree = "<group>";
 		};
+		342394FA1FC5D46F003DE70D /* Merlin */ = {
+			isa = PBXGroup;
+			children = (
+				342394FB1FC5D46F003DE70D /* MerlinProductCategory.swift */,
+				342394FC1FC5D46F003DE70D /* MerlinRecommendationData.swift */,
+				342394FD1FC5D46F003DE70D /* MerlinRecommendationResponse.swift */,
+				342395011FC5D52A003DE70D /* ProductCategoryPrediction.swift */,
+			);
+			path = Merlin;
+			sourceTree = "<group>";
+		};
 		452E95811E64107E001191E0 /* Fixture */ = {
 			isa = PBXGroup;
 			children = (
@@ -6679,6 +6700,7 @@
 		F954B33F1FC55B61008C0B30 /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				342394FA1FC5D46F003DE70D /* Merlin */,
 				F954B3401FC55B61008C0B30 /* CategoryPageViewController.xib */,
 				F954B3411FC55B61008C0B30 /* CategoryNavigationViewController.swift */,
 				F954B3421FC55B61008C0B30 /* RequestCategory.h */,
@@ -10745,6 +10767,7 @@
 				F954BD111FC55B65008C0B30 /* GaladrielTarget.swift */,
 				F954BD121FC55B65008C0B30 /* PaymentTarget.swift */,
 				F954BD131FC55B65008C0B30 /* WalletTarget.swift */,
+				342394F71FC5D3D7003DE70D /* MerlinTarget.swift */,
 				F954BD141FC55B65008C0B30 /* ScroogeTarget.swift */,
 				F954BD151FC55B65008C0B30 /* ReactTarget.swift */,
 				F954BD161FC55B65008C0B30 /* TopAdsTarget.swift */,
@@ -12274,6 +12297,7 @@
 				F954C24C1FC55B6A008C0B30 /* Deposit.m in Sources */,
 				F954BD9D1FC55B66008C0B30 /* OneClickData.swift in Sources */,
 				F954C3271FC55B6B008C0B30 /* JNE.m in Sources */,
+				342395021FC5D52A003DE70D /* ProductCategoryPrediction.swift in Sources */,
 				F954BD721FC55B66008C0B30 /* NSURL+TKPURL.m in Sources */,
 				F954C3CD1FC55B6C008C0B30 /* DigitalCategoryListViewController.swift in Sources */,
 				F954C40D1FC55B6C008C0B30 /* TKPMappingManager.m in Sources */,
@@ -12554,6 +12578,7 @@
 				F954C4131FC55B6C008C0B30 /* MigrationHelper.swift in Sources */,
 				F954C3401FC55B6B008C0B30 /* SettingPaymentResult.m in Sources */,
 				F954C2E81FC55B6A008C0B30 /* VerifyOTPResult.m in Sources */,
+				342395001FC5D46F003DE70D /* MerlinRecommendationResponse.swift in Sources */,
 				F954BE421FC55B66008C0B30 /* TalkCell.m in Sources */,
 				F954BF441FC55B67008C0B30 /* ReplacementSplitViewController.swift in Sources */,
 				F954C2F01FC55B6A008C0B30 /* ResponseSpeed.m in Sources */,
@@ -12749,6 +12774,7 @@
 				F954C0281FC55B67008C0B30 /* DetailProductVideoLinks.swift in Sources */,
 				F954BE1D1FC55B66008C0B30 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
 				F954BD941FC55B66008C0B30 /* ProductHeaderNode.swift in Sources */,
+				342394FF1FC5D46F003DE70D /* MerlinRecommendationData.swift in Sources */,
 				F954C3AE1FC55B6C008C0B30 /* SimpleFavoritedShopResult.m in Sources */,
 				F954C1821FC55B69008C0B30 /* LabelMenu.m in Sources */,
 				F954BE811FC55B66008C0B30 /* EditSolutionSellerCell.swift in Sources */,
@@ -12916,6 +12942,7 @@
 				F954BF101FC55B67008C0B30 /* RejectReasonEmptyVariantViewController.m in Sources */,
 				F954C4181FC55B6C008C0B30 /* HomePageHeaderSectionStyle.swift in Sources */,
 				F954C3771FC55B6B008C0B30 /* FavoriteShop.m in Sources */,
+				342394F81FC5D3D7003DE70D /* MerlinTarget.swift in Sources */,
 				F954C24F1FC55B6A008C0B30 /* ProductTalkFormResult.m in Sources */,
 				F954BE301FC55B66008C0B30 /* GeneralAlertCell.m in Sources */,
 				F954BD8E1FC55B66008C0B30 /* ProductPriceNode.swift in Sources */,
@@ -13625,6 +13652,7 @@
 				F954C2DF1FC55B6A008C0B30 /* Register.m in Sources */,
 				F954C2F31FC55B6A008C0B30 /* ManageProductList.m in Sources */,
 				F954BDBE1FC55B66008C0B30 /* TransactionCartShippingViewController.m in Sources */,
+				342394FE1FC5D46F003DE70D /* MerlinProductCategory.swift in Sources */,
 				F954C2A51FC55B6A008C0B30 /* TrackOrder.m in Sources */,
 				F954C2E41FC55B6A008C0B30 /* AccountInfo.swift in Sources */,
 			);

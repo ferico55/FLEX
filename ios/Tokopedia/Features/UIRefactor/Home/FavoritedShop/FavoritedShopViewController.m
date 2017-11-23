@@ -539,7 +539,7 @@ FavoriteShopRequestDelegate
     filter.ep = TopAdsEpShop;
     filter.numberOfShopItems = 3;
     filter.source = TopAdsSourceFavoriteShop;
-    filter.isRecommendationCategory = true;
+    filter.type = TopAdsFilterTypeRecommendationCategory;
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
         _isnodata = NO;

@@ -82,6 +82,7 @@ ProductCellDelegate
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeSortImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIImageView) NSArray *activeFilterImageViews;
 @property (strong, nonatomic) IBOutletCollection(UIButton) NSArray *imageSearchToolbarButtons;
+@property (strong, nonatomic) IBOutlet UIScrollView *searchNoResultScrollView; // container for no result view
 
 @property (nonatomic) CollectionViewCellType cellType;
 
@@ -97,10 +98,11 @@ ProductCellDelegate
 @property (strong, nonatomic) FuzzySearchDataSuggestionText *suggestionText;
 @property (strong, nonatomic) FuzzySearchDataSuggestionInstead *suggestionInstead;
 @property (strong, nonatomic) SearchProductWrapper *searchProductWrapper;
-
+@property (strong, nonatomic) TopAdsView *topAdsView;
 @property (strong, nonatomic) NSString *redirectURL;
 @property (assign, nonatomic) BOOL hasMore;
 @property (assign, nonatomic) NSInteger hascatalog;
+@property (strong, nonatomic) UIRefreshControl *refreshControlNoResult;
 
 @end
 
@@ -153,11 +155,28 @@ ProductCellDelegate
     return self;
 }
 
+- (void)initNoResultView{
+    _topAdsView = [TopAdsView new];
+    NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
+    [noResultView generateAllElements:@"no-result.png"
+                                title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
+                                 desc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"
+                             btnTitle:@""];
+    [noResultView hideButton:YES];
+    _refreshControlNoResult = [[UIRefreshControl alloc] init];
+    [_refreshControlNoResult addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
+
+    [_searchNoResultScrollView addSubview:noResultView];
+    [_searchNoResultScrollView addSubview:_topAdsView];
+    [_searchNoResultScrollView addSubview:_refreshControlNoResult];
+}
+
 #pragma mark - Life Cycle
 - (void)viewDidLoad {
     [super viewDidLoad];
     _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     _userManager = [UserAuthentificationManager new];
+    _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
     _similarityDictionary = [NSMutableDictionary new];
     _defaultSearchCategory = [_data objectForKey:kTKPDSEARCH_DATASEARCHKEY]?:[_params objectForKey:@"department_name"];
@@ -167,6 +186,8 @@ ProductCellDelegate
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE]];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     [_collectionView addSubview:_refreshControl];
+    
+    [self initNoResultView];
     
     CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
     [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
@@ -243,6 +264,15 @@ ProductCellDelegate
     [_threeButtonsToolbar setUserInteractionEnabled:NO];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshWishlist) name:TKPDUserDidLoginNotification object:nil];
+}
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setupTopAdsViewContraints];
+}
+
+-(NSString*)getSearchSource{
+    return [_data objectForKey:@"type"]?:@"";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -514,6 +544,11 @@ ProductCellDelegate
     }
 }
 
+- (void) endLoading {
+    [_refreshControl endRefreshing];
+    [_refreshControlNoResult endRefreshing];
+}
+
 - (void) updateViewWithCellType {
     if (self.cellType == CollectionViewCellTypeTypeOneColumn) {
         [self.changeGridButton setImage:[UIImage imageNamed:@"icon_grid_dua.png"] forState:UIControlStateNormal];
@@ -593,6 +628,21 @@ ProductCellDelegate
 - (IBAction)didTapTryAgainButton:(UIButton *)sender {
     [_tryAgainButton setHidden:YES];
     [_act setHidden:NO];
+}
+
+- (void) setupTopAdsViewContraints {
+    [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_searchNoResultScrollView.mas_top).offset(300);
+        if (IS_IPAD) {
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width- 288]);
+            make.left.equalTo(_searchNoResultScrollView.mas_left).offset(144);
+            make.right.equalTo(_searchNoResultScrollView.mas_right).offset(-144);
+        } else {
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
+        }
+        make.height.equalTo([NSNumber numberWithFloat:_topAdsView.frame.size.height]);
+        make.bottom.equalTo(_searchNoResultScrollView.mas_bottom);
+    }];
 }
 
 - (IBAction)didTapSuggestionText:(id)sender {
@@ -707,7 +757,7 @@ ProductCellDelegate
         [_refreshControl beginRefreshing];
         [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.5f * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
-            [_refreshControl endRefreshing];
+            [self endLoading];
             [_collectionView reloadData];
         });
     } else {
@@ -801,7 +851,7 @@ ProductCellDelegate
                                    } andErrorHandler:^(NSError *error) {
                                        _isLoadingData = NO;
                                        [_act stopAnimating];
-                                       [_refreshControl endRefreshing];
+                                       [self endLoading];
                                    }];
     }else {
         __weak typeof(self) weakSelf = self;
@@ -814,7 +864,7 @@ ProductCellDelegate
                               } andErrorHandler:^(NSError *error) {
                                   _isLoadingData = NO;
                                   [_act stopAnimating];
-                                  [_refreshControl endRefreshing];
+                                  [self endLoading];
                               }];
     }
 }
@@ -943,10 +993,25 @@ ProductCellDelegate
             //no data at all
             [_flowLayout setFooterReferenceSize:CGSizeZero];
             [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:@"No Result" label:[_data objectForKey:@"search"]?:@""];
+            
+            TopAdsService *topAdsService = [TopAdsService new];
+            TopAdsFilter *topAdsFilter = [[TopAdsFilter alloc] initWithSource:TopAdsSourceSearch
+                                                                           ep:TopAdsEpProduct
+                                                         numberOfProductItems:4
+                                                                     searchNF:@"1"
+                                                                searchKeyword:[_params objectForKey:@"search"]
+                                                                         type: TopAdsFilterTypeMerlinRecommendation];
+            __weak typeof(self) weakSelf = self;
+            [topAdsService getTopAdsWithTopAdsFilter:topAdsFilter onSuccess:^(NSArray<PromoResult *> * promoResult) {
+                [weakSelf.topAdsView setPromoWithAds:promoResult];
+                [weakSelf setupTopAdsViewContraints];
+            } onFailure:^(NSError * error) {
+                
+            }];
         }
         
-        if(_refreshControl.isRefreshing) {
-            [_refreshControl endRefreshing];
+        if(_refreshControl.isRefreshing || _refreshControlNoResult.isRefreshing) {
+            [self endLoading];
             [_collectionView setContentOffset:CGPointMake(0, 0) animated:YES];
         }
         [_collectionView reloadData];
@@ -1088,17 +1153,10 @@ ProductCellDelegate
 #pragma mark - Collection Delegate
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     if (_product && _product.count == 0) {
-        NoResultReusableView *noResultView = [[NoResultReusableView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
-        [noResultView generateAllElements:@"no-result.png"
-                                    title:@"Oops... hasil pencarian Anda tidak dapat ditemukan."
-                                     desc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"
-                                 btnTitle:@""];
-        [noResultView hideButton:YES];
-        collectionView.backgroundView = noResultView;
-        collectionView.backgroundView.layer.opacity = 1.0;
+        _searchNoResultScrollView.hidden = NO;
         return 0;
     }else {
-        collectionView.backgroundView.layer.opacity = 0.0;
+        _searchNoResultScrollView.hidden = YES;
         return _product.count;
     }
 }

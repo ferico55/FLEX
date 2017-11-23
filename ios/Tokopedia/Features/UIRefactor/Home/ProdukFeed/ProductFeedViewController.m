@@ -376,7 +376,7 @@ FavoriteShopRequestDelegate
     TopAdsFilter *filter = [[TopAdsFilter alloc] init];
     filter.source = TopAdsSourceFavoriteProduct;
     filter.currentPage = _page;
-    filter.isRecommendationCategory = true;
+    filter.type = TopAdsFilterTypeRecommendationCategory;
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
         if (promoResult) {

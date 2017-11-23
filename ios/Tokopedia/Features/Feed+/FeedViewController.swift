@@ -307,7 +307,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
     }
     
     private func loadTopAdsContent(onPage page: Int, totalData: Int) {
-        let filter = totalData > 2 ? TopAdsFilter(source: .favoriteProduct, ep: .random, numberOfProductItems: 4, numberOfShopItems: 1, page: page, searchKeyword: "", isRecommendationCategory: true) : TopAdsFilter(source: .favoriteProduct, ep: .shop, numberOfProductItems: 0, numberOfShopItems: 2, page: 1, searchKeyword: "", isRecommendationCategory: true)
+        let filter = totalData > 2 ? TopAdsFilter(source: .favoriteProduct, ep: .random, numberOfProductItems: 4, numberOfShopItems: 1, page: page, searchKeyword: "", type: .recommendationCategory) : TopAdsFilter(source: .favoriteProduct, ep: .shop, numberOfProductItems: 0, numberOfShopItems: 2, page: 1, searchKeyword: "", type: .recommendationCategory)
         
         self.topAdsService.getTopAds(
             topAdsFilter: filter,
@@ -356,7 +356,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                         self.feedState.feedCards.append(topAdsCard)
                     }
                     
-                    let productFilter = TopAdsFilter(source: .favoriteProduct, ep: .product, numberOfProductItems: 4, numberOfShopItems: 0, page: 1, searchKeyword: "", isRecommendationCategory: true)
+                    let productFilter = TopAdsFilter(source: .favoriteProduct, ep: .product, numberOfProductItems: 4, numberOfShopItems: 0, page: 1, searchKeyword: "", type: .recommendationCategory)
                     self.topAdsService.getTopAds(topAdsFilter: productFilter, onSuccess: { productAds in
                         var topAdsCard = FeedCardState()
                         topAdsCard.content.type = .topAds

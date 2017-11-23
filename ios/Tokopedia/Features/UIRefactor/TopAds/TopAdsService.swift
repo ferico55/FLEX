@@ -13,6 +13,11 @@ import SPTPersistentCache
 import Moya
 import RxSwift
 
+@objc(TopAdsFilterType)
+enum TopAdsFilterType: Int {
+    case standard, recommendationCategory, merlinRecommendation
+}
+
 class TopAdsFilter: NSObject {
     var ep: TopAdsEp = .product
     var numberOfProductItems: Int = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
@@ -23,10 +28,29 @@ class TopAdsFilter: NSObject {
     var hotlistId: String?
     var searchKeyword: String?
     var userFilter: NSDictionary?
-    var isRecommendationCategory: Bool = false
+    var type: TopAdsFilterType = .standard
+    var searchNF: String? // flag parameter used for search not found top Ads
+    var userId: String?
     
     override init() {
         super.init()
+    }
+    
+    // used for merlin recommendation in search no result
+    convenience init(source: TopAdsSource,
+                     ep: TopAdsEp,
+                     numberOfProductItems: Int,
+                     searchNF: String,
+                     searchKeyword: String,
+                     type: TopAdsFilterType
+        ) {
+        self.init()
+        self.source = source
+        self.ep = ep
+        self.numberOfProductItems = numberOfProductItems
+        self.searchNF = searchNF
+        self.searchKeyword = searchKeyword
+        self.type = type
     }
     
     convenience init(source: TopAdsSource,
@@ -38,7 +62,7 @@ class TopAdsFilter: NSObject {
                      hotlistId: String? = nil,
                      searchKeyword: String? = nil,
                      userFilter: NSDictionary? = nil,
-                     isRecommendationCategory: Bool? = nil) {
+                     type: TopAdsFilterType? = nil) {
         self.init()
         if let theEp = ep {
             self.ep = theEp
@@ -52,8 +76,8 @@ class TopAdsFilter: NSObject {
         if let thePage = page {
             self.currentPage = thePage
         }
-        if let isRecCat = isRecommendationCategory {
-            self.isRecommendationCategory = isRecCat
+        if let type = type {
+            self.type = type
         }
         self.source = source
         self.departementId = departementId
@@ -169,16 +193,22 @@ class TopAdsService: NSObject {
     }
     
     func getTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
-        if topAdsFilter.isRecommendationCategory {
+        if topAdsFilter.type == .recommendationCategory {
             self.getTopAdsFromCategoryRecommendation(topAdsFilter: topAdsFilter, onSuccess: { result in
                 onSuccess(result)
             }, onFailure: { error in
                 onFailure(error)
             })
-        } else {
+        } else if topAdsFilter.type == .standard {
             self.requestTopAds(topAdsFilter: topAdsFilter, onSuccess: { result in
                 onSuccess(result)
             }, onFailure: { error in
+                onFailure(error)
+            })
+        } else if topAdsFilter.type == .merlinRecommendation {
+            self.requestTopAdsMerlinRecommendation(topAdsFilter: topAdsFilter, onSuccess: { (promoResult) in
+                onSuccess(promoResult)
+            }, onFailure: { (error) in
                 onFailure(error)
             })
         }
@@ -291,6 +321,27 @@ class TopAdsService: NSObject {
         }
     }
     
+    private func requestTopAdsMerlinRecommendation(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
+        guard let searchKeyword = topAdsFilter.searchKeyword else { return }
+        MerlinProvider()
+            .request(.getProductRecommendation(productTitle: searchKeyword))
+            .map(to: MerlinRecommendationResponse.self)
+            .subscribe(onNext: {[weak self] merlinRecommendationResponse in
+                let topAdsNoResultFilter = topAdsFilter
+                
+                topAdsNoResultFilter.departementId = merlinRecommendationResponse.data.first?.productCategoryPrediction.first?.merlinProductCategories.last?.categoryId
+                topAdsNoResultFilter.userId = UserAuthentificationManager().getUserId()
+                
+                self?.requestTopAds(topAdsFilter: topAdsNoResultFilter, onSuccess: { result in
+                    onSuccess(result)
+                }, onFailure: { error in
+                    onFailure(error)
+                })
+            }, onError: { error in
+                    onFailure(error)
+            }).disposed(by: self.rx_disposeBag)
+    }
+    
     static func sendClickImpression(clickURLString: String) {
         guard let url = URL(string: clickURLString) else {
             return
@@ -324,6 +375,14 @@ class TopAdsService: NSObject {
         
         if let searchKey = adFilter.searchKeyword {
             parameters["q"] = searchKey
+        }
+        
+        if let searchNF = adFilter.searchNF {
+            parameters["search_nf"] = searchNF
+        }
+        
+        if let userId = adFilter.userId {
+            parameters["user_id"] = userId
         }
         
         var dict = [String: String]()

@@ -270,7 +270,7 @@ typedef enum TagRequest {
 -(void) requestPromo{
     
     TopAdsFilter *filter = [TopAdsFilter new];
-    filter.isRecommendationCategory = true;
+    filter.type = TopAdsFilterTypeRecommendationCategory;
     filter.source = TopAdsSourceWishlist;
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {

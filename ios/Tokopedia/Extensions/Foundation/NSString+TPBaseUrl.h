@@ -38,6 +38,7 @@
 + (nonnull NSString*)rideHailingUrl;
 + (nonnull NSString*)topChatURL;
 + (nonnull NSString*)galadrielURL;
++ (nonnull NSString*)merlinUrl;
 + (nonnull NSString*)ajaxAppUrl;
 + (nonnull NSString*)webSocketUrl;
 

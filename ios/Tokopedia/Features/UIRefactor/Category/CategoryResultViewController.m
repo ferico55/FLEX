@@ -748,8 +748,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     } else {
         //no data at all
         [AnalyticsManager trackEventName:@"noSearchResult" category:GA_EVENT_CATEGORY_NO_SEARCH_RESULT action:@"No Result" label:[_data objectForKey:@"search"]?:@""];
-        
-        [self adjustNoResultView];
         [_containerView addSubview:_noResultView];
         [self showEntireView];
     }
@@ -798,17 +796,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 #pragma mark - Other Method
-
--(void)adjustNoResultView{
-    if(![_suggestion isEqual:nil] && ![_suggestion isEqual:@""]){
-        [_noResultView setNoResultDesc:@"Silakan lakukan pencarian dengan kata kunci lain. Mungkin maksud Anda: "];
-        [_noResultView setNoResultButtonTitle:_suggestion];
-        [_noResultView hideButton:NO];
-    } else {
-        [_noResultView setNoResultDesc:@"Silahkan lakukan pencarian dengan kata kunci / filter lain"];
-        [_noResultView hideButton:YES];
-    }
-}
 
 - (void) showEntireView {
     [_toolbarView setHidden: NO];
