@@ -264,7 +264,7 @@ class PaymentViewModel: NSObject {
                     sectionItems.append(.emptyCreditCard())
                 }
 
-                return .creditCard(title: "Kartu Kredit", items: sectionItems)
+                return .creditCard(title: "KARTU KREDIT", items: sectionItems)
             }).catchError({ error -> Observable<MultipleSectionModel> in
                 if let moyaError = error as? MoyaError,
                     case let .underlying(responseError) = moyaError,

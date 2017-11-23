@@ -30,6 +30,10 @@
 		45365E741FC6DCA10072965C /* PaymentTouchIDServiceBridging.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E6D1FC6DCA00072965C /* PaymentTouchIDServiceBridging.swift */; };
 		45365E751FC6DCA10072965C /* CryptoExportImportManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E6E1FC6DCA00072965C /* CryptoExportImportManager.swift */; };
 		45365E761FC6DCA10072965C /* PublicKeyResult.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E6F1FC6DCA00072965C /* PublicKeyResult.swift */; };
+		45365E801FC6EBF20072965C /* CCAuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E7F1FC6EBF20072965C /* CCAuthenticationViewModel.swift */; };
+		45365E821FC6EBFD0072965C /* CCAuthenticationStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E811FC6EBFD0072965C /* CCAuthenticationStatus.swift */; };
+		45365E851FC6EC0E0072965C /* CCAuthenticationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E831FC6EC0E0072965C /* CCAuthenticationViewController.swift */; };
+		45365E861FC6EC0E0072965C /* CCAuthenticationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 45365E841FC6EC0E0072965C /* CCAuthenticationViewController.xib */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		525B5AF51FC57047004195FE /* DigitalOperatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */; };
@@ -2061,6 +2065,10 @@
 		45365E6D1FC6DCA00072965C /* PaymentTouchIDServiceBridging.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PaymentTouchIDServiceBridging.swift; sourceTree = "<group>"; };
 		45365E6E1FC6DCA00072965C /* CryptoExportImportManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoExportImportManager.swift; sourceTree = "<group>"; };
 		45365E6F1FC6DCA00072965C /* PublicKeyResult.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PublicKeyResult.swift; sourceTree = "<group>"; };
+		45365E7F1FC6EBF20072965C /* CCAuthenticationViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCAuthenticationViewModel.swift; sourceTree = "<group>"; };
+		45365E811FC6EBFD0072965C /* CCAuthenticationStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCAuthenticationStatus.swift; sourceTree = "<group>"; };
+		45365E831FC6EC0E0072965C /* CCAuthenticationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CCAuthenticationViewController.swift; sourceTree = "<group>"; };
+		45365E841FC6EC0E0072965C /* CCAuthenticationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CCAuthenticationViewController.xib; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperatorTableViewCell.swift; sourceTree = "<group>"; };
@@ -5922,6 +5930,7 @@
 		F954B19B1FC55B60008C0B30 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				45365E7F1FC6EBF20072965C /* CCAuthenticationViewModel.swift */,
 				F954B19C1FC55B60008C0B30 /* PaymentViewModel.swift */,
 			);
 			path = ViewModel;
@@ -5930,6 +5939,7 @@
 		F954B19D1FC55B60008C0B30 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				45365E811FC6EBFD0072965C /* CCAuthenticationStatus.swift */,
 				F954B19E1FC55B60008C0B30 /* OneClickResponse.swift */,
 				F954B19F1FC55B60008C0B30 /* PaymentActionResponse.swift */,
 				F954B1A01FC55B60008C0B30 /* OneClickData.swift */,
@@ -5955,6 +5965,8 @@
 		F954B1AA1FC55B60008C0B30 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				45365E831FC6EC0E0072965C /* CCAuthenticationViewController.swift */,
+				45365E841FC6EC0E0072965C /* CCAuthenticationViewController.xib */,
 				F954B1AB1FC55B60008C0B30 /* PaymentViewController.xib */,
 				F954B1AC1FC55B60008C0B30 /* PaymentViewController.swift */,
 				F954B1AD1FC55B60008C0B30 /* OneClickEditViewController.swift */,
@@ -11436,6 +11448,7 @@
 				F954BF641FC55B67008C0B30 /* AlertLuckyView.xib in Resources */,
 				F954C05F1FC55B68008C0B30 /* TKPDTabNavigationController.xib in Resources */,
 				F954C43F1FC55B6C008C0B30 /* icon_snap@2x.png in Resources */,
+				45365E861FC6EC0E0072965C /* CCAuthenticationViewController.xib in Resources */,
 				F954BE801FC55B66008C0B30 /* EditSolutionSellerCell.xib in Resources */,
 				F954BF691FC55B67008C0B30 /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				F954C3D21FC55B6C008C0B30 /* DigitalCartViewController.xib in Resources */,
@@ -12577,6 +12590,7 @@
 				F954C1531FC55B68008C0B30 /* PulsaProduct.swift in Sources */,
 				F954C2C41FC55B6A008C0B30 /* ReputationList.m in Sources */,
 				F954C3B71FC55B6C008C0B30 /* InboxTalkResult.m in Sources */,
+				45365E851FC6EC0E0072965C /* CCAuthenticationViewController.swift in Sources */,
 				F954C2E11FC55B6A008C0B30 /* LoginResult.m in Sources */,
 				F954C1941FC55B69008C0B30 /* FeedCardKOLPostState.swift in Sources */,
 				F954C1A41FC55B69008C0B30 /* FeedHeaderComponentView.swift in Sources */,
@@ -13356,6 +13370,7 @@
 				F954BDD91FC55B66008C0B30 /* SettingPrivacyViewController.m in Sources */,
 				F954C2BD1FC55B6A008C0B30 /* InboxMessageResult.m in Sources */,
 				F954C0701FC55B68008C0B30 /* SearchAutoCompleteViewModel.m in Sources */,
+				45365E801FC6EBF20072965C /* CCAuthenticationViewModel.swift in Sources */,
 				F954C17A1FC55B69008C0B30 /* AccountActivationViewController.swift in Sources */,
 				F954C2D31FC55B6A008C0B30 /* SecurityAnswer.m in Sources */,
 				F954BF0A1FC55B66008C0B30 /* RejectReasonEditPriceViewController.m in Sources */,
@@ -13379,6 +13394,7 @@
 				F954C22B1FC55B69008C0B30 /* Info.m in Sources */,
 				F954BFEC1FC55B67008C0B30 /* ChangePhoneNumberSQViewController.swift in Sources */,
 				F954BE391FC55B66008C0B30 /* ProductThumbCell.m in Sources */,
+				45365E821FC6EBFD0072965C /* CCAuthenticationStatus.swift in Sources */,
 				F954BEFC1FC55B66008C0B30 /* FilterNewOrderViewController.m in Sources */,
 				F954C3621FC55B6B008C0B30 /* NotificationFormNotif.m in Sources */,
 				F954C2821FC55B6A008C0B30 /* WarehouseResult.m in Sources */,

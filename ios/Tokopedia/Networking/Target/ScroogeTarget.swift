@@ -48,6 +48,8 @@ enum ScroogeTarget {
     case deleteOneClick(String)
     case getListCreditCard()
     case deleteCreditCard(String)
+    case getCCAuthenticationStatus()
+    case updateCCAuthenticationStatus(Int)
     case register(PublicKey: String, signature: String, transactionID: String, ccHash: String, dateString: String)
     case validatePayment(PublicKey: String, signature: String, parameter: [String: Any], dateString: String)
 }
@@ -99,6 +101,8 @@ extension ScroogeTarget: TargetType {
         case .deleteOneClick: return "/ws/oneclick"
         case .getListCreditCard: return "/v2/ccvault/metadata"
         case .deleteCreditCard: return "/v2/ccvault/delete"
+        case .getCCAuthenticationStatus: return "/zeus/whitelist/status"
+        case .updateCCAuthenticationStatus: return "/zeus/whitelist"
         case .register: return "/v2/fingerprint/publickey/save"
         case .validatePayment: return "/v2/payment/cc/fingerprint"
         }
@@ -184,6 +188,33 @@ extension ScroogeTarget: TargetType {
                 "user_id": userID,
                 "signature": signatureString.hmac(key: NSString.creditCardSecretKey())
             ]
+        case .getCCAuthenticationStatus() :
+            let email = authManager.getUserEmail() ?? ""
+            let secretKey: String
+            if self.baseURL.absoluteString.contains("staging") {
+                secretKey = "zeuswhitelist"
+            } else {
+                secretKey = "abf49d067c9ca8585f3a1059464d22b9"
+            }
+            return [
+                "data" : [[ "user_email" : email ]],
+                "signature": email.hmac(key: secretKey)
+            ]
+        case let .updateCCAuthenticationStatus(status) :
+            let email = authManager.getUserEmail() ?? ""
+            let signatureString = "\(email)\(status)"
+            let secretKey: String
+            if self.baseURL.absoluteString.contains("staging") {
+                secretKey = "zeuswhitelist"
+            } else {
+                secretKey = "abf49d067c9ca8585f3a1059464d22b9"
+            }
+            return [
+                "data" : [[ "user_email" : email ,
+                            "state":status
+                    ]],
+                "signature": signatureString.hmac(key: secretKey)
+        ]
         case let .register(publicKey, signature, transactionID, ccHash, dateString):
 
             let auth = UserAuthentificationManager()
@@ -211,13 +242,13 @@ extension ScroogeTarget: TargetType {
                 ])
             
             return param
-        }
+    }
     }
 
     /// The method used for parameter encoding.
     var parameterEncoding: ParameterEncoding {
         switch self {
-        case .getListCreditCard, .deleteCreditCard: return JSONEncoding.default
+        case .getListCreditCard, .deleteCreditCard, .getCCAuthenticationStatus, .updateCCAuthenticationStatus: return JSONEncoding.default
         default: return URLEncoding.default
         }
     }

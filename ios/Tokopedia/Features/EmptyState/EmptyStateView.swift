@@ -32,7 +32,7 @@ import RxSwift
         return view
     }
     
-    init(frame : CGRect, animationName: String? = "FeedEmptyState", title: String, description: String, buttonTitle: String? = "") {
+    init(frame : CGRect, animationName: String? = "FeedEmptyState", title: String, description: String, buttonTitle: String? = "", buttonColor: UIColor? = UIColor.tpGreen()) {
         super.init(frame: frame)
         
         let view = self.viewFromNib()
@@ -59,6 +59,7 @@ import RxSwift
             return
         }
         self.actionButton.setTitle(buttonTitle, for: .normal)
+        self.actionButton.backgroundColor = buttonColor
     }
     
     required init?(coder aDecoder: NSCoder) {

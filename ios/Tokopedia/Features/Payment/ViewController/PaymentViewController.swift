@@ -22,6 +22,7 @@ import Lottie
     private var viewModel: PaymentViewModel!
     let refreshControl: UIRefreshControl = UIRefreshControl()
     let dataSource = RxTableViewSectionedReloadDataSource<MultipleSectionModel>()
+    let popover = PopoverTableView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,6 +45,7 @@ import Lottie
     }
 
     func setupTableView() {
+        tableView.contentInset.top = 30
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 44
         tableView.backgroundColor = .tpBackground()
@@ -60,6 +62,10 @@ import Lottie
 
         viewModel.listActivityIndicator.asObservable()
             .bindTo(refreshControl.rx.isRefreshing)
+            .addDisposableTo(rx_disposeBag)
+        
+        tableView.rx
+            .setDelegate(self)
             .addDisposableTo(rx_disposeBag)
 
         viewModel.actionActivityIndicator.asObservable()
@@ -279,5 +285,92 @@ import Lottie
                 self.dismiss(animated: true, completion: nil)
             }
         }
+    }
+}
+
+extension PaymentViewController : UITableViewDelegate {
+    
+    func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 70
+    }
+
+    func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        
+        let section = dataSource[section]
+        
+        if section.title != "",
+            let firstItem : SectionItem = section.items.first{
+            switch firstItem {
+            case .emptyCreditCard():
+                return UIView()
+            default:
+                return self.headerView(title: section.title)
+            }
+        } else {
+           return UIView()
+        }
+    }
+    
+    func headerView(title: String) -> UIView {
+        let headerLabel = UILabel()
+        headerLabel.font = UIFont.title2Theme()
+        headerLabel.textColor = UIColor.tpSecondaryBlackText()
+        headerLabel.text = title
+        
+        let button = UIButton()
+        button.setImage(UIImage(named: "iconn_more_black") , for: .normal)
+        button.rx.tap.subscribe(onNext: { [weak self] in
+            let item = PopoverItem(title: "Pengaturan Autentikasi", action: { [weak self]  item in
+                let vc = CCAuthenticationViewController()
+                self?.navigationController?.pushViewController(vc, animated: true)
+            })
+            self?.popover.showFromView(button, items: [item])
+        }).disposed(by: rx_disposeBag)
+        
+        let stackView   = UIStackView(arrangedSubviews: [headerLabel, button])
+        stackView.axis  = .horizontal
+        stackView.distribution  = .fill
+        
+        headerLabel.snp.makeConstraints { make in
+            make.left.equalTo(15)
+        }
+        button.snp.makeConstraints { make in
+            make.width.equalTo(40)
+        }
+        
+        let topLine = lineView()
+        let bottomLine = lineView()
+        let verticalStackView   = UIStackView(
+            arrangedSubviews: [topLine,
+                               stackView,
+                               bottomLine])
+        verticalStackView.axis  = .vertical
+        stackView.snp.makeConstraints { make in
+            make.height.equalTo(54)
+        }
+        topLine.snp.makeConstraints { make in
+            make.height.equalTo(1)
+        }
+        bottomLine.snp.makeConstraints { make in
+            make.height.equalTo(1)
+        }
+        
+        let view = UIView()
+        view.addSubview(verticalStackView)
+        view.backgroundColor = .white
+        verticalStackView.snp.makeConstraints { make in
+            make.width.equalTo(view)
+            make.height.equalTo(56)
+        }
+
+        return view
+    }
+    
+    func lineView() -> UIView {
+        let view = UIView()
+        view.backgroundColor = UIColor.tpLine()
+        view.frame.size.height = 1
+        
+        return view
     }
 }
