@@ -500,7 +500,6 @@ ProductCellDelegate
         _urinext = nil;
         
         [_refreshControl beginRefreshing];
-        [_collectionView setContentOffset:CGPointMake(0, -_refreshControl.frame.size.height) animated:YES];
         
         [self requestSearch];
         [_act startAnimating];
