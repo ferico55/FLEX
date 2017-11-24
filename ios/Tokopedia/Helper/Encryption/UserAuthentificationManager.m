@@ -252,7 +252,7 @@
         reputation.positive_percentage = [[self secureStorageDictionary] objectForKey:@"reputation_positive_percentage"];
         reputation.neutral = [[self secureStorageDictionary] objectForKey:@"reputation_neutral"];
         reputation.negative = [[self secureStorageDictionary] objectForKey:@"reputation_negative"];
-        reputation.no_reputation = [[[self secureStorageDictionary] objectForKey:@"no_reputation"] stringValue];
+        reputation.no_reputation = [[self secureStorageDictionary] objectForKey:@"no_reputation"];
         return reputation;
     } else {
         return nil;

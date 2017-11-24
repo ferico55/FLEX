@@ -169,7 +169,7 @@
     if([[_data objectForKey:@"shop_id"] isKindOfClass:[NSString class]]) {
         shopId = [_data objectForKey:@"shop_id"];
     } else if ([[_data objectForKey:@"auth"] objectForKey:@"shop_id"]) {
-        shopId = [[[_data objectForKey:@"auth"] objectForKey:@"shop_id"] stringValue];
+        shopId = [[_data objectForKey:@"auth"] objectForKey:@"shop_id"];
     } else {
         shopId = [[_data objectForKey:@"shop_id"] stringValue];
     }
