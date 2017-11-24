@@ -988,10 +988,10 @@ class TPRoutes: NSObject {
         }
     }
     
-    static func getUTMQueryItems(url: URL) -> [URLQueryItem] {
+    static func getUTMQueryItems(url: URL) -> [URLQueryItem]? {
         let urlComponents = URLComponents(string: url.absoluteString)
         
-        guard let queryItems = urlComponents?.queryItems else { return [] }
+        guard let queryItems = urlComponents?.queryItems else { return nil }
         
         let keys = queryItems.map { $0.name }
         let hasUtmParameters = Set(["utm_source","utm_campaign","utm_medium"]).isSubset(of: Set(keys))
@@ -999,9 +999,10 @@ class TPRoutes: NSObject {
         if hasUtmParameters {
             return queryItems
         } else {
-            return queryItems.filter { item in
+            let filteredQueryItem = queryItems.filter { item in
                 !item.description.contains("utm")
             }
+            return filteredQueryItem.count > 0 ? filteredQueryItem : nil
         }
     }
 
