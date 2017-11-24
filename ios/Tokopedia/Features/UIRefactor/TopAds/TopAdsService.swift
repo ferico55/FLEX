@@ -326,13 +326,13 @@ class TopAdsService: NSObject {
         MerlinProvider()
             .request(.getProductRecommendation(productTitle: searchKeyword))
             .map(to: MerlinRecommendationResponse.self)
-            .subscribe(onNext: {[weak self] merlinRecommendationResponse in
+            .subscribe(onNext: {merlinRecommendationResponse in
                 let topAdsNoResultFilter = topAdsFilter
                 
                 topAdsNoResultFilter.departementId = merlinRecommendationResponse.data.first?.productCategoryPrediction.first?.merlinProductCategories.last?.categoryId
                 topAdsNoResultFilter.userId = UserAuthentificationManager().getUserId()
                 
-                self?.requestTopAds(topAdsFilter: topAdsNoResultFilter, onSuccess: { result in
+                self.requestTopAds(topAdsFilter: topAdsNoResultFilter, onSuccess: { result in
                     onSuccess(result)
                 }, onFailure: { error in
                     onFailure(error)
