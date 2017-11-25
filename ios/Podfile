@@ -92,8 +92,7 @@ def common_pods
     pod 'GoogleMaps',  '~> 2.1.1'
     pod 'GooglePlaces', '~> 2.1.1'
     pod 'FirebaseRemoteConfig', '~> 2.0.2'
-    pod 'FirebasePerformance', '~> 1.0'
-    
+
     #Swift 3.0 pods
     pod 'RSKGrowingTextView', '~> 2.0'
     pod 'RSKPlaceholderTextView', '~> 2.0'
