@@ -789,6 +789,7 @@ class ProductReviewFormPage extends PureComponent {
     if (index < 0 || index > 2) {
       return
     }
+    this.props.disableOnboardingScroll()
     this.onboardingState = index
 
     if (index === 1) {
@@ -811,6 +812,7 @@ class ProductReviewFormPage extends PureComponent {
           switch (status) {
             case -1:
               // cancel
+              this.props.enableOnboardingScroll()
               break
             case 0:
               this.onboardingState -= 1
@@ -819,6 +821,7 @@ class ProductReviewFormPage extends PureComponent {
               break
             default:
               if (index === 2) {
+                this.props.enableOnboardingScroll()
                 ReactOnboardingHelper.disableOnboarding(
                   'review_form_onboarding',
                   `${this.props.authInfo.user_id}`,

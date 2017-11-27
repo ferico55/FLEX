@@ -122,6 +122,7 @@ class InboxReview extends Component {
           switch (status) {
             case -1:
               // cancel
+              this.props.enableOnboardingScroll()
               break
             case 0:
               // prev
@@ -177,6 +178,7 @@ class InboxReview extends Component {
                 (this.onboardingState === 1 &&
                   this.props.authInfo.shop_id === '0')
               ) {
+                this.props.enableOnboardingScroll()
                 ReactOnboardingHelper.disableOnboarding(
                   'review_inbox_onboarding',
                   `${this.props.authInfo.user_id}`,
@@ -238,6 +240,7 @@ class InboxReview extends Component {
             `${this.props.authInfo.user_id}`,
             isOnboardingShown => {
               if (!isOnboardingShown) {
+                this.props.disableOnboardingScroll()
                 this.startOnboarding()
               }
             },

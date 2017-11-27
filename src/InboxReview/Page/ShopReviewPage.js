@@ -61,6 +61,7 @@ class ShopReviewPage extends Component {
     if (this.onboardingState === 0) {
       return
     }
+    this.props.disableOnboardingScroll()
     this.onboardingState = 0
     ReactOnboardingHelper.showShopOnboarding(
       {
@@ -73,6 +74,7 @@ class ShopReviewPage extends Component {
       status => {
         switch (status) {
           case 1:
+            this.props.enableOnboardingScroll()
             ReactOnboardingHelper.disableOnboarding(
               'review_shop_onboarding',
               `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
@@ -80,6 +82,7 @@ class ShopReviewPage extends Component {
             // done
             break
           default:
+            this.props.enableOnboardingScroll()
           // cancel
         }
       },

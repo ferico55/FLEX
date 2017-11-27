@@ -11,6 +11,7 @@ import UIKit
 @objc public protocol OnboardingViewControllerDelegate: NSObjectProtocol {
     func didTapNextButton()
     func didTapBackButton()
+    func didDimissOnboarding()
 }
 
 // ini bikin extension aja buat implement delegate nya
@@ -62,8 +63,6 @@ class OnboardingViewController: UIViewController, UIPopoverPresentationControlle
     
     func makeOverlayView(presentingViewController: UIViewController, anchorView: UIView) -> UIView {
         let overlayView = UIView(frame: presentingViewController.view.frame)
-        let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissOnboarding))
-        overlayView.addGestureRecognizer(tapRecognizer)
         overlayView.backgroundColor = UIColor(white: 0, alpha: 0.5)
         
         let overlayRect = anchorView.convert(anchorView.bounds, to: nil)
@@ -77,10 +76,6 @@ class OnboardingViewController: UIViewController, UIPopoverPresentationControlle
         overlayView.layer.mask = maskLayer
         
         return overlayView
-    }
-    
-    func dismissOnboarding() {
-        self.overlayView?.removeFromSuperview()
     }
     
     override func viewDidLoad() {
@@ -142,6 +137,10 @@ class OnboardingViewController: UIViewController, UIPopoverPresentationControlle
     
     func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
+    }
+    
+    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        self.delegate?.didDimissOnboarding()
     }
     
     @IBAction func btnNextTap(_ sender: Any) {

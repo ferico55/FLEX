@@ -188,6 +188,14 @@ export const enableInteraction = () => ({
   type: 'ENABLE_INTERACTION',
 })
 
+export const disableOnboardingScroll = () => ({
+  type: 'DISABLE_ONBOARDING_SCROLL',
+})
+
+export const enableOnboardingScroll = () => ({
+  type: 'ENABLE_ONBOARDING_SCROLL',
+})
+
 export const setLastPage = pageIndex => ({
   type: 'SET_LAST_PAGE',
   pageIndex,

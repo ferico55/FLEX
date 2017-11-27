@@ -43,6 +43,10 @@ RCT_EXPORT_METHOD(showShopOnboarding:(NSDictionary*) options callback: (RCTRespo
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];
     UIViewController* shopViewController = [[topMostViewController parentViewController] parentViewController];
+    if (![shopViewController isKindOfClass:[ShopViewController class]]) {
+        return;
+    }
+
     ShopViewController *shopVC = (ShopViewController*) shopViewController;
     
     void (^displayOnboarding)(void) = ^{
@@ -115,9 +119,8 @@ RCT_EXPORT_METHOD(getOnboardingStatus: (NSString*) key userId: (NSString*) userI
     _callback(@[@0]);
 }
 
-- (void) dismissOverlayView:(id) sender {
+- (void) didDimissOnboarding {
     _callback(@[@(-1)]);
-    [[sender view] removeFromSuperview];
 }
 
 - (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {

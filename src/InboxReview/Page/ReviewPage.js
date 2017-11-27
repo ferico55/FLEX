@@ -526,6 +526,7 @@ class ReviewPage extends PureComponent {
     <View style={{ flex: 1 }}>
       <FlatList
         style={styles.wrapper}
+        scrollEnabled={this.props.isOnboardingScrollEnabled}
         onScroll={({
           nativeEvent: { contentOffset: { y }, contentSize: { height } },
         }) => {

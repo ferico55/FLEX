@@ -7,6 +7,7 @@ const inboxReviewState = {
   reviewLists: [[], [], []],
   notificationCount: [0, 0, 0],
   isInteractionBlocked: false,
+  isOnboardingScrollEnabled: true,
 }
 
 export function inboxReviewReducer(state = inboxReviewState, action) {
@@ -161,6 +162,16 @@ export function inboxReviewReducer(state = inboxReviewState, action) {
       return {
         ...state,
         isInteractionBlocked: false,
+      }
+    case 'ENABLE_ONBOARDING_SCROLL':
+      return {
+        ...state,
+        isOnboardingScrollEnabled: true,
+      }
+    case 'DISABLE_ONBOARDING_SCROLL':
+      return {
+        ...state,
+        isOnboardingScrollEnabled: false,
       }
     default:
       return state
