@@ -256,6 +256,9 @@ class InboxReview extends Component {
         if (item.index === this.state.tabViewState.index) {
           return
         }
+        if (!this.props.isOnboardingScrollEnabled) {
+          return
+        }
         this.setState({
           tabViewState: { ...this.state.tabViewState, index: item.index },
         })
@@ -334,6 +337,7 @@ class InboxReview extends Component {
           <TabViewAnimated
             lazy
             style={styles.container}
+            swipeEnabled={this.props.isOnboardingScrollEnabled}
             navigationState={this.state.tabViewState}
             renderScene={this.renderScene}
             renderHeader={this.renderHeader}

@@ -22,10 +22,23 @@ import {
 } from 'NativeModules'
 import Rx from 'rxjs/Rx'
 import DeviceInfo from 'react-native-device-info'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
 
 import ReviewCard from '../Components/ReviewCard'
 import RatingStars from '../../RatingStars'
 import NoResultView from '../../NoResultView'
+import * as Actions from '../Redux/Actions'
+
+function mapStateToProps(state) {
+  return {
+    ...state.inboxReviewReducer,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch)
+}
 
 const styles = StyleSheet.create({
   starContainer: {
@@ -110,6 +123,7 @@ class ProductReviewPage extends Component {
 
   componentDidMount() {
     this.loadData()
+    this.props.disableOnboardingScroll()
 
     this.subscriptionLoadData = this.loadReviews$
       .debounceTime(1000)
@@ -149,6 +163,7 @@ class ProductReviewPage extends Component {
           case 1:
             // next
             if (this.onboardingState === 1) {
+              this.props.enableOnboardingScroll()
               ReactOnboardingHelper.disableOnboarding(
                 'review_product_onboarding',
                 `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
@@ -169,6 +184,7 @@ class ProductReviewPage extends Component {
             )
             break
           default:
+            this.props.enableOnboardingScroll()
           // cancel
         }
       },
@@ -846,12 +862,15 @@ class ProductReviewPage extends Component {
               isOnboardingShown => {
                 if (!isOnboardingShown) {
                   this.startOnboarding()
+                } else {
+                  this.props.enableOnboardingScroll()
                 }
               },
             )
           }}
         >
           <FlatList
+            scrollEnabled={this.props.isOnboardingScrollEnabled}
             style={{ marginVertical: 8, flex: 1 }}
             renderItem={this.renderSelection}
             horizontal
@@ -869,6 +888,7 @@ class ProductReviewPage extends Component {
         <SectionList
           style={{ flex: 1, backgroundColor: 'rgb(242,242,242)' }}
           extraData={this.state.headerData}
+          scrollEnabled={this.props.isOnboardingScrollEnabled}
           ListHeaderComponent={this.renderHeader}
           sections={this.state.reviews}
           renderItem={this.renderItem}
@@ -915,4 +935,4 @@ class ProductReviewPage extends Component {
   }
 }
 
-export default ProductReviewPage
+export default connect(mapStateToProps, mapDispatchToProps)(ProductReviewPage)

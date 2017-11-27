@@ -15,15 +15,28 @@ import {
   EventManager,
   ReactOnboardingHelper,
 } from 'NativeModules'
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
 import Navigator from 'native-navigation'
 import Rx from 'rxjs/Rx'
 import DeviceInfo from 'react-native-device-info'
 
 import ReviewCard from '../Components/ReviewCard'
 import NoResultView from '../../NoResultView'
+import * as Actions from '../Redux/Actions'
 
 const nativeTabEmitter = new NativeEventEmitter(EventManager)
 const styles = StyleSheet.create({})
+
+function mapStateToProps(state) {
+  return {
+    ...state.inboxReviewReducer,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(Actions, dispatch)
+}
 
 class ShopReviewPage extends Component {
   constructor(props) {
@@ -45,6 +58,7 @@ class ShopReviewPage extends Component {
 
   componentDidMount() {
     this.loadData()
+    this.props.disableOnboardingScroll()
 
     this.subscription = nativeTabEmitter.addListener('shouldRefresh', () => {
       this.handleRefresh()
@@ -61,7 +75,6 @@ class ShopReviewPage extends Component {
     if (this.onboardingState === 0) {
       return
     }
-    this.props.disableOnboardingScroll()
     this.onboardingState = 0
     ReactOnboardingHelper.showShopOnboarding(
       {
@@ -302,6 +315,8 @@ class ShopReviewPage extends Component {
           isOnboardingShown => {
             if (!isOnboardingShown) {
               this.showOnboarding()
+            } else {
+              this.props.enableOnboardingScroll()
             }
           },
         )
@@ -349,6 +364,7 @@ class ShopReviewPage extends Component {
     return (
       <View style={{ flex: 1, backgroundColor: 'rgb(242,242,242)' }}>
         <FlatList
+          scrollEnabled={this.props.isOnboardingScrollEnabled}
           style={{ flex: 1, backgroundColor: 'rgb(242,242,242)' }}
           renderItem={this.renderItem}
           data={this.state.reviewList}
@@ -379,4 +395,4 @@ class ShopReviewPage extends Component {
   }
 }
 
-export default ShopReviewPage
+export default connect(mapStateToProps, mapDispatchToProps)(ShopReviewPage)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17B48" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="12121" systemVersion="17A405" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -894,28 +894,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BARU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XUj-wy-x7Z">
-                                                    <rect key="frame" x="303" y="18" width="36" height="15"/>
-                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="15" id="LXQ-2n-s77"/>
-                                                        <constraint firstAttribute="width" constant="36" id="UB5-yV-zHl"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstAttribute="trailingMargin" secondItem="XUj-wy-x7Z" secondAttribute="trailing" constant="-5" id="RK6-vB-rQI"/>
-                                                <constraint firstItem="XUj-wy-x7Z" firstAttribute="centerY" secondItem="tt8-V8-7Aa" secondAttribute="centerY" id="iCy-9V-esb"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                         <constraints>
                                             <constraint firstItem="6Tx-Ao-C2Z" firstAttribute="top" secondItem="tSC-F4-nTY" secondAttribute="top" constant="15" id="4bM-Vi-Gj2"/>
@@ -1009,7 +988,7 @@
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BARU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uSl-3p-cfe">
-                                                    <rect key="frame" x="303" y="63" width="36" height="15"/>
+                                                    <rect key="frame" x="298" y="63" width="36" height="15"/>
                                                     <color key="backgroundColor" red="0.94117647059999998" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="15" id="3TG-Fl-yFH"/>
@@ -1028,7 +1007,7 @@
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="mmb-sk-MUn" firstAttribute="top" secondItem="A1e-Ce-6Fm" secondAttribute="bottom" constant="22" id="8tL-iB-zLr"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="uSl-3p-cfe" secondAttribute="trailing" constant="-5" id="F0I-df-LGI"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="uSl-3p-cfe" secondAttribute="trailing" id="F0I-df-LGI"/>
                                                 <constraint firstItem="A1e-Ce-6Fm" firstAttribute="top" secondItem="ylz-qU-6CO" secondAttribute="topMargin" constant="14" id="Gbi-di-E95"/>
                                                 <constraint firstItem="mmb-sk-MUn" firstAttribute="leading" secondItem="ylz-qU-6CO" secondAttribute="leadingMargin" constant="12" id="Nfr-P9-eEt"/>
                                                 <constraint firstItem="A1e-Ce-6Fm" firstAttribute="leading" secondItem="ylz-qU-6CO" secondAttribute="leadingMargin" constant="12" id="R5K-JN-9RM"/>
@@ -1069,7 +1048,28 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BARU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tm4-gA-tgR">
+                                                    <rect key="frame" x="298" y="18" width="36" height="15"/>
+                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="36" id="WNG-zU-6ax"/>
+                                                        <constraint firstAttribute="height" constant="15" id="bHF-PC-DGA"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Tm4-gA-tgR" secondAttribute="trailing" id="Uvi-HW-3t7"/>
+                                                <constraint firstItem="Tm4-gA-tgR" firstAttribute="centerY" secondItem="HgJ-Qn-DEA" secondAttribute="centerY" id="VBm-D5-MmP"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <constraints>
                                             <constraint firstItem="HgJ-Qn-DEA" firstAttribute="leading" secondItem="g40-pl-YDi" secondAttribute="leading" constant="20" id="H2R-XA-sLq"/>
@@ -1134,28 +1134,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BARU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5Z-4W-yMw">
-                                                    <rect key="frame" x="303" y="19" width="36" height="15"/>
-                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="height" constant="15" id="W7O-ff-BxE"/>
-                                                        <constraint firstAttribute="width" constant="36" id="ZrM-YE-NGP"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                    <nil key="highlightedColor"/>
-                                                    <userDefinedRuntimeAttributes>
-                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                            <integer key="value" value="2"/>
-                                                        </userDefinedRuntimeAttribute>
-                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
-                                                    </userDefinedRuntimeAttributes>
-                                                </label>
                                             </subviews>
-                                            <constraints>
-                                                <constraint firstItem="P5Z-4W-yMw" firstAttribute="trailing" secondItem="cpe-Az-BLa" secondAttribute="trailingMargin" constant="5" id="LG4-XT-uVu"/>
-                                                <constraint firstItem="P5Z-4W-yMw" firstAttribute="centerY" secondItem="cpe-Az-BLa" secondAttribute="centerY" id="aKd-bM-fvK"/>
-                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="52" id="dSL-Nw-Ac2">
@@ -1354,7 +1333,7 @@
             <objects>
                 <navigationController automaticallyAdjustsScrollViewInsets="NO" id="2Kq-eg-CQr" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="hWt-Lv-mAy">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="hWt-Lv-mAy">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
@@ -1372,7 +1351,7 @@
             <objects>
                 <navigationController storyboardIdentifier="MoreNavigationViewController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="7PW-b2-mbI" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" misplaced="YES" translucent="NO" id="jdf-CP-FAZ">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" translucent="NO" id="jdf-CP-FAZ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
