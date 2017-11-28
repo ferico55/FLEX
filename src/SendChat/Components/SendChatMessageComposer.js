@@ -88,6 +88,8 @@ export default class SendChatMessageComposer extends Component {
   }
 
   componentDidMount() {
+    TKPReactAnalytics.trackScreenName('send message room')
+    
     this.sendButtonSubcriber = this.sendButton$
       .take(1)
       .subscribe(({ message, to_shop_id, to_user_id }) => {

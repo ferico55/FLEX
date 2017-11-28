@@ -65,7 +65,7 @@ class DetailView extends Component {
       shop_id,
       attributes: { contact: { id, role, attributes: { domain, name } } },
     } = props
-    const is_seller = role === 'shop'
+    this.is_seller = role === 'shop'
     this.page = 1
     this.onKeyFirstChange$ = new Subject()
     this.onPressSend$ = new Subject()
@@ -74,12 +74,12 @@ class DetailView extends Component {
     this.role = null
     this.title = name
     this.onlineStatusParams = {
-      type: is_seller ? 'shop' : 'user',
+      type: this.is_seller ? 'shop' : 'user',
       id,
     }
     this.shopParams = {
-      shop_id: is_seller ? id : shop_id,
-      shop_domain: is_seller ? domain : '',
+      shop_id: this.is_seller ? id : shop_id,
+      shop_domain: this.is_seller ? domain : '',
     }
   }
 
@@ -175,8 +175,8 @@ class DetailView extends Component {
         ]).role
       }
 
-      //reset page to 1
-      if(!nextProps.chatDetail.paging_next){
+      // reset page to 1
+      if (!nextProps.chatDetail.paging_next) {
         this.page = 1
       }
 
@@ -199,15 +199,15 @@ class DetailView extends Component {
         shop_id,
         attributes: { contact: { id, role, attributes: { domain, name } } },
       } = nextProps.chatDetail.ipadAttributes
-      const is_seller = role === 'shop'
+      this.is_seller = role === 'shop'
       this.title = name
       this.onlineStatusParams = {
-        type: is_seller ? 'shop' : 'user',
+        type: this.is_seller ? 'shop' : 'user',
         id,
       }
       this.shopParams = {
-        shop_id: is_seller ? id : shop_id,
-        shop_domain: is_seller ? domain : '',
+        shop_id: this.is_seller ? id : shop_id,
+        shop_domain: this.is_seller ? domain : '',
       }
     }
   }
@@ -297,11 +297,16 @@ class DetailView extends Component {
 
   onPressSend = (message, sectionList) => {
     this.sectionList = sectionList
-    const { user_id, full_name, messages: { current_msg_id } } = this.props
+    const {
+      user_id,
+      full_name,
+      shop_name,
+      messages: { current_msg_id },
+    } = this.props
     const data = {
       message_id: current_msg_id,
       message,
-      sender_name: full_name,
+      sender_name: this.is_seller ? full_name : shop_name,
       sender_id: parseInt(user_id, 10),
       role: this.role,
     }
@@ -313,7 +318,7 @@ class DetailView extends Component {
     this.sectionList = sectionList
     const sendChatAttr = {
       message_id: this.props.messages.current_msg_id,
-      sender_name: this.props.full_name,
+      sender_name: this.is_seller ? this.props.full_name : this.props.full_name,
       sender_id: parseInt(this.props.user_id, 10),
       role: this.role,
     }
@@ -335,7 +340,9 @@ class DetailView extends Component {
         fromIpad: this.props.fromIpad,
       },
       {
-        modalPresentationStyle: this.props.fromIpad ? 'formSheet' : 'fullScreen',
+        modalPresentationStyle: this.props.fromIpad
+          ? 'formSheet'
+          : 'fullScreen',
       },
     ).then(() => {
       this.sectionList.scrollToLocation({
