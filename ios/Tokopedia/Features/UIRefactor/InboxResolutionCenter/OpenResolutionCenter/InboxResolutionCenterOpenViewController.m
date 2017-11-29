@@ -111,7 +111,6 @@
 -(void)adjustNavigationTitle
 {
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
     
@@ -157,7 +156,6 @@
         titleSecondPage = @"Selesai";
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:(_indexPage==0&&_isGotTheOrder)?@"Lanjut":titleSecondPage style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = backBarButtonItem;
 }

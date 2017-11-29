@@ -57,7 +57,7 @@ PODS:
   - EAIntroView (2.8.3):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
-  - Eureka (2.0.0-beta.1)
+  - Eureka (3.0.0)
   - EZYGradientView-ObjC (1.3)
   - Fabric (1.7.0)
   - FBSDKCoreKit (4.19.0):
@@ -131,7 +131,7 @@ PODS:
     - JSQSystemSoundPlayer (~> 2.0.1)
   - JSQSystemSoundPlayer (2.0.1)
   - KeychainAccess (3.0.1)
-  - KMNavigationBarTransition (1.0.0)
+  - KMNavigationBarTransition (1.1.5)
   - lottie-ios (1.5.2)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.5)
@@ -249,9 +249,9 @@ PODS:
   - RKValueTransformers (1.1.3)
   - RNDeviceInfo (0.9.3):
     - React
-  - RNSVG (5.5.1):
+  - RNSVG (5.4.1):
     - React
-  - RNVectorIcons (4.4.2):
+  - RNVectorIcons (4.3.0):
     - React
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
@@ -296,7 +296,7 @@ DEPENDENCIES:
   - DownPicker (~> 0.1.34)
   - DTTJailbreakDetection (~> 0.4.0)
   - EAIntroView (~> 2.8.0)
-  - Eureka (~> 2.0.0-beta.1)
+  - Eureka (from `https://github.com/xmartlabs/Eureka.git`, branch `Xcode9-Swift3_2`)
   - EZYGradientView-ObjC (~> 1.3)
   - Fabric (~> 1.7.0)
   - FBSDKCoreKit (~> 4.19.0)
@@ -317,7 +317,7 @@ DEPENDENCIES:
   - JLRoutes (~> 1.6.2)
   - JSQMessagesViewController (from `https://github.com/ferico55/JSQMessagesViewController`, branch `master`)
   - KeychainAccess (~> 3.0)
-  - KMNavigationBarTransition (~> 1.0.0)
+  - KMNavigationBarTransition (~> 1.1.5)
   - lottie-ios (~> 1.5.2)
   - Masonry (~> 1.0.1)
   - MMNumberKeyboard (~> 0.1.5)
@@ -381,6 +381,9 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   CodePush:
     :path: ../node_modules/react-native-code-push
+  Eureka:
+    :branch: Xcode9-Swift3_2
+    :git: https://github.com/xmartlabs/Eureka.git
   FLEX:
     :commit: 99eccdf4c34af9b1042d96313ad9cf12dd30ff1f
     :git: https://github.com/Flipboard/FLEX.git
@@ -416,6 +419,9 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
+  Eureka:
+    :commit: 05acfb04c24a480f1868e671d19b39e0f22fc265
+    :git: https://github.com/xmartlabs/Eureka.git
   FLEX:
     :commit: 99eccdf4c34af9b1042d96313ad9cf12dd30ff1f
     :git: https://github.com/Flipboard/FLEX.git
@@ -456,7 +462,7 @@ SPEC CHECKSUMS:
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
-  Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
+  Eureka: 5b9418d7bfdc21ca977d69d124a6409f3e9af2c7
   EZYGradientView-ObjC: 42e23b6e36bd75b7f7288198a328cbf7bc1b5aee
   Fabric: e6be012366472553807dada21243c5ab8d904151
   FBSDKCoreKit: 894b2b6eda6a4c8c4204e92e59cc355709ef045c
@@ -487,7 +493,7 @@ SPEC CHECKSUMS:
   JSQMessagesViewController: 39fed975e3c9f8eba7292071e29eeb541d105e66
   JSQSystemSoundPlayer: c5850e77a4363ffd374cd851154b9af93264ed8d
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
-  KMNavigationBarTransition: b3fb8337f7a1e4542add07fd6c45fb9980794d59
+  KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
   lottie-ios: 255a0e95973a5c4424e809d7a5c19f7384c73e84
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 12da79571d08aca21566534a74726c5469aed29a
@@ -517,8 +523,8 @@ SPEC CHECKSUMS:
   RichEditorView: e5990b1a092539559def9df135e064b29ab97e68
   RKValueTransformers: e5ed67e3811229b616fe01bddeeafe3bb337b1b9
   RNDeviceInfo: dc3cbee96cd2392cf03d6ff6191dc15f1606a166
-  RNSVG: c850931093bcdd4fb13f95e58d989379fa2643ec
-  RNVectorIcons: c1821d56c775cc5a3bca66c77dfc8cb4a90d27e2
+  RNSVG: 9350bab6cf5e9f3073c65ce9802f1ee093726651
+  RNVectorIcons: a58392f365a38ffd3a070bf7449c0145bd0814e1
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
   RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
@@ -541,6 +547,6 @@ SPEC CHECKSUMS:
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 584563c6ca084f9ebd392dbf261894deac80cdad
+PODFILE CHECKSUM: 3c913e60ddc0d5e0e2ddbc19c4d20d53f6b0d485
 
 COCOAPODS: 1.3.1

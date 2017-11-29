@@ -19,9 +19,11 @@ end
 
 platform :ios do
   before_all do
-    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "600"
     ENV["SLACK_URL"] = "https://hooks.slack.com/services/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"
     ENV["APP_XCODEPROJ"] = 'ios/Tokopedia.xcodeproj'
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_TIMEOUT"] = "1800"
+    ENV["FASTLANE_XCODE_LIST_TIMEOUT"] = "1800"
+    ENV["FASTLANE_XCODEBUILD_SETTINGS_RETRIES"] = "10"
 
     #cocoapods
   end
@@ -89,6 +91,7 @@ platform :ios do
     pilot(
        skip_submission: false,
        distribute_external: false,
+       skip_waiting_for_build_processing: true,
        changelog: changelogs
       )
   end
@@ -147,7 +150,9 @@ platform :ios do
       configuration: 'Debug',
       sdk: "iphoneos",
       codesigning_identity: "iPhone Developer: Melissa Juminto (TT6A3N9KTC)",
-      export_method: "development"
+      export_method: "development",
+      include_bitcode: false,
+      export_options: { "compileBitcode": false }
     )
 
     hockeyapp

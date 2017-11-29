@@ -174,12 +174,9 @@
 
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
-
-
     _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
     resultController.searchBar = _searchController.searchBar;
     [_searchController setSearchBarToTopWithViewController:self title:self.navigationTitle];
-    
 }
 
 #pragma mark -

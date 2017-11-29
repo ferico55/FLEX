@@ -70,30 +70,74 @@ extension UISearchBar {
     }
 }
 
-extension UISearchController {
+protocol PropertyStoring {
+    
+    associatedtype T
+    
+    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T
+}
+
+extension PropertyStoring {
+    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T {
+        guard let value = objc_getAssociatedObject(self, key) as? T else {
+            return defaultValue
+        }
+        return value
+    }
+}
+
+extension UISearchController: PropertyStoring {
+    
+    typealias T = SearchBarWrapperView?
+    
+    private struct CustomProperties {
+        static var wrapperView: SearchBarWrapperView? = nil
+    }
+    
+    var wrapperView: SearchBarWrapperView? {
+        get {
+            return getAssociatedObject(&CustomProperties.wrapperView, defaultValue: nil)
+        }
+        set(newValue) {
+            return objc_setAssociatedObject(self, &CustomProperties.wrapperView, newValue, .OBJC_ASSOCIATION_RETAIN)
+        }
+    }
     
     func setSearchBarToTop(viewController: UIViewController, title: String) {
         
-        delegate = self
-        searchResultsUpdater = self
+        delegate = viewController as? UISearchControllerDelegate
+        searchResultsUpdater = viewController as? UISearchResultsUpdating
         searchBar.placeholder = "Cari Produk atau Toko"
-        searchBar.barTintColor = .white
+        searchBar.barTintColor = .tpGreen()
         searchBar.setTextFieldColor(color: UIColor.fromHexString("E5E5E5"))
         searchBar.setTextColor(color: UIColor(red: 0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha: 0.7))
-        searchBar.layer.borderColor = UIColor(red: 255 / 255.0, green: 255 / 255.0, blue: 255 / 255.0, alpha: 1.0).cgColor
+        searchBar.backgroundImage = UIImage()
+        
         hidesNavigationBarDuringPresentation = false
         dimsBackgroundDuringPresentation = false
-        searchBar.text = title
-        searchBar.sizeToFit()
-        let searchWrapper = UIView(frame: searchBar.bounds)
-        searchWrapper.addSubview(searchBar)
-        searchWrapper.backgroundColor = .clear
-        searchBar.layer.borderWidth = 1
-        searchBar.snp.makeConstraints { make in
-            make.left.right.top.equalTo(searchWrapper)
-        }
-        viewController.navigationItem.titleView = searchWrapper
         
+        // if initialized from HomeTabViewController and the title is set, somehow searching doesn't work
+        if !title.isEmpty {
+            searchBar.text = title
+        }
+        
+        searchBar.sizeToFit()
+        
+        wrapperView = SearchBarWrapperView(customSearchBar: searchBar)
+        let screenWidth = UIScreen.main.bounds.width
+        wrapperView?.frame = CGRect(x: 0, y: 0, width: screenWidth, height: 44)
+        wrapperView?.autoresizingMask = [.flexibleWidth]
+        wrapperView?.sizeToFit()
+        
+        viewController.navigationItem.titleView = wrapperView
+    }
+    
+    func setSearchBarToTop(viewController: UIViewController) {
+        setSearchBarToTop(viewController: viewController, title: "")
+    }
+    
+    func getSearchWrapperView() -> SearchBarWrapperView? {
+        return wrapperView ?? nil
     }
 }
 

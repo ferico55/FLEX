@@ -32,11 +32,9 @@
     _list = [NSMutableArray new];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:nil];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     
     UIBarButtonItem *doneBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Selesai" style:UIBarButtonItemStylePlain target:(self) action:@selector(tapDone:)];
-    [doneBarButtonItem setTintColor:[UIColor whiteColor]];
     doneBarButtonItem.tag = 11;
     self.navigationItem.rightBarButtonItem = doneBarButtonItem;
     

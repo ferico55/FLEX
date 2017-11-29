@@ -19,7 +19,7 @@
 #define CTagAddress 2
 #define CTagPhone 3
 
-@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TransactionCartCellDelegate>
+@interface TxOrderTransactionDetailViewController () <UITableViewDelegate, UITableViewDataSource, TransactionCartCellDelegate, ViewControllerSwipeGestureProtocol>
 {
     NavigateViewController *_navigate;
 }
@@ -64,10 +64,18 @@
     
     self.title = @"Detail Transaksi";
     
-    UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
-    backBarButtonItem.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
-    self.navigationItem.backBarButtonItem = backBarButtonItem;
+    UIButton *backButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [backButton setImage:[UIImage imageNamed:@"icon_arrow_white"] forState:UIControlStateNormal];
+    [backButton addTarget:self action:@selector(tapBackButton) forControlEvents:UIControlEventTouchUpInside];
+    [backButton setFrame:CGRectMake(0, 0, 25, 35)];
+    [backButton setImageEdgeInsets:UIEdgeInsetsMake(0, -26, 0, 0)];
+    
+    UIBarButtonItem *backBarButton = [[UIBarButtonItem alloc] initWithCustomView:backButton];
+    self.navigationItem.leftBarButtonItem = backBarButton;
+    
+    self.navigationController.interactivePopGestureRecognizer.delegate = self;
+    
+    backButton.tag = TAG_BAR_BUTTON_TRANSACTION_BACK;
     
     _tableView.tableHeaderView = _shopView;
     [self setDefaultData];
@@ -299,6 +307,10 @@
         _senderName.text = dropshipName;
         _senderPhone.text = _order.order_detail.detail_dropship_telp;
     }
+}
+
+- (void)tapBackButton {
+    [self.navigationController popViewControllerAnimated:YES];
 }
 
 @end

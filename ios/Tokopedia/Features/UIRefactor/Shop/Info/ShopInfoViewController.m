@@ -605,7 +605,6 @@
         if ([_shop.result.info.shop_id integerValue]==shop_id)
         {
             UIBarButtonItem *barbutton = [[UIBarButtonItem alloc] initWithTitle:@"Ubah" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-            [barbutton setTintColor:[UIColor whiteColor]];
             barbutton.tag = 11;
             self.navigationItem.rightBarButtonItem = barbutton;
         }

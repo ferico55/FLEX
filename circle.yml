@@ -3,13 +3,10 @@ machine:
     XCODE_SCHEME: "Tokopedia"
 
   xcode:
-    version: 8.3.3
+    version: 9.1
 
 dependencies:
   override:
-    - brew update
-    - brew install node
-    - brew install yarn
     - yarn
     - yarn run postinstall
     - gem install fastlane
@@ -35,4 +32,5 @@ deployment:
   release_distribution:
     branch: [/hotfix\/.*/, /release\/.*/]
     commands:
-      - fastlane beta
+      - fastlane beta:
+        timeout: 1800

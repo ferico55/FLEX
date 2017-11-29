@@ -713,11 +713,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [AnalyticsManager trackClickNavigateFromMore:@"Layanan Pengguna" parent:MORE_SECTION_5];
             
             UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-            WebViewController *webViewController = [WebViewController new];
-            webViewController.strURL = [userManager webViewUrlFromUrl:@"https://m.tokopedia.com/help/ticket-list/mobile"];
-            webViewController.strTitle = @"Help";
             
-            [wrapperController.navigationController pushViewController:webViewController animated:YES];
+            WKWebViewController *wkWebViewController = [[WKWebViewController new] initWithUrlString:[userManager webViewUrlFromUrl:@"https://m.tokopedia.com/help/ticket-list/mobile"] title:@"Help"];
+            
+            [wrapperController.navigationController pushViewController:wkWebViewController animated:YES];
         } else if (indexPath.row == 4) {
             [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_5];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {

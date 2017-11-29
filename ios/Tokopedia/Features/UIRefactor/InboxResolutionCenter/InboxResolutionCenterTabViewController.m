@@ -94,17 +94,19 @@
     _segmentControl.selectedSegmentIndex = _index;
     [_pageController setViewControllers:@[[self viewControllerAtIndex:_index]] direction:UIPageViewControllerNavigationDirectionForward animated:NO completion:nil];
     
-    [[_pageController view] setFrame:_containerView.frame];
-    
     [self addChildViewController:_pageController];
-    [[self view] addSubview:[_pageController view]];
+    
+    [[_pageController view] setFrame:_containerView.bounds];
+    
+    [_containerView addSubview:[_pageController view]];
     
     [[self view] addSubview:_pageControlView];
+    
     [_pageController didMoveToParentViewController:self];
+    
     [self setScrollEnabled:NO forPageViewController:_pageController];
     
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
     self.navigationItem.backBarButtonItem = backBarButtonItem;
     

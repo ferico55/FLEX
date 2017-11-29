@@ -23,10 +23,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface UIViewController (KMNavigationBarTransition_Internal)
+@interface UIViewController (KMNavigationBarTransition_internal)
 
 @property (nonatomic, strong) UINavigationBar *km_transitionNavigationBar;
-@property (nonatomic, assign) BOOL km_prefersNavigationBarBackgroundViewHidden;
 
 - (void)km_addTransitionNavigationBarIfNeeded;
 

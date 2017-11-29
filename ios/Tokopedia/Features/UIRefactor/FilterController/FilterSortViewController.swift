@@ -118,7 +118,7 @@ class FilterSortViewController: UIViewController, UITableViewDelegate, UITableVi
         if (selectedObject != nil) {
             if item.value == selectedObject!.value {
                 cell.accessoryType = .checkmark
-                tableView .selectRow(at: indexPath, animated: true, scrollPosition: .bottom)
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: UITableViewScrollPosition.none)
             }
         }
         

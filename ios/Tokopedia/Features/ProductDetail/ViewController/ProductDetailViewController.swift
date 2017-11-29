@@ -97,6 +97,12 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         self.campaignTimer.invalidate()
     }
     
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        self.navigationController?.isNavigationBarHidden = false
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         

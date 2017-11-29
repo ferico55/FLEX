@@ -56,7 +56,6 @@
                                                       style:UIBarButtonItemStylePlain
                                                      target:self
                                                      action:@selector(tap:)];
-    [_barButtonSave setTintColor:[UIColor whiteColor]];
     _barButtonSave.tag = TAG_BAR_BUTTON_TRANSACTION_DONE;
     self.navigationItem.rightBarButtonItem = _barButtonSave;
     

@@ -122,7 +122,6 @@
     _tableView.dataSource = self;
 
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Kembali" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [backBarButtonItem setTintColor:[UIColor whiteColor]];
     backBarButtonItem.tag = 10;
     self.navigationItem.leftBarButtonItem = backBarButtonItem;
     

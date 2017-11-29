@@ -87,7 +87,7 @@
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
     
     if (indexPath.row == 3) {
-        cell.detailTextLabel.text = @" BARU   ";
+        cell.detailTextLabel.text = @"BARU";
         cell.detailTextLabel.textAlignment = NSTextAlignmentCenter;
         cell.detailTextLabel.backgroundColor = [UIColor colorWithRed:234.0/255.0 green:33.0/255.0 blue:45.0/255.0 alpha:1];
         cell.detailTextLabel.textColor = [UIColor whiteColor];

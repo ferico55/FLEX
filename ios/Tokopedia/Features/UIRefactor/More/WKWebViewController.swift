@@ -12,7 +12,8 @@ import Popover
 
 class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate, NoResultDelegate {
 
-    fileprivate var urlString: String
+    fileprivate var strTitle: String = ""
+    fileprivate var urlString: String = ""
     fileprivate var shouldAuthorizeRequest: Bool = true
     fileprivate var webView: WKWebView!
     fileprivate var refreshControl: UIRefreshControl!
@@ -50,16 +51,19 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         refreshControl.addTarget(self, action: #selector(WKWebViewController.refreshWebView), for: UIControlEvents.valueChanged)
         webView.scrollView.addSubview(refreshControl)
         webView.navigationDelegate = self
-        
+
         let emptyLeftButton = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(didTapBackButton))
         navigationItem.leftBarButtonItem = emptyLeftButton
         navigationItem.hidesBackButton = true
-        
+
         initNoInternetView()
         loadWebView()
         
         //popover
         self.navigationItem.rightBarButtonItem = UIBarButtonItem.make(controller: self, selector: #selector(WKWebViewController.tapPopover))
+        
+        // set title
+        self.navigationItem.title = strTitle
     }
     
     func didTapBackButton() {
@@ -79,10 +83,29 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         self.init(urlString: authenticationManager.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: shouldAuthorizeRequest)
     }
     
+    convenience init(urlString: String, title: String) {
+        let authenticationManager = UserAuthentificationManager()
+        
+        let shouldAuthorizeRequest = authenticationManager.isLogin
+        
+        self.init(urlString: authenticationManager.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: shouldAuthorizeRequest, title: title)
+    }
+    
     init(urlString: String, shouldAuthorizeRequest: Bool) {
         self.urlString = urlString
         self.shouldAuthorizeRequest = shouldAuthorizeRequest
         super.init(nibName: nil, bundle: nil)
+    }
+    
+    init(urlString: String, shouldAuthorizeRequest: Bool, title: String) {
+        self.urlString = urlString
+        self.shouldAuthorizeRequest = shouldAuthorizeRequest
+        self.strTitle = title
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -100,7 +123,7 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
-            
+
             self.progressView.setProgress(Float(webView.estimatedProgress), animated: true)
         }
     }

@@ -122,7 +122,6 @@
                                                   style:UIBarButtonItemStylePlain
                                                  target:(self)
                                                  action:@selector(tap:)];
-    [barbutton1 setTintColor:[UIColor whiteColor]];
     [barbutton1 setTag:10];
     self.navigationItem.leftBarButtonItem = barbutton1;
 

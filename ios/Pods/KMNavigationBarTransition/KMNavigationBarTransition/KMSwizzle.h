@@ -23,4 +23,4 @@
 
 #import <Foundation/Foundation.h>
 
-extern void KMSwizzleMethod(Class cls, SEL originalSelector, SEL swizzledSelector);
+extern void KMSwizzleMethod(Class originalCls, SEL originalSelector, Class swizzledCls, SEL swizzledSelector);

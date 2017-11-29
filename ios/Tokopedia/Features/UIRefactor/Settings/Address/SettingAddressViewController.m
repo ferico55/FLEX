@@ -127,6 +127,7 @@
     [_refreshControl addTarget:self action:@selector(refreshView)forControlEvents:UIControlEventValueChanged];
     [_table setTableHeaderView:_refreshControl];
     _table.scrollIndicatorInsets = UIEdgeInsetsMake(_refreshControl.frame.size.height - 15, 0, 0, 0);
+    _table.delaysContentTouches = YES;
     
     _list = [NSMutableArray new];
     _datainput = [NSMutableDictionary new];

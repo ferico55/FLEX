@@ -173,6 +173,8 @@
 		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
 		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
 		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
+		E58B168F1FCBC73100846573 /* SearchBarWrapperView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58B168E1FCBC73100846573 /* SearchBarWrapperView.swift */; };
+		E58B16911FCBC74B00846573 /* ViewControllerSwipeGestureProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58B16901FCBC74A00846573 /* ViewControllerSwipeGestureProtocol.swift */; };
 		E5F071041FC5899F00C1C41C /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F071021FC5899F00C1C41C /* RemoteConfig.swift */; };
 		E5F071081FC589D200C1C41C /* SendChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F071061FC589D200C1C41C /* SendChatViewController.swift */; };
 		E5F071091FC589D200C1C41C /* SendChatViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5F071071FC589D200C1C41C /* SendChatViewController.xib */; };
@@ -2280,6 +2282,8 @@
 		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
 		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
 		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
+		E58B168E1FCBC73100846573 /* SearchBarWrapperView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchBarWrapperView.swift; sourceTree = "<group>"; };
+		E58B16901FCBC74A00846573 /* ViewControllerSwipeGestureProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewControllerSwipeGestureProtocol.swift; sourceTree = "<group>"; };
 		E5F071021FC5899F00C1C41C /* RemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		E5F071061FC589D200C1C41C /* SendChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendChatViewController.swift; sourceTree = "<group>"; };
 		E5F071071FC589D200C1C41C /* SendChatViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendChatViewController.xib; sourceTree = "<group>"; };
@@ -8560,6 +8564,7 @@
 				F954B7E31FC55B63008C0B30 /* OAStackViewCategory.h */,
 				F954B7E41FC55B63008C0B30 /* DBManager.m */,
 				F954B7E51FC55B63008C0B30 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
+				E58B168E1FCBC73100846573 /* SearchBarWrapperView.swift */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -10695,6 +10700,7 @@
 				F954BCF21FC55B65008C0B30 /* VersionChecker.swift */,
 				F954BCF31FC55B65008C0B30 /* HomePageHeaderSectionStyle.swift */,
 				F954BCF41FC55B65008C0B30 /* LabelCopyable.swift */,
+				E58B16901FCBC74A00846573 /* ViewControllerSwipeGestureProtocol.swift */,
 				F954BCF51FC55B65008C0B30 /* Fonts */,
 				F954BD001FC55B65008C0B30 /* CacheController */,
 				F954BD071FC55B65008C0B30 /* Analytics */,
@@ -12312,6 +12318,7 @@
 				F954C2961FC55B6A008C0B30 /* CatalogReview.m in Sources */,
 				F954C0F41FC55B68008C0B30 /* OfficialStoreBrandsViewController.m in Sources */,
 				F954C2051FC55B69008C0B30 /* TransactionCart.m in Sources */,
+				E58B168F1FCBC73100846573 /* SearchBarWrapperView.swift in Sources */,
 				F954C2751FC55B6A008C0B30 /* ResolutionAction.m in Sources */,
 				F954BDE31FC55B66008C0B30 /* SettingBankAccountViewController.m in Sources */,
 				F954C1A21FC55B69008C0B30 /* FeedDetailActionComponentView.swift in Sources */,
@@ -12811,6 +12818,7 @@
 				F954C0431FC55B67008C0B30 /* ProcessingAddProducts.m in Sources */,
 				F954BDDC1FC55B66008C0B30 /* SettingNotificationCell.m in Sources */,
 				F954C2151FC55B69008C0B30 /* SearchAWSSwift.swift in Sources */,
+				E58B16911FCBC74B00846573 /* ViewControllerSwipeGestureProtocol.swift in Sources */,
 				F954C04F1FC55B68008C0B30 /* RequestMoveTo.m in Sources */,
 				F954C3221FC55B6B008C0B30 /* Gojek.m in Sources */,
 				F954C3481FC55B6B008C0B30 /* AddProductPicture.m in Sources */,
@@ -14028,7 +14036,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Resources/SupportingFiles/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -14088,7 +14095,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
 				CODE_SIGN_ENTITLEMENTS = Tokopedia/Resources/SupportingFiles/Tokopedia.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution: TOKOPEDIA PT (YQP4A2M94J)";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
@@ -14106,7 +14112,10 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

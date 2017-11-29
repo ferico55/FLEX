@@ -106,12 +106,10 @@
 
 - (void)initBarButton {
     _barbuttonleft = [[UIBarButtonItem alloc] initWithTitle:@"Batal" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonleft setTintColor:[UIColor whiteColor]];
     [_barbuttonleft setTag:10];
     self.navigationItem.leftBarButtonItem = _barbuttonleft;
     
     _barbuttonright = [[UIBarButtonItem alloc] initWithTitle:@"Konfirmasi" style:UIBarButtonItemStylePlain target:(self) action:@selector(tap:)];
-    [_barbuttonright setTintColor:[UIColor whiteColor]];
     [_barbuttonright setTag:11];
     self.navigationItem.rightBarButtonItem = _barbuttonright;
 }

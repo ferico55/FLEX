@@ -585,7 +585,7 @@
 
 - (void)hideTitleBackButton {
     //hide title back button globally
-    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, -60) forBarMetrics:UIBarMetricsDefault];
+    [[UIBarButtonItem appearance] setBackButtonTitlePositionAdjustment:UIOffsetMake(0, 0) forBarMetrics:UIBarMetricsDefault];
 }
 
 #pragma mark - Send app status to MoEngage

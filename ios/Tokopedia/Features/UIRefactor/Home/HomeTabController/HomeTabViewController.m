@@ -69,6 +69,8 @@
 @property (strong, nonatomic) IBOutlet UIView *homeHeaderView;
 @property (strong, nonatomic) NSArray<UIViewController*> *viewControllers;
 
+@property (strong, nonatomic) SearchBarWrapperView *searchBarWrapperView;
+
 @end
 
 @implementation HomeTabViewController
@@ -190,32 +192,15 @@
 
 - (void)setSearchBar {
     SearchViewController* resultController = [[SearchViewController alloc] init];
+    _searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
+    [_searchController setSearchBarToTopWithViewController:self];
+    _searchBarWrapperView = [_searchController getSearchWrapperView];
     
-    self.searchController = [[UISearchController alloc] initWithSearchResultsController:resultController];
-    self.searchController.searchResultsUpdater = self;
-    self.searchController.searchBar.placeholder = @"Cari produk atau toko";
-    self.searchController.searchBar.barTintColor = [UIColor tpGreen];
-    self.searchController.hidesNavigationBarDuringPresentation = NO;
-    self.searchController.dimsBackgroundDuringPresentation = NO;
-    self.searchController.delegate = self;
+    [self.searchController.searchBar setTextFieldColorWithColor:[UIColor whiteColor]];
+    [self.searchController.searchBar setTextColorWithColor:[UIColor blackColor]];
     
     resultController.searchBar = self.searchController.searchBar;
     resultController.searchBar.text = @"";
-    [self.searchController.searchBar sizeToFit];
-    
-    //sometimes cancel button is missing if placed on navigation, thus it needs a wrapper #ios bugs
-    UIView* searchWrapper = [[UIView alloc] initWithFrame:self.searchController.searchBar.bounds];
-    [searchWrapper setBackgroundColor:[UIColor clearColor]];
-    [searchWrapper addSubview:self.searchController.searchBar];
-    self.searchController.searchBar.layer.borderWidth = 1;
-    self.searchController.searchBar.layer.borderColor = [UIColor tpGreen].CGColor;
-    
-    [self.searchController.searchBar mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.top.equalTo(searchWrapper);
-    }];
-
-    
-    self.navigationItem.titleView = searchWrapper;
 }
 
 - (void)setSearchByImage {
@@ -474,6 +459,8 @@
 - (void)willPresentSearchController:(UISearchController *)searchController {
     [self setSearchControllerHidden:NO];
     self.navigationItem.rightBarButtonItem = nil;
+    if (_searchBarWrapperView != nil)
+        _searchBarWrapperView.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 }
 
 - (void)willDismissSearchController:(UISearchController *)searchController {
@@ -494,6 +481,7 @@
     [self instantiateViewControllers];
     [self redirectToHome];
     [self setSearchByImage];
+    [self setSearchBar];
 }
 
 - (void)activateSearch:(NSNotification*)notification {
