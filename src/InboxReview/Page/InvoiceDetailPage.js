@@ -489,11 +489,11 @@ class InvoiceDetailPage extends PureComponent {
       return (
         <TouchableOpacity
           onPress={() => {
-            ReactInteractionHelper.showBuyerBadge({
-              negative: revieweeData.reviewee_buyer_badge.negative,
-              neutral: revieweeData.reviewee_buyer_badge.neutral,
-              positive: revieweeData.reviewee_buyer_badge.positive,
-            })
+            ReactInteractionHelper.showBuyerBadge(
+              revieweeData.reviewee_buyer_badge.negative,
+              revieweeData.reviewee_buyer_badge.neutral,
+              revieweeData.reviewee_buyer_badge.positive,
+            )
           }}
         >
           <View style={[styles.buyerBadge, { borderColor: textColor }]}>
