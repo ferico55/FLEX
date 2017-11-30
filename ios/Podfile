@@ -1,7 +1,10 @@
 # Uncomment this line to define a global platform for your project
 # platform :ios, "6.0"
 
+plugin 'cocoapods-static-frameworks'
+
 use_frameworks!
+static_frameworks
 
 inhibit_all_warnings!
 

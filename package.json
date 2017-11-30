@@ -60,7 +60,7 @@
     "react-native-swiper": "^1.5.4",
     "react-native-tooltip": "^5.0.0",
     "react-native-tab-view": "^0.0.69",
-    "react-native-vector-icons": "^4.2.0",
+    "react-native-vector-icons": "4.2.0",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.5",
     "redux": "^3.7.0",
