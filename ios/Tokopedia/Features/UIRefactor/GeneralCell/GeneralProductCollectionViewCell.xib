@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -57,13 +56,6 @@
                                     <constraint firstAttribute="height" constant="30" id="Ga0-8k-Who"/>
                                 </constraints>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" tag="10" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="loyalMerchant.png" translatesAutoresizingMaskIntoConstraints="NO" id="8g2-HO-0UX" userLabel="Lucky Badges">
-                                <rect key="frame" x="109" y="46" width="30" height="30"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="aHN-Ud-lqO"/>
-                                    <constraint firstAttribute="width" constant="30" id="wFu-OF-a0y"/>
-                                </constraints>
-                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -74,7 +66,6 @@
                             <constraint firstItem="9VS-xt-RUV" firstAttribute="leading" secondItem="asv-mJ-GLb" secondAttribute="leading" constant="6" id="An4-l2-QD4"/>
                             <constraint firstItem="BDT-Tx-3Ij" firstAttribute="leading" secondItem="Jui-Tb-eBR" secondAttribute="leading" id="CfE-Qr-FH4"/>
                             <constraint firstItem="BDT-Tx-3Ij" firstAttribute="top" secondItem="9VS-xt-RUV" secondAttribute="bottom" constant="11" id="Cv6-YF-orU"/>
-                            <constraint firstItem="8g2-HO-0UX" firstAttribute="top" secondItem="Pn2-8I-Q4Z" secondAttribute="bottom" constant="8" id="H8c-cu-jPD"/>
                             <constraint firstItem="9VS-xt-RUV" firstAttribute="leading" secondItem="Jui-Tb-eBR" secondAttribute="leading" id="LU1-WO-EVV"/>
                             <constraint firstAttribute="bottom" secondItem="Jui-Tb-eBR" secondAttribute="bottom" constant="18" id="O9q-ZF-5xM"/>
                             <constraint firstItem="Pn2-8I-Q4Z" firstAttribute="trailing" secondItem="9VS-xt-RUV" secondAttribute="trailing" id="PXf-Sb-lEG"/>
@@ -84,7 +75,6 @@
                             <constraint firstItem="9OD-Cc-0ur" firstAttribute="top" secondItem="asv-mJ-GLb" secondAttribute="top" id="nGk-IE-ltg"/>
                             <constraint firstItem="9VS-xt-RUV" firstAttribute="centerX" secondItem="9OD-Cc-0ur" secondAttribute="centerX" id="odw-uN-Mwe"/>
                             <constraint firstItem="9OD-Cc-0ur" firstAttribute="leading" secondItem="asv-mJ-GLb" secondAttribute="leading" id="ru3-cb-KiL"/>
-                            <constraint firstAttribute="trailing" secondItem="8g2-HO-0UX" secondAttribute="trailing" constant="6" id="z5l-jD-sFC"/>
                         </constraints>
                     </view>
                 </subviews>
@@ -97,7 +87,6 @@
             </constraints>
             <connections>
                 <outlet property="goldShopBadge" destination="Pn2-8I-Q4Z" id="b1d-Rp-GBM"/>
-                <outlet property="luckyMerchantBadge" destination="8g2-HO-0UX" id="d7e-l2-HbR"/>
                 <outlet property="productImage" destination="9OD-Cc-0ur" id="0nT-27-jpA"/>
                 <outlet property="productName" destination="9VS-xt-RUV" id="N4y-Rn-oym"/>
                 <outlet property="productPrice" destination="Jui-Tb-eBR" id="U9G-h9-WzD"/>
@@ -108,7 +97,6 @@
     </objects>
     <resources>
         <image name="Badges_gold_merchant" width="40" height="40"/>
-        <image name="loyalMerchant.png" width="28" height="27"/>
     </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
