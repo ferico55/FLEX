@@ -1139,60 +1139,49 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             
             AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
             
-            let networkManager = TokopediaNetworkManager()
-            networkManager.isUsingHmac = true
-            let path = "/users/\(userId)/wishlist/\(productDetail.id)/v1.1"
-            networkManager.isUsingDefaultError = false
-            networkManager.request(withBaseUrl: NSString.mojitoUrl(),
-                                   path: path,
-                                   method: .POST,
-                                   header: ["X-User-ID": userId],
-                                   parameter: nil,
-                                   mapping: GeneralAction.mapping(),
-                                   onSuccess: { _, _ in
-                                        if let notificationView = self.notificationView {
-                                            notificationView.isHidden = true
-                                            self.notificationView = nil
-                                            NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
-                                        }
-                                    
-                                       self.notificationView = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
-                                       NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
-                                       tabManager.didWishlistProduct(productDetail.id)
-                                   },
-                                   onFailure: { err in
-                                        let error = err as NSError
-                                        
-                                        var messageToShow = "Kendala koneksi internet."
-                                        if let errorMessage = error.localizedRecoverySuggestion, let data = errorMessage.data(using: .utf8) {
-                                            do {
-                                                if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
-                                                    if let msg = json["message_error"] as? [String] {
-                                                        messageToShow = msg[0]
-                                                    }
-                                                }
-                                            }
-                                            catch {
-                                                // do nothing
-                                            }
-                                        }
-                                    
-                                        if let notificationView = self.notificationView {
-                                            notificationView.isHidden = true
-                                            self.notificationView = UIView()
-                                            NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
-                                        }
-                                    
-                                        self.notificationView = UIViewController.showNotificationWithMessage(messageToShow, type: NotificationType.error.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
-                                    
-                                        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-                                            NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
-                                            self.store.dispatch(ProductDetailAction.updateWishlist(false))
-                                            tabManager.didRemoveWishlistProduct(productDetail.id)
-                                        }
-                                    
-            })
-            
+            MojitoProvider()
+                .request(.setWishlist(withProductId: productDetail.id))
+                .subscribe(onNext : { _ in
+                    if let notificationView = self.notificationView {
+                        notificationView.isHidden = true
+                        self.notificationView = nil
+                        NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                    }
+                    
+                    self.notificationView = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
+                    tabManager.didWishlistProduct(productDetail.id)
+                }, onError: { err in
+                    let error = err as NSError
+                    
+                    var messageToShow = "Kendala koneksi internet."
+                    if let errorMessage = error.localizedRecoverySuggestion, let data = errorMessage.data(using: .utf8) {
+                        do {
+                            if let json = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
+                                if let msg = json["message_error"] as? [String] {
+                                    messageToShow = msg[0]
+                                }
+                            }
+                        }
+                        catch {
+                            // do nothing
+                        }
+                    }
+                    
+                    if let notificationView = self.notificationView {
+                        notificationView.isHidden = true
+                        self.notificationView = UIView()
+                        NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                    }
+                    
+                    self.notificationView = UIViewController.showNotificationWithMessage(messageToShow, type: NotificationType.error.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
+                        self.store.dispatch(ProductDetailAction.updateWishlist(false))
+                        tabManager.didRemoveWishlistProduct(productDetail.id)
+                    }
+                })
         } else {
             if let category = productDetail.categories.first {
                 let attributes = [
@@ -1211,40 +1200,32 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 AnalyticsManager.moEngageTrackEvent(withName: "Product_Removed_From_Wishlist_Marketplace", attributes: attributes)
             }
             
-            let networkManager = TokopediaNetworkManager()
-            networkManager.isUsingHmac = true
-            let path = "/users/\(userId)/wishlist/\(productDetail.id)/v1.1"
-            networkManager.isUsingDefaultError = false
-            networkManager.request(withBaseUrl: NSString.mojitoUrl(),
-                                   path: path,
-                                   method: .DELETE,
-                                   header: ["X-User-ID": userId],
-                                   parameter: nil,
-                                   mapping: GeneralAction.mapping(),
-                                   onSuccess: { _, _ in
-                                        if let notificationView = self.notificationView {
-                                            notificationView.isHidden = true
-                                            self.notificationView = nil
-                                            NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
-                                        }
-                                       
-                                       self.notificationView = UIViewController.showNotificationWithMessage("Anda berhasil menghapus wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
-                                       NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
-                                       tabManager.didRemoveWishlistProduct(productDetail.id)
-                                   },
-                                   onFailure: { _ in
-                                        if let notificationView = self.notificationView {
-                                            notificationView.isHidden = true
-                                            self.notificationView = nil
-                                            NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
-                                        }
-                                        
-                                        self.notificationView = UIViewController.showNotificationWithMessage("Anda gagal menghapus wishlist", type: NotificationType.error.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
-                                    
-                                        NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
-                                        self.store.dispatch(ProductDetailAction.updateWishlist(true))
-                                        tabManager.didWishlistProduct(productDetail.id)
-            })
+            MojitoProvider()
+                .request(.unsetWishlist(withProductId: productDetail.id))
+                .subscribe(onNext : { _ in
+                    if let notificationView = self.notificationView {
+                        notificationView.isHidden = true
+                        self.notificationView = nil
+                        NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                    }
+                    
+                    self.notificationView = UIViewController.showNotificationWithMessage("Anda berhasil menghapus wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
+                    tabManager.didRemoveWishlistProduct(productDetail.id)
+                    
+                }, onError: { _ in
+                    if let notificationView = self.notificationView {
+                        notificationView.isHidden = true
+                        self.notificationView = nil
+                        NSObject.cancelPreviousPerformRequests(withTarget: SwiftOverlays.self)
+                    }
+                    
+                    self.notificationView = UIViewController.showNotificationWithMessage("Anda gagal menghapus wishlist", type: NotificationType.error.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
+                    
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
+                    self.store.dispatch(ProductDetailAction.updateWishlist(true))
+                    tabManager.didWishlistProduct(productDetail.id)
+                })
         }
         
     }

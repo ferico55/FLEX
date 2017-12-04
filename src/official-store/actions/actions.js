@@ -295,8 +295,11 @@ export const addToWishlist = (productId) => ({
       return ReactNetworkManager.request({
         method: 'POST',
         baseUrl: TKPReactURLManager.mojitoUrl,
-        path: '/users/' + userId + '/wishlist/' + productId + '/v1.1',
-        params: {},
+        path: '/wishlist/v1.2',
+        params: {
+          user_id: userId,
+          product_id: productId
+        },
         headers: { 'X-User-ID': userId },
       })
         .then(response => {
@@ -329,8 +332,11 @@ export const removeFromWishlist = (productId) => ({
       return ReactNetworkManager.request({
         method: 'DELETE',
         baseUrl: TKPReactURLManager.mojitoUrl,
-        path: '/users/' + userId + '/wishlist/' + productId + '/v1.1',
-        params: {},
+        path: '/wishlist/v1.2',
+        params: {
+          user_id: userId,
+          product_id: productId
+        },
         headers: { 'X-User-ID': ReactUserManager.userId },
       })
         .then(res => {

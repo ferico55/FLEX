@@ -150,7 +150,7 @@
         [originalPrice addAttribute:NSStrikethroughStyleAttributeName value:@2 range:NSMakeRange(0, [originalPrice length])];
         [originalPrice addAttribute:NSStrikethroughColorAttributeName value:[UIColor.blackColor colorWithAlphaComponent:0.6] range:NSMakeRange(0, [originalPrice length])];
         self.originalPriceLabel.attributedText = originalPrice;
-        self.discountLabel.text = [NSString stringWithFormat:@"%d%%OFF", viewModel.percentage_amount];
+        self.discountLabel.text = [NSString stringWithFormat:@"%ld%%OFF", (long)viewModel.percentage_amount];
         [self.originalPriceLabel setHidden:NO];
         [self.discountView setHidden:NO];
         self.productPriceLabelTopConstraint.constant = 12;
@@ -236,10 +236,11 @@
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
 
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId: _viewModel.productId userId: [_userManager getUserId]]
+                                                   path:@"/wishlist/v1.2"
                                                  method:RKRequestMethodPOST
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
-                                              parameter: nil
+                                              parameter: @{@"user_id" : [_userManager getUserId],
+                                                           @"product_id" : _viewModel.productId}
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
@@ -285,10 +286,6 @@
     [self.delegate changeWishlistForProductId:self.viewModel.productId withStatus:YES];
 }
 
-- (NSString *) wishlistUrlPathWithProductId: (NSString *)productId userId: (NSString*) userID {
-    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", userID, productId];
-}
-
 - (void)setUnWishList
 {
     __weak __typeof(self) weakSelf = self;
@@ -296,10 +293,11 @@
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
     [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[self wishlistUrlPathWithProductId: _viewModel.productId userId: [_userManager getUserId]]
+                                                   path:@"/wishlist/v1.2"
                                                  method:RKRequestMethodDELETE
                                                  header: @{@"X-User-ID" : [_userManager getUserId]}
-                                              parameter: nil
+                                              parameter: @{@"user_id" : [_userManager getUserId],
+                                                           @"product_id" : _viewModel.productId}
                                                 mapping:[GeneralAction mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];

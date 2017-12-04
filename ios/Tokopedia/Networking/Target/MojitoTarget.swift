@@ -53,9 +53,8 @@ extension MojitoTarget : TargetType {
             let query = productIds.joined(separator: ",")
             url.append(query)
             return url
-        case let .setWishlist(productId), let .unsetWishlist(productId):
-            let userManager = UserAuthentificationManager()
-            return "/users/\(userManager.getUserId()!)/wishlist/\(productId)/v1.1"
+        case .setWishlist, .unsetWishlist:
+            return "/wishlist/v1.2"
         case .getProductCampaignInfo:
             return "os/v1/campaign/product/info"
         case let .requestOfficialStore(categoryId):
@@ -76,8 +75,10 @@ extension MojitoTarget : TargetType {
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
+        let userManager = UserAuthentificationManager()
+        
         switch self {
-        case .setWishlist, .unsetWishlist: return nil
+        case let .setWishlist(productId), let .unsetWishlist(productId): return ["product_id" : productId, "user_id" : userManager.getUserId()!]
         case let .getProductCampaignInfo(productIds): return [ "pid":productIds ]
         case .requestOfficialStore: return nil
         case .requestOfficialStoreHomePage: return ["device":"ios"]
@@ -88,7 +89,7 @@ extension MojitoTarget : TargetType {
     /// The method used for parameter encoding.
     var parameterEncoding: ParameterEncoding {
         switch self {
-            case .requestOfficialStore, .setWishlist, .unsetWishlist: return JSONEncoding.default
+        case .requestOfficialStore : return JSONEncoding.default
         default: return URLEncoding.default
         }
     }

@@ -37,7 +37,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                              json:(NSDictionary*)parameter {
     NSDictionary *secretsByUrls = @{
                                     [NSString v4Url]: @"web_service_v4",
-                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString mojitoUrl]: @"web_service_v4",
                                     [NSString basicUrl]: @"web_service_v4",
                                     [NSString aceUrl]: @"web_service_v4",
                                     [NSString keroUrl]: @"web_service_v4",
@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary *secretsByUrls = @{
                                     [NSString v4Url]: @"web_service_v4",
-                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString mojitoUrl]: @"web_service_v4",
                                     [NSString basicUrl]: @"web_service_v4",
                                     [NSString aceUrl]: @"web_service_v4",
                                     [NSString keroUrl]: @"web_service_v4",
@@ -108,7 +108,6 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     NSString *output;
     NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
     NSString* date = [self getDate];
-    
     
     [self setRequestMethod:method];
     [self setParameterMD5:parameter];
@@ -142,7 +141,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary *secretsByUrls = @{
                                     [NSString v4Url]: @"web_service_v4",
-                                    [NSString mojitoUrl]: @"mojito_api_v1",
+                                    [NSString mojitoUrl]: @"web_service_v4",
                                     [NSString basicUrl]: @"web_service_v4",
                                     [NSString aceUrl]: @"web_service_v4",
                                     [NSString keroUrl]: @"web_service_v4",
@@ -284,7 +283,15 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
         return @"application/json";
     }
     
-    return [baseUrl isEqual: [NSString mojitoUrl]] ? @"application/json" : [self.getRequestMethod isEqualToString:@"GET"] ? @"" : [baseUrl isEqual: [NSString topAdsUrl]] ? @"application/json" : @"application/x-www-form-urlencoded; charset=utf-8";
+    if([self.getRequestMethod isEqualToString:@"GET"]) {
+        return @"";
+    } else {
+        if([baseUrl isEqual:[NSString topAdsUrl]]) {
+            return @"application/json";
+        } else {
+            return @"application/x-www-form-urlencoded; charset=utf-8";
+        }
+    }
 }
 
 - (void)setContentType:(NSString*)contentType {

@@ -2042,7 +2042,14 @@ TTTAttributedLabelDelegate
         __weak __typeof(self) weakSelf = self;
         NSString *productId = _product.data.info.product_id?:@"";
         tokopediaNetworkManagerWishList.isUsingHmac = YES;
-        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodDELETE header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+        [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
+                                                       path:@"/wishlist/v1.2"
+                                                     method:RKRequestMethodDELETE
+                                                     header: @{@"X-User-ID" : [_userManager getUserId]}
+                                                  parameter: @{@"user_id" : [_userManager getUserId],
+                                                               @"product_id" : productId}
+                                                    mapping:[GeneralAction mapping]
+                                                  onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
             [weakSelf didSuccessRemoveWishlistWithSuccessResult: successResult withOperation:operation];
         } onFailure:^(NSError *errorResult) {
             [weakSelf didFailedRemoveWishListWithErrorResult:errorResult];
@@ -2098,7 +2105,14 @@ TTTAttributedLabelDelegate
     __weak __typeof(self) weakSelf = self;
     tokopediaNetworkManagerWishList.isUsingHmac = YES;
     tokopediaNetworkManagerWishList.isUsingDefaultError = NO;
-    [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl] path:[self getWishlistUrlPathWithProductId:productId] method:RKRequestMethodPOST header: @{@"X-User-ID" : [_userManager getUserId]} parameter: nil mapping:[GeneralAction mapping] onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+    [tokopediaNetworkManagerWishList requestWithBaseUrl:[NSString mojitoUrl]
+                                                   path:@"/wishlist/v1.2"
+                                                 method:RKRequestMethodPOST
+                                                 header: @{@"X-User-ID" : [_userManager getUserId]}
+                                              parameter: @{@"user_id" : [_userManager getUserId],
+                                                           @"product_id" : productId}
+                                                mapping:[GeneralAction mapping]
+                                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
         [weakSelf didSuccessAddWishlistWithSuccessResult: successResult withOperation:operation];
     } onFailure:^(NSError *errorResult) {
         [weakSelf didFailedAddWishListWithErrorResult:errorResult];
@@ -2440,11 +2454,6 @@ TTTAttributedLabelDelegate
     [alert show];
     btnWishList.tag = 0;
     [self setWishlistRequestingAction:NO];
-}
-
-
--(NSString *) getWishlistUrlPathWithProductId: (NSString *)productId {
-    return [NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", [_userManager getUserId], productId];
 }
 
 -(BOOL) isAbleToLoadVideo {

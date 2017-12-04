@@ -252,10 +252,12 @@ typedef enum TagRequest {
 -(void) loadAllWishlist {
     __weak typeof(self) weakSelf = self;
     _isRequestingData = YES;
+    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
+    NSString *userId = [userManager getUserId];
     [_wishlistNetworkManager requestWithBaseUrl:[NSString mojitoUrl]
-                                          path:[self getWishlistPath]
+                                          path:@"/wishlist/v1.2"
                                         method:RKRequestMethodGET
-                                     parameter:@{@"page" : @(_page), @"count" : @"10"}
+                                      parameter:@{@"page" : @(_page), @"count" : @"10", @"user_id" : userId}
                                        mapping:[MyWishlistResponse mapping]
                                      onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                          weakSelf.activeSearchText = @"";
@@ -289,9 +291,9 @@ typedef enum TagRequest {
         } else {
             _isRequestingData = YES;
             [_wishlistNetworkManager requestWithBaseUrl:[NSString mojitoUrl]
-                                                   path:[NSString stringWithFormat:@"/users/%@/wishlist/search/v2", [_userManager getUserId]]
+                                                   path:@"/wishlist/search/v1.2"
                                                  method:RKRequestMethodGET
-                                              parameter:@{@"q":searchText, @"page" : @(_page), @"count" : @"10"}
+                                              parameter:@{@"q":searchText, @"page" : @(_page), @"count" : @"10", @"user_id" : [_userManager getUserId]}
                                                 mapping:[MyWishlistResponse mapping]
                                               onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                 weakSelf.activeSearchText = searchText;
@@ -309,12 +311,6 @@ typedef enum TagRequest {
     _isFailRequest = NO;
     _isRequestingData = NO;
     [self removeAllOverlays];
-}
-
--(NSString *) getWishlistPath {
-    UserAuthentificationManager *userManager = [[UserAuthentificationManager alloc] init];
-    NSString *userId = [userManager getUserId];
-    return [NSString stringWithFormat:@"/v1.0.3/users/%@/wishlist/products", userId];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -402,10 +398,11 @@ typedef enum TagRequest {
     NSString *productId = wishlistData.id;
     __weak typeof(self) weakSelf = self;
     [removeWishlistRequest requestWithBaseUrl:[NSString mojitoUrl]
-                                         path:[NSString stringWithFormat:@"/users/%@/wishlist/%@/v1.1", [_userManager getUserId], productId]
+                                         path:@"/wishlist/v1.2"
                                        method:RKRequestMethodDELETE
                                        header:@{@"X-User-ID" : userId}
-                                    parameter:nil
+                                    parameter:@{@"user_id" : [_userManager getUserId],
+                                                @"product_id" : productId}
                                       mapping:[self actionRemoveWishlistMapping]
                                     onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
                                         if ([weakSelf.product containsObject: wishlistData]){
