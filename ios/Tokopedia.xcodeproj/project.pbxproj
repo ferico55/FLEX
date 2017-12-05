@@ -137,8 +137,6 @@
 		DADB9F641F3C46CF002B1FAE /* SwipeView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9F311F3C46CE002B1FAE /* SwipeView.m */; };
 		DADB9F651F3C46CF002B1FAE /* UIImage+Resize.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9F341F3C46CE002B1FAE /* UIImage+Resize.m */; };
 		DADB9F661F3C46CF002B1FAE /* UIImageView%2BAFNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = DADB9F361F3C46CE002B1FAE /* UIImageView%2BAFNetworking.swift */; };
-		DADB9F671F3C46CF002B1FAE /* vt-iOSlib-1.0.1.tar.gz in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F381F3C46CE002B1FAE /* vt-iOSlib-1.0.1.tar.gz */; };
-		DADB9F681F3C46CF002B1FAE /* vt-iOSlib-1.0.1.zip in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F391F3C46CE002B1FAE /* vt-iOSlib-1.0.1.zip */; };
 		DADB9F691F3C46CF002B1FAE /* XYPieChart.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9F3C1F3C46CE002B1FAE /* XYPieChart.m */; };
 		DADB9F721F3C56D9002B1FAE /* FacebookSDKStrings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */; };
 		DADB9F731F3C56D9002B1FAE /* FBAudienceNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6D1F3C56D9002B1FAE /* FBAudienceNetwork.framework */; };
@@ -11622,7 +11620,6 @@
 				F954BF201FC55B67008C0B30 /* TrackOrderViewController.xib in Resources */,
 				DADB9F5B1F3C46CF002B1FAE /* LICENSE in Resources */,
 				F954BFCF1FC55B67008C0B30 /* OpenShopImageViewCell.xib in Resources */,
-				DADB9F671F3C46CF002B1FAE /* vt-iOSlib-1.0.1.tar.gz in Resources */,
 				F954BF2D1FC55B67008C0B30 /* ShipmentLocationPickupViewCell.xib in Resources */,
 				F954BF3B1FC55B67008C0B30 /* ReplacementListViewController.xib in Resources */,
 				F954BDAE1FC55B66008C0B30 /* TransactionShipmentATCTableViewController.xib in Resources */,
@@ -11646,7 +11643,6 @@
 				F954BE611FC55B66008C0B30 /* DepositListBankCell.xib in Resources */,
 				F954BF581FC55B67008C0B30 /* AlertPhoneVerification.xib in Resources */,
 				F954BE991FC55B66008C0B30 /* CategoryPageViewController.xib in Resources */,
-				DADB9F681F3C46CF002B1FAE /* vt-iOSlib-1.0.1.zip in Resources */,
 				F954C44C1FC55B6C008C0B30 /* icon_home@3x.png in Resources */,
 				F954C0B01FC55B68008C0B30 /* PenilaianUserCell.xib in Resources */,
 				F954C41D1FC55B6C008C0B30 /* Foundation.ttf in Resources */,
