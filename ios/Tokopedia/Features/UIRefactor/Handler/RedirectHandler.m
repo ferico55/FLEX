@@ -8,8 +8,6 @@
 
 #import "RedirectHandler.h"
 
-#import "InboxMessageViewController.h"
-#import "TKPDTabInboxMessageNavigationController.h"
 #import "InboxTalkViewController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "SalesNewOrderViewController.h"
@@ -140,8 +138,7 @@
 }
 
 - (void)redirectToMessage {
-    _navigationController = (UINavigationController*)_delegate;
-    [[self navigate]navigateToInboxMessageFromViewController:_navigationController];
+    [TPRoutes routeURL:[NSURL URLWithString:@"tokopedia://topchat"]];
 }
 
 - (void)redirectToTalk {

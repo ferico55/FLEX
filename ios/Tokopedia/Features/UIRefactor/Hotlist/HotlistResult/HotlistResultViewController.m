@@ -40,7 +40,6 @@
 
 #import "PromoCollectionReusableView.h"
 
-#import "DetailProductViewController.h"
 #import "HotlistBannerRequest.h"
 #import "HotlistBannerResult.h"
 

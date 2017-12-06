@@ -236,11 +236,11 @@ class ShopViewController: UIViewController {
             
             NavigateViewController.navigateToProduct(
                 from: self,
-                withName: "",
-                withPrice: "",
-                withId: productId,
-                withImageurl: "",
-                withShopName: ""
+                withProductID: productId,
+                andName: "",
+                andPrice: "",
+                andImageURL: "",
+                andShopName: ""
             )
         }
         

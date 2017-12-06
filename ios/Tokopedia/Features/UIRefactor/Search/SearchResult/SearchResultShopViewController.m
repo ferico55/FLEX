@@ -12,7 +12,6 @@
 
 #import "SearchItem.h"
 #import "TKPDTabNavigationController.h"
-#import "DetailProductViewController.h"
 #import "SearchResultShopCell.h"
 #import "SearchResultViewController.h"
 #import "SortViewController.h"

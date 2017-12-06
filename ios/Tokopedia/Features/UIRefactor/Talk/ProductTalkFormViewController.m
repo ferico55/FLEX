@@ -9,7 +9,6 @@
 #import "ProductTalkFormViewController.h"
 #import "detail.h"
 #import "ProductTalkForm.h"
-#import "inbox.h"
 #import "stringrestkit.h"
 
 @interface ProductTalkFormViewController () <UITextViewDelegate>{

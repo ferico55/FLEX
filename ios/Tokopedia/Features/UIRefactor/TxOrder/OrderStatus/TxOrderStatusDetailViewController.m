@@ -24,7 +24,6 @@
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "DetailOrderButtonsView.h"
-#import "SendMessageViewController.h"
 #import "TrackOrderViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ResolutionCenterCreateViewController.h"

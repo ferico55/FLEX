@@ -76,7 +76,6 @@
 #import "CarouselDataSource.h"
 #import "AnnouncementTickerView.h"
 
-#import "InboxMessageList.h"
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
 #import "ResolutionLast.h"
@@ -102,8 +101,6 @@
 #import "TransactionCalculatePrice.h"
 #import "TransactionAction.h"
 #import "RateProduct.h"
-#import "InboxMessageDetail.h"
-#import "InboxMessageAction.h"
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "NSNumberFormatter+IDRFormater.h"
@@ -157,7 +154,6 @@
 #import "NSMutableURLRequest+TKPDURLRequestUploadImage.h"
 #import "SecurityQuestionTweaks.h"
 #import "NavigateViewController.h"
-#import "SendMessageViewController.h"
 #import "ShopSettingViewController.h"
 #import "FavoriteShopRequest.h"
 #import "UIColor+Theme.h"
@@ -177,7 +173,6 @@
 #import "ProcessingAddProducts.h"
 #import "TkpdHMAC.h"
 #import "NSDictionaryCategory.h"
-#import "DetailProductViewController.h"
 #include "ifaddrs.h"
 #import "UIActivityViewController+Extensions.h"
 #import <MessageUI/MessageUI.h>

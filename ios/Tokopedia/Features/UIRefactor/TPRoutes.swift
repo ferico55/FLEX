@@ -29,16 +29,16 @@ class TPRoutes: NSObject {
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId)
             return true
         }
-        
+
         JLRoutes.global().add(["/peluang", "peluang.pl"]) { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
-            
+
             if userManager.isLogin && userManager.userIsSeller() {
                 AnalyticsManager.trackEventName("clickPeluang",
                                                 category: "Peluang filter",
                                                 action: "Click",
                                                 label: "order peluang")
-                
+
                 if UI_USER_INTERFACE_IDIOM() == .pad {
                     let controller = ReplacementSplitViewController()
                     controller.hidesBottomBarWhenPushed = true
@@ -107,18 +107,6 @@ class TPRoutes: NSObject {
             return true
         }
 
-        // MARK: Inbox Message (Native)
-        JLRoutes.global().addRoute("/message") { (_: [String: Any]!) -> Bool in
-            navigator.navigateToInboxMessage(from: UIApplication.topViewController())
-            return true
-        }
-
-        JLRoutes.global().addRoute("/message/:messageId") { (params: [String: Any]!) -> Bool in
-            let messageId = params["messageId"] as! String
-            navigator.navigateToInboxMessage(from: UIApplication.topViewController(), withMessageId: messageId)
-            return true
-        }
-
         // MARK: Inbox Talk (Native)
         JLRoutes.global().addRoute("/talk") { (_: [String: Any]!) -> Bool in
             navigator.navigateToInboxTalk(from: UIApplication.topViewController())
@@ -137,13 +125,13 @@ class TPRoutes: NSObject {
             navigateToInboxReview()
             return true
         }
-        
+
         // need to handle one with parameter, it will goes to the last route (/:shopId/:productId) if this doesn't implemented
         JLRoutes.global().addRoute("/review/:reviewId") { (_: [String: Any]!) -> Bool in
             navigateToInboxReview()
             return true
         }
-        
+
         // MARK: Product Review (Native)
         JLRoutes.global().addRoute("product/:productId/review") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
@@ -295,7 +283,7 @@ class TPRoutes: NSObject {
                 }
 
                 var viewControllers = navigationController.childViewControllers
-                
+
                 webView.onTapBackButton = { url in
                     if let paymentUrl = url?.absoluteString.contains("payment"), paymentUrl {
                         viewController.navigationController?.popViewController(animated: true)
@@ -465,11 +453,11 @@ class TPRoutes: NSObject {
             }
             var url = URLComponents(string: decodedURL)
             url?.queryItems = getUTMQueryItems(url: URL(string: decodedURL)!)
-            
+
             guard let completeURL = url?.url else { return false }
-            
+
             openWebView(completeURL)
-            
+
             return true
         }
 
@@ -545,7 +533,7 @@ class TPRoutes: NSObject {
             let url = params[kJLRouteURLKey] as? NSURL
             guard let urlString = url?.absoluteString, var parameters = params else { return true }
             parameters[kJLRouteURLKey] = addFlagApp(urlString: urlString)
-            
+
             openWebView(routeParams: parameters)
             return true
         }
@@ -582,13 +570,13 @@ class TPRoutes: NSObject {
             openWebView(routeParams: params)
             return true
         }
-        
+
         // MARK: Tokopedia Blog Detail - Category (Webview)
         JLRoutes.global().addRoute("/blog/:blogName") { (params: [String: Any]!) -> Bool in
             openWebView(routeParams: params)
             return true
         }
-        
+
         // MARK: Tokopedia Blog - Article (Webview)
         JLRoutes.global().addRoute("/blog/:year/:month/:title") { (params: [String: Any]!) -> Bool in
             openWebView(routeParams: params)
@@ -743,29 +731,29 @@ class TPRoutes: NSObject {
             }
             return true
         }
-        
-        //order detail (REACT LOCAL ONLY)
+
+        // order detail (REACT LOCAL ONLY)
         JLRoutes.global().addRoute("/order/detail/:orderID/:type") { (params: [String: Any]!) -> Bool in
             guard let orderID = params["orderID"], let type = params["type"] else {
                 return true
             }
-            
+
             let userManager = UserAuthentificationManager()
-            
+
             let viewController = ReactViewController(moduleName: "OrderDetailPage", props: ["user_id": userManager.getUserId() as AnyObject, "order_id": orderID as AnyObject, "type": type as AnyObject])
             UIApplication.topViewController()?
                 .navigationController?
                 .pushReactViewController(viewController, animated: true)
-            
+
             return true
         }
-        
+
         //topAds dashboard
         JLRoutes.global().addRoute("/topads/dashboard") { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
 
-            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo":auth as AnyObject])
+            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
 
             viewController.hidesBottomBarWhenPushed = true
             UIApplication.topViewController()?
@@ -789,42 +777,42 @@ class TPRoutes: NSObject {
             return true
         }
 
+        JLRoutes.global().add(["/message", "/message/:messageId"]) { _ in
+            return TPRoutes.routeURL(URL(string: "tokopedia://topchat")!)
+        }
+        
         // MARK: TopChat (Native)
         JLRoutes.global().addRoute("/topchat") { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
-            let remoteConfig = RemoteConfig.remoteConfig()
+            
             var viewController: UIViewController
-            if remoteConfig.topchatEnabled {
-              if UI_USER_INTERFACE_IDIOM() == .pad {
-                  let userID = userManager.getUserId()
-                  let name = userManager.getUserFullName()
-                  let modulesAndProps: [String: Any] = [
-                      "TopChatMain": [
-                          "authInfo": auth as Any,
-                          "fromIpad": true
-                      ],
-                      "TopChatDetail": [
-                          "fromIpad": true,
-                          "statusBarHeight": UIApplication.shared.statusBarFrame.height,
-                          "user_id": userID as Any,
-                          "full_name": name as Any
-                      ]
-                  ]
 
-                  viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
-              } else {
-                  viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject])
-              }
+            if UI_USER_INTERFACE_IDIOM() == .pad {
+                let userID = userManager.getUserId()
+                let name = userManager.getUserFullName()
+                let modulesAndProps: [String: Any] = [
+                    "TopChatMain": [
+                        "authInfo": auth as Any,
+                        "fromIpad": true
+                    ],
+                    "TopChatDetail": [
+                        "fromIpad": true,
+                        "statusBarHeight": UIApplication.shared.statusBarFrame.height,
+                        "user_id": userID as Any,
+                        "full_name": name as Any
+                    ]
+                ]
 
-              viewController.hidesBottomBarWhenPushed = true
-              UIApplication.topViewController()?
-                  .navigationController?
-                  .pushViewController(viewController, animated: true)
-
+                viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
             } else {
-                navigator.navigateToInboxMessage(from: UIApplication.topViewController())
+                viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject])
             }
+
+            viewController.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
 
             return true
         }
@@ -835,48 +823,44 @@ class TPRoutes: NSObject {
             let auth = userManager.getUserLoginData()
             let remoteConfig = RemoteConfig.remoteConfig()
             var viewController: UIViewController
-            if remoteConfig.topchatEnabled {
-              if UI_USER_INTERFACE_IDIOM() == .pad {
-                  let userID = userManager.getUserId()
-                  let name = userManager.getUserFullName()
-                  let modulesAndProps: [String: Any] = [
-                      "TopChatMain": [
-                          "authInfo": auth as Any,
-                          "fromIpad": true,
-                          "msg_id_applink": message_id
-                      ],
-                      "TopChatDetail": [
-                          "fromIpad": true,
-                          "statusBarHeight": UIApplication.shared.statusBarFrame.height,
-                          "user_id": userID as Any,
-                          "full_name": name as Any,
-                          "msg_id_applink": message_id
-                      ]
-                  ]
 
-                  viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
-              } else {
-                  viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
-              }
+            if UI_USER_INTERFACE_IDIOM() == .pad {
+                let userID = userManager.getUserId()
+                let name = userManager.getUserFullName()
+                let modulesAndProps: [String: Any] = [
+                    "TopChatMain": [
+                        "authInfo": auth as Any,
+                        "fromIpad": true,
+                        "msg_id_applink": message_id
+                    ],
+                    "TopChatDetail": [
+                        "fromIpad": true,
+                        "statusBarHeight": UIApplication.shared.statusBarFrame.height,
+                        "user_id": userID as Any,
+                        "full_name": name as Any,
+                        "msg_id_applink": message_id
+                    ]
+                ]
 
-              viewController.hidesBottomBarWhenPushed = true
-
-              guard let topVc = UIApplication.topViewController() else { return false }
-              if(topVc.isKind(of: ReactViewController.self) || topVc.isKind(of: ReactSplitViewController.self)){
-                  if let countVc = topVc.navigationController?.viewControllers.count {
-                      if countVc > 2 {
-                          topVc.navigationController?.viewControllers.removeLast()
-                      }
-                  }
-                  UIApplication.topViewController()?.navigationController?.replaceTopViewController(viewController: viewController)
-              }
-              else{
-                  UIApplication.topViewController()?
-                      .navigationController?
-                      .pushViewController(viewController, animated: true)
-              }
+                viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
             } else {
-                navigator.navigateToInboxMessage(from: UIApplication.topViewController(), withMessageId: message_id)
+                viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
+            }
+
+            viewController.hidesBottomBarWhenPushed = true
+
+            guard let topVc = UIApplication.topViewController() else { return false }
+            if topVc.isKind(of: ReactViewController.self) || topVc.isKind(of: ReactSplitViewController.self) {
+                if let countVc = topVc.navigationController?.viewControllers.count {
+                    if countVc > 2 {
+                        topVc.navigationController?.viewControllers.removeLast()
+                    }
+                }
+                UIApplication.topViewController()?.navigationController?.replaceTopViewController(viewController: viewController)
+            } else {
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(viewController, animated: true)
             }
 
             return true
@@ -904,21 +888,21 @@ class TPRoutes: NSObject {
             NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
             return true
         }
-        
+
         JLRoutes.global().addRoute("/product/review/:productId") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
-            
-            let viewController = ReactViewController(moduleName: "ProductReviewPage", props: ["productID":productId as AnyObject, "authInfo": auth as AnyObject])
+
+            let viewController = ReactViewController(moduleName: "ProductReviewPage", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
             viewController.hidesBottomBarWhenPushed = true
             UIApplication.topViewController()?
                 .navigationController?
                 .pushViewController(viewController, animated: true)
-            
+
             return true
         }
-        
+
         // MARK: Product Detail - from Product URL (Native)
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String: Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
@@ -987,15 +971,15 @@ class TPRoutes: NSObject {
             }
         }
     }
-    
+
     static func getUTMQueryItems(url: URL) -> [URLQueryItem]? {
         let urlComponents = URLComponents(string: url.absoluteString)
-        
+
         guard let queryItems = urlComponents?.queryItems else { return nil }
-        
+
         let keys = queryItems.map { $0.name }
-        let hasUtmParameters = Set(["utm_source","utm_campaign","utm_medium"]).isSubset(of: Set(keys))
-        
+        let hasUtmParameters = Set(["utm_source", "utm_campaign", "utm_medium"]).isSubset(of: Set(keys))
+
         if hasUtmParameters {
             return queryItems
         } else {
@@ -1020,13 +1004,13 @@ class TPRoutes: NSObject {
         let visibleController = UIApplication.topViewController()
         visibleController?.navigationController?.pushViewController(controller, animated: true)
     }
-    
+
     static func openWebView(routeParams: [String: Any]) {
         guard let url = routeParams[kJLRouteURLKey] as? URL else { return }
         let title = routeParams["title"] as? String ?? ""
         var components = URLComponents(string: url.absoluteString)
         components?.queryItems = getUTMQueryItems(url: url)
-        
+
         guard let newURL = components?.url else { return }
         if title.isEmpty {
             openWebView(newURL)
@@ -1034,7 +1018,7 @@ class TPRoutes: NSObject {
             openWebView(newURL, title: title)
         }
     }
-    
+
     static func redirectContactUs() {
         let userManager = UserAuthentificationManager()
         if userManager.isLogin {
@@ -1049,7 +1033,7 @@ class TPRoutes: NSObject {
     @discardableResult
     static func routeURL(_ url: URL) -> Bool {
         AnalyticsManager.trackCampaign(url)
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController;
+        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
         if let topMostViewController = rootViewController?.topMostViewController() {
             if topMostViewController.isKind(of: OnboardingViewController.self) {
                 topMostViewController.dismiss(animated: true, completion: {
@@ -1058,7 +1042,7 @@ class TPRoutes: NSObject {
                 return true
             }
         }
-        
+
         return JLRoutes.routeURL(url)
     }
 
@@ -1088,24 +1072,24 @@ class TPRoutes: NSObject {
             shopExists(false)
         }
     }
-    
+
     static func navigateToInboxReview() {
         let userManager = UserAuthentificationManager()
         let auth = userManager.getUserLoginData()
-        
-        var viewController:UIViewController
+
+        var viewController: UIViewController
         if UIDevice.current.userInterfaceIdiom == .pad {
             viewController = ReactSplitViewController(modules: ["InboxReview": ["authInfo": auth as AnyObject], "InvoiceDetailPage": ["authInfo": auth]], masterViewKey: "InboxReview", detailViewKey: "InvoiceDetailPage")
         } else {
-            viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo":auth as AnyObject])
+            viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo": auth as AnyObject])
         }
-        
+
         viewController.hidesBottomBarWhenPushed = true
         UIApplication.topViewController()?
             .navigationController?
             .pushViewController(viewController, animated: true)
     }
-    
+
     static func addFlagApp(urlString: String) -> URL? {
         let queryItem = URLQueryItem(name: "flag_app", value: "1")
         var urlComponents = URLComponents(string: urlString)
@@ -1119,8 +1103,8 @@ class TPRoutes: NSObject {
         return urlComponents?.url
     }
 
-    static func getFilterParams(params: [String : Any]) -> [String : Any] {
-        var newParams: [String : Any] = params
+    static func getFilterParams(params: [String: Any]) -> [String: Any] {
+        var newParams: [String: Any] = params
 
         newParams[kJLRouteNamespaceKey] = nil
         newParams[kJLRouteWildcardComponentsKey] = nil

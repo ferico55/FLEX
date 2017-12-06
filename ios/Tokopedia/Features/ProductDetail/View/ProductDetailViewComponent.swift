@@ -524,14 +524,14 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 } else if let productDetail = self.state?.productDetail {
                     view.delegate = self.viewController
                     view.onButtonTap = { [unowned self] _ in
-                        let vc = SendMessageViewController()
-                        vc.data = [
-                            "shop_id": productDetail.shop.id,
-                            "shop_name": productDetail.shop.name
-                        ]
-                        vc.subject = "Konfirmasi produk tidak ditemukan"
-                        vc.source = "product"
-                        vc.display(from: self.viewController)
+                        let vc = SendChatViewController(
+                            shopID: productDetail.shop.id,
+                            name: productDetail.shop.name,
+                            imageURL: productDetail.shop.avatarURL,
+                            source: "pdp"
+                        )
+                        
+                        self.viewController.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
             }

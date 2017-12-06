@@ -10,7 +10,6 @@
 #import "ProductQuantityCell.h"
 #import "OrderProduct.h"
 #import "UITextView+UITextView_Placeholder.h"
-#import "DetailProductViewController.h"
 #import "NavigateViewController.h"
 #import "ActionOrder.h"
 #import "Tokopedia-Swift.h"

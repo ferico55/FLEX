@@ -14,7 +14,6 @@
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 
-#import "inbox.h"
 #import "string_home.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"

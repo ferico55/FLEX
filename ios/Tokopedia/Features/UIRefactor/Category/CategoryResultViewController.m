@@ -20,7 +20,6 @@
 #import "List.h"
 #import "DepartmentTree.h"
 
-#import "DetailProductViewController.h"
 #import "CatalogViewController.h"
 
 #import "SearchResultViewController.h"

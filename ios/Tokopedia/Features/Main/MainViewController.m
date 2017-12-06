@@ -28,8 +28,6 @@
 #import "UserAuthentificationManager.h"
 #import "Logout.h"
 
-#import "InboxRootViewController.h"
-
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 

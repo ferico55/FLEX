@@ -15,7 +15,6 @@
 #import "SortViewController.h"
 #import "FilterCatalogViewController.h"
 #import "CatalogProductViewController.h"
-#import "DetailProductViewController.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"
 #import "NavigateViewController.h"

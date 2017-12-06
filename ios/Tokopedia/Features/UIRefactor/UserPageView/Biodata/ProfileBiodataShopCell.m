@@ -5,7 +5,6 @@
 //  Created by IT Tkpd on 10/17/14.
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
-#import "DetailProductViewController.h"
 #import "ProfileBiodataShopCell.h"
 #import "ShopBadgeLevel.h"
 #import "SmileyAndMedal.h"

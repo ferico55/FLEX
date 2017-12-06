@@ -25,13 +25,13 @@
 #import "ReputationDetail.h"
 #import "SmileyAndMedal.h"
 #import "string_inbox_talk.h"
-#import "string_inbox_message.h"
 #import "stringrestkit.h"
-#import "inbox.h"
 #import "string.h"
 #import "Tokopedia-Swift.h"
 
 #import "TalkCell.h"
+
+#define CPengguna @"Pengguna"
 
 #pragma mark - Product Talk View Controller
 @interface ProductTalkViewController ()<UITableViewDataSource, UITableViewDelegate, UIScrollViewDelegate, UIAlertViewDelegate, TalkCellDelegate>

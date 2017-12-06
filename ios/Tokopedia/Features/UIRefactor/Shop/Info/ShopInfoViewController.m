@@ -6,7 +6,6 @@
 ////  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 ////
 #import "ShopBadgeLevel.h"
-#import "DetailProductViewController.h"
 #import "DetailStatisticViewController.h"
 #import "detail.h"
 #import "Shop.h"

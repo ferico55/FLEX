@@ -28,11 +28,9 @@
                                    andPrice:(NSString *)price
                                 andImageURL:(NSString *)imageURL
                                 andShopName:(NSString *)shopName;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
-- (void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
-- (void)navigateToProductFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 
--(void)navigateToInboxMessageFromViewController:(UIViewController *)viewController withMessageId:(NSString *)messageId;
+- (void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
+
 //-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId;
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId;
 
@@ -64,11 +62,10 @@
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
 - (void)navigateToPromoDetailFromViewController:(UIViewController*) viewController withName:(NSString*) promoName;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withProduct:(id)objProduct andDelegate:(id<ProductCellDelegate>) delegate;
 
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams;
-- (void)navigateToSearchFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
 
 -(void)popUpLuckyDeal:(LuckyDealWord*)words;
@@ -76,7 +73,6 @@
 
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;
-+ (void)navigateToProductFromViewController:(UIViewController *)viewController withName:(NSString*)name withPrice:(NSString*)price withId:(NSString*)productId withImageurl:(NSString*)url withShopName:(NSString*)shopName;
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID;
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController;
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
@@ -88,11 +84,9 @@
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
 
 #pragma mark - Inbox
-- (void)navigateToInboxMessageFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController withGetDataFromMasterDB:(BOOL)getDataFromMaster;
 - (void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController;
 -(void)navigateToInboxResolutionFromViewController:(UIViewController *)viewController atIndex:(int)index;
-- (void)navigateToInboxPriceAlertFromViewController:(UIViewController*)viewController;
 @end

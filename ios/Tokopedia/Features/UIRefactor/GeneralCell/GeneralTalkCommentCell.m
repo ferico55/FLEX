@@ -11,7 +11,6 @@
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
 #import "TTTAttributedLabel.h"
-#import "InboxMessageDetailCell.h"
 
 @implementation GeneralTalkCommentCell
 

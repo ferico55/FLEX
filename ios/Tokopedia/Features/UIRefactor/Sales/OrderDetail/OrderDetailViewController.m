@@ -26,8 +26,6 @@
 #import "UIAlertView+BlocksKit.h"
 #import "Tokopedia-Swift.h"
 
-#import "SendMessageViewController.h"
-
 @interface OrderDetailViewController ()
 <
     SubmitShipmentConfirmationDelegate,

@@ -11,8 +11,6 @@
 
 #import "SortViewController.h"
 
-#import "DetailProductViewController.h"
-
 #import "ProductCell.h"
 #import "ProductSingleViewCell.h"
 #import "ProductThumbCell.h"

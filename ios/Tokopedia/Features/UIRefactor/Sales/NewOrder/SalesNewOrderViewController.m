@@ -36,7 +36,6 @@
 #import <BlocksKit/BlocksKit.h>
 #import "UIAlertView+BlocksKit.h"
 #import "UIColor+Theme.h"
-#import "SendMessageViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ReactOrderManager.h"
 

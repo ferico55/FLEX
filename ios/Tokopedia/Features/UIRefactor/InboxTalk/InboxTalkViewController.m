@@ -6,7 +6,6 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "CMPopTipView.h"
-#import "string_inbox_message.h"
 #import "InboxTalkViewController.h"
 #import "ProductTalkDetailViewController.h"
 #import "ReportViewController.h"
@@ -14,10 +13,8 @@
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 #import "NoResultView.h"
-#import "DetailProductViewController.h"
 #import "TalkCell.h"
 
-#import "inbox.h"
 #import "SmileyAndMedal.h"
 #import "string_home.h"
 #import "stringrestkit.h"
@@ -32,6 +29,11 @@
 #import "TAGDataLayer.h"
 #import "Tokopedia-Swift.h"
 #import "NavigationHelper.h"
+
+#define KTKPDTALK_ACTIONGET @"get_inbox_talk"
+#define KTKPDMESSAGE_FILTERKEY @"filter"
+#define KTKPDMESSAGE_KEYWORDKEY @"keyword"
+#define KTKPDMESSAGE_NAVKEY @"nav"
 
 @interface InboxTalkViewController () <UITableViewDataSource, UITableViewDelegate, TKPDTabViewDelegate, UIAlertViewDelegate, TalkCellDelegate>
 

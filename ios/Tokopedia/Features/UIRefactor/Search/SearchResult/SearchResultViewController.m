@@ -33,7 +33,6 @@
 #import "ProductThumbCell.h"
 
 #import "NavigateViewController.h"
-#import "DetailProductViewController.h"
 #import "CatalogViewController.h"
 #import "FilterViewController.h"
 #import "HotlistResultViewController.h"

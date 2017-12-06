@@ -15,11 +15,8 @@
 
 #import "HomeTabHeaderViewController.h"
 #import "NotificationManager.h"
-#import "InboxMessageViewController.h"
-#import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
-#import "InboxMessageViewController.h"
 #import "NotificationState.h"
 #import "UserAuthentificationManager.h"
 
@@ -27,7 +24,6 @@
 
 #import "RedirectHandler.h"
 
-#import "InboxRootViewController.h"
 #import "NavigateViewController.h"
 
 #import "UIView+HVDLayout.h"
@@ -397,7 +393,7 @@
 }
 
 - (void)goToInboxMessage {
-    [_navigate navigateToInboxMessageFromViewController:self];
+    [TPRoutes routeURL:[NSURL URLWithString:@"tokopedia://topchat"]];
 }
 
 - (void)goToInboxTalk {

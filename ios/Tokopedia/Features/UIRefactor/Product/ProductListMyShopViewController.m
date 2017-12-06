@@ -16,7 +16,6 @@
 #import "EtalaseList.h"
 #import "ProductListMyShopCell.h"
 #import "ShopSettings.h"
-#import "DetailProductViewController.h"
 #import "ProductAddEditViewController.h"
 #import "EtalaseViewController.h"
 #import "ProductListMyShopFilterViewController.h"

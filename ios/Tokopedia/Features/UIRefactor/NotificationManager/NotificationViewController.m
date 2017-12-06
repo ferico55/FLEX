@@ -6,9 +6,7 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "NotificationViewController.h"
-#import "InboxMessageViewController.h"
 #import "InboxTalkViewController.h"
-#import "TKPDTabInboxMessageNavigationController.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "ShipmentConfirmationViewController.h"
@@ -22,7 +20,6 @@
 
 #import "TKPDTabViewController.h"
 #import "InboxTicketViewController.h"
-#import "InboxRootViewController.h"
 #import "InboxTalkSplitViewController.h"
 #import "InboxResolSplitViewController.h"
 #import "InboxTicketSplitViewController.h"

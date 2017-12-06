@@ -22,7 +22,6 @@
 #import "NavigateViewController.h"
 #import "NoResultReusableView.h"
 #import "UITableView+IndexPath.h"
-#import "SendMessageViewController.h"
 #import "Tokopedia-Swift.h"
 #import "ReactOrderManager.h"
 

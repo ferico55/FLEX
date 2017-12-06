@@ -7,8 +7,6 @@
 //
 
 #import "NotificationManager.h"
-#import "InboxMessageViewController.h"
-#import "TKPDTabInboxMessageNavigationController.h"
 #import "NotificationState.h"
 #import "UIImage+ImageEffects.h"
 

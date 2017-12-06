@@ -10,7 +10,6 @@
 #import "ShopProductPageViewController.h"
 #import "ShopNotesPageViewController.h"
 #import "ShopInfoViewController.h"
-#import "SendMessageViewController.h"
 #import "ShopBadgeLevel.h"
 #import "ShopSettingViewController.h"
 #import "ProductAddEditViewController.h"

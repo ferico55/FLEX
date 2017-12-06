@@ -12,14 +12,12 @@
 #import "GeneralAction.h"
 #import "InboxTalk.h"
 
-#import "inbox.h"
 #import "string_home.h"
 #import "stringrestkit.h"
 #import "string_inbox_talk.h"
 #import "detail.h"
 
 #import "ReputationDetail.h"
-#import "string_inbox_message.h"
 #import "NoResultReusableView.h"
 #import "NSString+HTML.h"
 #import "UserAuthentificationManager.h"
