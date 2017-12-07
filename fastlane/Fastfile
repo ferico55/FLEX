@@ -147,7 +147,7 @@ platform :ios do
       clean: true,
       workspace: 'ios/Tokopedia.xcworkspace',
       scheme: scheme,
-      configuration: 'Debug',
+      configuration: 'Debug-Optimized',
       sdk: "iphoneos",
       codesigning_identity: "iPhone Developer: Melissa Juminto (TT6A3N9KTC)",
       export_method: "development",

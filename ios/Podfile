@@ -8,6 +8,10 @@ static_frameworks
 
 inhibit_all_warnings!
 
+project 'Tokopedia', 'Debug-Optimized' => :debug
+
+$DEBUG_CONFIGS = ['Debug', 'Debug-Optimized']
+
 def react_pods
     pod 'React', :path => '../node_modules/react-native', :subspecs => [
         'Core',
@@ -44,7 +48,7 @@ def common_pods
     pod 'BlocksKit', '~> 2.2.5'
     pod 'ComponentKit', '~> 0.14'
     pod 'DTTJailbreakDetection', '~> 0.4.0'
-    pod 'FLEX', :git => 'https://github.com/Flipboard/FLEX.git', :commit => '99eccdf4c34af9b1042d96313ad9cf12dd30ff1f', :configurations => ['Debug']
+    pod 'FLEX', :git => 'https://github.com/Flipboard/FLEX.git', :commit => '99eccdf4c34af9b1042d96313ad9cf12dd30ff1f', :configurations => $DEBUG_CONFIGS
     pod 'JLPermissions/Notification', '2.2.8'
     pod 'JLPermissions/Contacts', '2.2.8'
     pod 'JLPermissions/Location', '2.2.8'
@@ -132,7 +136,7 @@ end
 target "Tokopedia" do
     common_pods
     react_pods
-    pod 'Reveal-iOS-SDK', :configurations => ['Debug']
+    pod 'Reveal-iOS-SDK', :configurations => $DEBUG_CONFIGS
 end
 
 target "TokopediaTests" do
@@ -164,6 +168,8 @@ post_install do |installer|
 
             if config.name == 'Release'
                 config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+            elsif config.name == 'Debug-Optimized'
+                config.build_settings['SWIFT_WHOLE_MODULE_OPTIMIZATION'] = 'YES'
             end
 
             if target.name == "MoEngage-iOS-SDK"
