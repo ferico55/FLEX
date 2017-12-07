@@ -162,8 +162,9 @@ class ProductHeaderNode: ContainerNode {
             if tappable {
                 let tapGestureRecognizer = UITapGestureRecognizer()
                 _ = tapGestureRecognizer.rx.event.subscribe(onNext: { [unowned self] _ in
-                    let index = self.state.currentPage
-                    self.didTapProductImage(index!)
+                    // get the index from pageControl instead of state as state often get cleared
+                    let index = self.pageControl?.currentPage ?? 0
+                    self.didTapProductImage(index)
                 })
                 view.addGestureRecognizer(tapGestureRecognizer)
             }
