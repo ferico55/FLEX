@@ -13,18 +13,6 @@
     {
       "idiom" : "universal",
       "scale" : "3x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_category_white.png",
-      "unassigned" : true,
-      "scale" : "1x"
-    },
-    {
-      "idiom" : "universal",
-      "filename" : "icon_category_white@2x.png",
-      "unassigned" : true,
-      "scale" : "2x"
     }
   ],
   "info" : {
