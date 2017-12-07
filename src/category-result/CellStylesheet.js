@@ -35,10 +35,12 @@ module.exports = StyleSheet.create({
     marginBottom: 4,
   },
   shopName: {
-    color: 'rgba(0,0,0,0.54)',
-    fontSize: 11,
     marginLeft: 10,
     marginBottom: 3.4,
+  },
+  shopNameHTML: {
+    color: 'rgba(0,0,0,0.54)',
+    fontSize: 11,
   },
   shopLocation: {
     color: 'rgba(0,0,0,0.38)',

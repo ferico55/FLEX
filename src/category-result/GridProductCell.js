@@ -9,7 +9,6 @@ import WishlistCategoryButton from './WishlistCategoryButton'
 import { Stars, ProductLabels, Badges } from './CellHelper'
 import { ProductCellViewModel } from './ProductCellViewModel'
 
-
 const styles = require('./CellStylesheet')
 
 const screenWidth = Dimensions.get('window').width
@@ -71,6 +70,7 @@ export default class GridProductCell extends React.PureComponent {
         <HTMLView
           RootComponent={Text}
           style={styles.shopName}
+          textComponentProps={{ style: styles.shopNameHTML }}
           value={viewModel.shopName}
         />
         <View

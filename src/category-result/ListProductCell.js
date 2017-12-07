@@ -3,6 +3,7 @@ import { TouchableOpacity, Text, View, Image, Dimensions } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 
 import Icon from 'react-native-vector-icons/Ionicons'
+import HTMLView from 'react-native-htmlview'
 import { ReactTPRoutes } from 'NativeModules'
 import WishlistCategoryButton from './WishlistCategoryButton'
 import { Stars, ProductLabels, Badges } from './CellHelper'
@@ -68,7 +69,12 @@ export default class ListProductCell extends React.PureComponent {
               totalReview={viewModel.productReviewCount}
             />
             <ProductLabels labels={viewModel.productLabels} />
-            <Text style={styles.shopName}>{viewModel.shopName}</Text>
+            <HTMLView
+              RootComponent={Text}
+              style={styles.shopName}
+              textComponentProps={{ style: styles.shopNameHTML }}
+              value={viewModel.shopName}
+            />
             <View
               style={{
                 flexDirection: 'row',

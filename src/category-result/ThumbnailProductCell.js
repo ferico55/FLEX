@@ -1,6 +1,7 @@
 import React from 'react'
-import { TouchableOpacity, Text, View, Image } from 'react-native'
+import { TouchableOpacity, Text, View, Image, Dimensions } from 'react-native'
 import HTMLView from 'react-native-htmlview'
+import DeviceInfo from 'react-native-device-info'
 
 import Icon from 'react-native-vector-icons/Ionicons'
 import { ReactTPRoutes } from 'NativeModules'
@@ -10,6 +11,8 @@ import { ProductLabels, Badges } from './CellHelper'
 import { ProductCellThumbnailViewModel } from './ProductCellViewModel'
 
 const styles = require('./CellStylesheet')
+
+const screenWidth = Dimensions.get('window').width
 
 export default class ThumbnailProductCell extends React.PureComponent {
   render() {
@@ -24,7 +27,7 @@ export default class ThumbnailProductCell extends React.PureComponent {
         }}
         style={{
           backgroundColor: 'white',
-          flex: 1,
+          width: screenWidth / (DeviceInfo.isTablet() ? 2 : 1),
           borderLeftWidth: 1,
           borderBottomWidth: 1,
           borderColor: 'rgba(224,224,224,1)',
@@ -60,6 +63,7 @@ export default class ThumbnailProductCell extends React.PureComponent {
         <HTMLView
           RootComponent={Text}
           style={styles.shopName}
+          textComponentProps={{ style: styles.shopNameHTML }}
           value={viewModel.shopName}
         />
         <View
