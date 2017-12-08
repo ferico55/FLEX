@@ -25,6 +25,14 @@ class ReplacementListCell: UITableViewCell {
         return label
     }()
     
+    lazy var replacementMultiplier: UILabel = {
+        let label = UILabel()
+        label.backgroundColor = UIColor(red: 255/255, green: 255/255, blue: 255/255, alpha: 1)
+        label.textColor = UIColor.tpPrimaryWhiteText()
+        label.font = UIFont.microTheme()
+        return label
+    }()
+    
     lazy var productName : UILabel = {
         let label = UILabel()
         label.textColor = UIColor.tpPrimaryBlackText()
@@ -54,11 +62,38 @@ class ReplacementListCell: UITableViewCell {
         }
         
         self.contentView.addSubview(dateExpired)
-        dateExpired.text = " \(replacement.deadline!.processText!) "
+        
+        if let deadline = replacement.deadline, let processText = deadline.processText {
+            dateExpired.text = " \(processText) "
+        } else {
+            dateExpired.text = ""
+        }
+        
         dateExpired.backgroundColor = UIColor.fromHexString(replacement.deadline.backgroundColorHex)
+        dateExpired.layer.masksToBounds = true
+        dateExpired.layer.cornerRadius = 2
         dateExpired.snp.makeConstraints { make in
             make.top.equalTo(10)
             make.left.equalTo(self.thumbnail.snp.right).offset(15)
+            make.height.equalTo(18)
+        }
+        
+        self.contentView.addSubview(replacementMultiplier)
+        
+        if let multiplierText = replacement.multiplierText {
+            replacementMultiplier.text = " \(multiplierText) "
+        } else {
+            replacementMultiplier.text = ""
+        }
+        
+        replacementMultiplier.textColor = UIColor.fromHexString(replacement.multiplierColor)
+        replacementMultiplier.layer.masksToBounds = true
+        replacementMultiplier.layer.borderColor = UIColor.fromHexString(replacement.multiplierColor).cgColor
+        replacementMultiplier.layer.borderWidth = 1
+        replacementMultiplier.layer.cornerRadius = 2
+        replacementMultiplier.snp.makeConstraints { make in
+            make.left.equalTo(self.dateExpired.snp.right).offset(8)
+            make.centerY.equalTo(self.dateExpired.snp.centerY)
             make.height.equalTo(18)
         }
         
