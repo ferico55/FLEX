@@ -121,7 +121,7 @@ def common_pods
     pod 'RxDataSources', '~> 1.0'
     
     #will be changed to proper version later
-    pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'temporary-fix'
+    pod 'Render', :git => 'https://github.com/esam091/Render.git', :branch => 'change-namespace'
     pod 'ReSwift', '~> 3.0.0'
     
     # networking and object mapping

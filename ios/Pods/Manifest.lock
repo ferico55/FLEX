@@ -345,7 +345,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
-  - Render (from `https://github.com/esam091/Render.git`, branch `temporary-fix`)
+  - Render (from `https://github.com/esam091/Render.git`, branch `change-namespace`)
   - RestKit (~> 0.27.0)
   - RestKit/Testing (~> 0.27.0)
   - ReSwift (~> 3.0.0)
@@ -397,7 +397,7 @@ EXTERNAL SOURCES:
   react-native-maps:
     :path: ../node_modules/react-native-maps
   Render:
-    :branch: temporary-fix
+    :branch: change-namespace
     :git: https://github.com/esam091/Render.git
   RNDeviceInfo:
     :path: ../node_modules/react-native-device-info
@@ -425,7 +425,7 @@ CHECKOUT OPTIONS:
     :commit: 468c0c09187b571d74a256d4e796d9ed104cfd2a
     :git: https://github.com/corin8823/Popover.git
   Render:
-    :commit: fd92ba10121dd0a438ed35de08d630dc11184745
+    :commit: 080e79380c17ece7ea712df6d37019688a525dfe
     :git: https://github.com/esam091/Render.git
   SPTPersistentCache:
     :commit: 42d45d2dfe80001af783f98cf45e7c024a87cda5
@@ -535,6 +535,6 @@ SPEC CHECKSUMS:
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 272a91a858b1e6594d3a97db87e073347a26254e
+PODFILE CHECKSUM: 1f9571d7986af8ca600bcc090609bd451fe5ede6
 
 COCOAPODS: 1.3.1
