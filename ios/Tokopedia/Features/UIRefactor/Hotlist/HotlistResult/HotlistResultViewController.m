@@ -286,14 +286,15 @@ ProductCellDelegate
 }
 
 -(void)fetchDataHotlistBanner{
+    __weak typeof(self) weakSelf = self;
     [HotlistBannerRequest fetchHotlistBannerWithQuery:[self getQueryBanner]
                                             onSuccess:^(HotlistBannerResult *data) {
                                                 
-                                                [self didReceiveBannerHotlist:data];
+                                                [weakSelf didReceiveBannerHotlist:data];
                                                 
                                             } onFailure:^(NSError *error) {
                                                 NSArray *errorMessage = @[@"Maaf, permintaan Anda gagal"];
-                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:self];
+                                                StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:errorMessage delegate:weakSelf];
                                                 [alert show];
                                             }];
 }
@@ -614,7 +615,6 @@ ProductCellDelegate
     [_requestHotlistManager requestCancel];
     _start = 0;
     _page = 0;
-    [_promo removeAllObjects];
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
@@ -828,11 +828,15 @@ ProductCellDelegate
             filter.searchKeyword = @"";
         }
         
+        __weak typeof(self) weakSelf = self;
         [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * promoResult) {
+            if ([self isInitialRequest]) {
+                [weakSelf.promo removeAllObjects];
+            }
             if (promoResult) {
-                [_promo addObject:promoResult];
-                [_collectionView reloadData];
-                [_collectionView layoutIfNeeded];
+                [weakSelf.promo addObject:promoResult];
+                [weakSelf.collectionView reloadData];
+                [weakSelf.collectionView layoutIfNeeded];
             }
         } onFailure:^(NSError * error) {
             
