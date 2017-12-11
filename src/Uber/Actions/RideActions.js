@@ -348,7 +348,7 @@ const currentTripStatusEpic = action$ =>
       ])
 
     const currentTripAction$ = currentTrip$
-      .filter(currentTrip => currentTrip.data)
+      .filter(currentTrip => currentTrip.data && currentTrip.data.request_id)
       .mergeMap(currentTrip =>
         Observable.fromPromise(getCurrentLocation()).map(location => {
           const userLocation = {
@@ -388,7 +388,7 @@ const currentTripStatusEpic = action$ =>
       .toArray()
 
     return currentTrip$
-      .filter(currentTrip => currentTrip.data)
+      .filter(currentTrip => currentTrip.data && currentTrip.data.request_id)
       .do(currentTrip => {
         AsyncStorage.getItem('ride-request-id')
           .then(requestId => {
@@ -424,7 +424,7 @@ const currentTripStatusEpic = action$ =>
               // on the server ride is in progress
               AsyncStorage.setItem(
                 'ride-request-id',
-                currentTrip.data.request_id,
+                currentTrip.data.request_id ? currentTrip.data.request_id : '',
               )
             }
           })
@@ -570,7 +570,7 @@ const driverRouteEpic = (action, store) =>
       Observable.of(currentTrip)
         .filter(() => {
           const statusTripNoNeedToRideDirection = [
-            'processing',
+            // 'processing',
             'driver_canceled',
             'rider_canceled',
             'no_drivers_available',
