@@ -562,11 +562,13 @@ class CategoryResultPage extends PureComponent {
         ListFooterComponent={this.renderFooter}
         refreshing={this.state.refreshing}
         onRefresh={() => {
-          this.setState({
-            dataSource: [],
-            start: 0,
-          })
-          this.loadData()
+          this.setState(
+            {
+              dataSource: [],
+              start: 0,
+            },
+            () => this.loadData(),
+          )
         }}
         style={{ backgroundColor: '#f1f1f1' }}
       />
