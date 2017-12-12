@@ -94,7 +94,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary *secretsByUrls = @{
                                     [NSString v4Url]: @"web_service_v4",
-                                    [NSString mojitoUrl]: @"web_service_v4",
+                                    [NSString mojitoUrl]: @"mojito_api_v1",
                                     [NSString basicUrl]: @"web_service_v4",
                                     [NSString aceUrl]: @"web_service_v4",
                                     [NSString keroUrl]: @"web_service_v4",
@@ -108,6 +108,11 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     NSString *output;
     NSString *secret = secretsByUrls[url] ?: @"web_service_v4";
     NSString* date = [self getDate];
+        
+    // wishlist endpoint need different secret text
+    if ([url isEqualToString:[NSString mojitoUrl]] && ([path hasPrefix:@"/wishlist/v1.2"] || [path hasPrefix:@"/wishlist/check/v1.2"] || [path hasPrefix:@"/wishlist/search/v1.2"])) {
+        secret = @"web_service_v4";
+    }
     
     [self setRequestMethod:method];
     [self setParameterMD5:parameter];

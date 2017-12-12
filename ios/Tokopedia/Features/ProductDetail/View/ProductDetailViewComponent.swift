@@ -1141,7 +1141,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             
             MojitoProvider()
                 .request(.setWishlist(withProductId: productDetail.id))
-                .subscribe(onNext : { _ in
+                .subscribe(onNext : { [weak self] _ in
+                    guard let `self` = self else {
+                        return
+                    }
+                    
                     if let notificationView = self.notificationView {
                         notificationView.isHidden = true
                         self.notificationView = nil
@@ -1151,7 +1155,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     self.notificationView = UIViewController.showNotificationWithMessage("Anda berhasil menambah wishlist", type: NotificationType.success.rawValue, duration: 2.0, buttonTitle: nil, dismissable: true, action: nil)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "didAddedProductToWishList"), object: productDetail.id)
                     tabManager.didWishlistProduct(productDetail.id)
-                }, onError: { err in
+                }, onError: { [weak self] err in
+                    guard let `self` = self else {
+                        return
+                    }
+                    
                     let error = err as NSError
                     
                     var messageToShow = "Kendala koneksi internet."
@@ -1202,7 +1210,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
             
             MojitoProvider()
                 .request(.unsetWishlist(withProductId: productDetail.id))
-                .subscribe(onNext : { _ in
+                .subscribe(onNext : { [weak self] _ in
+                    guard let `self` = self else {
+                        return
+                    }
+                    
                     if let notificationView = self.notificationView {
                         notificationView.isHidden = true
                         self.notificationView = nil
@@ -1213,7 +1225,11 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     NotificationCenter.default.post(name: Notification.Name(rawValue: "didRemovedProductFromWishList"), object: productDetail.id)
                     tabManager.didRemoveWishlistProduct(productDetail.id)
                     
-                }, onError: { _ in
+                }, onError: { [weak self] _ in
+                    guard let `self` = self else {
+                        return
+                    }
+                    
                     if let notificationView = self.notificationView {
                         notificationView.isHidden = true
                         self.notificationView = nil
