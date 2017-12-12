@@ -56,7 +56,6 @@ NoResultDelegate
 
 @property (nonatomic) UITableViewCellType cellType;
 
-
 @end
 
 @implementation ShopProductPageViewController {
@@ -90,7 +89,7 @@ NoResultDelegate
         _isrefreshview = YES;
         _isNoData = YES;
         _searchBar = [[UISearchBar alloc] init];
-        _searchBar.placeholder = @"Cari Produk";
+        _searchBar.placeholder = @"Cari di semua produk";
         _productFilter = [ShopProductFilter new];
         _selectedSort = [ListOption new];
     }
@@ -170,6 +169,7 @@ NoResultDelegate
     [_flowLayout setEstimatedSizeWithCellType:self.cellType];
     if(_initialEtalase){
         [_productFilter setEtalaseId:_initialEtalase.etalase_id];
+        [_searchBar setPlaceholder: @"Cari di etalase"];
     }
     
     if(_data) {
@@ -261,14 +261,28 @@ NoResultDelegate
         view.backgroundColor = [UIColor whiteColor];
         
         UILabel *textView = [[UILabel alloc] init];
-        textView.text = (indexPath.section == 0 && _featuredProducts.count > 0) ? @"Produk Unggulan" : @"Produk";
+        
+        if (indexPath.section == 0 && _featuredProducts.count > 0) {
+            textView.text = @"Produk Unggulan";
+        } else if (_initialEtalase != NULL && ![_initialEtalase.etalase_name isEqual: @""]) {
+            if (([_initialEtalase.etalase_id caseInsensitiveCompare: @"etalase"] == NSOrderedSame) || ([_initialEtalase.etalase_id caseInsensitiveCompare: @"sold"] == NSOrderedSame)) {
+                textView.text = [NSString stringWithFormat: @"%@", _initialEtalase.etalase_name];
+            } else {
+                textView.text = [NSString stringWithFormat: @"Etalase %@", _initialEtalase.etalase_name];
+            }
+        } else {
+            textView.text = @"Semua Produk";
+        }
+        
         textView.font = [UIFont title1Theme];
+        textView.numberOfLines = 1;
         textView.textColor = [UIColor tpPrimaryBlackText];
         textView.backgroundColor = [UIColor whiteColor];
         
         [view addSubview:textView];
         [textView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(view.mas_left).offset(12);
+            make.right.equalTo(view.mas_right).offset(-12);
             make.centerY.equalTo(view);
         }];
         
@@ -543,7 +557,15 @@ NoResultDelegate
     _isrefreshview = YES;
     _collectionView.contentOffset = CGPointMake(0, 0);
     [_productFilter setEtalaseId:selectedEtalase.etalase_id];
-    [_searchBar setPlaceholder:selectedEtalase.etalase_name];
+    
+    if ([selectedEtalase.etalase_id isEqual:@""]) {
+        _initialEtalase = NULL;
+        [_searchBar setPlaceholder: @"Cari di semua produk"];
+    } else {
+        _initialEtalase = selectedEtalase;
+        [_searchBar setPlaceholder: @"Cari di etalase"];
+    }
+
     _productFilter.isGetListProductToAce = selectedEtalase.isGetListProductFromAce;
     [_product removeAllObjects];
     [_collectionView reloadData];
