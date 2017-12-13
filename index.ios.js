@@ -13,22 +13,9 @@ import HybridContainer from './src/HybridContainer'
 import moment from 'moment'
 
 // top ads pages
-import TopAdsDashboard from './src/TopAds/Page/TopAdsDashboard'
-import AddCreditPage from './src/TopAds/Page/AddCreditPage'
-import DateSettingsPage from './src/TopAds/Page/DateSettingsPage'
-import PromoListPage from './src/TopAds/Page/PromoListPage'
-import PromoDetailPage from './src/TopAds/Page/PromoDetailPage'
-import FilterPage from './src/TopAds/Page/FilterPage'
-import FilterDetailPage from './src/TopAds/Page/FilterDetailPage'
-import StatDetailPage from './src/TopAds/Page/StatDetailPage'
+import TopAds from './src/TopAds'
+
 import SearchFilterScreen from './src/search/'
-import AddPromoPage from './src/TopAds/Page/AddPromoPage'
-import AddPromoPageStep1 from './src/TopAds/Page/AddPromoPageStep1'
-import ChooseProductPage from './src/TopAds/Page/ChooseProductPage'
-import AddPromoPageStep2 from './src/TopAds/Page/AddPromoPageStep2'
-import AddPromoPageStep3 from './src/TopAds/Page/AddPromoPageStep3'
-import EditPromoPage from './src/TopAds/Page/EditPromoPage'
-import EditPromoGroupNamePage from './src/TopAds/Page/EditPromoGroupNamePage'
 import OrderHistoryPage from './src/Order/Page/HistoryPage'
 import OrderDetailPage from './src/Order/Page/OrderDetailPage'
 import FeedKOLActivityScreen from './src/Feed/KOL'
@@ -49,7 +36,6 @@ import ImageDetailPage from './src/InboxReview/Page/ImageDetailPage'
 import ProductReviewPage from './src/InboxReview/Page/ProductReviewPage'
 import ShopReviewPage from './src/InboxReview/Page/ShopReviewPage'
 
-import topAdsDashboardReducer from './src/TopAds/Redux/Reducers/GeneralReducer'
 import inboxReviewReducer from './src/InboxReview/Redux/Reducer'
 
 import Promo from './src/Promo'
@@ -57,7 +43,9 @@ import PromoDetail from './src/PromoDetail'
 import CategoryResultPage from './src/category-result/CategoryResultPage'
 import { createEpicMiddleware } from 'redux-observable'
 
-import RideHailingScreen, { getVehicles } from './src/Uber/Containers/RideHailingScreen'
+import RideHailingScreen, {
+  getVehicles,
+} from './src/Uber/Containers/RideHailingScreen'
 import RidePlacesAutocompleteScreen from './src/Uber/Containers/RidePlacesAutocompleteScreen'
 import RideWebViewScreen from './src/Uber/Containers/RideWebViewScreen'
 import RideReceiptScreen from './src/Uber/Containers/RideReceiptScreen'
@@ -82,7 +70,6 @@ if (__DEV__) {
 }
 
 const middleware = applyMiddleware(thunk)
-const topAdsDashboardStore = createStore(topAdsDashboardReducer, middleware)
 const inboxReviewStore = createStore(inboxReviewReducer, middleware)
 const rideStore = createStore(
   rideReducer,
@@ -176,97 +163,6 @@ moment.relativeTimeThreshold('h', 24)
 moment.relativeTimeThreshold('d', 30)
 moment.relativeTimeThreshold('M', 12)
 
-// Navigator.registerScreen('PromoListPage', () => PromoListPage)
-
-Navigator.registerScreen('AddPromoPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <AddPromoPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('AddPromoPageStep1', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <AddPromoPageStep1 {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('ChooseProductPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <ChooseProductPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('AddPromoPageStep2', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <AddPromoPageStep2 {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('AddPromoPageStep3', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <AddPromoPageStep3 {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('EditPromoPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <EditPromoPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('EditPromoGroupNamePage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <EditPromoGroupNamePage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('StatDetailPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <StatDetailPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('FilterPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <FilterPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('FilterDetailPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <FilterDetailPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('PromoListPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <PromoListPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('PromoDetailPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <PromoDetailPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('DateSettingsPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <DateSettingsPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('TopAdsDashboard', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <TopAdsDashboard {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('AddCreditPage', () => props => (
-  <Provider store={topAdsDashboardStore}>
-    <AddCreditPage {...props} />
-  </Provider>
-))
 
 // Order Management Screen
 Navigator.registerScreen('HistoryPage', () => OrderHistoryPage)
@@ -344,8 +240,8 @@ Navigator.registerScreen('ProductAttachTopChat', () => props => (
 ))
 /* TOPCHAT */
 
-Navigator.registerScreen('SearchFilterScreen',() => props =>(
-<SearchFilterScreen {...props}/>
+Navigator.registerScreen('SearchFilterScreen', () => props => (
+  <SearchFilterScreen {...props} />
 ))
 
 const container = HybridContainer({
@@ -360,3 +256,12 @@ const container = HybridContainer({
 })
 
 AppRegistry.registerComponent('Tokopedia', () => container)
+
+const registerScreens = screenGroups =>
+  screenGroups.forEach(group =>
+    Object.keys(group).forEach(screenName =>
+      Navigator.registerScreen(screenName, () => group[screenName]),
+    ),
+  )
+
+registerScreens([TopAds])
