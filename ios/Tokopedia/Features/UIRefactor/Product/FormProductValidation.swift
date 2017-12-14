@@ -215,22 +215,11 @@ class FormProductValidation: NSObject {
     }
     
     fileprivate func priceValidation(_ price: String?, currency:String) throws {
-        
+
         guard price != "" && price != nil else {
             throw FormError(message: "Harga harus diisi.")
         }
         
-        if currency == PriceCurrencyType.IDR.rawValue {
-            guard Float(price!) >= 100 && Float(price!) <= 50000000 else {
-                throw FormError(message: "Rentang Harga 100 - 50000000")
-            }
-        }
-        
-        if currency == PriceCurrencyType.USD.rawValue {
-            guard Float(price!) >= 1 && Float(price!) <= 4000 else {
-                throw FormError(message: "Rentang Harga 1 - 4000")
-            }
-        }
     }
     
     fileprivate func weightValidation(_ weight: String, unit: String) throws {
