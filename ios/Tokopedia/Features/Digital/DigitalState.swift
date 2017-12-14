@@ -144,6 +144,8 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             
             if let op = selectedOperator {
                 newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
+            } else {
+                newState.selectedProduct = nil
             }
         } else {
             if lastOrder.clientNumber != nil {
@@ -154,6 +156,8 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             newState.selectedOperator = operators
             if let op = operators {
                 newState.selectedProduct = self.selectProduct(fromOperator: op, orProductId: lastOrder.productId)
+            } else {
+                newState.selectedProduct = nil
             }
         }
         newState.textInputStates = textInputStates

@@ -239,7 +239,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             layout.position = .absolute
                             
                             imageView.contentMode = .scaleAspectFit
-                            imageView.setImageWith(URL(string: self.state!.selectedOperator?.imageUrl ?? ""))
+                            if let selectedOperator = self.store.state?.selectedOperator {
+                                imageView.setImageWith(URL(string: selectedOperator.imageUrl))
+                            } else {
+                                imageView.image = nil
+                            }
                         }
                     ),
                     Node { view, layout, _ in
