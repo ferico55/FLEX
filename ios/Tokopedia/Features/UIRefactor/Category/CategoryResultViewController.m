@@ -191,18 +191,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [_refreshControl setAttributedTitle:[[NSAttributedString alloc] initWithString:kTKPDREQUEST_REFRESHMESSAGE]];
     [_refreshControl addTarget:self action:@selector(refreshView:)forControlEvents:UIControlEventValueChanged];
     
-    
-    if ([[_data objectForKey:@"type"] isEqualToString:@"search_product"]||[[_data objectForKey:@"type"] isEqualToString:[self directoryType]]) {
-        if(self.isFromAutoComplete) {
-            [AnalyticsManager trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
-        } else {
-            [AnalyticsManager trackScreenName:@"Product Search Results" gridType:self.cellType];
-        }
-    }
-    else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
-        [AnalyticsManager trackScreenName:@"Catalog Search Results"];
-    }
-    
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
     }
