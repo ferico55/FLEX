@@ -10,11 +10,17 @@ import Unbox
 
 final class CategoryIntermediaryCuratedProductSection: NSObject, Unboxable {
     var title: String = ""
-    var products: [CategoryIntermediaryProduct]!
+    var products: [CategoryIntermediaryProduct]
     
-    convenience init(unboxer:Unboxer) throws {
-        self.init()
-        self.title = try unboxer.unbox(keyPath: "title");
-        self.products = try unboxer.unbox(keyPath: "products");
+    required convenience init(unboxer:Unboxer) throws {
+        self.init(
+            title: try unboxer.unbox(keyPath: "title"),
+            products: try unboxer.unbox(keyPath: "products")
+        )
+    }
+    
+    init(title: String, products: [CategoryIntermediaryProduct]) {
+        self.title = title
+        self.products = products
     }
 }

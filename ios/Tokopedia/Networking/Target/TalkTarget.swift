@@ -42,8 +42,6 @@ extension TalkTarget: TargetType {
                     "page": 1]
         case let .getTalkComment(talkID):
             return ["talk_id": talkID]
-        default :
-            return [ : ]
         }
     }
     

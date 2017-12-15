@@ -225,7 +225,7 @@ UICollectionViewDelegate
 }
 
 + (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type {
-    CGFloat height;
+    CGFloat height = 0.0;
     CGSize itemSize = [self itemSize:type];
     
     if (IS_IPHONE_4_OR_LESS || IS_IPHONE_5) {
@@ -254,8 +254,8 @@ UICollectionViewDelegate
     CGRect screenRect = [[UIScreen mainScreen] bounds];
     CGFloat screenWidth = screenRect.size.width;
     
-    CGFloat cellWidth;
-    CGFloat cellHeight;
+    CGFloat cellWidth = 0.0;
+    CGFloat cellHeight = 0.0;
     if (type == PromoCollectionViewCellTypeNormal) {
         BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
         CGFloat numberOfCell = isPad ? 4 : 2;

@@ -180,7 +180,7 @@ class ListBankViewController: UIViewController {
         self.title = "Rekening Tokopedia"
         
         self.view = tableView
-        Observable.from(listBank)
+        Observable.from(optional: listBank)
             .bindTo(tableView.rx.items) { (tableView, row, bank) in
                 return BankCell(bank: bank)
             }

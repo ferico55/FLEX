@@ -369,7 +369,6 @@ static NSString const *rows = @"12";
 
 -(NSDictionary*)parameterDynamicFilter{
     NSString *querry = [_params objectForKey:kTKPDSEARCH_DATASEARCHKEY];
-    NSString *type = kTKPDSEARCH_DATASEARCHSHOPKEY;
     NSString *deptid = [_params objectForKey:@"sc"];
     
     NSDictionary* param;

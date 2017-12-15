@@ -49,7 +49,7 @@ class ResetPasswordSuccessViewController: UIViewController {
             withBaseUrl: NSString.accountsUrl(),
             path: "/api/reset",
             method: .POST,
-            parameter: ["email": self.email ?? ""],
+            parameter: ["email": self.email ],
             mapping: GeneralAction.mapping(),
             onSuccess: { successResult, _ in
                 let reset = successResult.dictionary()[""] as! GeneralAction

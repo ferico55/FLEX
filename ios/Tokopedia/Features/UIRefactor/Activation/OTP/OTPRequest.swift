@@ -53,12 +53,12 @@ class OTPRequest: NSObject {
             onSuccess: { (mappingResult, operation) in
                 let otp = mappingResult.dictionary()[""] as! SecurityRequestOTP
                 
-                if otp.message_error != nil && otp.message_error.count > 0 {
+                if otp.message_error.count > 0 {
                     StickyAlertView.showErrorMessage(otp.message_error)
                     onFailure()
                 }
                 
-                if otp.message_status != nil && otp.message_status.count > 0 {
+                if otp.message_status.count > 0 {
                     StickyAlertView.showSuccessMessage(otp.message_status)
                     onSuccess(otp)
                 }

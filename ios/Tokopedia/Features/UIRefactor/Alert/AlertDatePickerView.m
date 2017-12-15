@@ -132,10 +132,10 @@
                 NSDateFormatter *dateFormat = [[NSDateFormatter alloc] init];
                 [dateFormat setDateFormat:@"YYYY-MM-dd"];
 
-                NSString *maximum = [NSString stringWithFormat:@"%ld-12-31", maximumYear];
+                NSString *maximum = [NSString stringWithFormat:@"%ld-12-31", (long)maximumYear];
                 NSDate *maximumDate = [dateFormat dateFromString:maximum];
 
-                NSString *minimum = [NSString stringWithFormat:@"%ld-01-01", minimumYear];
+                NSString *minimum = [NSString stringWithFormat:@"%ld-01-01", (long)minimumYear];
                 NSDate *minimumDate = [dateFormat dateFromString:minimum];
 
                 [_datepicker setMaximumDate:maximumDate];

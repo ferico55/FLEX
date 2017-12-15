@@ -10,16 +10,16 @@ import Unbox
 
 final class ReplacementDeadline: Unboxable {
     
-    var processDayLeft: String!
-    var processHourLeft: String!
-    var processText: String!
-    var poDayLeft: String!
-    var shippingDayLeft: String!
-    var shippingHourLeft: String!
-    var shippingText: String!
-    var finishDayLeft: String!
-    var finishHourLeft: String!
-    var backgroundColorHex: String!
+    var processDayLeft: String
+    var processHourLeft: String
+    var processText: String
+    var poDayLeft: String
+    var shippingDayLeft: String
+    var shippingHourLeft: String
+    var shippingText: String
+    var finishDayLeft: String
+    var finishHourLeft: String
+    var backgroundColorHex: String
     
     required convenience init(unboxer: Unboxer) throws {
         self.init(
@@ -36,7 +36,7 @@ final class ReplacementDeadline: Unboxable {
         )
     }
     
-    init(processDayLeft: String!, processHourLeft: String!, processText: String!, poDayLeft: String!, shippingDayLeft: String!, shippingHourLeft: String!, shippingText : String!, finishDayLeft: String!, finishHourLeft: String!, backgroundColorHex: String!) {
+    init(processDayLeft: String, processHourLeft: String, processText: String, poDayLeft: String, shippingDayLeft: String, shippingHourLeft: String, shippingText : String, finishDayLeft: String, finishHourLeft: String, backgroundColorHex: String) {
         self.processDayLeft = processDayLeft
         self.processHourLeft = processHourLeft
         self.processText = processText

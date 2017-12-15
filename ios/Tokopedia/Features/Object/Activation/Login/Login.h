@@ -16,7 +16,7 @@
 @property (nonatomic, strong, nonnull) NSString *status;
 @property (nonatomic, strong, nonnull) NSString *server_process_time;
 @property (nonatomic, strong, nonnull) LoginResult *result;
-@property (nonatomic, strong) NSString *medium; // Added to help analytics
+@property (nonatomic, strong, nonnull) NSString *medium; // Added to help analytics
 
 @property BOOL justRegistered;
 

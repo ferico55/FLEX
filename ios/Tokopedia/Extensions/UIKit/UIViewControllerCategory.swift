@@ -17,7 +17,7 @@ import SwiftOverlays
 }
 
 extension UIViewController {
-    class func showNotificationWithMessage(_ message: String,
+    @discardableResult class func showNotificationWithMessage(_ message: String,
                                            type: Int,
                                            duration: TimeInterval,
                                            buttonTitle: String?,

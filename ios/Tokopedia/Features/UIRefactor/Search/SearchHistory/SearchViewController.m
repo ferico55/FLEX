@@ -81,7 +81,9 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)viewDidLoad {
     [super viewDidLoad];
     _authManager = [UserAuthentificationManager new];
-    debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:nil];
+    debouncer = [[Debouncer alloc] initWithDelay:0.2 callback:^{
+       // do nothing
+    }];
     
     _searchSuggestionDataArray = [NSMutableArray new];
     _searchBar.delegate = self;

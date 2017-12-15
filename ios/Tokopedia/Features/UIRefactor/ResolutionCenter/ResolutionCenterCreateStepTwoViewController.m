@@ -198,7 +198,7 @@ UIPickerViewDelegate
 -(void)troublePickerValueChanged:(id)picker{
     DownPicker* downPicker = (DownPicker*)picker;
     ResolutionCenterCreatePOSTProduct *postProduct = [_result.postObject.product_list objectAtIndex:downPicker.tag];
-    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:postProduct];
+    NSMutableArray* possibleTroubles = [_result generatePossibleTroubleListWithCategoryTroubleId:_result.postObject.category_trouble_id isFreeReturn:postProduct.isFreeReturn];
     ResolutionCenterCreateTroubleList *selectedTrouble = [possibleTroubles objectAtIndex:[downPicker selectedIndex]];
     
     postProduct.trouble_id = selectedTrouble.trouble_id;

@@ -115,7 +115,7 @@ class ShopViewController: UIViewController {
     }
     
     private func trackScreenWithShop(_ shop: Shop) {
-        let shopID = shop.result.info.shop_id
+        let shopID = shop.result.info.shop_id as Any
         var shopType = "regular"
         
         if shop.result.info.shop_is_gold == 1 {

@@ -10,11 +10,11 @@ import Unbox
 
 final class ReplacementShipment: Unboxable {
     
-    var productId: String!
-    var name: String!
-    var product: String!
-    var id: String!
-    var logo: String!
+    var productId: String
+    var name: String
+    var product: String
+    var id: String
+    var logo: String
     
     required convenience init(unboxer: Unboxer) throws {
         self.init(
@@ -26,7 +26,7 @@ final class ReplacementShipment: Unboxable {
         )
     }
 
-    init(productId: String!, name: String!, product: String!, id: String!, logo: String!) {
+    init(productId: String, name: String, product: String, id: String, logo: String) {
         self.productId = productId
         self.name = name
         self.product = product

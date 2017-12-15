@@ -170,8 +170,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             .subscribe(onNext: { checkResult in
                 for id in checkResult.ids {
                     for section in intermediaryCategorySection {
-                        guard let products = section.products else { continue }
-                        for product in products {
+                        for product in section.products {
                             if String(product.id) == id {
                                 product.isOnWishlist = true
                                 break

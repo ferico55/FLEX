@@ -39,7 +39,7 @@ extension HadesTarget : TargetType {
         switch self {
         case let .getCategoryIntermediary(categoryID):
             return "/v1/categories/\(categoryID)/detail"
-        case let .getNavigationCategory(categoryId, root):
+        case let .getNavigationCategory(categoryId, _):
             return "/v1/category_layout/\(categoryId)"
         case let .getFilterCategories(categoryID):
             var path : String = "/v1/categories"
@@ -67,7 +67,7 @@ extension HadesTarget : TargetType {
         switch self {
         case .getCategoryIntermediary :
             return [:]
-        case let .getNavigationCategory(categoryId, root) :
+        case let .getNavigationCategory(_, root) :
             return root ? ["type" : "root"] : [:]
         case .getFilterCategories :
             return ["filter":"type==tree"]

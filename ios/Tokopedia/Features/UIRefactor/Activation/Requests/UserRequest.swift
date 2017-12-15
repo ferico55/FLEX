@@ -334,7 +334,6 @@ class UserRequest: NSObject {
 
     class func getMoengageUserInformation(withUserID: String, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
         let userID = Int(withUserID) ?? 0
-        var moengageWatcher: GraphQLQueryWatcher<MoEngageQuery>?
         let moengageClient: ApolloClient = {
             let configuration = URLSessionConfiguration.default
             let userManager = UserAuthentificationManager()
@@ -346,7 +345,7 @@ class UserRequest: NSObject {
             let accessToken = loginData?["oAuthToken.accessToken"] as? String ?? ""
             let accountsAuth = "\(tokenType) \(accessToken)" as String
 
-            let headers = ["Tkpd-UserId": userManager.getUserId(),
+            let headers: [AnyHashable: Any] = ["Tkpd-UserId": userManager.getUserId(),
                            "Tkpd-SessionId": userManager.getMyDeviceToken(),
                            "X-Device": "ios-\(appVersion)",
                            "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
@@ -359,7 +358,7 @@ class UserRequest: NSObject {
             return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
         }()
 
-        moengageWatcher = moengageClient.watch(query: MoEngageQuery(userID: userID)) { result, error in
+        _ = moengageClient.watch(query: MoEngageQuery(userID: userID)) { result, error in
             guard error == nil, result?.errors == nil, let data = result?.data else {
                 onFailure()
                 return

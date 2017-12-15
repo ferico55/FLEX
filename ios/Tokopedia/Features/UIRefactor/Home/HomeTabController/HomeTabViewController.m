@@ -440,7 +440,6 @@
         _redirectHandler = [[RedirectHandler alloc]init];
         _redirectHandler.delegate = self;
         
-        NSDictionary *userInfo = notification.userInfo;
         NSInteger code = [[data objectForKey:@"tkp_code"] integerValue];
         
         [_redirectHandler proxyRequest:code];

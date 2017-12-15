@@ -585,8 +585,6 @@
                                                                        delegate:self];
         [alert show];
     } else {
-        NSString *totalcomment = [NSString stringWithFormat:@"%zd %@",_list.count, @"Komentar"];
-        
         TalkCommentList *comment = _list[_list.count-1];
         comment.is_just_sent = NO;
         comment.comment_id = commentAction.result.comment_id;

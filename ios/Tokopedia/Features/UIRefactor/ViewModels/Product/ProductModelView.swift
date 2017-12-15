@@ -13,20 +13,20 @@ class ProductModelViewSwift : NSObject {
     
     var productName:String? {
         get {
-            return productName?.kv_decodeHTMLCharacterEntities()
+            return self.productName?.kv_decodeHTMLCharacterEntities()
         }
         set {
-            productName = newValue
+            self.productName = newValue
         }
     }
     var productPrice:String?
     var productPriceIDR:String?
     var productShop:String? {
         get{
-            return productShop?.kv_decodeHTMLCharacterEntities()
+            return self.productShop?.kv_decodeHTMLCharacterEntities()
         }
         set {
-            productName = newValue
+            self.productName = newValue
         }
     }
     var shopLocation:String?

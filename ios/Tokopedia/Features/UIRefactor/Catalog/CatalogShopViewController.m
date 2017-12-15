@@ -231,7 +231,7 @@
     cell.constraintWidthGoldMerchant.constant = (![shop.shop_gold_shop isEqualToString:@"1"])?0:20;
     cell.constraintSpaceLuckyMerchant.constant = (![shop.shop_gold_shop isEqualToString:@"1"])?0:2;
     
-    UIImageView *thumb = cell.luckyMerchantBadge;
+    __weak UIImageView *thumb = cell.luckyMerchantBadge;
     thumb.image = nil;
     [thumb setImageWithURLRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:shop.shop_lucky]]
                               placeholderImage:[UIImage imageNamed:@""]
@@ -322,7 +322,6 @@
 
         } else if (button.tag == 3) {
             if (_catalog) {
-                NSString *title = _catalog.result.catalog_info.catalog_name;
                 ReferralManager *referralManager = [ReferralManager new];
                 [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: button];
             }
@@ -460,8 +459,6 @@
 - (void)didReceiveMappingResult:(RKMappingResult *)mappingResult {
     NSDictionary *result = ((RKMappingResult*)mappingResult).dictionary;
     CatalogShopAWS *shops = [result objectForKey:@""];
-    
-    NSMutableArray *catalogShops = [[NSMutableArray alloc]init];
     
     [_noResultView removeFromSuperview];
     _uriNext = shops.result.paging.uri_next;

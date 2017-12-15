@@ -68,7 +68,7 @@ class CategoryNavigationViewController: MHVerticalTabBarController {
                             selectedCategoryAndIndex = (categoryNavigationTableViewController, index)
                             break
                         } else {
-                            guard let level2CategoryChild =  level2Category.child else { continue }
+                            guard level2Category.child != nil else { continue }
                             for level3Category in level2Category.child! {
                                 if level3Category.categoryId == categoryId {
                                     selectedCategoryAndIndex = (categoryNavigationTableViewController, index)

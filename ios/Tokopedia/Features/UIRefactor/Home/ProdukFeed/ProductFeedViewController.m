@@ -28,8 +28,6 @@
 #import "FavoriteShopRequest.h"
 
 static NSString *productFeedCellIdentifier = @"ProductCellIdentifier";
-static NSInteger const normalWidth = 320;
-static NSInteger const normalHeight = 568;
 
 typedef enum TagRequest {
     ProductFeedTag
@@ -134,10 +132,6 @@ FavoriteShopRequestDelegate
     [super viewDidLoad];
     
     _productDataSource = [[ProductDataSource alloc] initWithCollectionView:_collectionView supplementaryDataSource:self];
-    
-    
-    double widthMultiplier = [[UIScreen mainScreen]bounds].size.width / normalWidth;
-    double heightMultiplier = [[UIScreen mainScreen]bounds].size.height / normalHeight;
     
     //todo with variable
     _promo = [NSMutableArray new];

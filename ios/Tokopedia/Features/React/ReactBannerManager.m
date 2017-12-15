@@ -11,9 +11,6 @@
 #import "iCarousel.h"
 #import "Tokopedia-Swift.h"
 
-static const CGSize bannerIPadSize = {.width = 450, .height = 225};
-static const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
-
 @interface ReactCarousel: iCarousel
 
 @property(nonatomic, copy) RCTBubblingEventBlock onPageChange;

@@ -116,6 +116,9 @@ extension CategoryNavigationTableViewController: RATreeViewDataSource, RATreeVie
     func treeView(_ treeView: RATreeView, cellForItem item: Any?) -> UITableViewCell {
         let cell = treeView.dequeueReusableCell(withIdentifier: kCategoryNavigationTableViewCell) as! CategoryNavigationTableViewCell
         
+        guard let item = item else {
+            return cell
+        }
         let level = treeView.levelForCell(forItem: item) + 1
         let listOption = item as! ListOption
         cell.setListOption(listOption: listOption)

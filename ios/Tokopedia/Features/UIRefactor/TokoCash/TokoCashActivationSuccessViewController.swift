@@ -42,8 +42,8 @@ class TokoCashActivationSuccessViewController: UIViewController {
         }
         phoneNumber.asObservable()
             .subscribe(onNext: { _ in
-                let regularAttributes = [NSFontAttributeName: UIFont.largeTheme()]
-                let boldAttributes = [NSFontAttributeName: UIFont.largeThemeSemibold()]
+                let regularAttributes: [String: Any] = [NSFontAttributeName: UIFont.largeTheme()]
+                let boldAttributes: [String: Any] = [NSFontAttributeName: UIFont.largeThemeSemibold()]
                 
                 let partOne = NSMutableAttributedString(string: "Selamat Anda berhasil melakukan aktivasi TokoCash dengan nomor ", attributes: regularAttributes)
                 let partTwo = NSMutableAttributedString(string: self.phoneNumber.value, attributes: boldAttributes)

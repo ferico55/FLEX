@@ -36,8 +36,6 @@ extension ReputationTarget: TargetType {
         switch self {
         case let .getMostHelpfulReview(productId):
             return ["product_id": productId]
-        default :
-            return [ : ]
         }
     }
     

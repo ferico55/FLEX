@@ -316,19 +316,18 @@ typedef enum TagRequest {
         if(index == items.count - 1) {
             UserAuthentificationManager* userManager = [UserAuthentificationManager new];
             if(!userManager.isLogin) {
-                [tabBarItem initWithTitle:@"Login"
-                                    image:[[UIImage imageNamed:@"icon_login.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                            selectedImage:[[UIImage imageNamed:@"icon_login_active.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setTitle:@"Login"];
+                [tabBarItem setImage:[[UIImage imageNamed:@"icon_login.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setSelectedImage:[[UIImage imageNamed:@"icon_login_active.png"]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             } else {
-                [tabBarItem initWithTitle:[item objectForKey:@"name"]
-                                    image:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                            selectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setTitle:[item objectForKey:@"name"]];
+                [tabBarItem setImage:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setSelectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             }
         } else {
-            [tabBarItem initWithTitle:[item objectForKey:@"name"]
-                                image:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]
-                        selectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
-            
+            [tabBarItem setTitle:[item objectForKey:@"name"]];
+            [tabBarItem setImage:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [tabBarItem setSelectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
         }
         
         [tabBarItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];

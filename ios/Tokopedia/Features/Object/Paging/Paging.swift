@@ -78,7 +78,7 @@ final class Paging:NSObject, Unboxable {
     
     init(withDecoder: NSCoder) {
         super.init()
-        self.uri_next = withDecoder.decodeObject(forKey: "uri_next") as! String
+        self.uri_next = withDecoder.decodeObject(forKey: "uri_next") as? String
     }
     
     init(uri_previous:String, uri_next:String) {

@@ -503,7 +503,7 @@ enum RequestError : Error {
             "product_name"          : product.product_name,
             "product_description"   : product.product_short_desc,
             "product_department_id" : product.product_category.categoryId ?? "",
-            "product_catalog_id"    : product.product_catalog.catalog_id ?? "",
+            "product_catalog_id"    : product.product_catalog.catalog_id ,
             "product_min_order"     : product.product_min_order,
             "product_price_currency": product.product_currency_id,
             "product_price"         : product.product_price,

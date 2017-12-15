@@ -26,7 +26,7 @@ class WebviewPopover: Popover {
         
         self.viewController = viewController
         
-        popView = Bundle.main.loadNibNamed("PivotNavigationView", owner: self, options: nil)?[0] as! UIView
+        popView = (Bundle.main.loadNibNamed("PivotNavigationView", owner: self, options: nil)?[0] as! UIView)
         
         var frame = self.popView?.frame
         frame?.size.width = UIScreen.main.bounds.size.width

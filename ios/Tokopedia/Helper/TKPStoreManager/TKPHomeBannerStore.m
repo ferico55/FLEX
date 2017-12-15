@@ -15,7 +15,6 @@
 
 NSString static *const TKPAPIPageKey = @"page";
 NSString static *const TKPAPILimitKey = @"per_page";
-NSInteger static const TKPSuccessStatusCode = 200;
 
 @implementation TKPHomeBannerStore
 

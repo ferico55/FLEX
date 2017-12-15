@@ -124,7 +124,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             
             view.didTapSeeAllButton = { [unowned self] in
                 AnalyticsManager .trackEventName(GA_EVENT_CLICK_INTERMEDIARY,
-                    category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryNonHiddenChildren.first?.rootCategoryId)",
+                    category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(String(describing: categoryIntermediaryNonHiddenChildren.first?.rootCategoryId))",
                     action: "Navigation",
                     label: "Expand Subcategory")
                 self.state?.isCategorySubviewExpanded = !(state?.isCategorySubviewExpanded)!
@@ -452,7 +452,9 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 cell.removeWishlistButton()
                 cell.parentViewController = state?.intermediaryViewController
                 cell.applinks = curatedProduct.applinks
-                cell.delegate = state?.intermediaryViewController as! ProductCellDelegate
+                if let delegate = state?.intermediaryViewController {
+                    cell.delegate = delegate
+                }
                 cell.bk_(whenTapped: {
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel.productName)", label: cell.viewModel.productName)
                     TPRoutes.routeURL(URL(string: cell.applinks)!)

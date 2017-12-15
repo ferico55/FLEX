@@ -13,31 +13,48 @@ final class CategoryIntermediaryProduct: NSObject, Unboxable {
     var departmentId: Int = 0
     var condition: Int = 0
     var imageUrl: String = ""
-    var badges: [ProductBadge]!
+    var badges: [ProductBadge]
     var name: String = ""
     var price: String = ""
     var rating: Int = 0
     var url: String = ""
     var wholesalePrice: String? = ""
-    var labels: [ProductLabel]!
-    var shop: CategoryIntermediaryProductShop!
+    var labels: [ProductLabel]
+    var shop: CategoryIntermediaryProductShop
     var applinks: String = ""
     var isOnWishlist = false
 
-    convenience init(unboxer:Unboxer) throws {
-        self.init()
-        self.id = try unboxer.unbox(keyPath: "id")
-        self.condition = try unboxer.unbox(keyPath: "condition")
-        self.name = try unboxer.unbox(keyPath: "name")
-        self.price = try unboxer.unbox(keyPath: "price")
-        self.rating = try unboxer.unbox(keyPath: "rating")
-        self.url = try unboxer.unbox(keyPath: "url")
-        self.applinks = try unboxer.unbox(keyPath: "applinks")
-        self.departmentId = try unboxer.unbox(keyPath: "department_id")
-        self.imageUrl = try unboxer.unbox(keyPath: "image_url")
-        self.wholesalePrice = try? unboxer.unbox(keyPath: "wholesale_price") as String
-        self.badges = try unboxer.unbox(keyPath: "badges")
-        self.labels = try unboxer.unbox(keyPath: "labels")
-        self.shop = try unboxer.unbox(keyPath: "shop")
+    required convenience init(unboxer:Unboxer) throws {
+        self.init(
+            id: try unboxer.unbox(keyPath: "id"),
+            departmentId: try unboxer.unbox(keyPath: "department_id"),
+            condition: try unboxer.unbox(keyPath: "condition"),
+            imageUrl: try unboxer.unbox(keyPath: "image_url"),
+            badges: try unboxer.unbox(keyPath: "badges"),
+            name: try unboxer.unbox(keyPath: "name"),
+            price: try unboxer.unbox(keyPath: "price"),
+            rating: try unboxer.unbox(keyPath: "rating"),
+            url: try unboxer.unbox(keyPath: "url"),
+            wholesalePrice: try? unboxer.unbox(keyPath: "wholesale_price") as String,
+            labels: try unboxer.unbox(keyPath: "labels"),
+            shop: try unboxer.unbox(keyPath: "shop"),
+            appLinks: try unboxer.unbox(keyPath: "applinks")
+        )
+    }
+    
+    init(id: String, departmentId: Int, condition: Int, imageUrl: String, badges: [ProductBadge], name: String, price: String, rating: Int, url: String, wholesalePrice: String?, labels: [ProductLabel], shop: CategoryIntermediaryProductShop, appLinks: String) {
+        self.id = id
+        self.departmentId = departmentId
+        self.condition = condition
+        self.imageUrl = imageUrl
+        self.badges = badges
+        self.name = name
+        self.price = price
+        self.rating = rating
+        self.url = url
+        self.wholesalePrice = wholesalePrice
+        self.labels = labels
+        self.shop = shop
+        self.applinks = appLinks
     }
 }

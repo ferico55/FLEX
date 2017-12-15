@@ -255,7 +255,7 @@
         self.productPrice.textColor = [UIColor.blackColor colorWithAlphaComponent:0.6];
         
         self.productPrice.font = [UIFont superMicroTheme];
-        self.discountLabel.text = [NSString stringWithFormat:@"%d%%OFF", viewModel.percentage_amount];
+        self.discountLabel.text = [NSString stringWithFormat:@"%ld%%OFF", (long)viewModel.percentage_amount];
         self.catalogPriceLabel.text = viewModel.productPrice;
         self.shopLocation.hidden = YES;
         

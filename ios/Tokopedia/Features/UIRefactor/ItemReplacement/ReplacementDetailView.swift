@@ -387,12 +387,12 @@ class ReplacementDetailView: ComponentView<ReplacementState> {
             backgroundColorHexString:replacement.deadline.backgroundColorHex,
             cashback: replacement.cashback,
             destination: replacement.destination.province,
-            shipper: "\(replacement.shipper.name!) - \(replacement.shipper.product!)",
+            shipper: "\(replacement.shipper.name) - \(replacement.shipper.product)",
             productImageUrlString: replacement.products.first!.thumbnailUrlString,
             productName: replacement.products.first!.name,
             productNote: replacement.products.first!.note ?? "-",
             totalPrice: replacement.detail.totalPriceIdr,
-            quantity: "\(replacement.products.first!.deliverQuantity!) barang"
+            quantity: "\(replacement.products.first!.deliverQuantity) barang"
         )
     }
     

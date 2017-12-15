@@ -38,7 +38,7 @@ final class WalletStore: NSObject, Unboxable {
         let userAuth = UserAuthentificationManager()
         let userInformation = userAuth.getUserLoginData()
         
-        if let tokenType = userInformation?["oAuthToken.tokenType"] {
+        if userInformation?["oAuthToken.tokenType"] != nil {
             return self.error == "invalid_request"
         }
         

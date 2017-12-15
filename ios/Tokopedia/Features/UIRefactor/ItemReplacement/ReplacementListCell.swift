@@ -63,8 +63,8 @@ class ReplacementListCell: UITableViewCell {
         
         self.contentView.addSubview(dateExpired)
         
-        if let deadline = replacement.deadline, let processText = deadline.processText {
-            dateExpired.text = " \(processText) "
+        if let deadline = replacement.deadline {
+            dateExpired.text = " \(deadline.processText) "
         } else {
             dateExpired.text = ""
         }

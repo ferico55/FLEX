@@ -1,11 +1,13 @@
-included: # paths to include during linting. `--path` is ignored if present.
-  - Tokopedia
-excluded: # paths to ignore during linting. Takes precedence over `included`.
+--- 
+excluded: 
   - Carthage
   - Pods
   - Tokopedia/API.swift
- 
-whitelist_rules:
+force_cast: warning
+force_try: warning
+included: 
+  - Tokopedia
+whitelist_rules: 
   - force_try
   - force_cast
   - private_outlet
@@ -19,7 +21,3 @@ whitelist_rules:
   - overridden_super_call
   - syntactic_sugar
   - prohibited_super_call
-  
-
-force_cast: warning
-force_try: warning

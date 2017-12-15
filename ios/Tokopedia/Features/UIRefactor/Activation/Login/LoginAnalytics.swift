@@ -34,7 +34,7 @@ class LoginAnalytics {
     }
     //    MARK: - Mo engage event
     func trackMoEngageEvent(with login: Login) {
-        let attributes = ["mobile_number": login.result.phoneNumber ?? "", "customer_id": login.result.user_id ?? "", "medium": login.medium ?? "", "email": login.result.email ?? ""]
+        let attributes = ["mobile_number": login.result.phoneNumber ?? "", "customer_id": login.result.user_id ?? "", "medium": login.medium , "email": login.result.email ?? ""]
         AnalyticsManager.moEngageTrackEvent(withName: "Login", attributes: attributes)
     }
 }

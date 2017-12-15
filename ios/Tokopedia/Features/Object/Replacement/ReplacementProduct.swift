@@ -10,22 +10,22 @@ import Unbox
 
 final class ReplacementProduct: Unboxable {
     
-    var deliverQuantity: String!
-    var weightUnitId: String!
-    var orderId: String!
-    var status: String!
-    var identifier: String!
-    var currentWeight: String!
-    var thumbnailUrlString: String!
-    var priceWithFormat: String!
-    var description: String!
-    var price: String!
-    var priceCurrencyId: String!
-    var subtotalPriceIdr: String!
-    var subtotalPrice: String!
-    var weight: String!
-    var rejectQty: String!
-    var name: String!
+    var deliverQuantity: String
+    var weightUnitId: String
+    var orderId: String
+    var status: String
+    var identifier: String
+    var currentWeight: String
+    var thumbnailUrlString: String
+    var priceWithFormat: String
+    var description: String
+    var price: String
+    var priceCurrencyId: String
+    var subtotalPriceIdr: String
+    var subtotalPrice: String
+    var weight: String
+    var rejectQty: String
+    var name: String
     var note: String?
     
     required convenience init(unboxer: Unboxer) throws {
@@ -50,7 +50,7 @@ final class ReplacementProduct: Unboxable {
         )
     }
     
-    init(deliverQuantity: String!, weightUnitId: String!, orderId: String!, status: String!, identifier: String!, currentWeight: String!, thumbnailUrlString: String!, priceWithFormat: String!, description: String!, price: String!, priceCurrencyId: String!, subtotalPriceIdr: String!, subtotalPrice: String!, weight: String!, rejectQty: String!, name: String!, note: String?) {
+    init(deliverQuantity: String, weightUnitId: String, orderId: String, status: String, identifier: String, currentWeight: String, thumbnailUrlString: String, priceWithFormat: String, description: String, price: String, priceCurrencyId: String, subtotalPriceIdr: String, subtotalPrice: String, weight: String, rejectQty: String, name: String, note: String?) {
         
         self.deliverQuantity = deliverQuantity
         self.weightUnitId = weightUnitId

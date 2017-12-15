@@ -34,7 +34,7 @@ class SalesOrderRequest: NSObject {
         
         let requestURL = URL(string: requestURLString)
         let baseURLString = "\(requestURL!.scheme ?? "")://\(requestURL!.host ?? "")"
-        let pathURLString = requestURL!.path ?? ""
+        let pathURLString = requestURL!.path 
         
         networkManager.request(withBaseUrl: baseURLString,
                                           path: pathURLString,

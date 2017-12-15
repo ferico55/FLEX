@@ -43,7 +43,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         let accessToken = loginData?["oAuthToken.accessToken"] as? String ?? ""
         let accountsAuth = "\(tokenType) \(accessToken)" as String
         
-        let headers = ["Tkpd-UserId": userManager.getUserId(),
+        let headers: [AnyHashable: Any] = ["Tkpd-UserId": userManager.getUserId(),
                        "Tkpd-SessionId": userManager.getMyDeviceToken(),
                        "X-Device": "ios-\(appVersion)",
                        "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
@@ -393,7 +393,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         let accessToken = loginData?["oAuthToken.accessToken"] as? String ?? ""
         let accountsAuth = "\(tokenType) \(accessToken)" as String
         
-        let headers = ["Tkpd-UserId": userManager.getUserId(),
+        let headers: [AnyHashable: Any] = ["Tkpd-UserId": userManager.getUserId(),
                        "Tkpd-SessionId": userManager.getMyDeviceToken(),
                        "X-Device": "ios-\(appVersion)",
                        "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),

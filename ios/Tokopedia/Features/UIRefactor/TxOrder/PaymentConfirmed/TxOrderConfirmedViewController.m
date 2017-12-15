@@ -448,7 +448,6 @@
     
     [_loadingAlert show];
     
-    __weak typeof(self) wself = self;
     [RequestOrderData fetchDataDetailPaymentID:order.payment_id success:^(TxOrderConfirmedDetailOrder *data) {
         [_loadingAlert dismissWithClickedButtonIndex:0 animated:YES];
         

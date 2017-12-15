@@ -198,9 +198,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
-    
-    
-    UINib *promoNib = [UINib nibWithNibName:@"PromoCollectionReusableView" bundle:nil];
 
     [self configureGTM];
     
@@ -632,8 +629,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                    [weakSelf setProductListBaseLayout];
                                                    
                                                    if (_searchObject.data.products.count > 0) {
-                                                       TopAdsWrapper *topAdsWrapper = [[TopAdsWrapper alloc] init];
-                                                       
                                                        _reactProductListView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                                                                         moduleName:@"Tokopedia"
                                                                                                  initialProperties:@{

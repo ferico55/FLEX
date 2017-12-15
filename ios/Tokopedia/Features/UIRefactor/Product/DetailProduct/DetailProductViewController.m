@@ -2128,20 +2128,6 @@ TTTAttributedLabelDelegate
                                                                                    AFEventParamQuantity : @(1)
                                                                                    }];
     
-    NSArray *categories = _product.data.breadcrumb;
-    Breadcrumb *lastCategory = [categories objectAtIndex:categories.count - 1];
-    NSString *productCategory = lastCategory.department_name?:@"";
-    
-    NSCharacterSet *notAllowedChars = [NSCharacterSet characterSetWithCharactersInString:@"Rp."];
-    NSString *productPrice = [[_product.data.info.product_price componentsSeparatedByCharactersInSet:notAllowedChars] componentsJoinedByString:@""]?:@"";
-    
-    NSDictionary *attributes = @{
-                                 @"Product Id" : _product.data.info.product_id,
-                                 @"Product Name" : _product.data.info.product_name,
-                                 @"Product Price" : productPrice,
-                                 @"Product Category" : productCategory
-                                 };
-    
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didAddedProductToWishList" object:_product.data.info.product_id];
 }
 

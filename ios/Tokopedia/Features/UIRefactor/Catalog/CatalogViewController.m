@@ -454,7 +454,6 @@ static CGFloat rowHeight = 40;
     if (_catalog == nil) {
         return;
     }
-    NSString *title = _catalog.result.catalog_info.catalog_name;
     ReferralManager *referralManager = [ReferralManager new];
     [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: view];
 }

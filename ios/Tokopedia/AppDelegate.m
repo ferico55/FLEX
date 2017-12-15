@@ -424,7 +424,9 @@
 - (void)refreshDeviceTokenIfAuthorized {
     JLNotificationPermission* permission = [JLNotificationPermission sharedInstance];
     if (permission.authorizationStatus == JLPermissionAuthorized) {
-        [permission authorize:nil];
+        [permission authorize:^(NSString * _Nullable deviceID, NSError * _Nullable error) {
+            // do nothing
+        }];
     }
 }
 

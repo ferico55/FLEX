@@ -27,7 +27,7 @@
     policy = SecPolicyCreateBasicX509();
     OSStatus returnCode = SecTrustCreateWithCertificates(certificate, policy, &trust);
     if (returnCode != 0) {
-        NSLog(@"SecTrustCreateWithCertificates fail. Error Code: %ld", returnCode);
+        NSLog(@"SecTrustCreateWithCertificates fail. Error Code: %d", (int)returnCode);
         return nil;
     }
     

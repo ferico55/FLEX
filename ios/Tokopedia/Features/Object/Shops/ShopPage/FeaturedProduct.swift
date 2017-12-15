@@ -69,9 +69,6 @@ final class FeaturedProduct: NSObject, Unboxable {
     }
     
     func productFieldObjects() -> [String:String] {
-        let characterSet = CharacterSet(charactersIn: "Rp.")
-        let productPriceArray = self.price.components(separatedBy: characterSet)
-        let productPrice = productPriceArray.joined(separator: "")
         return [
             "name"  : self.name!,
             "id"    : String(self.productID),

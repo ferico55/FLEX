@@ -490,8 +490,6 @@ NoResultDelegate
         return 0;
     }
     
-    TransactionCartGateway *selectedGateway = [_dataInput objectForKey:DATA_CART_GATEWAY_KEY];
-    
     if (section < _list.count)
     {
         if (_list[section].errors.count > 0) {

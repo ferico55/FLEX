@@ -206,7 +206,7 @@ import GooglePlaces
         let style = NSMutableParagraphStyle()
         style.lineSpacing = 2
         let font = UIFont.microTheme()
-        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
+        let attributes: [String: Any] = [NSFontAttributeName:font, NSParagraphStyleAttributeName:style]
         let string = "Pastikan lokasi yang Anda tandai di peta sesuai dengan alamat Anda di atas"
         let attributedString = NSMutableAttributedString(string:string, attributes:attributes)
         self.mapWarningLabel.attributedText = attributedString;

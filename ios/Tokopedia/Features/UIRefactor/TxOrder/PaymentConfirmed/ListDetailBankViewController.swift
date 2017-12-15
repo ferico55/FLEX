@@ -101,7 +101,7 @@ class ListDetailBankViewController: UIViewController {
         super.viewDidLoad()
         
         self.view = tableView
-        Observable.from(list)
+        Observable.from(optional: list)
             .bindTo(tableView.rx.items) { (tableView, row, bank) in
                 return BankDetailCell(bank: bank)
             }
