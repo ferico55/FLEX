@@ -99,8 +99,6 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
-        
-        self.navigationController?.isNavigationBarHidden = false
     }
     
     override func viewDidLayoutSubviews() {

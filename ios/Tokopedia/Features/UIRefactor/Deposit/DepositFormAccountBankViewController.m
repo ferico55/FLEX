@@ -28,6 +28,7 @@
 @property (weak, nonatomic) IBOutlet UIButton *sendOTPButton;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UILabel *notesLabel;
+@property (weak, nonatomic) IBOutlet NSLayoutConstraint *contentViewHeightConstraint;
 
 - (void)configureRestkit;
 - (void)cancelCurrentAction;
@@ -72,21 +73,21 @@
     
     _datainput = [NSMutableDictionary new];
 }
+
+- (void)viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    
+    _contentViewHeightConstraint.constant = 0;
+    for (UIView* subView in _contentView.subviews) {
+        _contentViewHeightConstraint.constant = _contentViewHeightConstraint.constant + subView.frame.size.height;
+    }
+    
+    _contentViewHeightConstraint.constant = _contentViewHeightConstraint.constant + 25;
+}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
-    [_contentView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:[NSString stringWithFormat:@"H:[_contentView(==%f)]", [UIScreen mainScreen].bounds.size.width] options:0 metrics:nil views:NSDictionaryOfVariableBindings(_contentView)]];
-    CGFloat contentSizeWidth = [UIScreen mainScreen].bounds.size.width;
-    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ) {
-        contentSizeWidth = _container.frame.size.width;
-    }
-    _contentView.frame = CGRectMake(0, 0, contentSizeWidth, _contentView.frame.size.height);
-    CGFloat contenSizeHeight =_notesLabel.frame.origin.y+_notesLabel.bounds.size.height+10;
-    if (contenSizeHeight <= [[UIScreen mainScreen]bounds].size.height) {
-        contenSizeHeight = [[UIScreen mainScreen]bounds].size.height+10;
-    }
-    _container.contentSize = CGSizeMake(contentSizeWidth, contenSizeHeight);
 }
 
 #pragma mark - DataSource Delegate

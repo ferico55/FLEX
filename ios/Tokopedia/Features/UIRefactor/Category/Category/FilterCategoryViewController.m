@@ -81,18 +81,18 @@
     if (self.filterType == FilterCategoryTypeProductAddEdit) {
         if (self.selectedCategory.child.count > 0 || self.selectedCategory == nil) {
             doneButton.enabled = NO;
-            doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+            doneButton.tintColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         } else {
             doneButton.enabled = YES;
-            doneButton.tintColor = [UIColor whiteColor];
+            doneButton.tintColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
         }
     } else {
         if (self.selectedCategory) {
             doneButton.enabled = YES;
-            doneButton.tintColor = [UIColor whiteColor];
+            doneButton.tintColor = [[UIColor blackColor] colorWithAlphaComponent:0.7];
         } else {
             doneButton.enabled = NO;
-            doneButton.tintColor = [[UIColor whiteColor] colorWithAlphaComponent:0.5];
+            doneButton.tintColor = [[UIColor blackColor] colorWithAlphaComponent:0.5];
         }
     }
 }
