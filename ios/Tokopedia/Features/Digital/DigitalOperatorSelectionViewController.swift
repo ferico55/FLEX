@@ -38,7 +38,7 @@ class DigitalOperatorSelectionViewController: UIViewController {
     }()
     fileprivate let containerView = UIView()
     fileprivate let imageView:UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "icon_search"))
+        let imageView = UIImageView(image: #imageLiteral(resourceName: "ic_search"))
         imageView.frame = CGRect(x: 0, y: 0, width: imageView.frame.width + 16, height: imageView.frame.height)
         imageView.image = imageView.image?.withRenderingMode(.alwaysTemplate)
         imageView.tintColor = .tpGray()

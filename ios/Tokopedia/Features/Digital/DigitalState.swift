@@ -41,9 +41,9 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     var errorMessageState = DigitalErrorState.noError
     var addToCartProgress = DigitalAddToCartProgress.idle
     var showErrors = false
+    var showErrorClientNumber = false
     var alertState = DigitalAlertState.idle
     var errorMessages = [String: String]()
-    var selectedTab = 0
     var favourites: [DigitalFavourite] = []
     
     var canAddToCart: Bool = true
@@ -97,16 +97,14 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             }
             
             newState.textInputStates = textInputStates
+            
         }
-        
-        newState.showErrors = false
         
         return newState
     }
     
     func inputText(for textInput: DigitalTextInput, with text: String) -> DigitalState {
         var newState = self
-        newState.showErrors = false
         
         let normalizedText = textInput.normalizedText(from: text)
         
@@ -140,8 +138,8 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             
             let selectedOperator = form.operators.appropriateOperator(for: normalizedText)
             textInputStates[input.id] = DigitalTextInputState(text: normalizedText, failedValidation: input.failedValidation(for: normalizedText))
-            newState.selectedOperator = selectedOperator
             
+            newState.selectedOperator = selectedOperator
             if let op = selectedOperator {
                 newState.selectedProduct = selectProduct(fromOperator: op, orProductId: lastOrder.productId)
             } else {
@@ -161,6 +159,20 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
             }
         }
         newState.textInputStates = textInputStates
+        let shouldShowError = newState.textInputStates.contains(where: { (key, value) -> Bool in
+            if key == "client_number" {
+                return value.text.isEmpty || value.failedValidation == nil
+            } else {
+                return false
+            }
+        })
+        if newState.textInputStates.count == 0 || shouldShowError {
+            newState.showErrorClientNumber = false
+            newState.showErrors = false
+        } else {
+            newState.showErrorClientNumber = true
+            newState.showErrors = true
+        }
         newState.isInstantPaymentEnabled = isInstant
         return newState
     }
@@ -171,11 +183,5 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
     
     func selectedOperator(fromForm: DigitalForm, orOperatorId: String?) -> DigitalOperator? {
         return fromForm.operators.filter { $0.id == orOperatorId }.first ?? fromForm.defaultOperator
-    }
-    
-    func selectedTab(tab: Int) -> DigitalState {
-        var newState = self
-        newState.selectedTab = tab
-        return newState
     }
 }

@@ -35,12 +35,36 @@ struct DigitalWidgetReducer: Reducer {
         
         switch(action) {
         case let .changePhoneNumber(textInput, phoneNumber):
-            return state.inputText(for: textInput, with: phoneNumber)
+            var newState = state.inputText(for: textInput, with: phoneNumber)
+            
+            var textInputStates = [String: DigitalTextInputState]()
+            
+            state.activeTextInputs.forEach { textInput in
+                textInputStates[textInput.id] = DigitalTextInputState(
+                    text: phoneNumber,
+                    failedValidation: textInput.failedValidation(for: phoneNumber)
+                )
+            }
+            newState.textInputStates = textInputStates
+            let shouldShowError = newState.textInputStates.contains(where: { (key, value) -> Bool in
+                if key == "client_number" {
+                    return value.text.isEmpty || value.failedValidation == nil
+                } else {
+                    return false
+                }
+            })
+            if shouldShowError {
+                newState.showErrorClientNumber = false
+                newState.showErrors = false
+            } else {
+                newState.showErrorClientNumber = true
+                newState.showErrors = true
+            }
+            return newState
             
         case .selectProduct(let product):
             var newState = state
             newState.selectedProduct = product
-            newState.showErrors = false
             return newState
             
         case .selectOperator(let digitalOperator):

@@ -75,9 +75,8 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         
         barButton.rx.tap.subscribe(onNext: { [unowned self] in
             let openWebView = { (_ urlString: String) -> Void in
-                let webViewController = WKWebViewController(urlString: urlString)
-                
-                self.navigationController?.pushViewController(webViewController, animated: true)
+                guard let url = URL(string:urlString) else { return }
+                TPRoutes.routeURL(url)
             }
             
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
@@ -225,10 +224,22 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                 self.viewController?.navigationController?.pushViewController(viewController, animated: true)
                             }).disposed(by: self.disposeBag)
                         } else {
+                            
+                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                guard let `self` = self else { return }
+                                self.store.state.showErrorClientNumber = true
+                            }).disposed(by: self.disposeBag)
+                            
+                            view.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
+                                guard let `self` = self else { return }
+                                self.store.state.showErrorClientNumber = false
+                            }).disposed(by: self.disposeBag)
+                            
                             view.rx.text.orEmpty.changed
                                 .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
                                 .dispatch(to: self.store)
                                 .disposed(by: self.disposeBag)
+                            
                         }
                     }.add(
                         child: Node<UIImageView>(identifier: "icon") { [unowned self] imageView, layout, _ in
@@ -412,7 +423,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node<UILabel>() { label, _, _ in
                 label.font = .smallTheme()
                 label.textColor = .red
-                label.text = state.showErrors && state.selectedProduct == nil ? "Pilih terlebih dahulu" : nil
+                label.text = state.showErrors && !state.showErrorClientNumber && state.selectedProduct == nil ? "Pilih terlebih dahulu" : nil
                 
             }
         ])
@@ -461,8 +472,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     gestureRecognizer.rx.event
                         .subscribe(onNext: { _ in
                             if let urlString = self.state?.selectedProduct?.url, let url: URL = URL(string: urlString) {
-                                let webViewController = WKWebViewController(urlString: urlString)
-                                self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
+                                TPRoutes.routeURL(url)
                             }
                         })
                         .disposed(by: self.rx_disposeBag)
@@ -552,6 +562,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
                         label.attributedText = attributeString
                     } else {
+                        label.attributedText = nil
                         label.font = .largeTheme()
                         label.text = state.selectedProduct?.priceText
                     }
@@ -697,6 +708,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 layout.marginTop = 10
                 button.rx.tap
                     .subscribe(onNext: {
+                        self.store.state.showErrorClientNumber = false
                         guard state.passesTextValidations && state.selectedProduct != nil else {
                             self.store.dispatch(DigitalWidgetAction.buyButtonTap)
                             return
@@ -863,9 +875,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let gestureRecognizer = UITapGestureRecognizer()
                             gestureRecognizer.rx.event
                                 .subscribe(onNext: { _ in
-                                    let webViewController = WKWebViewController(urlString: banner.url)
-                                    
-                                    self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
+                                    guard let url = URL(string:banner.url) else { return }
+                                    TPRoutes.routeURL(url)
                                 })
                                 .disposed(by: self.rx_disposeBag)
                             
@@ -959,9 +970,8 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let gestureRecognizer = UITapGestureRecognizer()
                             gestureRecognizer.rx.event
                                 .subscribe(onNext: { _ in
-                                    let webViewController = WKWebViewController(urlString: banner.url)
-                                    
-                                    self.viewController?.navigationController?.pushViewController(webViewController, animated: true)
+                                    guard let url = URL(string:banner.url) else { return }
+                                    TPRoutes.routeURL(url)
                                 })
                                 .disposed(by: self.rx_disposeBag)
                             
