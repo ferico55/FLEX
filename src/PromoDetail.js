@@ -536,7 +536,7 @@ class PromoDetail extends React.PureComponent {
                 url: this.state.data.meta.app_link,
               })}
           >
-            <Text style={styles.shopText}>Belanja Sekarang</Text>
+            <Text style={styles.shopText}>{this.state.data.cta_text}</Text>
           </TouchableOpacity>
         )}
       </View>
