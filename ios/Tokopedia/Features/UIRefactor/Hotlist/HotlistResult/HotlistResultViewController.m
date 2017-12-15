@@ -134,10 +134,9 @@ ProductCellDelegate
 }
 
 @property (weak, nonatomic) IBOutlet UIImageView *imageview;
-@property (strong, nonatomic) IBOutlet UIView *header;
-@property (strong, nonatomic) IBOutlet UIView *iPadView;
+@property (strong, nonatomic) IBOutlet HotlistResultHeaderView *header;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *promoHeaderHeightConstraint;
 @property (weak, nonatomic) IBOutlet UIScrollView *hashtagsscrollview;
-@property (weak, nonatomic) IBOutlet UIScrollView *iPadHastags;
 @property (strong, nonatomic) IBOutlet UIView *descriptionview;
 @property (weak, nonatomic) IBOutlet UILabel *descriptionlabel;
 @property (weak, nonatomic) IBOutlet UIView *filterview;
@@ -194,32 +193,22 @@ ProductCellDelegate
     _detailfilter = [NSMutableDictionary new];
     _departmenttree = [NSMutableArray new];
 
-    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, IS_IPAD ? _iPadView.frame.size.height : _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
+    _noResultView = [[NoResultView alloc]initWithFrame:CGRectMake(0, _header.frame.size.height, [UIScreen mainScreen].bounds.size.width, 100)];
 
     _promo = [NSMutableArray new];
     _promoScrollPosition = [NSMutableArray new];
-
-    CGRect newFrame = _iPadView.frame;
-    newFrame.size.width = [UIScreen mainScreen].bounds.size.width;
-    _iPadView.frame = newFrame;
     
-    if(IS_IPAD) {
-        [_header removeFromSuperview];
-    } else {
-        UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
-        if (imageview) {
-            _imageview.image = imageview.image;
-            _header.hidden = NO;
-            _pagecontrol.hidden = YES;
-            _swipegestureleft.enabled = NO;
-            _swipegestureright.enabled = NO;
-        }
-        
-        [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
-        [_pagecontrol bringSubviewToFront:_descriptionview];
-        
-        
+    UIImageView *imageview = [_data objectForKey:kTKPHOME_DATAHEADERIMAGEKEY];
+    if (imageview) {
+        _imageview.image = imageview.image;
+        _header.hidden = NO;
+        _pagecontrol.hidden = YES;
+        _swipegestureleft.enabled = NO;
+        _swipegestureright.enabled = NO;
     }
+    
+    [_descriptionview setFrame:CGRectMake(350, _imageview.frame.origin.y, _imageview.frame.size.width, _imageview.frame.size.height)];
+    [_pagecontrol bringSubviewToFront:_descriptionview];
     
     NSDictionary *data = [[TKPDSecureStorage standardKeyChains] keychainDictionary];
     if ([data objectForKey:USER_LAYOUT_PREFERENCES]) {
@@ -565,20 +554,11 @@ ProductCellDelegate
         totalWidth += previousButtonWidth;
         
         [_buttons addObject:button];
-        if(IS_IPAD) {
-            [_iPadHastags addSubview:button];
-        } else {
-            [_hashtagsscrollview addSubview:button];
-        }
+        [_hashtagsscrollview addSubview:button];
 
 
     }
-
-    if(IS_IPAD) {
-        _iPadHastags.contentSize = CGSizeMake(totalWidth, 40);
-    } else {
-        _hashtagsscrollview.contentSize = CGSizeMake(totalWidth, 40);
-    }
+    _hashtagsscrollview.contentSize = CGSizeMake(totalWidth, 40);
 }
 
 - (void)didTapOnHashtag:(id)sender {
@@ -618,6 +598,10 @@ ProductCellDelegate
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
+}
+
+-(BOOL)isPromoHeaderEmpty {
+    return _bannerResult.promoInfo == nil || _bannerResult.promoInfo.isEmpty;
 }
 
 #pragma mark - Category Delegate
@@ -696,15 +680,18 @@ ProductCellDelegate
     if (kind == UICollectionElementKindSectionHeader) {
         
         [_header removeFromSuperview];
-        [_iPadView removeFromSuperview];
         
         BOOL isNoPromo = YES;
+        
+        if (![self isPromoHeaderEmpty]) {
+            [_header.promoView setPromoInfo:_bannerResult.promoInfo];
+        }
+        
         if (_promo.count > indexPath.section) {
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if (currentPromo && currentPromo.count > 0) {
                 isNoPromo = NO;
                 [_header removeFromSuperview];
-                [_iPadView removeFromSuperview];
                 
                 reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
                                                                   withReuseIdentifier:@"PromoCollectionReusableView"
@@ -717,11 +704,9 @@ ProductCellDelegate
                 
                 if (indexPath.section == 0) {
                     ((PromoCollectionReusableView *)reusableView).headerViewHeightConstraint.constant = _header.bounds.size.height;
-                    if(IS_IPAD) {
-                        [((PromoCollectionReusableView *)reusableView).headerView addSubview: _iPadView];
-                    } else {
+                    
                         [((PromoCollectionReusableView *)reusableView).headerView addSubview: _header];
-                    }
+                    
                 }
             }
         }
@@ -733,12 +718,9 @@ ProductCellDelegate
             CGRect frame = _noResultView.frame;
             frame.origin.y = reusableView.frame.size.height;
             _noResultView.frame = frame;
+
+            [reusableView addSubview:_header];
             
-            if(IS_IPAD) {
-                [reusableView addSubview:_iPadView];
-            } else {
-                [reusableView addSubview:_header];
-            }
         }
     }
     else if(kind == UICollectionElementKindSectionFooter) {
@@ -761,13 +743,17 @@ ProductCellDelegate
     CGSize size = CGSizeZero;
     CGFloat headerHeight = 0.0;
     if (section == 0) {
-        if(IS_IPAD) {
-            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, _iPadView.frame.size.height);
-        } else {
-            _header.frame = CGRectMake(0, 0, self.view.bounds.size.width, self.view.bounds.size.width/1.7f);
+        if ([self isPromoHeaderEmpty]) {
+            _promoHeaderHeightConstraint.constant = 0;
+            [_header.promoView setHidden:YES];
         }
         
-        headerHeight = _header.bounds.size.height;
+        CGRect tempRect = CGRectZero;
+        tempRect.size =[_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
+        tempRect.size.width = self.view.bounds.size.width;
+        _header.frame = tempRect;
+        
+        headerHeight = tempRect.size.height;
     }
     
     if (_promo.count > section) {
@@ -967,7 +953,6 @@ ProductCellDelegate
     if([self isInitialRequest]) {
         _hashtags = searchResult.hashtags;
         [_hashtagsscrollview removeAllSubviews];
-        [_iPadHastags removeAllSubviews];
         
         [self setHashtagButtons:_hashtags];
         

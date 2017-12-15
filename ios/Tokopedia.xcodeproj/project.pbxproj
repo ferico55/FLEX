@@ -21,6 +21,10 @@
 		342394FF1FC5D46F003DE70D /* MerlinRecommendationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FC1FC5D46F003DE70D /* MerlinRecommendationData.swift */; };
 		342395001FC5D46F003DE70D /* MerlinRecommendationResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342394FD1FC5D46F003DE70D /* MerlinRecommendationResponse.swift */; };
 		342395021FC5D52A003DE70D /* ProductCategoryPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 342395011FC5D52A003DE70D /* ProductCategoryPrediction.swift */; };
+		34431B191FCEB2FF0042998A /* HotlistPromoInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34431B181FCEB2FE0042998A /* HotlistPromoInfo.swift */; };
+		345265D71FE11EC10062CBA3 /* HotlistResultPromoHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 345265D51FE11EC00062CBA3 /* HotlistResultPromoHeaderView.xib */; };
+		345265D81FE11EC20062CBA3 /* HotlistResultPromoHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345265D61FE11EC00062CBA3 /* HotlistResultPromoHeaderView.swift */; };
+		345265DA1FE11F1B0062CBA3 /* HotlistResultHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 345265D91FE11F1B0062CBA3 /* HotlistResultHeaderView.swift */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		45365E701FC6DCA00072965C /* TPCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45365E691FC6DCA00072965C /* TPCryptoManager.swift */; };
@@ -1949,6 +1953,10 @@
 		342394FC1FC5D46F003DE70D /* MerlinRecommendationData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinRecommendationData.swift; sourceTree = "<group>"; };
 		342394FD1FC5D46F003DE70D /* MerlinRecommendationResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MerlinRecommendationResponse.swift; sourceTree = "<group>"; };
 		342395011FC5D52A003DE70D /* ProductCategoryPrediction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductCategoryPrediction.swift; sourceTree = "<group>"; };
+		34431B181FCEB2FE0042998A /* HotlistPromoInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotlistPromoInfo.swift; sourceTree = "<group>"; };
+		345265D51FE11EC00062CBA3 /* HotlistResultPromoHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HotlistResultPromoHeaderView.xib; sourceTree = "<group>"; };
+		345265D61FE11EC00062CBA3 /* HotlistResultPromoHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotlistResultPromoHeaderView.swift; sourceTree = "<group>"; };
+		345265D91FE11F1B0062CBA3 /* HotlistResultHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HotlistResultHeaderView.swift; sourceTree = "<group>"; };
 		450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BCAXCOWidget.framework; path = Tokopedia/ThirdParty/BCAXCOWidget.framework; sourceTree = "<group>"; };
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
@@ -4884,6 +4892,15 @@
 			path = Merlin;
 			sourceTree = "<group>";
 		};
+		345265D41FE11EC00062CBA3 /* PromoHeader */ = {
+			isa = PBXGroup;
+			children = (
+				345265D51FE11EC00062CBA3 /* HotlistResultPromoHeaderView.xib */,
+				345265D61FE11EC00062CBA3 /* HotlistResultPromoHeaderView.swift */,
+			);
+			path = PromoHeader;
+			sourceTree = "<group>";
+		};
 		452E95811E64107E001191E0 /* Fixture */ = {
 			isa = PBXGroup;
 			children = (
@@ -6327,7 +6344,9 @@
 		F954B3051FC55B61008C0B30 /* HotlistResult */ = {
 			isa = PBXGroup;
 			children = (
+				345265D41FE11EC00062CBA3 /* PromoHeader */,
 				F954B3061FC55B61008C0B30 /* HotlistBannerRequest.m */,
+				345265D91FE11F1B0062CBA3 /* HotlistResultHeaderView.swift */,
 				F954B3071FC55B61008C0B30 /* HotlistResultViewController.h */,
 				F954B3081FC55B61008C0B30 /* HotlistResultViewController.xib */,
 				F954B3091FC55B61008C0B30 /* HotlistBannerRequest.h */,
@@ -8861,6 +8880,7 @@
 				F954B97D1FC55B64008C0B30 /* HotlistBannerInfo.h */,
 				F954B97E1FC55B64008C0B30 /* HotlistBanner.m */,
 				F954B97F1FC55B64008C0B30 /* HotlistBannerQuery.m */,
+				34431B181FCEB2FE0042998A /* HotlistPromoInfo.swift */,
 			);
 			path = Banner;
 			sourceTree = "<group>";
@@ -11003,6 +11023,7 @@
 				F954BDE71FC55B66008C0B30 /* SettingBankNameCell.xib in Resources */,
 				F954BECC1FC55B66008C0B30 /* ShipmentStatusViewController.xib in Resources */,
 				F954C0021FC55B67008C0B30 /* LoginViewController.xib in Resources */,
+				345265D71FE11EC10062CBA3 /* HotlistResultPromoHeaderView.xib in Resources */,
 				F954C1781FC55B69008C0B30 /* AccountActivationSuccessViewController.xib in Resources */,
 				F954C06D1FC55B68008C0B30 /* SearchAutoCompleteCategoryCell.xib in Resources */,
 				F954C0A21FC55B68008C0B30 /* NoResultView.xib in Resources */,
@@ -12220,6 +12241,7 @@
 				F954C4191FC55B6C008C0B30 /* LabelCopyable.swift in Sources */,
 				F954BEAC1FC55B66008C0B30 /* CategoryIntermediarySeeAllView.swift in Sources */,
 				F954C0DC1FC55B68008C0B30 /* OrderCellContext.mm in Sources */,
+				345265D81FE11EC20062CBA3 /* HotlistResultPromoHeaderView.swift in Sources */,
 				F954C2601FC55B6A008C0B30 /* ResolutionLast.m in Sources */,
 				F954BF401FC55B67008C0B30 /* ReplacementListViewController.swift in Sources */,
 				F954BE101FC55B66008C0B30 /* HomePageCategoryResponse.swift in Sources */,
@@ -12319,6 +12341,7 @@
 				F954C0AA1FC55B68008C0B30 /* UserPageHeader.m in Sources */,
 				F954BD751FC55B66008C0B30 /* NSURL+Dictionary.m in Sources */,
 				F954C3001FC55B6B008C0B30 /* SearchAutoCompleteObject.m in Sources */,
+				34431B191FCEB2FF0042998A /* HotlistPromoInfo.swift in Sources */,
 				F954C40C1FC55B6C008C0B30 /* TKPHomeProductsStore.m in Sources */,
 				F954C0031FC55B67008C0B30 /* LoginViewController.swift in Sources */,
 				DADB9F4F1F3C46CE002B1FAE /* FBTweakStore.m in Sources */,
@@ -12423,6 +12446,7 @@
 				F954BE1D1FC55B66008C0B30 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
 				F954BD941FC55B66008C0B30 /* ProductHeaderNode.swift in Sources */,
 				342394FF1FC5D46F003DE70D /* MerlinRecommendationData.swift in Sources */,
+				345265DA1FE11F1B0062CBA3 /* HotlistResultHeaderView.swift in Sources */,
 				F954C3AE1FC55B6C008C0B30 /* SimpleFavoritedShopResult.m in Sources */,
 				F954C1821FC55B69008C0B30 /* LabelMenu.m in Sources */,
 				F954BE811FC55B66008C0B30 /* EditSolutionSellerCell.swift in Sources */,

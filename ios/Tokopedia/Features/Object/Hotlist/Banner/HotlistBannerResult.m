@@ -7,6 +7,7 @@
 //
 
 #import "HotlistBannerResult.h"
+#import "Tokopedia-Swift.h"
 
 @implementation HotlistBannerResult
 
@@ -22,6 +23,7 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"info" toKeyPath:@"info" withMapping:[HotlistBannerInfo mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"query" toKeyPath:@"query" withMapping:[HotlistBannerQuery mapping]]];
     [mapping addAttributeMappingsFromDictionary:@{@"disable_topads" : @"disableTopAds"}];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"promo_info" toKeyPath:@"promoInfo" withMapping:[HotlistPromoInfo mapping]]];
     return mapping;
 }
 
