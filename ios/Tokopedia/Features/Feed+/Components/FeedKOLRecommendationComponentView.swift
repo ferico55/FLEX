@@ -63,11 +63,11 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardKOLRecommendatio
             label.text = state.title == "" ? "Explore Posting dari Celebgram Favoritmu" : state.title
             label.font = .largeThemeSemibold()
             label.textColor = .tpPrimaryBlackText()
-            label.textAlignment = .center
             
             layout.marginLeft = 10
             layout.marginTop = 16
             layout.marginBottom = 16
+            layout.marginRight = 10
         })
     }
     

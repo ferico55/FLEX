@@ -986,6 +986,11 @@ public final class FeedsQuery: GraphQLQuery {
     "            url" +
     "          }" +
     "        }" +
+    "        favorite_cta {" +
+    "          __typename" +
+    "          title_id" +
+    "          subtitle_id" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -1366,6 +1371,7 @@ public final class FeedsQuery: GraphQLQuery {
             GraphQLField("kolpost", type: .object(Kolpost.self)),
             GraphQLField("followedkolpost", type: .object(Followedkolpost.self)),
             GraphQLField("kolrecommendation", type: .object(Kolrecommendation.self)),
+            GraphQLField("favorite_cta", type: .object(FavoriteCtum.self)),
           ]
 
           public var snapshot: Snapshot
@@ -1374,8 +1380,8 @@ public final class FeedsQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil) {
-            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation])
+          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil, favoriteCta: FavoriteCtum? = nil) {
+            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation, "favorite_cta": favoriteCta])
           }
 
           public var __typename: String {
@@ -1501,6 +1507,15 @@ public final class FeedsQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue?.snapshot, forKey: "kolrecommendation")
+            }
+          }
+
+          public var favoriteCta: FavoriteCtum? {
+            get {
+              return (snapshot["favorite_cta"]! as! Snapshot?).flatMap { FavoriteCtum(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "favorite_cta")
             }
           }
 
@@ -3474,6 +3489,53 @@ public final class FeedsQuery: GraphQLQuery {
                 set {
                   snapshot.updateValue(newValue, forKey: "url")
                 }
+              }
+            }
+          }
+
+          public struct FavoriteCtum: GraphQLSelectionSet {
+            public static let possibleTypes = ["FeedsFavoriteCta"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("title_id", type: .scalar(String.self)),
+              GraphQLField("subtitle_id", type: .scalar(String.self)),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(titleId: String? = nil, subtitleId: String? = nil) {
+              self.init(snapshot: ["__typename": "FeedsFavoriteCta", "title_id": titleId, "subtitle_id": subtitleId])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var titleId: String? {
+              get {
+                return snapshot["title_id"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "title_id")
+              }
+            }
+
+            public var subtitleId: String? {
+              get {
+                return snapshot["subtitle_id"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "subtitle_id")
               }
             }
           }

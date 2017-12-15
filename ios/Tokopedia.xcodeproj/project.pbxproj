@@ -38,6 +38,7 @@
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		525B5AF51FC57047004195FE /* DigitalOperatorTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
+		62395B261FDE335F005423F4 /* FeedNoShopComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62395B251FDE335F005423F4 /* FeedNoShopComponentView.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -1967,6 +1968,7 @@
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalOperatorTableViewCell.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		62395B251FDE335F005423F4 /* FeedNoShopComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNoShopComponentView.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -8165,6 +8167,7 @@
 				F954B7F11FC55B63008C0B30 /* FeedKOLActivityComponentView.swift */,
 				F954B7F61FC55B63008C0B30 /* FeedKOLRecommendationComponentView.swift */,
 				F954B7F91FC55B63008C0B30 /* FeedNextPageErrorComponentView.swift */,
+				62395B251FDE335F005423F4 /* FeedNoShopComponentView.swift */,
 				F954B7F01FC55B63008C0B30 /* FeedOfficialStoreComponentView.swift */,
 				F954B7FE1FC55B63008C0B30 /* FeedPromotionComponentView.swift */,
 				F954B7F21FC55B63008C0B30 /* FeedToppicksComponentView.swift */,
@@ -10401,14 +10404,14 @@
 		FC36DF7A19B0656400AF74C1 = {
 			isa = PBXGroup;
 			children = (
+				FC36DF8519B0656400AF74C1 /* Frameworks */,
+				CC986A6F2F7B402EAE979B0E /* Libraries */,
+				E1A48FC656B05056B45251AD /* Pods */,
+				FC36DF8419B0656400AF74C1 /* Products */,
+				925BA62F1E518A54001CED3A /* ServiceExtension */,
 				7AA485291E9B34C20099D9CE /* Tokopedia */,
 				FC36DFA519B0656400AF74C1 /* TokopediaTests */,
-				925BA62F1E518A54001CED3A /* ServiceExtension */,
 				E52517BC1F838410008FDBCF /* TokopediaUITests */,
-				FC36DF8519B0656400AF74C1 /* Frameworks */,
-				FC36DF8419B0656400AF74C1 /* Products */,
-				E1A48FC656B05056B45251AD /* Pods */,
-				CC986A6F2F7B402EAE979B0E /* Libraries */,
 			);
 			sourceTree = "<group>";
 		};
@@ -12278,6 +12281,7 @@
 				F954C38F1FC55B6B008C0B30 /* LikeDislikePostResult.m in Sources */,
 				F954C3941FC55B6B008C0B30 /* DetailTotalLikeDislike.m in Sources */,
 				F954C1061FC55B68008C0B30 /* ResolutionCenterSellerEditViewController.m in Sources */,
+				62395B261FDE335F005423F4 /* FeedNoShopComponentView.swift in Sources */,
 				F954BDC11FC55B66008C0B30 /* TransactionCartHeaderView.m in Sources */,
 				F954BEAA1FC55B66008C0B30 /* CategoryIntermediaryProductShop.swift in Sources */,
 				F954C2E71FC55B6A008C0B30 /* SendOTPResult.m in Sources */,

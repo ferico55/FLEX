@@ -193,6 +193,10 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 						url
 					}
 				}
+				favorite_cta {
+					title_id
+					subtitle_id
+				}
 			}
 		}
 		links {

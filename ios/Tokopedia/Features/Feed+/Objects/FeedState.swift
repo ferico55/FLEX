@@ -26,6 +26,7 @@ enum FeedContentType {
     case KOLPost
     case KOLRecommendation
     case followedKOLPost
+    case favoriteCTA
     case emptyState
     case nextPageError
 }
@@ -86,8 +87,24 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var inspiration: FeedCardInspirationState?
     var kolPost: FeedCardKOLPostState?
     var kolRecommendation: FeedCardKOLRecommendationState?
+    var favoriteCTA: FeedCardFavoriteCTAState?
     var page = 0
     var row = 0
+}
+
+struct FeedCardFavoriteCTAState: Render.StateType, ReSwift.StateType {
+    var title = ""
+    var subtitle = ""
+    
+    init() {}
+    
+    init(favoriteCTA: FeedsQuery.Data.Feed.Datum.Content.FavoriteCtum) {
+        if let title = favoriteCTA.titleId,
+            let subtitle = favoriteCTA.subtitleId {
+            self.title = title
+            self.subtitle = subtitle
+        }
+    }
 }
 
 struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
@@ -539,7 +556,7 @@ class FeedStateManager: NSObject {
         case "toppick":
             content.type = .toppicks
             
-            guard let toppicks = feedContent.topPicks else { return FeedCardContentState() }
+            guard let toppicks = feedContent.topPicks, toppicks.count > 0 else { return FeedCardContentState() }
             
             content.toppicks = toppicks.map { item in
                 if let item = item {
@@ -605,6 +622,14 @@ class FeedStateManager: NSObject {
             if state.users.count > 0 {
                 content.kolRecommendation = FeedCardKOLRecommendationState(content: feedContent, page: page, row: row)
                 content.type = .KOLRecommendation
+            } else {
+                content.type = .invalid
+            }
+        case "favorite_cta":
+            content.type = .favoriteCTA
+            
+            if let favoriteCTA = feedContent.favoriteCta {
+                content.favoriteCTA = FeedCardFavoriteCTAState(favoriteCTA: favoriteCTA)
             } else {
                 content.type = .invalid
             }

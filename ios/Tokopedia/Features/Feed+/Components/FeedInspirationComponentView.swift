@@ -12,24 +12,30 @@ import RxSwift
 
 class FeedInspirationComponentView: ComponentView<FeedCardInspirationState> {
     override func construct(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
+        guard let state = state else {
+            return Node<UIView>() { _, _, _ in
+                
+            }
+        }
+        
         return self.inspirationCard(state: state, size: size)
     }
     
-    func inspirationCard(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
-        let titleView = Node<UIView>(identifier: "title-view") { view, layout, size in
+    private func inspirationCard(state: FeedCardInspirationState, size: CGSize) -> NodeType {
+        let titleView = state.title == "" ? NilNode() : Node<UIView>(identifier: "title-view") { view, layout, size in
             view.backgroundColor = .white
             
             layout.width = size.width
-        }.add(child: Node<UILabel>(identifier: "title") { label, layout, _ in
-            label.text = state?.title
+        }
+        .add(child: Node<UILabel>(identifier: "title") { label, layout, _ in
+            label.text = state.title
             label.font = .largeThemeSemibold()
             label.textColor = UIColor.tpPrimaryBlackText()
             
             layout.marginLeft = 10
             layout.marginTop = 16
             layout.marginBottom = 16
-        }
-        )
+        })
         
         let card = Node<UIView>(identifier: "inspiration-card") { _, layout, _ in
             layout.flexDirection = .column
@@ -60,9 +66,7 @@ class FeedInspirationComponentView: ComponentView<FeedCardInspirationState> {
         return card
     }
     
-    func productCellLayout(state: FeedCardInspirationState?, size: CGSize) -> NodeType {
-        guard let state = state else { return NilNode() }
-        
+    private func productCellLayout(state: FeedCardInspirationState, size: CGSize) -> NodeType {
         let mainContent: NodeType = Node<UIView>(identifier: "main-content") { _, layout, size in
             layout.flexDirection = .column
             layout.width = size.width
@@ -113,7 +117,7 @@ class FeedInspirationComponentView: ComponentView<FeedCardInspirationState> {
         return mainContent
     }
     
-    func horizontalLine() -> NodeType {
+    private func horizontalLine() -> NodeType {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.height = 1
             
@@ -121,7 +125,7 @@ class FeedInspirationComponentView: ComponentView<FeedCardInspirationState> {
         }
     }
     
-    func verticalLine() -> NodeType {
+    private func verticalLine() -> NodeType {
         return Node<UIView>(identifier: "line") { view, layout, _ in
             layout.width = 1
             
