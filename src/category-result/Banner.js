@@ -3,8 +3,12 @@ import React, { Component } from 'react'
 
 const ReactBanner = requireNativeComponent('ReactBanner', null)
 
-const Banner = ({children, style, onPageChange}) => (
-  <ReactBanner style={[style, {flexDirection: 'row'}]} onPageChange={onPageChange}>
+const Banner = ({ children, style, onPageChange, onPress }) => (
+  <ReactBanner
+    style={[style, { flexDirection: 'row' }]}
+    onPageChange={onPageChange}
+    onPress={event => onPress(event.nativeEvent.index)}
+  >
     {children}
   </ReactBanner>
 )

@@ -14,6 +14,7 @@
 @interface ReactCarousel: iCarousel
 
 @property(nonatomic, copy) RCTBubblingEventBlock onPageChange;
+@property(nonatomic, copy) RCTBubblingEventBlock onPress;
 
 @end
 
@@ -34,6 +35,7 @@
 RCT_EXPORT_MODULE()
 
 RCT_EXPORT_VIEW_PROPERTY(onPageChange, RCTBubblingEventBlock)
+RCT_EXPORT_VIEW_PROPERTY(onPress, RCTBubblingEventBlock)
 
 - (UIView *)view {
     iCarousel *carousel = [ReactCarousel new];
@@ -70,6 +72,12 @@ RCT_EXPORT_VIEW_PROPERTY(onPageChange, RCTBubblingEventBlock)
 - (void)carouselCurrentItemIndexDidChange:(ReactCarousel *)carousel {
     if (carousel.onPageChange) {
         carousel.onPageChange(@{@"page": @(carousel.currentItemIndex)});
+    }
+}
+
+- (void)carousel:(ReactCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
+    if (carousel.onPress) {
+        carousel.onPress(@{@"index": @(index)});
     }
 }
 

@@ -98,6 +98,20 @@ class CategoryResultPage extends PureComponent {
   handlePageChange = event =>
     this.setState({ bannerCurrentIndex: event.nativeEvent.page })
 
+  handleOnPressBanner = index => {
+    const { categoryIntermediaryResult } = this.props.navigation.state.params
+    const selectedBanner = categoryIntermediaryResult.banner.images[index]
+    TKPReactAnalytics.trackEvent({
+      name: 'clickCategory',
+      category: `Category Page - ${categoryIntermediaryResult.rootCategoryId}`,
+      action: 'Banner Click',
+      label: selectedBanner.title,
+    })
+    this.props.navigation.navigate('tproutes', {
+      url: selectedBanner.appLinks,
+    })
+  }
+
   handleTopAdsInformationIcon = () => {
     ReactTopAdsManager.showTopAdsInfoActionSheet()
   }
@@ -332,29 +346,17 @@ class CategoryResultPage extends PureComponent {
 
           return (
             <View>
-              <Banner onPageChange={this.handlePageChange}>
+              <Banner
+                onPageChange={this.handlePageChange}
+                onPress={this.handleOnPressBanner}
+              >
                 {banner.images.map(image => (
-                  <TouchableWithoutFeedback
-                    key={image.title}
-                    onPress={_ => {
-                      TKPReactAnalytics.trackEvent({
-                        name: 'clickCategory',
-                        category: `Category Page - ${categoryIntermediaryResult.rootCategoryId}`,
-                        action: 'Banner Click',
-                        label: image.title,
-                      })
-                      this.props.navigation.navigate('tproutes', {
-                        url: image.appLinks,
-                      })
-                    }}
-                  >
-                    <Image
-                      style={[styles.pageStyle]}
-                      source={{ uri: image.imageUrl }}
-                      key={image.imageUrl}
-                      resizeMode={'cover'}
-                    />
-                  </TouchableWithoutFeedback>
+                  <Image
+                    style={[styles.pageStyle]}
+                    source={{ uri: image.imageUrl }}
+                    key={image.imageUrl}
+                    resizeMode={'cover'}
+                  />
                 ))}
               </Banner>
               <View
