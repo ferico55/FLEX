@@ -130,16 +130,6 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         let storageManager = SecureStorageManager()
         storageManager.storeLoginInformation(login.result)
         
-        let userManager = UserAuthentificationManager()
-        UserRequest.getUserInformation(
-            withUserID: userManager.getUserId(),
-            onSuccess: { _ in
-                AnalyticsManager.moEngageTrackUserAttributes()
-        },
-            onFailure: {
-                
-        })
-        
         AnalyticsManager.trackLogin(login)
         
         NotificationCenter.default.post(name: NSNotification.Name(TKPDUserDidLoginNotification), object: nil)

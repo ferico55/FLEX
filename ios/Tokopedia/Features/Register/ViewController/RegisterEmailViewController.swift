@@ -266,17 +266,7 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
         
         let storageManager = SecureStorageManager()
         storageManager.storeLoginInformation(login.result)
-        
-        let userManager = UserAuthentificationManager()
-        UserRequest.getUserInformation(
-            withUserID: userManager.getUserId(),
-            onSuccess: { _ in
-                AnalyticsManager.moEngageTrackUserAttributes()
-        },
-            onFailure: {
                 
-        })
-        
         if self.isLoginPresented {
             self.navigationController?.dismiss(animated: true, completion: nil)
         }

@@ -64,7 +64,6 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         AnalyticsManager.trackLogin(login)
         UserRequest.getUserInformation(withUserID: UserAuthentificationManager().getUserId(),
                                        onSuccess: { (_: ProfileInfo) in
-                                           AnalyticsManager.moEngageTrackUserAttributes()
                                            DispatchQueue.main.async {
                                                self.makeActivityIndicator(toShow: false)
                                                if self.onLoginFinished != nil {
