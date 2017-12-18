@@ -1524,6 +1524,20 @@ SOFTWARE.
 		</dict>
 		<dict>
 			<key>FooterText</key>
+			<string>lelib
+
+Created by Petr on 01.12.13.
+Copyright (c) 2013 JLizard. All rights reserved.
+</string>
+			<key>License</key>
+			<string>Custom</string>
+			<key>Title</key>
+			<string>LogEntries</string>
+			<key>Type</key>
+			<string>PSGroupSpecifier</string>
+		</dict>
+		<dict>
+			<key>FooterText</key>
 			<string>The MIT License (MIT)
 
 Copyright (c) 2015 Matías Martínez

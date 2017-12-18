@@ -74,6 +74,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Feed Page")
         if self.shouldRefreshData {
+            self.shouldRefreshData = false
             self.refreshFeed()
         }
     }

@@ -88,6 +88,7 @@ def common_pods
     pod 'AppsFlyerFramework',  '~> 4.5.1'
     pod 'Appsee', '~> 2.2'
     pod 'MoEngage-iOS-SDK', '~> 3.3.0'
+    pod 'LogEntries', '~> 0.0.1'
     
     #Facebook Pod
     pod 'FBSDKCoreKit', '~>4.19.0'

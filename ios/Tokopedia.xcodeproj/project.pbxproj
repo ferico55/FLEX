@@ -47,6 +47,7 @@
 		62395B261FDE335F005423F4 /* FeedNoShopComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62395B251FDE335F005423F4 /* FeedNoShopComponentView.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
+		6271A9C51FE7769200AB07D7 /* LogEntriesHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6271A9C41FE7769200AB07D7 /* LogEntriesHelper.swift */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		78EF4498BD217D421F8A575D /* Pods_TokopediaTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */; };
 		7A0C43211EA5FB9500E1E977 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
@@ -1983,6 +1984,7 @@
 		62395B251FDE335F005423F4 /* FeedNoShopComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedNoShopComponentView.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6271A9C41FE7769200AB07D7 /* LogEntriesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogEntriesHelper.swift; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		7A465F811EB2FEA900A72105 /* Tokopedia-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "Tokopedia-Info.plist"; sourceTree = "<group>"; };
@@ -4865,10 +4867,10 @@
 			isa = PBXGroup;
 			children = (
 				2A1AE4291FC5E5D2003E7EF8 /* DistrictRecommendation.swift */,
+				2A1AE4271FC5E578003E7EF8 /* DistrictService.swift */,
 				2A1AE42A1FC5E5D2003E7EF8 /* DistrictViewController.swift */,
 				2A1AE42B1FC5E5D2003E7EF8 /* DistrictViewController.xib */,
 				2A1AE42C1FC5E5D2003E7EF8 /* ZipcodeRecommendationTableView.swift */,
-				2A1AE4271FC5E578003E7EF8 /* DistrictService.swift */,
 			);
 			path = DistrictRecomendation;
 			sourceTree = "<group>";
@@ -4923,13 +4925,13 @@
 		45365E681FC6DCA00072965C /* Passwordless */ = {
 			isa = PBXGroup;
 			children = (
-				45365E691FC6DCA00072965C /* TPCryptoManager.swift */,
-				45365E6A1FC6DCA00072965C /* CreditCardTouchIDData.swift */,
 				45365E6B1FC6DCA00072965C /* AsymmetricCryptoManager.swift */,
+				45365E6A1FC6DCA00072965C /* CreditCardTouchIDData.swift */,
+				45365E6E1FC6DCA00072965C /* CryptoExportImportManager.swift */,
 				45365E6C1FC6DCA00072965C /* PaymentTouchIDService.swift */,
 				45365E6D1FC6DCA00072965C /* PaymentTouchIDServiceBridging.swift */,
-				45365E6E1FC6DCA00072965C /* CryptoExportImportManager.swift */,
 				45365E6F1FC6DCA00072965C /* PublicKeyResult.swift */,
+				45365E691FC6DCA00072965C /* TPCryptoManager.swift */,
 			);
 			path = Passwordless;
 			sourceTree = "<group>";
@@ -5495,14 +5497,14 @@
 			isa = PBXGroup;
 			children = (
 				344657231FE3D8440070F7DF /* Cache */,
-				45365E681FC6DCA00072965C /* Passwordless */,
-				2A1AE4261FC5E578003E7EF8 /* DistrictRecomendation */,
 				F954B7C51FC55B63008C0B30 /* Cocoa */,
 				F954BC6A1FC55B65008C0B30 /* Digital */,
+				2A1AE4261FC5E578003E7EF8 /* DistrictRecomendation */,
 				F954B7C21FC55B63008C0B30 /* EmptyState */,
 				F954B7E61FC55B63008C0B30 /* Feed+ */,
 				F954BC891FC55B65008C0B30 /* Main */,
 				F954B8021FC55B63008C0B30 /* Object */,
+				45365E681FC6DCA00072965C /* Passwordless */,
 				F954B19A1FC55B60008C0B30 /* Payment */,
 				F954B1AF1FC55B60008C0B30 /* Popover */,
 				F954B1861FC55B60008C0B30 /* ProductDetail */,
@@ -5518,12 +5520,12 @@
 		F954B16D1FC55B60008C0B30 /* Referral */ = {
 			isa = PBXGroup;
 			children = (
-				F954B16E1FC55B60008C0B30 /* UI */,
-				F954B1711FC55B60008C0B30 /* Sharing */,
-				F954B1741FC55B60008C0B30 /* RemoteConfig */,
-				F954B1761FC55B60008C0B30 /* Protocol */,
-				F954B1781FC55B60008C0B30 /* Extensions */,
 				F954B1841FC55B60008C0B30 /* Analytics */,
+				F954B1781FC55B60008C0B30 /* Extensions */,
+				F954B1761FC55B60008C0B30 /* Protocol */,
+				F954B1741FC55B60008C0B30 /* RemoteConfig */,
+				F954B1711FC55B60008C0B30 /* Sharing */,
+				F954B16E1FC55B60008C0B30 /* UI */,
 			);
 			path = Referral;
 			sourceTree = "<group>";
@@ -5610,16 +5612,16 @@
 		F954B18A1FC55B60008C0B30 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				F954B18B1FC55B60008C0B30 /* ProductInfoNode.swift */,
-				F954B18C1FC55B60008C0B30 /* ProductDetailDiscussionNode.swift */,
-				F954B18D1FC55B60008C0B30 /* ProductPriceNode.swift */,
-				F954B18E1FC55B60008C0B30 /* ProductRecommendationNode.swift */,
-				F954B18F1FC55B60008C0B30 /* ProductDetailReviewNode.swift */,
 				F954B1901FC55B60008C0B30 /* ProductDescriptionNode.swift */,
+				F954B18C1FC55B60008C0B30 /* ProductDetailDiscussionNode.swift */,
+				F954B18F1FC55B60008C0B30 /* ProductDetailReviewNode.swift */,
 				F954B1911FC55B60008C0B30 /* ProductDetailViewComponent.swift */,
-				F954B1921FC55B60008C0B30 /* ProductSellerNode.swift */,
 				F954B1931FC55B60008C0B30 /* ProductHeaderNode.swift */,
+				F954B18B1FC55B60008C0B30 /* ProductInfoNode.swift */,
+				F954B18D1FC55B60008C0B30 /* ProductPriceNode.swift */,
 				F954B1941FC55B60008C0B30 /* ProductPromoNode.swift */,
+				F954B18E1FC55B60008C0B30 /* ProductRecommendationNode.swift */,
+				F954B1921FC55B60008C0B30 /* ProductSellerNode.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -5638,10 +5640,10 @@
 		F954B19A1FC55B60008C0B30 /* Payment */ = {
 			isa = PBXGroup;
 			children = (
-				F954B19B1FC55B60008C0B30 /* ViewModel */,
 				F954B19D1FC55B60008C0B30 /* Model */,
 				F954B1A31FC55B60008C0B30 /* View */,
 				F954B1AA1FC55B60008C0B30 /* ViewController */,
+				F954B19B1FC55B60008C0B30 /* ViewModel */,
 			);
 			path = Payment;
 			sourceTree = "<group>";
@@ -7409,24 +7411,24 @@
 		F954B5E21FC55B62008C0B30 /* More */ = {
 			isa = PBXGroup;
 			children = (
-				F954B5E31FC55B62008C0B30 /* PurchaseViewController.h */,
-				F954B5E51FC55B62008C0B30 /* string_more.h */,
-				F954B5E61FC55B62008C0B30 /* WKWebViewController.swift */,
 				F954B5E71FC55B62008C0B30 /* ActivatePushInstructionViewController.swift */,
-				F954B5E81FC55B62008C0B30 /* SalesViewController.m */,
-				F954B5E91FC55B62008C0B30 /* WebViewController.m */,
-				F954B5EA1FC55B62008C0B30 /* ActivatePushInstructionViewController7.xib */,
-				F954B5EB1FC55B62008C0B30 /* MoreViewController.m */,
 				F954B5EC1FC55B62008C0B30 /* ActivatePushInstructionViewController.xib */,
-				F954B5ED1FC55B62008C0B30 /* PurchaseViewController.m */,
-				F954B5EE1FC55B62008C0B30 /* WebviewPopover.swift */,
+				F954B5EA1FC55B62008C0B30 /* ActivatePushInstructionViewController7.xib */,
 				F954B5F01FC55B62008C0B30 /* more.h */,
-				F954B5F11FC55B62008C0B30 /* WebViewController.xib */,
 				F954B5F21FC55B62008C0B30 /* MoreViewController.h */,
+				F954B5EB1FC55B62008C0B30 /* MoreViewController.m */,
 				F954B5F31FC55B62008C0B30 /* PivotNavigationView.xib */,
+				F954B5E31FC55B62008C0B30 /* PurchaseViewController.h */,
+				F954B5ED1FC55B62008C0B30 /* PurchaseViewController.m */,
+				F954B5F61FC55B62008C0B30 /* SalesViewController.h */,
+				F954B5E81FC55B62008C0B30 /* SalesViewController.m */,
+				F954B5E51FC55B62008C0B30 /* string_more.h */,
 				F954B5F41FC55B62008C0B30 /* TopPointRequest.swift */,
 				F954B5F51FC55B62008C0B30 /* WebViewController.h */,
-				F954B5F61FC55B62008C0B30 /* SalesViewController.h */,
+				F954B5E91FC55B62008C0B30 /* WebViewController.m */,
+				F954B5F11FC55B62008C0B30 /* WebViewController.xib */,
+				F954B5EE1FC55B62008C0B30 /* WebviewPopover.swift */,
+				F954B5E61FC55B62008C0B30 /* WKWebViewController.swift */,
 			);
 			path = More;
 			sourceTree = "<group>";
@@ -8099,15 +8101,15 @@
 			isa = PBXGroup;
 			children = (
 				F954B7B81FC55B63008C0B30 /* AccountActivationSuccessViewController.swift */,
-				F954B7B91FC55B63008C0B30 /* RegisterSocialMediaViewController.xib */,
-				F954B7BA1FC55B63008C0B30 /* RegisterBaseViewController.xib */,
-				F954B7BB1FC55B63008C0B30 /* RegisterEmailViewController.xib */,
 				F954B7BC1FC55B63008C0B30 /* AccountActivationSuccessViewController.xib */,
-				F954B7BD1FC55B63008C0B30 /* RegisterEmailViewController.swift */,
 				F954B7BE1FC55B63008C0B30 /* AccountActivationViewController.swift */,
-				F954B7BF1FC55B63008C0B30 /* RegisterSocialMediaViewController.swift */,
 				F954B7C01FC55B63008C0B30 /* AccountActivationViewController.xib */,
 				F954B7C11FC55B63008C0B30 /* RegisterBaseViewController.swift */,
+				F954B7BA1FC55B63008C0B30 /* RegisterBaseViewController.xib */,
+				F954B7BD1FC55B63008C0B30 /* RegisterEmailViewController.swift */,
+				F954B7BB1FC55B63008C0B30 /* RegisterEmailViewController.xib */,
+				F954B7BF1FC55B63008C0B30 /* RegisterSocialMediaViewController.swift */,
+				F954B7B91FC55B63008C0B30 /* RegisterSocialMediaViewController.xib */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -8115,8 +8117,8 @@
 		F954B7C21FC55B63008C0B30 /* EmptyState */ = {
 			isa = PBXGroup;
 			children = (
-				F954B7C31FC55B63008C0B30 /* EmptyStateView.xib */,
 				F954B7C41FC55B63008C0B30 /* EmptyStateView.swift */,
+				F954B7C31FC55B63008C0B30 /* EmptyStateView.xib */,
 			);
 			path = EmptyState;
 			sourceTree = "<group>";
@@ -8124,35 +8126,35 @@
 		F954B7C51FC55B63008C0B30 /* Cocoa */ = {
 			isa = PBXGroup;
 			children = (
-				F954B7C61FC55B63008C0B30 /* ViewLabelUser.m */,
-				F954B7C71FC55B63008C0B30 /* TextMenu.h */,
-				F954B7C91FC55B63008C0B30 /* AFNetworkingImageDownloader.mm */,
-				F954B7CA1FC55B63008C0B30 /* TKPDStackView.h */,
-				F954B7CB1FC55B63008C0B30 /* RKObjectManagerCategory.h */,
-				F954B7CC1FC55B63008C0B30 /* LabelMenu.m */,
-				F954B7CD1FC55B63008C0B30 /* ImageDownloader.m */,
-				F954B7CE1FC55B63008C0B30 /* TopAlignedLabel.m */,
-				F954B7CF1FC55B63008C0B30 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
-				F954B7D01FC55B63008C0B30 /* DBManager.h */,
-				F954B7D11FC55B63008C0B30 /* OAStackViewCategory.m */,
-				F954B7D21FC55B63008C0B30 /* NSMutableAttributedString+TKPCategory.m */,
-				F954B7D31FC55B63008C0B30 /* TKPDSecureStorage.m */,
-				F954B7D51FC55B63008C0B30 /* QueueImageDownloader.h */,
-				F954B7D61FC55B63008C0B30 /* ViewLabelUser.h */,
 				F954B7D71FC55B63008C0B30 /* AFNetworkingImageDownloader.h */,
-				F954B7D81FC55B63008C0B30 /* TKPDStackView.m */,
-				F954B7DA1FC55B63008C0B30 /* TextMenu.m */,
-				F954B7DB1FC55B63008C0B30 /* ImageDownloader.h */,
-				F954B7DC1FC55B63008C0B30 /* TopAlignedLabel.h */,
-				F954B7DD1FC55B63008C0B30 /* LabelMenu.h */,
-				F954B7DE1FC55B63008C0B30 /* RKObjectManagerCategory.m */,
-				F954B7DF1FC55B63008C0B30 /* QueueImageDownloader.m */,
-				F954B7E11FC55B63008C0B30 /* TKPDSecureStorage.h */,
-				F954B7E21FC55B63008C0B30 /* NSMutableAttributedString+TKPCategory.h */,
-				F954B7E31FC55B63008C0B30 /* OAStackViewCategory.h */,
+				F954B7C91FC55B63008C0B30 /* AFNetworkingImageDownloader.mm */,
+				F954B7D01FC55B63008C0B30 /* DBManager.h */,
 				F954B7E41FC55B63008C0B30 /* DBManager.m */,
+				F954B7DB1FC55B63008C0B30 /* ImageDownloader.h */,
+				F954B7CD1FC55B63008C0B30 /* ImageDownloader.m */,
+				F954B7DD1FC55B63008C0B30 /* LabelMenu.h */,
+				F954B7CC1FC55B63008C0B30 /* LabelMenu.m */,
+				F954B7E21FC55B63008C0B30 /* NSMutableAttributedString+TKPCategory.h */,
+				F954B7D21FC55B63008C0B30 /* NSMutableAttributedString+TKPCategory.m */,
 				F954B7E51FC55B63008C0B30 /* NSMutableURLRequest+TKPDURLRequestUploadImage.h */,
+				F954B7CF1FC55B63008C0B30 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m */,
+				F954B7E31FC55B63008C0B30 /* OAStackViewCategory.h */,
+				F954B7D11FC55B63008C0B30 /* OAStackViewCategory.m */,
+				F954B7D51FC55B63008C0B30 /* QueueImageDownloader.h */,
+				F954B7DF1FC55B63008C0B30 /* QueueImageDownloader.m */,
+				F954B7CB1FC55B63008C0B30 /* RKObjectManagerCategory.h */,
+				F954B7DE1FC55B63008C0B30 /* RKObjectManagerCategory.m */,
 				E58B168E1FCBC73100846573 /* SearchBarWrapperView.swift */,
+				F954B7C71FC55B63008C0B30 /* TextMenu.h */,
+				F954B7DA1FC55B63008C0B30 /* TextMenu.m */,
+				F954B7E11FC55B63008C0B30 /* TKPDSecureStorage.h */,
+				F954B7D31FC55B63008C0B30 /* TKPDSecureStorage.m */,
+				F954B7CA1FC55B63008C0B30 /* TKPDStackView.h */,
+				F954B7D81FC55B63008C0B30 /* TKPDStackView.m */,
+				F954B7DC1FC55B63008C0B30 /* TopAlignedLabel.h */,
+				F954B7CE1FC55B63008C0B30 /* TopAlignedLabel.m */,
+				F954B7D61FC55B63008C0B30 /* ViewLabelUser.h */,
+				F954B7C61FC55B63008C0B30 /* ViewLabelUser.m */,
 			);
 			path = Cocoa;
 			sourceTree = "<group>";
@@ -10033,22 +10035,22 @@
 		F954BC6A1FC55B65008C0B30 /* Digital */ = {
 			isa = PBXGroup;
 			children = (
-				525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */,
-				F954BC6B1FC55B65008C0B30 /* DigitalOperator.swift */,
-				F954BC6C1FC55B65008C0B30 /* DigitalTextInput.swift */,
-				F954BC6D1FC55B65008C0B30 /* DigitalService.swift */,
-				F954BC6E1FC55B65008C0B30 /* DigitalForm.swift */,
-				F954BC6F1FC55B65008C0B30 /* DigitalWigetReducer.swift */,
-				F954BC701FC55B65008C0B30 /* DigitalCategoriesComponentView.swift */,
-				F954BC711FC55B65008C0B30 /* DigitalProductSelectionViewController.swift */,
-				F954BC721FC55B65008C0B30 /* DigitalCategoryListViewController.swift */,
-				F954BC731FC55B65008C0B30 /* UIRefactor */,
-				F954BC7A1FC55B65008C0B30 /* DigitalCategoryMenuViewController.swift */,
-				F954BC7B1FC55B65008C0B30 /* Object */,
-				F954BC851FC55B65008C0B30 /* DigitalOperatorSelectionViewController.swift */,
-				F954BC861FC55B65008C0B30 /* DigitalState.swift */,
-				F954BC871FC55B65008C0B30 /* DigitalProduct.swift */,
 				F954BC881FC55B65008C0B30 /* DigitalAnalyticsManager.swift */,
+				F954BC701FC55B65008C0B30 /* DigitalCategoriesComponentView.swift */,
+				F954BC721FC55B65008C0B30 /* DigitalCategoryListViewController.swift */,
+				F954BC7A1FC55B65008C0B30 /* DigitalCategoryMenuViewController.swift */,
+				F954BC6E1FC55B65008C0B30 /* DigitalForm.swift */,
+				F954BC6B1FC55B65008C0B30 /* DigitalOperator.swift */,
+				F954BC851FC55B65008C0B30 /* DigitalOperatorSelectionViewController.swift */,
+				525B5AF41FC57047004195FE /* DigitalOperatorTableViewCell.swift */,
+				F954BC871FC55B65008C0B30 /* DigitalProduct.swift */,
+				F954BC711FC55B65008C0B30 /* DigitalProductSelectionViewController.swift */,
+				F954BC6D1FC55B65008C0B30 /* DigitalService.swift */,
+				F954BC861FC55B65008C0B30 /* DigitalState.swift */,
+				F954BC6C1FC55B65008C0B30 /* DigitalTextInput.swift */,
+				F954BC6F1FC55B65008C0B30 /* DigitalWigetReducer.swift */,
+				F954BC7B1FC55B65008C0B30 /* Object */,
+				F954BC731FC55B65008C0B30 /* UIRefactor */,
 			);
 			path = Digital;
 			sourceTree = "<group>";
@@ -10085,11 +10087,11 @@
 		F954BC891FC55B65008C0B30 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				F954BC8A1FC55B65008C0B30 /* MainViewController.xib */,
-				F954BC8B1FC55B65008C0B30 /* MoreWrapperViewController.m */,
-				F954BC8C1FC55B65008C0B30 /* MainViewController.m */,
-				F954BC8D1FC55B65008C0B30 /* MoreWrapperViewController.h */,
 				F954BC8E1FC55B65008C0B30 /* MainViewController.h */,
+				F954BC8C1FC55B65008C0B30 /* MainViewController.m */,
+				F954BC8A1FC55B65008C0B30 /* MainViewController.xib */,
+				F954BC8D1FC55B65008C0B30 /* MoreWrapperViewController.h */,
+				F954BC8B1FC55B65008C0B30 /* MoreWrapperViewController.m */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -10097,55 +10099,55 @@
 		F954BC8F1FC55B65008C0B30 /* React */ = {
 			isa = PBXGroup;
 			children = (
-				C0E50F811FC5C4C60069403C /* Tooltip */,
-				C0E50F751FC5C48D0069403C /* ReactOrderManager.h */,
-				C0E50F761FC5C48D0069403C /* ReactOrderManager.m */,
+				F954BCA71FC55B65008C0B30 /* AppNavigationDelegate.h */,
+				F954BCA81FC55B65008C0B30 /* HybridNavigationManager.h */,
+				F954BC951FC55B65008C0B30 /* HybridNavigationManager.m */,
+				F954BCA61FC55B65008C0B30 /* OnboardingViewController.swift */,
+				F954BCA11FC55B65008C0B30 /* OnboardingViewController.xib */,
+				F954BCAE1FC55B65008C0B30 /* OptionCell.xib */,
+				F954BCA51FC55B65008C0B30 /* ReactBannerManager.h */,
+				F954BC961FC55B65008C0B30 /* ReactBannerManager.m */,
+				F954BCBA1FC55B65008C0B30 /* ReactCategoryResultManager.h */,
+				F954BCA21FC55B65008C0B30 /* ReactCategoryResultManager.m */,
 				9246FBF81FC576F90038D99B /* ReactDynamicFilterBridge.swift */,
 				9246FBF91FC576F90038D99B /* ReactDynamicFilterModule.h */,
 				9246FBFA1FC576F90038D99B /* ReactDynamicFilterModule.m */,
-				9246FBFB1FC576F90038D99B /* ReactHybridViewController.h */,
-				9246FBFC1FC576F90038D99B /* ReactHybridViewController.m */,
-				F954BC901FC55B65008C0B30 /* ReactSplitViewController.swift */,
-				F954BC911FC55B65008C0B30 /* TKPReactAnalytics.m */,
-				F954BC921FC55B65008C0B30 /* ReactTPRoutes.m */,
-				F954BC941FC55B65008C0B30 /* ReactUserManager.h */,
-				F954BC951FC55B65008C0B30 /* HybridNavigationManager.m */,
-				F954BC961FC55B65008C0B30 /* ReactBannerManager.m */,
-				F954BC971FC55B65008C0B30 /* ReactNetworkManager.m */,
-				F954BC981FC55B65008C0B30 /* ReactNotificationCenter.m */,
-				F954BC991FC55B65008C0B30 /* ReactTopAdsManager.m */,
-				F954BC9A1FC55B65008C0B30 /* ReactOnboardingHelper.m */,
-				F954BC9B1FC55B65008C0B30 /* RNSearchBarManager.h */,
-				F954BC9C1FC55B65008C0B30 /* TKPReactURLManager.h */,
-				F954BC9D1FC55B65008C0B30 /* ReactPopoverOptionViewController.swift */,
-				F954BC9E1FC55B65008C0B30 /* ReactInteractionHelper.h */,
-				F954BC9F1FC55B65008C0B30 /* RNSearchBar.m */,
-				F954BCA01FC55B65008C0B30 /* ReactPermissionManager.m */,
-				F954BCA11FC55B65008C0B30 /* OnboardingViewController.xib */,
-				F954BCA21FC55B65008C0B30 /* ReactCategoryResultManager.m */,
-				F954BCA31FC55B65008C0B30 /* ReactFileUploader.m */,
 				F954BCA41FC55B65008C0B30 /* ReactEventManager.h */,
-				F954BCA51FC55B65008C0B30 /* ReactBannerManager.h */,
-				F954BCA61FC55B65008C0B30 /* OnboardingViewController.swift */,
-				F954BCA71FC55B65008C0B30 /* AppNavigationDelegate.h */,
-				F954BCA81FC55B65008C0B30 /* HybridNavigationManager.h */,
-				F954BCAA1FC55B65008C0B30 /* ReactUserManager.m */,
-				F954BCAB1FC55B65008C0B30 /* ReactTPRoutes.h */,
-				F954BCAC1FC55B65008C0B30 /* TKPReactAnalytics.h */,
-				F954BCAD1FC55B65008C0B30 /* ReactPopoverOptionViewController.xib */,
-				F954BCAE1FC55B65008C0B30 /* OptionCell.xib */,
-				F954BCAF1FC55B65008C0B30 /* ReactOnboardingHelper.h */,
-				F954BCB01FC55B65008C0B30 /* ReactTopAdsManager.h */,
-				F954BCB11FC55B65008C0B30 /* ReactNotificationCenter.h */,
-				F954BCB21FC55B65008C0B30 /* ReactNetworkManager.h */,
-				F954BCB31FC55B65008C0B30 /* ReactPermissionManager.h */,
-				F954BCB41FC55B65008C0B30 /* RNSearchBar.h */,
-				F954BCB51FC55B65008C0B30 /* ReactInteractionHelper.m */,
-				F954BCB61FC55B65008C0B30 /* TKPReactURLManager.m */,
-				F954BCB71FC55B65008C0B30 /* RNSearchBarManager.m */,
 				F954BCB81FC55B65008C0B30 /* ReactEventManager.m */,
 				F954BCB91FC55B65008C0B30 /* ReactFileUploader.h */,
-				F954BCBA1FC55B65008C0B30 /* ReactCategoryResultManager.h */,
+				F954BCA31FC55B65008C0B30 /* ReactFileUploader.m */,
+				9246FBFB1FC576F90038D99B /* ReactHybridViewController.h */,
+				9246FBFC1FC576F90038D99B /* ReactHybridViewController.m */,
+				F954BC9E1FC55B65008C0B30 /* ReactInteractionHelper.h */,
+				F954BCB51FC55B65008C0B30 /* ReactInteractionHelper.m */,
+				F954BCB21FC55B65008C0B30 /* ReactNetworkManager.h */,
+				F954BC971FC55B65008C0B30 /* ReactNetworkManager.m */,
+				F954BCB11FC55B65008C0B30 /* ReactNotificationCenter.h */,
+				F954BC981FC55B65008C0B30 /* ReactNotificationCenter.m */,
+				F954BCAF1FC55B65008C0B30 /* ReactOnboardingHelper.h */,
+				F954BC9A1FC55B65008C0B30 /* ReactOnboardingHelper.m */,
+				C0E50F751FC5C48D0069403C /* ReactOrderManager.h */,
+				C0E50F761FC5C48D0069403C /* ReactOrderManager.m */,
+				F954BCB31FC55B65008C0B30 /* ReactPermissionManager.h */,
+				F954BCA01FC55B65008C0B30 /* ReactPermissionManager.m */,
+				F954BC9D1FC55B65008C0B30 /* ReactPopoverOptionViewController.swift */,
+				F954BCAD1FC55B65008C0B30 /* ReactPopoverOptionViewController.xib */,
+				F954BC901FC55B65008C0B30 /* ReactSplitViewController.swift */,
+				F954BCB01FC55B65008C0B30 /* ReactTopAdsManager.h */,
+				F954BC991FC55B65008C0B30 /* ReactTopAdsManager.m */,
+				F954BCAB1FC55B65008C0B30 /* ReactTPRoutes.h */,
+				F954BC921FC55B65008C0B30 /* ReactTPRoutes.m */,
+				F954BC941FC55B65008C0B30 /* ReactUserManager.h */,
+				F954BCAA1FC55B65008C0B30 /* ReactUserManager.m */,
+				F954BCB41FC55B65008C0B30 /* RNSearchBar.h */,
+				F954BC9F1FC55B65008C0B30 /* RNSearchBar.m */,
+				F954BC9B1FC55B65008C0B30 /* RNSearchBarManager.h */,
+				F954BCB71FC55B65008C0B30 /* RNSearchBarManager.m */,
+				F954BCAC1FC55B65008C0B30 /* TKPReactAnalytics.h */,
+				F954BC911FC55B65008C0B30 /* TKPReactAnalytics.m */,
+				F954BC9C1FC55B65008C0B30 /* TKPReactURLManager.h */,
+				F954BCB61FC55B65008C0B30 /* TKPReactURLManager.m */,
+				C0E50F811FC5C4C60069403C /* Tooltip */,
 			);
 			path = React;
 			sourceTree = "<group>";
@@ -10153,30 +10155,30 @@
 		F954BCBB1FC55B65008C0B30 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				F954BCBC1FC55B65008C0B30 /* TouchIDHelper.swift */,
-				F954BCBD1FC55B65008C0B30 /* FoundationHelper.swift */,
-				F954BCBE1FC55B65008C0B30 /* Encryption */,
-				F954BCCC1FC55B65008C0B30 /* Spotlight */,
+				F954BD071FC55B65008C0B30 /* Analytics */,
 				F954BCCF1FC55B65008C0B30 /* AuthenticationServiceExtension.swift */,
-				F954BCD01FC55B65008C0B30 /* VersionCheckerConfig.h */,
+				F954BD001FC55B65008C0B30 /* CacheController */,
 				F954BCD11FC55B65008C0B30 /* CollectionViewCellType.swift */,
-				F954BCD21FC55B65008C0B30 /* NavigationHelper.m */,
 				F954BCD31FC55B65008C0B30 /* Constants */,
 				F954BCDA1FC55B65008C0B30 /* DelayedActionManager.swift */,
-				F954BCDB1FC55B65008C0B30 /* TKPStoreManager */,
+				F954BCBE1FC55B65008C0B30 /* Encryption */,
+				F954BCF51FC55B65008C0B30 /* Fonts */,
+				F954BCBD1FC55B65008C0B30 /* FoundationHelper.swift */,
 				F954BCEC1FC55B65008C0B30 /* GlobalRenderComponent.swift */,
-				F954BCED1FC55B65008C0B30 /* MigrationHelper.swift */,
-				F954BCEE1FC55B65008C0B30 /* NavigationHelper.h */,
-				F954BCEF1FC55B65008C0B30 /* QuickActionHelper.swift */,
-				F954BCF01FC55B65008C0B30 /* VersionCheckerConfig.m */,
-				F954BCF11FC55B65008C0B30 /* ScreenshotHelper.swift */,
-				F954BCF21FC55B65008C0B30 /* VersionChecker.swift */,
 				F954BCF31FC55B65008C0B30 /* HomePageHeaderSectionStyle.swift */,
 				F954BCF41FC55B65008C0B30 /* LabelCopyable.swift */,
+				F954BCED1FC55B65008C0B30 /* MigrationHelper.swift */,
+				F954BCEE1FC55B65008C0B30 /* NavigationHelper.h */,
+				F954BCD21FC55B65008C0B30 /* NavigationHelper.m */,
+				F954BCEF1FC55B65008C0B30 /* QuickActionHelper.swift */,
+				F954BCF11FC55B65008C0B30 /* ScreenshotHelper.swift */,
+				F954BCCC1FC55B65008C0B30 /* Spotlight */,
+				F954BCDB1FC55B65008C0B30 /* TKPStoreManager */,
+				F954BCBC1FC55B65008C0B30 /* TouchIDHelper.swift */,
+				F954BCF21FC55B65008C0B30 /* VersionChecker.swift */,
+				F954BCD01FC55B65008C0B30 /* VersionCheckerConfig.h */,
+				F954BCF01FC55B65008C0B30 /* VersionCheckerConfig.m */,
 				E58B16901FCBC74A00846573 /* ViewControllerSwipeGestureProtocol.swift */,
-				F954BCF51FC55B65008C0B30 /* Fonts */,
-				F954BD001FC55B65008C0B30 /* CacheController */,
-				F954BD071FC55B65008C0B30 /* Analytics */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -10185,16 +10187,16 @@
 			isa = PBXGroup;
 			children = (
 				F954BCBF1FC55B65008C0B30 /* EncodeDecoderManager.h */,
-				F954BCC01FC55B65008C0B30 /* UserAuthentificationManager.m */,
-				F954BCC21FC55B65008C0B30 /* RSA.m */,
-				F954BCC31FC55B65008C0B30 /* NSString+MD5.h */,
-				F954BCC41FC55B65008C0B30 /* TkpdHMAC.h */,
 				F954BCC51FC55B65008C0B30 /* EncodeDecoderManager.m */,
-				F954BCC61FC55B65008C0B30 /* public_key.der */,
-				F954BCC71FC55B65008C0B30 /* UserAuthentificationManager.h */,
+				F954BCC31FC55B65008C0B30 /* NSString+MD5.h */,
 				F954BCC81FC55B65008C0B30 /* NSString+MD5.m */,
+				F954BCC61FC55B65008C0B30 /* public_key.der */,
 				F954BCC91FC55B65008C0B30 /* RSA.h */,
+				F954BCC21FC55B65008C0B30 /* RSA.m */,
+				F954BCC41FC55B65008C0B30 /* TkpdHMAC.h */,
 				F954BCCB1FC55B65008C0B30 /* TkpdHMAC.m */,
+				F954BCC71FC55B65008C0B30 /* UserAuthentificationManager.h */,
+				F954BCC01FC55B65008C0B30 /* UserAuthentificationManager.m */,
 			);
 			path = Encryption;
 			sourceTree = "<group>";
@@ -10202,8 +10204,8 @@
 		F954BCCC1FC55B65008C0B30 /* Spotlight */ = {
 			isa = PBXGroup;
 			children = (
-				F954BCCD1FC55B65008C0B30 /* TPSpotlight.m */,
 				F954BCCE1FC55B65008C0B30 /* TPSpotlight.h */,
+				F954BCCD1FC55B65008C0B30 /* TPSpotlight.m */,
 			);
 			path = Spotlight;
 			sourceTree = "<group>";
@@ -10211,11 +10213,11 @@
 		F954BCD31FC55B65008C0B30 /* Constants */ = {
 			isa = PBXGroup;
 			children = (
-				F954BCD41FC55B65008C0B30 /* TkpdImg.h */,
 				F954BCD51FC55B65008C0B30 /* AnalyticsString.h */,
+				F954BCD91FC55B65008C0B30 /* string.h */,
 				F954BCD61FC55B65008C0B30 /* stringrestkit.h */,
 				F954BCD81FC55B65008C0B30 /* Tkpd.h */,
-				F954BCD91FC55B65008C0B30 /* string.h */,
+				F954BCD41FC55B65008C0B30 /* TkpdImg.h */,
 			);
 			path = Constants;
 			sourceTree = "<group>";
@@ -10223,20 +10225,20 @@
 		F954BCDB1FC55B65008C0B30 /* TKPStoreManager */ = {
 			isa = PBXGroup;
 			children = (
-				F954BCDC1FC55B65008C0B30 /* UIViewController+TKPAdditions.h */,
-				F954BCDD1FC55B65008C0B30 /* TKPStoreManager.m */,
+				F954BCE21FC55B65008C0B30 /* TKPAppFlow.h */,
+				F954BCE41FC55B65008C0B30 /* TKPGooglePlaceDetailProductStore.h */,
+				F954BCEB1FC55B65008C0B30 /* TKPGooglePlaceDetailProductStore.m */,
+				F954BCE31FC55B65008C0B30 /* TKPHomeBannerStore.h */,
+				F954BCEA1FC55B65008C0B30 /* TKPHomeBannerStore.m */,
+				F954BCE61FC55B65008C0B30 /* TKPHomeProductsStore.h */,
 				F954BCDE1FC55B65008C0B30 /* TKPHomeProductsStore.m */,
 				F954BCDF1FC55B65008C0B30 /* TKPMappingManager.h */,
-				F954BCE11FC55B65008C0B30 /* TKPObjectMapping.h */,
-				F954BCE21FC55B65008C0B30 /* TKPAppFlow.h */,
-				F954BCE31FC55B65008C0B30 /* TKPHomeBannerStore.h */,
-				F954BCE41FC55B65008C0B30 /* TKPGooglePlaceDetailProductStore.h */,
 				F954BCE51FC55B65008C0B30 /* TKPMappingManager.m */,
-				F954BCE61FC55B65008C0B30 /* TKPHomeProductsStore.h */,
+				F954BCE11FC55B65008C0B30 /* TKPObjectMapping.h */,
 				F954BCE71FC55B65008C0B30 /* TKPStoreManager.h */,
+				F954BCDD1FC55B65008C0B30 /* TKPStoreManager.m */,
+				F954BCDC1FC55B65008C0B30 /* UIViewController+TKPAdditions.h */,
 				F954BCE81FC55B65008C0B30 /* UIViewController+TKPAdditions.m */,
-				F954BCEA1FC55B65008C0B30 /* TKPHomeBannerStore.m */,
-				F954BCEB1FC55B65008C0B30 /* TKPGooglePlaceDetailProductStore.m */,
 			);
 			path = TKPStoreManager;
 			sourceTree = "<group>";
@@ -10244,16 +10246,16 @@
 		F954BCF51FC55B65008C0B30 /* Fonts */ = {
 			isa = PBXGroup;
 			children = (
-				F954BCF61FC55B65008C0B30 /* Octicons.ttf */,
 				F954BCF71FC55B65008C0B30 /* Entypo.ttf */,
-				F954BCF81FC55B65008C0B30 /* MaterialCommunityIcons.ttf */,
+				F954BCFD1FC55B65008C0B30 /* EvilIcons.ttf */,
+				F954BCFB1FC55B65008C0B30 /* FontAwesome.ttf */,
 				F954BCF91FC55B65008C0B30 /* Foundation.ttf */,
 				F954BCFA1FC55B65008C0B30 /* Ionicons.ttf */,
-				F954BCFB1FC55B65008C0B30 /* FontAwesome.ttf */,
-				F954BCFC1FC55B65008C0B30 /* Zocial.ttf */,
-				F954BCFD1FC55B65008C0B30 /* EvilIcons.ttf */,
-				F954BCFE1FC55B65008C0B30 /* SimpleLineIcons.ttf */,
+				F954BCF81FC55B65008C0B30 /* MaterialCommunityIcons.ttf */,
 				F954BCFF1FC55B65008C0B30 /* MaterialIcons.ttf */,
+				F954BCF61FC55B65008C0B30 /* Octicons.ttf */,
+				F954BCFE1FC55B65008C0B30 /* SimpleLineIcons.ttf */,
+				F954BCFC1FC55B65008C0B30 /* Zocial.ttf */,
 			);
 			path = Fonts;
 			sourceTree = "<group>";
@@ -10261,12 +10263,12 @@
 		F954BD001FC55B65008C0B30 /* CacheController */ = {
 			isa = PBXGroup;
 			children = (
+				F954BD041FC55B65008C0B30 /* URLCacheAlert.h */,
 				F954BD011FC55B65008C0B30 /* URLCacheAlert.m */,
+				F954BD061FC55B65008C0B30 /* URLCacheConnection.h */,
 				F954BD021FC55B65008C0B30 /* URLCacheConnection.m */,
 				F954BD031FC55B65008C0B30 /* URLCacheController.h */,
-				F954BD041FC55B65008C0B30 /* URLCacheAlert.h */,
 				F954BD051FC55B65008C0B30 /* URLCacheController.m */,
-				F954BD061FC55B65008C0B30 /* URLCacheConnection.h */,
 			);
 			path = CacheController;
 			sourceTree = "<group>";
@@ -10274,8 +10276,9 @@
 		F954BD071FC55B65008C0B30 /* Analytics */ = {
 			isa = PBXGroup;
 			children = (
-				F954BD081FC55B65008C0B30 /* AnalyticsManager.m */,
 				F954BD091FC55B65008C0B30 /* AnalyticsManager.h */,
+				F954BD081FC55B65008C0B30 /* AnalyticsManager.m */,
+				6271A9C41FE7769200AB07D7 /* LogEntriesHelper.swift */,
 			);
 			path = Analytics;
 			sourceTree = "<group>";
@@ -10304,25 +10307,25 @@
 		F954BD0D1FC55B65008C0B30 /* Target */ = {
 			isa = PBXGroup;
 			children = (
-				F954BD0E1FC55B65008C0B30 /* ReplacementTarget.swift */,
-				F954BD0F1FC55B65008C0B30 /* HadesTarget.swift */,
-				F954BD101FC55B65008C0B30 /* TalkTarget.swift */,
-				F954BD111FC55B65008C0B30 /* GaladrielTarget.swift */,
-				F954BD121FC55B65008C0B30 /* PaymentTarget.swift */,
-				F954BD131FC55B65008C0B30 /* WalletTarget.swift */,
-				342394F71FC5D3D7003DE70D /* MerlinTarget.swift */,
-				F954BD141FC55B65008C0B30 /* ScroogeTarget.swift */,
-				F954BD151FC55B65008C0B30 /* ReactTarget.swift */,
-				F954BD161FC55B65008C0B30 /* TopAdsTarget.swift */,
-				F954BD171FC55B65008C0B30 /* TokocashTarget.swift */,
-				F954BD181FC55B65008C0B30 /* ReputationTarget.swift */,
-				F954BD191FC55B65008C0B30 /* GoldMerchantTarget.swift */,
-				F954BD1A1FC55B65008C0B30 /* DigitalTarget.swift */,
-				F954BD1B1FC55B65008C0B30 /* MojitoTarget.swift */,
 				F954BD1C1FC55B65008C0B30 /* AccountTarget.swift */,
-				2ABF048C1FC5E9BF00757B85 /* KeroTarget.swift */,
-				F954BD1D1FC55B65008C0B30 /* V4Target.swift */,
 				F954BD1E1FC55B65008C0B30 /* AceTarget.swift */,
+				F954BD1A1FC55B65008C0B30 /* DigitalTarget.swift */,
+				F954BD111FC55B65008C0B30 /* GaladrielTarget.swift */,
+				F954BD191FC55B65008C0B30 /* GoldMerchantTarget.swift */,
+				F954BD0F1FC55B65008C0B30 /* HadesTarget.swift */,
+				2ABF048C1FC5E9BF00757B85 /* KeroTarget.swift */,
+				342394F71FC5D3D7003DE70D /* MerlinTarget.swift */,
+				F954BD1B1FC55B65008C0B30 /* MojitoTarget.swift */,
+				F954BD121FC55B65008C0B30 /* PaymentTarget.swift */,
+				F954BD151FC55B65008C0B30 /* ReactTarget.swift */,
+				F954BD0E1FC55B65008C0B30 /* ReplacementTarget.swift */,
+				F954BD181FC55B65008C0B30 /* ReputationTarget.swift */,
+				F954BD141FC55B65008C0B30 /* ScroogeTarget.swift */,
+				F954BD101FC55B65008C0B30 /* TalkTarget.swift */,
+				F954BD171FC55B65008C0B30 /* TokocashTarget.swift */,
+				F954BD161FC55B65008C0B30 /* TopAdsTarget.swift */,
+				F954BD1D1FC55B65008C0B30 /* V4Target.swift */,
+				F954BD131FC55B65008C0B30 /* WalletTarget.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -13159,6 +13162,7 @@
 				9246FC101FC5797B0038D99B /* FuzzySearchWrapper.swift in Sources */,
 				F954C0CA1FC55B68008C0B30 /* RequestFilterCategory.swift in Sources */,
 				F954C1A81FC55B69008C0B30 /* FeedViewController.swift in Sources */,
+				6271A9C51FE7769200AB07D7 /* LogEntriesHelper.swift in Sources */,
 				F954C1CE1FC55B69008C0B30 /* TxOrderPaymentEditForm.m in Sources */,
 				F954C0871FC55B68008C0B30 /* WalletService.swift in Sources */,
 				F954C3D91FC55B6C008C0B30 /* DigitalCartInfoDetail.swift in Sources */,

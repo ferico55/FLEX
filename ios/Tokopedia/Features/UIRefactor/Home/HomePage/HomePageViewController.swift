@@ -620,6 +620,7 @@ class HomePageViewController: UIViewController {
             if token != nil {
                 self.requestTokocash()
             } else {
+                LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/token")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: TkpdNotificationForcedLogout), object: nil)
             }
         }
@@ -671,6 +672,7 @@ class HomePageViewController: UIViewController {
                     WalletService.getBalance(userId: self.userManager.getUserId())
                         .subscribe(onNext: { wallet in
                             if wallet.isExpired() {
+                                LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/api/v1/wallet/balance")
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
                                 if wallet.shouldShowActivation {

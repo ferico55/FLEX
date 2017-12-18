@@ -27,6 +27,7 @@
 #import "HybridNavigationManager.h"
 #import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
+#import "lecore.h"
 
 @import NativeNavigation;
 @import GooglePlaces;
@@ -176,6 +177,7 @@
         [self configureGoogleAnalytics];
         [self configureMoEngageInApplication:application withLaunchOptions:launchOptions];
         [self sendAppStatusToMoEngage];
+        [self configureLogEntries];
         
         [[AFRKNetworkActivityIndicatorManager sharedManager] setEnabled:YES];
 
@@ -325,6 +327,11 @@
 #else
     [[MoEngage sharedInstance] initializeProdWithApiKey:@"LNCME8HVKUEJIGXE2N0698H0" inApplication:application withLaunchOptions:launchOptions openDeeplinkUrlAutomatically:NO];
 #endif
+}
+
+- (void)configureLogEntries {
+    le_init();
+    le_set_token("078965b7-d9aa-42a6-b6fe-485485c62205");
 }
 
 - (NSString *)getGAPropertyID {
