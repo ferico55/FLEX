@@ -127,7 +127,6 @@ ProductCellDelegate
 
     NSArray *_initialBreadcrumb;
     
-    FilterData *_filterResponse;
     NSMutableArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
@@ -723,7 +722,6 @@ ProductCellDelegate
 
 -(void)searchWithDynamicSort{
     FiltersController *controller __unused = [[FiltersController alloc]initWithSource:[self getSourceSearchData]
-                                                                         sortResponse:_filterResponse?:[FilterData new]
                                                                          selectedSort:_selectedSort
                                                                           presentedVC:self
                                                                        rootCategoryID:_rootCategoryID
@@ -736,9 +734,6 @@ ProductCellDelegate
                                                                              [self showSortingIsActive:[self getSortingIsActive]];
                                                                              
                                                                              [self refreshSearchDataWithDynamicSort];
-                                                                             
-                                                                         } onReceivedFilterDataOption:^(FilterData * filterResponse) {
-                                                                             _filterResponse = filterResponse;
                                                                          }];
 }
 

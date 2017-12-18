@@ -339,7 +339,6 @@
 
 -(void)isSearchWithDynamicSort{
     FiltersController *controller = [[FiltersController alloc]initWithSource:SourceCatalogProduct
-                                                                sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
                                                               rootCategoryID:@""
@@ -361,8 +360,6 @@
                                                                     [self setActiveSort:[self isActiveSorting]];
                                                                     [self fetchDataCatalog];
                                                                     
-                                                                } onReceivedFilterDataOption:^(FilterData * filterResponse) {
-                                                                    _filterResponse = filterResponse;
                                                                 }];
 }
 

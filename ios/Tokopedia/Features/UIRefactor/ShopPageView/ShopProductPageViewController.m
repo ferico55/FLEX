@@ -77,7 +77,6 @@ NoResultDelegate
     NSArray<FeaturedProduct*> *_featuredProducts;
     
     ListOption *_selectedSort;
-    FilterData *_filterData;
     ShopProductFilter *_productFilter;
 }
 
@@ -603,12 +602,10 @@ NoResultDelegate
 }
 
 - (IBAction)tapToSort:(id)sender {
-    __unused FiltersController *controller = [[FiltersController alloc] initWithSource:SourceShopProduct sortResponse:_filterData selectedSort:_selectedSort presentedVC:self rootCategoryID:nil onCompletion:^(ListOption *selectedSort, NSDictionary *paramSort) {
+    __unused FiltersController *controller = [[FiltersController alloc] initWithSource:SourceShopProduct selectedSort:_selectedSort presentedVC:self rootCategoryID:nil onCompletion:^(ListOption *selectedSort, NSDictionary *paramSort) {
         _selectedSort = selectedSort;
        
         [self reloadDataSearch];
-    } onReceivedFilterDataOption: ^(FilterData *filterData){
-        _filterData = filterData;
     }];
 }
 

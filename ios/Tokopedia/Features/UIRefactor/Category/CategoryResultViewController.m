@@ -141,7 +141,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     NSIndexPath *_sortIndexPath;
     NSArray *_initialBreadcrumb;
     
-    FilterData *_filterResponse;
     NSArray<ListOption*> *_selectedFilters;
     NSDictionary *_selectedFilterParam;
     ListOption *_selectedSort;
@@ -481,7 +480,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 
 -(void)searchWithDynamicSort{
     FiltersController *controller = [[FiltersController alloc]initWithSource:[self getSourceSearchData]
-                                                                sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
                                                               rootCategoryID:_rootCategoryID
@@ -493,8 +491,6 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                                     
                                                                     [self refreshSearchDataWithDynamicSort];
                                                                     
-                                                                } onReceivedFilterDataOption:^(FilterData * filterResponse) {
-                                                                    _filterResponse = filterResponse;
                                                                 }];
 }
 

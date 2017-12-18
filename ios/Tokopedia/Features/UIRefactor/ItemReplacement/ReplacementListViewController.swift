@@ -178,7 +178,6 @@ class ReplacementListViewController: UIViewController {
                 
                 _ = FiltersController(
                     source: .replacement,
-                    sortResponse: self.filterOptions,
                     selectedSort: self.selectedFilter.sort,
                     presentedVC: self,
                     rootCategoryID:"" ,
@@ -190,8 +189,6 @@ class ReplacementListViewController: UIViewController {
                     self.selectedSortParameter = sortParameter
                     self.viewModel.filter.value = self.selectedFilterParameter.merged(with: self.selectedSortParameter)
                     
-                }, onReceivedFilterDataOption: { filterOptions in
-                    self.filterOptions = filterOptions
                 })
                 
             })

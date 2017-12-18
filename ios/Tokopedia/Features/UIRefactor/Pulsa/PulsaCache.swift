@@ -40,7 +40,7 @@ class PulsaCache: NSObject {
     }
     
     func loadCategories(_ loadCategoryCallBack: @escaping (_ category: PulsaCategoryRoot?) -> Void) {
-        if (!PulsaTweaks.shouldCacheRequest()) {
+        if (!CacheTweaks.shouldCachePulsaRequest()) {
             pruneCache()
         }
         
@@ -68,7 +68,7 @@ class PulsaCache: NSObject {
     }
     
     func loadOperators(_ loadOperatorCallBack: @escaping (_ op: PulsaOperatorRoot?) -> Void) {
-        if (!PulsaTweaks.shouldCacheRequest()) {
+        if (!CacheTweaks.shouldCachePulsaRequest()) {
             pruneCache()
         }
         
@@ -103,7 +103,7 @@ class PulsaCache: NSObject {
     }
     
     func loadProducts(_ loadProductCallBack: @escaping (_ product: PulsaProductRoot?) -> Void) {
-        if (!PulsaTweaks.shouldCacheRequest()) {
+        if (!CacheTweaks.shouldCachePulsaRequest()) {
             pruneCache()
         }
         
@@ -132,7 +132,7 @@ class PulsaCache: NSObject {
     }
     
     func loadLastOrder(categoryId:String, loadLastOrderCallBack: @escaping (_ lastOrder: DigitalLastOrder?) -> Void) {
-        if (!PulsaTweaks.shouldCacheRequest()) {
+        if (!CacheTweaks.shouldCachePulsaRequest()) {
             pruneCache()
         }
         

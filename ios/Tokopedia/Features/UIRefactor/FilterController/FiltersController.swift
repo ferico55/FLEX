@@ -72,17 +72,14 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     /*
         The designated initializer for sorting list view controller. sortResponse (optional) is list sort option from previous fetch dynamic attibute.
      */
-    init(source:Source, sortResponse:FilterData?, selectedSort: ListOption, presentedVC: UIViewController, rootCategoryID: String? = "", onCompletion: @escaping ((_ selectedSort:ListOption, _ paramSort:[String:String]) -> Void), onReceivedFilterDataOption:@escaping ((FilterData) -> Void)){
+    init(source:Source, selectedSort: ListOption, presentedVC: UIViewController, rootCategoryID: String? = "", onCompletion: @escaping ((_ selectedSort:ListOption, _ paramSort:[String:String]) -> Void)){
         
         self.selectedSort = selectedSort
         self.completionHandlerSort = onCompletion
         self.presentedController = presentedVC
         self.source = source
         self.rootCategoryID = rootCategoryID ?? ""
-        
-        if sortResponse != nil { self.filterResponse = sortResponse! }
-        completionHandlerResponse = onReceivedFilterDataOption
-        
+    
         super.init()
         
         self .presentControllerSort()
@@ -148,7 +145,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
     }
     
     fileprivate func presentControllerSort(){
-        let controller : FilterSortViewController = FilterSortViewController(source:source, items: filterResponse.sort, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { [unowned self](selectedSort: ListOption, paramSort:[String:String]) in
+        let controller : FilterSortViewController = FilterSortViewController(source:source, selectedObject: selectedSort, rootCategoryID: self.rootCategoryID, onCompletion: { (selectedSort: ListOption, paramSort:[String:String]) in
             self.selectedSort = selectedSort
             
             let eventName = self.isSourceFromDirectory() ? GA_EVENT_CLICK_CATEGORY : "clickSort"
@@ -160,10 +157,7 @@ class FiltersController: NSObject, MHVerticalTabBarControllerDelegate {
                 AnalyticsManager.trackEventName(eventName, category: category, action: action, label: selectedSort.name)
             }
             self.completionHandlerSort(self.selectedSort, paramSort)
-        }) { (response) in
-            self.filterResponse = response
-            self.completionHandlerResponse(response)
-        }
+        })
         
         let navigation: UINavigationController = UINavigationController(rootViewController: controller)
         navigation.navigationBar.isTranslucent = false

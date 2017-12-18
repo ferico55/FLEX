@@ -15,7 +15,7 @@ struct Filters {
     var sort : ListOption = ListOption()
 }
 
-class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable {
+class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable, NSCoding {
     
     var name : String = ""
     var value : String?
@@ -178,6 +178,29 @@ class ListOption: NSObject, TKPObjectMapping, NSCopying, Unboxable {
             }
         }
         return false
+    }
+    
+    // MARK: NSCoding
+    
+    required init?(coder aDecoder: NSCoder) {
+        if let child = aDecoder.decodeObject(forKey:"child") as? [ListOption] {
+            self.child = child
+        }
+        if let name = aDecoder.decodeObject(forKey:"name") as? String {
+            self.name = name
+        }
+        if let key = aDecoder.decodeObject(forKey:"key") as? String {
+            self.key = key
+        }
+        if let value = aDecoder.decodeObject(forKey:"value") as? String {
+            self.value = value
+        }
+    }
+    func encode(with aCoder: NSCoder) {
+        aCoder.encode(child, forKey: "child")
+        aCoder.encode(name as Any?, forKey: "name")
+        aCoder.encode(key as Any?, forKey: "key")
+        aCoder.encode(value as Any?, forKey: "value")
     }
 
 }

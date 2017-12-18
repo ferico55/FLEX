@@ -1,5 +1,5 @@
 //
-//  PulsaTweaks.h
+//  CacheTweaks.h
 //  Tokopedia
 //
 //  Created by Tonito Acen on 12/27/16.
@@ -8,8 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@interface PulsaTweaks : NSObject
+@interface CacheTweaks : NSObject
 
-+ (BOOL)shouldCacheRequest;
++ (BOOL)shouldCachePulsaRequest;
++ (BOOL)shouldCacheSortRequest;
 
 @end

@@ -328,7 +328,6 @@ ProductCellDelegate
 
 -(void)searchWithDynamicSort{
     __unused FiltersController *controller = [[FiltersController alloc]initWithSource:SourceHotlist
-                                                                sortResponse:_filterResponse?:[FilterData new]
                                                                 selectedSort:_selectedSort
                                                                  presentedVC:self
                                                               rootCategoryID:_rootCategoryID
@@ -339,8 +338,6 @@ ProductCellDelegate
         [self showSortingIsActive:[self getSortingIsActive]];
         [self refreshView:nil];
         
-    } onReceivedFilterDataOption:^(FilterData * filterResponse) {
-        _filterResponse = filterResponse;
     }];
 }
 
