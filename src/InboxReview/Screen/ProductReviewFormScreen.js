@@ -21,7 +21,7 @@ import {
   ReactNetworkManager,
   ReactFileUploader,
   ReactOnboardingHelper,
-  Facebook,
+  ReactFacebookManager,
   TKPReactAnalytics,
 } from 'NativeModules'
 import entities from 'entities'
@@ -1292,7 +1292,7 @@ class ProductReviewFormScreen extends PureComponent {
                   this.state.isShareToFacebook &&
                   this.props.review.product_data.product_status !== 0
                 ) {
-                  Facebook.shareToFacebook(
+                  ReactFacebookManager.shareToFacebook(
                     this.state.review,
                     `${this.props.review.product_data.product_id}`,
                     this.props.review.product_data.product_page_url,
