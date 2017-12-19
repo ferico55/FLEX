@@ -52,18 +52,29 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
             }
         }
         
+        let container = Node<UIView> {
+            view, layout, _ in
+            view.backgroundColor = .tpBackground()
+        }
+        
+        let space = Node<UIView> {
+            view, layout, _ in
+            view.backgroundColor = .tpBackground()
+            layout.height = 15
+        }
+        
         if theTopAds.count > 0 && (theTopAds[0].product != nil) {
             // product
-            return Node<UIView>().add(
-                child:
-                    TopAdsFeedPlusProductComponentView().construct(state: state, size: size)
-            )
+            return container.add(children: [
+                TopAdsFeedPlusProductComponentView().construct(state: state, size: size),
+                space,
+            ])
         } else {
             // shop
-            return Node<UIView>().add(
-                child:
-                    TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size)
-            )
+            return container.add(children: [
+                TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size),
+                space,
+            ])
         }
     }
     
@@ -248,17 +259,9 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
             adView(topAdsResult: theTopAds[index], index: index)
         })
         
-        let space = Node<UIView> {
-            view, layout, _ in
-            view.backgroundColor = .tpBackground()
-            layout.marginTop = 0
-            layout.height = 15
-        }
-        
         return mainWrapper.add(children: [
             promotedInfoView(),
-            adsWrapper,
-            space
+            adsWrapper
         ])
     }
     
@@ -662,21 +665,8 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
             
         }
         
-        func space() -> NodeType {
-            let space = Node<UIView> {
-                view, layout, _ in
-                view.backgroundColor = .tpBackground()
-                layout.marginTop = 0
-                layout.height = 15
-            }
-            return space
-        }
-        
         for ad in theTopAds {
-            mainWrapper.add(children: [
-                adView(ad: ad),
-                space()
-            ])
+            mainWrapper.add(child: adView(ad: ad))
         }
         
         return mainWrapper

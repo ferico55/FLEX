@@ -38,7 +38,8 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
     }
     
     private func componentContainer(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
-        return Node<UIView>() { _, layout, size in
+        return Node<UIView>() { view, layout, size in
+            view.backgroundColor = .tpBackground()
             layout.flexDirection = .column
             layout.width = size.width
         }.add(children: [
@@ -48,6 +49,7 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
                 
                 view.borderWidth = 1
                 view.borderColor = .fromHexString("#e0e0e0")
+                view.backgroundColor = .white
             }.add(children: [
                 self.titleView(state: state, size: size),
                 self.horizontalLine(),

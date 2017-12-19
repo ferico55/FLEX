@@ -186,7 +186,8 @@ class FeedOfficialStoreComponentView: ComponentView<FeedCardContentState> {
             )
         }
         
-        return Node<UIView>() { _, layout, _ in
+        return Node<UIView>() { view, layout, _ in
+            view.backgroundColor = .tpBackground()
             layout.flexDirection = .column
         }.add(children: [
             Node<UIView>() { view, layout, _ in
