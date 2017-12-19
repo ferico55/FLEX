@@ -185,9 +185,9 @@ class Promo extends React.PureComponent {
     this.aliveSubscription.unsubscribe()
   }
 
-  getPromoPeriod = (startDate, endDate) => {
-    startDate = new Date(startDate)
-    endDate = new Date(endDate)
+  getPromoPeriod = (startDateString, endDateString) => {
+    const startDate = new Date(startDateString)
+    const endDate = new Date(endDateString)
     let period = startDate.getDate()
     if (startDate.getMonth() !== endDate.getMonth()) {
       period += ` ${monthNames[startDate.getMonth()]}`
@@ -390,7 +390,7 @@ class Promo extends React.PureComponent {
             isErrorOnScroll: false,
           })
         },
-        err => {
+        () => {
           ReactInteractionHelper.showDangerAlert('Tidak ada koneksi internet')
           this.setState({
             isLoading: false,
@@ -436,6 +436,16 @@ class Promo extends React.PureComponent {
         },
       )
     }
+  }
+  renderPromoCodes = item => {
+    if (item.acf.multiple_promo_code) {
+      const numberOfCodes = item.acf.promo_codes.reduce(
+        (sum, array) => sum + array.group_code.length,
+        0,
+      )
+      return `${numberOfCodes} Kode Promo`
+    }
+    return item.meta.promo_code === '' ? 'Tanpa Kode Promo' : 'Kode Promo'
   }
 
   renderItem = (item, _) => (
@@ -487,11 +497,7 @@ class Promo extends React.PureComponent {
                     }
                     numberOfLines={2}
                   >
-                    {item.item.meta.promo_code === '' ? (
-                      'Tanpa Kode Promo'
-                    ) : (
-                      'Kode Promo'
-                    )}
+                    {this.renderPromoCodes(item.item)}
                   </Text>
                   {item.item.meta.promo_code !== '' && (
                     <TouchableOpacity

@@ -20,6 +20,7 @@ import {
   ReactPopoverHelper,
 } from 'NativeModules'
 
+import { flatten, map } from 'lodash'
 import PreAnimatedImage from './PreAnimatedImage'
 import NoResultView from './NoResultView'
 
@@ -155,16 +156,16 @@ class PromoDetail extends React.PureComponent {
     }
     let tag = props.navigation.state.key
     tag = tag.substring(tag.indexOf('-') + 1, tag.length)
-    HybridNavigationManager.setTitle(parseInt(tag), 'Promo Detail')
+    HybridNavigationManager.setTitle(parseInt(tag, 2), 'Promo Detail')
   }
 
   componentDidMount() {
     this.loadData()
   }
 
-  getPromoPeriod = (startDate, endDate) => {
-    startDate = new Date(startDate)
-    endDate = new Date(endDate)
+  getPromoPeriod = (startDateString, endDateString) => {
+    const startDate = new Date(startDateString)
+    const endDate = new Date(endDateString)
     let period = startDate.getDate()
     if (startDate.getMonth() !== endDate.getMonth()) {
       period += ` ${monthNames[startDate.getMonth()]}`
@@ -238,8 +239,8 @@ class PromoDetail extends React.PureComponent {
         slug: this.state.promoName,
       },
     })
-      .then(response => {
-        response = response[0]
+      .then(responseData => {
+        const response = responseData[0]
         response.content.rendered = response.content.rendered.replace(/\n/g, '')
         this.setState({
           data: response,
@@ -324,6 +325,109 @@ class PromoDetail extends React.PureComponent {
         </Text>
       )
     }
+  }
+
+  renderPromoCode = () => {
+    if (this.state.data.acf.multiple_promo_code) {
+      const promoCodes = flatten(
+        map(this.state.data.acf.promo_codes, code => code.group_code),
+      )
+      const arr = promoCodes.map((v, k) => (
+        <TouchableOpacity
+          key={k}
+          style={{
+            width: '45%',
+            margin: '2.5%',
+            borderRadius: 3,
+            borderColor: 'rgb(224,224,224)',
+            borderWidth: 1,
+            height: 40,
+          }}
+          onPress={() => this.copyPromoCode(v.single_code)}
+        >
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              backgroundColor: 'rgb(248,248,248)',
+            }}
+          >
+            <View
+              style={{
+                flex: 1,
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <Text style={{ color: 'rgb(255, 87, 34)' }}>{v.single_code}</Text>
+            </View>
+          </View>
+          <View style={{ position: 'absolute', right: 10, top: 10 }}>
+            <Image
+              source={{ uri: 'ic-copy-mobile' }}
+              style={{ width: 19, height: 19 }}
+            />
+          </View>
+          <View
+            style={{
+              position: 'absolute',
+              top: -9,
+              left: -1,
+              backgroundColor: 'white',
+              width: 18,
+              height: 18,
+              borderRadius: 18,
+              borderWidth: 1,
+              borderColor: 'rgb(224,224,224)',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <Text style={{ fontSize: 10, color: '#42b549' }}>{k + 1}</Text>
+          </View>
+        </TouchableOpacity>
+      ))
+      return (
+        <View
+          style={{
+            flex: 1,
+            flexDirection: 'row',
+            flexWrap: 'wrap',
+            marginTop: 15,
+          }}
+        >
+          {arr}
+        </View>
+      )
+    } else if (this.state.data.meta.promo_code !== '') {
+      return (
+        <View style={styles.codeHolder}>
+          <View
+            style={[
+              styles.innerCodeHolder,
+              { backgroundColor: 'rgb(248,248,248)' },
+            ]}
+          >
+            <Text style={{ color: 'rgb(255, 87, 34)' }}>
+              {this.state.data.meta.promo_code}
+            </Text>
+          </View>
+          <View
+            style={{
+              borderLeftWidth: 1,
+              borderColor: 'rgb(224,224,224)',
+            }}
+          />
+          <TouchableOpacity
+            style={styles.innerCodeHolder}
+            onPress={() => this.copyPromoCode(this.state.data.meta.promo_code)}
+          >
+            <Text style={[styles.greyText, { fontSize: 14 }]}>Salin Kode</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    }
+    return null
   }
 
   renderMainContent = () => (
@@ -419,8 +523,17 @@ class PromoDetail extends React.PureComponent {
             borderColor: 'rgba(0,0,0,0.12)',
           }}
         />
-        <View style={[styles.innerDescriptionHolder, { alignItems: 'center' }]}>
-          <View style={{ flexDirection: 'row' }}>
+        <View
+          style={[
+            styles.innerDescriptionHolder,
+            {
+              alignItems: this.state.data.acf.multiple_promo_code
+                ? 'flex-start'
+                : 'center',
+            },
+          ]}
+        >
+          <View style={{ flexDirection: 'row', marginLeft: 16 }}>
             <Image
               source={{ uri: 'icon_coupon' }}
               style={{ width: 25, height: 14, marginTop: 2 }}
@@ -432,13 +545,15 @@ class PromoDetail extends React.PureComponent {
                 { marginTop: 1, marginLeft: 10, marginRight: 3 },
               ]}
             >
-              {this.state.data.meta.promo_code === '' ? (
+              {this.state.data.meta.promo_code === '' &&
+              !this.state.data.acf.multiple_promo_code ? (
                 'Tanpa Kode Promo'
               ) : (
                 'Kode Promo'
               )}
             </Text>
-            {this.state.data.meta.promo_code !== '' && (
+            {(this.state.data.meta.promo_code !== '' ||
+              this.state.data.acf.multiple_promo_code) && (
               <TouchableOpacity
                 onPress={() =>
                   ReactPopoverHelper.showTooltip(
@@ -455,36 +570,7 @@ class PromoDetail extends React.PureComponent {
               </TouchableOpacity>
             )}
           </View>
-
-          {this.state.data.meta.promo_code !== '' && (
-            <View style={styles.codeHolder}>
-              <View
-                style={[
-                  styles.innerCodeHolder,
-                  { backgroundColor: 'rgb(248,248,248)' },
-                ]}
-              >
-                <Text style={{ color: 'rgb(255, 87, 34)' }}>
-                  {this.state.data.meta.promo_code}
-                </Text>
-              </View>
-              <View
-                style={{
-                  borderLeftWidth: 1,
-                  borderColor: 'rgb(224,224,224)',
-                }}
-              />
-              <TouchableOpacity
-                style={styles.innerCodeHolder}
-                onPress={() =>
-                  this.copyPromoCode(this.state.data.meta.promo_code)}
-              >
-                <Text style={[styles.greyText, { fontSize: 14 }]}>
-                  Salin Kode
-                </Text>
-              </TouchableOpacity>
-            </View>
-          )}
+          {this.renderPromoCode()}
         </View>
       </View>
 
