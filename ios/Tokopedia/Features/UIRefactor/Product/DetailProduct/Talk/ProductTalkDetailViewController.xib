@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16F73" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -125,13 +126,14 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="0qe-6u-X0z" secondAttribute="trailing" id="BXH-qr-L1g"/>
                 <constraint firstItem="0qe-6u-X0z" firstAttribute="top" secondItem="S8B-WM-3ht" secondAttribute="bottom" id="Er5-Y9-fPf"/>
+                <constraint firstItem="0qe-6u-X0z" firstAttribute="bottom" secondItem="OZx-V3-dee" secondAttribute="bottom" id="Hdp-uR-QDS"/>
                 <constraint firstAttribute="trailing" secondItem="S8B-WM-3ht" secondAttribute="trailing" id="OXK-IP-xht"/>
                 <constraint firstItem="S8B-WM-3ht" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="alZ-dO-rt4"/>
                 <constraint firstItem="S8B-WM-3ht" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="bRN-tf-IdR"/>
-                <constraint firstAttribute="bottom" secondItem="0qe-6u-X0z" secondAttribute="bottom" id="fg9-ke-gVh"/>
                 <constraint firstItem="0qe-6u-X0z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="qfP-GH-cCc"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="OZx-V3-dee"/>
             <point key="canvasLocation" x="140" y="154"/>
         </view>
         <view contentMode="scaleToFill" id="RKC-0v-BTt" userLabel="FooterView">
@@ -153,6 +155,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="mCe-UO-KaZ"/>
             <point key="canvasLocation" x="-275" y="214"/>
         </view>
         <tapGestureRecognizer id="riw-XE-bpa" userLabel="User Image tap">
@@ -180,9 +183,4 @@
         <image name="icon_attachment" width="19" height="20"/>
         <image name="icon_send" width="20" height="17"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

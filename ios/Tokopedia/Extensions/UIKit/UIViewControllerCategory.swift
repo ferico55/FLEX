@@ -66,15 +66,15 @@ extension UIViewController {
         view?.frame.size.height = preferredHeight!
         
         view?.closeButton.bk_(whenTapped:{
-            SwiftOverlays.closeAnnoyingNotificationOnTopOfStatusBar(view!)
+            SwiftOverlays.closeNotificationOnTopOfStatusBar(view!)
         })
         
         view?.actionButton.bk_(whenTapped:{
-            SwiftOverlays.closeAnnoyingNotificationOnTopOfStatusBar(view!)
+            SwiftOverlays.closeNotificationOnTopOfStatusBar(view!)
             action?()
         })
         
-        UIViewController.showNotificationOnTopOfStatusBar(view!, duration: duration)
+        UIViewController.showOnTopOfStatusBar(view!, duration: duration)
         return view!
     }
 }

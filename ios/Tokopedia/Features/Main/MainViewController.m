@@ -304,7 +304,7 @@ typedef enum TagRequest {
                        @{@"name" : @"Lainnya", @"image" : @"icon_more.png", @"selectedImage" : @"icon_more_active.png"}];
     UITabBar *tabBar = _tabBarController.tabBar;
     tabBar.tintColor = [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1];
-    tabBar.backgroundImage = [UIImage imageNamed:@"tabnav_bg"];
+    tabBar.backgroundColor = [UIColor whiteColor];
     
     NSUInteger index = 0;
     NSDictionary *textAttributes = @{

@@ -140,6 +140,7 @@ class OrderButtonView: UIView {
         
         let button = UIButton(type: UIButtonType.custom) as UIButton
         button.setImage(UIImage(named: imageName), for: UIControlState())
+        button.imageView?.tintColor = UIColor(red:98.0/255.0, green:98.0/255.0, blue:98.0/255.0, alpha:1)
         button.setTitleColor(UIColor(red:98.0/255.0, green:98.0/255.0, blue:98.0/255.0, alpha:1), for: UIControlState())
         button.titleLabel?.font = UIFont.systemFont(ofSize: 10)
         button.titleLabel?.numberOfLines = 0;

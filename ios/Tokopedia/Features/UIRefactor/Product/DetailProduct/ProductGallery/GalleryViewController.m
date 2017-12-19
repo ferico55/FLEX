@@ -102,7 +102,7 @@
         [btnCancel setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
 //        [btnCancel setTitle:@"X" forState:UIControlStateNormal];
         [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
-        btnCancel.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width-49, 0, 49, 49);
+        btnCancel.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width-60, 20, 49, 49);
         
         lblTitle = [[TopAlignedLabel alloc] initWithFrame:CGRectMake(10, 10, btnCancel.frame.origin.x-10, 4*btnCancel.bounds.size.height)];
         lblTitle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
@@ -138,7 +138,7 @@
             [btnDownload setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             
             
-            contentDownload = [[UIView alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-70, [[UIScreen mainScreen] bounds].size.width, 70)];
+            contentDownload = [[UIView alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-100, [[UIScreen mainScreen] bounds].size.width, 70)];
             btnDownload.frame = CGRectMake((contentDownload.bounds.size.width-100)/2.0f, 30, 100, 30);
 
             CAGradientLayer *gradient = [CAGradientLayer layer];

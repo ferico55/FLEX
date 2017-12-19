@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -189,14 +190,15 @@
                     <variation key="heightClass=regular-widthClass=regular" constant="0.0"/>
                 </constraint>
                 <constraint firstItem="OQu-8S-oTs" firstAttribute="top" secondItem="eWC-P2-hId" secondAttribute="bottom" id="egy-WN-1az"/>
+                <constraint firstItem="ja3-l5-cLl" firstAttribute="bottom" secondItem="vVc-8X-zhr" secondAttribute="bottom" id="hvz-Iu-NPc"/>
                 <constraint firstItem="vVc-8X-zhr" firstAttribute="top" secondItem="OQu-8S-oTs" secondAttribute="bottom" id="iTo-du-X3U">
                     <variation key="heightClass=regular-widthClass=regular" constant="-12"/>
                 </constraint>
                 <constraint firstItem="eWC-P2-hId" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="ivE-uk-Nr5"/>
                 <constraint firstAttribute="trailing" secondItem="vVc-8X-zhr" secondAttribute="trailing" id="tDQ-pO-0kd"/>
-                <constraint firstAttribute="bottom" secondItem="vVc-8X-zhr" secondAttribute="bottom" id="wHA-TU-ox5"/>
                 <constraint firstItem="OQu-8S-oTs" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="zvK-BE-yln"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="ja3-l5-cLl"/>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="HRi-o6-4zC"/>
@@ -234,6 +236,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="TX0-RW-dJA"/>
             <point key="canvasLocation" x="215" y="389"/>
         </view>
     </objects>

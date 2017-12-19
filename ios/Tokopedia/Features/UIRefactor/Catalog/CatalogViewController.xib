@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -82,15 +83,16 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="q30-yM-9go" secondAttribute="bottom" id="62B-aa-z9K"/>
                 <constraint firstItem="q30-yM-9go" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="6AU-kL-j7C"/>
                 <constraint firstItem="zkY-Oo-8pF" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="96U-No-xY1"/>
                 <constraint firstItem="zkY-Oo-8pF" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Idc-df-H2y"/>
                 <constraint firstAttribute="trailing" secondItem="q30-yM-9go" secondAttribute="trailing" id="Ja5-4U-5Fu"/>
                 <constraint firstItem="q30-yM-9go" firstAttribute="top" secondItem="zkY-Oo-8pF" secondAttribute="bottom" id="Vwj-9A-rke"/>
+                <constraint firstItem="EWw-22-wRS" firstAttribute="bottom" secondItem="q30-yM-9go" secondAttribute="bottom" id="ZJX-Ra-MNg"/>
                 <constraint firstAttribute="trailing" secondItem="zkY-Oo-8pF" secondAttribute="trailing" id="pzn-ja-ci1"/>
                 <constraint firstItem="q30-yM-9go" firstAttribute="top" secondItem="zkY-Oo-8pF" secondAttribute="bottom" id="ttb-Xv-VyJ"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="EWw-22-wRS"/>
         </view>
         <view contentMode="scaleToFill" id="R1m-Ns-Khm">
             <rect key="frame" x="0.0" y="0.0" width="320" height="81"/>
@@ -113,6 +115,7 @@
                 <constraint firstItem="jN3-1q-F9q" firstAttribute="leading" secondItem="R1m-Ns-Khm" secondAttribute="leading" constant="15" id="yWe-ol-PT2"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="znc-xq-79J"/>
             <point key="canvasLocation" x="1102" y="-338.5"/>
         </view>
         <view contentMode="scaleToFill" id="AM6-9u-G6G">
@@ -129,6 +132,7 @@
                 <constraint firstAttribute="centerX" secondItem="FPH-40-GAZ" secondAttribute="centerX" id="oo9-Ls-qYa"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="g2S-vJ-qoy"/>
             <point key="canvasLocation" x="311" y="155"/>
         </view>
         <view contentMode="scaleToFill" id="dd0-OT-oAb">
@@ -274,6 +278,7 @@
                 <constraint firstItem="wIs-wM-BvO" firstAttribute="top" secondItem="0yt-n2-JvF" secondAttribute="bottom" constant="5" id="yvT-Kt-dSX"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="jLp-5e-s1U"/>
             <point key="canvasLocation" x="700" y="-166"/>
         </view>
     </objects>

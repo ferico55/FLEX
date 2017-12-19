@@ -265,9 +265,14 @@ class ShopViewController: UIViewController {
         self.addChildViewController(viewController)
         self.view.addSubview(viewController.view)
         
-        viewController.view.mas_makeConstraints { make in
-            make?.edges.equalTo()(self.view)
-        }
+        viewController.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            viewController.view.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor),
+            viewController.view.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor),
+            viewController.view.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor),
+            viewController.view.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor)
+            ])
         
         viewController.didMove(toParentViewController: self)
         

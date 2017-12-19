@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -544,9 +546,9 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
                     <subviews>
                         <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3CI-P4-kQM">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="36"/>
+                            <rect key="frame" x="0.0" y="-10" width="375" height="36"/>
                             <subviews>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ood-od-EEU">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ood-od-EEU">
                                     <rect key="frame" x="8" y="10" width="359" height="16"/>
                                     <constraints>
                                         <constraint firstAttribute="height" priority="250" constant="30" id="mEZ-iz-4Ys"/>
@@ -561,7 +563,7 @@
                                     </attributedString>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-Xp-ygl">
+                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qNb-Xp-ygl">
                                     <rect key="frame" x="8" y="10" width="359" height="16"/>
                                     <connections>
                                         <action selector="didTapSuggestionText:" destination="-1" eventType="touchUpInside" id="IqG-2l-oYI"/>
@@ -581,7 +583,7 @@
                             </constraints>
                         </view>
                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="wUv-gY-Tcb">
-                            <rect key="frame" x="0.0" y="36" width="375" height="586"/>
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
                             <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="Jdd-NB-rBb">
                                 <size key="itemSize" width="145" height="205"/>
@@ -597,7 +599,7 @@
                     </subviews>
                 </stackView>
                 <scrollView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ye3-TO-Dg7">
-                    <rect key="frame" x="0.0" y="36" width="375" height="586"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
                 </scrollView>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lw-in-mCe">
                     <rect key="frame" x="112.5" y="45" width="150" height="28"/>
@@ -627,17 +629,17 @@
             <constraints>
                 <constraint firstItem="f2G-rW-SNO" firstAttribute="top" secondItem="a9N-KR-7yR" secondAttribute="top" id="12d-jP-28F"/>
                 <constraint firstItem="U9A-qv-5z8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="6Mu-fN-bmm"/>
-                <constraint firstAttribute="bottom" secondItem="f2G-rW-SNO" secondAttribute="bottom" id="F1m-Rk-H2n"/>
                 <constraint firstItem="U9A-qv-5z8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="H1E-Bu-95r"/>
-                <constraint firstAttribute="bottom" secondItem="a9N-KR-7yR" secondAttribute="bottom" id="Hyv-H1-ox6"/>
-                <constraint firstAttribute="bottom" secondItem="1AR-6H-D7f" secondAttribute="bottom" id="N2Y-G5-76i"/>
+                <constraint firstItem="597-M1-ypj" firstAttribute="bottom" secondItem="f2G-rW-SNO" secondAttribute="bottom" id="Ika-pV-kwP"/>
                 <constraint firstItem="1lw-in-mCe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Nqe-Mk-jWS"/>
                 <constraint firstItem="a9N-KR-7yR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Oae-b8-1eK"/>
+                <constraint firstItem="597-M1-ypj" firstAttribute="bottom" secondItem="a9N-KR-7yR" secondAttribute="bottom" id="RbP-HZ-BoO"/>
                 <constraint firstItem="1AR-6H-D7f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SGm-FI-5UZ"/>
                 <constraint firstAttribute="trailing" secondItem="f2G-rW-SNO" secondAttribute="trailing" id="Wc6-Vs-cuJ"/>
                 <constraint firstAttribute="trailing" secondItem="1AR-6H-D7f" secondAttribute="trailing" id="WtM-G6-2iv"/>
                 <constraint firstAttribute="trailing" secondItem="a9N-KR-7yR" secondAttribute="trailing" id="WxY-7T-K6f"/>
                 <constraint firstItem="ye3-TO-Dg7" firstAttribute="bottom" secondItem="wUv-gY-Tcb" secondAttribute="bottom" id="XbP-FU-z8X"/>
+                <constraint firstItem="597-M1-ypj" firstAttribute="bottom" secondItem="1AR-6H-D7f" secondAttribute="bottom" id="aG7-RH-mKp"/>
                 <constraint firstAttribute="trailing" secondItem="U9A-qv-5z8" secondAttribute="trailing" id="bqU-NZ-dGu"/>
                 <constraint firstItem="ye3-TO-Dg7" firstAttribute="leading" secondItem="wUv-gY-Tcb" secondAttribute="leading" id="e8G-nz-i0F"/>
                 <constraint firstItem="ye3-TO-Dg7" firstAttribute="top" secondItem="wUv-gY-Tcb" secondAttribute="top" id="f2h-kn-GNd"/>
@@ -648,6 +650,7 @@
                 <constraint firstItem="1lw-in-mCe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="45" id="z4Q-Cb-OJ3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="597-M1-ypj"/>
             <point key="canvasLocation" x="35.5" y="54.5"/>
         </view>
         <view contentMode="scaleToFill" id="gK5-Vd-Tcn">
@@ -664,6 +667,7 @@
                 <constraint firstItem="Krz-rR-lZi" firstAttribute="centerY" secondItem="gK5-Vd-Tcn" secondAttribute="centerY" id="wVC-7B-XMP"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="MRS-PM-Dfe"/>
         </view>
     </objects>
     <resources>
@@ -674,9 +678,4 @@
         <image name="icon_urutkan.png" width="30" height="30"/>
         <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

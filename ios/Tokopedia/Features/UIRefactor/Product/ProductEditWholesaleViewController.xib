@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ProductEditWholesaleViewController">
@@ -16,19 +21,19 @@
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view contentMode="scaleToFill" id="iN0-l3-epB">
-            <rect key="frame" x="0.0" y="0.0" width="768" height="1024"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" keyboardDismissMode="onDrag" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="150" sectionHeaderHeight="1" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="zm8-32-e0B">
-                    <rect key="frame" x="0.0" y="0.0" width="768" height="984"/>
-                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="627"/>
+                    <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <connections>
                         <outlet property="dataSource" destination="-1" id="zAS-Lp-RT3"/>
                         <outlet property="delegate" destination="-1" id="Cd6-gc-C5h"/>
                     </connections>
                 </tableView>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XZZ-Xm-vsg">
-                    <rect key="frame" x="0.0" y="984" width="768" height="40"/>
+                    <rect key="frame" x="0.0" y="627" width="375" height="40"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SUa-KT-Wxp">
                             <rect key="frame" x="15" y="7" width="297" height="29"/>
@@ -38,14 +43,14 @@
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                             <state key="normal" title="Tambah Harga Grosir">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="onTapAddWholesale:" destination="-1" eventType="touchUpInside" id="PmK-fP-YVU"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="SUa-KT-Wxp" firstAttribute="top" secondItem="XZZ-Xm-vsg" secondAttribute="top" constant="7" id="Kjx-Jl-ARN">
                             <variation key="heightClass=regular-widthClass=regular" constant="15"/>
@@ -60,21 +65,21 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <gestureRecognizers/>
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="zm8-32-e0B" secondAttribute="trailing" constant="70" id="07X-3E-Yrg"/>
+                <constraint firstItem="yFd-8G-yoB" firstAttribute="bottom" secondItem="XZZ-Xm-vsg" secondAttribute="bottom" id="5VG-25-eoy"/>
                 <constraint firstAttribute="trailing" secondItem="XZZ-Xm-vsg" secondAttribute="trailing" id="9lP-dZ-XJr"/>
                 <constraint firstItem="zm8-32-e0B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="70" id="C4n-RD-fiW"/>
                 <constraint firstItem="XZZ-Xm-vsg" firstAttribute="top" secondItem="zm8-32-e0B" secondAttribute="bottom" id="Sfl-rN-IXn"/>
-                <constraint firstAttribute="bottom" secondItem="XZZ-Xm-vsg" secondAttribute="bottom" id="faF-tx-bGT"/>
                 <constraint firstItem="zm8-32-e0B" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hL3-Oh-dQX"/>
                 <constraint firstItem="XZZ-Xm-vsg" firstAttribute="top" secondItem="zm8-32-e0B" secondAttribute="bottom" id="i0t-tQ-tLC"/>
                 <constraint firstItem="XZZ-Xm-vsg" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="jH1-gW-ZNG"/>
                 <constraint firstAttribute="trailing" secondItem="zm8-32-e0B" secondAttribute="trailing" id="rcB-Gp-Ap3"/>
                 <constraint firstItem="zm8-32-e0B" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="vRr-rX-59R"/>
             </constraints>
-            <simulatedScreenMetrics key="simulatedDestinationMetrics" type="iPad"/>
+            <viewLayoutGuide key="safeArea" id="yFd-8G-yoB"/>
             <variation key="default">
                 <mask key="constraints">
                     <exclude reference="07X-3E-Yrg"/>
@@ -100,14 +105,14 @@
                     <subviews>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="56j-C3-CsY" userLabel="Border Top">
                             <rect key="frame" x="0.0" y="0.0" width="55" height="44"/>
-                            <color key="backgroundColor" red="0.96078431369999995" green="0.96078431369999995" blue="0.96078431369999995" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.95075207948684692" green="0.95072358846664429" blue="0.95073974132537842" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="55" id="j2h-1P-rxw"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mdr-fW-PEQ" userLabel="Border Top">
                             <rect key="frame" x="55" y="0.0" width="1" height="44"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="1" id="T4X-ge-HYY"/>
                             </constraints>
@@ -119,7 +124,7 @@
                                 <constraint firstAttribute="width" constant="56" id="mxL-9X-4qc"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="17000" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8S0-zJ-7uN">
@@ -128,25 +133,25 @@
                                 <constraint firstAttribute="height" constant="21" id="pap-Zs-Zxe"/>
                             </constraints>
                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                            <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7NQ-DM-7uv" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="43" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="5uQ-Vm-DG7"/>
                             </constraints>
                         </view>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vX6-2t-oV0" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="deviceRGB"/>
+                            <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="1" id="ZbN-W2-HYb"/>
                             </constraints>
                         </view>
                     </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                    <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="bottom" secondItem="56j-C3-CsY" secondAttribute="bottom" id="2FC-5d-fG1"/>
                         <constraint firstItem="8S0-zJ-7uN" firstAttribute="leading" secondItem="mdr-fW-PEQ" secondAttribute="trailing" constant="14" id="2TD-74-Let"/>
@@ -175,7 +180,7 @@
                         <constraint firstAttribute="width" constant="146" id="YL3-VZ-nuO"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
-                    <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="deviceRGB"/>
+                    <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="280" translatesAutoresizingMaskIntoConstraints="NO" id="qzt-QF-yeV">
@@ -186,11 +191,11 @@ Kelompok Jumlah: 1 - 10, Harga: 15000
 Kelompok Jumlah: 11 - 20, Harga: 10000
 dst...</string>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="textColor" red="0.45882352941176469" green="0.45882352941176469" blue="0.45882352941176469" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
             </subviews>
-            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+            <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="Z7w-7i-bDi" firstAttribute="leading" secondItem="UyG-mq-n15" secondAttribute="leading" id="4ny-5m-t9E"/>
                 <constraint firstItem="qzt-QF-yeV" firstAttribute="leading" secondItem="UyG-mq-n15" secondAttribute="leading" constant="15" id="6Ws-fy-BBU"/>
@@ -204,6 +209,7 @@ dst...</string>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="aG3-fi-LK4"/>
             <point key="canvasLocation" x="173" y="2"/>
         </view>
     </objects>

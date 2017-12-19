@@ -221,6 +221,10 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     //MARK: pop over
     func tapPopover() {
-        self.popover.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: 50))
+        if let navigationFrame = self.navigationController?.navigationBar.frame {
+            self.popover.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: navigationFrame.origin.y + 40))
+        } else {
+            self.popover.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: 50))
+        }
     }
 }

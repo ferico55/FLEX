@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -614,13 +616,13 @@
                 <constraint firstAttribute="trailing" secondItem="Hx3-PJ-Ox6" secondAttribute="trailing" id="BOl-tW-8Ex"/>
                 <constraint firstItem="1lw-in-mCe" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="BYK-Sk-mBO"/>
                 <constraint firstItem="hEK-Te-f7h" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="C6n-hC-bas"/>
+                <constraint firstItem="EQH-Kf-y32" firstAttribute="bottom" secondItem="f2G-rW-SNO" secondAttribute="bottom" id="D4D-gh-fQ7"/>
                 <constraint firstItem="D3z-0e-KRQ" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="-30" id="DlE-5O-FK4"/>
-                <constraint firstAttribute="bottom" secondItem="f2G-rW-SNO" secondAttribute="bottom" id="F1m-Rk-H2n"/>
-                <constraint firstAttribute="bottom" secondItem="a9N-KR-7yR" secondAttribute="bottom" id="Hyv-H1-ox6"/>
-                <constraint firstAttribute="bottom" secondItem="1AR-6H-D7f" secondAttribute="bottom" id="N2Y-G5-76i"/>
+                <constraint firstItem="EQH-Kf-y32" firstAttribute="bottom" secondItem="1AR-6H-D7f" secondAttribute="bottom" id="Dxq-bS-Rpq"/>
                 <constraint firstItem="1lw-in-mCe" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="Nqe-Mk-jWS"/>
                 <constraint firstItem="a9N-KR-7yR" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Oae-b8-1eK"/>
                 <constraint firstAttribute="trailing" secondItem="1lw-in-mCe" secondAttribute="trailing" constant="30" id="Ocu-H0-19A"/>
+                <constraint firstItem="EQH-Kf-y32" firstAttribute="bottom" secondItem="a9N-KR-7yR" secondAttribute="bottom" id="QAS-2U-WC2"/>
                 <constraint firstItem="1AR-6H-D7f" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="SGm-FI-5UZ"/>
                 <constraint firstAttribute="trailing" secondItem="f2G-rW-SNO" secondAttribute="trailing" id="Wc6-Vs-cuJ"/>
                 <constraint firstAttribute="trailing" secondItem="1AR-6H-D7f" secondAttribute="trailing" id="WtM-G6-2iv"/>
@@ -635,6 +637,7 @@
                 <constraint firstItem="1lw-in-mCe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="30" id="z4Q-Cb-OJ3"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="EQH-Kf-y32"/>
             <point key="canvasLocation" x="81.5" y="161.5"/>
         </view>
     </objects>
@@ -646,9 +649,4 @@
         <image name="icon_urutkan.png" width="30" height="30"/>
         <image name="icon_urutkan_alt.png" width="30" height="30"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

@@ -234,7 +234,7 @@ NoResultDelegate
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
         [_topAdsView setPromoWithAds:result];
-        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height)];
+        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, self.view.frame.size.height + _topAdsView.frame.size.height)];
     } onFailure:^(NSError * error) {
         
     }];
@@ -287,7 +287,6 @@ NoResultDelegate
 -(void)initAllNoResult{
     _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultScrollView.userInteractionEnabled = true;
-    [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 775)];
     [_noResultScrollView addSubview:_refreshControlNoResult];
     
     _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];

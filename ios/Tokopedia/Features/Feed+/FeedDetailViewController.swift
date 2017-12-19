@@ -53,6 +53,14 @@ class FeedDetailViewController: UIViewController {
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     
+    fileprivate lazy var safeAreaView: UIView = {
+        let view = UIView(frame: CGRect.zero)
+        
+        view.backgroundColor = .clear
+        
+        return view
+    }()
+    
     init(activityID: String) {
         self.activityID = activityID
         super.init(nibName: nil, bundle: nil)
@@ -67,6 +75,17 @@ class FeedDetailViewController: UIViewController {
         
         self.title = "Detail Feed"
         self.view.backgroundColor = .tpBackground()
+        
+        self.view.addSubview(self.safeAreaView)
+        
+        self.safeAreaView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.safeAreaView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 0),
+            self.safeAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0),
+            self.safeAreaView.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor, constant: 0),
+            self.safeAreaView.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor, constant: 0)
+            ])
         
         self.footerView.frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40)
         self.footerView.backgroundColor = .clear
@@ -84,7 +103,7 @@ class FeedDetailViewController: UIViewController {
         
         feedHeader = FeedDetailHeaderComponentView()
         
-        self.view.addSubview(feedHeader)
+        self.safeAreaView.addSubview(feedHeader)
         
         tableView.rowHeight = UITableViewAutomaticDimension
         tableView.estimatedRowHeight = 100
@@ -105,23 +124,23 @@ class FeedDetailViewController: UIViewController {
             }
             .disposed(by: rx_disposeBag)
         
-        self.view.addSubview(tableView)
+        self.safeAreaView.addSubview(tableView)
         
         if UI_USER_INTERFACE_IDIOM() == .phone {
-            self.view.addSubview(self.feedAction)
+            self.safeAreaView.addSubview(self.feedAction)
             
             self.tableView.mas_makeConstraints { make in
                 _ = make?.top.mas_equalTo()(self.feedHeader.mas_bottom)
-                _ = make?.left.mas_equalTo()(self.view)
-                _ = make?.right.mas_equalTo()(self.view)
-                _ = make?.bottom.mas_equalTo()(self.view)?.offset()(-51)
+                _ = make?.left.mas_equalTo()(self.safeAreaView)
+                _ = make?.right.mas_equalTo()(self.safeAreaView)
+                _ = make?.bottom.mas_equalTo()(self.safeAreaView)?.offset()(-51)
             }
         } else {
             self.tableView.mas_makeConstraints { make in
                 _ = make?.top.mas_equalTo()(self.feedHeader.mas_bottom)
-                _ = make?.left.mas_equalTo()(self.view)?.offset()(104)
-                _ = make?.right.mas_equalTo()(self.view)?.offset()(-104)
-                _ = make?.bottom.mas_equalTo()(self.view)
+                _ = make?.left.mas_equalTo()(self.safeAreaView)?.offset()(104)
+                _ = make?.right.mas_equalTo()(self.safeAreaView)?.offset()(-104)
+                _ = make?.bottom.mas_equalTo()(self.safeAreaView)
             }
         }
         
@@ -189,10 +208,10 @@ class FeedDetailViewController: UIViewController {
                 self.tableView.tableFooterView = nil
                 self.isRequesting = false
                 
-                self.feedHeader.render(in: self.view.frame.size)
+                self.feedHeader.render(in: self.safeAreaView.frame.size)
                 if UI_USER_INTERFACE_IDIOM() == .phone {
-                    self.feedAction.render(in: self.view.frame.size)
-                    self.feedAction.frame.origin.y = self.view.frame.size.height - 51
+                    self.feedAction.render(in: self.safeAreaView.frame.size)
+                    self.feedAction.frame.origin.y = self.safeAreaView.frame.size.height - 51
                     
                     self.feedHeader.frame.origin.x = 0
                     self.feedHeader.frame.origin.y = 0

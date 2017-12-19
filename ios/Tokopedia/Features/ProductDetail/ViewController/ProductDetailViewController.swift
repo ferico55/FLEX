@@ -25,6 +25,14 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     fileprivate var isReplacementMode: Bool!
     fileprivate var campaignTimer = Timer()
     fileprivate var campaignEndDate: Date?
+    
+    fileprivate lazy var safeAreaView: UIView = {
+        let view = UIView(frame: CGRect.zero)
+        
+        view.backgroundColor = .clear
+        
+        return view
+    }()
         
     override var canBecomeFirstResponder: Bool { return true }
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -52,7 +60,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
                             "imageURL": imageURL,
                             "shopName": shopName]
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         let state = ProductDetailState()
@@ -66,7 +74,19 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         
         self.productView = ProductDetailViewComponent(store: self.store, viewController: self)
         
-        self.view.addSubview(self.productView)
+        self.view.addSubview(self.safeAreaView)
+        
+        self.safeAreaView.addSubview(self.productView)
+        
+        self.safeAreaView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.safeAreaView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 0),
+            self.safeAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0),
+            self.safeAreaView.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor, constant: 0),
+            self.safeAreaView.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor, constant: 0)
+            ])
+    
         self.automaticallyAdjustsScrollViewInsets = false
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -104,7 +124,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
-        self.productView.render(in: self.view.bounds.size)
+        self.productView.render(in: self.safeAreaView.bounds.size)
         self.store.subscribe(self.productView)
     }
     

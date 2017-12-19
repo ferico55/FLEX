@@ -128,6 +128,7 @@
 		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
 		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
 		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
+		E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */; };
 		F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = F954BD251FC55B65008C0B30 /* TokopediaDB.db */; };
 		F954C43F1FC55B6C008C0B30 /* icon_snap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD271FC55B65008C0B30 /* icon_snap@2x.png */; };
 		F954C4401FC55B6C008C0B30 /* badge_official_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD281FC55B65008C0B30 /* badge_official_small.png */; };
@@ -2132,6 +2133,7 @@
 		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
 		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
 		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
+		E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		F954BD251FC55B65008C0B30 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		F954BD271FC55B65008C0B30 /* icon_snap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_snap@2x.png"; sourceTree = "<group>"; };
 		F954BD281FC55B65008C0B30 /* badge_official_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badge_official_small.png; sourceTree = "<group>"; };
@@ -5497,6 +5499,7 @@
 				F977EEF11FE8AB6E00183A85 /* UIImage+ImageEffects.m */,
 				F977EEF21FE8AB6E00183A85 /* UIActivityViewController+Extensions.h */,
 				F977EEF31FE8AB6E00183A85 /* UITableView+RefreshControl.h */,
+				E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -12611,6 +12614,7 @@
 				F977FE6C1FE8AB8200183A85 /* TransactionAddressShipping.m in Sources */,
 				F977FB921FE8AB7B00183A85 /* CategoryIntermediaryHotListImagePortrait.swift in Sources */,
 				F977000E1FE8AB8500183A85 /* TicketCategory.m in Sources */,
+				E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */,
 				F977FDEB1FE8AB8000183A85 /* ShopProductPageViewController.m in Sources */,
 				F977FE3C1FE8AB8100183A85 /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				F977FE8D1FE8AB8200183A85 /* TxOrderConfirmedDetailInvoice.m in Sources */,

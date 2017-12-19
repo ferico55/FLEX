@@ -572,6 +572,14 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     private var carouselDataSource: CarouselDataSource!
     fileprivate var videoFirstTimePlaying = true
     
+    fileprivate lazy var safeAreaView: UIView = {
+        let view = UIView(frame: CGRect.zero)
+        
+        view.backgroundColor = .clear
+        
+        return view
+    }()
+    
     func changeWishlist(forProductId productId: String, withStatus isOnWishlist: Bool) {
         guard let curatedProduct = categoryIntermediaryResult.curatedProduct else { return }
         guard let sections = curatedProduct.sections else { return }
@@ -635,11 +643,23 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         intermediaryView.state?.categoryIntermediaryResult = categoryIntermediaryResult
         intermediaryView.state?.categoryIntermediaryNonHiddenChildren = categoryIntermediaryResult.nonHiddenChildren
         intermediaryView.state?.categoryIntermediaryNotExpandedChildren = categoryIntermediaryResult.nonExpandedChildren
-        intermediaryView.render(in: self.view.bounds.size)
         
         let backButtonItem = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(CategoryIntermediaryViewController.back))
         
-        self.view.addSubview(self.intermediaryView)
+        self.view.addSubview(self.safeAreaView)
+        
+        self.safeAreaView.addSubview(self.intermediaryView)
+        
+        self.safeAreaView.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            self.safeAreaView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 0),
+            self.safeAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0),
+            self.safeAreaView.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor, constant: 0),
+            self.safeAreaView.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor, constant: 0)
+            ])
+        
+        intermediaryView.render(in: self.safeAreaView.bounds.size)
         
         self.navigationItem.leftBarButtonItem = backButtonItem
         
@@ -683,7 +703,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
             .subscribe(onNext: { [weak self] result in
                 guard let `self` = self else { return }
                 self.intermediaryView.state?.officialStoreHomeItems = result
-                self.intermediaryView.render(in: self.view.bounds.size)
+                self.intermediaryView.render(in: self.safeAreaView.bounds.size)
             })
     }
     
@@ -692,7 +712,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let categoryIntermediaryHotListResponse: CategoryIntermediaryHotListResponse = result[""] as! CategoryIntermediaryHotListResponse
             self.intermediaryView.state?.categoryIntermediaryHotListItems = categoryIntermediaryHotListResponse.list
-            self.intermediaryView.render(in: self.view.bounds.size)
+            self.intermediaryView.render(in: self.safeAreaView.bounds.size)
             
             self.requestOfficialStore()
             
@@ -702,7 +722,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
                 guard let `self` = self else { return }
                 
                 self.intermediaryView.state?.ads = ads
-                self.intermediaryView.render(in: self.view.bounds.size)
+                self.intermediaryView.render(in: self.safeAreaView.bounds.size)
                 
             }, onFailure: { _ in })
             

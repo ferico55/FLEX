@@ -1,8 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="8191" systemVersion="14F27" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="8154"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TKPDTabNavigationController">
@@ -21,7 +26,7 @@
             <subviews>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h6P-fn-Wnp" userLabel="ContainerView">
                     <rect key="frame" x="0.0" y="44" width="320" height="524"/>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                 </view>
                 <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="oab-Fo-r2Z">
                     <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -41,7 +46,7 @@
                             </connections>
                         </segmentedControl>
                     </subviews>
-                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="calibratedRGB"/>
+                    <color key="backgroundColor" red="0.90588235289999997" green="0.90588235289999997" blue="0.90588235289999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="trailing" secondItem="04q-Fv-Gk4" secondAttribute="trailing" constant="9" id="LIZ-AD-ffr"/>
                         <constraint firstAttribute="height" constant="44" id="dii-Bx-S5z"/>
@@ -50,17 +55,18 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
+                <constraint firstItem="lJO-o3-CTZ" firstAttribute="bottom" secondItem="h6P-fn-Wnp" secondAttribute="bottom" id="GDY-bs-oPv"/>
                 <constraint firstItem="oab-Fo-r2Z" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="Nmz-kL-bEm"/>
                 <constraint firstAttribute="trailing" secondItem="oab-Fo-r2Z" secondAttribute="trailing" id="ckW-j5-HeS"/>
                 <constraint firstItem="h6P-fn-Wnp" firstAttribute="top" secondItem="oab-Fo-r2Z" secondAttribute="bottom" id="jul-hm-Poy"/>
                 <constraint firstAttribute="trailing" secondItem="h6P-fn-Wnp" secondAttribute="trailing" id="qKW-fB-KbZ"/>
-                <constraint firstAttribute="bottom" secondItem="h6P-fn-Wnp" secondAttribute="bottom" id="wYY-kT-OnE"/>
                 <constraint firstItem="h6P-fn-Wnp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="xch-Hw-IA6"/>
                 <constraint firstItem="oab-Fo-r2Z" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="xon-17-aOD"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="lJO-o3-CTZ"/>
         </view>
     </objects>
 </document>

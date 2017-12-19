@@ -161,6 +161,7 @@ typedef NS_ENUM(NSInteger, TalkRequestType) {
     } else {
         [_unfollowButton setTitle:@"Ikuti" forState:UIControlStateNormal];
         [_unfollowButton setImage:[UIImage imageNamed:@"icon_order_check"] forState:UIControlStateNormal];
+        [_unfollowButton imageView].tintColor = [UIColor colorWithRed:98.0 / 255.0 green:98.0 / 255.0 blue:98.0 / 255.0 alpha:1.0];
     }
 }
 

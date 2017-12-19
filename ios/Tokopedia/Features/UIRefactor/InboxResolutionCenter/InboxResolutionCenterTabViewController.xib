@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -160,7 +161,7 @@
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="1Ok-3c-VB5" secondAttribute="bottom" id="KOR-xq-kFR"/>
+                <constraint firstItem="YzR-UD-laq" firstAttribute="bottom" secondItem="1Ok-3c-VB5" secondAttribute="bottom" id="U7v-I8-dfv"/>
                 <constraint firstItem="1Ok-3c-VB5" firstAttribute="top" secondItem="Jfm-jd-bnJ" secondAttribute="bottom" id="V32-em-RvH"/>
                 <constraint firstItem="eZK-20-GGe" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="WP6-gP-uVD"/>
                 <constraint firstAttribute="trailing" secondItem="eZK-20-GGe" secondAttribute="trailing" id="XDG-Va-5CN"/>
@@ -171,6 +172,7 @@
                 <constraint firstItem="Jfm-jd-bnJ" firstAttribute="top" secondItem="eZK-20-GGe" secondAttribute="bottom" id="oWY-nK-Zqh"/>
                 <constraint firstItem="Jfm-jd-bnJ" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="yyr-Sw-fsS"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="YzR-UD-laq"/>
             <point key="canvasLocation" x="423" y="343"/>
         </view>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="WLe-ck-ibf">
@@ -360,10 +362,11 @@
                 <constraint firstItem="v3Y-8P-lZg" firstAttribute="leading" secondItem="WLe-ck-ibf" secondAttribute="leading" id="ROJ-wl-8u5"/>
                 <constraint firstItem="5nT-VC-DzQ" firstAttribute="trailing" secondItem="PLD-w7-Nr5" secondAttribute="trailing" id="XZd-aD-4h1"/>
                 <constraint firstItem="5nT-VC-DzQ" firstAttribute="bottom" secondItem="PLD-w7-Nr5" secondAttribute="bottom" id="cPX-xD-X6l"/>
-                <constraint firstAttribute="bottom" secondItem="PLD-w7-Nr5" secondAttribute="bottom" id="dL6-ew-BIT"/>
+                <constraint firstItem="amp-xE-dWY" firstAttribute="bottom" secondItem="PLD-w7-Nr5" secondAttribute="bottom" id="iVK-Hc-gTP"/>
                 <constraint firstItem="PLD-w7-Nr5" firstAttribute="top" secondItem="v3Y-8P-lZg" secondAttribute="bottom" id="jCy-S4-a3h"/>
                 <constraint firstAttribute="trailing" secondItem="v3Y-8P-lZg" secondAttribute="trailing" id="m16-oh-dVd"/>
             </constraints>
+            <viewLayoutGuide key="safeArea" id="amp-xE-dWY"/>
             <point key="canvasLocation" x="-188" y="270"/>
         </view>
         <tapGestureRecognizer id="QST-Sh-zAP">

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -54,10 +56,11 @@
             <constraints>
                 <constraint firstItem="0yG-jh-9gp" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="7Zb-Pv-pJx"/>
                 <constraint firstItem="0yG-jh-9gp" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8Ao-Ie-TIj"/>
-                <constraint firstAttribute="bottom" secondItem="0yG-jh-9gp" secondAttribute="bottom" id="NOl-c7-sSe"/>
+                <constraint firstItem="c5H-S4-Uak" firstAttribute="bottom" secondItem="0yG-jh-9gp" secondAttribute="bottom" id="MAN-Qp-8Vf"/>
                 <constraint firstAttribute="trailing" secondItem="0yG-jh-9gp" secondAttribute="trailing" id="SMR-rT-rAR"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="c5H-S4-Uak"/>
             <point key="canvasLocation" x="140" y="154"/>
         </view>
         <view contentMode="scaleToFill" id="zu3-1p-Fi6">
@@ -185,6 +188,7 @@
                 <constraint firstItem="rfs-MY-jim" firstAttribute="top" secondItem="zu3-1p-Fi6" secondAttribute="top" constant="26" id="wnz-qr-WUd"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="qeF-yw-vaC"/>
             <point key="canvasLocation" x="896" y="-335.5"/>
         </view>
         <view contentMode="scaleToFill" id="nTK-iz-s4n">
@@ -562,13 +566,14 @@
                 <constraint firstItem="ZYM-gf-Qjk" firstAttribute="top" secondItem="tyX-g2-cUY" secondAttribute="bottom" id="DYG-he-X8N"/>
                 <constraint firstItem="w1I-Qk-eyd" firstAttribute="leading" secondItem="nTK-iz-s4n" secondAttribute="leading" id="FR2-Jc-QBf"/>
                 <constraint firstItem="w1I-Qk-eyd" firstAttribute="top" secondItem="nTK-iz-s4n" secondAttribute="top" id="MCY-mo-ojy"/>
-                <constraint firstAttribute="bottom" secondItem="ZYM-gf-Qjk" secondAttribute="bottom" constant="20" id="ffm-pR-c1K"/>
                 <constraint firstItem="tyX-g2-cUY" firstAttribute="top" secondItem="w1I-Qk-eyd" secondAttribute="bottom" id="ieG-JZ-q1s"/>
+                <constraint firstItem="eDl-IE-c3n" firstAttribute="bottom" secondItem="ZYM-gf-Qjk" secondAttribute="bottom" constant="20" id="mRr-Fh-Rpn"/>
                 <constraint firstItem="ZYM-gf-Qjk" firstAttribute="leading" secondItem="nTK-iz-s4n" secondAttribute="leading" id="nU6-aT-Px9"/>
                 <constraint firstAttribute="trailing" secondItem="w1I-Qk-eyd" secondAttribute="trailing" id="xGV-zc-ajh"/>
                 <constraint firstItem="tyX-g2-cUY" firstAttribute="leading" secondItem="nTK-iz-s4n" secondAttribute="leading" id="y7h-kk-5TR"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="eDl-IE-c3n"/>
             <point key="canvasLocation" x="948" y="161"/>
         </view>
         <tapGestureRecognizer id="fXr-yt-wq7">
@@ -586,9 +591,4 @@
         <image name="icon_default_shop.jpg" width="14" height="14"/>
         <image name="icon_info_grey_small.png" width="14" height="14"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

@@ -177,7 +177,7 @@
     
 #pragma mark - pop over
 - (void)tapPopover {
-    [self.popover tapShowWithCoordinate:CGPointMake(self.view.frame.size.width-26, 50)];
+    [self.popover tapShowWithCoordinate:CGPointMake(self.view.frame.size.width - 26, self.navigationController.navigationBar.frame.origin.y + 40)];
 }
 
 @end

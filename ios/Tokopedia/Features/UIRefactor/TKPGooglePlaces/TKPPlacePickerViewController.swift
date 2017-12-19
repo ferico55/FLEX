@@ -60,7 +60,11 @@ import GooglePlaces
     
     @IBOutlet var transparentView: UIView!
     @IBOutlet weak var mapView: TKPMapView!
-    @IBOutlet weak var searchBar: UISearchBar!
+    @IBOutlet weak var searchBar: UISearchBar! {
+        didSet {
+            searchBar.isSecureTextEntry = false
+        }
+    }
     @IBOutlet weak var doneButton: UIButton!
     @IBOutlet weak var whiteLocationView: UIView!
     @IBOutlet weak var locationView: UIView!
@@ -216,7 +220,6 @@ import GooglePlaces
         switch type {
         case TypePlacePicker.typeEditPlace.rawValue :
             let doneBarButton = UIBarButtonItem(title: "Selesai", style: .plain, target: self, action: #selector(TKPPlacePickerViewController.tapDone(_:)))
-            doneBarButton.tintColor = UIColor.white
             self.navigationItem.rightBarButtonItem = doneBarButton
             self.title = "Pilih Lokasi"
             locationView.isHidden = false
@@ -246,31 +249,20 @@ import GooglePlaces
         searchBar.placeholder = "Cari Alamat";
         searchBar.delegate = self
         if((infoAddress) != nil){
-            _infoTopConstraint = NSLayoutConstraint(
-                item: self.infoAddressView,
-                attribute: .top,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1.0,
-                constant: -60.0)
+            _infoTopConstraint = self.infoAddressView.topAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: -80)
+            
             self.view .addConstraint(_infoTopConstraint)
+            
             mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, abs(_infoTopConstraint.constant), 0.0);
             adjustInfoAddress(infoAddress)
         }
         else
         {
-            _infoTopConstraint = NSLayoutConstraint(
-                item: self.infoAddressView,
-                attribute: .top,
-                relatedBy: .equal,
-                toItem: self.view,
-                attribute: .bottom,
-                multiplier: 1.0,
-                constant: 0.0)
-            self.view .addConstraint(_infoTopConstraint)
-            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, 0.0, 0.0);
+            _infoTopConstraint = self.infoAddressView.topAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0)
             
+            self.view .addConstraint(_infoTopConstraint)
+            
+            mapView.padding = UIEdgeInsetsMake(searchBar.frame.size.height, 0.0, 0.0, 0.0);
         }
     }
     
@@ -319,7 +311,7 @@ import GooglePlaces
     
     func hideInfo() -> Void{
         transparantInfoView.isHidden = true
-        _infoTopConstraint.constant = -60
+        _infoTopConstraint.constant = -80
         UIView.animate(withDuration: 0.5, delay: 0.0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0.0, options: .curveEaseIn, animations: { () -> Void in
             self.view.setNeedsLayout()
             self.view.layoutIfNeeded()
@@ -567,22 +559,11 @@ import GooglePlaces
     
     func setSearchBarActive(_ isActive:Bool, animated:Bool) {
         searchBar.setShowsCancelButton(isActive, animated: animated)
-        self.navigationController?.setNavigationBarHidden(isActive, animated: animated)
-        UIApplication.shared.setStatusBarHidden(isActive, with: UIStatusBarAnimation.slide)
         transparentView.isHidden = !isActive
+        self.activeSearchBar(isActive)
         
-        if (animated){
-            UIView.animate(withDuration: 0.25, animations: { () -> Void in
-                self.activeSearchBar(isActive)
-                if (!isActive){
-                    self.searchBar.resignFirstResponder()
-                }
-            }, completion: nil)
-        } else {
-            activeSearchBar(isActive)
-            if (!isActive){
-                searchBar.resignFirstResponder()
-            }
+        if (!isActive){
+            self.searchBar.resignFirstResponder()
         }
     }
     

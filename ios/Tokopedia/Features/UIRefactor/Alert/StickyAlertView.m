@@ -7,6 +7,7 @@
 //
 
 #import "StickyAlertView.h"
+#import "Tokopedia-Swift.h"
 
 @interface StickyAlertView () {
     id _delegate;
@@ -162,8 +163,13 @@
     _textLabel.frame = frame;
     
     self.view.frame = CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, _textLabel.frame.size.height + 24);
-
-    self.frame = CGRectMake(0, 64, self.frame.size.width, self.frame.size.height);
+    
+    NSString *modelDevice = [[UIDevice currentDevice] modelName];
+    if ([modelDevice caseInsensitiveCompare:@"iPhone X"] == NSOrderedSame) {
+        self.frame = CGRectMake(0, 90, self.frame.size.width, self.frame.size.height);
+    } else {
+        self.frame = CGRectMake(0, 64, self.frame.size.width, self.frame.size.height);
+    }
 }
 
 @end

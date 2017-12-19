@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="ipad9_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -303,14 +304,15 @@
             </subviews>
             <constraints>
                 <constraint firstItem="vHm-Tc-Aus" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="B2x-oe-efl"/>
+                <constraint firstItem="buC-LM-YsM" firstAttribute="bottom" secondItem="vHm-Tc-Aus" secondAttribute="bottom" id="F4q-6E-Ag3"/>
                 <constraint firstItem="NyE-A1-2NA" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="GOe-PR-juX"/>
                 <constraint firstAttribute="trailing" secondItem="NyE-A1-2NA" secondAttribute="trailing" id="IVD-dB-Apt"/>
                 <constraint firstItem="vHm-Tc-Aus" firstAttribute="top" secondItem="NyE-A1-2NA" secondAttribute="bottom" id="U7o-9g-FjP"/>
-                <constraint firstAttribute="bottom" secondItem="vHm-Tc-Aus" secondAttribute="bottom" id="Zku-7O-gR6"/>
                 <constraint firstAttribute="trailing" secondItem="vHm-Tc-Aus" secondAttribute="trailing" id="ivd-G5-HoC"/>
                 <constraint firstItem="NyE-A1-2NA" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="kWe-oT-ZvW"/>
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="buC-LM-YsM"/>
             <point key="canvasLocation" x="843" y="311"/>
         </view>
         <view contentMode="scaleToFill" id="HKl-uZ-hi3" userLabel="HeaderView" customClass="HotlistResultHeaderView" customModule="Tokopedia" customModuleProvider="target">
@@ -341,7 +343,7 @@
                     </connections>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="11" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="paG-jW-UkY">
-                    <rect key="frame" x="363" y="0.0" width="0.0" height="188"/>
+                    <rect key="frame" x="363" y="0.0" width="486" height="188"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="188" id="ORy-Tg-kol"/>
                     </constraints>
@@ -350,7 +352,7 @@
                     <nil key="highlightedColor"/>
                 </label>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="LRM-Jj-4M9" customClass="HotlistResultPromoHeaderView" customModule="Tokopedia" customModuleProvider="target">
-                    <rect key="frame" x="0.0" y="188" width="849" height="163"/>
+                    <rect key="frame" x="0.0" y="188" width="849" height="176"/>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="176" id="UbM-88-fRk"/>
@@ -372,7 +374,7 @@
                     <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
                 </pageControl>
                 <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsHorizontalScrollIndicator="NO" showsVerticalScrollIndicator="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Q9k-15-37M" userLabel="Hashtags Scroll View">
-                    <rect key="frame" x="0.0" y="351" width="849" height="0.0"/>
+                    <rect key="frame" x="0.0" y="364" width="849" height="0.0"/>
                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstAttribute="height" id="xF3-0f-Irq"/>
@@ -402,6 +404,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="pja-Cd-tel"/>
             <variation key="default">
                 <mask key="subviews">
                     <exclude reference="paG-jW-UkY"/>
@@ -448,6 +451,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="k16-OP-A0q"/>
             <variation key="heightClass=regular-widthClass=regular" hidden="YES"/>
             <connections>
                 <outletCollection property="gestureRecognizers" destination="fyb-L5-qaN" appends="YES" id="uUj-Go-inz"/>
@@ -478,6 +482,7 @@
                 <constraint firstItem="RZk-KV-GRl" firstAttribute="top" secondItem="04a-cn-Xyi" secondAttribute="top" constant="15" id="m4d-Zn-pTv"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="osa-ug-YJd"/>
             <point key="canvasLocation" x="-231" y="-66"/>
         </view>
     </objects>

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -425,19 +426,17 @@
             <color key="backgroundColor" red="0.87843137250000003" green="0.87843137250000003" blue="0.87843137250000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="5EI-FS-xn5" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="5nC-LJ-H8U"/>
-                <constraint firstAttribute="trailing" secondItem="N7O-mI-2jh" secondAttribute="trailing" id="6Bp-I0-NPu"/>
-                <constraint firstAttribute="bottom" secondItem="N7O-mI-2jh" secondAttribute="bottom" id="JkV-mS-Ik7"/>
-                <constraint firstItem="N7O-mI-2jh" firstAttribute="top" secondItem="5EI-FS-xn5" secondAttribute="bottom" constant="-4" id="Rm6-Nv-5e7">
+                <constraint firstItem="N7O-mI-2jh" firstAttribute="bottom" secondItem="lfg-YH-FPS" secondAttribute="bottom" id="QUe-lo-ecq"/>
+                <constraint firstItem="N7O-mI-2jh" firstAttribute="top" secondItem="5EI-FS-xn5" secondAttribute="bottom" id="Rm6-Nv-5e7">
                     <variation key="heightClass=regular-widthClass=regular" constant="1"/>
                 </constraint>
                 <constraint firstAttribute="trailing" secondItem="N7O-mI-2jh" secondAttribute="trailing" id="TC8-cJ-GAz"/>
                 <constraint firstAttribute="trailing" secondItem="5EI-FS-xn5" secondAttribute="trailing" id="UQo-ax-bpJ"/>
                 <constraint firstItem="5EI-FS-xn5" firstAttribute="top" secondItem="56G-bC-GIm" secondAttribute="top" id="UwR-bv-tSz"/>
-                <constraint firstItem="N7O-mI-2jh" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="gom-KY-U5z"/>
                 <constraint firstItem="N7O-mI-2jh" firstAttribute="leading" secondItem="56G-bC-GIm" secondAttribute="leading" id="mvN-Sp-R6z"/>
-                <constraint firstAttribute="bottom" secondItem="N7O-mI-2jh" secondAttribute="bottom" id="qAn-sQ-dY0"/>
             </constraints>
             <nil key="simulatedBottomBarMetrics"/>
+            <viewLayoutGuide key="safeArea" id="lfg-YH-FPS"/>
             <point key="canvasLocation" x="145" y="160"/>
         </view>
         <view contentMode="scaleToFill" id="6N7-Wf-YM3" userLabel="FooterView">
@@ -455,6 +454,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="lca-4m-Ehf"/>
             <point key="canvasLocation" x="-275" y="214"/>
         </view>
         <view contentMode="scaleToFill" id="GPk-s2-Kf1" userLabel="HeaderView">
@@ -479,6 +479,7 @@
             </constraints>
             <nil key="simulatedStatusBarMetrics"/>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="FiK-hz-Cee"/>
             <point key="canvasLocation" x="-275" y="306"/>
         </view>
     </objects>
