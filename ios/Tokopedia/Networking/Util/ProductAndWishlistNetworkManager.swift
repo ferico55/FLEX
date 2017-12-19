@@ -135,22 +135,22 @@ class ProductAndWishlistNetworkManager: NSObject {
             ).disposed(by: self.rx_disposeBag)
     }
     
-    func checkWishlistStatusFor(fuzzyProduct:[FuzzySearchProduct], withCompletionHandler completionHandler: @escaping([FuzzySearchProduct]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    func checkWishlistStatusFor(fuzzyProduct:[[FuzzySearchProduct]], withCompletionHandler completionHandler: @escaping([[FuzzySearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         
-        var productIds: [String] = []
-        for product in fuzzyProduct {
-            productIds.append(product.productId)
+        let productIds:[String] = fuzzyProduct.reduce([]) { allIds, productList in
+            return allIds + productList.map { $0.productId }
         }
         
         NetworkProvider<MojitoTarget>()
             .request(.getProductWishStatus(productIds: productIds))
             .map(to: ProductWishlistCheckResult.self)
             .subscribe(onNext: { checkResult in
-                zip(checkResult.ids, fuzzyProduct).forEach({
-                    if $0 == $1.productId {
-                        $1.isOnWishlist = true
+                checkResult.ids.forEach { id in
+                    fuzzyProduct.forEach { products in
+                        let product = products.first { $0.productId == id }
+                        product?.isOnWishlist = true
                     }
-                })
+                }
                 completionHandler(fuzzyProduct)
             },
                        onError: { [] error in

@@ -189,7 +189,10 @@
         return;
     }
     
-    [AuthenticationService.shared ensureLoggedInFromViewController:[UIApplication topViewController:nil] onSuccess:^{
+    BOOL isLoggedIn = [UserAuthentificationManager new].isLogin;
+    if (!isLoggedIn) {
+        [AuthenticationService.shared ensureLoggedInFromViewController:self.parentViewController onSuccess:nil];
+    } else {
         if(self.setWishlistAnimationView == nil) {
             [self setupWishlistButton];
             [self setWishlistButtonState:self.viewModel.isOnWishlist];
@@ -210,7 +213,7 @@
             }];
             [self setWishList];
         }
-    }];
+    }
 }
 
 - (void)setWishList
