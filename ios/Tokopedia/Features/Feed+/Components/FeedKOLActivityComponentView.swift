@@ -259,10 +259,15 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
                 
                 let gestureRecognizer = UITapGestureRecognizer()
                 gestureRecognizer.rx.event.subscribe(onNext: { _ in
-                    var newState = state
-                    newState.descriptionShownAll = !state.descriptionShownAll
+                    let viewController = ReactViewController(
+                        moduleName: "FeedKOLActivityComment",
+                        props: ["cardState": state.dictionary as AnyObject]
+                    )
+                    viewController.hidesBottomBarWhenPushed = true
                     
-                    self.onTapLongDescription(newState)
+                    UIApplication.topViewController()?
+                        .navigationController?
+                        .pushReactViewController(viewController, animated: true)
                 }).disposed(by: self.rx_disposeBag)
                 
                 label.addGestureRecognizer(gestureRecognizer)
