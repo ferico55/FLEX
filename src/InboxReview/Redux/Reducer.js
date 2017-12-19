@@ -7,6 +7,7 @@ const inboxReviewState = {
   reviewLists: [[], [], []],
   notificationCount: [0, 0, 0],
   isInteractionBlocked: false,
+  selectedItems: [null, null, null],
   isOnboardingScrollEnabled: true,
 }
 
@@ -141,16 +142,29 @@ export function inboxReviewReducer(state = inboxReviewState, action) {
         ...state,
         item: action.item,
         invoicePageIndex: action.pageIndex,
+        selectedItems: [
+          ...state.selectedItems.slice(0, action.pageIndex),
+          action.item,
+          ...state.selectedItems.slice(action.pageIndex + 1),
+        ],
       }
     case 'CHANGE_INVOICE_PAGE':
       return {
         ...state,
         invoicePageIndex: action.pageIndex,
+        item: state.selectedItems[action.pageIndex],
       }
     case 'RESET_INVOICE':
       return {
         ...state,
         item: null,
+        invoicePageIndex: 0,
+      }
+    case 'RESET_ALL_INVOICE':
+      return {
+        ...state,
+        item: null,
+        selectedItems: [null, null, null],
         invoicePageIndex: 0,
       }
     case 'DISABLE_INTERACTION':

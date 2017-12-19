@@ -7,6 +7,7 @@ import {
   Image,
   FlatList,
 } from 'react-native'
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   wrapper: {
@@ -109,6 +110,18 @@ class FilterRadioGroup extends Component {
       </View>
     )
   }
+}
+
+FilterRadioGroup.propTypes = {
+  title: PropTypes.string.isRequired,
+  style: PropTypes.object,
+  option: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedIndex: PropTypes.number,
+}
+
+FilterRadioGroup.defaultProps = {
+  style: {},
+  selectedIndex: 0,
 }
 
 export default FilterRadioGroup

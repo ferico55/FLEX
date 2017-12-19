@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Image } from 'react-native'
+import PropTypes from 'prop-types'
 
 class DynamicSizeImage extends Component {
   constructor(props) {
@@ -48,6 +49,17 @@ class DynamicSizeImage extends Component {
       />
     )
   }
+}
+
+DynamicSizeImage.defaultProps = {
+  width: 0,
+  height: 0,
+}
+
+DynamicSizeImage.propTypes = {
+  uri: PropTypes.string.isRequired,
+  width: PropTypes.number,
+  height: PropTypes.number,
 }
 
 export default DynamicSizeImage

@@ -20,6 +20,7 @@ import { bindActionCreators } from 'redux'
 import Navigator from 'native-navigation'
 import Rx from 'rxjs/Rx'
 import DeviceInfo from 'react-native-device-info'
+import PropTypes from 'prop-types'
 
 import ReviewCard from '../Components/ReviewCard'
 import NoResultView from '../../NoResultView'
@@ -38,7 +39,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 
-class ShopReviewPage extends Component {
+class ShopReviewScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -89,7 +90,7 @@ class ShopReviewPage extends Component {
           case 1:
             this.props.enableOnboardingScroll()
             ReactOnboardingHelper.disableOnboarding(
-              'review_shop_onboarding',
+              'shop_onboarding',
               `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
             )
             // done
@@ -191,7 +192,6 @@ class ShopReviewPage extends Component {
           })
       })
       .map(response => {
-        console.log(response)
         const list = response.data.list.map(item => ({
           likeCount: item.likeCount,
           isLiked: item.isLiked,
@@ -310,7 +310,7 @@ class ShopReviewPage extends Component {
           return
         }
         ReactOnboardingHelper.getOnboardingStatus(
-          'review_shop_onboarding',
+          'shop_onboarding',
           `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
           isOnboardingShown => {
             if (!isOnboardingShown) {
@@ -347,7 +347,7 @@ class ShopReviewPage extends Component {
           const options = ['Laporkan']
           ReactInteractionHelper.showPopover(options, target, index => {
             if (index === 0) {
-              Navigator.push('ReportReviewPage', {
+              Navigator.push('ReportReviewScreen', {
                 data: item.item,
                 shopID: this.state.ownerData.shop.shop_id,
               })
@@ -395,4 +395,14 @@ class ShopReviewPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ShopReviewPage)
+ShopReviewScreen.propTypes = {
+  authInfo: PropTypes.object,
+  shopDomain: PropTypes.string.isRequired,
+  shopID: PropTypes.string.isRequired,
+}
+
+ShopReviewScreen.defaultProps = {
+  authInfo: null,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ShopReviewScreen)

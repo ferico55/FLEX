@@ -226,7 +226,7 @@ class ShopViewController: UIViewController {
         
         let userManager = UserAuthentificationManager()
         let auth = userManager.getUserLoginData()
-        let reviewViewController = ReactViewController(moduleName: "ShopReviewPage", props: ["authInfo": auth as AnyObject, "shopDomain": shop.result.info.shop_domain! as AnyObject, "shopID": shop.result.info.shop_id! as AnyObject])
+        let reviewViewController = ReactViewController(moduleName: "ShopReviewScreen", props: ["authInfo": auth as AnyObject, "shopDomain": shop.result.info.shop_domain! as AnyObject, "shopID": shop.result.info.shop_id! as AnyObject])
         
         let noteViewController = ShopNotesPageViewController()
         noteViewController.data = data
@@ -293,7 +293,7 @@ class ShopViewController: UIViewController {
         }
     }
     
-    func minimizeHeader(_ animated: Bool) {
+    func minimizeHeader() {
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = 0
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
     }
@@ -511,7 +511,29 @@ extension ShopViewController: MXSegmentedPagerDelegate {
         }
         
         if self.isDisplayingReviewPage() {
+            let userManager = UserAuthentificationManager()
+            if let onboardingStatus = UserDefaults.standard.dictionary(forKey: "shop_onboarding") {
+                guard let status = onboardingStatus[userManager.getUserId()] as? Bool else {
+                    self.minimizeHeader()
+                    self.delegate?.didDisplayReviewPage()
+                    return
+                }
+                if !status {
+                    self.minimizeHeader()
+                }
+            } else {
+                self.minimizeHeader()
+            }
             self.delegate?.didDisplayReviewPage()
         }
+    }
+}
+
+extension ShopViewController: CustomTopMostViewController {
+    func customTopMostViewController() -> UIViewController? {
+        if self.isOfficial {
+            return tabChildren[3].viewController
+        }
+        return tabChildren[2].viewController
     }
 }

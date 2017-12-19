@@ -36,6 +36,7 @@
 
 #ifdef DEBUG
 @import FLEX;
+#import "ReactOnboardingHelper.h"
 #endif
 @import FirebaseCore;
 
@@ -390,6 +391,7 @@
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 #ifdef DEBUG
     [FLEXManager.sharedManager showExplorer];
+    [ReactOnboardingHelper resetOnboarding];
 #endif
     
     [FBSDKAppEvents activateApp];
@@ -624,24 +626,6 @@
 }
 
 - (UIViewController *)rootViewControllerForCoordinator:(ReactNavigationCoordinator *)coordinator {
-    UIViewController *rootViewController = _window.rootViewController;
-    if([rootViewController isKindOfClass:[UITabBarController class]]) {
-        UIViewController *topMostViewController = [rootViewController topMostViewController];
-        if([topMostViewController isKindOfClass:[ReactSplitViewController class]]) {
-            ReactSplitViewController* reactSplitVC = (ReactSplitViewController*) topMostViewController;
-            return reactSplitVC.splitVC.viewControllers[1];
-        }
-        
-        UIViewController *parentViewController = [topMostViewController parentViewController];
-        if([parentViewController isKindOfClass:[MXSegmentedPagerController class]]) {
-            NSArray<UIViewController*> *childViewControllers = [(MXSegmentedPagerController *) parentViewController childViewControllers];
-            for (UIViewController *childViewController in childViewControllers) {
-                if([childViewController isKindOfClass:[ReactViewController class]]) {
-                    return childViewController;
-                }
-            }
-        }
-    }
     return _window.rootViewController;
 }
 

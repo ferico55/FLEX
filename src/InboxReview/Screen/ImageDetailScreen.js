@@ -10,6 +10,7 @@ import {
 } from 'react-native'
 import Navigator from 'native-navigation'
 import { ReactInteractionHelper } from 'NativeModules'
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   headerContainer: {
@@ -38,7 +39,7 @@ const styles = StyleSheet.create({
   },
 })
 
-class ImageDetailPage extends PureComponent {
+class ImageDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -128,4 +129,8 @@ class ImageDetailPage extends PureComponent {
   }
 }
 
-export default ImageDetailPage
+ImageDetailScreen.propTypes = {
+  uri: PropTypes.string.isRequired,
+}
+
+export default ImageDetailScreen

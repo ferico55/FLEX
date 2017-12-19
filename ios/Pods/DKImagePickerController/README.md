@@ -1,13 +1,13 @@
 DKImagePickerController
 =======================
 
- [![Build Status](https://secure.travis-ci.org/zhangao0086/DKImagePickerController.svg)](http://travis-ci.org/zhangao0086/DKImagePickerController) [![Version Status](http://img.shields.io/cocoapods/v/DKImagePickerController.png)][docsLink] [![license MIT](http://img.shields.io/badge/license-MIT-orange.png)][mitLink] [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+ [![Build Status](https://secure.travis-ci.org/zhangao0086/DKImagePickerController.svg)](http://travis-ci.org/zhangao0086/DKImagePickerController) [![Version Status](http://img.shields.io/cocoapods/v/DKImagePickerController.png)][docsLink] [![license MIT](https://img.shields.io/cocoapods/l/DKImagePickerController.svg?style=flat)][mitLink] [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 
 <img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot1.png" /><img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot2.png" />
 ---
 <img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot3.png" /><img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot4.png" />
 ---
-<img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot5.png" /><img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot6.png" />
+<img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot11.png" /><img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot6.png" />
 ---
 
 ## Description
@@ -23,6 +23,7 @@ It's a Facebook style Image Picker Controller by Swift. It uses [DKCamera][DKCam
 * Customizable UI.
 * Customizable UICollectionViewLayout.
 * Supports footer view.
+* Supports inline mode.
 
 ## Requirements
 * iOS 8.0+
@@ -36,8 +37,6 @@ DKImagePickerController is available on CocoaPods. Simply add the following line
 ```ruby
 # For latest release in cocoapods
 pod 'DKImagePickerController'
-
-
 ```
 
 #### iOS 7.x
@@ -47,11 +46,15 @@ pod 'DKImagePickerController'
 > To use Swift libraries on apps that support iOS 7, you must manually copy the files into your application project.
 [CocoaPods only supports Swift on OS X 10.9 and newer, and iOS 8 and newer.](https://github.com/CocoaPods/blog.cocoapods.org/commit/6933ae5ccfc1e0b39dd23f4ec67d7a083975836d)
 
+<del>
+
 #### Swift 2.2
 > For Swift 2.2, use version <= 3.3.4
 
 #### Swift 2.3
 > For Swift 2.3, use version = 3.3.5
+
+</del>
 
 ## Getting Started
 #### Initialization and presentation
@@ -71,7 +74,7 @@ self.presentViewController(pickerController, animated: true) {}
 #### Customizing
 
 ```swift
-/// Forces selection of tapped image immediatly.
+/// Forces selection of tapped image immediately.
 public var singleSelect = false
     
 /// The maximum count of assets which the user will be able to select.
@@ -121,6 +124,16 @@ public var didSelectAssets: ((assets: [DKAsset]) -> Void)?
 /// It will have selected the specific assets.
 public var defaultSelectedAssets: [DKAsset]?
 
+/// allow swipe to select images.
+public var allowSwipeToSelect: Bool = false
+
+public var inline: Bool = false
+
+/// Limits the maximum number of objects returned in the fetch result, a value of 0 means no limit.
+public var fetchLimit = 0
+
+public var selectedChanged: (() -> Void)?
+
 ```
 
 ##### Exporting to file
@@ -165,6 +178,21 @@ UINavigationBar.appearance().titleTextAttributes = [
 ]
 ```
 <img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot9.png" />
+
+#### Inline
+
+<img width="50%" height="50%" src="https://raw.githubusercontent.com/zhangao0086/DKImagePickerController/develop/Screenshot11.png" />
+
+```swift
+let pickerController = DKImagePickerController()
+pickerController.inline = true
+pickerController.fetchLimit = 10
+pickerController.UIDelegate = CustomInlineLayoutUIDelegate()
+pickerController.assetType = .allPhotos
+pickerController.sourceType = .photo
+```
+
+Please see my demo project.
 
 ## How to use in Objective-C
 
@@ -225,10 +253,14 @@ It has been supported languages so far:
 * hu.lproj
 * ja.lproj
 * ko.lproj
+* nb-NO.lproj
+* pt_BR.lproj
 * ru.lproj
 * tr.lproj
 * ur.lproj
 * vi.lproj
+* ar.lproj
+* it.lproj
 * zh-Hans.lproj
 * zh-Hant.lproj
 
@@ -239,47 +271,31 @@ You can merge your branch into the `develop` branch. Any Pull Requests to be wel
 
 ## Change Log
 
-## [3.5.0](https://github.com/zhangao0086/DKImagePickerController/tree/3.5.0) (2017-01-03)
+## [3.6.1](https://github.com/zhangao0086/DKImagePickerController/tree/3.6.1) (2017-08-29)
 
-[Full Changelog](https://github.com/zhangao0086/DKImagePickerController/compare/3.4.1...3.5.0)
+[Full Changelog](https://github.com/zhangao0086/DKImagePickerController/compare/3.6.0...3.6.1)
 
-- Added danish translation.
+- Updated way of implementation for fetchLimit.
 
-- Added Korean Language.
+- Call triggerSelectedChanged if deselectAllAssets was called.
 
-- Added Traditional Chinese language.
+## [3.6.0](https://github.com/zhangao0086/DKImagePickerController/tree/3.6.0) (2017-08-24)
 
-- Added Vietnamese language.
+[Full Changelog](https://github.com/zhangao0086/DKImagePickerController/compare/3.5.6...3.6.0)
+
+- Support Italian language.
+
+- Support Arabic language
+
+- Ability to specify the exported file format.
+
+- Added support for fetchLimit.
+
+- Added support for inline mode.
+
+- Save image with metadata.
 
 - Updated DKCamera.
-
-- Updated demo project.
-
-- Updated API for custom camera.
-
-- Supports UICollectionViewCell customizable.
-
-- DKPermissionView access modifier is open.
-
-- Fixed some bugs.
-
-## [3.4.1](https://github.com/zhangao0086/DKImagePickerController/tree/3.4.1) (2016-10-25)
-
-[Full Changelog](https://github.com/zhangao0086/DKImagePickerController/compare/3.4.0...3.4.1)
-
-- Added french language.
-
-- Updated the condition of isInCloud.
-
-- Add CryptoSwift lib in order to the DKAsset has a unique identifier.
-
-- Improve scroll performance.
-
-- Fix crash issue.
-
-- Added support for asset editing.
-
-- Fix an issue that may cause arrow does not appear.
 
 ## License
 DKImagePickerController is released under the MIT license. See LICENSE for details.

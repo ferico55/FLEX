@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "FBSDKShareKit.h"
 
-@interface ReactInteractionHelper : NSObject<RCTBridgeModule, FBSDKSharingDelegate>
+@interface ReactInteractionHelper : NSObject<RCTBridgeModule>
 
 @property (nonatomic, weak, readonly) RCTBridge *bridge;
 

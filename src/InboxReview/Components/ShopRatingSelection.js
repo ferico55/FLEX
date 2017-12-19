@@ -13,8 +13,10 @@ import {
   TKPReactURLManager,
   ReactNetworkManager,
   ReactInteractionHelper,
+  TKPReactAnalytics,
 } from 'NativeModules'
 import entities from 'entities'
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   scoreContainer: {
@@ -115,6 +117,25 @@ class ShopRatingSelection extends Component {
   }
 
   postReputation = value => {
+    let label = ''
+    switch (value) {
+      case -1:
+        label = 'dissatisfied'
+        break
+      case 1:
+        label = 'neutral'
+        break
+      case 2:
+        label = 'satisfied'
+        break
+    }
+    TKPReactAnalytics.trackEvent({
+      name: 'clickReview',
+      category: 'inbox review',
+      action: 'click reputation',
+      label,
+    })
+
     this.setState({
       isLoadingReputation: true,
     })
@@ -351,6 +372,23 @@ class ShopRatingSelection extends Component {
       </View>
     )
   }
+}
+
+ShopRatingSelection.propTypes = {
+  reviewerScore: PropTypes.number.isRequired,
+  revieweeRoleID: PropTypes.number.isRequired,
+  reputationID: PropTypes.number.isRequired,
+  ratingChanged: PropTypes.func.isRequired,
+  isLast: PropTypes.bool,
+  revieweeName: PropTypes.string.isRequired,
+  isLocked: PropTypes.bool,
+  isAutoScored: PropTypes.bool,
+}
+
+ShopRatingSelection.defaultProps = {
+  isLast: false,
+  isLocked: false,
+  isAutoScored: false,
 }
 
 export default ShopRatingSelection

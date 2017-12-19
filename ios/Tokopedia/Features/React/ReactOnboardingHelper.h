@@ -11,7 +11,7 @@
 #import <UIKit/UIKit.h>
 #import "Tokopedia-Swift.h"
 
-@interface ReactOnboardingHelper : NSObject<RCTBridgeModule, UIPopoverPresentationControllerDelegate, OnboardingViewControllerDelegate, ShopViewControllerDelegate>
+@interface ReactOnboardingHelper : NSObject<RCTBridgeModule, ShopViewControllerDelegate>
 
 @property (nonatomic, weak, readonly) RCTBridge *bridge;
 + (void) resetOnboarding;

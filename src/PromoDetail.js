@@ -17,6 +17,7 @@ import {
   ReactNetworkManager,
   ReactInteractionHelper,
   HybridNavigationManager,
+  ReactPopoverHelper,
 } from 'NativeModules'
 
 import PreAnimatedImage from './PreAnimatedImage'
@@ -440,7 +441,7 @@ class PromoDetail extends React.PureComponent {
             {this.state.data.meta.promo_code !== '' && (
               <TouchableOpacity
                 onPress={() =>
-                  ReactInteractionHelper.showTooltip(
+                  ReactPopoverHelper.showTooltip(
                     'Kode Promo',
                     'Masukan Kode Promo di halaman pembayaran',
                     'icon_promo',

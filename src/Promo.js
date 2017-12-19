@@ -18,6 +18,7 @@ import {
   ReactNetworkManager,
   EventManager,
   ReactInteractionHelper,
+  ReactPopoverHelper,
   TKPReactAnalytics,
 } from 'NativeModules'
 import Rx from 'rxjs/Rx'
@@ -281,7 +282,7 @@ class Promo extends React.PureComponent {
     ]
     ActionSheetIOS.showActionSheetWithOptions(
       {
-        options: options,
+        options,
         cancelButtonIndex: 5,
       },
       index => {
@@ -501,12 +502,13 @@ class Promo extends React.PureComponent {
                           action: GA_EVENT_ACTION_PROMO_CLICK_PROMO_INFO,
                           label: item.item.meta.promo_code,
                         })
-                        ReactInteractionHelper.showTooltip(
+                        ReactPopoverHelper.showTooltip(
                           'Kode Promo',
                           'Masukan Kode Promo di halaman pembayaran',
                           'icon_promo',
                           'Tutup',
-                        )}}
+                        )
+                      }}
                     >
                       <Image
                         source={{ uri: 'icon_information' }}

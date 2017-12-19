@@ -20,6 +20,7 @@ import {
   ReactInteractionHelper,
   ReactTPRoutes,
 } from 'NativeModules'
+import PropTypes from 'prop-types'
 import DeviceInfo from 'react-native-device-info'
 
 import { bindActionCreators } from 'redux'
@@ -33,6 +34,7 @@ import FavoriteButton from '../Components/FavoriteButton'
 import ReviewReminder from '../Components/ReviewReminder'
 import DynamicSizeImage from '../Components/DynamicSizeImage'
 import ShopRatingSelection from '../Components/ShopRatingSelection'
+import ReputationModal from '../Components/ReputationModal'
 
 function mapStateToProps(state) {
   return {
@@ -108,7 +110,7 @@ const styles = StyleSheet.create({
   },
 })
 
-class InvoiceDetailPage extends PureComponent {
+class InvoiceDetailScreen extends PureComponent {
   constructor(props) {
     super(props)
 
@@ -128,38 +130,44 @@ class InvoiceDetailPage extends PureComponent {
       topOffset: 0,
       item: this.props.item,
       actionsLeft:
-        (this.props.item && this.props.item.reputation_data.reviewer_score) ===
-        0
+        (this.props.item &&
+          !this.props.item.isNotification &&
+          this.props.item.reputation_data.reviewer_score) === 0
           ? 1
           : 0,
+      isNotification: this.props.item ? this.props.item.isNotification : false,
     }
 
     this.item = this.props.item
   }
 
   componentDidMount() {
-    this.loadData()
+    if (!this.state.isNotification) {
+      this.loadData()
+    }
 
     DeviceEventEmitter.addListener('REFRESH_INVOICE_DETAIL', isLast => {
-      // console.log(this.props)
-      // console.log(this.state)
-      // debugger
+      if (!this.props.item) {
+        return
+      }
       this.loadData()
       if (isLast) {
         this.showCompleteNotification()
       }
     })
 
-    // console.log(this.props)
-    // console.log(this.state)
-    // debugger
-
     DeviceEventEmitter.addListener('SET_INVOICE', () => {
-      this.loadData()
+      setTimeout(() => {
+        this.loadData()
+      }, 150)
 
       if (this.props.item !== null) {
         this.item = this.props.item
       }
+    })
+
+    DeviceEventEmitter.addListener('REVIEW_NOTIFICATION', () => {
+      this.handleRefresh()
     })
   }
 
@@ -227,6 +235,9 @@ class InvoiceDetailPage extends PureComponent {
         dataSource: [],
       },
       () => {
+        if (!this.props.item) {
+          return
+        }
         ReactNetworkManager.request({
           method: 'GET',
           baseUrl: TKPReactURLManager.v4Url,
@@ -247,7 +258,8 @@ class InvoiceDetailPage extends PureComponent {
                 ...data.review_data,
                 review_response: {
                   ...data.review_data.review_response,
-                  response_by: `${data.review_data.review_response.response_by}`,
+                  response_by: `${data.review_data.review_response
+                    .response_by}`,
                 },
               },
             }))
@@ -274,6 +286,7 @@ class InvoiceDetailPage extends PureComponent {
                 response.data.review_inbox_data,
               ),
               isError: false,
+              isNotification: false,
               userData: response.data.user_data,
             })
           })
@@ -282,6 +295,7 @@ class InvoiceDetailPage extends PureComponent {
             this.setState({
               isLoading: false,
               isError: true,
+              isNotification: false,
             })
             ReactInteractionHelper.showDangerAlert(
               'Terjadi gangguan pada koneksi.',
@@ -298,7 +312,7 @@ class InvoiceDetailPage extends PureComponent {
     if (isSeller) {
       ReactTPRoutes.navigate(`tokopedia://${id}`)
     } else {
-      ReactTPRoutes.navigate(`tokopedia://user/${id}`)
+      ReactTPRoutes.navigate(`tkpd-internal://user/${id}`)
     }
   }
 
@@ -306,40 +320,41 @@ class InvoiceDetailPage extends PureComponent {
     if (!this.props.item) {
       return
     }
-    const params = {
-      ...this.props.params[this.props.invoicePageIndex],
-      reputation_id: this.props.item.reputation_id,
-    }
-    ReactNetworkManager.request({
-      method: 'GET',
-      baseUrl: TKPReactURLManager.v4Url,
-      path: '/reputationapp/reputation/api/v1/inbox',
-      params,
-    })
-      .then(response => {
-        this.props.item = {
-          ...response.data.inbox_reputation[0],
-          shop_id: `${response.data.inbox_reputation[0].shop_id}`,
-          user_id: `${response.data.inbox_reputation[0].user_id}`,
-        }
-        this.setState({
-          isRefreshing: false,
-        })
-      })
-      .catch(error => {
-        console.log(error)
-        this.setState({
-          isRefreshing: false,
-        })
-        ReactInteractionHelper.showDangerAlert('Terjadi gangguan pada koneksi.')
-      })
     this.setState(
       {
         dataSource: [],
         isLoading: false,
       },
       () => {
-        this.loadData()
+        const params = {
+          ...this.props.params[this.props.invoicePageIndex],
+          reputation_id: this.props.item.reputation_id,
+        }
+        ReactNetworkManager.request({
+          method: 'GET',
+          baseUrl: TKPReactURLManager.v4Url,
+          path: '/reputationapp/reputation/api/v1/inbox',
+          params,
+        })
+          .then(response => {
+            const item = {
+              ...response.data.inbox_reputation[0],
+              shop_id: `${response.data.inbox_reputation[0].shop_id}`,
+              user_id: `${response.data.inbox_reputation[0].user_id}`,
+            }
+            this.item = item
+            this.props.setInvoice(item, this.props.invoicePageIndex)
+            this.loadData()
+          })
+          .catch(error => {
+            console.log(error)
+            this.setState({
+              isRefreshing: false,
+            })
+            ReactInteractionHelper.showDangerAlert(
+              'Terjadi gangguan pada koneksi.',
+            )
+          })
       },
     )
   }
@@ -388,7 +403,8 @@ class InvoiceDetailPage extends PureComponent {
           userData={this.state.userData}
           isLikeHidden
           isSensorDisabled={
-            this.props.authInfo.shop_id === this.props.item.shop_id}
+            this.props.authInfo.shop_id === this.props.item.shop_id
+          }
           shopName={
             this.props.authInfo.shop_id === this.props.item.shop_id ? (
               this.props.authInfo.shop_name
@@ -402,13 +418,13 @@ class InvoiceDetailPage extends PureComponent {
             ReactInteractionHelper.showPopover(options, target, index => {
               if (index === 0) {
                 if (this.props.authInfo.shop_id === this.props.item.shop_id) {
-                  Navigator.push('ReportReviewPage', {
+                  Navigator.push('ReportReviewScreen', {
                     data: item.item,
                     shopID: this.props.item.shop_id,
                   })
                   return
                 } else if (item.item.review_is_editable) {
-                  Navigator.push('ProductReviewFormPage', {
+                  Navigator.push('ProductReviewFormScreen', {
                     review: item.item,
                     reputationId: this.state.reputationId,
                     authInfo: this.props.authInfo,
@@ -441,7 +457,7 @@ class InvoiceDetailPage extends PureComponent {
             !item.item.review_has_reviewed &&
             item.item.product_data.shop_id !== this.props.authInfo.shop_id
           ) {
-            Navigator.push('ProductReviewFormPage', {
+            Navigator.push('ProductReviewFormScreen', {
               review: item.item,
               reputationId: this.state.reputationId,
               authInfo: this.props.authInfo,
@@ -475,6 +491,12 @@ class InvoiceDetailPage extends PureComponent {
     )
   }
 
+  handleModalClose = () => {
+    this.setState({
+      modalVisible: false,
+    })
+  }
+
   renderBadge = revieweeData => {
     if (revieweeData.reviewee_role_id === 1) {
       // buyer
@@ -489,11 +511,9 @@ class InvoiceDetailPage extends PureComponent {
       return (
         <TouchableOpacity
           onPress={() => {
-            ReactInteractionHelper.showBuyerBadge(
-              revieweeData.reviewee_buyer_badge.negative,
-              revieweeData.reviewee_buyer_badge.neutral,
-              revieweeData.reviewee_buyer_badge.positive,
-            )
+            this.setState({
+              modalVisible: true,
+            })
           }}
         >
           <View style={[styles.buyerBadge, { borderColor: textColor }]}>
@@ -514,10 +534,9 @@ class InvoiceDetailPage extends PureComponent {
     return (
       <TouchableOpacity
         onPress={() => {
-          ReactInteractionHelper.showSellerBadge(
-            revieweeData.reviewee_shop_badge.reputation_badge_url,
-            revieweeData.reviewee_shop_badge.score,
-          )
+          this.setState({
+            modalVisible: true,
+          })
         }}
       >
         <DynamicSizeImage
@@ -590,6 +609,21 @@ class InvoiceDetailPage extends PureComponent {
   }
 
   render() {
+    if (this.state.isNotification) {
+      return (
+        <Navigator.Config
+          title={''}
+          subtitle={''}
+          titleColor="black"
+          statusBarAnimation="slide"
+          onLeftPress={_ => Navigator.pop()}
+        >
+          <View style={styles.noResultContainer}>
+            <ActivityIndicator animating size="small" />
+          </View>
+        </Navigator.Config>
+      )
+    }
     if (!this.props.item) {
       let text = ''
       let image = ''
@@ -642,6 +676,7 @@ class InvoiceDetailPage extends PureComponent {
           enableResetScrollToCoords={false}
           style={{ backgroundColor: '#f1f1f1', flex: 1 }}
           horizontal={false}
+          keyboardDismissMode="on-drag"
           refreshControl={
             <RefreshControl
               refreshing={this.state.isRefreshing}
@@ -649,6 +684,11 @@ class InvoiceDetailPage extends PureComponent {
             />
           }
         >
+          <ReputationModal
+            onRequestClose={this.handleModalClose}
+            visible={this.state.modalVisible}
+            reviewee_data={this.props.item.reviewee_data}
+          />
           <View style={{ backgroundColor: 'white' }}>
             <TouchableOpacity
               onPress={() => {
@@ -737,4 +777,17 @@ class InvoiceDetailPage extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetailPage)
+InvoiceDetailScreen.propTypes = {
+  item: PropTypes.object,
+  setParams: PropTypes.func.isRequired,
+  params: PropTypes.arrayOf(PropTypes.object).isRequired,
+  invoicePageIndex: PropTypes.number.isRequired,
+  resetInvoice: PropTypes.func.isRequired,
+  authInfo: PropTypes.object.isRequired,
+}
+
+InvoiceDetailScreen.defaultProps = {
+  item: null,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(InvoiceDetailScreen)

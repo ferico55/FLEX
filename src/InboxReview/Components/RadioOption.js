@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
 } from 'react-native'
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   optionContainer: {
@@ -42,6 +43,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderColor: 'rgba(0,0,0,0.54)',
     backgroundColor: 'white',
+    fontSize: 15,
+    lineHeight: 21,
   },
 })
 
@@ -87,6 +90,9 @@ class RadioOption extends Component {
       onPress={() => {
         this.setState({ selectedIndex: item.index }, () => {
           this.verifyInput()
+          if (item.index !== this.props.otherIndex) {
+            this.textInput.setNativeProps({ text: '' })
+          }
         })
       }}
     >
@@ -118,8 +124,14 @@ class RadioOption extends Component {
                   this.verifyInput()
                 })
               }}
+              onFocus={() => {
+                if (this.state.selectedIndex !== this.props.otherIndex) {
+                  this.setState({ selectedIndex: this.props.otherIndex })
+                }
+              }}
               style={styles.otherInput}
               placeholder="Isi alasan disini"
+              multiline
             />
           )}
         </View>
@@ -145,6 +157,21 @@ class RadioOption extends Component {
       </View>
     )
   }
+}
+
+RadioOption.propTypes = {
+  style: PropTypes.object,
+  validationChanged: PropTypes.func,
+  options: PropTypes.arrayOf(PropTypes.string).isRequired,
+  selectedIndex: PropTypes.number,
+  otherIndex: PropTypes.number,
+}
+
+RadioOption.defaultProps = {
+  style: {},
+  validationChanged: null,
+  selectedIndex: 0,
+  otherIndex: 0,
 }
 
 export default RadioOption

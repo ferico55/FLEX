@@ -9,11 +9,13 @@ import Navigator from 'native-navigation'
 import { applyMiddleware, createStore } from 'redux'
 import { Provider } from 'react-redux'
 import thunk from 'redux-thunk'
-import HybridContainer from './src/HybridContainer'
 import moment from 'moment'
+import HybridContainer from './src/HybridContainer'
 
 // top ads pages
 import TopAds from './src/TopAds'
+// inbox review pages
+import InboxReview from './src/InboxReview'
 
 import SearchFilterScreen from './src/search/'
 import OrderHistoryPage from './src/Order/Page/HistoryPage'
@@ -24,19 +26,6 @@ import TopChatDetail from '@containers/detail/DetailContainers'
 import TopChatStore from './src/TopChat/Store'
 import SendChatView from '@SendChatContainers/SendChatView'
 import ProductAttachTopChat from '@containers/product/ProductContainers'
-
-// Inbox review pages
-import InboxReview from './src/InboxReview/Page/InboxReview'
-import ReviewFilterPage from './src/InboxReview/Page/ReviewFilterPage'
-import InvoiceDetailPage from './src/InboxReview/Page/InvoiceDetailPage'
-import ProductReviewFormPage from './src/InboxReview/Page/ProductReviewFormPage'
-import ImageUploadPage from './src/InboxReview/Page/ImageUploadPage'
-import ReportReviewPage from './src/InboxReview/Page/ReportReviewPage'
-import ImageDetailPage from './src/InboxReview/Page/ImageDetailPage'
-import ProductReviewPage from './src/InboxReview/Page/ProductReviewPage'
-import ShopReviewPage from './src/InboxReview/Page/ShopReviewPage'
-
-import inboxReviewReducer from './src/InboxReview/Redux/Reducer'
 
 import Promo from './src/Promo'
 import PromoDetail from './src/PromoDetail'
@@ -69,8 +58,6 @@ if (__DEV__) {
   composer = id => id
 }
 
-const middleware = applyMiddleware(thunk)
-const inboxReviewStore = createStore(inboxReviewReducer, middleware)
 const rideStore = createStore(
   rideReducer,
   composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
@@ -168,54 +155,6 @@ moment.relativeTimeThreshold('M', 12)
 Navigator.registerScreen('HistoryPage', () => OrderHistoryPage)
 Navigator.registerScreen('OrderDetailPage', () => OrderDetailPage)
 
-// Inbox Review screen
-Navigator.registerScreen('InboxReview', () => props => (
-  <Provider store={inboxReviewStore}>
-    <InboxReview {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ReviewFilterPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ReviewFilterPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('InvoiceDetailPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <InvoiceDetailPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ProductReviewFormPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ProductReviewFormPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ImageUploadPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ImageUploadPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ReportReviewPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ReportReviewPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ImageDetailPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ImageDetailPage {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('ProductReviewPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ProductReviewPage {...props} />
-  </Provider>
-))
-Navigator.registerScreen('ShopReviewPage', () => props => (
-  <Provider store={inboxReviewStore}>
-    <ShopReviewPage {...props} />
-  </Provider>
-))
-
 Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)
 
 /* TOPCHAT */
@@ -249,7 +188,6 @@ const container = HybridContainer({
   CategoryResultPage,
   Promo,
   PromoDetail,
-  ProductReview: require('./src/Review/ProductReview'),
   'Official Store': require('./src/official-store/setup'),
   'Official Store Promo': require('./src/os-promo/setup'),
   NotFoundComponent,
@@ -264,4 +202,4 @@ const registerScreens = screenGroups =>
     ),
   )
 
-registerScreens([TopAds])
+registerScreens([TopAds, InboxReview])

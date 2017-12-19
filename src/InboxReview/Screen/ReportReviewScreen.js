@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
 } from 'react-native'
 import Navigator from 'native-navigation'
+import PropTypes from 'prop-types'
 
 import {
   TKPReactURLManager,
@@ -55,7 +56,7 @@ const reportOptions = [
   'Lainnya',
 ]
 
-class ReportReviewPage extends PureComponent {
+class ReportReviewScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -137,6 +138,7 @@ class ReportReviewPage extends PureComponent {
             }}
             options={reportOptions}
             otherIndex={2}
+            selectedIndex={-1}
             style={{ marginTop: 20 }}
             validationChanged={isValid => {
               this.setState({
@@ -200,4 +202,9 @@ class ReportReviewPage extends PureComponent {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReportReviewPage)
+ReportReviewScreen.propTypes = {
+  data: PropTypes.object.isRequired,
+  shopID: PropTypes.string.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReportReviewScreen)

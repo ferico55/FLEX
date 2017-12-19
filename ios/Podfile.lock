@@ -47,11 +47,11 @@ PODS:
   - Crashlytics (3.9.0):
     - Fabric (~> 1.7.0)
   - DBPrivacyHelper (0.6.3)
-  - DKImagePickerController (3.5.0):
-    - DKImagePickerController/Camera (= 3.5.0)
-    - DKImagePickerController/ImageManager (= 3.5.0)
-  - DKImagePickerController/Camera (3.5.0)
-  - DKImagePickerController/ImageManager (3.5.0)
+  - DKImagePickerController (3.6.2):
+    - DKImagePickerController/Camera (= 3.6.2)
+    - DKImagePickerController/ImageManager (= 3.6.2)
+  - DKImagePickerController/Camera (3.6.2)
+  - DKImagePickerController/ImageManager (3.6.2)
   - DownPicker (0.1.34)
   - DTTJailbreakDetection (0.4.0)
   - EAIntroView (2.8.3):
@@ -290,7 +290,7 @@ DEPENDENCIES:
   - CodePush (from `../node_modules/react-native-code-push`)
   - ComponentKit (~> 0.14)
   - Crashlytics (~> 3.9.0)
-  - DKImagePickerController (~> 3.5.0)
+  - DKImagePickerController (from `https://github.com/ferico55/DKImagePickerController.git`, branch `3.6.2-tkpd`)
   - DownPicker (~> 0.1.34)
   - DTTJailbreakDetection (~> 0.4.0)
   - EAIntroView (~> 2.8.0)
@@ -379,6 +379,9 @@ DEPENDENCIES:
 EXTERNAL SOURCES:
   CodePush:
     :path: ../node_modules/react-native-code-push
+  DKImagePickerController:
+    :branch: 3.6.2-tkpd
+    :git: https://github.com/ferico55/DKImagePickerController.git
   Eureka:
     :branch: Xcode9-Swift3_2
     :git: https://github.com/xmartlabs/Eureka.git
@@ -414,6 +417,9 @@ EXTERNAL SOURCES:
     :path: ../node_modules/react-native/ReactCommon/yoga
 
 CHECKOUT OPTIONS:
+  DKImagePickerController:
+    :commit: 89b22f3c1dbae0bebc31299fa994e6060e6a15b9
+    :git: https://github.com/ferico55/DKImagePickerController.git
   Eureka:
     :commit: 05acfb04c24a480f1868e671d19b39e0f22fc265
     :git: https://github.com/xmartlabs/Eureka.git
@@ -449,7 +455,7 @@ SPEC CHECKSUMS:
   ComponentKit: 11d9177b5e9940c456e7486d8f5a25c26d9ca5f2
   Crashlytics: 64aad5dd97249dd3ff94b979fea140144590cdd3
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
-  DKImagePickerController: 0fccc62b047a6b0c64d81e7b64a3deab22b86839
+  DKImagePickerController: 8d0c7595e5ffe1d353c60ba085e2cc6f28af3428
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
   EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
@@ -538,6 +544,6 @@ SPEC CHECKSUMS:
   Yoga: ccefa1454b2e9825dce3b2df98088b7f0e3c2675
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 7163df88328190e4ce19bf1ddc5824b11ed0dbb8
+PODFILE CHECKSUM: 6f1dd240d31c37fd98fc3d1f4df7043e3eb940d7
 
 COCOAPODS: 1.3.1

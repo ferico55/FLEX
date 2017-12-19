@@ -27,6 +27,9 @@ open class DKAsset: NSObject {
 	/// When the asset was an image, it's false. Otherwise true.
 	open private(set) var isVideo: Bool = false
 	
+    /// Returns location, if its contained in original asser
+    open private(set) var location: CLLocation?
+    
 	/// play time duration(seconds) of a video.
 	open private(set) var duration: Double?
 	
@@ -36,6 +39,7 @@ open class DKAsset: NSObject {
 		
 	public init(originalAsset: PHAsset) {
         self.localIdentifier = originalAsset.localIdentifier
+        self.location = originalAsset.location
 		super.init()
 		
 		self.originalAsset = originalAsset
@@ -215,14 +219,15 @@ public extension DKAsset {
     /**
      Writes the AV in the receiver to the file specified by a given path.
      
-     - parameter presetName:    An NSString specifying the name of the preset template for the export. See AVAssetExportPresetXXX.
+     - parameter presetName:        An NSString specifying the name of the preset template for the export. See AVAssetExportPresetXXX.
+     - parameter outputFileType:    Type of file to export. Should be a valid media type, otherwise export will fail. See AVFileType.
      */
-	public func writeAVToFile(_ path: String, presetName: String, completeBlock: @escaping (_ success: Bool) -> Void) {
+    public func writeAVToFile(_ path: String, presetName: String, outputFileType: String = AVFileTypeQuickTimeMovie, completeBlock: @escaping (_ success: Bool) -> Void) {
 		self.fetchAVAsset(nil) { (avAsset, _) in
             DKAssetWriter.writeQueue.addOperation({
                 if let avAsset = avAsset,
                     let exportSession = AVAssetExportSession(asset: avAsset, presetName: presetName) {
-                    exportSession.outputFileType = AVFileTypeQuickTimeMovie
+                    exportSession.outputFileType = outputFileType
                     exportSession.outputURL = URL(fileURLWithPath: path)
                     exportSession.shouldOptimizeForNetworkUse = true
                     exportSession.exportAsynchronously(completionHandler: {

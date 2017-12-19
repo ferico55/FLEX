@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, View, DeviceEventEmitter } from 'react-native'
 
 import Navigator from 'native-navigation'
 import DeviceInfo from 'react-native-device-info'
@@ -7,7 +7,9 @@ import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import { ReactInteractionHelper, ReactOnboardingHelper } from 'NativeModules'
 import { TabViewAnimated, TabBar } from 'react-native-tab-view'
-import ReviewPage from './ReviewPage'
+import PropTypes from 'prop-types'
+
+import ReviewScreen from './ReviewScreen'
 import * as Actions from '../Redux/Actions'
 
 function mapStateToProps(state) {
@@ -32,13 +34,6 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     marginHorizontal: 4,
   },
-  tabContainer: {
-    backgroundColor: 'white',
-    shadowColor: 'black',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.15,
-    shadowRadius: 6,
-  },
 })
 
 const onboardingTitle = [
@@ -48,7 +43,7 @@ const onboardingTitle = [
 ]
 const onboardingMessage = [
   'Berikan penilaian toko dan ulasan pada produk yang Anda beli.',
-  'Berikan penilaian toko dan ulasan pada produk yang Anda beli.',
+  'Lihat seluruh penilaian dan ulasan yang telah Anda isi.',
   'Berikan penilaian dan balas ulasan pembeli.',
 ]
 
@@ -80,11 +75,14 @@ class InboxReview extends Component {
   }
 
   componentWillMount() {
-    this.props.resetInvoice()
+    this.props.resetAllInvoice()
   }
 
   startOnboarding = () => {
     if (this.onboardingState > -1) {
+      return
+    }
+    if (this.props.reputationId) {
       return
     }
 
@@ -180,7 +178,7 @@ class InboxReview extends Component {
               ) {
                 this.props.enableOnboardingScroll()
                 ReactOnboardingHelper.disableOnboarding(
-                  'review_inbox_onboarding',
+                  'inbox_onboarding',
                   `${this.props.authInfo.user_id}`,
                 )
               }
@@ -192,7 +190,10 @@ class InboxReview extends Component {
   }
 
   handleIndexChange = index => {
-    this.props.changeInvoicePage(index)
+    if (DeviceInfo.isTablet()) {
+      this.props.changeInvoicePage(index)
+      DeviceEventEmitter.emit('SET_INVOICE')
+    }
   }
 
   handleLayout = event => {
@@ -236,7 +237,7 @@ class InboxReview extends Component {
         this.tabReactTag[item.index] = event.target
         if (item.index === 0) {
           ReactOnboardingHelper.getOnboardingStatus(
-            'review_inbox_onboarding',
+            'inbox_onboarding',
             `${this.props.authInfo.user_id}`,
             isOnboardingShown => {
               if (!isOnboardingShown) {
@@ -262,7 +263,10 @@ class InboxReview extends Component {
         this.setState({
           tabViewState: { ...this.state.tabViewState, index: item.index },
         })
-        this.props.changeInvoicePage(item.index)
+        if (DeviceInfo.isTablet()) {
+          this.props.changeInvoicePage(item.index)
+          DeviceEventEmitter.emit('SET_INVOICE')
+        }
       }}
       renderIcon={this.renderDummy}
       scrollEnabled
@@ -271,7 +275,13 @@ class InboxReview extends Component {
         backgroundColor: 'rgb(66,181,73)',
         height: 3,
       }}
-      style={{ backgroundColor: 'white' }}
+      style={{
+        backgroundColor: 'white',
+        shadowOffset: { height: 2, width: 0 },
+        shadowColor: 'black',
+        shadowOpacity: 0.2,
+        shadowRadius: 6,
+      }}
       tabStyle={{
         width: this.width,
       }}
@@ -284,7 +294,7 @@ class InboxReview extends Component {
     switch (route.key) {
       case '1':
         return (
-          <ReviewPage
+          <ReviewScreen
             role={1}
             status={1}
             pageIndex={0}
@@ -293,7 +303,7 @@ class InboxReview extends Component {
         )
       case '2':
         return (
-          <ReviewPage
+          <ReviewScreen
             role={1}
             status={2}
             pageIndex={1}
@@ -302,7 +312,7 @@ class InboxReview extends Component {
         )
       case '3':
         return (
-          <ReviewPage
+          <ReviewScreen
             role={2}
             status={3}
             pageIndex={2}
@@ -310,7 +320,7 @@ class InboxReview extends Component {
           />
         )
       default:
-        return <ReviewPage />
+        return <ReviewScreen />
     }
   }
 
@@ -347,6 +357,14 @@ class InboxReview extends Component {
       </Navigator.Config>
     )
   }
+}
+
+InboxReview.propTypes = {
+  authInfo: PropTypes.object.isRequired,
+  resetInvoice: PropTypes.func.isRequired,
+  changeInvoicePage: PropTypes.func.isRequired,
+  isInteractionBlocked: PropTypes.bool.isRequired,
+  resetAllInvoice: PropTypes.func.isRequired,
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(InboxReview)

@@ -12,7 +12,9 @@ import {
   TKPReactURLManager,
   ReactNetworkManager,
   ReactInteractionHelper,
+  TKPReactAnalytics,
 } from 'NativeModules'
+import PropTypes from 'prop-types'
 
 const styles = StyleSheet.create({
   followButton: {
@@ -62,6 +64,12 @@ class FavoriteButton extends Component {
   }
 
   handleFavoriteAction = () => {
+    TKPReactAnalytics.trackEvent({
+      name: 'clickReview',
+      category: 'inbox review',
+      action: 'click favourite',
+      label: '',
+    })
     this.setState({
       isLoadingShopFavorite: true,
     })
@@ -153,6 +161,11 @@ class FavoriteButton extends Component {
       </TouchableOpacity>
     )
   }
+}
+
+FavoriteButton.propTypes = {
+  roleID: PropTypes.number.isRequired,
+  shopID: PropTypes.string.isRequired,
 }
 
 export default FavoriteButton

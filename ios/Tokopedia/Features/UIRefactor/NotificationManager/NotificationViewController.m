@@ -367,7 +367,9 @@
                 
                 UIViewController *reviewReactViewController;
                 if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-                    reviewReactViewController = [[ReactSplitViewController alloc] initWithModules:@{@"InboxReview": @{@"authInfo": auth}, @"InvoiceDetailPage": @{@"authInfo": auth}} masterViewKey:@"InboxReview" detailViewKey:@"InvoiceDetailPage"];
+                    ReactModule *masterModule = [[ReactModule alloc] initWithName:@"InboxReview" props:@{@"authInfo": auth}];
+                    ReactModule *detailModule = [[ReactModule alloc] initWithName:@"InvoiceDetailScreen" props:@{@"authInfo": auth}];
+                    reviewReactViewController = [[ReactSplitViewController alloc] initWithMasterModule:masterModule detailModule:detailModule];
                 } else {
                     reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : auth }];
                 }

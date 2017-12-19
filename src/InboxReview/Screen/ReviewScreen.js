@@ -10,6 +10,7 @@ import {
   ActivityIndicator,
   DeviceEventEmitter,
   Dimensions,
+  Keyboard,
 } from 'react-native'
 import entities from 'entities'
 import Navigator from 'native-navigation'
@@ -19,6 +20,7 @@ import { ReactTPRoutes, ReactInteractionHelper } from 'NativeModules'
 import { connect } from 'react-redux'
 import DeviceInfo from 'react-native-device-info'
 import Rx from 'rxjs/Rx'
+import PropTypes from 'prop-types'
 
 import NoResultView from '../../NoResultView'
 import DynamicSizeImage from '../Components/DynamicSizeImage'
@@ -147,18 +149,15 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 
-class ReviewPage extends PureComponent {
+class ReviewScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
       dataSource: [],
       page: 1,
       isLoading: false,
-      timeFilter: 1,
-      status: this.props.status,
       pageIndex: this.props.pageIndex,
       role: this.props.role,
-      selectedInvoice: 0,
     }
 
     this.loadData$ = new Rx.Subject()
@@ -167,11 +166,11 @@ class ReviewPage extends PureComponent {
   componentDidMount() {
     this.props.setParams(
       {
+        per_page: 10,
         page: 1,
-        per_page: 12,
-        role: this.props.role,
         time_filter: 1,
         status: this.props.status,
+        role: this.props.role,
         keyword: this.state.keyword,
       },
       this.props.pageIndex,
@@ -241,9 +240,16 @@ class ReviewPage extends PureComponent {
             subtitleText=""
             buttonText="Mulai Cari Produk"
             onRefresh={() => {
-              ReactInteractionHelper.dismiss(() => {
-                ReactTPRoutes.navigate('hot')
-              })
+              if (DeviceInfo.isTablet()) {
+                ReactInteractionHelper.dismiss(() => {
+                  ReactTPRoutes.navigate('hot')
+                })
+              } else {
+                Navigator.pop()
+                setTimeout(() => {
+                  ReactTPRoutes.navigate('hot')
+                }, 150)
+              }
             }}
           />
         )
@@ -255,6 +261,9 @@ class ReviewPage extends PureComponent {
           buttonText="Lihat Semua Ulasan"
           onRefresh={() => {
             this.textInput.setNativeProps({ text: '' })
+            this.setState({
+              keyword: '',
+            })
             this.props.resetInvoice()
             this.props.setParams(
               {
@@ -322,7 +331,7 @@ class ReviewPage extends PureComponent {
   )
 
   handleFilter = () => {
-    Navigator.present('ReviewFilterPage', {
+    Navigator.present('ReviewFilterScreen', {
       pageIndex: this.props.pageIndex,
       keyword: this.state.keyword,
     })
@@ -386,16 +395,11 @@ class ReviewPage extends PureComponent {
             }
             this.props.setInvoice(item, this.props.pageIndex)
             if (DeviceInfo.isTablet()) {
-              this.setState(
-                {
-                  selectedInvoice: item.inbox_id,
-                },
-                () => {
-                  DeviceEventEmitter.emit('SET_INVOICE')
-                },
-              )
+              setTimeout(() => {
+                DeviceEventEmitter.emit('SET_INVOICE')
+              }, 100)
             } else {
-              Navigator.push('InvoiceDetailPage', {
+              Navigator.push('InvoiceDetailScreen', {
                 authInfo: this.props.authInfo,
                 invoicePageIndex: this.props.pageIndex,
               })
@@ -526,6 +530,7 @@ class ReviewPage extends PureComponent {
     <View style={{ flex: 1 }}>
       <FlatList
         style={styles.wrapper}
+        keyboardDismissMode="on-drag"
         scrollEnabled={this.props.isOnboardingScrollEnabled}
         onScroll={({
           nativeEvent: { contentOffset: { y }, contentSize: { height } },
@@ -567,4 +572,22 @@ class ReviewPage extends PureComponent {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewPage)
+ReviewScreen.propTypes = {
+  pageIndex: PropTypes.number.isRequired,
+  role: PropTypes.number.isRequired,
+  setParams: PropTypes.func.isRequired,
+  params: PropTypes.arrayOf(PropTypes.object).isRequired,
+  updateParams: PropTypes.func.isRequired,
+  resetInvoice: PropTypes.func.isRequired,
+  loadingStatus: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  reviewLists: PropTypes.arrayOf(PropTypes.array).isRequired,
+  isInteractionBlocked: PropTypes.bool.isRequired,
+  setInvoice: PropTypes.func.isRequired,
+  authInfo: PropTypes.object.isRequired,
+  item: PropTypes.object.isRequired,
+  errorStatus: PropTypes.arrayOf(PropTypes.bool).isRequired,
+  setLastPage: PropTypes.func.isRequired,
+  status: PropTypes.number.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewScreen)

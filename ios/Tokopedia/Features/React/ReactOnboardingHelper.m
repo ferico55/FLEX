@@ -13,10 +13,7 @@
 @import NativeNavigation;
 
 @implementation ReactOnboardingHelper {
-    RCTResponseSenderBlock _callback;
-    BOOL _isShopPage;
     UIViewController *_delayedOnboarding;
-    UIView *_delayedOverlay;
 }
 
 RCT_EXPORT_MODULE();
@@ -31,53 +28,51 @@ RCT_EXPORT_MODULE();
     ShopViewController* shopViewController = (ShopViewController*) [[topMostViewController parentViewController] parentViewController];
 
     shopViewController.delegate = nil;
-    [shopViewController minimizeHeader:YES];
-    [rootViewController.view addSubview:_delayedOverlay];
+    [shopViewController minimizeHeader];
     [rootViewController presentViewController:_delayedOnboarding animated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(showShopOnboarding:(NSDictionary*) options callback: (RCTResponseSenderBlock)callback) {
-    _callback = callback;
-    _isShopPage = YES;
     RCTView* anchorView = (RCTView*)[_bridge.uiManager viewForReactTag: [options objectForKey:@"anchor"]];
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];
     UIViewController* shopViewController = [[topMostViewController parentViewController] parentViewController];
-    if (![shopViewController isKindOfClass:[ShopViewController class]]) {
-        return;
-    }
-
-    ShopViewController *shopVC = (ShopViewController*) shopViewController;
-    
-    void (^displayOnboarding)(void) = ^{
-        OnboardingViewController *vc = [[OnboardingViewController alloc] initWithTitle:[options objectForKey:@"title"] message:[options objectForKey:@"message"] currentStep:([[options objectForKey:@"currentStep"] intValue] - 1) totalStep:[[options objectForKey:@"totalStep"] intValue] anchorView:anchorView presentingViewController:rootViewController];
-        vc.delegate = self;
-        
-        if(![shopVC isDisplayingReviewPage]) {
-            shopVC.delegate = self;
-            _delayedOnboarding = vc;
-            return;
-        }
-        
-        [vc showOnboarding];
-    };
+    OnboardingViewController *vc = [[OnboardingViewController alloc] initWithTitle:[options objectForKey:@"title"]
+                                                                           message:[options objectForKey:@"message"]
+                                                                       currentStep:([[options objectForKey:@"currentStep"] intValue] - 1)
+                                                                         totalStep:[[options objectForKey:@"totalStep"] intValue]
+                                                                        anchorView:anchorView
+                                                          presentingViewController:rootViewController
+                                                                          callback: ^(enum OnboardingAction action) {
+        callback(@[[NSNumber numberWithInt:action]]);
+    }];
     
     if ([shopViewController isKindOfClass:[ShopViewController class]]) {
-        [shopVC minimizeHeader:YES];
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.2 * NSEC_PER_SEC)), dispatch_get_main_queue(), displayOnboarding);
-    } else {
-        displayOnboarding();
+        ShopViewController *shopVC = (ShopViewController*) shopViewController;
+        if(![shopVC isDisplayingReviewPage]) {
+            _delayedOnboarding = vc;
+            shopVC.delegate = self;
+            return;
+        }
     }
+    
+    [vc showOnboarding];
 }
 
 
 RCT_EXPORT_METHOD(showInboxOnboarding:(NSDictionary*) options callback: (RCTResponseSenderBlock)callback) {
-    _callback = callback;
     RCTView* anchorView = (RCTView*)[_bridge.uiManager viewForReactTag: [options objectForKey:@"anchor"]];
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     
-    OnboardingViewController *vc = [[OnboardingViewController alloc] initWithTitle:[options objectForKey:@"title"] message:[options objectForKey:@"message"] currentStep:([[options objectForKey:@"currentStep"] intValue] - 1) totalStep:[[options objectForKey:@"totalStep"] intValue] anchorView:anchorView presentingViewController:rootViewController];
-    vc.delegate = self;
+    OnboardingViewController *vc = [[OnboardingViewController alloc] initWithTitle:[options objectForKey:@"title"]
+                                                                           message:[options objectForKey:@"message"]
+                                                                       currentStep:([[options objectForKey:@"currentStep"] intValue] - 1)
+                                                                         totalStep:[[options objectForKey:@"totalStep"] intValue]
+                                                                        anchorView:anchorView
+                                                          presentingViewController:rootViewController
+                                                                          callback: ^(enum OnboardingAction action) {
+            callback(@[[NSNumber numberWithInt:action]]);
+        }];
     [vc showOnboarding];
 }
 
@@ -109,22 +104,6 @@ RCT_EXPORT_METHOD(getOnboardingStatus: (NSString*) key userId: (NSString*) userI
     } else {
         callback(@[@NO]);
     }
-}
-
-- (void)didTapNextButton {
-    _callback(@[@1]);
-}
-
-- (void)didTapBackButton {
-    _callback(@[@0]);
-}
-
-- (void) didDimissOnboarding {
-    _callback(@[@(-1)]);
-}
-
-- (UIModalPresentationStyle)adaptivePresentationStyleForPresentationController:(UIPresentationController *)controller {
-    return UIModalPresentationNone;
 }
 
 @end

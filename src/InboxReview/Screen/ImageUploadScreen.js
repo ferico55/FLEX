@@ -12,6 +12,7 @@ import Navigator from 'native-navigation'
 import DeviceInfo from 'react-native-device-info'
 import { ReactInteractionHelper } from 'NativeModules'
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+import PropTypes from 'prop-types'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -75,7 +76,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 
-class ImageUploadPage extends PureComponent {
+class ImageUploadScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -241,4 +242,13 @@ class ImageUploadPage extends PureComponent {
   )
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImageUploadPage)
+ImageUploadScreen.propTypes = {
+  selectedImages: PropTypes.arrayOf(PropTypes.any).isRequired,
+  addImage: PropTypes.func.isRequired,
+  updatePreviewImage: PropTypes.func.isRequired,
+  previewImage: PropTypes.object.isRequired,
+  changeDescription: PropTypes.func.isRequired,
+  removeCurrentImage: PropTypes.func.isRequired,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ImageUploadScreen)

@@ -175,6 +175,10 @@ export const resetInvoice = () => ({
   type: 'RESET_INVOICE',
 })
 
+export const resetAllInvoice = () => ({
+  type: 'RESET_ALL_INVOICE',
+})
+
 export const changeInvoicePage = pageIndex => ({
   type: 'CHANGE_INVOICE_PAGE',
   pageIndex,

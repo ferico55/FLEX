@@ -18,18 +18,18 @@
 
 RCT_EXPORT_MODULE();
 
-RCT_EXPORT_METHOD(uploadImage:(NSString*) host urlString: (NSString *) urlString imageId:(NSString *) imageId callback:(RCTPromiseResolveBlock) resolve rejecter:(RCTPromiseRejectBlock) reject) {
+RCT_EXPORT_METHOD(uploadImage:(NSDictionary*) options callback:(RCTPromiseResolveBlock) resolve rejecter:(RCTPromiseRejectBlock) reject) {
     RequestObjectUploadImage *requestObject = [RequestObjectUploadImage new];
-    requestObject.image_id = imageId;
+    requestObject.image_id = [options objectForKey:@"imageId"];
     requestObject.token = @"";
     requestObject.user_id = [[UserAuthentificationManager new] getUserId];
     requestObject.web_service = @"1";
     
-    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    NSURL *url = [[NSURL alloc] initWithString:[options objectForKey:@"imageUri"]];
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData:data];
     [RequestUploadImage requestUploadImage:img
-                            withUploadHost:host
+                            withUploadHost:[options objectForKey:@"host"]
                                       path:@"/upload/attachment"
                                       name:@"fileToUpload"
                                   fileName:@"image.png"

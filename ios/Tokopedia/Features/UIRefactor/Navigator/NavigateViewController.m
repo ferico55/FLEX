@@ -147,7 +147,7 @@
 
 -(void)navigateToShopReviewFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
-    ReactViewController* reviewViewController = [[ReactViewController alloc] initWithModuleName:@"ShopReviewPage" props:@{@"shopID": shopID}];
+    ReactViewController* reviewViewController = [[ReactViewController alloc] initWithModuleName:@"ShopReviewScreen" props:@{@"shopID": shopID}];
     [viewController.navigationController pushViewController:reviewViewController animated:YES];
 }
 
@@ -334,7 +334,9 @@
     
     UIViewController *reviewReactViewController;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules:@{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}} masterViewKey:@"InboxReview" detailViewKey:@"InvoiceDetailPage"];
+        ReactModule *masterModule = [[ReactModule alloc] initWithName:@"InboxReview" props:@{@"authInfo": userData}];
+        ReactModule *detailModule = [[ReactModule alloc] initWithName:@"InvoiceDetailScreen" props:@{@"authInfo": userData}];
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithMasterModule:masterModule detailModule:detailModule];
     } else {
         reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }
@@ -353,7 +355,9 @@
     
     UIViewController *reviewReactViewController;
     if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
-        reviewReactViewController = [[ReactSplitViewController alloc] initWithModules:@{@"InboxReview": @{@"authInfo": userData}, @"InvoiceDetailPage": @{@"authInfo": userData}} masterViewKey:@"InboxReview" detailViewKey:@"InvoiceDetailPage"];
+        ReactModule *masterModule = [[ReactModule alloc] initWithName:@"InboxReview" props:@{@"authInfo": userData}];
+        ReactModule *detailModule = [[ReactModule alloc] initWithName:@"InvoiceDetailScreen" props:@{@"authInfo": userData}];
+        reviewReactViewController = [[ReactSplitViewController alloc] initWithMasterModule:masterModule detailModule:detailModule];
     } else {
         reviewReactViewController = [[ReactViewController alloc] initWithModuleName:@"InboxReview" props:@{@"authInfo" : userData }];
     }

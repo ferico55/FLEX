@@ -21,14 +21,18 @@ import {
   ReactNetworkManager,
   ReactFileUploader,
   ReactOnboardingHelper,
+  Facebook,
+  TKPReactAnalytics,
 } from 'NativeModules'
 import entities from 'entities'
+import PropTypes from 'prop-types'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import * as Actions from '../Redux/Actions'
 import RatingStars from '../../RatingStars'
 import ImageRow from '../Components/ImageRow'
+import InfoModal from '../../unify/InfoModal'
 
 function mapStateToProps(state) {
   return {
@@ -126,6 +130,7 @@ const styles = StyleSheet.create({
   },
   productName: {
     marginLeft: 8,
+    marginRight: 48,
     color: 'rgba(0,0,0,0.7)',
     fontSize: 16,
     lineHeight: 18,
@@ -133,7 +138,7 @@ const styles = StyleSheet.create({
   },
 })
 
-class ProductReviewFormPage extends PureComponent {
+class ProductReviewFormScreen extends PureComponent {
   constructor(props) {
     super(props)
     this.state = {
@@ -142,7 +147,7 @@ class ProductReviewFormPage extends PureComponent {
         ? this.props.review.review_data.review_rating
         : 0,
       isShareToFacebook: false,
-      isAnnon: this.props.review.review_has_reviewed
+      isAnonymous: this.props.review.review_has_reviewed
         ? this.props.review.review_data.review_anonymity
         : false,
       review: this.props.review.review_has_reviewed
@@ -154,6 +159,7 @@ class ProductReviewFormPage extends PureComponent {
       isLoading: false,
       uploadingImage: 0,
       isChangeRequired: this.props.review.review_has_reviewed,
+      modalVisible: false,
     }
 
     this.onboardingTag = [0, 0, 0]
@@ -164,7 +170,7 @@ class ProductReviewFormPage extends PureComponent {
       'Pilih Profil Ulasan',
     ]
     this.onboardingMessage = [
-      'Pelajari tips ini untuk menulis ulasan dengan baik dan balas ulasan pembeli.',
+      'Pelajari tips ini untuk menulis ulasan dengan baik.',
       'Bagikan ulasan Anda secara otomatis ke Facebook.',
       'Pilih profil yang akan ditampilkan pada ulasan. Anda dapat mengubah profil menjadi anonim.',
     ]
@@ -220,17 +226,25 @@ class ProductReviewFormPage extends PureComponent {
       this.props.authInfo.full_name.length,
     )}`
 
+  getInputLength = () =>
+    this.state.review.replace(new RegExp('[ \n]', 'g'), '').length
+
   getInputText = () => {
-    if (this.state.review.replace(new RegExp(' ', 'g'), '').length === 0) {
+    if (this.getInputLength() === 0) {
       return 'Minimal 20 karakter'
-    } else if (
-      this.state.review.replace(new RegExp(' ', 'g'), '').length < 20
-    ) {
-      return `${20 -
-        this.state.review.replace(new RegExp(' ', 'g'), '')
-          .length} karakter lagi`
+    } else if (this.getInputLength() < 20) {
+      return `${20 - this.getInputLength()} karakter lagi`
     }
     return 'Hebat!'
+  }
+
+  trackPostReview = status => {
+    TKPReactAnalytics.trackEvent({
+      name: 'clickReview',
+      category: 'inbox review',
+      action: 'click send',
+      label: status ? 'success' : 'error',
+    })
   }
 
   refreshListView = () => {
@@ -325,6 +339,7 @@ class ProductReviewFormPage extends PureComponent {
         )
       })
       .catch(error => {
+        this.trackPostReview(false)
         this.props.enableInteraction()
         ReactInteractionHelper.showDangerAlert('Terjadi kesalahan pada server')
         this.setState({
@@ -354,7 +369,7 @@ class ProductReviewFormPage extends PureComponent {
         is_deleted: '0',
         file_desc: this.props.imageDescriptions[index]
           ? this.props.imageDescriptions[index].replace(
-              new RegExp(' ', 'g'),
+              new RegExp('[ \n]', 'g'),
               '',
             )
           : '',
@@ -410,7 +425,7 @@ class ProductReviewFormPage extends PureComponent {
       review_message: this.state.review.trim(),
       rate_quality: this.state.rating,
       user_id: this.props.authInfo.user_id,
-      anonymous: this.state.isAnnon,
+      anonymous: this.state.isAnonymous,
     }
 
     ReactNetworkManager.request({
@@ -428,6 +443,7 @@ class ProductReviewFormPage extends PureComponent {
             this.generateHost(imageData)
           }
         } else {
+          this.trackPostReview(false)
           this.props.enableInteraction()
           this.setState({
             isLoading: false,
@@ -438,6 +454,7 @@ class ProductReviewFormPage extends PureComponent {
         }
 
         if (imageIds.length === 0) {
+          this.trackPostReview(true)
           if (!this.props.isLast) {
             ReactInteractionHelper.showSuccessAlert(
               'Anda telah berhasil mengisi ulasan',
@@ -461,6 +478,7 @@ class ProductReviewFormPage extends PureComponent {
         }
       })
       .catch(error => {
+        this.trackPostReview(false)
         this.props.enableInteraction()
         this.setState({
           isLoading: false,
@@ -503,12 +521,22 @@ class ProductReviewFormPage extends PureComponent {
       }
 
       const imageId = imageIds[index]
-      ReactFileUploader.uploadImage(host, item.uri, `${imageId}`)
+      ReactFileUploader.uploadImage({
+        host,
+        imageUri: item.uri,
+        imageId: `${imageId}`,
+      })
         .then(imageObject => {
           imageObjects[imageId] = imageObject
 
           uploadingImage -= 1
           if (uploadingImage === 0) {
+            TKPReactAnalytics.trackEvent({
+              name: 'clickReview',
+              category: 'inbox review',
+              action: 'click upload product photo',
+              label: 'success',
+            })
             if (!this.props.review.review_has_reviewed) {
               this.submitReview(imageIds, imageObjects)
             } else {
@@ -517,6 +545,12 @@ class ProductReviewFormPage extends PureComponent {
           }
         })
         .catch(error => {
+          TKPReactAnalytics.trackEvent({
+            name: 'clickReview',
+            category: 'inbox review',
+            action: 'click upload product photo',
+            label: 'error',
+          })
           this.props.enableInteraction()
           this.setState({
             isLoading: false,
@@ -548,6 +582,7 @@ class ProductReviewFormPage extends PureComponent {
     })
       .then(response => {
         if (response.data.is_success === 1) {
+          this.trackPostReview(true)
           if (!this.props.isLast) {
             ReactInteractionHelper.showSuccessAlert(
               'Anda telah berhasil mengubah ulasan',
@@ -568,6 +603,7 @@ class ProductReviewFormPage extends PureComponent {
             console.log(e)
           }
         } else {
+          this.trackPostReview(false)
           this.setState({
             isLoading: false,
             isInputEnabled: true,
@@ -577,6 +613,7 @@ class ProductReviewFormPage extends PureComponent {
         this.props.enableInteraction()
       })
       .catch(error => {
+        this.trackPostReview(false)
         this.props.enableInteraction()
         console.log(error)
         this.setState({
@@ -602,6 +639,7 @@ class ProductReviewFormPage extends PureComponent {
     })
       .then(response => {
         if (response.data.is_success === 1) {
+          this.trackPostReview(true)
           if (!this.props.isLast) {
             ReactInteractionHelper.showSuccessAlert(
               'Anda telah berhasil mengisi ulasan',
@@ -622,6 +660,7 @@ class ProductReviewFormPage extends PureComponent {
             console.log(e)
           }
         } else {
+          this.trackPostReview(false)
           this.setState({
             isLoading: false,
             isInputEnabled: true,
@@ -631,6 +670,7 @@ class ProductReviewFormPage extends PureComponent {
         this.props.enableInteraction()
       })
       .catch(error => {
+        this.trackPostReview(false)
         this.props.enableInteraction()
         console.log(error)
         this.setState({
@@ -681,7 +721,7 @@ class ProductReviewFormPage extends PureComponent {
       review_message: this.state.review.trim(),
       rate_quality: this.state.rating,
       user_id: this.props.authInfo.user_id,
-      anonymous: this.state.isAnnon ? 1 : 0,
+      anonymous: this.state.isAnonymous ? 1 : 0,
     }
 
     ReactNetworkManager.request({
@@ -696,6 +736,7 @@ class ProductReviewFormPage extends PureComponent {
             postKey: response.data.post_key,
           })
         } else {
+          this.trackPostReview(false)
           this.props.enableInteraction()
           this.setState({
             isLoading: false,
@@ -706,6 +747,7 @@ class ProductReviewFormPage extends PureComponent {
         }
 
         if (response.data.post_key === '') {
+          this.trackPostReview(true)
           if (!this.props.isLast) {
             ReactInteractionHelper.showSuccessAlert(
               'Anda telah berhasil mengubah ulasan',
@@ -731,6 +773,7 @@ class ProductReviewFormPage extends PureComponent {
         }
       })
       .catch(error => {
+        this.trackPostReview(false)
         this.props.enableInteraction()
         this.setState({
           isLoading: false,
@@ -823,7 +866,7 @@ class ProductReviewFormPage extends PureComponent {
               if (index === 2) {
                 this.props.enableOnboardingScroll()
                 ReactOnboardingHelper.disableOnboarding(
-                  'review_form_onboarding',
+                  'form_onboarding',
                   `${this.props.authInfo.user_id}`,
                 )
               }
@@ -841,7 +884,7 @@ class ProductReviewFormPage extends PureComponent {
       this.onboardingState = 0
       setTimeout(() => {
         ReactOnboardingHelper.getOnboardingStatus(
-          'review_form_onboarding',
+          'form_onboarding',
           `${this.props.authInfo.user_id}`,
           isOnboardingShown => {
             if (!isOnboardingShown) {
@@ -882,13 +925,31 @@ class ProductReviewFormPage extends PureComponent {
 
       const c = this.props.selectedImages.filter(v => v !== 'default').length
       if (c > 0) {
-        Navigator.push('ImageUploadPage')
+        Navigator.push('ImageUploadScreen')
         this.setState({
           isChangeRequired: false,
         })
       }
     })
   }
+
+  handleModalClose = () => {
+    this.setState({
+      modalVisible: false,
+    })
+  }
+
+  renderModal = () => (
+    <InfoModal
+      imageUri={'icon_image'}
+      visible={this.state.modalVisible}
+      onRequestClose={this.handleModalClose}
+      title={'Upload Gambar Produk'}
+      message={
+        'Anda dapat mengupload 5 gambar dengan format .JPG, .JPEG, .PNG. Maksimal ukuran gambar 10 MB'
+      }
+    />
+  )
 
   renderItem = item => {
     if (item.item === 'default') {
@@ -906,7 +967,7 @@ class ProductReviewFormPage extends PureComponent {
             return
           }
           this.props.updatePreviewImage(item.item.uri, item.index)
-          Navigator.push('ImageUploadPage')
+          Navigator.push('ImageUploadScreen')
         }}
       >
         <View
@@ -943,16 +1004,18 @@ class ProductReviewFormPage extends PureComponent {
       : []
     return (
       <Navigator.Config
-        title="Ulasan Produk"
+        title="Ulas Produk"
         onRightPress={_ => this.handleRightPress()}
         rightButtons={skipButton}
       >
         <ScrollView
+          keyboardDismissMode="on-drag"
           style={{ backgroundColor: '#f1f1f1', flex: 1 }}
           ref={scrollView => {
             this.scrollView = scrollView
           }}
         >
+          {this.renderModal()}
           <View style={styles.sectionContainer}>
             <View style={styles.itemContainer}>
               <Image
@@ -1002,6 +1065,14 @@ class ProductReviewFormPage extends PureComponent {
           >
             <TouchableOpacity
               onPress={() => {
+                if (!this.state.isHelpExpanded) {
+                  TKPReactAnalytics.trackEvent({
+                    name: 'clickReview',
+                    category: 'inbox review',
+                    action: 'click dropdown',
+                    label: 'writing review tips',
+                  })
+                }
                 this.setState({ isHelpExpanded: !this.state.isHelpExpanded })
               }}
             >
@@ -1123,12 +1194,9 @@ class ProductReviewFormPage extends PureComponent {
               <Text style={styles.sectionTitle}>{'Upload Gambar Produk'}</Text>
               <TouchableOpacity
                 onPress={() => {
-                  ReactInteractionHelper.showAlternativeTooltip(
-                    'Upload Gambar Produk',
-                    'Anda dapat mengupload 5 gambar dengan format.JPG, .JPEG, .PNG. Maksimal ukuran gambar 8 MB',
-                    'icon_image',
-                    'Tutup',
-                  )
+                  this.setState({
+                    modalVisible: true,
+                  })
                 }}
               >
                 <Image
@@ -1159,8 +1227,17 @@ class ProductReviewFormPage extends PureComponent {
               <Switch
                 disabled={this.props.review.product_data.product_status === 0}
                 value={this.state.isShareToFacebook}
-                onValueChange={value =>
-                  this.setState({ isShareToFacebook: value })}
+                onValueChange={value => {
+                  if (value) {
+                    TKPReactAnalytics.trackEvent({
+                      name: 'clickReview',
+                      category: 'inbox review',
+                      action: 'slide share to facebook',
+                      label: '',
+                    })
+                  }
+                  this.setState({ isShareToFacebook: value })
+                }}
               />
             </View>
           </View>
@@ -1183,9 +1260,18 @@ class ProductReviewFormPage extends PureComponent {
                 </Text>
               </View>
               <Switch
-                value={this.state.isAnnon}
-                onValueChange={value =>
-                  this.setState({ isAnnon: value, isChangeRequired: false })}
+                value={this.state.isAnonymous}
+                onValueChange={value => {
+                  if (value) {
+                    TKPReactAnalytics.trackEvent({
+                      name: 'clickReview',
+                      category: 'inbox review',
+                      action: 'slide anonymous',
+                      label: '',
+                    })
+                  }
+                  this.setState({ isAnonymous: value, isChangeRequired: false })
+                }}
               />
             </View>
           </View>
@@ -1196,11 +1282,17 @@ class ProductReviewFormPage extends PureComponent {
                 this.setState({
                   isInputEnabled: false,
                 })
+                TKPReactAnalytics.trackEvent({
+                  name: 'clickReview',
+                  category: 'inbox review',
+                  action: 'click rating',
+                  label: `${this.state.rating}`,
+                })
                 if (
                   this.state.isShareToFacebook &&
                   this.props.review.product_data.product_status !== 0
                 ) {
-                  ReactInteractionHelper.shareToFacebook(
+                  Facebook.shareToFacebook(
                     this.state.review,
                     `${this.props.review.product_data.product_id}`,
                     this.props.review.product_data.product_page_url,
@@ -1261,6 +1353,28 @@ class ProductReviewFormPage extends PureComponent {
   }
 }
 
+ProductReviewFormScreen.propTypes = {
+  review: PropTypes.object.isRequired,
+  addUploadedImages: PropTypes.func.isRequired,
+  removeAllImages: PropTypes.func.isRequired,
+  authInfo: PropTypes.object.isRequired,
+  setParams: PropTypes.func.isRequired,
+  params: PropTypes.arrayOf(PropTypes.object).isRequired,
+  invoicePageIndex: PropTypes.number.isRequired,
+  reputationId: PropTypes.number.isRequired,
+  merchantShopID: PropTypes.string.isRequired,
+  isLast: PropTypes.bool,
+  enableInteraction: PropTypes.func.isRequired,
+  selectedImages: PropTypes.arrayOf(PropTypes.any).isRequired,
+  imageDescriptions: PropTypes.arrayOf(PropTypes.string).isRequired,
+  disableInteraction: PropTypes.func.isRequired,
+  updatePreviewImage: PropTypes.func.isRequired,
+}
+
+ProductReviewFormScreen.defaultProps = {
+  isLast: false,
+}
+
 export default connect(mapStateToProps, mapDispatchToProps)(
-  ProductReviewFormPage,
+  ProductReviewFormScreen,
 )

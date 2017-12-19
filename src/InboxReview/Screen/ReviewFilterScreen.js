@@ -1,6 +1,7 @@
 import React, { PureComponent } from 'react'
 import { ScrollView, Image } from 'react-native'
 import Navigator from 'native-navigation'
+import PropTypes from 'prop-types'
 
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
@@ -17,7 +18,7 @@ function mapDispatchToProps(dispatch) {
   return bindActionCreators(Actions, dispatch)
 }
 
-class ReviewFilterPage extends PureComponent {
+class ReviewFilterScreen extends PureComponent {
   constructor(props) {
     super(props)
     const params = this.props.params[this.props.pageIndex]
@@ -104,4 +105,14 @@ class ReviewFilterPage extends PureComponent {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ReviewFilterPage)
+ReviewFilterScreen.propTypes = {
+  params: PropTypes.arrayOf(PropTypes.object).isRequired,
+  pageIndex: PropTypes.number.isRequired,
+  keyword: PropTypes.string,
+}
+
+ReviewFilterScreen.defaultProps = {
+  keyword: '',
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ReviewFilterScreen)

@@ -18,9 +18,7 @@
 @import NativeNavigation;
 @import SwiftOverlays;
 
-@implementation ReactInteractionHelper {
-    RCTResponseSenderBlock _callback;
-}
+@implementation ReactInteractionHelper
 
 RCT_EXPORT_MODULE();
 
@@ -28,20 +26,6 @@ static UIView *lastNotificationView;
 
 - (dispatch_queue_t)methodQueue {
     return dispatch_get_main_queue();
-}
-
-RCT_EXPORT_METHOD(showTooltip:(NSString*) title subtitle:(NSString*)subtitle imageName:(NSString*) imageName dismissLabel:(NSString*) dismissLabel) {
-    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:dismissLabel style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-
-    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:title subtitle:subtitle image:[UIImage imageNamed:imageName] buttons: @[closeAction] isAlternative: NO];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
-}
-
-RCT_EXPORT_METHOD(showAlternativeTooltip:(NSString*) title subtitle:(NSString*)subtitle imageName:(NSString*) imageName dismissLabel:(NSString*) dismissLabel) {
-    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:dismissLabel style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-
-    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:title subtitle:subtitle image:[UIImage imageNamed:imageName] buttons: @[closeAction] isAlternative: YES];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
 }
 
 RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink caption:(NSString*) caption anchor:(nonnull NSNumber*) anchorTag) {
@@ -59,7 +43,6 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink capti
 
 RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
-
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeSuccess
                                                                 duration:4.0
@@ -68,26 +51,12 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
                                                                   action:nil];
 }
 
-RCT_EXPORT_METHOD(showErrorStickyAlertWithCallback:(NSString*) message callback:(RCTResponseSenderBlock)callback) {
-  [self destroyLastNotificationView];
-  
-  lastNotificationView = [UIViewController showNotificationWithMessage:message
-                                                                  type:NotificationTypeError
-                                                              duration:6.0
-                                                           buttonTitle:@"Coba Lagi"
-                                                           dismissable:YES
-                                                                action:^{
-                                                                    callback(@[[NSNull null]]);
-                                                                }];
-}
-
 RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
-
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeError
                                                                 duration:4.0
-                                                             buttonTitle:nil
+                                                             buttonTitle:@"Coba Lagi"
                                                              dismissable:YES
                                                                   action:nil];
 }
@@ -112,59 +81,33 @@ RCT_EXPORT_METHOD(showSuccessAlert:(NSString*) message){
     [alertView show];
 }
 
-RCT_EXPORT_METHOD(showBuyerBadge: (nonnull NSNumber*) negative neutral:(nonnull NSNumber*) neutral positive:(nonnull NSNumber*) positive) {
-    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-
-    CFAlertViewController *alertViewController = [TooltipAlert createReputationAlertWithNegative: negative.intValue neutral: neutral.intValue positive: positive.intValue buttons: @[closeAction]];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
-}
-
-RCT_EXPORT_METHOD(showSellerBadge: (NSString*) imageUrl point:(nonnull NSNumber*) point) {
-    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
-
-    CFAlertViewController *alertViewController = [TooltipAlert createSellerReputationAlertWithImageUrl: imageUrl point: point.intValue buttons: @[closeAction]];
-    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
-}
-
 RCT_EXPORT_METHOD(showPopover:(NSArray<NSString*>*) options anchor:(nonnull NSNumber*) anchorTag callback: (RCTResponseSenderBlock)callback) {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        RCTView* view = (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
-        UIViewController *rootViewController =[UIApplication sharedApplication].keyWindow.rootViewController;
-
-        ReactPopoverOptionViewController *vc = [[ReactPopoverOptionViewController alloc] initWithOptions:options anchorView:view presentingViewController:rootViewController callback:^(NSInteger selectedIndex){
-            callback(@[@(selectedIndex)]);
-        }];
-        [vc showPopover];
-    });
+    RCTView* view = (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
+    UIViewController *rootViewController =[UIApplication sharedApplication].keyWindow.rootViewController;
+    
+    ReactPopoverOptionViewController *vc = [[ReactPopoverOptionViewController alloc] initWithOptions:options anchorView:view presentingViewController:rootViewController callback:^(NSInteger selectedIndex){
+        callback(@[@(selectedIndex)]);
+    }];
+    [vc showPopover];
 }
 
 RCT_EXPORT_METHOD(hideNavigationBar) {
     UIViewController *topMostViewController = [self topMostViewController];
     [topMostViewController.navigationController setNavigationBarHidden:YES animated:YES];
-
-    if([topMostViewController isKindOfClass:[ReactSplitViewController class]]) {
-        ReactSplitViewController *reactSplitViewController = (ReactSplitViewController*) topMostViewController;
-        UIViewController *rightViewController = reactSplitViewController.splitVC.viewControllers[1];
-        UINavigationController *presentedNavigationController = (UINavigationController*) rightViewController.presentedViewController;
-        [presentedNavigationController setNavigationBarHidden:YES animated:YES];
-    }
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
 }
 
-RCT_EXPORT_METHOD(shareToFacebook:(NSString*) message productID:(NSString*) productID url:(NSString*) url callback: (RCTResponseSenderBlock)callback) {
-    _callback = callback;
-    FBSDKShareLinkContent *fbShareContent = [FBSDKShareLinkContent new];
-    fbShareContent.contentURL = [NSURL URLWithString:url];
-    fbShareContent.quote = message;
-
-    [FBSDKShareDialog showFromViewController: [UIApplication sharedApplication].keyWindow.rootViewController
-                                 withContent:fbShareContent
-                                    delegate:self];
-}
-
 RCT_EXPORT_METHOD(dismiss: (RCTResponseSenderBlock)callback) {
-    UIViewController *topMostViewController = [self topMostViewController];
-    [topMostViewController.navigationController popToRootViewControllerAnimated:YES];
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    NSArray<UIViewController*> *firstChildren = [rootViewController childViewControllers];
+    for (UIViewController *firstChild in firstChildren) {
+        NSArray<UIViewController*>* secondChildren = [firstChild childViewControllers];
+        for (UIViewController *viewController in secondChildren) {
+            if ([viewController isKindOfClass:[ReactSplitViewController class]]) {
+                [viewController.navigationController popToRootViewControllerAnimated:YES];
+            }
+        }
+    }
     callback(@[[NSNull null]]);
 }
 
@@ -177,8 +120,9 @@ RCT_EXPORT_METHOD(ensureLogin: (RCTResponseSenderBlock)callback) {
 }
 
 RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RCTResponseSenderBlock)callback) {
-    UIViewController *topMostViewController = [self topMostViewController];
-
+    UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    UIViewController *topMostViewController = [rootViewController topMostViewController];
+    
     [[TKPImagePickerController class] showImagePicker:topMostViewController assetType:DKImagePickerControllerAssetTypeAllPhotos allowMultipleSelect:YES showCancel:YES showCamera:YES maxSelected:maxSelected.intValue selectedAssets:nil completion:^(NSArray<DKAsset*>* result){
         NSMutableArray<NSString*>* resultUri = [NSMutableArray new];
         __block int count = (int) result.count;
@@ -200,18 +144,6 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RC
 - (UIViewController*) topMostViewController {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     return [rootViewController topMostViewController];
-}
-
-- (void)sharer:(id<FBSDKSharing>)sharer didCompleteWithResults:(NSDictionary *)results {
-    _callback(@[[NSNull null]]);
-}
-
-- (void)sharer:(id<FBSDKSharing>)sharer didFailWithError:(NSError *)error {
-    _callback(@[[NSNull null]]);
-}
-
-- (void)sharerDidCancel:(id<FBSDKSharing>)sharer {
-    _callback(@[[NSNull null]]);
 }
 
 @end

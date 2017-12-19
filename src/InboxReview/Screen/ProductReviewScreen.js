@@ -22,6 +22,7 @@ import {
 } from 'NativeModules'
 import Rx from 'rxjs/Rx'
 import DeviceInfo from 'react-native-device-info'
+import PropTypes from 'prop-types'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
 })
 
-class ProductReviewPage extends Component {
+class ProductReviewScreen extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -147,8 +148,6 @@ class ProductReviewPage extends Component {
     }
     if (index < 0 || index > 1) {
       return
-    } else if (index === 1 && this.state.reviews[1].data.length === 0) {
-      return
     }
     ReactOnboardingHelper.showInboxOnboarding(
       {
@@ -165,7 +164,7 @@ class ProductReviewPage extends Component {
             if (this.onboardingState === 1) {
               this.props.enableOnboardingScroll()
               ReactOnboardingHelper.disableOnboarding(
-                'review_product_onboarding',
+                'product_onboarding',
                 `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
               )
             }
@@ -690,7 +689,7 @@ class ProductReviewPage extends Component {
             const options = ['Laporkan']
             ReactInteractionHelper.showPopover(options, target, index => {
               if (index === 0) {
-                Navigator.push('ReportReviewPage', {
+                Navigator.push('ReportReviewScreen', {
                   data: item.item,
                   shopID: this.state.ownerData.shop.shop_id,
                 })
@@ -857,7 +856,7 @@ class ProductReviewPage extends Component {
               return
             }
             ReactOnboardingHelper.getOnboardingStatus(
-              'review_product_onboarding',
+              'product_onboarding',
               `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
               isOnboardingShown => {
                 if (!isOnboardingShown) {
@@ -935,4 +934,13 @@ class ProductReviewPage extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(ProductReviewPage)
+ProductReviewScreen.propTypes = {
+  authInfo: PropTypes.object,
+  productID: PropTypes.string.isRequired,
+}
+
+ProductReviewScreen.defaultProps = {
+  authInfo: null,
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(ProductReviewScreen)

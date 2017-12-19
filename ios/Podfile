@@ -110,7 +110,7 @@ def common_pods
     pod 'RxSwift', '~> 3.3.1'
     pod 'RxCocoa', '~> 3.3.1'
     pod 'NSObject+Rx', '~>2.0.0'
-    pod 'DKImagePickerController', '~> 3.5.0'
+    pod 'DKImagePickerController', :git => 'https://github.com/ferico55/DKImagePickerController.git', :branch =>'3.6.2-tkpd'
     pod 'RestKit/Testing', '~> 0.27.0'
     pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
@@ -138,11 +138,6 @@ target "Tokopedia" do
     common_pods
     react_pods
     pod 'Reveal-iOS-SDK', :configurations => $DEBUG_CONFIGS
-end
-
-target "TokopediaTests" do
-    react_pods
-    common_pods
 end
 
 target "ServiceExtension" do

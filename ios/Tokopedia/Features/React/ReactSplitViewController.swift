@@ -11,23 +11,27 @@ import NativeNavigation
 
 class ReactSplitViewController: UIViewController {
 
-    let modules: [String: Any]
     let splitVC: UISplitViewController
 
-    init(modules: [String: Any], masterViewKey: String, detailViewKey: String) {
-        self.modules = modules
+    init(masterModule: ReactModule, detailModule: ReactModule) {
         self.splitVC = UISplitViewController()
         super.init(nibName: nil, bundle: nil)
 
-        guard let firstProps = modules[masterViewKey] as? [String: AnyObject], let secondProps = modules[detailViewKey] as? [String:AnyObject] else {
-            return
+        var leftViewController: ReactViewController
+        if let props = masterModule.props {
+            leftViewController = ReactViewController(moduleName: masterModule.name, props: props)
+        } else {
+            leftViewController = ReactViewController(moduleName: masterModule.name)
         }
-
-        let leftViewController = ReactViewController(moduleName: masterViewKey, props: firstProps)
         let masterViewController = UINavigationController(rootViewController: leftViewController)
         masterViewController.navigationBar.isTranslucent = false
 
-        let rightViewController = ReactViewController(moduleName: detailViewKey, props: secondProps)
+        var rightViewController: ReactViewController
+        if let props = detailModule.props {
+            rightViewController = ReactViewController(moduleName: detailModule.name, props: props)
+        } else {
+            rightViewController = ReactViewController(moduleName: detailModule.name)
+        }
         let detailViewController = UINavigationController(rootViewController: rightViewController)
         detailViewController.navigationBar.isTranslucent = false
 
@@ -41,8 +45,8 @@ class ReactSplitViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(true, animated: true)
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+    deinit {
+        // need to be in deinit instead of viewWillDissappear to prevent bug on presenting popover here
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
 
@@ -54,5 +58,11 @@ class ReactSplitViewController: UIViewController {
 extension ReactSplitViewController: UISplitViewControllerDelegate {
     func splitViewController(_ svc: UISplitViewController, shouldHide vc: UIViewController, in orientation: UIInterfaceOrientation) -> Bool {
         return false
+    }
+}
+
+extension ReactSplitViewController: CustomTopMostViewController {
+    func customTopMostViewController() -> UIViewController? {
+        return splitVC.viewControllers[1]
     }
 }

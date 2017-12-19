@@ -122,13 +122,19 @@ class TPRoutes: NSObject {
 
         // MARK: Inbox Review (Native)
         JLRoutes.global().addRoute("/review") { (_: [String: Any]!) -> Bool in
-            navigateToInboxReview()
+            AnalyticsManager.trackEventName("clickReview",
+                                            category: "",
+                                            action: "",
+                                            label: "")
+            navigateToInboxReview(reputationId: nil)
             return true
         }
 
         // need to handle one with parameter, it will goes to the last route (/:shopId/:productId) if this doesn't implemented
-        JLRoutes.global().addRoute("/review/:reviewId") { (_: [String: Any]!) -> Bool in
-            navigateToInboxReview()
+        JLRoutes.global().addRoute("/review/:reputationId") { (_: [String: Any]!) -> Bool in
+            //            let reputationId = params["reputationId"] as! String
+            // will be handled later, once backend provide the data needed
+            navigateToInboxReview(reputationId: nil)
             return true
         }
 
@@ -732,6 +738,20 @@ class TPRoutes: NSObject {
             return true
         }
 
+        // user detail
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/user/:userId") { (params: [String: Any]!) -> Bool in
+            if let userId = params["userId"] as? String {
+                let userController = UserContainerViewController()
+                userController.profileUserID = userId
+
+                userController.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(userController, animated: true)
+            }
+            return true
+        }
+
         // order detail (REACT LOCAL ONLY)
         JLRoutes.global().addRoute("/order/detail/:orderID/:type") { (params: [String: Any]!) -> Bool in
             guard let orderID = params["orderID"], let type = params["type"] else {
@@ -780,31 +800,30 @@ class TPRoutes: NSObject {
         JLRoutes.global().add(["/message", "/message/:messageId"]) { _ in
             return TPRoutes.routeURL(URL(string: "tokopedia://topchat")!)
         }
-        
+
         // MARK: TopChat (Native)
         JLRoutes.global().addRoute("/topchat") { (_: [String: Any]!) -> Bool in
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
-            
+
             var viewController: UIViewController
 
             if UI_USER_INTERFACE_IDIOM() == .pad {
                 let userID = userManager.getUserId()
                 let name = userManager.getUserFullName()
-                let modulesAndProps: [String: Any] = [
-                    "TopChatMain": [
-                        "authInfo": auth as Any,
-                        "fromIpad": true
-                    ],
-                    "TopChatDetail": [
-                        "fromIpad": true,
-                        "statusBarHeight": UIApplication.shared.statusBarFrame.height,
-                        "user_id": userID as Any,
-                        "full_name": name as Any
-                    ]
-                ]
+                
+                let masterModule = ReactModule(name: "TopChatMain", props: [
+                    "authInfo": auth as AnyObject,
+                    "fromIpad": true as AnyObject
+                    ])
+                let detailModule = ReactModule(name: "TopChatDetail", props: [
+                    "fromIpad": true as AnyObject,
+                    "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
+                    "user_id": userID as AnyObject,
+                    "full_name": name as AnyObject
+                    ])
 
-                viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
+                viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
             } else {
                 viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject])
             }
@@ -827,22 +846,20 @@ class TPRoutes: NSObject {
             if UI_USER_INTERFACE_IDIOM() == .pad {
                 let userID = userManager.getUserId()
                 let name = userManager.getUserFullName()
-                let modulesAndProps: [String: Any] = [
-                    "TopChatMain": [
-                        "authInfo": auth as Any,
-                        "fromIpad": true,
-                        "msg_id_applink": message_id
-                    ],
-                    "TopChatDetail": [
-                        "fromIpad": true,
-                        "statusBarHeight": UIApplication.shared.statusBarFrame.height,
-                        "user_id": userID as Any,
-                        "full_name": name as Any,
-                        "msg_id_applink": message_id
-                    ]
-                ]
-
-                viewController = ReactSplitViewController(modules: modulesAndProps, masterViewKey: "TopChatMain", detailViewKey: "TopChatDetail")
+                let masterModule = ReactModule(name: "TopChatMain", props: [
+                    "authInfo": auth as AnyObject,
+                    "fromIpad": true as AnyObject,
+                    "msg_id_applink": message_id as AnyObject
+                    ])
+                let detailModule = ReactModule(name: "TopChatDetail", props: [
+                    "fromIpad": true as AnyObject,
+                    "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
+                    "user_id": userID as AnyObject,
+                    "full_name": name as AnyObject,
+                    "msg_id_applink": message_id as AnyObject
+                    ])
+                
+                viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
             } else {
                 viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
             }
@@ -894,7 +911,7 @@ class TPRoutes: NSObject {
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
 
-            let viewController = ReactViewController(moduleName: "ProductReviewPage", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
+            let viewController = ReactViewController(moduleName: "ProductReviewScreen", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
             viewController.hidesBottomBarWhenPushed = true
             UIApplication.topViewController()?
                 .navigationController?
@@ -1073,15 +1090,17 @@ class TPRoutes: NSObject {
         }
     }
 
-    static func navigateToInboxReview() {
+    static func navigateToInboxReview(reputationId: String?) {
         let userManager = UserAuthentificationManager()
         let auth = userManager.getUserLoginData()
 
         var viewController: UIViewController
         if UIDevice.current.userInterfaceIdiom == .pad {
-            viewController = ReactSplitViewController(modules: ["InboxReview": ["authInfo": auth as AnyObject], "InvoiceDetailPage": ["authInfo": auth]], masterViewKey: "InboxReview", detailViewKey: "InvoiceDetailPage")
+            let masterModule = ReactModule(name: "InboxReview", props: ["authInfo": auth as AnyObject])
+            let detailModule = ReactModule(name: "InvoiceDetailScreen", props: ["authInfo": auth as AnyObject])
+            viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
         } else {
-            viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo": auth as AnyObject])
+            viewController = ReactViewController(moduleName: "InboxReview", props: ["authInfo": auth as AnyObject, "reputationId": reputationId as AnyObject])
         }
 
         viewController.hidesBottomBarWhenPushed = true

@@ -18,6 +18,7 @@ import {
   ReactNetworkManager,
   ReactTPRoutes,
 } from 'NativeModules'
+import PropTypes from 'prop-types'
 
 import RatingStars from '../../RatingStars'
 import ReplyComponent from '../Components/ReplyComponent'
@@ -136,6 +137,9 @@ class ReviewCard extends Component {
     return this.props.userData.full_name
   }
 
+  isResponseValid = () =>
+    this.state.response.replace(new RegExp('[ \n]', 'g'), '').length > 5
+
   handleLikeButtonClick = () => {
     if (this.props.userID === 0) {
       ReactInteractionHelper.ensureLogin((userID, shopID) => {
@@ -188,7 +192,7 @@ class ReviewCard extends Component {
   }
 
   handlePostResponse = () => {
-    if (this.state.response.replace(new RegExp(' ', 'g'), '').length < 5) {
+    if (!this.isResponseValid()) {
       return
     }
     const params = {
@@ -314,15 +318,12 @@ class ReviewCard extends Component {
     ) {
       return (
         <View>
-          <View style={styles.separator} />
           <View
             style={{
-              backgroundColor: 'rgb(247,247,247)',
+              backgroundColor: 'white',
               padding: 8,
               flexDirection: 'row',
               alignItems: 'center',
-              borderWidth: 1,
-              borderColor: 'rgb(224,224,224)',
             }}
           >
             <TextInput
@@ -331,28 +332,26 @@ class ReviewCard extends Component {
                 borderColor: 'rgb(224,224,224)',
                 borderRadius: 16,
                 borderWidth: 1,
-                paddingVertical: 6,
+                paddingVertical: 7,
+                paddingTop: 8,
                 paddingHorizontal: 8,
                 backgroundColor: 'white',
                 fontSize: 14,
                 color: 'rgba(0,0,0,0.7)',
-                lineHeight: 23,
+                lineHeight: 21,
               }}
               multiline
               numberOfLines={1}
               placeholder="Tulis Balasan"
-              returnKeyType="done"
               onChangeText={text => this.setState({ response: text })}
               onFocus={this.props.onFocus}
             />
             <TouchableOpacity onPress={this.handlePostResponse}>
               <Image
                 source={{
-                  uri:
-                    this.state.response.replace(new RegExp(' ', 'g'), '')
-                      .length < 5
-                      ? 'icon_send_disabled'
-                      : 'icon_send',
+                  uri: this.isResponseValid()
+                    ? 'icon_send'
+                    : 'icon_send_disabled',
                 }}
                 style={{ width: 21, height: 18, marginLeft: 16 }}
               />
@@ -373,7 +372,7 @@ class ReviewCard extends Component {
       <TouchableOpacity
         key={item.index}
         onPress={() => {
-          Navigator.present('ImageDetailPage', {
+          Navigator.present('ImageDetailScreen', {
             uri: item.item.uri_large,
             description: item.item.description,
           })
@@ -557,7 +556,7 @@ class ReviewCard extends Component {
                     return
                   }
                   ReactTPRoutes.navigate(
-                    `tokopedia://user/${this.props.userData.user_id}`,
+                    `tkpd-internal://user/${this.props.userData.user_id}`,
                   )
                 }}
               >
@@ -603,6 +602,32 @@ class ReviewCard extends Component {
       </View>
     )
   }
+}
+
+ReviewCard.propTypes = {
+  item: PropTypes.object.isRequired,
+  userID: PropTypes.number.isRequired,
+  isSensorDisabled: PropTypes.bool,
+  userData: PropTypes.object.isRequired,
+  merchantShopID: PropTypes.string.isRequired,
+  onActionDone: PropTypes.func.isRequired,
+  showPopover: PropTypes.func.isRequired,
+  shopName: PropTypes.string,
+  isReplyDisabled: PropTypes.bool,
+  isLikeHidden: PropTypes.bool,
+  style: PropTypes.object,
+  isHeaderHidden: PropTypes.bool,
+  isOptionHidden: PropTypes.bool,
+}
+
+ReviewCard.defaultProps = {
+  isSensorDisabled: false,
+  shopName: null,
+  isReplyDisabled: false,
+  isLikeHidden: false,
+  style: {},
+  isHeaderHidden: false,
+  isOptionHidden: false,
 }
 
 export default ReviewCard
