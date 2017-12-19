@@ -68,7 +68,7 @@ def common_pods
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
     pod 'JDStatusBarNotification', '~> 1.5.5'
     pod 'KMNavigationBarTransition', '~> 1.1.5'
-    pod 'MMNumberKeyboard', '~> 0.1.5'
+    pod 'MMNumberKeyboard', '~> 0.1.8'
     pod 'MXSegmentedPager', '~> 3.2.0'
     pod 'NJKWebViewProgress',  '~> 0.2.3'
     pod 'NSAttributedString-DDHTML', '1.2.0'
