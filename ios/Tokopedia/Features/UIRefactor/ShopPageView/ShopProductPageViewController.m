@@ -267,7 +267,11 @@ NoResultDelegate
             if (([_initialEtalase.etalase_id caseInsensitiveCompare: @"etalase"] == NSOrderedSame) || ([_initialEtalase.etalase_id caseInsensitiveCompare: @"sold"] == NSOrderedSame)) {
                 textView.text = [NSString stringWithFormat: @"%@", _initialEtalase.etalase_name];
             } else {
-                textView.text = [NSString stringWithFormat: @"Etalase %@", _initialEtalase.etalase_name];
+                if (_initialEtalase.etalase_name) {
+                    textView.text = [NSString stringWithFormat: @"Etalase %@", _initialEtalase.etalase_name];
+                } else {
+                    textView.text = @"Etalase";
+                }
             }
         } else {
             textView.text = @"Semua Produk";
