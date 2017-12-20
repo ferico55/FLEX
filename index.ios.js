@@ -46,6 +46,8 @@ import rideReducer from './src/Uber/Reducers/RideReducer'
 import RideTopupTokocashScreen from './src/Uber/Components/RideTopupTokocashScreen'
 import { epic } from './src/Uber/Actions/RideActions'
 
+import ThankYou from './src/thankyou-page'
+
 let composer
 if (__DEV__) {
   const { composeWithDevTools } = require('remote-redux-devtools')
@@ -202,4 +204,4 @@ const registerScreens = screenGroups =>
     ),
   )
 
-registerScreens([TopAds, InboxReview])
+registerScreens([TopAds, InboxReview, ThankYou])

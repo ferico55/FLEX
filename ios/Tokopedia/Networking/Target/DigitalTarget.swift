@@ -100,6 +100,7 @@ extension DigitalTarget: TargetType {
                         "user_agent": userAgent,
                         "show_subscribe_flag": true,
                         "fields": fields,
+                        "is_thankyou_native": true,
                         "identifier": [
                             "user_id": userManager.getUserId(),
                             "device_token": userManager.getMyDeviceToken(),

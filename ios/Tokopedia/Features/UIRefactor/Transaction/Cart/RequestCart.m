@@ -79,7 +79,8 @@
                                       @"donation_amt"   :donationAmount?:@"0",
                                       @"client_id"      :clientID?:@"",
                                       @"fingerprint_support": @(hasTouchID),
-                                      @"fingerprint_publickey": [service getPublicKey]
+                                      @"fingerprint_publickey": [service getPublicKey],
+                                      @"is_thankyou_native" : @"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {

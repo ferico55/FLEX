@@ -44,7 +44,9 @@ RCT_EXPORT_MODULE();
              @"ajaxAppUrl" : NSString.ajaxAppUrl,
              @"webSocketUrl" : NSString.webSocketUrl,
              @"mobileSiteUrl" : NSString.mobileSiteUrl,
-             @"graphQLURL": NSString.graphQLURL
+             @"graphQLURL": NSString.graphQLURL,
+             @"pulsaURL": NSString.pulsaApiUrl,
+             @"paymentURL": NSString.paymentURL
              };
 }
 

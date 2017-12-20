@@ -281,7 +281,6 @@ class TPRoutes: NSObject {
                 webView.strURL = cartPayment.redirectUrl
                 webView.strQuery = cartPayment.queryString
                 webView.shouldAuthorizeRequest = false
-                webView.strTitle = "Pembayaran"
 
                 guard let navigationController = UIApplication.topViewController()?.navigationController
                     , let viewController = UIApplication.topViewController() else {
@@ -653,7 +652,7 @@ class TPRoutes: NSObject {
             if pathComponent.count > 0 {
                 let categoryDataForCategoryResultVC = CategoryDataForCategoryResultVC(pathComponent: pathComponent)
 
-                let filterParams = getFilterParams(params: params)
+                let filterParams = queryParams(params: params)
 
                 navigator.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withData: categoryDataForCategoryResultVC, withFilterParams: filterParams)
             }
@@ -919,7 +918,33 @@ class TPRoutes: NSObject {
 
             return true
         }
-
+        
+        JLRoutes.global().addRoute("/thankyou/:platform/:template") { (params: [String: Any]!) -> Bool in
+            
+            guard let platform = params["platform"] as? String else { return false }
+            let parameters = decodePlus(params: queryParams(params: params))
+            let auth = UserAuthentificationManager()
+            let userID = auth.getUserId()!
+            let deviceToken = auth.getMyDeviceToken()
+            let viewController = ReactViewController(
+                moduleName: "ThankYouPage",
+                props: ["data": parameters as AnyObject,
+                        "deviceToken": deviceToken as AnyObject,
+                        "userID": userID as AnyObject]
+            )
+            viewController.title = "Pembayaran"
+            viewController.hidesBottomBarWhenPushed = true
+            
+            let navigationController = UIApplication.topViewController()?.navigationController
+            if platform == "digital" {
+                navigationController?.popViewController(animated: false)
+            }
+            
+            navigationController?.replaceTopViewController(viewController: viewController)
+            
+            return true
+        }
+        
         // MARK: Product Detail - from Product URL (Native)
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String: Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
@@ -1122,14 +1147,25 @@ class TPRoutes: NSObject {
         return urlComponents?.url
     }
 
-    static func getFilterParams(params: [String: Any]) -> [String: Any] {
-        var newParams: [String: Any] = params
+    static func queryParams(params: [String : Any]) -> [String : Any] {
+        var newParams: [String : Any] = params
 
         newParams[kJLRouteNamespaceKey] = nil
         newParams[kJLRouteWildcardComponentsKey] = nil
         newParams[kJLRouteURLKey] = nil
         newParams[kJLRoutePatternKey] = nil
 
+        return newParams
+    }
+    
+    static func decodePlus(params: [String : Any]) -> [String : Any] {
+        var newParams = params
+        newParams.forEach {
+            if let newParam = newParams[$0.0] as? String {
+                newParams[$0.0] = newParam.replacingOccurrences(of: "+", with: " ")
+            }
+        }
+        
         return newParams
     }
 }

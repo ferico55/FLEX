@@ -316,6 +316,11 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:data];
 }
 
++ (void)trackData:(NSDictionary *)data {
+    AnalyticsManager *manager = [[self alloc] init];
+    [manager.dataLayer push:data];
+}
+
 + (void)trackCheckout:(NSArray *)shops step:(NSInteger)step option:(NSString *)option {
     if (!shops || !step || !option) return;
     AnalyticsManager *manager = [[self alloc] init];

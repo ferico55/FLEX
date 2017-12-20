@@ -47,5 +47,8 @@ RCT_EXPORT_METHOD(trackPromoClickWithDictionary:(NSDictionary*)promotionsDict di
     [AnalyticsManager trackPromoClickWithDictionary:promotionsDict];
 }
 
+RCT_EXPORT_METHOD(gtmTrack:(NSDictionary *)data) {
+    [AnalyticsManager trackData:data];
+}
 
 @end
