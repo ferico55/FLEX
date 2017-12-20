@@ -1,14 +1,14 @@
 import { NativeModules } from 'react-native'
-
 import { Observable } from 'rxjs'
-
 import polyline from 'polyline'
-
 import identity from 'lodash/identity'
+import parse from 'url-parse'
 
 const serverUrl = NativeModules.TKPReactURLManager.rideHailingUrl
+const serverAccountUrl = NativeModules.TKPReactURLManager.accountsUrl
 const request = NativeModules.ReactNetworkManager.request
 const googleapisKey = 'AIzaSyDnak2oyQVqnyEvhwS94zzF9CpMRavB-18'
+const apiVersion = 'v2'
 
 const extractErrorMessage = error => {
   const errorMessageByCode = {
@@ -23,7 +23,7 @@ const extractErrorMessage = error => {
   }
 }
 
-export const extractInteruptCode = code => {
+export const isRegisteredInterruptCode = code => {
   const interuptCode = [
     'tos_tokopedia',
     'tos_accept_confirmation',
@@ -44,11 +44,11 @@ const rideNetworkRequest = (params, intercept = identity) =>
       // detect code error on the resposnse
       if (result.message_error && result.data && result.data.code) {
         // if error code is not include on registered interupt code
-        if (!extractInteruptCode(result.data.code)) {
+        if (!isRegisteredInterruptCode(result.data.code)) {
           return Promise.reject({
             description: result.data.message,
           })
-        } else if (extractInteruptCode(result.data.code)) {
+        } else if (isRegisteredInterruptCode(result.data.code)) {
           // if error code is include on registered interupt code
           return result
         }
@@ -389,9 +389,10 @@ export const bookRide = ({
   rideNetworkRequest({
     baseUrl: serverUrl,
     method: 'POST',
-    path: '/uber/request',
+    path: 'v2/uber/request',
     authorizationMode: 'token',
     params: {
+      api_version: apiVersion,
       alat: pickupPoint.latitude, // TODO: use gps
       along: pickupPoint.longitude,
       start_latitude: pickupPoint.latitude,
@@ -507,3 +508,59 @@ export const getRecentAddresses = () =>
     path: 'user/address',
     authorizationMode: 'token',
   }).then(response => response.data)
+
+export const getPaymentMethods = () =>
+  rideNetworkRequest({
+    baseUrl: serverUrl,
+    method: 'POST',
+    path: '/v1/uber/payment_method/list',
+    authorizationMode: 'token',
+  })
+
+export const allowAutoDebitPaymentMethod = (url, data) => {
+  const urlParsed = parse(url)
+  const { pathname } = urlParsed
+  return rideNetworkRequest({
+    baseUrl: serverUrl,
+    method: 'POST',
+    path: pathname,
+    params: { ...data },
+    authorizationMode: 'token',
+  })
+}
+
+export const deletePaymentMethod = (url, data) => {
+  const urlParsed = parse(url)
+  const { pathname } = urlParsed
+  return rideNetworkRequest({
+    baseUrl: serverUrl,
+    method: 'POST',
+    path: pathname,
+    params: { ...data },
+    authorizationMode: 'token',
+  })
+}
+
+export const getPendingFare = () =>
+  rideNetworkRequest({
+    baseUrl: serverUrl,
+    method: 'POST',
+    path: '/v1/uber/pending/get',
+    authorizationMode: 'token',
+  })
+
+export const getTokoCashBalance = () =>
+  rideNetworkRequest({
+    baseUrl: serverAccountUrl,
+    method: 'POST',
+    path: '/api/v1/wallet/balance',
+    authorizationMode: 'token',
+  })
+
+export const payPendingfare = () =>
+  rideNetworkRequest({
+    baseUrl: serverUrl,
+    method: 'POST',
+    path: '/v1/uber/pending/pay',
+    authorizationMode: 'token',
+  })

@@ -16,6 +16,7 @@ import HybridContainer from './src/HybridContainer'
 import TopAds from './src/TopAds'
 // inbox review pages
 import InboxReview from './src/InboxReview'
+import RideHailing from './src/Uber'
 
 import SearchFilterScreen from './src/search/'
 import OrderHistoryPage from './src/Order/Page/HistoryPage'
@@ -30,39 +31,7 @@ import PromoDetail from './src/PromoDetail'
 import CategoryResultPage from './src/category-result/CategoryResultPage'
 import { createEpicMiddleware } from 'redux-observable'
 
-import RideHailingScreen, {
-  getVehicles,
-} from './src/Uber/Containers/RideHailingScreen'
-import RidePlacesAutocompleteScreen from './src/Uber/Containers/RidePlacesAutocompleteScreen'
-import RideWebViewScreen from './src/Uber/Containers/RideWebViewScreen'
-import RideReceiptScreen from './src/Uber/Containers/RideReceiptScreen'
-import RideHistoryScreen from './src/Uber/Containers/RideHistoryScreen'
-import RideHistoryDetailScreen from './src/Uber/Containers/RideHistoryDetailScreen'
-import RideCancellationScreen from './src/Uber/Containers/RideCancellationScreen'
-import RidePromoCodeScreen from './src/Uber/Containers/RidePromoCodeScreen'
-import rideReducer from './src/Uber/Reducers/RideReducer'
-import RideTopupTokocashScreen from './src/Uber/Components/RideTopupTokocashScreen'
-import { epic } from './src/Uber/Actions/RideActions'
-
 import ThankYou from './src/thankyou-page'
-
-let composer
-if (__DEV__) {
-  const { composeWithDevTools } = require('remote-redux-devtools')
-  composer = composeWithDevTools({
-    name: 'Ridehailing',
-    port: 8000,
-    sendTo: 'http://localhost:8000',
-  })
-} else {
-  composer = id => id
-}
-
-const rideStore = createStore(
-  rideReducer,
-  composer(applyMiddleware(thunk, createEpicMiddleware(epic))),
-)
-rideStore.dispatch({ type: 'FOO' })
 
 const styles = StyleSheet.create({
   container: {
@@ -88,60 +57,6 @@ const NotFoundComponent = () => (
     <Text style={styles.welcome}>Screen not found!</Text>
   </View>
 )
-
-Navigator.registerScreen('RideHailing', () => props => (
-  <Provider store={rideStore}>
-    <RideHailingScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RidePlacesAutocompleteScreen', () => () => (
-  <Provider store={rideStore}>
-    <RidePlacesAutocompleteScreen />
-  </Provider>
-))
-
-Navigator.registerScreen('RideWebViewScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideWebViewScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideReceiptScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideReceiptScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideHistoryScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideHistoryScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideHistoryDetailScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideHistoryDetailScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideCancellationScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideCancellationScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RidePromoCodeScreen', () => props => (
-  <Provider store={rideStore}>
-    <RidePromoCodeScreen {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('RideTopupTokocashScreen', () => props => (
-  <Provider store={rideStore}>
-    <RideTopupTokocashScreen {...props} />
-  </Provider>
-))
 
 moment.relativeTimeThreshold('ss', 1)
 moment.relativeTimeThreshold('s', 60)
@@ -179,9 +94,4 @@ const registerScreens = screenGroups =>
     ),
   )
 
-registerScreens([
-  TopAds, 
-  InboxReview, 
-  ThankYou,
-  TopChat,
-])
+registerScreens([TopAds, InboxReview, ThankYou, TopChat, RideHailing])

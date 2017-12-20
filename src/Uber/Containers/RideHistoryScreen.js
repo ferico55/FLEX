@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 import DeviceInfo from 'react-native-device-info'
 import Navigator from 'native-navigation'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import { getHistory, getStaticMapUrl, getHistoryFromUri } from '../Services/api'
 import PreAnimatedImage from '../../PreAnimatedImage'
@@ -68,14 +69,17 @@ class RideHistoryScreen extends Component {
     trackEvent('GenericUberEvent', 'click back', this.state.screenName)
   }
 
-  handleRefresh = async () => {
-    await this.setState({
-      loadProgress: 'loading',
-      dataSource: [],
-      nextUri: null,
-    })
-
-    this.loadData()
+  handleRefresh = () => {
+    this.setState(
+      {
+        loadProgress: 'loading',
+        dataSource: [],
+        nextUri: null,
+      },
+      () => {
+        this.loadData()
+      },
+    )
   }
 
   loadData = () => {
@@ -163,7 +167,8 @@ class RideHistoryScreen extends Component {
         trackEvent(
           'GenericUberEvent',
           'click receipt',
-          `${this.state.screenName} - ${item.item.create_time} - ${currencyFormat(
+          `${this.state.screenName} - ${item.item
+            .create_time} - ${currencyFormat(
             item.item.payment.currency_code,
           )} ${rupiahFormat(item.item.payment.total_amount)} - ${item.item
             .status}`,
@@ -249,10 +254,13 @@ class RideHistoryScreen extends Component {
 
   render() {
     return (
-      <View style={{ flex: 1 }}>
+      <SafeAreaView
+        style={{ flex: 1 }}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         <Navigator.Config title="Your Trips" />
         {this.renderContent()}
-      </View>
+      </SafeAreaView>
     )
   }
 }

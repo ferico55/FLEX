@@ -13,6 +13,7 @@ import {
   ActivityIndicator,
   FlatList,
 } from 'react-native'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import { connect } from 'react-redux'
@@ -331,7 +332,9 @@ export class RidePlacesAutocompleteScreen extends Component {
     } else if (predictions && predictions.status === 'error') {
       return (
         <View style={{ backgroundColor: 'white' }}>
-          <Text style={{ margin: 10, color: 'rgba(0, 0, 0, 0.54)' }}>{predictions.error.description}</Text>
+          <Text style={{ margin: 10, color: 'rgba(0, 0, 0, 0.54)' }}>
+            {predictions.error.description}
+          </Text>
         </View>
       )
     }
@@ -414,13 +417,13 @@ export class RidePlacesAutocompleteScreen extends Component {
       loadSelectedAddress,
     } = this.props
 
-    const {
-      isSearchingWithMap,
-      readyToSubmitSelectedLocation,
-    } = this.state
+    const { isSearchingWithMap, readyToSubmitSelectedLocation } = this.state
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         <Navigator.Config title="Find Address" />
 
         {loadSelectedAddress &&
@@ -631,7 +634,7 @@ export class RidePlacesAutocompleteScreen extends Component {
             </View>
           </View>
         )}
-      </View>
+      </SafeAreaView>
     )
   }
 }

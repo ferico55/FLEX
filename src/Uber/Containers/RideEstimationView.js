@@ -17,7 +17,14 @@ import { trackEvent, currencyFormat, rupiahFormat } from '../Lib/RideHelper'
 
 import UberIcon from '../Resources/icon-uber.png'
 
-const screenHeight = Dimensions.get('screen').height - 64
+const screenHeight = () => {
+  const X_HEIGHT = 812
+  const X_WIDTH = 375
+  return Dimensions.get('screen').height === X_HEIGHT &&
+  Dimensions.get('screen').width === X_WIDTH
+    ? Dimensions.get('screen').height - 64 - 59
+    : Dimensions.get('screen').height - 64
+}
 const styles = StyleSheet.create({
   overlay: {
     position: 'absolute',
@@ -192,7 +199,7 @@ class RideEstimationView extends React.Component {
 
     return (
       <View style={styles.overlay} pointerEvents="box-none">
-        <View style={{ height: screenHeight }} pointerEvents="box-none" />
+        <View style={{ height: screenHeight() }} pointerEvents="box-none" />
         <Interactable.View
           ref={ref => (this.interactableView = ref)}
           onLayout={event => onUpdatePanelHeight(event)}

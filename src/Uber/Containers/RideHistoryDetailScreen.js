@@ -12,9 +12,12 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
   Keyboard,
+  Dimensions,
 } from 'react-native'
 import Dash from 'react-native-dash'
 import Navigator from 'native-navigation'
+import { ReactInteractionHelper } from 'NativeModules'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import { getStaticMapUrl, postReview } from '../Services/api'
 import PreAnimatedImage from '../../PreAnimatedImage'
@@ -121,6 +124,22 @@ const styles = StyleSheet.create({
     bottom: 0,
     width: '100%',
     zIndex: 10,
+  },
+  pendingFareContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  buttonContainer: {
+    flex: 1,
+    marginHorizontal: 50,
+    marginTop: 50,
+  },
+  button: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#ff5722',
+    borderRadius: 3,
+    height: 50,
   },
 })
 
@@ -254,250 +273,318 @@ class RideHistoryDetailScreen extends Component {
       eligibleToRate,
       screenName,
     } = this.state
+    const { width: screenWidth } = Dimensions.get('window')
+
     return (
-      <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
-        <Navigator.Config title="Trip Detail" />
+      <SafeAreaView
+        style={{ flex: 1 }}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
+        <KeyboardAvoidingView behavior="padding" style={{ flex: 1 }}>
+          <Navigator.Config title="Trip Detail" />
 
-        <ScrollView
-          ref={ref => {
-            this.scrollView = ref
-          }}
-          style={{
-            backgroundColor: '#fafafa',
-          }}
-        >
-          <View style={{ backgroundColor: '#fafafa' }}>
-            <PreAnimatedImage
-              aspectRatio={2}
-              source={getStaticMapUrl(trip.pickup, trip.destination)}
-            />
-            <View style={styles.tripOverviewContainer}>
-              <View style={styles.descriptionContainer}>
-                <View>
-                  <Text>{trip.create_time}</Text>
-                  {eligibleToRate ? (
-                    <Text style={styles.subtitle}>
-                      {`${trip.vehicle.make} ${trip.vehicle.model} ${trip
-                        .vehicle.license_plate}`}
-                    </Text>
-                  ) : null}
-                </View>
-                <View>
-                  <Text style={styles.alignRight}>
-                    {`${currencyFormat(
-                      trip.payment.currency_code,
-                    )} ${rupiahFormat(trip.payment.total_amount)}`}
-                  </Text>
-                  {this.renderStatus(trip.status.toUpperCase())}
-                </View>
-              </View>
-              <View style={styles.tripContainer}>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    flex: 2,
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  }}
-                >
-                  <Image style={styles.locationPointer} source={SourceIcon} />
-                  <Dash
-                    style={styles.dash}
-                    dashColor="rgba(0,0,0,0.34)"
-                    dashThickness={1}
-                  />
-                  <Image
-                    style={styles.locationPointer}
-                    source={DestinationIcon}
-                  />
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'column',
-                    flex: 10,
-                    justifyContent: 'center',
-                  }}
-                >
-                  <Text style={{ marginBottom: 8 }}>
-                    {trip.pickup.address_name ? (
-                      trip.pickup.address_name
-                    ) : (
-                      `${trip.pickup.latitude}, ${trip.pickup.longitude}`
-                    )}
-                  </Text>
-                  <View style={styles.thinBorder} />
-                  <Text style={{ marginTop: 8 }}>
-                    {trip.destination.address_name ? (
-                      trip.destination.address_name
-                    ) : (
-                      `${trip.destination.latitude}, ${trip.destination
-                        .longitude}`
-                    )}
-                  </Text>
-                </View>
-              </View>
-            </View>
-
-            {eligibleToRate ? (
-              <View>
-                <View style={styles.driverContainer}>
-                  <Image
-                    style={styles.driverPicture}
-                    source={{ url: trip.driver.picture_url }}
-                  />
-                  <Text style={{ alignSelf: 'center', marginLeft: 12 }}>
-                    Your trip with {trip.driver.name}
-                  </Text>
-                </View>
-
-                <View style={styles.paymentContainer}>
-                  <Text
-                    style={[
-                      styles.mutedText,
-                      { alignSelf: 'center', fontSize: 13 },
-                    ]}
-                  >
-                    {'PAYMENT DETAILS'}
-                  </Text>
-                  <View
-                    style={{
-                      marginTop: 14,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Text style={styles.mutedText}>Total Fare</Text>
-                    <Text>
+          <ScrollView
+            ref={ref => {
+              this.scrollView = ref
+            }}
+            style={{
+              backgroundColor: '#fafafa',
+            }}
+          >
+            <View style={{ backgroundColor: '#fafafa' }}>
+              <PreAnimatedImage
+                aspectRatio={2}
+                source={getStaticMapUrl(trip.pickup, trip.destination)}
+              />
+              <View style={styles.tripOverviewContainer}>
+                <View style={styles.descriptionContainer}>
+                  <View>
+                    <Text>{trip.create_time}</Text>
+                    {eligibleToRate ? (
+                      <Text style={styles.subtitle}>
+                        {`${trip.vehicle.make} ${trip.vehicle.model} ${trip
+                          .vehicle.license_plate}`}
+                      </Text>
+                    ) : null}
+                  </View>
+                  <View>
+                    <Text style={styles.alignRight}>
                       {`${currencyFormat(
                         trip.payment.currency_code,
                       )} ${rupiahFormat(trip.payment.total_amount)}`}
                     </Text>
+                    {this.renderStatus(trip.status.toUpperCase())}
                   </View>
-                  <View
-                    style={{
-                      marginTop: 12,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <Text style={styles.mutedText}>Cashback</Text>
-                    <Text>
-                      {`${currencyFormat(
-                        trip.payment.currency_code,
-                      )} ${rupiahFormat(trip.cashback_top_cash_amount)}`}
-                    </Text>
-                  </View>
-                  <View style={[styles.thinBorder, { marginTop: 12 }]} />
-                  <View
-                    style={{
-                      marginTop: 12,
-                      flexDirection: 'row',
-                      justifyContent: 'space-between',
-                    }}
-                  >
-                    <View style={{ flexDirection: 'row' }}>
-                      <Image
-                        source={{ uri: 'icon_wallet' }}
-                        style={{
-                          width: 32,
-                          height: 32,
-                          marginTop: -8,
-                          marginRight: 8,
-                        }}
-                      />
-                      <Text style={styles.mutedText}>TokoCash Charged</Text>
-                    </View>
-                    <Text>
-                      {`${currencyFormat(
-                        trip.payment.currency_code,
-                      )} ${rupiahFormat(trip.payment.paid_amount)}`}
+                </View>
+                <View
+                  style={[
+                    styles.descriptionContainer,
+                    {
+                      marginTop: 0,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    },
+                  ]}
+                >
+                  <View>
+                    <Text
+                      style={[
+                        styles.alignRight,
+                        { fontSize: screenWidth <= 320 ? 11 : 14 },
+                      ]}
+                    >
+                      TRIP ID: {trip.request_id}
                     </Text>
                   </View>
                 </View>
-
-                <View style={styles.ratingContainer}>
-                  <Text
-                    style={[
-                      styles.mutedText,
-                      { alignSelf: 'center', fontSize: 13 },
-                    ]}
-                  >
-                    {'RATE YOUR RIDE'}
-                  </Text>
+                <View style={styles.tripContainer}>
                   <View
                     style={{
-                      alignSelf: 'center',
+                      flexDirection: 'column',
+                      flex: 2,
+                      justifyContent: 'center',
                       alignItems: 'center',
-                      marginTop: 12,
-                      flexDirection: 'row',
                     }}
                   >
-                    {eligibleToRate ? (
-                      <RatingStars
-                        rating={rating}
-                        enabled={trip.rating.stars === 0}
-                        onStarPressed={this.handleRating}
-                      />
-                    ) : (
-                      <RatingStars rating={rating} enabled={false} />
-                    )}
-                  </View>
-                  <View style={styles.suggestionContainer}>
-                    <TextInput
-                      placeholder="Write suggestions..."
-                      editable={eligibleToRate && trip.rating.stars === 0}
-                      style={styles.suggestionTextInput}
-                      onChangeText={comment => this.setState({ comment })}
-                      value={comment}
-                      returnKeyType={'done'}
-                      blurOnSubmit
+                    <Image style={styles.locationPointer} source={SourceIcon} />
+                    <Dash
+                      style={styles.dash}
+                      dashColor="rgba(0,0,0,0.34)"
+                      dashThickness={1}
                     />
-                    <View style={[styles.thinBorder, { marginBottom: 16 }]} />
-                    {isLoading && (
-                      <ActivityIndicator
-                        animating={isLoading}
-                        style={[styles.centering, { height: 37 }]}
-                        size="small"
-                      />
-                    )}
-                    {!isLoading && (
-                      <Button
-                        title="Submit"
-                        color="#42b549"
-                        disabled={!eligibleToSubmitRate}
-                        onPress={this.handleSubmit}
-                      />
-                    )}
+                    <Image
+                      style={styles.locationPointer}
+                      source={DestinationIcon}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      flexDirection: 'column',
+                      flex: 10,
+                      justifyContent: 'center',
+                    }}
+                  >
+                    <Text style={{ marginBottom: 8 }}>
+                      {trip.pickup.address_name ? (
+                        trip.pickup.address_name
+                      ) : (
+                        `${trip.pickup.latitude}, ${trip.pickup.longitude}`
+                      )}
+                    </Text>
+                    <View style={styles.thinBorder} />
+                    <Text style={{ marginTop: 8 }}>
+                      {trip.destination.address_name ? (
+                        trip.destination.address_name
+                      ) : (
+                        `${trip.destination.latitude}, ${trip.destination
+                          .longitude}`
+                      )}
+                    </Text>
                   </View>
                 </View>
               </View>
-            ) : null}
-          </View>
-        </ScrollView>
-        <TouchableOpacity
-          onPress={() => {
-            Navigator.push('RideWebViewScreen', {
-              url: trip.help_url,
-              expectedCode: 'tos_confirmation_id',
-            })
-            trackEvent(
-              'GenericUberEvent',
-              'click help for trip detail',
-              `${screenName} - ${trip.create_time} - ${currencyFormat(
-                trip.payment.currency_code,
-              )} ${rupiahFormat(trip.payment.total_amount)} - ${trip.status}`,
-            )
-          }}
-        >
-          <View style={styles.footerContainer}>
-            <View style={[styles.thinBorder, { marginBottom: 8 }]} />
-            <Text style={[styles.mutedText, { fontWeight: '500' }]}>
-              {'NEED HELP? '}
-              <Text style={{ color: '#3AB539' }}>{'CLICK HERE'}</Text>
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </KeyboardAvoidingView>
+
+              {eligibleToRate ? (
+                <View>
+                  <View style={styles.driverContainer}>
+                    <Image
+                      style={styles.driverPicture}
+                      source={{ url: trip.driver.picture_url }}
+                    />
+                    <Text style={{ alignSelf: 'center', marginLeft: 12 }}>
+                      Your trip with {trip.driver.name}
+                    </Text>
+                  </View>
+
+                  <View style={styles.paymentContainer}>
+                    <Text
+                      style={[
+                        styles.mutedText,
+                        { alignSelf: 'center', fontSize: 13 },
+                      ]}
+                    >
+                      {'PAYMENT DETAILS'}
+                    </Text>
+                    <View
+                      style={{
+                        marginTop: 14,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <Text style={styles.mutedText}>Total Fare</Text>
+                      <Text>
+                        {`${currencyFormat(
+                          trip.payment.currency_code,
+                        )} ${rupiahFormat(trip.payment.total_amount)}`}
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        marginTop: 12,
+                        flexDirection: 'row',
+                        justifyContent: 'space-between',
+                      }}
+                    >
+                      <View style={{ flexDirection: 'row' }}>
+                        <Text style={styles.mutedText}>
+                          {trip.payment.payment_method === 'wallet' ? (
+                            'TokoCash Charged'
+                          ) : (
+                            'Credit Card Charged'
+                          )}
+                        </Text>
+                      </View>
+                      <Text>
+                        {`${currencyFormat(
+                          trip.payment.currency_code,
+                        )} ${rupiahFormat(trip.payment.paid_amount)}`}
+                      </Text>
+                    </View>
+                    {trip &&
+                    trip.cashback_top_cash_amount !== 0 &&
+                    trip.cashback_top_cash_amount !== '0' && (
+                      <View>
+                        <View style={[styles.thinBorder, { marginTop: 12 }]} />
+                        <View
+                          style={{
+                            marginTop: 12,
+                            flexDirection: 'row',
+                            justifyContent: 'space-between',
+                          }}
+                        >
+                          <Text style={styles.mutedText}>Cashback</Text>
+                          <Text>
+                            {`${currencyFormat(
+                              trip.payment.currency_code,
+                            )} ${rupiahFormat(trip.cashback_top_cash_amount)}`}
+                          </Text>
+                        </View>
+                      </View>
+                    )}
+
+                    {trip &&
+                    trip.payment &&
+                    trip.payment.pending_amount !== '' &&
+                    trip.payment.pending_amount > 0 && (
+                      <View>
+                        <View
+                          style={[
+                            styles.pendingFareContainer,
+                            { marginTop: 12 },
+                          ]}
+                        >
+                          <Text style={[styles.mutedText, { color: 'red' }]}>
+                            Pending Fare
+                          </Text>
+                          <Text style={{ color: 'red' }}>
+                            {`${currencyFormat(
+                              trip.payment.currency_code,
+                            )} ${rupiahFormat(trip.payment.pending_amount)}`}
+                          </Text>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                          <TouchableOpacity
+                            style={styles.button}
+                            onPress={() => {
+                              Navigator.present('RidePendingFareScreen')
+                            }}
+                          >
+                            <Text
+                              style={{ color: '#FFFFFF', fontWeight: 'bold' }}
+                            >
+                              Pay Pending Fare
+                            </Text>
+                          </TouchableOpacity>
+                        </View>
+                      </View>
+                    )}
+                  </View>
+
+                  <View style={styles.ratingContainer}>
+                    <Text
+                      style={[
+                        styles.mutedText,
+                        { alignSelf: 'center', fontSize: 13 },
+                      ]}
+                    >
+                      {'RATE YOUR RIDE'}
+                    </Text>
+                    <View
+                      style={{
+                        alignSelf: 'center',
+                        alignItems: 'center',
+                        marginTop: 12,
+                        flexDirection: 'row',
+                      }}
+                    >
+                      {eligibleToRate ? (
+                        <RatingStars
+                          rating={rating}
+                          enabled={trip.rating.stars === 0}
+                          onStarPressed={this.handleRating}
+                        />
+                      ) : (
+                        <RatingStars rating={rating} enabled={false} />
+                      )}
+                    </View>
+                    <View style={styles.suggestionContainer}>
+                      <TextInput
+                        placeholder="Write suggestions..."
+                        editable={eligibleToRate && trip.rating.stars === 0}
+                        style={styles.suggestionTextInput}
+                        onChangeText={comment => this.setState({ comment })}
+                        value={comment}
+                        returnKeyType={'done'}
+                        blurOnSubmit
+                      />
+                      <View style={[styles.thinBorder, { marginBottom: 16 }]} />
+                      {isLoading && (
+                        <ActivityIndicator
+                          animating={isLoading}
+                          style={[styles.centering, { height: 37 }]}
+                          size="small"
+                        />
+                      )}
+                      {!isLoading && (
+                        <Button
+                          title="Submit"
+                          color="#42b549"
+                          disabled={!eligibleToSubmitRate}
+                          onPress={this.handleSubmit}
+                        />
+                      )}
+                    </View>
+                  </View>
+                </View>
+              ) : null}
+            </View>
+          </ScrollView>
+          <TouchableOpacity
+            onPress={() => {
+              Navigator.push('RideWebViewScreen', {
+                url: trip.help_url,
+                expectedCode: 'tos_confirmation_id',
+              })
+              trackEvent(
+                'GenericUberEvent',
+                'click help for trip detail',
+                `${screenName} - ${trip.create_time} - ${currencyFormat(
+                  trip.payment.currency_code,
+                )} ${rupiahFormat(trip.payment.total_amount)} - ${trip.status}`,
+              )
+            }}
+          >
+            <View style={styles.footerContainer}>
+              <View style={[styles.thinBorder, { marginBottom: 8 }]} />
+              <Text style={[styles.mutedText, { fontWeight: '500' }]}>
+                {'NEED HELP? '}
+                <Text style={{ color: '#3AB539' }}>{'CLICK HERE'}</Text>
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </KeyboardAvoidingView>
+      </SafeAreaView>
     )
   }
 }

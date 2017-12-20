@@ -4,6 +4,8 @@ import Navigator from 'native-navigation'
 import qs from 'qs'
 import parse from 'url-parse'
 
+import { trackScreenName } from '../Lib/RideHelper'
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -12,6 +14,19 @@ const styles = StyleSheet.create({
 })
 
 class RideTopupTokocashScreen extends Component {
+  componentWillMount() {
+    const url = this.props.uri
+    const urlParsed = parse(url)
+    const { pathname } = urlParsed
+    if (pathname === '/v1/uber/pendingcash') {
+      trackScreenName('Ride Pending Payment Screen')
+    } else if (pathname === '/v1/uber/pending/pay') {
+      trackScreenName('Ride Pending Payment Screen')
+    } else if (pathname === '/uber/topupcash') {
+      trackScreenName('Ride Insufficient Tokocash Screen')
+    }
+  }
+
   handleContinuation = event => {
     const url = event.url
 
@@ -34,17 +49,25 @@ class RideTopupTokocashScreen extends Component {
     return true
   }
 
-  render() {
+  navigatorConfig = () => {
     const url = this.props.uri
     const urlParsed = parse(url)
     const { pathname } = urlParsed
+    if (pathname === '/v1/uber/pendingcash') {
+      return { title: 'Pending Payment' }
+    } else if (pathname === '/v1/uber/pending/pay') {
+      return { title: 'Pending Payment' }
+    } else if (pathname === '/uber/topupcash') {
+      return { title: 'Insufficient Tokocash' }
+    }
+
+    return { title: '' }
+  }
+
+  render() {
     return (
       <View style={styles.container}>
-        {pathname === '/uber/pendingcash' ? (
-          <Navigator.Config title="Pending Payment" />
-        ) : (
-          <Navigator.Config title="Insufficient Tokocash" />
-        )}
+        <Navigator.Config {...this.navigatorConfig()} />
         <WebView
           onShouldStartLoadWithRequest={this.handleContinuation}
           onLoadStart={this.handleLoadStart}

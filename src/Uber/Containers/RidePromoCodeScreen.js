@@ -11,6 +11,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import { getAvailablePromos } from '../Services/api'
 import { trackEvent } from '../Lib/RideHelper'
@@ -80,7 +81,10 @@ export class RidePromoCodeScreen extends Component {
       !text || isApplyingPromo || text === this.props.promoCodeApplied
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         {text && text.toUpperCase() === this.props.promoCodeApplied ? (
           <Navigator.Config
             title="Apply Promo Code"
@@ -240,7 +244,7 @@ export class RidePromoCodeScreen extends Component {
             </View>
           ))}
         </ScrollView>
-      </View>
+      </SafeAreaView>
     )
   }
 }

@@ -520,6 +520,22 @@ export const locationSourceReducer = (
   }
 }
 
+export const paymentMethodReducer = (
+  state = { data: null, status: 'idle', error: null },
+  action,
+) => {
+  switch (action.type) {
+    case 'RIDE_GET_PAYMENT_METHOD':
+      return { data: null, status: 'loading', error: null }
+    case 'RIDE_GET_PAYMENT_METHOD_SUCCESS':
+      return { data: action.paymentMethods, status: 'loaded', error: null }
+    case 'RIDE_GET_PAYMENT_METHOD_ERROR':
+      return { data: null, status: 'loaded', error: action.error }
+    default:
+      return state
+  }
+}
+
 export default resetReducer(
   combineReducers({
     predictions: predictionReducer,
@@ -550,5 +566,6 @@ export default resetReducer(
     loadSelectedAddress: selectedAddressReducer,
     loadShareUrlTrip: loadShareUrlTripReducer,
     recentAddresses: recentAddressesReducer,
+    paymentMethods: paymentMethodReducer,
   }),
 )

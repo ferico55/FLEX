@@ -11,12 +11,14 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import { trackEvent, currencyFormat, rupiahFormat } from '../Lib/RideHelper'
 
 import IconUberThumbsUp from '../Resources/icon-uber-thumbs-up.png'
 import IconUberTag from '../Resources/icon-uber-tag.png'
 import IconUberPeople from '../Resources/icon-uber-people.png'
+import IconTokocash from '../Resources/icon-tokocash.png'
 
 const styles = StyleSheet.create({
   shadow: {
@@ -36,6 +38,11 @@ const styles = StyleSheet.create({
     backgroundColor: '#e6e6e6',
     height: 1,
   },
+  itemIcon: {
+    width: 25,
+    aspectRatio: 1,
+    marginRight: 7,
+  },
 })
 
 class RideBookingConfirmationView extends React.Component {
@@ -53,7 +60,9 @@ class RideBookingConfirmationView extends React.Component {
       bookRide,
       mode,
       screenName,
+      paymentMethod,
     } = this.props
+
     const fareOverview =
       fareOverviewLoadStatus && fareOverviewLoadStatus.fareOverview
 
@@ -145,15 +154,79 @@ class RideBookingConfirmationView extends React.Component {
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
-                justifyContent: 'center',
                 paddingVertical: 8,
+                paddingHorizontal: 5,
               }}
             >
-              <Image
-                source={{ uri: 'icon_wallet' }}
-                style={{ width: 25, aspectRatio: 1, marginRight: 7 }}
-              />
-              <Text>Tokocash</Text>
+              {paymentMethod ? (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  {paymentMethod.mode === 'wallet' ? (
+                    <Image
+                      source={IconTokocash}
+                      style={styles.itemIcon}
+                      resizeMode={'contain'}
+                    />
+                  ) : (
+                    <Image
+                      source={{ uri: paymentMethod.image }}
+                      style={{ width: 25, aspectRatio: 1, marginRight: 7 }}
+                      resizeMode={'contain'}
+                    />
+                  )}
+                  <Text>
+                    {paymentMethod.mode === 'wallet' ? (
+                      paymentMethod.label
+                    ) : (
+                      paymentMethod.label.slice(-4)
+                    )}
+                  </Text>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                  }}
+                >
+                  <Image
+                    source={IconTokocash}
+                    style={{ width: 25, aspectRatio: 1, marginRight: 7 }}
+                  />
+                  <Text>TokoCash</Text>
+                </View>
+              )}
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  justifyContent: 'flex-end',
+                  alignItems: 'center',
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() =>
+                    Navigator.push('RidePaymentMethodScreen', {
+                      title: 'Change Payment Method',
+                    })}
+                >
+                  <Text
+                    style={{
+                      color: '#42b549',
+                      fontSize: 12,
+                      fontWeight: '500',
+                    }}
+                  >
+                    Change Payment Method
+                  </Text>
+                </TouchableOpacity>
+              </View>
             </View>
 
             <View style={styles.verticalSeparator} />
@@ -280,7 +353,7 @@ class RideBookingConfirmationView extends React.Component {
     const { fareOverviewLoadStatus, promoCodeApplied } = this.props
     const { fareOverview } = fareOverviewLoadStatus
     return (
-      <View>
+      <SafeAreaView>
         {fareOverviewLoadStatus.status === 'loaded' ? (
           <View
             style={[
@@ -361,7 +434,7 @@ class RideBookingConfirmationView extends React.Component {
         ) : null}
 
         {this.renderSelectedProduct()}
-      </View>
+      </SafeAreaView>
     )
   }
 }
@@ -404,11 +477,20 @@ const selectedProduct = state => {
   return product
 }
 
+const selectedPaymentMethod = state => {
+  const { paymentMethods: { data } } = state
+  if (data && data.payment_methods) {
+    return data.payment_methods.filter(paymentMethod => paymentMethod.active)[0]
+  }
+  return false
+}
+
 const mapStateToProps = state => {
   const source = state.routeSelection.source
 
   return {
     ...state,
+    paymentMethod: selectedPaymentMethod(state),
     selectedProduct: selectedProduct(state),
   }
 }

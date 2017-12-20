@@ -5,6 +5,7 @@ import { connect } from 'react-redux'
 import rlite from 'rlite-router'
 import Navigator from 'native-navigation'
 import parse from 'url-parse'
+import SafeAreaView from 'react-native-safe-area-view'
 
 const { TKPReactURLManager } = NativeModules
 
@@ -45,40 +46,50 @@ export class RideWebViewScreen extends Component {
         // image: { uri: 'navigation-chevron', scale: 1.8 },
       }
       return (
-        <Navigator.Config
-          title="Help"
-          leftButtons={[leftButton]}
-          onLeftPress={() => this.handleBackButton()}
+        <SafeAreaView
+          style={styles.container}
+          forceInset={{ top: 'never', bottom: 'always' }}
         >
-          <View style={styles.container}>
-            <WebView
-              ref={component => (this._webview = component)}
-              onLoadStart={onLoadStart}
-              style={styles.container}
-              source={{ uri: url }}
-              startInLoadingState
-              onNavigationStateChange={() => {
-                if (isLoaded) {
-                  this.setState({
-                    webViewHistoryCount: webViewHistoryCount + 1,
-                  })
-                }
-              }}
-              onLoadEnd={() => {
-                this.setState({ isLoaded: true })
-              }}
-            />
-          </View>
-        </Navigator.Config>
+          <Navigator.Config
+            title="Help"
+            leftButtons={[leftButton]}
+            onLeftPress={() => this.handleBackButton()}
+          >
+            <View style={styles.container}>
+              <WebView
+                ref={component => (this._webview = component)}
+                onLoadStart={onLoadStart}
+                style={styles.container}
+                source={{ uri: url }}
+                startInLoadingState
+                onNavigationStateChange={() => {
+                  if (isLoaded) {
+                    this.setState({
+                      webViewHistoryCount: webViewHistoryCount + 1,
+                    })
+                  }
+                }}
+                onLoadEnd={() => {
+                  this.setState({ isLoaded: true })
+                }}
+              />
+            </View>
+          </Navigator.Config>
+        </SafeAreaView>
       )
     }
 
     return (
-      <WebView
-        onLoadStart={onLoadStart}
+      <SafeAreaView
         style={styles.container}
-        source={{ uri: url }}
-      />
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
+        <WebView
+          onLoadStart={onLoadStart}
+          style={styles.container}
+          source={{ uri: url }}
+        />
+      </SafeAreaView>
     )
   }
 }

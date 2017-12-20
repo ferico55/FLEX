@@ -45,6 +45,7 @@ RCT_EXPORT_MODULE();
              @"webSocketUrl" : NSString.webSocketUrl,
              @"mobileSiteUrl" : NSString.mobileSiteUrl,
              @"graphQLURL": NSString.graphQLURL,
+             @"accountsUrl": NSString.accountsUrl,
              @"pulsaURL": NSString.pulsaApiUrl,
              @"paymentURL": NSString.paymentURL
              };

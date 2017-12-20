@@ -10,6 +10,7 @@ import {
 import { connect } from 'react-redux'
 import Navigator from 'native-navigation'
 import { Observable, Subject } from 'rxjs'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import NoResult from '../../unify/NoResult'
 
@@ -241,10 +242,13 @@ export class RideCancellationScreen extends Component {
         .price_details.cancellation_fee}`
 
     return (
-      <View style={styles.container}>
+      <SafeAreaView
+        style={styles.container}
+        forceInset={{ top: 'never', bottom: 'always' }}
+      >
         <Navigator.Config title="Cancellation Reason" />
         {this._renderContent()}
-      </View>
+      </SafeAreaView>
     )
   }
 }

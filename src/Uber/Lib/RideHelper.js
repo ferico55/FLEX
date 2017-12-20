@@ -42,14 +42,16 @@ export const getFollowLocation = () =>
   })
 
 export const trackEvent = (name, action, label) => {
-  // console.log('TRACKER!')
-  // console.log(`${name} - digital uber - ${action} - ${label}`)
   TKPReactAnalytics.trackEvent({
     name: name || 'GenericUberEvent',
     category: 'digital - uber',
     action: action || '',
     label: label || '',
   })
+}
+
+export const trackScreenName = name => {
+  TKPReactAnalytics.trackScreenName(name)
 }
 
 export const expiryTime = dateString => {
@@ -61,3 +63,11 @@ export const expiryTime = dateString => {
 
   return moment(dateString, 'YYYY-MM-DD hh:mm:ss').valueOf()
 }
+
+export const serialize = data =>
+  Object.keys(data)
+    .reduce((accumulator, key) => {
+      accumulator.push(`${key}=${data[key]}`)
+      return accumulator
+    }, [])
+    .join('&')

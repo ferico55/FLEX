@@ -14,6 +14,7 @@ import {
   Easing,
   Alert,
   ImageBackground,
+  ActionSheetIOS,
 } from 'react-native'
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps'
 import Navigator from 'native-navigation'
@@ -30,6 +31,7 @@ import {
   trackEvent,
   expiryTime,
 } from '../Lib/RideHelper'
+import { getPendingFare } from '../Services/api'
 
 import RideEstimationView from './RideEstimationView'
 import RideBookingConfirmationView from './RideBookingConfirmationView'
@@ -120,6 +122,8 @@ export class RideHailingScreen extends Component {
   componentDidMount() {
     this.props.loadCurrentTrip()
     this.zoomToCurrentLocation()
+    this.props.getPaymentMethod()
+    this.getPendingFare()
   }
 
   componentWillReceiveProps(newProps) {
@@ -191,6 +195,24 @@ export class RideHailingScreen extends Component {
   componentWillUnmount() {
     this.props.onExitScreen()
     trackEvent('GenericUberEvent', 'click back', this.state.screenName)
+  }
+
+  getPendingFare = () => {
+    getPendingFare()
+      .then(response => {
+        if (!response.message_error && response.status === 'OK') {
+          const { data } = response
+          if (data && data.pending_amount > 0) {
+            Navigator.present('RidePendingFareScreen')
+          }
+        } else {
+          throw {
+            code: response.data.code,
+            description: response.message_error[0],
+          }
+        }
+      })
+      .catch(error => {})
   }
 
   _shakeValue = new Animated.Value(0)
@@ -271,6 +293,73 @@ export class RideHailingScreen extends Component {
 
   handleLocationButton = this.zoomToCurrentLocation
 
+  navigationConfig = () => {
+    const {
+      mode,
+      screenTitle,
+      routeSelection: { source, destination },
+      currentTrip,
+    } = this.props
+
+    const { screenName } = this.state
+
+    let navigationConfig = {}
+    if (mode === 'select-route' || mode === 'booking-confirmation') {
+      navigationConfig = {
+        title: screenTitle,
+        rightImage: { uri: 'iconn_more_black', scale: 2 },
+        onRightPress: () => {
+          ActionSheetIOS.showActionSheetWithOptions(
+            {
+              options: ['Your Trips', 'Payment', 'Cancel'],
+              cancelButtonIndex: 2,
+              title: 'Select menu options',
+            },
+            buttonIndex => {
+              switch (buttonIndex) {
+                case 0:
+                  Navigator.push('RideHistoryScreen')
+                  trackEvent(
+                    'GenericUberEvent',
+                    'click on your trips',
+                    screenName,
+                  )
+                  break
+                case 1:
+                  Navigator.push('RidePaymentMethodScreen', {
+                    title: 'Payment Method',
+                  })
+                  break
+                default:
+              }
+            },
+          )
+        },
+        onAppear: () => {
+          // handle after cancel and open receipt
+          if (mode === 'select-route' && !source && !destination) {
+            this.handleLocationButton()
+          }
+        },
+      }
+    } else if (mode === 'riding' && !currentTrip) {
+      navigationConfig = {
+        title: 'Requesting Ride',
+        onRightPress: () => {},
+        onAppear: () => {},
+      }
+    } else {
+      navigationConfig = {
+        title: screenTitle,
+        rightImage: { uri: 'iconn_more_black', scale: 100 },
+        onRightPress: () => {},
+        onAppear: () => {},
+      }
+    }
+
+    return navigationConfig
+  }
+
   render() {
     const {
       routeSelection,
@@ -345,290 +434,297 @@ export class RideHailingScreen extends Component {
     }
 
     return (
-      <View style={styles.container}>
-        {/* navigator.config */}
-        {mode === 'select-route' ? (
-          <Navigator.Config
-            title={screenTitle}
-            rightTitle="Your Trips"
-            onRightPress={() => {
-              Navigator.push('RideHistoryScreen')
-              trackEvent('GenericUberEvent', 'click on your trips', screenName)
+      <Navigator.Config {...this.navigationConfig()}>
+        <View style={styles.container}>
+          {/* mapview */}
+          <MapView
+            ref={ref => (this.mapView = ref)}
+            provider={PROVIDER_GOOGLE}
+            style={{ flexGrow: 1 }}
+            initialRegion={{
+              latitude: initialLatitude,
+              longitude: initialLongitude,
+              latitudeDelta: 0.04546489130798292,
+              longitudeDelta: 0.03475338220596313,
             }}
-            onAppear={() => {
-              // handle after cancel and open receipt
-              if (mode === 'select-route' && !source && !destination) {
-                this.handleLocationButton()
-              }
-            }}
-          />
-        ) : (
-          <Navigator.Config
-            title={screenTitle}
-            rightTitle=""
-            onRightPress={() => {}}
-            onAppear={() => {}}
-          />
-        )}
-
-        {/* mapview */}
-        <MapView
-          ref={ref => (this.mapView = ref)}
-          provider={PROVIDER_GOOGLE}
-          style={{ flexGrow: 1 }}
-          initialRegion={{
-            latitude: initialLatitude,
-            longitude: initialLongitude,
-            latitudeDelta: 0.04546489130798292,
-            longitudeDelta: 0.03475338220596313,
-          }}
-          onRegionChangeComplete={region =>
-            onRegionChanged(region, locationSource)}
-          onRegionChange={onMapStartDragging}
-          showsUserLocation
-        >
-          {coordinates && (
-            <MapView.Polyline
-              coordinates={coordinates}
-              strokeWidth={2}
-              lineJoin={'round'}
-            />
-          )}
-          {pickupCoordinate && (
-            <MapView.Marker coordinate={pickupCoordinate}>
-              <Image source={SourceIcon} style={{ width: 15, height: 15 }} />
-            </MapView.Marker>
-          )}
-          {dropOffCoordinate && (
-            <MapView.Marker coordinate={dropOffCoordinate}>
-              <Image
-                source={DestinationIcon}
-                style={{ width: 15, height: 15 }}
-              />
-            </MapView.Marker>
-          )}
-          {currentTrip &&
-          currentTrip.data &&
-          currentTrip.data.status !== 'in_progress' && (
-            <MapView.Marker
-              coordinate={currentTrip.data.location}
-              rotation={currentTrip.data.location.bearing}
-              anchor={{ x: 0.5, y: 0.5 }}
-            >
-              <Image
-                resizeMode="contain"
-                source={
-                  selectedProduct.display_name === 'uberMotor' ? (
-                    BikeIcon
-                  ) : (
-                    CarIcon
-                  )
-                }
-                style={{ maxWidth: 15 }}
-              />
-            </MapView.Marker>
-          )}
-          {currentTrip &&
-          currentTrip.data &&
-          currentTrip.data.status === 'in_progress' &&
-          currentTrip.userLocation && (
-            <MapView.Marker
-              coordinate={currentTrip.userLocation}
-              anchor={{ x: 0.5, y: 0.5 }}
-            >
-              <Image
-                resizeMode="contain"
-                source={
-                  selectedProduct.display_name === 'uberMotor' ? (
-                    BikeIcon
-                  ) : (
-                    CarIcon
-                  )
-                }
-                style={{ maxWidth: 15 }}
-              />
-            </MapView.Marker>
-          )}
-        </MapView>
-
-        {/* marker icon on map */}
-        {mode === 'select-route' &&
-        !destination && (
-          <View
-            style={[
-              styles.overlay,
-              { justifyContent: 'center', alignItems: 'center' },
-            ]}
-            pointerEvents="box-none"
+            onRegionChangeComplete={region =>
+              onRegionChanged(region, locationSource)}
+            onRegionChange={onMapStartDragging}
+            showsUserLocation
           >
-            <ImageBackground
-              source={PinIcon}
-              style={{
-                marginBottom: 49,
-                alignItems: 'center',
-                width: 38,
-                height: 49,
-              }}
-            >
-              <View
-                style={{ height: 22, marginTop: 8, justifyContent: 'center' }}
+            {coordinates && (
+              <MapView.Polyline
+                coordinates={coordinates}
+                strokeWidth={2}
+                lineJoin={'round'}
+              />
+            )}
+            {pickupCoordinate && (
+              <MapView.Marker coordinate={pickupCoordinate}>
+                <Image source={SourceIcon} style={{ width: 15, height: 15 }} />
+              </MapView.Marker>
+            )}
+            {dropOffCoordinate && (
+              <MapView.Marker coordinate={dropOffCoordinate}>
+                <Image
+                  source={DestinationIcon}
+                  style={{ width: 15, height: 15 }}
+                />
+              </MapView.Marker>
+            )}
+            {currentTrip &&
+            currentTrip.data &&
+            currentTrip.data.status !== 'in_progress' && (
+              <MapView.Marker
+                coordinate={currentTrip.data.location}
+                rotation={currentTrip.data.location.bearing}
+                anchor={{ x: 0.5, y: 0.5 }}
               >
-                <Text
+                <Image
+                  resizeMode="contain"
+                  source={
+                    selectedProduct.display_name === 'uberMotor' ? (
+                      BikeIcon
+                    ) : (
+                      CarIcon
+                    )
+                  }
+                  style={{ maxWidth: 15 }}
+                />
+              </MapView.Marker>
+            )}
+            {currentTrip &&
+            currentTrip.data &&
+            currentTrip.data.status === 'in_progress' &&
+            currentTrip.userLocation && (
+              <MapView.Marker
+                coordinate={currentTrip.userLocation}
+                anchor={{ x: 0.5, y: 0.5 }}
+              >
+                <Image
+                  resizeMode="contain"
+                  source={
+                    selectedProduct.display_name === 'uberMotor' ? (
+                      BikeIcon
+                    ) : (
+                      CarIcon
+                    )
+                  }
+                  style={{ maxWidth: 15 }}
+                />
+              </MapView.Marker>
+            )}
+          </MapView>
+
+          {/* marker icon on map */}
+          {mode === 'select-route' &&
+          !destination && (
+            <View
+              style={[
+                styles.overlay,
+                { justifyContent: 'center', alignItems: 'center' },
+              ]}
+              pointerEvents="box-none"
+            >
+              <ImageBackground
+                source={PinIcon}
+                style={{
+                  marginBottom: 49,
+                  alignItems: 'center',
+                  width: 38,
+                  height: 49,
+                }}
+              >
+                <View
+                  style={{ height: 22, marginTop: 8, justifyContent: 'center' }}
+                >
+                  <Text
+                    style={{
+                      backgroundColor: 'transparent',
+                      color: 'white',
+                      fontSize: 9,
+                      fontWeight: '500',
+                      textAlign: 'center',
+                    }}
+                  >
+                    {shortestPickupTime ? `${shortestPickupTime}\nmin` : '--'}
+                  </Text>
+                </View>
+              </ImageBackground>
+            </View>
+          )}
+
+          <View style={[styles.overlay]} pointerEvents="box-none">
+            {/* form source and destination */}
+            <View style={[styles.locationBox, styles.shadow]}>
+              <View
+                style={{
+                  alignItems: 'center',
+                  paddingHorizontal: 10,
+                  paddingVertical: 13,
+                }}
+              >
+                <Image source={SourceIcon} style={{ width: 13, height: 13 }} />
+                <Dash
                   style={{
-                    backgroundColor: 'transparent',
-                    color: 'white',
-                    fontSize: 9,
-                    fontWeight: '500',
-                    textAlign: 'center',
+                    flexDirection: 'column',
+                    flex: 1,
+                    marginVertical: 3,
+                  }}
+                  dashColor="#c6c6c6"
+                  dashThickness={1}
+                />
+                <Image
+                  source={DestinationIcon}
+                  style={{ width: 13, height: 13 }}
+                />
+              </View>
+              <View style={styles.inputContainer}>
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    sourceSearch()
+                    trackEvent('GenericUberEvent', 'click source', screenName)
                   }}
                 >
-                  {shortestPickupTime ? `${shortestPickupTime}\nmin` : '--'}
-                </Text>
+                  <View style={styles.textInputWrapper}>
+                    <TextInput
+                      placeholder="Select Pickup"
+                      value={pickUpBoxText}
+                      style={styles.textInput}
+                      editable={false}
+                      pointerEvents="box-none"
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+
+                <View style={{ height: 1, backgroundColor: '#c6c6c6' }} />
+
+                <TouchableWithoutFeedback
+                  onPress={() => {
+                    destinationSearch()
+                    trackEvent(
+                      'GenericUberEvent',
+                      'click destination',
+                      screenName,
+                    )
+                  }}
+                >
+                  <View style={styles.textInputWrapper}>
+                    <AnimatedTextInput
+                      placeholder="Select Destination"
+                      placeholderTextColor={destinationPlaceholderColor}
+                      value={destination && destination.name}
+                      pointerEvents="box-none"
+                      style={[
+                        styles.textInput,
+                        {
+                          transform: [
+                            {
+                              translateX: this._shakeValue.interpolate({
+                                inputRange: [0, 1, 2],
+                                outputRange: [0, 30, 0],
+                              }),
+                            },
+                          ],
+                        },
+                      ]}
+                      editable={false}
+                    />
+
+                    {destination &&
+                    mode !== 'riding' && (
+                      <TouchableOpacity
+                        style={{
+                          alignSelf: 'stretch',
+                          justifyContent: 'center',
+                          paddingRight: 10,
+                          paddingLeft: 30,
+                        }}
+                        onPress={() => {
+                          removeDestination()
+                          trackEvent(
+                            'GenericUberEvent',
+                            'click delete destination',
+                            `${screenName} - ${destination.name}`,
+                          )
+                        }}
+                      >
+                        <Image
+                          source={CancelIcon}
+                          style={{ height: 15, width: 15 }}
+                        />
+                      </TouchableOpacity>
+                    )}
+                  </View>
+                </TouchableWithoutFeedback>
               </View>
-            </ImageBackground>
-          </View>
-        )}
+            </View>
 
-        <View style={[styles.overlay]} pointerEvents="box-none">
-          {/* form source and destination */}
-          <View style={[styles.locationBox, styles.shadow]}>
-            <View
-              style={{
-                alignItems: 'center',
-                paddingHorizontal: 10,
-                paddingVertical: 13,
-              }}
+            {/* button navigation */}
+            <TouchableOpacity
+              onPress={this.handleLocationButton}
+              style={{ alignSelf: 'flex-end', marginRight: 8 }}
             >
-              <Image source={SourceIcon} style={{ width: 13, height: 13 }} />
-              <Dash
-                style={{ flexDirection: 'column', flex: 1, marginVertical: 3 }}
-                dashColor="#c6c6c6"
-                dashThickness={1}
+              {mode === 'riding' &&
+              currentTrip &&
+              currentTrip.status === 'in_progress' ? (
+                <Image source={NavigationIcon} />
+              ) : (
+                <Image source={LocationIcon} />
+              )}
+            </TouchableOpacity>
+            <View style={{ flex: 1 }} pointerEvents="none" />
+
+            {/* estimation view */}
+            {mode === 'select-route' ? (
+              <RideEstimationView
+                shakeDestination={this._shakeDestination}
+                screenName={screenName}
+                snapIndex={snapIndex}
+                onPanelSnap={this.onPanelSnap}
+                onPanelStop={this.onPanelStop}
+                onUpdatePanelHeight={this.onUpdatePanelHeight}
+                basePanelheight={basePanelheight}
+                panelHeight={panelHeight}
               />
-              <Image
-                source={DestinationIcon}
-                style={{ width: 13, height: 13 }}
-              />
-            </View>
-            <View style={styles.inputContainer}>
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  sourceSearch()
-                  trackEvent('GenericUberEvent', 'click source', screenName)
-                }}
+            ) : null}
+
+            {/* booking confirmation view */}
+            {mode === 'booking-confirmation' &&
+            (fareOverviewLoadStatus.status !== 'idle' ||
+              requestStatus.status === 'error') ? (
+                <RideBookingConfirmationView />
+            ) : null}
+
+            {/* overlay - load when uber/request */}
+            {mode === 'riding' && !currentTrip ? (
+              <View
+                style={[
+                  styles.overlay,
+                  {
+                    backgroundColor: 'rgba(0,0,0,0.5)',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  },
+                ]}
               >
-                <View style={styles.textInputWrapper}>
-                  <TextInput
-                    placeholder="Select Pickup"
-                    value={pickUpBoxText}
-                    style={styles.textInput}
-                    editable={false}
-                    pointerEvents="box-none"
-                  />
-                </View>
-              </TouchableWithoutFeedback>
+                <ActivityIndicator size="large" />
+              </View>
+            ) : null}
 
-              <View style={{ height: 1, backgroundColor: '#c6c6c6' }} />
-
-              <TouchableWithoutFeedback
-                onPress={() => {
-                  destinationSearch()
-                  trackEvent(
-                    'GenericUberEvent',
-                    'click destination',
-                    screenName,
-                  )
-                }}
-              >
-                <View style={styles.textInputWrapper}>
-                  <AnimatedTextInput
-                    placeholder="Select Destination"
-                    placeholderTextColor={destinationPlaceholderColor}
-                    value={destination && destination.name}
-                    pointerEvents="box-none"
-                    style={[
-                      styles.textInput,
-                      {
-                        transform: [
-                          {
-                            translateX: this._shakeValue.interpolate({
-                              inputRange: [0, 1, 2],
-                              outputRange: [0, 30, 0],
-                            }),
-                          },
-                        ],
-                      },
-                    ]}
-                    editable={false}
-                  />
-
-                  {destination &&
-                  mode !== 'riding' && (
-                    <TouchableOpacity
-                      style={{
-                        alignSelf: 'stretch',
-                        justifyContent: 'center',
-                        paddingRight: 10,
-                        paddingLeft: 30,
-                      }}
-                      onPress={() => {
-                        removeDestination()
-                        trackEvent(
-                          'GenericUberEvent',
-                          'click delete destination',
-                          `${screenName} - ${destination.name}`,
-                        )
-                      }}
-                    >
-                      <Image
-                        source={CancelIcon}
-                        style={{ height: 15, width: 15 }}
-                      />
-                    </TouchableOpacity>
-                  )}
-                </View>
-              </TouchableWithoutFeedback>
-            </View>
-          </View>
-
-          {/* button navigation */}
-          <TouchableOpacity
-            onPress={this.handleLocationButton}
-            style={{ alignSelf: 'flex-end', marginRight: 8 }}
-          >
+            {/* ontrip view */}
             {mode === 'riding' &&
             currentTrip &&
-            currentTrip.status === 'in_progress' ? (
-              <Image source={NavigationIcon} />
-            ) : (
-              <Image source={LocationIcon} />
-            )}
-          </TouchableOpacity>
-          <View style={{ flex: 1 }} pointerEvents="none" />
+            currentTrip.status !== 'processing' ? (
+              <RideOntripView
+                screenName={screenName}
+                onCancelButtonTap={this._onCancelButtonTap}
+              />
+            ) : null}
+          </View>
 
-          {/* estimation view */}
-          {mode === 'select-route' ? (
-            <RideEstimationView
-              shakeDestination={this._shakeDestination}
-              screenName={screenName}
-              snapIndex={snapIndex}
-              onPanelSnap={this.onPanelSnap}
-              onPanelStop={this.onPanelStop}
-              onUpdatePanelHeight={this.onUpdatePanelHeight}
-              basePanelheight={basePanelheight}
-              panelHeight={panelHeight}
-            />
-          ) : null}
-
-          {/* booking confirmation view */}
-          {mode === 'booking-confirmation' &&
-          (fareOverviewLoadStatus.status !== 'idle' ||
-            requestStatus.status === 'error') ? (
-              <RideBookingConfirmationView />
-          ) : null}
-
-          {/* overlay - load when uber/request */}
-          {mode === 'riding' && !currentTrip ? (
+          {/* overlay - when uber/request/detail */}
+          {currentTrip && currentTrip.status === 'processing' ? (
             <View
               style={[
                 styles.overlay,
@@ -639,163 +735,138 @@ export class RideHailingScreen extends Component {
                 },
               ]}
             >
-              <Navigator.Config title="Requesting Ride" />
               <ActivityIndicator size="large" />
+
+              <TouchableOpacity
+                onPress={() => {
+                  this._onCancelButtonTap()
+                  trackEvent(
+                    'GenericUberEvent',
+                    'click cancel request ride',
+                    screenName,
+                  )
+                }}
+                style={{
+                  margin: 10,
+                  padding: 10,
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: 2,
+                  borderWidth: 1,
+                  borderColor: '#FFFFFF',
+                  position: 'absolute',
+                  left: 0,
+                  right: 0,
+                  bottom: 0,
+                  justifyContent: 'flex-end',
+                }}
+              >
+                <Text
+                  style={{
+                    color: '#B4B4B4',
+                    textAlign: 'center',
+                    fontWeight: '500',
+                  }}
+                >
+                  Cancel
+                </Text>
+              </TouchableOpacity>
             </View>
           ) : null}
 
-          {/* ontrip view */}
-          {mode === 'riding' &&
-          currentTrip &&
-          currentTrip.status !== 'processing' ? (
-            <RideOntripView
-              screenName={screenName}
-              onCancelButtonTap={this._onCancelButtonTap}
-            />
-          ) : null}
-        </View>
-
-        {/* overlay - when uber/request/detail */}
-        {currentTrip && currentTrip.status === 'processing' ? (
-          <View
-            style={[
-              styles.overlay,
-              {
-                backgroundColor: 'rgba(0,0,0,0.5)',
-                alignItems: 'center',
-                justifyContent: 'center',
-              },
-            ]}
-          >
-            <ActivityIndicator size="large" />
-
-            <TouchableOpacity
-              onPress={() => {
-                this._onCancelButtonTap()
-                trackEvent(
-                  'GenericUberEvent',
-                  'click cancel request ride',
-                  screenName,
-                )
-              }}
-              style={{
-                margin: 10,
-                padding: 10,
-                backgroundColor: '#FFFFFF',
-                borderRadius: 2,
-                borderWidth: 1,
-                borderColor: '#FFFFFF',
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                bottom: 0,
-                justifyContent: 'flex-end',
-              }}
-            >
-              <Text
-                style={{
-                  color: '#B4B4B4',
-                  textAlign: 'center',
-                  fontWeight: '500',
-                }}
-              >
-                Cancel
-              </Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-
-        {/* interupt tos view */}
-        {showTermsOfServiceInterrupt ? (
-          <View style={styles.overlay}>
-            <View
-              style={{
-                flex: 1,
-                backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                justifyContent: 'center',
-                alignItems: 'center',
-              }}
-            >
+          {/* interupt tos view */}
+          {showTermsOfServiceInterrupt ? (
+            <View style={styles.overlay}>
               <View
                 style={{
-                  backgroundColor: 'white',
-                  borderRadius: 3,
-                  padding: 20,
+                  flex: 1,
+                  backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                  justifyContent: 'center',
                   alignItems: 'center',
                 }}
               >
-                <Text style={{ fontSize: 13 }}>By clicking Booking Ride,</Text>
-                <Text style={{ fontSize: 13 }}>
-                  I agree with{' '}
-                  <TouchableOpacity
-                    style={{ width: 132, height: 12.5 }}
-                    onPress={() => {
-                      Navigator.push('RideWebViewScreen', {
-                        url: interrupt.link,
-                        expectedCode: 'tos_tokopedia_id',
-                      })
-                    }}
-                  >
-                    <Text style={{ fontSize: 13, color: '#42b549' }}>
-                      terms and conditions.
-                    </Text>
-                  </TouchableOpacity>
-                </Text>
-
-                <View style={{ flexDirection: 'row', marginTop: 20 }}>
-                  <View
-                    style={{
-                      borderColor: '#42b549',
-                      borderWidth: 1,
-                      borderRadius: 3,
-                    }}
-                  >
+                <View
+                  style={{
+                    backgroundColor: 'white',
+                    borderRadius: 3,
+                    padding: 20,
+                    alignItems: 'center',
+                  }}
+                >
+                  <Text style={{ fontSize: 13 }}>
+                    By clicking Booking Ride,
+                  </Text>
+                  <Text style={{ fontSize: 13 }}>
+                    I agree with{' '}
                     <TouchableOpacity
-                      style={{
-                        width: 100,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                      onPress={this.props.handleRejectTermsOfService}
-                    >
-                      <Text style={{ color: '#42b549', textAlign: 'center' }}>
-                        Cancel
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-
-                  <View
-                    style={{
-                      backgroundColor: '#42b549',
-                      marginLeft: 20,
-                      borderRadius: 3,
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={{
-                        width: 100,
-                        height: 40,
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
+                      style={{ width: 132, height: 12.5 }}
                       onPress={() => {
-                        this.props.bookRide(selectedProduct.product_id, {
-                          [interrupt.code.name]: interrupt.code.value,
+                        Navigator.push('RideWebViewScreen', {
+                          url: interrupt.link,
+                          expectedCode: 'tos_tokopedia_id',
                         })
                       }}
                     >
-                      <Text style={{ color: 'white', textAlign: 'center' }}>
-                        Accept
+                      <Text style={{ fontSize: 13, color: '#42b549' }}>
+                        terms and conditions.
                       </Text>
                     </TouchableOpacity>
+                  </Text>
+
+                  <View style={{ flexDirection: 'row', marginTop: 20 }}>
+                    <View
+                      style={{
+                        borderColor: '#42b549',
+                        borderWidth: 1,
+                        borderRadius: 3,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          width: 100,
+                          height: 40,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={this.props.handleRejectTermsOfService}
+                      >
+                        <Text style={{ color: '#42b549', textAlign: 'center' }}>
+                          Cancel
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
+
+                    <View
+                      style={{
+                        backgroundColor: '#42b549',
+                        marginLeft: 20,
+                        borderRadius: 3,
+                      }}
+                    >
+                      <TouchableOpacity
+                        style={{
+                          width: 100,
+                          height: 40,
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                        }}
+                        onPress={() => {
+                          this.props.bookRide(selectedProduct.product_id, {
+                            [interrupt.code.name]: interrupt.code.value,
+                          })
+                        }}
+                      >
+                        <Text style={{ color: 'white', textAlign: 'center' }}>
+                          Accept
+                        </Text>
+                      </TouchableOpacity>
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-        ) : null}
-      </View>
+          ) : null}
+        </View>
+      </Navigator.Config>
     )
   }
 }
@@ -974,6 +1045,8 @@ const mapDispatchToProps = dispatch => ({
   onExitScreen: () => dispatch({ type: 'RIDE_RESET_STATE' }),
 
   handleRejectTermsOfService: () => dispatch({ type: 'RIDE_REJECT_TOS' }),
+
+  getPaymentMethod: () => dispatch({ type: 'RIDE_GET_PAYMENT_METHOD' }),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RideHailingScreen)

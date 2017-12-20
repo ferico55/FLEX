@@ -22,9 +22,10 @@ import {
   getProductDetail,
   getPriceEstimation,
   cancelBooking,
-  extractInteruptCode,
+  isRegisteredInterruptCode,
   getShareUrl,
   getRecentAddresses,
+  getPaymentMethods,
 } from '../Services/api'
 import { getCurrentLocation, trackEvent } from '../Lib/RideHelper'
 
@@ -99,9 +100,7 @@ const bookVehicleEpic = (action$, store) =>
               })
               break
             case 'pending_fare':
-              Navigator.push('RideTopupTokocashScreen', {
-                uri: result.data.meta.pending_fare.href,
-              })
+              Navigator.present('RidePendingFareScreen')
               break
             case 'surge_confirmation':
               Navigator.push('RideWebViewScreen', {
@@ -184,7 +183,10 @@ const bookVehicleEpic = (action$, store) =>
             return Observable.of({ type: 'RIDE_LOAD_CURRENT_TRIP' })
           }
 
-          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          if (error.code === 'no_internet') {
+            ReactInteractionHelper.showErrorStickyAlert(error.description)
+          }
+
           return Observable.of({
             type: 'RIDE_BOOK_ERROR',
             error,
@@ -213,7 +215,7 @@ const rideInterruptEpic = (action$, store) =>
   action$
     .ofType('RIDE_BOOKING_RESULT')
     .filter(
-      ({ result }) => result.data.code && extractInteruptCode(result.data.code),
+      ({ result }) => result.data.code && isRegisteredInterruptCode(result.data.code),
     )
     .map(({ result }) => ({
       type: 'RIDE_BOOKING_INTERRUPT',
@@ -287,7 +289,9 @@ const pickupEstimationEpic = (action$, store) =>
           priceEstimations,
         }))
         .catch(error => {
-          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          if (error.code === 'no_internet') {
+            ReactInteractionHelper.showErrorStickyAlert(error.description)
+          }
           return Observable.of({
             type: 'RIDE_ESTIMATES_ERROR',
             error: error.code === 'no_internet' ? { description: '' } : error,
@@ -476,7 +480,9 @@ const selectVehicleEpic = (action$, store) =>
         },
       ])
       .catch(error => {
-        ReactInteractionHelper.showErrorStickyAlert(error.description)
+        if (error.code === 'no_internet') {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+        }
         return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
           error: error.code === 'no_internet' ? { description: '' } : error,
@@ -509,7 +515,9 @@ const fareOverviewEpic = (action$, store) =>
         },
       ])
       .catch(error => {
-        ReactInteractionHelper.showErrorStickyAlert(error.description)
+        if (error.code === 'no_internet') {
+          ReactInteractionHelper.showErrorStickyAlert(error.description)
+        }
         return Observable.of({
           type: 'RIDE_SELECT_VEHICLE_ERROR',
           error: error.code === 'no_internet' ? { description: '' } : error,
@@ -705,7 +713,9 @@ const autocompleteEpic = (action$, store) =>
           predictions,
         }))
         .catch(error => {
-          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          if (error.code === 'no_internet') {
+            ReactInteractionHelper.showErrorStickyAlert(error.description)
+          }
           return Observable.of({
             type: 'RECEIVE_PREDICTIONS_ERROR',
             error: error.code === 'no_internet' ? { description: '' } : error,
@@ -829,7 +839,10 @@ const openReceiptEpic = (action$, store) =>
 
       store.dispatch(openReceipt(currentTrip.data.request_id))
     })
-    .mapTo({ type: 'RIDE_RESET_STATE' })
+    .mergeMap(() => [
+      { type: 'RIDE_RESET_STATE' },
+      { type: 'RIDE_GET_PAYMENT_METHOD' },
+    ])
 
 const showDriverCancelEpic = action$ =>
   action$
@@ -843,13 +856,19 @@ const showDriverCancelEpic = action$ =>
         'Sorry, driver cancelled your request. Please try again',
       )
     })
-    .mapTo({ type: 'RIDE_RESET_STATE' })
+    .mergeMap(() => [
+      { type: 'RIDE_RESET_STATE' },
+      { type: 'RIDE_GET_PAYMENT_METHOD' },
+    ])
 
 const cancelBookingEpic = action$ =>
   action$.ofType('RIDE_CANCEL_BOOKING').switchMap(({ reason }) =>
     Observable.from(cancelBooking(reason))
       .do(() => Navigator.pop())
-      .mapTo({ type: 'RIDE_RESET_STATE' })
+      .mergeMap(() => [
+        { type: 'RIDE_RESET_STATE' },
+        { type: 'RIDE_GET_PAYMENT_METHOD' },
+      ])
       .catch(error =>
         Observable.of({
           type: 'RIDE_CANCEL_BOOKING_ERROR',
@@ -920,7 +939,9 @@ const applyPromoCodeEpic = (action$, store) =>
           },
         ])
         .catch(error => {
-          ReactInteractionHelper.showErrorStickyAlert(error.description)
+          if (error.code === 'no_internet') {
+            ReactInteractionHelper.showErrorStickyAlert(error.description)
+          }
           return Observable.of({
             type: 'RIDE_APPLY_PROMO_CODE_ERROR',
             error: error.code === 'no_internet' ? { description: '' } : error,
@@ -982,6 +1003,21 @@ const getRecentAddressesEpic = action$ =>
       }),
   )
 
+const getPaymentMethodsEpic = actions$ =>
+  actions$.ofType('RIDE_GET_PAYMENT_METHOD').switchMap(() =>
+    Observable.from(getPaymentMethods())
+      .map(paymentMethods => ({
+        type: 'RIDE_GET_PAYMENT_METHOD_SUCCESS',
+        paymentMethods: paymentMethods.data,
+      }))
+      .catch(error => {
+        return Observable.of({
+          type: 'RIDE_GET_PAYMENT_METHOD_ERROR',
+          error,
+        })
+      }),
+  )
+
 export const epic = combineEpics(
   bookVehicleEpic,
   rideInterruptEpic,
@@ -1009,4 +1045,5 @@ export const epic = combineEpics(
   findPickupEstimationEpic,
   getRecentAddressesEpic,
   regionChangeSourceEpic,
+  getPaymentMethodsEpic,
 )

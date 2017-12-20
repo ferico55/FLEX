@@ -372,6 +372,16 @@ class TPRoutes: NSObject {
                 viewController.hidesBottomBarWhenPushed = true
                 UIApplication.topViewController()?.navigationController?.pushReactViewController(viewController, animated: true)
 
+                NotificationCenter.default.rx.notification(Notification.Name("RideFinishPayment"))
+                    .observeOn(MainScheduler.instance)
+                    .subscribe(onNext: { [weak viewController] notification in
+                        guard let viewController = viewController else { return }
+                        UIApplication.topViewController()?.navigationController?.dismiss(animated: true, completion: {
+                          UIApplication.topViewController()?.navigationController?.popToViewController(viewController, animated: true)
+                        })
+                    })
+                    .disposed(by: viewController.rx_disposeBag)
+                
                 NotificationCenter.default.rx.notification(Notification.Name("RideTokocashTopup"))
                     .observeOn(MainScheduler.instance)
                     .subscribe(onNext: { notification in

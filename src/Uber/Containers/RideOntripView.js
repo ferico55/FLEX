@@ -14,6 +14,7 @@ import {
 } from 'react-native'
 import { connect } from 'react-redux'
 import { ReactInteractionHelper } from 'NativeModules'
+import SafeAreaView from 'react-native-safe-area-view'
 
 import { trackEvent } from '../Lib/RideHelper'
 
@@ -43,7 +44,7 @@ class RideOntripView extends React.Component {
       onCancelButtonTap,
     } = this.props
     return (
-      <View
+      <SafeAreaView
         style={[
           {
             margin: 8,
@@ -52,6 +53,7 @@ class RideOntripView extends React.Component {
           },
           styles.shadow,
         ]}
+        forceInset={{ top: 'never', bottom: 'always' }}
       >
         <View
           style={{
@@ -249,7 +251,7 @@ class RideOntripView extends React.Component {
             ]
           ) : null}
         </View>
-      </View>
+      </SafeAreaView>
     )
   }
 }
