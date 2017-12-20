@@ -9,7 +9,7 @@ const AllBrands = () => (
   >
     <Image
       source={require('./img/banner-all-brand.jpg')}
-      style={{ width: '100%', height: 105, resizeMode: 'cover' }}
+      style={{ width: '100%', height: 105, resizeMode: 'contain' }}
     />
   </TouchableWithoutFeedback>
 )

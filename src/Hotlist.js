@@ -217,6 +217,7 @@ class Hotlist extends PureComponent {
 
   renderItem = item => (
     <TouchableOpacity
+    activeOpacity={0.9}
       onPress={() => {
         TKPReactAnalytics.trackEvent({
           name: 'clickHotlist',

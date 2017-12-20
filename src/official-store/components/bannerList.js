@@ -41,7 +41,7 @@ const BannerList = ({ banners, onBannerPress, onViewAllPress }) => {
                 style={styles.pageStyle}
                 source={{ uri: banner.image_url }}
                 defaultSource={{ uri: 'grey-bg' }}
-                resizeMode="contain"
+                resizeMode="cover"
               />
             </TouchableWithoutFeedback>
           </View>
