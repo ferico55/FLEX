@@ -532,6 +532,8 @@ typedef enum TagRequest {
     [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"phone_verif_last_appear"];
     [[NSUserDefaults standardUserDefaults] synchronize];
     
+    [NotificationCache.sharedManager pruneCache];
+    
     [self performSelector:@selector(applicationLogin:) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];
     
     [self reinitCartTabBar];

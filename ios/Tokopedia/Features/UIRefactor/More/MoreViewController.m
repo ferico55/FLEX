@@ -32,7 +32,6 @@
 #import "InboxTicketViewController.h"
 
 #import "InboxTalkViewController.h"
-#import "NotificationManager.h"
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
@@ -61,7 +60,7 @@
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
-@interface MoreViewController () <NotificationManagerDelegate, EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
+@interface MoreViewController () <EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -69,7 +68,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     RKObjectManager *_objectmanager;
     BOOL _isNoDataDeposit, hasLoadViewWillAppear;
-    NotificationManager *_notifManager;
     NSTimer *_requestTimer;
     
     UISplitViewController *splitViewController;
@@ -642,7 +640,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             case 1: {
                 [AnalyticsManager trackClickNavigateFromMore:@"Pembelian" parent:MORE_SECTION_2];
                 PurchaseViewController *purchaseController = [PurchaseViewController new];
-                purchaseController.notification = _notifManager.notification;
                 purchaseController.hidesBottomBarWhenPushed = YES;
                 [wrapperController.navigationController pushViewController:purchaseController animated:YES];
             }
@@ -669,7 +666,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         } else if(indexPath.row == 1) {
             [AnalyticsManager trackClickNavigateFromMore:@"Penjualan" parent:MORE_SECTION_3];
             SalesViewController *salesController = [SalesViewController new];
-            salesController.notification = _notifManager.notification;
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
@@ -808,41 +804,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
     CodeShareTableViewController *viewController = [storyboard instantiateInitialViewController];
     [self.navigationController pushViewController:viewController animated:YES];
- }
-#pragma mark - Notification Manager
-
-- (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:_wrapperViewController];
-    _notifManager.delegate = _wrapperViewController;
-    _wrapperViewController.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
 }
-
-//
-//- (void)tapNotificationBar {
-//    [_notifManager tapNotificationBar];
-//}
-//
-//- (void)tapWindowBar {
-//    [_notifManager tapWindowBar];
-//}
 
 - (void)navigateToContactUs:(NSNotification*)notification{
     [NavigateViewController navigateToContactUsFromViewController:_wrapperViewController];
 }
 
-#pragma mark - Notification delegate
-- (void)reloadNotification
-{
-    [self initNotificationManager];
-}
-//
-//- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-//{
-//    [notificationManager tapWindowBar];
-//    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-//}
-//
 - (void)pushViewController:(id)viewController
 {
     self.hidesBottomBarWhenPushed = YES;

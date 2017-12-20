@@ -10,16 +10,11 @@
 #import "MoreViewController.h"
 #import "UIView+HVDLayout.h"
 #import "Tokopedia-Swift.h"
-#import "NotificationManager.h"
-
-@interface MoreWrapperViewController()<NotificationManagerDelegate>
-
-@end
-
 
 @implementation MoreWrapperViewController {
     MoreViewController *_moreViewController;
-    NotificationManager *_notifManager;
+    NotificationBarButton *_barButton;
+    UserAuthentificationManager *_userManager;
 }
 
 - (void)viewDidLoad {
@@ -43,6 +38,16 @@
     if(IS_IPAD) {
         [_moreViewController.tableView HVD_fillInSuperViewWithInsets:UIEdgeInsetsMake(20, 70, 0, 70)];
     }
+    
+    _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
+    
+    _userManager = [UserAuthentificationManager new];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+    
+    [self initNotificationManager];
 }
 
 - (void)viewDidAppear:(BOOL)animated {
@@ -59,40 +64,14 @@
     });
 }
 
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
 - (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController {
-    UIViewController *vc = viewController;
-    vc.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
-- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
-}
-
-- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
-    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+    if ([_userManager isLogin]) {
+        self.navigationItem.rightBarButtonItem = _barButton;
+        [_barButton reloadNotifications];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 @end

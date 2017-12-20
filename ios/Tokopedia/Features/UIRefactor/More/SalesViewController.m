@@ -11,7 +11,6 @@
 #import "ShipmentConfirmationViewController.h"
 #import "ShipmentStatusViewController.h"
 #import "SalesTransactionListViewController.h"
-#import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
 
 @interface SalesViewController ()
@@ -24,6 +23,7 @@
 >
 {
     NotificationManager *_notificationManager;
+    NotificationData *_notification;
     UITableView *tableView;
 }
 
@@ -61,6 +61,9 @@
     [tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
+    
+    _notificationManager = [NotificationManager new];
+    _notificationManager.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -75,9 +78,7 @@
 {
     [super viewDidAppear:animated];
     
-    _notificationManager = [NotificationManager new];
-    [_notificationManager initNotificationRequest];
-    _notificationManager.delegate = self;
+    [_notificationManager loadNotifications];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -147,15 +148,15 @@
             break;
         case 1:
             cell.textLabel.text = @"Pesanan Baru";
-            cell.detailTextLabel.text = _notification.result.sales.sales_new_order?:@"0";
+            cell.detailTextLabel.text = _notification.sales != nil && _notification.sales.newOrder > 0 ? [NSString stringWithFormat:@"%ld", _notification.sales.newOrder] : @"0";
             break;
         case 2:
             cell.textLabel.text = @"Konfirmasi Pengiriman";
-            cell.detailTextLabel.text = _notification.result.sales.sales_shipping_confirm?:@"0";
+            cell.detailTextLabel.text = _notification.sales != nil && _notification.sales.shippingConfirm > 0 ? [NSString stringWithFormat:@"%ld", _notification.sales.shippingConfirm] : @"0";
             break;
         case 3:
             cell.textLabel.text = @"Status Pengiriman";
-            cell.detailTextLabel.text = _notification.result.sales.sales_shipping_status?:@"0";
+            cell.detailTextLabel.text = _notification.sales != nil && _notification.sales.shippingStatus > 0 ? [NSString stringWithFormat:@"%ld", _notification.sales.shippingStatus] : @"0";
             break;
         case 4:
             cell.textLabel.text = @"Daftar Transaksi";
@@ -193,8 +194,7 @@
 
 #pragma mark - Notification Manager Delegate
 
-- (void)didReceiveNotification:(Notification *)notification
-{
+- (void)notificationManager:(id)notificationManager notificationLoaded:(id)notification {
     _notification = notification;
     [tableView reloadData];
 }
@@ -203,17 +203,7 @@
 
 - (void)viewController:(UIViewController *)viewController numberOfProcessedOrder:(NSInteger)totalOrder
 {
-    if ([viewController isKindOfClass:[SalesNewOrderViewController class]]) {
-        NSInteger salesNewOrder = [_notification.result.sales.sales_new_order integerValue];
-        _notification.result.sales.sales_new_order = [NSString stringWithFormat:@"%@",
-                                                      [NSNumber numberWithInteger:(salesNewOrder - totalOrder)]];
-        [tableView reloadData];
-    } else if ([viewController isKindOfClass:[ShipmentConfirmationViewController class]]) {
-        NSInteger shipmentConfirmation = [_notification.result.sales.sales_shipping_confirm integerValue];
-        _notification.result.sales.sales_shipping_confirm = [NSString stringWithFormat:@"%@",
-                                                             [NSNumber numberWithInteger:(shipmentConfirmation - totalOrder)]];
-        [tableView reloadData];
-    }
+    // do nothing
 }
 
 @end

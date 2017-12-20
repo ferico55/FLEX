@@ -57,6 +57,7 @@
 #import <BlocksKit/NSObject+A2DynamicDelegate.h>
 #import "NSURL+Dictionary.h"
 #import "UIImage+Resize.h"
+#import "UIImage+ImageEffects.h"
 #import <Masonry/Masonry.h>
 #import "WebViewController.h"
 #import "GAITrackedViewController.h"
@@ -224,5 +225,18 @@
 #import "UserContainerViewController.h"
 
 #import "string_alert.h"
+
+#import "InboxTalkSplitViewController.h"
+#import "TKPDTabViewController.h"
+#import "InboxTalkViewController.h"
+#import "InboxResolSplitViewController.h"
+#import "InboxResolutionCenterTabViewController.h"
+#import "SalesNewOrderViewController.h"
+#import "ShipmentConfirmationViewController.h"
+#import "ShipmentStatusViewController.h"
+#import "SalesTransactionListViewController.h"
+#import "TxOrderStatusViewController.h"
+#import "TxOrderConfirmedViewController.h"
+
 #import "BannerType.h"
 #import "ReactDynamicFilterModule.h"

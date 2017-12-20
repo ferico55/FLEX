@@ -19,6 +19,8 @@
 #import "SalesTransactionListViewController.h"
 #import "ShipmentStatusViewController.h"
 
+#import "Tokopedia-Swift.h"
+
 @implementation RedirectHandler
 {
     NavigateViewController *_navigate;

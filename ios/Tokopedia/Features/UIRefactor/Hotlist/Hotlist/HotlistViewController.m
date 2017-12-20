@@ -6,15 +6,15 @@
 //  Copyright (c) 2014 TOKOPEDIA. All rights reserved.
 //
 #import "HotlistViewController.h"
-#import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
 #import "UIApplication+React.h"
 #import "ReactEventManager.h"
 #import "CategoryResultViewController.h"
 #import <React/RCTRootView.h>
 
-@interface HotlistViewController ()<NotificationManagerDelegate> {
-    NotificationManager *_notifManager;
+@interface HotlistViewController () {
+    NotificationBarButton *_barButton;
+    UserAuthentificationManager *_userManager;
 }
 
 @end
@@ -33,6 +33,10 @@
                                               initialProperties:@{@"name" : @"Hotlist", @"params" : @{} }];
     
     self.view = rootView;
+    
+    _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
+    
+    _userManager = [UserAuthentificationManager new];
 }
 
 -(void)viewWillAppear:(BOOL)animated {
@@ -40,10 +44,11 @@
     
     [AnalyticsManager trackScreenName:@"Hot List Page"];
     
-    [self initNotificationManager];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
     
     [self checkForPhoneVerification];
+    
+    [self initNotificationManager];
 }
 
 -(void)checkForPhoneVerification{
@@ -125,44 +130,17 @@
 
 #pragma mark - Notification Manager
 - (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
-}
-
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController {
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-}
-
-- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
-}
-
-- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
-    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
+    if ([_userManager isLogin]) {
+        self.navigationItem.rightBarButtonItem = _barButton;
+        [_barButton reloadNotifications];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 - (void)scrollToTop {
     ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
     [tabManager sendScrollToTopEvent];
 }
-
-
 @end

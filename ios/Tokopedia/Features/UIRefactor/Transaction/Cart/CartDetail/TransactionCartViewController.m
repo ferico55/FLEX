@@ -44,7 +44,6 @@
 #import "Tokopedia-Swift.h"
 
 #import "UITableView+FDTemplateLayoutCell.h"
-#import "NotificationManager.h"
 
 #define DurationInstallmentFormat @"%@ bulan (%@)"
 @import SwiftOverlays;
@@ -105,12 +104,14 @@ NoResultDelegate
     NoResultReusableView *_noLoginView;
     
     NSMutableArray *_errorMessages;
-    NotificationManager *_notifManager;
+    NotificationBarButton *_barButton;
     
     NSString *_editedCartId;
     
     UIView *_lineView;
     UIView *lastNotificationView;
+    
+    UserAuthentificationManager *_userManager;
 }
 
 @property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
@@ -164,8 +165,6 @@ NoResultDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    
-    
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _topAdsService = [TopAdsService new];
@@ -184,12 +183,14 @@ NoResultDelegate
     [_tableView addSubview:_refreshControl];
     
     [self initAllNoResult];
-    [self initNotificationManager];
     
     [self refreshRequestCart];
     
     [AnalyticsManager trackScreenName:@"Shopping Cart"];
+ 
+    _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
     
+    _userManager = [UserAuthentificationManager new];
 }
 
 - (void)initNotification {
@@ -243,18 +244,13 @@ NoResultDelegate
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem =_notifManager.notificationButton;
-}
-
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
+    if ([_userManager isLogin]) {
+        self.navigationItem.rightBarButtonItem = _barButton;
+        [_barButton reloadNotifications];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
 #pragma mark - Notification delegate
@@ -262,26 +258,6 @@ NoResultDelegate
 - (void)reloadNotification
 {
     [self initNotificationManager];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController
-{
-    [self.navigationController pushViewController:viewController animated:YES];
-}
-
-- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
-}
-
-- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
-    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
 }
 
 -(void)initAllNoResult{
@@ -351,6 +327,7 @@ NoResultDelegate
         _tableView.tableFooterView =_checkoutView;
     } else _tableView.tableFooterView = nil;
     
+    [self initNotificationManager];
 }
 
 -(void)userLogin{
@@ -1713,7 +1690,6 @@ NoResultDelegate
         [_noInternetConnectionView removeFromSuperview];
         [self refreshRequestCart];
     }
-    
 }
 
 @end

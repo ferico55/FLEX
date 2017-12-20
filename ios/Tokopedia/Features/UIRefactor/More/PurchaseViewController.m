@@ -11,12 +11,12 @@
 #import <Masonry/Masonry.h>
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
-#import "NotificationManager.h"
 #import "Tokopedia-Swift.h"
 
 @interface PurchaseViewController ()<NotificationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
 {
     NotificationManager *_notificationManager;
+    NotificationData *_notification;
     UITableView *tableView;
 }
 
@@ -45,6 +45,9 @@
                                             selector:@selector(updateValues:)
                                                 name:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME
                                               object:nil];
+    
+    _notificationManager = [NotificationManager new];
+    _notificationManager.delegate = self;
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -55,9 +58,7 @@
     
     self.hidesBottomBarWhenPushed = YES;
     
-    _notificationManager = [NotificationManager new];
-    [_notificationManager initNotificationRequest];
-    _notificationManager.delegate = self;
+    [_notificationManager loadNotifications];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -107,15 +108,15 @@
     switch (indexPath.row) {
         case 0:
             cell.textLabel.text = @"Status Pembayaran";
-            cell.detailTextLabel.text = _notification.result.purchase.purchase_payment_confirm?:@"0";
+            cell.detailTextLabel.text = _notification.purchase != nil && _notification.purchase.paymentConfirm > 0 ? [NSString stringWithFormat:@"%ld", _notification.purchase.paymentConfirm] : @"0";
             break;
         case 1:
             cell.textLabel.text = @"Status Pemesanan";
-            cell.detailTextLabel.text =  _notification.result.purchase.purchase_order_status?:@"0";
+            cell.detailTextLabel.text = _notification.purchase != nil && _notification.purchase.orderStatus > 0 ? [NSString stringWithFormat:@"%ld", _notification.purchase.orderStatus] : @"0";
             break;
         case 2:
             cell.textLabel.text = @"Konfirmasi Penerimaan";
-            cell.detailTextLabel.text = _notification.result.purchase.purchase_delivery_confirm?:@"0";
+            cell.detailTextLabel.text = _notification.purchase != nil && _notification.purchase.deliveryConfirm > 0 ? [NSString stringWithFormat:@"%ld", _notification.purchase.deliveryConfirm] : @"0";
             break;
         case 3:
             cell.textLabel.text = @"Daftar Transaksi";
@@ -154,15 +155,10 @@
 
 -(void)updateValues:(NSNotification*)notification
 {
-    _notificationManager = [NotificationManager new];
-    [_notificationManager initNotificationRequest];
-    _notificationManager.delegate = self;
-
-    [tableView reloadData];
+    [_notificationManager loadNotifications];
 }
 
-- (void)didReceiveNotification:(Notification *)notification
-{
+- (void)notificationManager:(id)notificationManager notificationLoaded:(id)notification {
     _notification = notification;
     [tableView reloadData];
 }

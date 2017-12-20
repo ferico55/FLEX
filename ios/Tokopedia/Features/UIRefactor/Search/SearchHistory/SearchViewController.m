@@ -15,7 +15,6 @@
 #import "ProductFeedViewController.h"
 #import "SearchAutoCompleteViewController.h"
 #import "CatalogViewController.h"
-#import "NotificationManager.h"
 #import "HotlistResultViewController.h"
 #import "NSString+MD5.h"
 #import "SearchAutoCompleteDomains.h"
@@ -37,12 +36,9 @@ UISearchDisplayDelegate,
 UICollectionViewDataSource,
 UICollectionViewDelegate,
 UINavigationControllerDelegate,
-SearchResultDelegate,
-NotificationDelegate,
-NotificationManagerDelegate
+SearchResultDelegate
 >
 {
-    NotificationManager *_notifManager;
     UITapGestureRecognizer *imageSearchGestureRecognizer;
     Debouncer *debouncer;
     
@@ -51,8 +47,6 @@ NotificationManagerDelegate
 
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 
-@property (strong, nonatomic) NotificationBarButton *notificationButton;
-@property (strong, nonatomic) NotificationViewController *notificationController;
 @property (strong, nonatomic) IBOutlet UIView *iconCamera;
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *searchBarTrailingConstraint;
 @property (strong, nonatomic) IBOutlet UIImageView *cameraImageView;
@@ -136,8 +130,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self getUserSearchSuggestionDataWithQuery:@""];
-    
-    [self initNotificationManager];
     
     if([self isEnableImageSearch]) {
         _searchBarTrailingConstraint.constant = 44;
@@ -450,23 +442,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
     _data = data;
 }
 
-#pragma mark - Notification Manager
-- (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
-}
-
-- (void)tapNotificationBar {
-    [_searchBar resignFirstResponder];
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
 #pragma mark - Notification delegate
 - (void)goToHotlist:(NSNotification*)notification {
     NSDictionary *userInfo = notification.userInfo;
@@ -483,15 +458,6 @@ NSString *const RECENT_SEARCH = @"recent_search";
 
 - (void)keyboardWillHide:(NSNotification *)info {
     _collectionView.contentInset = UIEdgeInsetsZero;
-}
-
-- (void)reloadNotification {
-    [self initNotificationManager];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
 }
 
 - (void)pushViewController:(id)viewController {

@@ -28,7 +28,6 @@
 #import "TransactionATCViewController.h"
 
 #import "NSNumberFormatter+IDRFormater.h"
-#import "NotificationManager.h"
 #import "UITextField+BlocksKit.h"
 #import "Tokopedia-Swift.h"
 
@@ -44,8 +43,7 @@ UICollectionViewDelegate,
 UICollectionViewDelegateFlowLayout,
 UIScrollViewDelegate,
 NoResultDelegate,
-RetryViewDelegate,
-NotificationManagerDelegate
+RetryViewDelegate
 >
 
 
@@ -94,7 +92,7 @@ typedef enum TagRequest {
     UIScrollView *_noResultScrollView;
     TopAdsView *_topAdsView;
     
-    NotificationManager *_notifManager;
+    NotificationBarButton *_barButton;
 }
 
 #pragma mark - Initialization
@@ -247,6 +245,14 @@ typedef enum TagRequest {
     }
     
     [self requestPromo];
+    
+    _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
+    [super viewDidAppear:animated];
+    
+    
 }
 
 -(void) loadAllWishlist {
@@ -317,6 +323,8 @@ typedef enum TagRequest {
     [super viewWillAppear:animated];
     
     [AnalyticsManager trackScreenName:@"Home - Wish List"];
+    
+    [self initNotificationManager];
 }
 
 - (void)registerNib {
@@ -729,41 +737,15 @@ typedef enum TagRequest {
 
 #pragma mark - Notification Manager
 - (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+    if ([_userManager isLogin]) {
+        self.navigationItem.rightBarButtonItem = _barButton;
+        [_barButton reloadNotifications];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
 
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)pushViewController:(id)viewController {
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-}
-
-- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
-}
-
-- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
-    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
-}
 #pragma - Scroll to Top
 - (void)scrollToTop
 {

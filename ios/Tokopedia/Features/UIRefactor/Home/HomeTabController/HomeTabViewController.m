@@ -14,10 +14,8 @@
 #import "FavoritedShopViewController.h"
 
 #import "HomeTabHeaderViewController.h"
-#import "NotificationManager.h"
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "InboxTalkViewController.h"
-#import "NotificationState.h"
 #import "UserAuthentificationManager.h"
 
 #import "MyWishlistViewController.h"
@@ -34,7 +32,6 @@
 @interface HomeTabViewController ()
 <
     UIScrollViewDelegate,
-    NotificationManagerDelegate,
     RedirectHandlerDelegate,
     UISearchControllerDelegate,
     UISearchResultsUpdating,
@@ -42,7 +39,6 @@
     UINavigationControllerDelegate
 >
 {
-    NotificationManager *_notifManager;
     NSInteger _page;
     UserAuthentificationManager *_userManager;
     RedirectHandler *_redirectHandler;
@@ -50,6 +46,7 @@
     NSURL *_deeplinkUrl;
     BOOL _needToActivateSearch;
     BOOL _isViewLoaded;
+    NotificationBarButton *_barButton;
 }
 
 @property (strong, nonatomic) HomePageViewController *homePageController;
@@ -173,10 +170,13 @@
     [_homePageController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
     [_homePageController didMoveToParentViewController:self];
+    
+    // init notification bar button
+    _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
+    
     [self setArrow];
     [self setHeaderBar];
     [self setSearchBar];
-    
 }
 
 
@@ -238,6 +238,7 @@
         [_scrollView setContentSize:CGSizeMake(self.view.frame.size.width*2, 300)];
     }
     
+    [self initNotificationManager];
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -252,7 +253,6 @@
 - (void)viewDidAppear:(BOOL)animated {
     [super viewDidAppear:animated];
     _isViewLoaded = YES;
-    [self initNotificationManager];
 }
 
 - (void)setArrow {
@@ -356,80 +356,20 @@
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {
-    _notifManager = [NotificationManager new];
-    [_notifManager setViewController:self];
-    _notifManager.delegate = self;
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+    if ([_userManager isLogin]) {
+        self.navigationItem.rightBarButtonItem = _barButton;
+        [_barButton reloadNotifications];
+    }
+    else {
+        self.navigationItem.rightBarButtonItem = nil;
+    }
 }
-
-- (void)tapNotificationBar {
-    [_notifManager tapNotificationBar];
-    [AnalyticsManager trackEventName:@"clickTopedIcon" category:GA_EVENT_CATEGORY_NOTIFICATION action:GA_EVENT_ACTION_CLICK label:@"Bell Notification"];
-}
-
-- (void)tapWindowBar {
-    [_notifManager tapWindowBar];
-}
-
-
-- (void)reloadNotification
-{
-    [self initNotificationManager];
-}
-
-- (void)notificationManager:(id)notificationManager pushViewController:(id)viewController
-{
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(pushViewController:) withObject:viewController afterDelay:0.3];
-}
-
-- (void)navigateUsingTPRoutesWithString:(NSString *)urlString onNotificationManager:(id)notificationManager {
-    [notificationManager tapWindowBar];
-    [self performSelector:@selector(redirectUsingTPRoutesToURL:) withObject:urlString afterDelay:0.45];
-}
-
-- (void)redirectUsingTPRoutesToURL:(NSString *)urlString {
-    [TPRoutes routeURL:[NSURL URLWithString:urlString]];
-}
-
-- (void)goToInboxMessage {
-    [TPRoutes routeURL:[NSURL URLWithString:@"tokopedia://topchat"]];
-}
-
-- (void)goToInboxTalk {
-    [_navigate navigateToInboxTalkFromViewController:self];
-}
-
-- (void)goToInboxReview {
-    [_navigate navigateToInboxReviewFromViewController:self];
-}
-
-- (void)goToNewOrder {
-    
-}
-
--(void)goToResolutionCenter
-{
-    [_navigate navigateToInboxResolutionFromViewController:self];
-}
-
-#pragma mark - Child view contoller delegate
-
-- (void)pushViewController:(id)viewController
-{
-    self.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:viewController animated:YES];
-    self.hidesBottomBarWhenPushed = NO;
-}
-
-
 
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
 
 - (void)redirectNotification:(NSNotification*)notification {
     NSDictionary* data = [notification.userInfo objectForKey:@"data"];
@@ -458,8 +398,8 @@
         _searchBarWrapperView.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 }
 
-- (void)willDismissSearchController:(UISearchController *)searchController {
-    self.navigationItem.rightBarButtonItem = _notifManager.notificationButton;
+- (void)didDismissSearchController:(UISearchController *)searchController {
+    [self initNotificationManager];
 }
 
 - (void)userDidLogin:(NSNotification*)notification {
