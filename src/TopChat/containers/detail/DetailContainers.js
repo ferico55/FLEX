@@ -5,10 +5,10 @@ import {
   fetchReplyListForSearch,
   mergeReplyListAfterSearch,
   resetScrollParams,
-} from '@redux/chat_detail/Actions'
-import { sendTyping, sendMessage, unsetMsgId } from '@redux/messages/Actions'
+} from '@TopChatRedux/chat_detail/Actions'
+import { sendTyping, sendMessage, unsetMsgId } from '@TopChatRedux/messages/Actions'
 
-import { disconnectingWebSocket } from '@redux/web_socket/Actions'
+import { disconnectingWebSocket } from '@TopChatRedux/web_socket/Actions'
 
 import DetailView from './DetailView'
 

@@ -14,7 +14,7 @@ import {
 import Navigator from 'native-navigation'
 import SearchBar from 'react-native-search-bar'
 import { TKPReactAnalytics, RNSearchBarManager } from 'NativeModules'
-import { Loading, Overlay } from '@components/'
+import { Loading, Overlay } from '@TopChatComponents/'
 
 const { height } = Dimensions.get('window')
 const WINDOW_HEIGHT = height

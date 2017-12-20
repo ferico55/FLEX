@@ -8,15 +8,18 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView,
 } from 'react-native'
-import sendButton from '@img/sendButton.png'
 import {
   TKPReactAnalytics,
   TKPReactURLManager,
   ReactNetworkManager,
   ReactInteractionHelper,
+  ReactUserManager,
 } from 'NativeModules'
 import Navigator from 'native-navigation'
 import { Subject } from 'rxjs'
+import { Loading } from '@TopChat/components'
+import sendButton from '@img/sendButton.png'
+import ChatTemplate from '@TopChat/containers/chat_template/ChatTemplateContainers'
 
 const styles = StyleSheet.create({
   main: {
@@ -29,6 +32,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderTopWidth: 1,
     borderTopColor: 'rgba(224, 224, 224, 0.7)',
+    backgroundColor: 'rgb(255,255,255)',
   },
   attachmentView: {
     justifyContent: 'center',
@@ -82,14 +86,31 @@ export default class SendChatMessageComposer extends Component {
     this.state = {
       messageText: '',
       composerHeight: 0,
+      wrapperHeight: 0,
+      loading: true,
+      isLogin: false,
     }
 
     this.sendButton$ = new Subject()
   }
 
+  componentWillMount() {
+    ReactUserManager.userIsLogin((_, isLogin) => {
+      if (isLogin) {
+        if (this.props.chatTemplate.templates.length === 0) {
+          this.fetchTemplate()
+        } else {
+          this.setState({ isLogin, loading: false })
+        }
+      } else {
+        this.setState({ loading: false })
+      }
+    })
+  }
+
   componentDidMount() {
     TKPReactAnalytics.trackScreenName('send message room')
-    
+
     this.sendButtonSubcriber = this.sendButton$
       .take(1)
       .subscribe(({ message, to_shop_id, to_user_id }) => {
@@ -126,38 +147,14 @@ export default class SendChatMessageComposer extends Component {
       })
   }
 
-  attachmentView() {
-    if (this.props.data.source === 'pdp') {
-      return (
-        <View style={styles.attachmentView}>
-          <Text style={styles.attachmentTitle}>Link Produk:</Text>
-          <Text style={styles.attachmentURL}>{this.props.data.productURL}</Text>
-        </View>
-      )
-    }
-
-    if (
-      this.props.data.source === 'tx_ask_buyer' ||
-      this.props.data.source === 'tx_ask_seller'
-    ) {
-      return (
-        <View style={styles.attachmentView}>
-          <Text style={styles.attachmentTitle}>INVOICE:</Text>
-          <Text style={styles.attachmentURL}>{this.props.data.invoiceURL}</Text>
-        </View>
-      )
-    }
-
-    return null
-  }
-
-  handleTextChanged = messageText => {
-    this.setState({
-      messageText,
-    })
-  }
-
   handleSendButtonPressed = () => {
+    if (!this.state.isLogin) {
+      ReactInteractionHelper.showErrorStickyAlert(
+        'Silahkan login terlebih dahulu untuk mengirim chat ke penjual',
+      )
+      return
+    }
+
     if (this.state.messageText === '') {
       ReactInteractionHelper.showErrorStickyAlert(
         'Isi chat tidak boleh kosong.',
@@ -183,7 +180,7 @@ export default class SendChatMessageComposer extends Component {
     this.sendButton$.next(param)
   }
 
-  onLayoutComposerHeight = ({ nativeEvent: { layout: { height } } }) => {
+  handleLayoutComposerHeight = ({ nativeEvent: { layout: { height } } }) => {
     this.setState({
       composerHeight: height,
     })
@@ -193,7 +190,88 @@ export default class SendChatMessageComposer extends Component {
     this.sendButtonSubcriber.unsubscribe()
   }
 
+  fetchTemplate = () =>
+    this.props
+      .fetchChatTemplate()
+      .then(() => {
+        this.setState({
+          loading: false,
+          isLogin: true,
+        })
+      })
+      .catch(() => this.setState({ loading: false }))
+
+  handleLayoutWrapperHeight = ({ nativeEvent: { layout: { height } } }) => {
+    this.setState({
+      wrapperHeight: height,
+    })
+  }
+
+  handleTextChanged = messageText => {
+    this.setState({
+      messageText,
+    })
+  }
+
+  attachmentView() {
+    if (this.props.data.source === 'pdp') {
+      return (
+        <View style={styles.attachmentView}>
+          <Text style={styles.attachmentTitle}>Link Produk:</Text>
+          <Text style={styles.attachmentURL}>{this.props.data.productURL}</Text>
+        </View>
+      )
+    }
+
+    if (
+      this.props.data.source === 'tx_ask_buyer' ||
+      this.props.data.source === 'tx_ask_seller'
+    ) {
+      return (
+        <View style={styles.attachmentView}>
+          <Text style={styles.attachmentTitle}>INVOICE:</Text>
+          <Text style={styles.attachmentURL}>{this.props.data.invoiceURL}</Text>
+        </View>
+      )
+    }
+
+    return null
+  }
+
+  handlePressTemplate = messageText => {
+    this.setState(
+      prevState => ({
+        messageText: `${prevState.messageText}${messageText} `,
+      }),
+      () => {
+        if (this.props.data.source === 'pdp') {
+          const trackerParams = {
+            name: 'clickProductPage',
+            category: 'click on template chat',
+            action: '',
+            label: '',
+          }
+
+          TKPReactAnalytics.trackEvent(trackerParams)
+        } else if (this.props.data.source === 'shop') {
+          const trackerParams = {
+            name: 'clickShopPage',
+            category: 'click on template chat',
+            action: '',
+            label: '',
+          }
+
+          TKPReactAnalytics.trackEvent(trackerParams)
+        }
+      },
+    )
+  }
+
   render() {
+    if (this.state.loading) {
+      return <Loading />
+    }
+
     return (
       <KeyboardAvoidingView
         behavior={'padding'}
@@ -201,17 +279,28 @@ export default class SendChatMessageComposer extends Component {
         keyboardVerticalOffset={this.state.composerHeight}
       >
         <View style={{ flex: 1 }} />
-        <View style={styles.container}>
+        <View
+          style={styles.container}
+          onLayout={this.handleLayoutWrapperHeight}
+        >
+          {!this.state.isLogin ? null : (
+            <ChatTemplate
+              chatTemplate={this.props.chatTemplate}
+              onPressTemplate={this.handlePressTemplate}
+              bottomOffset={this.state.wrapperHeight}
+            />
+          )}
           {this.attachmentView()}
           <View
             style={styles.composerView}
-            onLayout={this.onLayoutComposerHeight}
+            onLayout={this.handleLayoutComposerHeight}
           >
             <TextInput
               style={styles.textView}
               placeholder={'Tulis pesan...'}
               placeholderTextColor={'rgba(0, 0, 0, 0.4)'}
               selectionColor={'rgb(66, 181, 73)'}
+              value={this.state.messageText}
               onChangeText={this.handleTextChanged}
               multiline
             />

@@ -1,7 +1,9 @@
-import { getReplyList, reply } from '@helpers/Requests'
+import { getReplyList, reply } from '@TopChatHelpers/Requests'
 import { Observable } from 'rxjs'
 import _ from 'lodash'
-import { unixConverter } from '@helpers/TimeConverters'
+import { unixConverter } from '@TopChatHelpers/TimeConverters'
+import Navigator from 'native-navigation'
+import { ReactInteractionHelper } from 'NativeModules'
 
 import {
   setMsgId,
@@ -12,7 +14,7 @@ import {
   SEND_WITH_API,
   SEND_WITH_API_SUCCESS,
   SEND_WITH_API_ERROR,
-} from '@redux/messages/Actions'
+} from '@TopChatRedux/messages/Actions'
 
 // list of type
 export const FETCH_REPLY_LIST = 'FETCH_REPLY_LIST'
@@ -191,6 +193,14 @@ const composeData = (res, state) => {
 export const getReplyListEpic = (action$, store) =>
   action$.ofType(FETCH_REPLY_LIST).mergeMap(action =>
     Observable.from(getReplyList(action.payload, action.page, action.per_page))
+      .do(res => {
+        if (!res) {
+          Navigator.pop()
+          ReactInteractionHelper.showErrorStickyAlert(
+            'Terjadi gangguan pada server',
+          )
+        }
+      })
       .map(res => {
         if (!res.success) {
           throw res
@@ -199,7 +209,6 @@ export const getReplyListEpic = (action$, store) =>
         if (res.data.list !== null) {
           const dataSource = {
             ...res,
-
             data: {
               ...res.data,
               list: [...composeData(res, state)()],

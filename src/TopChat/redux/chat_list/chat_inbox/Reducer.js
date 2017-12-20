@@ -14,7 +14,7 @@ import {
   END_TYPING_MESSAGE,
   IS_RECEIVE_MESSAGE,
   SET_MSG_ID,
-} from '@redux/messages/Actions'
+} from '@TopChatRedux/messages/Actions'
 
 const initialState = {
   data: {

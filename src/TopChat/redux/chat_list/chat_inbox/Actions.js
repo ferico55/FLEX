@@ -1,14 +1,23 @@
-import { getChatList, markRead, moveToTrash } from '@helpers/Requests'
-import { Observable } from 'rxjs'
-import { unixConverter } from '@helpers/TimeConverters'
-import { IS_RECEIVE_MESSAGE, SEND_CHAT_MESSAGE } from '@redux/messages/Actions'
 import {
-  fetchReplyList,
-  setIpadAttributes,
-} from '@redux/chat_detail/Actions'
+  getChatList,
+  markRead,
+  moveToTrash,
+  getChatTemplate,
+} from '@TopChatHelpers/Requests'
+import { Observable } from 'rxjs'
 import { ReactInteractionHelper } from 'NativeModules'
 import Navigator from 'native-navigation'
 import _ from 'lodash'
+import { unixConverter } from '@TopChatHelpers/TimeConverters'
+import {
+  IS_RECEIVE_MESSAGE,
+  SEND_CHAT_MESSAGE,
+} from '@TopChatRedux/messages/Actions'
+import {
+  fetchReplyList,
+  setIpadAttributes,
+} from '@TopChatRedux/chat_detail/Actions'
+import { FETCH_CHAT_TEMPLATE_SUCCESS } from '@TopChatRedux/chat_template/Actions'
 
 // List of types
 export const FETCH_CHAT_LIST = 'FETCH_CHAT_LIST'
@@ -27,13 +36,13 @@ export const DELETE_SELECTED_DATA = 'DELETE_SELECTED_DATA'
 export const DELETE_SELECTED_DATA_SUCCESS = 'DELETE_SELECTED_DATA_SUCCESS'
 
 // List of actions
-export const fetchChatList = (
+export const fetchChatList = ({
   filter,
   page,
   msg_id_applink,
   auth_info,
   from_ipad,
-) => ({
+}) => ({
   type: FETCH_CHAT_LIST,
   payload: {
     tab: 'inbox',
@@ -118,7 +127,7 @@ export const getChatListEpic = (action$, store) =>
           pushToDetail(result, action, store)
         }
       })
-      .map(result => {
+      .mergeMap(result => {
         if (!result.success) {
           throw result
         }
@@ -144,7 +153,20 @@ export const getChatListEpic = (action$, store) =>
           },
           isEmpty: _.isEmpty(chatInbox),
         }
-        return fetchChatListSuccess(result)
+
+        return Observable.from(getChatTemplate())
+          .mergeMap(({ data: { templates, is_enable }, success }) => [
+            fetchChatListSuccess(result),
+            {
+              type: FETCH_CHAT_TEMPLATE_SUCCESS,
+              payload: {
+                templates: templates.filter(v => v !== '_'),
+                is_enable,
+                success,
+              },
+            },
+          ])
+          .catch(() => Observable.of(fetchChatListSuccess(result)))
       })
       .catch(result =>
         Observable.of({

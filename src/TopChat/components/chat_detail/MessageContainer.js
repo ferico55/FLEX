@@ -9,27 +9,45 @@ import {
   ActivityIndicator,
   Text,
 } from 'react-native'
-import _ from 'lodash'
-import { textToTimeAgo } from '@helpers/TimeConverters'
-import { BubbleChat, MessageComposer } from '@components/'
+import { TKPReactAnalytics } from 'NativeModules'
+import { textToTimeAgo } from '@TopChatHelpers/TimeConverters'
+import { INPUT_MIN_HEIGHT } from '@TopChatHelpers/Constants'
+import { BubbleChat, MessageComposer } from '@TopChatComponents/'
+import ChatTemplate from '@TopChatContainers/chat_template/ChatTemplateContainers'
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  timeWrapper: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    height: 25,
+  },
+  timeText: {
+    fontSize: 11,
+    color: 'rgba(0,0,0,0.3)',
+  },
+})
 
 export default class MessageContainer extends Component {
   constructor(props) {
     super(props)
 
     this.state = {
-      wrapperBottomOffset: 40,
+      wrapperBottomOffset: INPUT_MIN_HEIGHT + 16,
       isInitialized: false,
       containerHeight: 0,
       innerContainerHeight: 0,
       dataSource: [],
       showHistoryFooter: false,
       isScrollToHighlight: false,
+      messageText: props.messageText,
     }
 
     this.limiter = 1
+    this.animatedScrollY = new Animated.Value(0)
     this.containerHeight = new Animated.Value(0)
-    this.wrapperBottomOffset = new Animated.Value(40)
   }
 
   // will be use on next version
@@ -56,32 +74,35 @@ export default class MessageContainer extends Component {
       userId={this.props.userId}
       searchKeyword={this.props.searchKeyword}
       onUrlPress={this.props.onUrlPress}
+      showComposer={this.props.data.textarea_reply}
     />
   )
 
-  onKeyboardWillShow = ({ endCoordinates: { height } }) => {
+  handleKeyboardWillShow = ({ endCoordinates: { height } }) => {
+    const keyboardHeight = height
     Animated.timing(this.containerHeight, {
-      toValue: this.state.containerHeight - height,
+      toValue: this.state.containerHeight - keyboardHeight,
       duration: 200,
       bounciness: 0,
     }).start()
     this.setState({
-      innerContainerHeight: this.state.containerHeight - height - 40,
+      innerContainerHeight:
+        this.state.containerHeight - height - INPUT_MIN_HEIGHT - 16,
     })
   }
 
-  onKeyboardWillHide = () => {
+  handleKeyboardWillHide = () => {
     Animated.timing(this.containerHeight, {
       toValue: this.state.containerHeight,
       duration: 200,
       bounciness: 0,
     }).start()
     this.setState({
-      innerContainerHeight: this.state.containerHeight - 40,
+      innerContainerHeight: this.state.containerHeight - INPUT_MIN_HEIGHT - 16,
     })
   }
 
-  onLayoutInitialized = ({ nativeEvent: { layout: { height } } }) => {
+  handleLayoutInitialized = ({ nativeEvent: { layout: { height } } }) => {
     Animated.timing(this.containerHeight, {
       toValue: height,
       bounciness: 0,
@@ -90,18 +111,22 @@ export default class MessageContainer extends Component {
       this.setState({
         isInitialized: true,
         containerHeight: height,
-        innerContainerHeight: height - 40,
+        innerContainerHeight: height - INPUT_MIN_HEIGHT - 16, // 16 is padding of message composer (8x2)
       })
     })
   }
 
-  onPressSend = message => {
+  handlePressSend = message => {
     if (this.props.onPressSend) {
       this.props.onPressSend(message, this.sectionList)
     }
+
+    this.setState({
+      messageText: '',
+    })
   }
 
-  onPressAttachment = () => {
+  handlePressAttachment = () => {
     if (this.props.onPressAttachment) {
       this.props.onPressAttachment(this.sectionList)
     }
@@ -123,7 +148,7 @@ export default class MessageContainer extends Component {
     return null
   }
 
-  onLayoutComposer = ({ nativeEvent: { layout: { height } } }) => {
+  handleLayoutComposer = ({ nativeEvent: { layout: { height } } }) => {
     this.setState({
       wrapperBottomOffset: height,
     })
@@ -149,6 +174,33 @@ export default class MessageContainer extends Component {
     return error
   }
 
+  handlePressTemplate = messageText => {
+    this.setState(
+      prevState => ({
+        messageText: `${prevState.messageText}${messageText} `,
+      }),
+      () => {
+        const trackerParams = {
+          name: 'clickInboxChat',
+          category: 'click on template chat',
+          action: '',
+          label: '',
+        }
+        TKPReactAnalytics.trackEvent(trackerParams)
+      },
+    )
+  }
+
+  handleChangeText = messageText => {
+    if (this.props.onChangeText) {
+      this.props.onChangeText(messageText)
+    }
+
+    this.setState({
+      messageText,
+    })
+  }
+
   render() {
     if (this.state.isInitialized) {
       return (
@@ -163,7 +215,7 @@ export default class MessageContainer extends Component {
               right: 0,
               height: this.props.data.textarea_reply
                 ? this.state.innerContainerHeight
-                : this.state.innerContainerHeight + 40,
+                : this.state.innerContainerHeight + INPUT_MIN_HEIGHT, // make it full screen
             }}
           >
             <SectionList
@@ -191,17 +243,36 @@ export default class MessageContainer extends Component {
               }}
               inverted
               renderSectionFooter={this.renderSectionFooter}
-              onScroll={this.props.onScroll}
+              onScroll={Animated.event(
+                [
+                  {
+                    nativeEvent: { contentOffset: { y: this.animatedScrollY } },
+                  },
+                ],
+                {
+                  listener: event => {
+                    this.props.onScroll(event)
+                  },
+                },
+              )}
               renderItem={this.renderItem}
               keyExtractor={(item, index) => item.reply_id}
               sections={this.props.data.list}
-              onKeyboardWillShow={this.onKeyboardWillShow}
-              onKeyboardWillHide={this.onKeyboardWillHide}
+              onKeyboardWillShow={this.handleKeyboardWillShow}
+              onKeyboardWillHide={this.handleKeyboardWillHide}
               ListFooterComponent={this.props.loadingIndicator}
               ListHeaderComponent={this.renderIsTyping}
               keyboardDismissMode={'on-drag'}
             />
           </Animated.View>
+          {!this.props.data.textarea_reply ? null : (
+            <ChatTemplate
+              animated
+              offsetY={this.animatedScrollY}
+              bottomOffset={this.state.wrapperBottomOffset}
+              onPressTemplate={this.handlePressTemplate}
+            />
+          )}
           {!this.props.data.textarea_reply ? null : (
             <View
               style={{
@@ -215,11 +286,11 @@ export default class MessageContainer extends Component {
             >
               <MessageComposer
                 showComposer={this.props.data.textarea_reply}
-                onPressAttachment={this.onPressAttachment}
-                onChangeText={this.props.onChangeText}
-                onPressSend={this.onPressSend}
-                messageText={this.props.messageText}
-                onLayoutComposer={this.onLayoutComposer}
+                onPressAttachment={this.handlePressAttachment}
+                onChangeText={this.handleChangeText}
+                onPressSend={this.handlePressSend}
+                messageText={this.state.messageText}
+                onLayoutComposer={this.handleLayoutComposer}
                 connectedToWS={this.props.connectedToWS}
               />
             </View>
@@ -257,7 +328,7 @@ export default class MessageContainer extends Component {
           styles.container,
           { alignItems: 'center', justifyContent: 'center' },
         ]}
-        onLayout={this.onLayoutInitialized}
+        onLayout={this.handleLayoutInitialized}
       >
         <ActivityIndicator size={'small'} animating />
       </View>
@@ -271,18 +342,3 @@ MessageContainer.defaultProps = {
   },
   paging_next: false,
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  timeWrapper: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: 25,
-  },
-  timeText: {
-    fontSize: 11,
-    color: 'rgba(0,0,0,0.3)',
-  },
-})

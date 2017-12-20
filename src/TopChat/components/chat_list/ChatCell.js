@@ -4,7 +4,7 @@ import Navigator from 'native-navigation'
 import PropTypes from 'prop-types'
 import striptags from 'striptags'
 import { TKPReactAnalytics } from 'NativeModules'
-import { unixConverter, lastReplyTime } from '@helpers/TimeConverters'
+import { unixConverter, lastReplyTime } from '@TopChatHelpers/TimeConverters'
 import radioButton from '@img/radioButton.png'
 import checkList from '@img/checkList.png'
 
@@ -34,9 +34,8 @@ const styles = StyleSheet.create({
   userLabelContainer: {
     borderColor: '#42b549',
     borderWidth: 1,
-    borderRadius: 5,
-    opacity: 0.7,
-    padding: 3,
+    borderRadius: 12,
+    padding: 5,
     height: 18,
     justifyContent: 'center',
   },

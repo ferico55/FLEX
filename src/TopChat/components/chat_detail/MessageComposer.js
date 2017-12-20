@@ -11,12 +11,13 @@ import {
 
 import attachProduct from '@img/attachProduct.png'
 import sendButton from '@img/sendButton.png'
+import { INPUT_MAX_HEIGHT, INPUT_MIN_HEIGHT } from '@TopChatHelpers/Constants'
 
 export default class MessageComposer extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      messageText: '',
+      messageText: props.messageText,
     }
   }
 
@@ -24,20 +25,12 @@ export default class MessageComposer extends Component {
     if (this.props.onChangeText) {
       this.props.onChangeText(messageText)
     }
-
-    this.setState({
-      messageText,
-    })
   }
 
   onPressSend = () => {
     if (this.props.onPressSend) {
       this.props.onPressSend(this.state.messageText)
     }
-
-    this.setState({
-      messageText: '',
-    })
   }
 
   onPressAttachment = () => {
@@ -46,23 +39,43 @@ export default class MessageComposer extends Component {
     }
   }
 
+  componentWillReceiveProps = nextProps => {
+    this.setState({
+      messageText: nextProps.messageText,
+    })
+  }
+
   render() {
     return (
       <View
-        style={{ flex: 1, flexDirection: 'row', backgroundColor: 'white' }}
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          backgroundColor: 'white',
+          paddingVertical: 8,
+        }}
         onLayout={this.props.onLayoutComposer}
       >
-        <TouchableOpacity
-          style={styles.attachButtonWrapper}
-          onPress={this.onPressAttachment}
-          disabled={!this.props.connectedToWS}
-        >
-          <Image
-            source={attachProduct}
-            style={{ width: 17, height: 17, tintColor: '#666666' }}
-            resizeMode={'contain'}
-          />
-        </TouchableOpacity>
+        <View style={styles.buttonWrapper}>
+          <View
+            style={{
+              height: INPUT_MIN_HEIGHT,
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <TouchableOpacity
+              onPress={this.onPressAttachment}
+              disabled={!this.props.connectedToWS}
+            >
+              <Image
+                source={attachProduct}
+                style={{ width: 17, height: 17, tintColor: '#666666' }}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
         <View style={styles.inputWrapper}>
           <TextInput
             style={styles.textInput}
@@ -72,21 +85,32 @@ export default class MessageComposer extends Component {
             multiline
           />
         </View>
-        <TouchableOpacity
-          style={styles.sendButtonWrapper}
-          onPress={this.onPressSend}
-          disabled={!this.props.connectedToWS}
-        >
-          <Image
-            source={sendButton}
+        <View style={styles.buttonWrapper}>
+          <View
             style={{
-              width: 25,
-              height: 21,
-              tintColor: this.props.connectedToWS ? 'rgb(66,181,73)' : 'silver',
+              height: INPUT_MIN_HEIGHT,
+              justifyContent: 'center',
+              alignItems: 'center',
             }}
-            resizeMode={'contain'}
-          />
-        </TouchableOpacity>
+          >
+            <TouchableOpacity
+              onPress={this.onPressSend}
+              disabled={!this.props.connectedToWS}
+            >
+              <Image
+                source={sendButton}
+                style={{
+                  width: 25,
+                  height: 21,
+                  tintColor: this.props.connectedToWS
+                    ? 'rgb(66,181,73)'
+                    : 'silver',
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
     )
   }
@@ -96,17 +120,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  buttonWrapper: {
+    flex: 0.15,
+    justifyContent: 'flex-end',
+  },
   attachButtonWrapper: {
     flex: 0.15,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 12,
+    justifyContent: 'center',
+    backgroundColor: 'pink',
+    height: INPUT_MIN_HEIGHT,
   },
   inputWrapper: {
     flex: 0.7,
-    paddingVertical: 5,
-    minHeight: 40,
-    maxHeight: 80,
+    minHeight: INPUT_MIN_HEIGHT,
+    maxHeight: INPUT_MAX_HEIGHT,
     justifyContent: 'center',
   },
   textInput: {
@@ -119,7 +147,8 @@ const styles = StyleSheet.create({
   sendButtonWrapper: {
     flex: 0.15,
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    paddingBottom: 10,
+    justifyContent: 'center',
+    backgroundColor: 'blue',
+    height: INPUT_MIN_HEIGHT,
   },
 })

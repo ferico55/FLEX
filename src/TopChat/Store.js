@@ -2,6 +2,7 @@ import { createStore, applyMiddleware } from 'redux'
 import { createEpicMiddleware } from 'redux-observable'
 import { combineEpics } from 'redux-observable'
 import logger from 'redux-logger'
+import thunk from 'redux-thunk'
 
 import {
   getReplyListEpic,
@@ -9,29 +10,29 @@ import {
   getReplyListCompleteEpic,
   fetchListForSearchEpic,
   mergeReplyListEpic,
-  sendReplyWithAPIEpic
-} from '@redux/chat_detail/Actions'
+  sendReplyWithAPIEpic,
+} from '@TopChatRedux/chat_detail/Actions'
 import {
   getChatListEpic,
   markAsReadEpic,
   onReceiveNewMessageEpic,
   onSendNewMessageEpic,
   deleteSelectedDataEpic,
-} from '@redux/chat_list/chat_inbox/Actions'
+} from '@TopChatRedux/chat_list/chat_inbox/Actions'
 import {
   searchAllChatEpic,
   loadMoreSearchAllChatEpic,
-} from '@redux/chat_search/Actions'
-import { getArchiveChatListEpic } from '@redux/chat_list/chat_archive/Actions'
+} from '@TopChatRedux/chat_search/Actions'
+import { getArchiveChatListEpic } from '@TopChatRedux/chat_list/chat_archive/Actions'
 import {
   webSocketEpic,
   reconnectWebSocketEpic,
   connectedWebSocketEpic,
-} from '@redux/web_socket/Actions'
-import { fetchShopProductsEpic } from '@redux/products/Actions'
+} from '@TopChatRedux/web_socket/Actions'
+import { fetchShopProductsEpic } from '@TopChatRedux/products/Actions'
 
-import AppReducers from '@redux/AppReducers'
-import socketMiddleware from '@helpers/SocketMiddleware'
+import AppReducers from '@TopChatRedux/AppReducers'
+import socketMiddleware from '@TopChatHelpers/SocketMiddleware'
 
 const epics = combineEpics(
   getReplyListEpic,
@@ -51,19 +52,15 @@ const epics = combineEpics(
   deleteSelectedDataEpic,
   fetchShopProductsEpic,
   connectedWebSocketEpic,
-  sendReplyWithAPIEpic
+  sendReplyWithAPIEpic,
 )
 
 const epicMiddleware = createEpicMiddleware(epics)
 
-
-let middleware = [socketMiddleware, epicMiddleware]
+let middleware = [socketMiddleware, epicMiddleware, thunk]
 
 if (__DEV__) {
-  middleware = [
-    ...middleware,
-    logger
-  ]
+  middleware = [...middleware, logger]
 }
 
 const enchancer = applyMiddleware(...middleware)

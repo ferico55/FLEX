@@ -20,8 +20,8 @@ import {
   TKPReactURLManager,
 } from 'NativeModules'
 import PropTypes from 'prop-types'
-import { SearchChatCell, ChatCell, EmptyState, Overlay } from '@components/'
-import { resultsFor, renderBehaviours } from '@redux/chat_search/Actions'
+import { SearchChatCell, ChatCell, EmptyState, Overlay } from '@TopChatComponents/'
+import { resultsFor, renderBehaviours } from '@TopChatRedux/chat_search/Actions'
 import noResultFound from '@img/noResultFound.png'
 
 const { CONTACTS, REPLIES } = resultsFor

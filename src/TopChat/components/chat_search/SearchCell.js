@@ -10,8 +10,8 @@ import {
 import Navigator from 'native-navigation'
 import HTMLView from 'react-native-htmlview'
 
-import { unixConverter, lastReplyTime } from '@helpers/TimeConverters'
-import { resultsFor } from '@redux/chat_search/Actions'
+import { unixConverter, lastReplyTime } from '@TopChatHelpers/TimeConverters'
+import { resultsFor } from '@TopChatRedux/chat_search/Actions'
 
 // const WINDOW_WIDTH = Dimensions.get('window').width
 const { CONTACTS, REPLIES } = resultsFor

@@ -1,4 +1,4 @@
-import types from '@redux/web_socket/Actions'
+import types from '@TopChatRedux/web_socket/Actions'
 import {
   isTyping,
   endTyping,
@@ -9,7 +9,7 @@ import {
   SEND_TYPING,
   SET_MSG_ID,
   MESSAGES_RECEIVED,
-} from '@redux/messages/Actions'
+} from '@TopChatRedux/messages/Actions'
 
 const {
   CONNECTING,
@@ -21,8 +21,6 @@ const {
   SEND_READ_CODE,
   IS_READ_CODE,
 } = types
-
-import _ from 'lodash'
 
 const socketMiddleware = (() => {
   let socket = null

@@ -18,7 +18,7 @@ import {
   SEND_CHAT_MESSAGE,
   MESSAGES_RECEIVED,
   UNSET_MSG_ID,
-} from '@redux/messages/Actions'
+} from '@TopChatRedux/messages/Actions'
 
 const initialState = {
   data: {

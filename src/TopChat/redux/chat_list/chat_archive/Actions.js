@@ -1,6 +1,6 @@
-import { getChatList } from '@helpers/Requests'
+import { getChatList } from '@TopChatHelpers/Requests'
 import { Observable } from 'rxjs'
-import { unixConverter } from '@helpers/TimeConverters'
+import { unixConverter } from '@TopChatHelpers/TimeConverters'
 
 // List of types
 export const FETCH_ARCHIVE_CHAT_LIST = 'FETCH_ARCHIVE_CHAT_LIST'

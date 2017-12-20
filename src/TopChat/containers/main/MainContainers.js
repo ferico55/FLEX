@@ -3,18 +3,21 @@ import { bindActionCreators } from 'redux'
 import {
   fetchChatList,
   toggleEditMode,
-} from '@redux/chat_list/chat_inbox/Actions'
-import { searchAllChat, resetSearchAllChat } from '@redux/chat_search/Actions'
+} from '@TopChatRedux/chat_list/chat_inbox/Actions'
+import {
+  searchAllChat,
+  resetSearchAllChat,
+} from '@TopChatRedux/chat_search/Actions'
 import {
   connectingToWebSocket,
   disconnectingWebSocket,
   toggleConnectedNetwork,
-} from '@redux/web_socket/Actions'
+} from '@TopChatRedux/web_socket/Actions'
 import MainView from './MainView'
 
 const mapStateToProps = state => ({
   inboxList: state.chatInbox,
-  webSocket: state.webSocket.connectedToInternet,
+  connectedToInternet: state.webSocket.connectedToInternet,
 })
 
 const mapDispatchToProps = dispatch => ({

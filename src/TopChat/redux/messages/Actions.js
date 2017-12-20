@@ -1,5 +1,5 @@
-import types from '@redux/web_socket/Actions'
-import { getTime, getUnixTime } from '@helpers/TimeConverters'
+import types from '@TopChatRedux/web_socket/Actions'
+import { getTime, getUnixTime } from '@TopChatHelpers/TimeConverters'
 import _ from 'lodash'
 
 export const IS_TYPING_MESSAGE = 'IS_TYPING_MESSAGE'

@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { searchChat } from '@helpers/Requests'
+import { searchChat } from '@TopChatHelpers/Requests'
 import { Observable } from 'rxjs'
 
 export const SEARCH_ALL_CHAT = 'SEARCH_ALL_CHAT'

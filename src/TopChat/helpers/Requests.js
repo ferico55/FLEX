@@ -144,3 +144,22 @@ export const getOnlineStatus = ({ type, id }) =>
       format: 'api',
     },
   })
+
+export const getChatTemplate = () =>
+  ReactNetworkManager.request({
+    method: 'GET',
+    baseUrl: TKPReactURLManager.topChatURL,
+    path: '/tc/v1/chat_templates',
+  })
+
+export const updateChatTemplate = (templates, is_enable) =>
+  ReactNetworkManager.request({
+    method: 'POST',
+    baseUrl: TKPReactURLManager.topChatURL,
+    encoding: 'json',
+    path: '/tc/v1/update_chat_templates',
+    params: {
+      templates,
+      is_enable,
+    },
+  })

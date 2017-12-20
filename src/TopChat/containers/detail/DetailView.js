@@ -17,10 +17,10 @@ import {
   Loading,
   StickyAlert,
   EmptyState,
-} from '@components/'
-import types from '@redux/web_socket/Actions'
-import { getOnlineStatus } from '@helpers/Requests'
-import { getTimeFromNow } from '@helpers/TimeConverters'
+} from '@TopChat/components/'
+import types from '@TopChat/redux/web_socket/Actions'
+import { getOnlineStatus } from '@TopChat/helpers/Requests'
+import { getTimeFromNow } from '@TopChat/helpers/TimeConverters'
 import {
   TKPReactAnalytics,
   ReactTPRoutes,

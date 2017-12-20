@@ -101,6 +101,8 @@
 		DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */; };
 		DADB9F751F3C56D9002B1FAE /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
+		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
 		E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CB1F838508008FDBCF /* AddToCartPage.swift */; };
 		E52517D91F838508008FDBCF /* CategoryIntermediaryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */; };
 		E52517DA1F838508008FDBCF /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CD1F838508008FDBCF /* HomePage.swift */; };
@@ -2104,6 +2106,9 @@
 		DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = Tokopedia/ThirdParty/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Tokopedia/ThirdParty/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
+		E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopChatManager.m; sourceTree = "<group>"; };
+		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E52517CB1F838508008FDBCF /* AddToCartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddToCartPage.swift; path = Class/AddToCartPage.swift; sourceTree = "<group>"; };
@@ -10192,6 +10197,7 @@
 		F977F9871FE8AB7700183A85 /* TopChat */ = {
 			isa = PBXGroup;
 			children = (
+				E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */,
 				F977F9881FE8AB7700183A85 /* RemoteConfig.swift */,
 			);
 			path = TopChat;
@@ -10200,6 +10206,8 @@
 		F977F9891FE8AB7700183A85 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */,
+				E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */,
 				F977F98A1FE8AB7700183A85 /* ReactSplitViewController.swift */,
 				F977F98B1FE8AB7700183A85 /* TKPReactAnalytics.m */,
 				F977F98C1FE8AB7700183A85 /* ReactTPRoutes.m */,
@@ -11635,6 +11643,7 @@
 				D89EA9041FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m in Sources */,
 				F977FB551FE8AB7B00183A85 /* ReplayConversationPostData.swift in Sources */,
 				F977FAD41FE8AB7A00183A85 /* HomeTabViewController.m in Sources */,
+				E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */,
 				F97700091FE8AB8500183A85 /* ProfileEditFormResult.m in Sources */,
 				F977FCA81FE8AB7E00183A85 /* ShopStatView.m in Sources */,
 				F977FEB31FE8AB8200183A85 /* TransactionCartGateway.m in Sources */,
@@ -11965,6 +11974,7 @@
 				F977FB531FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */,
 				F977FF2B1FE8AB8300183A85 /* OrderPayment.m in Sources */,
+				E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */,
 				F977FEC01FE8AB8200183A85 /* GooglePlaceDetailResults.m in Sources */,
 				F977FA4E1FE8AB7900183A85 /* ReferralRemoteConfig.swift in Sources */,
 				F977FE9D1FE8AB8200183A85 /* OrderDetailForm.m in Sources */,

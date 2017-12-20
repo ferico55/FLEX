@@ -1,18 +1,26 @@
 /* @flow */
 
 import React, { Component } from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
-import { MessageText } from '@components/'
-import { unixConverter, textToTimeAgo } from '@helpers/TimeConverters'
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ActivityIndicator,
+} from 'react-native'
+import { MessageText, ImageProgress } from '@TopChatComponents/'
+import { unixConverter, textToTimeAgo } from '@TopChatHelpers/TimeConverters'
 import read from '@img/read.png'
 import unread from '@img/readUnread.png'
 import pending from '@img/readPending.png'
 import Icon from 'react-native-vector-icons/FontAwesome'
 import isTypingGif from '@img/isTyping.gif'
 
-const USER = 'User'
 const SHOP_ADMIN = 'Shop Admin'
 const SHOP_OWNER = 'Shop Owner'
+
+const ATTACHMENT_TYPE_SINGLE_IMAGE = 1 // Attachment Type 1, Only Single Image and Go to applink when clicked
 
 export default class BubbleChat extends Component {
   renderSection = () => (
@@ -80,6 +88,55 @@ export default class BubbleChat extends Component {
     )
   }
 
+  handlePressAttachment = url => {
+    if (this.props.onUrlPress) {
+      this.props.onUrlPress(url)
+    }
+  }
+
+  // This func will be use on next version in regards of attachment
+  renderMsg = () => {
+    if (this.props.attachment_id !== 0) {
+      switch (this.props.attachment.type) {
+        case ATTACHMENT_TYPE_SINGLE_IMAGE:
+          return (
+            <TouchableOpacity
+              style={styles[this.props.position].imageWrapper}
+              onPress={() =>
+                this.handlePressAttachment(
+                  this.props.attachment.attributes.url,
+                )}
+            >
+              <ImageProgress
+                source={{
+                  uri: this.props.attachment.attributes.image_url,
+                }}
+                resizeMode={'contain'}
+              />
+            </TouchableOpacity>
+          )
+        default:
+          const fallBackProps = {
+            searchKeyword: this.props.searchKeyword,
+            onUrlPress: this.props.onUrlPrness,
+            position: this.props.position,
+            msg: this.props.attachment.fallback_attachment.html,
+          }
+          return (
+            <View>
+              <MessageText {...fallBackProps} />
+            </View>
+          )
+      }
+    }
+
+    return (
+      <TouchableOpacity activeOpacity={1} accessibilityTraits="text">
+        <MessageText {...this.props} />
+      </TouchableOpacity>
+    )
+  }
+
   render() {
     if (this.props.isTyping) {
       return (
@@ -88,7 +145,8 @@ export default class BubbleChat extends Component {
             style={{
               alignItems: 'flex-start',
               marginLeft: 10,
-              marginTop: -20,
+              paddingBottom: 40, // height of chat template
+              marginTop: -110,
             }}
           >
             <Image source={isTypingGif} />
@@ -98,10 +156,11 @@ export default class BubbleChat extends Component {
     }
 
     let containerStyle = StyleSheet.flatten([styles.container])
+    // this only appear on last index on first section because our sectionlist is inverted
     if (this.props.lastSection === this.props.title && this.props.index === 0) {
       containerStyle = {
         ...containerStyle,
-        paddingBottom: 10,
+        paddingBottom: this.props.showComposer ? 100 : 10,
       }
     }
 
@@ -162,6 +221,12 @@ const styles = {
       minHeight: 40,
       justifyContent: 'center',
     },
+    imageWrapper: {
+      overflow: 'hidden',
+      borderTopRightRadius: 12,
+      borderBottomLeftRadius: 12,
+      borderBottomRightRadius: 12,
+    },
     containerToNext: {
       borderBottomLeftRadius: 3,
     },
@@ -182,8 +247,14 @@ const styles = {
       borderBottomRightRadius: 12,
       backgroundColor: 'rgb(66,181,73)',
       marginLeft: 60,
-      minHeight: 40,
+      paddingVertical: 5,
       justifyContent: 'center',
+    },
+    imageWrapper: {
+      overflow: 'hidden',
+      borderTopLeftRadius: 12,
+      borderBottomLeftRadius: 12,
+      borderBottomRightRadius: 12,
     },
     containerToNext: {
       borderBottomRightRadius: 3,

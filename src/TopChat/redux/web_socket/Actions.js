@@ -71,6 +71,7 @@ export const reconnectWebSocketEpic = (action$, store) =>
   action$
     .ofType(RECONNECTING)
     .delay(2000)
+    .filter(() => !store.getState().webSocket.force_close)
     .map(() => {
       const { device_token, user_id } = store.getState().webSocket
       return connectingToWebSocket(device_token, user_id)

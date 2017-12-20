@@ -1,7 +1,7 @@
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
-import { sendMessage } from '@redux/messages/Actions'
-import { fetchShopProducts } from '@redux/products/Actions'
+import { sendMessage } from '@TopChatRedux/messages/Actions'
+import { fetchShopProducts } from '@TopChatRedux/products/Actions'
 import ProductView from './ProductView'
 
 const mapStateToProps = state => ({

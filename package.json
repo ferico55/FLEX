@@ -32,6 +32,7 @@
     "eslint-plugin-react": "7.1.0",
     "graphql": "^0.11.7",
     "graphql-tag": "^2.5.0",
+    "html-entities": "^1.2.1",
     "lodash": "4.17.4",
     "moment": "^2.8.1",
     "native-navigation": "git+https://github.com/esam091/native-navigation.git#modifications",
@@ -54,12 +55,13 @@
     "react-native-modal-datetime-picker": "^4.8.0",
     "react-native-page-control": "^1.1.0",
     "react-native-search-bar": "^3.0.0",
+    "react-native-sortable-list": "^0.0.19",
     "react-native-svg": "^5.3.2",
     "react-native-swipeable": "^0.6.0",
     "react-native-swipeout": "^2.3.1",
     "react-native-swiper": "^1.5.4",
-    "react-native-tooltip": "^5.0.0",
     "react-native-tab-view": "^0.0.69",
+    "react-native-tooltip": "^5.0.0",
     "react-native-vector-icons": "4.2.0",
     "react-navigation": "git+https://github.com/react-community/react-navigation.git",
     "react-redux": "^5.0.5",
@@ -76,10 +78,9 @@
     "reselect": "3.0.1",
     "rlite-router": "2.0.1",
     "rxjs": "^5.4.2",
-    "url-parse": "1.1.9",
     "striptags": "^3.1.0",
-    "victory-native": "^0.14.0",
-    "html-entities": "^1.2.1"
+    "url-parse": "1.1.9",
+    "victory-native": "^0.14.0"
   },
   "devDependencies": {
     "danger": "2.0.1"

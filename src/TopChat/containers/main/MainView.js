@@ -1,8 +1,7 @@
 import React, { Component } from 'react'
 import { View, StyleSheet, NetInfo } from 'react-native'
-import PropTypes from 'prop-types'
 import ChatListContainers from './list/ChatListContainers'
-import { Loading, StickyAlert } from '@components/'
+import { Loading, StickyAlert } from '@TopChatComponents/'
 import SearchBar from 'react-native-search-bar'
 import Navigator from 'native-navigation'
 import { TKPReactAnalytics, ReactInteractionHelper } from 'NativeModules'
@@ -46,12 +45,12 @@ class MainView extends Component {
 
     this.connectionSubscriber = NetInfo.isConnected.addEventListener(
       'connectionChange',
-      this.handleFirstConnectivityChange,
+      this.props.toggleConnectedNetwork,
     )
   }
 
   componentDidMount() {
-    this.fetchInboxList(1, this.props.msg_id_applink)
+    this.fetchInboxList(1, this.props.msgIdAppLink)
 
     this.onSearchSubscriber = this.onSearch$.throttleTime(1000).subscribe(v => {
       if (v.trim() === '' && v.length < 1) {
@@ -69,25 +68,14 @@ class MainView extends Component {
     })
   }
 
-  handleFirstConnectivityChange = isConnected => {
-    this.props.toggleConnectedNetwork(isConnected)
-  }
-
-  shouldComponentUpdate({ inboxList: { success }, webSocket }) {
-    // we wont this component re-render on first init of websocket
-    if (success === null && webSocket) {
-      return false
-    }
-
-    return true
-  }
-
   componentWillReceiveProps(nextProps) {
+    // if success get remote response
     if (nextProps.inboxList.success) {
       this.setState({
         isLoading: false,
       })
     } else if (nextProps.inboxList.message_error !== null) {
+      // if the error messages is not null
       this.setState(
         {
           isLoading: false,
@@ -102,7 +90,7 @@ class MainView extends Component {
                   isLoading: true,
                 },
                 () => {
-                  this.fetchInboxList(1, nextProps.msg_id_applink)
+                  this.fetchInboxList(1, nextProps.msgIdAppLink)
                 },
               )
             },
@@ -112,66 +100,61 @@ class MainView extends Component {
     }
   }
 
-  onRightBarButtonTapped(isEditing) {
-    this.props.toggleEditMode(!isEditing)
+  shouldComponentUpdate({ inboxList: { success }, connectedToInternet }) {
+    // we wont this component re-render on first init of websocket (connectedInternet)
+    if (success === null && connectedToInternet) {
+      return false
+    }
+
+    return true
   }
 
-  fetchInboxList = (page = 1, msg_id_applink = null) => {
-    this.props.fetchChatList(
-      'all',
-      page,
-      msg_id_applink,
-      this.props.authInfo,
-      this.props.fromIpad,
-    )
-  }
-
-  fetchArchiveList = (page = 1) => {
-    // In this version, this will not be released yet
-    // this.props.fetchArchiveChatList('all', page)
-  }
-
-  onChangeText = text => {
+  handleChangeText = text => {
     this.setState({
       searchKeyword: text,
     })
   }
 
-  onSearchButtonPress = () => this.onSearch$.next(this.state.searchKeyword)
+  handleSearchButtonPress = () => this.onSearch$.next(this.state.searchKeyword)
 
-  onCancelButtonPress = () => {
+  handleCancelButtonPress = () => {
     this.props.resetSearchAllChat()
   }
 
-  onBlur = () => {
+  handleBlur = () => {
     this.setState(prevState => ({
       showsCancelButton: prevState.searchKeyword !== '',
       overlay: false,
     }))
   }
 
-  onFocus = () => {
+  handleFocus = () => {
     this.setState({ showsCancelButton: true, overlay: true })
   }
 
-  rightButonParams = isOverlay => {
+  rightButtonParams = isOverlay => {
     let rightButton = {
       rightTitle: '',
       onRightPress: () => {},
     }
 
-    if (!isOverlay && this.props.inboxList.data.list.length !== 0) {
+    // if overlay not showing and list of inbox is not null and not in search mode
+    if (
+      !isOverlay &&
+      this.props.inboxList.data.list.length !== 0 &&
+      this.state.searchKeyword === ''
+    ) {
       rightButton = {
         rightTitle: this.props.inboxList.isEditing ? 'Selesai' : 'Atur',
         onRightPress: () =>
-          this.onRightBarButtonTapped(this.props.inboxList.isEditing),
+          this.handleRightBarButtonTapped(this.props.inboxList.isEditing),
       }
     }
 
     return rightButton
   }
 
-  onAppear = () => {
+  handleAppear = () => {
     TKPReactAnalytics.trackScreenName('inbox-chat')
   }
 
@@ -183,6 +166,22 @@ class MainView extends Component {
     this.props.resetAllState()
   }
 
+  fetchInboxList = (page = 1, msgIdAppLink = null) => {
+    // all the params is snake case
+    const parameters = {
+      filter: 'all',
+      page,
+      msg_id_applink: msgIdAppLink,
+      auth_info: this.props.authInfo,
+      from_ipad: this.props.fromIpad,
+    }
+    this.props.fetchChatList(parameters)
+  }
+
+  handleRightBarButtonTapped(isEditing) {
+    this.props.toggleEditMode(!isEditing)
+  }
+
   render() {
     if (this.state.isLoading) {
       return <Loading />
@@ -190,9 +189,9 @@ class MainView extends Component {
 
     return (
       <Navigator.Config
-        onAppear={this.onAppear}
+        onAppear={this.handleAppear}
         title={'Chat'}
-        {...this.rightButonParams(this.state.overlay)}
+        {...this.rightButtonParams(this.state.overlay)}
         {...this.leftButtonParams(this.props.fromIpad)}
       >
         <View style={styles.container}>
@@ -200,12 +199,12 @@ class MainView extends Component {
             ref="chatSearchBar"
             placeholder="Cari chat atau pengguna"
             backgroundColor="#f1f1f1"
-            onChangeText={this.onChangeText}
-            onBlur={this.onBlur}
-            onFocus={this.onFocus}
-            onCancelButtonPress={this.onCancelButtonPress}
+            onChangeText={this.handleChangeText}
+            onBlur={this.handleBlur}
+            onFocus={this.handleFocus}
+            onCancelButtonPress={this.handleCancelButtonPress}
             showsCancelButton={this.state.showsCancelButton}
-            onSearchButtonPress={this.onSearchButtonPress}
+            onSearchButtonPress={this.handleSearchButtonPress}
           />
           <ChatListContainers
             fromIpad={this.props.fromIpad}
@@ -217,16 +216,16 @@ class MainView extends Component {
             overlay={this.state.overlay}
           />
           <StickyAlert
-            msg={
-              !this.props.webSocket ? (
+            message={
+              !this.props.connectedToInternet ? (
                 'Terjadi gangguan pada koneksi'
               ) : (
                 'Terhubung'
               )
             }
-            show={!this.props.webSocket}
+            show={!this.props.connectedToInternet}
             showLoading
-            alertType={!this.props.webSocket ? 'error' : 'success'}
+            alertType={!this.props.connectedToInternet ? 'error' : 'success'}
             listenOnChangeProps
           />
         </View>
@@ -240,7 +239,7 @@ MainView.defaultProps = {
   authInfo: {},
   nativeNavigationInitialBarHeight: 40,
   currentMsgId: null,
-  msg_id_applink: null,
+  msgIdAppLink: null,
 }
 
 export default MainView

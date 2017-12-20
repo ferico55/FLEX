@@ -810,7 +810,7 @@ class TPRoutes: NSObject {
             if UI_USER_INTERFACE_IDIOM() == .pad {
                 let userID = userManager.getUserId()
                 let name = userManager.getUserFullName()
-                
+                let shopName = userManager.getShopName()
                 let masterModule = ReactModule(name: "TopChatMain", props: [
                     "authInfo": auth as AnyObject,
                     "fromIpad": true as AnyObject
@@ -819,7 +819,8 @@ class TPRoutes: NSObject {
                     "fromIpad": true as AnyObject,
                     "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
                     "user_id": userID as AnyObject,
-                    "full_name": name as AnyObject
+                    "full_name": name as AnyObject,
+                    "shop_name": shopName as AnyObject
                     ])
 
                 viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
@@ -845,6 +846,7 @@ class TPRoutes: NSObject {
             if UI_USER_INTERFACE_IDIOM() == .pad {
                 let userID = userManager.getUserId()
                 let name = userManager.getUserFullName()
+                let shopName = userManager.getShopName()
                 let masterModule = ReactModule(name: "TopChatMain", props: [
                     "authInfo": auth as AnyObject,
                     "fromIpad": true as AnyObject,
@@ -855,6 +857,7 @@ class TPRoutes: NSObject {
                     "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
                     "user_id": userID as AnyObject,
                     "full_name": name as AnyObject,
+                    "shop_name": shopName as AnyObject,
                     "msg_id_applink": message_id as AnyObject
                     ])
                 

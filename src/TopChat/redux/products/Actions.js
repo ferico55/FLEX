@@ -1,5 +1,5 @@
 import { Observable } from 'rxjs'
-import { getShopProduct } from '@helpers/Requests'
+import { getShopProduct } from '@TopChatHelpers/Requests'
 
 export const FETCH_SHOP_PRODUCTS = 'FETCH_SHOP_PRODUCTS'
 export const FETCH_SHOP_PRODUCTS_SUCCESS = 'FETCH_SHOP_PRODUCTS_SUCCESS'

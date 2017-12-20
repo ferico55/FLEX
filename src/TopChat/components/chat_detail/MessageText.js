@@ -1,10 +1,8 @@
 /* @flow */
 
 import React, { PureComponent } from 'react'
-import { View, StyleSheet, Linking } from 'react-native'
+import { View, StyleSheet } from 'react-native'
 import HTMLView from 'react-native-htmlview'
-
-const TOKOPEDIA_URL_PATTERN = /www.tokopedia.com/i
 
 export default class MessageText extends PureComponent {
   constructor(props) {
@@ -16,11 +14,7 @@ export default class MessageText extends PureComponent {
 
   onUrlPress = url => {
     if (this.props.onUrlPress) {
-      if (TOKOPEDIA_URL_PATTERN.test(url)) {
-        this.props.onUrlPress(url)
-      } else {
-        this.props.onUrlPress(`https://tkp.me/r?url=${url}`)
-      }
+      this.props.onUrlPress(url)
     }
   }
 
@@ -58,7 +52,7 @@ const HTMLStyles = {
       lineHeight: 20,
     },
     a: {
-      textDecorationLine:'underline',
+      textDecorationLine: 'underline',
       fontWeight: '300',
     },
   }),
@@ -73,7 +67,7 @@ const HTMLStyles = {
       lineHeight: 20,
     },
     a: {
-      textDecorationLine:'underline',
+      textDecorationLine: 'underline',
       fontWeight: '300',
       color: 'rgb(255,255,255)',
     },

@@ -21,11 +21,9 @@ import SearchFilterScreen from './src/search/'
 import OrderHistoryPage from './src/Order/Page/HistoryPage'
 import OrderDetailPage from './src/Order/Page/OrderDetailPage'
 import FeedKOLActivityScreen from './src/Feed/KOL'
-import TopChatMain from '@containers/main/MainContainers'
-import TopChatDetail from '@containers/detail/DetailContainers'
-import TopChatStore from './src/TopChat/Store'
-import SendChatView from '@SendChatContainers/SendChatView'
-import ProductAttachTopChat from '@containers/product/ProductContainers'
+
+// TopChat Pages
+import TopChat from './src/TopChat'
 
 import Promo from './src/Promo'
 import PromoDetail from './src/PromoDetail'
@@ -152,34 +150,11 @@ moment.relativeTimeThreshold('h', 24)
 moment.relativeTimeThreshold('d', 30)
 moment.relativeTimeThreshold('M', 12)
 
-
 // Order Management Screen
 Navigator.registerScreen('HistoryPage', () => OrderHistoryPage)
 Navigator.registerScreen('OrderDetailPage', () => OrderDetailPage)
 
 Navigator.registerScreen('FeedKOLActivityComment', () => FeedKOLActivityScreen)
-
-/* TOPCHAT */
-Navigator.registerScreen('TopChatMain', () => props => (
-  <Provider store={TopChatStore}>
-    <TopChatMain {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('TopChatDetail', () => props => (
-  <Provider store={TopChatStore}>
-    <TopChatDetail {...props} />
-  </Provider>
-))
-
-Navigator.registerScreen('SendChat', () => props => <SendChatView {...props} />)
-
-Navigator.registerScreen('ProductAttachTopChat', () => props => (
-  <Provider store={TopChatStore}>
-    <ProductAttachTopChat {...props} />
-  </Provider>
-))
-/* TOPCHAT */
 
 Navigator.registerScreen('SearchFilterScreen', () => props => (
   <SearchFilterScreen {...props} />
@@ -204,4 +179,9 @@ const registerScreens = screenGroups =>
     ),
   )
 
-registerScreens([TopAds, InboxReview, ThankYou])
+registerScreens([
+  TopAds, 
+  InboxReview, 
+  ThankYou,
+  TopChat,
+])

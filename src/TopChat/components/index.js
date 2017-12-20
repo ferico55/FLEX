@@ -16,6 +16,8 @@ import SearchChatCell from './chat_search/SearchCell'
 // Misc
 import Loading from './Loading'
 import EmptyState from './EmptyState'
+import TextArea from './TextArea'
+import ImageProgress from './ImageProgress'
 
 export {
   ChatCell,
@@ -29,4 +31,6 @@ export {
   SearchChatCell,
   Overlay,
   StickyAlert,
+  TextArea,
+  ImageProgress,
 }

@@ -9,8 +9,8 @@ const textToTimeAgo = text => {
   return moment()
     .subtract(moment().diff(date, 'days'), 'days')
     .calendar(null, {
-      lastDay: '[Kemarin]',
-      sameDay: '[Hari Ini]',
+      lastDay: '[KEMARIN]',
+      sameDay: '[HARI INI]',
       nextDay: '[Besok]',
       lastWeek(now) {
         if (date.year === now.year) {

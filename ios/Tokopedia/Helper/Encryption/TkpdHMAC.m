@@ -283,7 +283,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 }
 
 - (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl {
-    NSArray *pathList = [NSArray arrayWithObjects:@"/tc/v1/mark_read",@"/tc/v1/delete", nil];
+    NSArray *pathList = [NSArray arrayWithObjects:@"/tc/v1/mark_read",@"/tc/v1/delete",@"/tc/v1/update_chat_templates", nil];
     if ([baseUrl isEqual:[NSString topChatURL]] && [pathList containsObject:self.getTkpdPath]){
         return @"application/json";
     }

@@ -4,15 +4,15 @@ import {
   toggleSelectRow,
   deleteSelectedData,
   toggleSelectAllRow,
-} from '@redux/chat_list/chat_inbox/Actions'
-import { loadMoreSearchAllChat } from '@redux/chat_search/Actions'
+} from '@TopChatRedux/chat_list/chat_inbox/Actions'
+import { loadMoreSearchAllChat } from '@TopChatRedux/chat_search/Actions'
 import {
   fetchReplyList,
   fetchReplyListForSearch,
   setIpadAttributes,
   unsetIpadAttributes,
-} from '@redux/chat_detail/Actions'
-import { unsetMsgId } from '@redux/messages/Actions'
+} from '@TopChatRedux/chat_detail/Actions'
+import { unsetMsgId } from '@TopChatRedux/messages/Actions'
 import ChatListView from './ChatListView'
 
 const mapStateToProps = ({
