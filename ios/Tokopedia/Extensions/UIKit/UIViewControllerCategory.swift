@@ -25,56 +25,65 @@ extension UIViewController {
                                            action: (() -> Void)?) -> UIView {
         let view = CustomNotificationView.new()
         
-        view?.actionButton.layer.borderColor = UIColor.white.cgColor
-        view?.actionButton.layer.borderWidth = 1.0
-        view?.actionButton.clipsToBounds = true
-        view?.setMessageLabelWithText(message)
+        guard let alertView = view else { return UIView() }
+        
+        alertView.actionButton.layer.borderColor = UIColor.white.cgColor
+        alertView.actionButton.layer.borderWidth = 1.0
+        alertView.actionButton.clipsToBounds = true
+        alertView.setMessageLabelWithText(message)
         
         if type == NotificationType.error.rawValue {
-            view?.backgroundColor = UIColor(red: 255/255.0,
+            alertView.backgroundColor = UIColor(red: 255/255.0,
                                            green: 59/255.0,
                                            blue: 48/255.0,
                                            alpha: 1.0)
         } else if type == NotificationType.success.rawValue {
-            view?.backgroundColor = UIColor(red: 10/255.0,
+            alertView.backgroundColor = UIColor(red: 10/255.0,
                                            green: 126/255.0,
                                            blue: 7/255.0,
                                            alpha: 1.0)
         } else if type == NotificationType.warning.rawValue {
-            view?.backgroundColor = UIColor(red: 255/255.0,
+            alertView.backgroundColor = UIColor(red: 255/255.0,
                                            green: 204/255.0,
                                            blue: 102/255.0,
                                            alpha: 1.0)
         }
         
+        let preferredHeight = UIApplication.shared.statusBarFrame.size.height
+            + UINavigationController().navigationBar.frame.height
+        
         if buttonTitle == nil {
-            view?.hideActionButton()
+            alertView.hideActionButton()
+            alertView.frame.size.height = preferredHeight
         } else {
-            view?.actionButton.setTitle(buttonTitle, for: .normal)
+            alertView.actionButton.setTitle(buttonTitle, for: .normal)
+            
+            if UIDevice.current.modelName.caseInsensitiveCompare("iPhone X") == ComparisonResult.orderedSame {
+                alertView.frame.size.height = preferredHeight + 50
+            } else {
+                alertView.frame.size.height = preferredHeight + 30
+            }
         }
         
         if !dismissable {
-            view?.hideCloseButton()
+            alertView.hideCloseButton()
         }
         
-        view?.frame.size.width = UIScreen.main.bounds.size.width
-        view?.setNeedsLayout()
-        view?.layoutIfNeeded()
-        view?.messageLabel.preferredMaxLayoutWidth = (view?.messageLabel.frame.size.width)!
+        alertView.frame.size.width = UIScreen.main.bounds.size.width
+        alertView.setNeedsLayout()
+        alertView.layoutIfNeeded()
+        alertView.messageLabel.preferredMaxLayoutWidth = alertView.messageLabel.frame.size.width
         
-        let preferredHeight = view?.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
-        view?.frame.size.height = preferredHeight!
-        
-        view?.closeButton.bk_(whenTapped:{
+        alertView.closeButton.bk_(whenTapped:{
             SwiftOverlays.closeNotificationOnTopOfStatusBar(view!)
         })
         
-        view?.actionButton.bk_(whenTapped:{
+        alertView.actionButton.bk_(whenTapped:{
             SwiftOverlays.closeNotificationOnTopOfStatusBar(view!)
             action?()
         })
         
-        UIViewController.showOnTopOfStatusBar(view!, duration: duration)
+        UIViewController.showOnTopOfStatusBar(alertView, duration: duration)
         return view!
     }
 }
