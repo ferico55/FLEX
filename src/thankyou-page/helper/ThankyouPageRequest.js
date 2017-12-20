@@ -36,52 +36,74 @@ export const getDigitalData = ({ userID, orderID, deviceToken }) =>
     params: {
         query: `
         {
-            payment(payment_id: ${payment}){
-              payment_id
-              payment_ref_num
-              orders{
-                  order_id
-                  phone
-              }
-              partial {
-                  amount
-                  gateway{
-                      gateway_name
-                    gateway_img_url
-                    gateway_id
+            payment(payment_id: ${paymentID}){
+                payment_id
+                payment_ref_num
+                payment_amount
+                voucher{
+                    voucher_code
+                }
+                orders{
+                    order_id
+                    phone
+                    shipping_price
+                    shop{
+                        shop_id,
+                        shop_name
                     }
-              }
-              payment_method{
-                method
-                instant{
-                  gateway{
-                      gateway_name
-                    gateway_img_url
-                    gateway_id
+                    shipping{
+                        shipping_name
+                    }
+                    order_detail{
+                        quantity,
+                        product{
+                            product_id,
+                            product_name,
+                            product_price,
+                            category{
+                                category_name
+                            }
+                        }
                     }
                 }
-                transfer{
-                    destination_name
-                    destination_account
-                    source_account
-                    source_name
+                partial {
+                    amount
                     gateway{
-                      gateway_name
-                    gateway_img_url
-                    gateway_id
+                        gateway_name
+                        gateway_img_url
+                        gateway_id
                     }
                 }
-                defer{
-                    gateway{
-                      gateway_name
-                    gateway_img_url
-                    gateway_id
+                payment_method{
+                    method
+                    instant{
+                        gateway{
+                            gateway_name
+                            gateway_img_url
+                            gateway_id
+                        }
+                    }
+                    transfer{
+                        destination_name
+                        destination_account
+                        source_account
+                        source_name
+                        gateway{
+                            gateway_name
+                        gateway_img_url
+                        gateway_id
+                        }
+                    }
+                    defer{
+                        gateway{
+                            gateway_name
+                        gateway_img_url
+                        gateway_id
+                        }
                     }
                 }
-              }
             }
-          }
-        `
+        }`
     },
   })
 

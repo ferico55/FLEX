@@ -288,6 +288,14 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
         return @"application/json";
     }
     
+    if ([baseUrl isEqual:[NSString pulsaUrl]] && [[self getTkpdPath] isEqualToString: @"/v1.4/track/thankyou"]){
+        return @"application/json";
+    }
+    
+    if ([baseUrl isEqual:[NSString paymentURL]] && [[self getTkpdPath] isEqualToString:@"/graphql"]){
+        return @"application/json";
+    }
+    
     if([self.getRequestMethod isEqualToString:@"GET"]) {
         return @"";
     } else {
