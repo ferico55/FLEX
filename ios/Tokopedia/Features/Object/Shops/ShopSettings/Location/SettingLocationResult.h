@@ -21,6 +21,7 @@
 @property (nonatomic, strong) NSString *is_inbox_manager;
 @property (nonatomic, strong) NSString *etalase_name;
 @property (nonatomic, strong) NSArray *list;
+@property (strong, nonatomic) ShipmentKeroToken *keroToken;
 @property (nonatomic) BOOL is_allow;
 
 + (RKObjectMapping *)objectMapping;

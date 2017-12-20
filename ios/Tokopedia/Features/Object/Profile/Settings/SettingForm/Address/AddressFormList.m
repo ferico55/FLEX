@@ -7,6 +7,8 @@
 //
 
 #import "AddressFormList.h"
+#import "AddressViewModel.h"
+#import "Tokopedia-Swift.h"
 
 @interface AddressFormList()
 
@@ -122,6 +124,21 @@
 {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
+    
+    RKRelationshipMapping *keroToken = [RKRelationshipMapping relationshipMappingFromKeyPath:@"token" toKeyPath:@"token" withMapping:[ShipmentKeroToken mapping]];
+    [mapping addPropertyMapping:keroToken];
+    
     return mapping;
 }
+
+- (NSString *) districtLabel {
+    NSString *provinceName = _province_name ?: @"";
+    NSString *cityName = _city_name ?: @"";
+    NSString *districtName = _district_name ?: @"";
+    NSString *districtLabel = [NSString stringWithFormat:@"%@, %@, %@", provinceName, cityName, districtName];
+    if (!_province_name && !_city_name && !_district_name) {
+        return nil;
+    } else return districtLabel;
+}
+
 @end

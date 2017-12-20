@@ -7,7 +7,8 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AddressViewModel.h"
+
+@class AddressViewModel, ShipmentKeroToken;
 
 static NSString *noAddress = @"-1";
 
@@ -46,5 +47,9 @@ static NSString *noAddress = @"-1";
 @property (nonatomic) BOOL isDefaultAddress;
 
 @property (nonatomic) BOOL hasAddress;
+
+@property (strong, nonatomic) ShipmentKeroToken *token;
+
+@property (nonatomic, strong) NSString *districtLabel;
 
 @end

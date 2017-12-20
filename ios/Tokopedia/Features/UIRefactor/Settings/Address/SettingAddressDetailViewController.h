@@ -11,6 +11,7 @@
 @interface SettingAddressDetailViewController : UIViewController
 
 @property (nonatomic, strong) AddressFormList *address;
+@property (nonatomic, strong) ShipmentKeroToken *keroToken;
 
 - (void)getSuccessSetDefaultAddress:(void (^)(AddressFormList* address))onSuccess;
 - (void)getSuccessDeleteAddress:(void (^)(AddressFormList* address))onSuccess;

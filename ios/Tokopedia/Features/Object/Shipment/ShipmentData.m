@@ -7,6 +7,7 @@
 //
 
 #import "ShipmentData.h"
+#import "Tokopedia-Swift.h"
 
 @implementation ShipmentData
 

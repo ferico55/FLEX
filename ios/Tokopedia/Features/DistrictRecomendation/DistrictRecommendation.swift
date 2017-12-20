@@ -46,6 +46,10 @@ final class DistrictDetail: NSObject {
         self.provinceName = provinceName
         self.zipCodes = zipCodes
     }
+    
+    var districtLabel: String {
+        return "\(provinceName) \(cityName) \(districtName)"
+    }
 }
 
 extension DistrictDetail: Unboxable {

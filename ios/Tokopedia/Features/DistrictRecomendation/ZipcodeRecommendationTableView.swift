@@ -16,6 +16,7 @@ class ZipcodeRecommendationTableView: NSObject, UITableViewDelegate, UITableView
     var shownZipCodes: [String]?
     var tableView: UITableView!
     var tableHeader: UIView!
+    var tableHeaderTitleLabel: UILabel!
     var textField: UITextField! {
         didSet {
             setupRx()
@@ -27,7 +28,10 @@ class ZipcodeRecommendationTableView: NSObject, UITableViewDelegate, UITableView
     override init() {
         super.init()
         tableView = UITableView()
-        tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 1))
+        tableHeader = UIView(frame: CGRect(x: 0, y: 0, width: 0, height: 40))
+        tableHeaderTitleLabel = UILabel(frame: CGRect(x: 15, y: 0, width: UIScreen.size().width-30, height: 40))
+        tableHeaderTitleLabel.numberOfLines = 0
+        tableHeaderTitleLabel.lineBreakMode = NSLineBreakMode.byWordWrapping
         setTableView()
     }
     
@@ -35,9 +39,12 @@ class ZipcodeRecommendationTableView: NSObject, UITableViewDelegate, UITableView
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
-        tableHeader.backgroundColor = UIColor.tpBorder()
+        tableHeader.backgroundColor = UIColor.fromHexString("e0e0e0")
+        tableHeader.addSubview(tableHeaderTitleLabel)
+        tableHeaderTitleLabel.text = "Silakan ketik kode pos Anda jika tidak tercantum di sini."
+        tableHeaderTitleLabel.font = UIFont.smallThemeMedium()
+        tableHeaderTitleLabel.textColor = UIColor(red: 109.0/255.0, green: 109.0/255.0, blue: 114.0/255.0, alpha: 1)
         tableView.tableHeaderView = tableHeader
-        tableView.tableFooterView = tableHeader
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {

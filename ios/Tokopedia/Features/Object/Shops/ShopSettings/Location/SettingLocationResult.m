@@ -16,6 +16,7 @@
     [mapping addAttributeMappingsFromArray:@[@"is_allow"]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"list" toKeyPath:@"list" withMapping:[Address mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"paging" toKeyPath:@"paging" withMapping:[Paging mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"token" toKeyPath:@"keroToken" withMapping:[ShipmentKeroToken mapping]]];
     return mapping;
 }
 

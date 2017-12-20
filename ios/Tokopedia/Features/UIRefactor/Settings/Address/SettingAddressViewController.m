@@ -57,6 +57,8 @@
     NSIndexPath *_indexPath;
     
     NSString *_searchKeyword;
+    
+    ShipmentKeroToken *_keroToken;
 }
 
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -299,6 +301,7 @@
         
         SettingAddressDetailViewController *vc = [SettingAddressDetailViewController new];
         vc.address = _list[indexPath.section];
+        vc.keroToken = _keroToken;
         [vc getSuccessSetDefaultAddress:^(AddressFormList *address) {
             [_list removeObject:address];
             [_list insertObject:address atIndex:0];
@@ -367,6 +370,7 @@
     [AddressRequest fetchListAddressPage: nextPage query:_searchKeyword onSuccess:^(AddressFormResult * data) {
         [self successRequestListAddress:data.list];
         _urinext =  data.paging.uri_next;
+        _keroToken = data.keroToken;
         
         [_act stopAnimating];
         [_refreshControl endRefreshing];
@@ -439,8 +443,10 @@
     
     NSInteger typeAddAddress = (type == TYPE_ADD_EDIT_PROFILE_ATC || type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?type:TYPE_ADD_EDIT_PROFILE_ADD_NEW;
     SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
+    vc.keroToken = _keroToken;
     vc.data = @{
-                kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress)
+                kTKPDPROFILE_DATAEDITTYPEKEY : @(typeAddAddress),
+                @"keroToken" : _keroToken?:[ShipmentKeroToken new]
                 };
     vc.delegate = self;
     

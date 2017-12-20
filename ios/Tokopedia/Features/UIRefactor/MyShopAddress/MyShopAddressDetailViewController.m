@@ -27,6 +27,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *labelprovince;
 @property (weak, nonatomic) IBOutlet UILabel *labelphonenumber;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section4Cells;
+@property (weak, nonatomic) IBOutlet UILabel *keroToken;
 
 @end
 
@@ -93,7 +94,8 @@
                 vc.data = @{kTKPDDETAIL_DATAADDRESSKEY : [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY],
                             kTKPD_AUTHKEY : [_data objectForKey:kTKPD_AUTHKEY],
                             kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPEEDITVIEWKEY),
-                            kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY]
+                            kTKPDDETAIL_DATAINDEXPATHKEY : [_data objectForKey:kTKPDDETAIL_DATAINDEXPATHKEY],
+                            @"keroToken" : [_data objectForKey:@"keroToken"]
                             };
                 vc.delegate = self;
                 UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:vc];

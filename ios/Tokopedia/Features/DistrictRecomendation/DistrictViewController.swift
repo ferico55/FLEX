@@ -53,7 +53,7 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
         districtTable.dataSource = self
         districtTable.isHidden = true
         labelView.isHidden = false
-        title = "Tulis Kota/Kecamatan"
+        title = "Tulis Kota / Kecamatan"
 
         NotificationCenter.default.addObserver(
             self,
@@ -169,16 +169,14 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
 
             searchBar.text = district.provinceName + ", " + district.cityName + ", " + district.districtName
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5, execute: {
-                self.dismiss(animated: true, completion: nil)
-            })
-
             let img = UIImage(named: "icon_check_green")!
             let imgView: UIImageView = UIImageView(frame: CGRect(x: 0, y: 0, width: 18, height: 18))
             imgView.clipsToBounds = true
             imgView.contentMode = UIViewContentMode.scaleAspectFit
             imgView.backgroundColor = UIColor.clear
             imgView.image = img
+            
+            self.navigationController?.dismiss(animated: true, completion: nil)
         }
     }
 

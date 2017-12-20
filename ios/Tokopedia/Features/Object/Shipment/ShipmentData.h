@@ -11,7 +11,6 @@
 #import "ShipmentCourierData.h"
 #import "ShipmentProvinceData.h"
 #import "Payment.h"
-#import "Tokopedia-Swift.h"
 
 @interface ShipmentData : NSObject
 

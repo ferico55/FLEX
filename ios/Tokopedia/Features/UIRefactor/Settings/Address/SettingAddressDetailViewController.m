@@ -27,6 +27,7 @@
 {
     UIImage *_captureMap;
     AddressFormList *_address;
+    ShipmentKeroToken *_keroToken;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *labelreceivername;
@@ -100,7 +101,6 @@ typedef void (^SuccessDeleteAddress)(AddressFormList* address);
     backBarButton.tag = 10;
     
     [self setDetailAddress:_address];
-
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -128,6 +128,7 @@ typedef void (^SuccessDeleteAddress)(AddressFormList* address);
     SettingAddressEditViewController *vc = [SettingAddressEditViewController new];
     vc.data = @{kTKPDPROFILE_DATAADDRESSKEY : _address,
                 kTKPDPROFILE_DATAEDITTYPEKEY : @(TYPE_ADD_EDIT_PROFILE_EDIT),
+                @"keroToken" : _keroToken
                 };
     vc.delegate = self;
     AddressFormList *address = _address;

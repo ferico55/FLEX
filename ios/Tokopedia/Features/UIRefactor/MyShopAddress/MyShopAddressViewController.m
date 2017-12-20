@@ -50,6 +50,7 @@
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
 @property (strong, nonatomic) NoResultReusableView *noResultView;
 @property (strong, nonatomic) LoadingView *loadingView;
+@property (strong, nonatomic) ShipmentKeroToken *keroToken;
 
 @end
 
@@ -178,7 +179,8 @@
                            kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
                            kTKPDDETAIL_DATAADDRESSKEY : _list[indexPath.row],
                            kTKPDDETAIL_DATAINDEXPATHKEY : indexPath,
-                           kTKPDDETAIL_DATAISDEFAULTKEY : @(isDefault)
+                           kTKPDDETAIL_DATAISDEFAULTKEY : @(isDefault),
+                           @"keroToken" : _keroToken
                            };
     controller.data = [NSMutableDictionary dictionaryWithDictionary:data];
     controller.delegate = self;
@@ -226,6 +228,7 @@
                                   SettingLocation *response = [mappingResult.dictionary objectForKey:@""];
                                   if (response.result.list.count > 0) {
                                       self.list = [NSMutableArray arrayWithArray:response.result.list];
+                                      self.keroToken = response.result.keroToken;
                                       self.tableView.tableFooterView = nil;
                                   } else {
                                       self.tableView.tableFooterView = self.noResultView;
@@ -293,7 +296,8 @@
     MyShopAddressEditViewController *controller = [MyShopAddressEditViewController new];
     controller.data = @{
         kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
-        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY)
+        kTKPDDETAIL_DATATYPEKEY : @(kTKPDSETTINGEDIT_DATATYPENEWVIEWKEY),
+        @"keroToken" : _keroToken
     };
     UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
     navigation.navigationBar.translucent = NO;
@@ -310,7 +314,8 @@
         kTKPD_AUTHKEY: [_data objectForKey:kTKPD_AUTHKEY],
         kTKPDDETAIL_DATAADDRESSKEY : _list[indexpath.row],
         kTKPDDETAIL_DATAINDEXPATHKEY : indexpath,
-        kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault)
+        kTKPDDETAIL_DATAISDEFAULTKEY : @(isdefault),
+        @"keroToken" : _keroToken
     }];
     controller.delegate = self;
     [self.navigationController pushViewController:controller animated:YES];

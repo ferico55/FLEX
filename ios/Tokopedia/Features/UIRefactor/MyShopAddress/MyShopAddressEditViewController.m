@@ -13,6 +13,7 @@
 #import "MyShopAddressEditViewController.h"
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
+#import "Tokopedia-Swift.h"
 
 #pragma mark - Setting Location Edit View Controller
 @interface MyShopAddressEditViewController ()
@@ -33,9 +34,6 @@
     __weak RKManagedObjectRequestOperation *_requestActionAddAddress;
     
     NSOperationQueue *_operationQueue;
-    
-    NSMutableDictionary *_datainput;
-    
     UITextView *_activetextview;
     NSMutableDictionary *_detailfilter;
     
@@ -49,10 +47,6 @@
     UIActivityIndicatorView *_act;
     
     BOOL _isBeingPresented;
-    
-    NSDictionary *_selectedProvince;
-    NSDictionary *_selectedDistrict;
-    NSDictionary *_selectedCity;
     
     UITextField *_activeTextField;
     
@@ -68,14 +62,17 @@
 @property (weak, nonatomic) IBOutlet TKPDTextView *textviewaddress;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldpostcode;
 @property (weak, nonatomic) IBOutlet UIButton *buttondistrict;
-@property (weak, nonatomic) IBOutlet UIButton *buttoncity;
-@property (weak, nonatomic) IBOutlet UIButton *buttonprovince;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldemail;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldfax;
 
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 
+@property (strong, nonatomic) ShipmentKeroToken *keroToken;
+@property (strong, nonatomic) DistrictDetail *selectedDistrict;
+@property (strong, nonatomic) ZipcodeRecommendationTableView *zipcodeRecommendation;
+@property (strong, nonatomic) NSArray *zipcodeList;
+@property (nonatomic) NSMutableDictionary *datainput;
 @end
 
 @implementation MyShopAddressEditViewController
@@ -122,7 +119,25 @@
     [_textfieldpostcode addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [_textfieldphonenumber addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
     [_textfieldemail addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
-    [_textfieldfax addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];    
+    [_textfieldfax addTarget:self action:@selector(textFieldValueChanged:) forControlEvents:UIControlEventEditingChanged];
+    
+    _zipcodeRecommendation.textField = _textfieldpostcode;
+    _zipcodeRecommendation = [ZipcodeRecommendationTableView new];
+    __weak typeof (self) wSelf = self;
+    self.zipcodeRecommendation.didSelectZipcode = ^(NSString* zipcode){
+        wSelf.textfieldpostcode.text = zipcode;
+        [wSelf.datainput setObject:zipcode forKey:kTKPDSHOP_APIPOSTALCODEKEY];
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC), dispatch_get_main_queue(), ^{
+            [wSelf.textfieldpostcode resignFirstResponder];
+        });
+    };
+    
+    [_textfieldpostcode bk_addEventHandler:^(UITextField* textField) {
+        textField.text = @"";
+        wSelf.zipcodeRecommendation.textField = textField;
+    } forControlEvents:UIControlEventEditingDidBegin];
+    
+    _keroToken = [_data objectForKey:@"keroToken"];
 }
 
 #pragma mark - Bar button item
@@ -158,44 +173,38 @@
     [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
 }
 
-- (IBAction)tap:(id)sender {
+- (IBAction)tap:(id)sender { //BTW tag kecamatan jd 10, kodePost jadi 11
+    DistrictViewController *controller = [[DistrictViewController alloc] initWithToken: _keroToken.token unixTime: _keroToken.unixTime];
+    __weak DistrictViewController *weakController = controller;
+    weakController.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                                   bk_initWithImage:[UIImage imageNamed:@"icon_close"]
+                                                   style:UIBarButtonItemStylePlain
+                                                   handler:^(id sender) {
+                                                       [weakController.navigationController dismissViewControllerAnimated:YES completion:nil];
+                                                   }];
     if ([sender isKindOfClass:[UIButton class]]) {
-        UIButton *btn = (UIButton*)sender;
-        switch (btn.tag) {
-            case 10: {
-                //location province
-                AddressViewController *vc = [AddressViewController new];
-                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEPROVINCEKEY),
-                            DATA_SELECTED_LOCATION_KEY : _selectedProvince?:@{}
-                            };
-                vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
+        __weak typeof(self) wSelf = self;
+        Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+        controller.didSelectDistrict = ^(DistrictDetail *district){
+            wSelf.selectedDistrict = district;
+            [wSelf.zipcodeRecommendation setZipcodeCellsWithPostalCodes:district.zipCodes];
+            wSelf.zipcodeList = district.zipCodes;
+            NSString *provinceName = wSelf.selectedDistrict.provinceName ?: list.location_province_name;
+            NSString *cityName = wSelf.selectedDistrict.cityName ?: list.location_city_name;
+            NSString *districtName = wSelf.selectedDistrict.districtName ?: list.location_district_name;
+            NSString *districtLabel = [NSString stringWithFormat:@"%@, %@, %@", provinceName, cityName, districtName];
+            [_buttondistrict setTitle:districtLabel forState:UIControlStateNormal];
+            [wSelf.tableView reloadData];
+            
+            if (wSelf.zipcodeList.count > 0) {
+                wSelf.zipcodeRecommendation.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 200);
+                wSelf.textfieldpostcode.inputAccessoryView = wSelf.zipcodeRecommendation.tableView;
+            } else {
+                wSelf.textfieldpostcode.inputAccessoryView = nil;
             }
-            case 11: {
-                AddressViewController *vc = [AddressViewController new];
-                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEREGIONKEY), //city
-                            kTKPDLOCATION_DATAPROVINCEIDKEY : _selectedProvince[DATA_ID_KEY]?:@(0),
-                            DATA_SELECTED_LOCATION_KEY :_selectedCity?:@{}
-                            };
-                vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            case 12: {
-                AddressViewController *vc = [AddressViewController new];
-                vc.data = @{kTKPDLOCATION_DATALOCATIONTYPEKEY : @(kTKPDLOCATION_DATATYPEDISTICTKEY),
-                            kTKPDLOCATION_DATAPROVINCEIDKEY : _selectedProvince[DATA_ID_KEY]?:@(0),
-                            kTKPDLOCATION_DATACITYIDKEY : _selectedCity[DATA_ID_KEY]?:@(0),
-                            DATA_SELECTED_LOCATION_KEY : _selectedDistrict?:@{}
-                            };
-                vc.delegate = self;
-                [self.navigationController pushViewController:vc animated:YES];
-                break;
-            }
-            default:
-                break;
-        }
+        };
+        UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
+        [self presentViewController:navigationController animated:YES completion:nil];
     }
 }
 
@@ -204,10 +213,8 @@
     
     NSString *addressname = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
     NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
-    NSInteger postcode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[list.location_postal_code integerValue];
-    NSString *district = _selectedDistrict[DATA_ID_KEY];
-    NSString *city = _selectedCity[DATA_ID_KEY];
-    NSString *prov = _selectedProvince[DATA_ID_KEY];
+    NSString *postcode =  _textfieldpostcode.text ?: [_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] ?: list.location_postal_code;
+    NSString *district = _selectedDistrict.districtID ?: list.location_district_id ?: [_datainput objectForKey:kTKPDSHOP_APIDISTRICTIDKEY];
     NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY];
     NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY];
     NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY];
@@ -226,24 +233,16 @@
         isValid = NO;
         [messages addObject:@"Alamat harus diisi."];
     }
-    if (postcode == 0) {
+    if (postcode.length!=5 || [postcode isEqualToString:@"99999"]) {
         isValid = NO;
-        [messages addObject:@"Kode Pos harus diisi."];
-    }
-    if (prov == nil || prov.length == 0) {
-        isValid = NO;
-        [messages addObject:@"Provinsi harus diisi."];
-    }
-    if (city == nil || city.length == 0) {
-        isValid = NO;
-        [messages addObject:@"Kotamadya harus diisi."];
+        [messages addObject:@"Format kode pos tidak sesuai."];
     }
     if (district == nil || district.length == 0) {
         isValid = NO;
         [messages addObject:@"Kecamatan harus diisi."];
     }
     if (email.length > 0 && [email isEmail] == nil) {
-        [messages addObject:@"Format Email tidak benar."];
+        [messages addObject:@"Format E-mail tidak benar."];
     }
     if (phone.length > 0) {
         if ([predicate evaluateWithObject:phone] == NO) {
@@ -279,10 +278,10 @@
     NSString *addressId = list.location_address_id?:@"";
     NSString *addressName = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:list.location_address_name;
     NSString *address = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:list.location_address;
-    NSString *postalCode = [_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY]?:list.location_postal_code;
-    NSString *district = _selectedDistrict[@"ID"]?:list.location_district_id?:@"";
-    NSString *city = _selectedCity[@"ID"]?:list.location_city_id?:@"";
-    NSString *province = _selectedProvince[@"ID"]?:list.location_province_id?:@"";
+    NSString *postalCode = _textfieldpostcode.text ?: @"";
+    NSString *district = _selectedDistrict.districtID?:list.location_district_id;
+    NSString *city = _selectedDistrict.cityID?:list.location_city_id;
+    NSString *province = _selectedDistrict.provinceID?:list.location_province_id;
     NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:list.location_phone?:@"";
     NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:list.location_email?:@"";
     NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:list.location_fax?:@"";
@@ -304,7 +303,7 @@
 }
 
 - (void)didTapSaveButton {
-    if ([self isValidInput] == NO) {
+    if (![self isValidInput]) {
         return;
     }
     NSString *baseURL = [NSString v4Url];
@@ -359,20 +358,20 @@
             
             NSString *addressName = [_datainput objectForKey:kTKPDSHOP_APIADDRESSNAMEKEY]?:address.location_address_name;
             NSString *streetAddress = [_datainput objectForKey:kTKPDSHOP_APIADDRESSKEY]?:address.location_address;
-            NSInteger postalCode = [[_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] integerValue]?:[address.location_postal_code integerValue];
-            NSString *districtID = _selectedDistrict[@"ID"]?:address.location_district_id?:@"";
-            NSString *cityID = _selectedCity[@"ID"]?:address.location_city_id?:@"";
-            NSString *provinceID = _selectedProvince[@"ID"]?:address.location_province_id?:@"";
+            NSString *postalCode = [_datainput objectForKey:kTKPDSHOP_APIPOSTALCODEKEY] ?: address.location_postal_code;
+            NSString *districtID = _selectedDistrict.districtID?:address.location_district_id?:@"";
+            NSString *cityID = _selectedDistrict.cityID?:address.location_city_id?:@"";
+            NSString *provinceID = _selectedDistrict.provinceID?:address.location_province_id?:@"";
             NSString *phone = [_datainput objectForKey:kTKPDSHOP_APIPHONEKEY]?:address.location_phone?:@"";
             NSString *email = [_datainput objectForKey:kTKPDSHOP_APIEMAILKEY]?:address.location_email?:@"";
             NSString *fax = [_datainput objectForKey:kTKPDSHOP_APIFAXKEY]?:address.location_fax?:@"";
             
-            address.location_city_name = _selectedCity[DATA_NAME_KEY]?:@"";
-            address.location_district_name = _selectedDistrict[DATA_NAME_KEY]?:@"";
-            address.location_province_name = _selectedProvince[DATA_NAME_KEY]?:@"";
+            address.location_city_name = _selectedDistrict.cityName?:address.location_city_name?:@"";
+            address.location_district_name = _selectedDistrict.districtName?:address.location_district_name?:@"";
+            address.location_province_name = _selectedDistrict.provinceName?:address.location_province_name?:@"";
             address.location_address_name = addressName;
             address.location_address = streetAddress;
-            address.location_postal_code = [NSString stringWithFormat:@"%ld", (long)postalCode];
+            address.location_postal_code = postalCode;
             address.location_district_id = districtID;
             address.location_city_id = cityID;
             address.location_province_id = provinceID;
@@ -495,66 +494,28 @@
         } else {
             _textfieldfax.text = list.location_fax;
         }
-        [_buttonprovince setTitle:list.location_province_name?:@"Pilih" forState:UIControlStateNormal];
-        [_buttoncity setTitle:list.location_city_name?:@"Pilih" forState:UIControlStateNormal];
-        [_buttondistrict setTitle:list.location_district_name?:@"Pilih" forState:UIControlStateNormal];
         
-        _selectedProvince = @{DATA_ID_KEY:list.location_province_id?:@"",DATA_NAME_KEY:list.location_province_name?:@""};
-        _selectedCity = @{DATA_ID_KEY:list.location_city_id?:@"",DATA_NAME_KEY:list.location_city_name?:@""};
-        _selectedDistrict = @{DATA_ID_KEY:list.location_district_id?:@"",DATA_NAME_KEY:list.location_district_name?:@""};
-        
-        if ([list.location_province_id isEqualToString:@""]||list.location_province_id == nil) {
-            _buttondistrict.enabled = NO;
-            _buttoncity.enabled = NO;
-        }
+        NSString *provinceName = _selectedDistrict.provinceName ?: list.location_province_name ?: @"";
+        NSString *cityName = _selectedDistrict.cityName ?: list.location_city_name ?: @"";
+        NSString *districtName = _selectedDistrict.districtName ?: list.location_district_name ?: @"";
+        NSString *name = [NSString stringWithFormat:@"%@, %@, %@", provinceName, cityName, districtName];
+        [_buttondistrict setTitle:list.location_district_name ? name : @"Pilih Kota / Kec" forState:UIControlStateNormal];
     }
 }
 
 #pragma mark - Setting Address Delegate
--(void)SettingAddressLocationView:(UIViewController *)vc withData:(NSDictionary *)data
-{
-    NSString *name = data[DATA_SELECTED_LOCATION_KEY][DATA_NAME_KEY]?:@"";
-    NSInteger locationid = [data[DATA_SELECTED_LOCATION_KEY][DATA_ID_KEY] integerValue];
+-(void)SettingAddressLocationView:(UIViewController *)vc withData:(NSDictionary *)data {
+    Address *list = [_data objectForKey:kTKPDDETAIL_DATAADDRESSKEY];
+    NSString *provinceName = _selectedDistrict.provinceName ?: list.location_province_name ?: @"";
+    NSString *cityName = _selectedDistrict.cityName ?: list.location_city_name ?: @"";
+    NSString *districtName = _selectedDistrict.districtName ?: list.location_district_name ?: @"";
+    NSString *name = [NSString stringWithFormat:@"%@, %@, %@", provinceName, cityName, districtName];
     
     switch ([[data objectForKey:kTKPDLOCATION_DATALOCATIONTYPEKEY] integerValue]) {
-        case kTKPDLOCATION_DATATYPEPROVINCEKEY:
-        {
-            if (locationid != [_selectedProvince[@"ID"] integerValue]) {
-                //reset city and district
-                _selectedCity = @{};
-                _selectedDistrict = @{};
-                
-                [_buttoncity setTitle:@"Pilih" forState:UIControlStateNormal];
-                [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
-                _buttondistrict.enabled = NO;
-            }
-            _buttoncity.enabled = YES;
-            
-            [_buttonprovince setTitle:name forState:UIControlStateNormal];
-            [_datainput setObject:name forKey:kTKPDSHOP_APIPROVINCENAMEKEY];
-            [_datainput setObject:@(locationid) forKey:kTKPDLOCATION_DATAPROVINCEIDKEY];
-            
-            _selectedProvince = data[DATA_SELECTED_LOCATION_KEY];
-            
-            break;
-        }
-        case kTKPDLOCATION_DATATYPEREGIONKEY:
-        {
-            if (locationid != [_selectedCity[@"ID"] integerValue]) {
-                //reset district
-                _selectedDistrict = @{};
-                
-                [_buttondistrict setTitle:@"Pilih" forState:UIControlStateNormal];
-            }
-            _buttondistrict.enabled = YES;
-            [_buttoncity setTitle:name forState:UIControlStateNormal];
-            
-            _selectedCity = data[DATA_SELECTED_LOCATION_KEY];
-            break;
-        }
         case kTKPDLOCATION_DATATYPEDISTICTKEY:
         {
-            [_buttondistrict setTitle:name forState:UIControlStateNormal];
+            _buttondistrict.enabled = YES;
+            [_buttondistrict setTitle:[name isEqualToString:@", , "]?@"Pilih Kota / Kec":name forState:UIControlStateNormal];
             
             _selectedDistrict = data[DATA_SELECTED_LOCATION_KEY];
             break;

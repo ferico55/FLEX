@@ -253,7 +253,7 @@ TKPPlacePickerDelegate
 
 - (ShipmentLocationViewCell *)locationCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ShipmentLocationViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"location"];
-    cell.locationTitleLabel.text = @"Kota/Kec";
+    cell.locationTitleLabel.text = @"Kota / Kec";
     NSString *province = _selectedDistrict.provinceName?: _shop.provinceName?: @"";
     NSString *city = _selectedDistrict.cityName?: _shop.cityName?: @"";
     NSString *district = _selectedDistrict.districtName?: _shop.districtName?: @"Pilih Kecamatan";
@@ -393,7 +393,6 @@ TKPPlacePickerDelegate
     if (indexPath.section == 0) {
         DistrictViewController *controller = [[DistrictViewController alloc] initWithToken: _keroToken.token unixTime: _keroToken.unixTime];
         if ([[tableView cellForRowAtIndexPath:indexPath] isKindOfClass: [ShipmentLocationViewCell class]]) {
-            controller.title = @"Tulis Kota / Kecamatan";
             controller.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
                                                            bk_initWithImage:[UIImage imageNamed:@"icon_close"]
                                                            style:UIBarButtonItemStylePlain
