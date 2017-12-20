@@ -46,6 +46,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                                     [NSString kunyitUrl]: @"web_service_v4",
                                     [NSString accountsUrl]: @"web_service_v4",
                                     [NSString topAdsUrl]: @"web_service_v4",
+                                    [NSString tokopointsUrl]: @"web_service_v4",
                                     };
     
     NSString *output;
@@ -103,6 +104,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                                     [NSString kunyitUrl]: @"web_service_v4",
                                     [NSString accountsUrl]: @"web_service_v4",
                                     [NSString topAdsUrl]: @"web_service_v4",
+                                    [NSString tokopointsUrl]: @"web_service_v4",
                                     };
     
     NSString *output;
@@ -155,6 +157,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                                     [NSString kunyitUrl]: @"web_service_v4",
                                     [NSString accountsUrl]: @"web_service_v4",
                                     [NSString topAdsUrl]: @"web_service_v4",
+                                    [NSString tokopointsUrl]: @"web_service_v4",
                                     };
     
     NSString *output;

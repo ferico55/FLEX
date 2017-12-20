@@ -66,7 +66,8 @@ TransactionCartEditViewControllerDelegate,
 TransactionCartWebViewViewControllerDelegate,
 LoadingViewDelegate,
 GeneralTableViewControllerDelegate,
-NoResultDelegate
+NoResultDelegate,
+InputPromoViewDelegate
 >
 {
     NSMutableArray<TransactionCartList *> *_list;
@@ -111,14 +112,10 @@ NoResultDelegate
     UIView *_lineView;
     UIView *lastNotificationView;
     
+    PromoType _promoType;
+    
     UserAuthentificationManager *_userManager;
 }
-
-@property (weak, nonatomic) IBOutlet UIView *voucerCodeBeforeTapView;
-@property (weak, nonatomic) IBOutlet UIButton *voucherCodeButton;
-@property (weak, nonatomic) IBOutlet UILabel *voucherAmountLabel;
-
-@property (strong, nonatomic) IBOutlet UITableViewCell *voucerCell;
 
 @property (strong, nonatomic) IBOutlet UIView *checkoutView;
 
@@ -128,8 +125,6 @@ NoResultDelegate
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentCell;
 @property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
 
-@property (weak, nonatomic) IBOutlet UIButton *buttonVoucherInfo;
-@property (weak, nonatomic) IBOutlet UIButton *buttonCancelVoucher;
 @property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *LPCashbackCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *donasiCell;
@@ -137,6 +132,13 @@ NoResultDelegate
 @property (strong, nonatomic) IBOutlet UITableViewCell *promoCell;
 @property (strong, nonatomic) IBOutlet UILabel *promoLabel;
 @property (strong, nonatomic) IBOutlet UILabel *promoCTALabel;
+
+@property (strong, nonatomic) IBOutlet UITableViewCell *usedVoucherCell;
+@property (strong, nonatomic) IBOutlet UITableViewCell *voucherCell;
+@property (weak, nonatomic) IBOutlet UILabel *lblUsedVoucherCode;
+@property (weak, nonatomic) IBOutlet UILabel *lblUsedVoucherMessage;
+@property (weak, nonatomic) IBOutlet UIButton *btnCancelUseVoucher;
+@property (weak, nonatomic) IBOutlet UIButton *btnUseVoucher;
 
 - (IBAction)tap:(id)sender;
 @end
@@ -526,7 +528,14 @@ NoResultDelegate
         picker.pickerData =ARRAY_IF_STOCK_AVAILABLE_PARTIALLY;
         picker.tag = TAG_ALERT_PARTIAL;
         [picker show];
-    } if (indexPath.section == _list.count+2) { //promo
+    }
+    if (indexPath.section == _list.count + 1) { // voucher
+        InputPromoViewController *vc = [[InputPromoViewController alloc] initWithServiceType:PromoServiceTypeMarketplace couponEnabled:([_cart.is_coupon_active isEqualToString:@"1"])];
+        vc.delegate = self;
+        UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
+        [self.navigationController presentViewController:nvc animated:true completion:nil];
+    }
+    if (indexPath.section == _list.count+2) { //promo
         [_dataInput setObject:_cart.promoSuggestion.promoCode forKey:@"voucher_code"];
         [_dataInput setObject:@(YES) forKey:@"isUsingPromoSuggestion"];
         [self doRequestVoucher];
@@ -544,34 +553,12 @@ NoResultDelegate
 - (IBAction)tap:(id)sender {
     UIButton *button = (UIButton*)sender;
     switch (button.tag) {
-        case 10:{
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Kode Promo"
-                                                            message:@"Masukkan kode promo"
-                                                           delegate:self
-                                                  cancelButtonTitle:@"Batal"
-                                                  otherButtonTitles:@"OK", nil];
-            alert.alertViewStyle = UIAlertViewStylePlainTextInput;
-            alert.tag = TAG_BUTTON_VOUCHER;
-            [alert show];
-        }
-            break;
-        case 11:
+        case 1833:
         {
-            AlertInfoView *alertInfo = [AlertInfoView newview];
-            alertInfo.text = @"Info Kode Promo Tokopedia";
-            alertInfo.detailText = @"Hanya berlaku untuk satu kali pembayaran. Sisa nilai promo tidak dapat dikembalikan.";
-            [alertInfo show];
-        }
-        case 12:
-        {
-            _voucherCodeButton.hidden = NO;
-            _voucherAmountLabel.text = @"";
-            _voucherAmountLabel.hidden = YES;
-            _buttonCancelVoucher.hidden = YES;
-            _buttonVoucherInfo.hidden = NO;
+            // btn cancel voucher
             _cart.promoSuggestion.isUsingVoucher = NO;
             
-            _voucherData = [TransactionVoucherData new];
+            _voucherData = nil;
             [_dataInput setObject:@"" forKey:API_VOUCHER_CODE_KEY];
             [self adjustGrandTotal];
             [_tableView reloadData];
@@ -949,20 +936,6 @@ NoResultDelegate
                     break;
             }
             break;
-        case TAG_BUTTON_VOUCHER:
-        {
-            if (buttonIndex == 1) {
-                NSString *voucherCode = [[alertView textFieldAtIndex:0] text];
-                [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
-                [_dataInput setObject:@(NO) forKey:@"isUsingPromoSuggestion"];
-                if ([CartValidation isValidInputVoucherCode:voucherCode]) {
-                    [self doRequestVoucher];
-                } else {
-                    [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
-                }
-            }
-        }
-            break;
         case TAG_ALERT_PARTIAL:
         {
             NSInteger partialSection = [[_dataInput objectForKey:DATA_PARTIAL_SECTION] integerValue];
@@ -1128,12 +1101,6 @@ NoResultDelegate
     [_dataInput removeAllObjects];
     [_list removeAllObjects];
     
-    _voucherCodeButton.hidden = NO;
-    _voucherAmountLabel.hidden = YES;
-    _voucherAmountLabel.text = @"";
-    _buttonVoucherInfo.hidden = NO;
-    _buttonCancelVoucher.hidden = YES;
-    
     _voucherData = nil;
     _tableView.tableFooterView = nil;
     
@@ -1262,7 +1229,12 @@ NoResultDelegate
     UITableViewCell *cell = nil;
     switch (indexPath.row) {
         case 0:
-            cell = _voucerCell;
+            if (_voucherData == nil) {
+                cell = _voucherCell;
+            }
+            else {
+                cell = _usedVoucherCell;
+            }
             break;
         case 1:
         {
@@ -1358,7 +1330,12 @@ NoResultDelegate
         else if (indexPath.row >1) {
             return 0;
         } else {
-            return UITableViewAutomaticDimension;
+            if (_voucherData == nil) {
+                return 44;
+            }
+            else {
+                return UITableViewAutomaticDimension;
+            }
         }
     } else if (indexPath.section == _list.count+2){
         return (_cart.promoSuggestion.isVisible) ? UITableViewAutomaticDimension : 0; //promo
@@ -1488,6 +1465,13 @@ NoResultDelegate
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
         _cart.promoSuggestion.isUsingVoucher = ([_dataInput objectForKey:@"voucher_code"] && ![[_dataInput objectForKey:@"voucher_code"] isEqualToString:@""]);
         
+        if ([data.is_coupon_active isEqualToString:@"1"]) {
+            [_btnUseVoucher setTitle:@"Gunakan Kode Promo atau Kupon" forState:UIControlStateNormal];
+        }
+        else {
+            [_btnUseVoucher setTitle:@"Gunakan Kode Promo" forState:UIControlStateNormal];
+        }
+        
         [self adjustGrandTotal];
         [self isLoading:NO];
         [self reloadNotification];
@@ -1581,32 +1565,40 @@ NoResultDelegate
     NSString *voucherCode = [_dataInput objectForKey:API_VOUCHER_CODE_KEY]?:@"";
     BOOL isPromoSuggestion = [[_dataInput objectForKey:@"isUsingPromoSuggestion"]  isEqual: @(YES)];
     [RequestCart fetchVoucherCode: voucherCode isPromoSuggestion: isPromoSuggestion success: ^(TransactionVoucher *voucher) {
-        
-        _cart.promoSuggestion.isUsingVoucher = YES;
         _voucherData = voucher.data.data_voucher;
-        
-        _voucherCodeButton.hidden = YES;
-        _voucherAmountLabel.hidden = NO;
-        
-        NSInteger voucherAmount = [_voucherData.voucher_amount integerValue];
-        NSString *voucherString = [[NSNumberFormatter IDRFormatter] stringFromNumber:[NSNumber numberWithInteger:voucherAmount]];
-        voucherString = [NSString stringWithFormat:@"Anda mendapatkan promo senilai %@.", voucherString];
-        if (![_voucherData.voucher_promo_desc isEqualToString:@""]){
-            voucherString = _voucherData.voucher_promo_desc;
-        }
-        _voucherAmountLabel.text = voucherString;
-        _voucherAmountLabel.font = [UIFont microTheme];
-        
-        _buttonVoucherInfo.hidden = YES;
-        _buttonCancelVoucher.hidden = NO;
+        _voucherData.voucher_code = [_dataInput objectForKey:@"voucher_code"];
+        _promoType = PromoTypeVoucher;
         
         [self isLoading:NO];
-        [self adjustGrandTotal];
-        [_tableView reloadData];
+        [self useVoucher];
     } error:^(NSError *error) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
         [self isLoading:NO];
     }];
+}
+
+- (void)useVoucher {
+    _cart.promoSuggestion.isUsingVoucher = YES;
+    
+    NSString *usedCouponString = @"";
+    int startVoucher = 0;
+    switch (_promoType) {
+        case PromoTypeCoupon:
+            usedCouponString = [NSString stringWithFormat:@"Kupon Saya: %@", _voucherData.coupon_title];
+            startVoucher = 12;
+            break;
+        case PromoTypeVoucher:
+            usedCouponString = [NSString stringWithFormat:@"Kode Voucher: %@", _voucherData.voucher_code];
+            startVoucher = 13;
+            break;
+    }
+    NSMutableAttributedString *voucherCodeText = [[NSMutableAttributedString alloc] initWithString:usedCouponString attributes:@{NSFontAttributeName: _lblUsedVoucherCode.font}];
+    [voucherCodeText addAttribute:NSForegroundColorAttributeName value:[UIColor fromHexString:@"#FD5830"] range:NSMakeRange(startVoucher, voucherCodeText.length - startVoucher)];
+    _lblUsedVoucherCode.attributedText = voucherCodeText;
+    _lblUsedVoucherMessage.text = _voucherData.voucher_promo_desc;
+        
+    [self adjustGrandTotal];
+    [_tableView reloadData];
 }
 
 -(void)doCheckoutWithToppay{
@@ -1690,6 +1682,17 @@ NoResultDelegate
         [_noInternetConnectionView removeFromSuperview];
         [self refreshRequestCart];
     }
+}
+
+#pragma mark - InputPromoViewDelegate
+- (void)didUseVoucher:(InputPromoViewController *)inputPromoViewController voucherData:(id)voucherData serviceType:(enum PromoServiceType)serviceType promoType:(enum PromoType)promoType {
+    _voucherData = (TransactionVoucherData *)voucherData;
+    _promoType = promoType;
+    
+    [_dataInput setObject:_voucherData.voucher_code forKey:API_VOUCHER_CODE_KEY];
+    [_dataInput setObject:@(NO) forKey:@"isUsingPromoSuggestion"];
+    
+    [self useVoucher];
 }
 
 @end

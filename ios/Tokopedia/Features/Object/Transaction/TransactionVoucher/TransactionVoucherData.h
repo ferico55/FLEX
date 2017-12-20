@@ -18,4 +18,8 @@
 @property (nonatomic, strong) NSString *voucher_no_other_promotion;
 @property (nonatomic, strong) NSString *voucher_promo_desc;
 
+// this isn't returned from api
+@property (nonatomic, strong) NSString *voucher_code;
+@property (nonatomic, strong) NSString *coupon_title;
+
 @end

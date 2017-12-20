@@ -176,6 +176,53 @@
                              }];
 }
 
++(void)fetchVoucherCode:(NSString*)voucherCode isPromoSuggestion:(BOOL)isPromoSuggestion showError:(BOOL)showError success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
+    
+    NSDictionary* param = @{@"voucher_code": voucherCode, @"suggested": @(isPromoSuggestion)};
+    TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
+    networkManager.isUsingHmac = YES;
+    networkManager.isUsingDefaultError = showError;
+    [networkManager requestWithBaseUrl:[NSString v4Url]
+                                  path:@"/v4/tx-voucher/check_voucher_code.pl"
+                                method:RKRequestMethodGET
+                             parameter:param
+                               mapping:[TransactionVoucher mapping]
+                             onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
+                                 
+                                 NSDictionary *result = successResult.dictionary;
+                                 TransactionVoucher *cart = [result objectForKey:@""];
+                                 if (cart.message_error.count > 0) {
+                                     if (showError) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_error]
+                                                                                  type:NotificationTypeError
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                     }
+                                     else {
+                                         NSError *err = [NSError errorWithDomain:[[NSBundle mainBundle] bundleIdentifier] code:3011 userInfo:[NSDictionary dictionaryWithObject:[NSString joinStringsWithBullets:cart.message_error] forKey:NSLocalizedDescriptionKey]];
+                                         error(err);
+                                     }
+                                 } else {
+                                     if (cart.message_status.count > 0) {
+                                         [UIViewController showNotificationWithMessage:[NSString joinStringsWithBullets:cart.message_status]
+                                                                                  type:NotificationTypeSuccess
+                                                                              duration:4.0
+                                                                           buttonTitle:nil
+                                                                           dismissable:YES
+                                                                                action:nil];
+                                         
+                                     }
+                                     success(cart);
+                                     
+                                 }
+                                 
+                             } onFailure:^(NSError *errorResult) {
+                                 error(errorResult);
+                             }];
+}
+
 +(void)fetchDeleteProduct:(ProductDetail*)product cart:(TransactionCartList*)cart withType:(NSInteger)type success:(void (^)(TransactionAction *data, ProductDetail* product, TransactionCartList* cart, NSInteger type))success error:(void (^)(NSError *error))error{
     
     NSInteger productCartID = [product.product_cart_id integerValue];

@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12118" systemVersion="16D32" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -33,5 +34,28 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
         </view>
+        <stackView opaque="NO" contentMode="scaleToFill" id="WiE-vl-TBA">
+            <rect key="frame" x="0.0" y="0.0" width="200" height="110"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FF2-On-B8C">
+                    <rect key="frame" x="0.0" y="0.0" width="98" height="110"/>
+                    <color key="backgroundColor" red="0.83529411760000005" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Rrd-hO-Oe3">
+                    <rect key="frame" x="98" y="0.0" width="2" height="110"/>
+                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="lY1-Nj-oFd">
+                    <rect key="frame" x="100" y="0.0" width="100" height="110"/>
+                    <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                </view>
+            </subviews>
+            <constraints>
+                <constraint firstItem="FF2-On-B8C" firstAttribute="width" secondItem="WiE-vl-TBA" secondAttribute="width" multiplier="0.49" id="N3C-YK-q23"/>
+                <constraint firstItem="Rrd-hO-Oe3" firstAttribute="width" secondItem="WiE-vl-TBA" secondAttribute="width" multiplier="0.01" id="uw1-MY-kfF"/>
+            </constraints>
+            <point key="canvasLocation" x="344" y="466"/>
+        </stackView>
     </objects>
 </document>

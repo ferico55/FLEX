@@ -15,6 +15,9 @@
 #define GA_EVENT_NAME_EVENT_TOP_NAV @"eventTopNav"
 #define GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE @"userInteractionHomePage"
 
+#define GA_EVENT_NAME_CLICK_TOKOPOINTS_HOMEPAGE @"clickHomepage"
+#define GA_EVENT_NAME_TOKOPOINTS @"eventTokopoint"
+
 #pragma mark - Event Category
 #define GA_EVENT_CATEGORY_HOMEPAGE @"Homepage"
 #define GA_EVENT_CATEGORY_HOMEPAGE_NON_CAPITAL @"homepage"
@@ -134,9 +137,9 @@
 #define GA_EVENT_ACTION_WISHLIST_CLICK_EMPTY_CARI_PRODUK @"wishlist - click empty cari produk"
 
 #pragma mark - More Section
-#define MORE_SECTION_2 @"Profil Saya"
-#define MORE_SECTION_3 @"Toko Saya"
-#define MORE_SECTION_5 @"Kotak Masuk"
+#define MORE_SECTION_1 @"Profil Saya"
+#define MORE_SECTION_2 @"Toko Saya"
+#define MORE_SECTION_4 @"Kotak Masuk"
 #define MORE_SECTION_OTHERS @"Others"
 
 #endif /* AnalyticsString_h */

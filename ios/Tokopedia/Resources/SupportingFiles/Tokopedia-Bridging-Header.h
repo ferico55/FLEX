@@ -128,7 +128,6 @@
 #import "PromoResponse.h"
 #import "PromoInfoAlertView.h"
 #import "SearchAWSResult.h"
-#import "LoyaltyPointResult.h"
 #import "LogoutResult.h"
 #import "TKPStoreManager.h"
 #import "Shop.h"
@@ -240,3 +239,5 @@
 
 #import "BannerType.h"
 #import "ReactDynamicFilterModule.h"
+
+#import "RequestCart.h"

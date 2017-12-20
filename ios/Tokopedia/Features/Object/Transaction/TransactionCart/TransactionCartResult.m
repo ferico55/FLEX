@@ -27,7 +27,8 @@
                       @"cashback_idr",
                       @"cashback",
                       @"grand_total_without_lp_idr",
-                      @"grand_total_without_lp"
+                      @"grand_total_without_lp",
+                      @"is_coupon_active"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

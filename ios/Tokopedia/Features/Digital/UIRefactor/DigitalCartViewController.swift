@@ -9,22 +9,19 @@
 import Foundation
 import UIKit
 import OAStackView
-import BEMCheckBox
 import Unbox
 import Moya
 import MoyaUnbox
 import MMNumberKeyboard
 import RxSwift
 
-class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFieldDelegate, NoResultDelegate {
+class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultDelegate, InputPromoViewDelegate {
     @IBOutlet weak var mainView: OAStackView!
     @IBOutlet weak var additionalView: OAStackView!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var content: OAStackView!
     @IBOutlet weak var discountView: UIView!
     @IBOutlet weak var expandButton: UIView!
-    @IBOutlet weak var voucherInputView: UIView!
-    @IBOutlet weak var voucherCancelView: UIView!
     @IBOutlet weak var expandView: UIView!
     @IBOutlet weak var textBoxView: UIView!
     
@@ -35,17 +32,17 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     @IBOutlet weak var expandIcon: UIImageView!
     @IBOutlet weak var inputLabel: UILabel!
     @IBOutlet weak var inputText: UITextField!
-    @IBOutlet weak var checkbox: BEMCheckBox!
-    @IBOutlet weak var voucherText: UITextField!
-    @IBOutlet weak var voucherName: UILabel!
     @IBOutlet weak var priceLabel: UILabel!
     @IBOutlet weak var discountLabel: UILabel!
     @IBOutlet weak var totalLabel: UILabel!
-    @IBOutlet weak var gunakanButton: UIButton!
     @IBOutlet weak var checkoutButton: UIButton!
     
+    @IBOutlet weak var usedVoucherContainerView: UIView!
+    @IBOutlet weak var lblUsedVoucher: UILabel!
+    @IBOutlet weak var lblVoucherMessage: UILabel!
+    @IBOutlet weak var btnUseVoucher: UIButton!
+    
     var categoryId = ""
-    var voucherCode = ""
     var transactionId = ""
     fileprivate var isOpen = false
     fileprivate var isVoucherUsed = false
@@ -54,6 +51,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     fileprivate var cart:DigitalCart = DigitalCart()
     fileprivate var voucher:DigitalVoucher = DigitalVoucher()
     fileprivate var noResultView: NoResultReusableView!
+    private var promoType: PromoType = .voucher
     
     let cartPayment = PublishSubject<DigitalCartPayment>()
     
@@ -66,12 +64,6 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
     lazy fileprivate var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         indicator.frame.origin = CGPoint(x: 20, y: 16)
-        return indicator
-    }()
-    
-    lazy fileprivate var actIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        indicator.center = CGPoint(x: self.gunakanButton.bounds.size.width/2, y: self.gunakanButton.bounds.size.height/2)
         return indicator
     }()
     
@@ -113,6 +105,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         self.mainActivityIndicator.center = self.view.center
         self.view.addSubview(self.mainActivityIndicator)
         self.mainActivityIndicator.startAnimating()
+        
         initView()
         if !self.categoryId.isEmpty {
             getCart()
@@ -165,33 +158,43 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         }
     }
     
-    fileprivate func setVoucherUsed() {
-        if (checkbox.on) {
-            voucherInputView.isHidden = false
-            AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Voucher Checklist")
-        } else {
-            voucherInputView.isHidden = true
-            isVoucherUsed = false
-            setVoucherCanceled()
-        }
-    }
-    
     fileprivate func setVoucherCanceled() {
-        if (isVoucherUsed) {
-            voucherCancelView.isHidden = false
-            self.voucherName.text = self.voucher.message
+        if isVoucherUsed {
+            var usedCouponString: String = ""
+            var startVoucher = 0
+            switch promoType {
+            case .coupon:
+                usedCouponString = "Kupon Saya: \(voucher.couponTitle)"
+                startVoucher = 12
+                break
+            case .voucher:
+                usedCouponString = "Kode Voucher: \(voucher.voucherCode)"
+                startVoucher = 13
+                break
+            }
+            let myCouponString = NSMutableAttributedString(string: usedCouponString, attributes: [NSFontAttributeName: lblUsedVoucher.font])
+            myCouponString.addAttribute(NSForegroundColorAttributeName, value: UIColor.fromHexString("#FD5830"), range: NSRange(location: startVoucher, length: myCouponString.length - startVoucher))
+            
+            lblUsedVoucher.attributedText = myCouponString
+            lblVoucherMessage.text = voucher.message.trimmingCharacters(in: .whitespacesAndNewlines)
+            
             if (self.voucher.discountAmount > 0) {
                 isDiscount = true
-            } else {
+            }
+            else {
                 isDiscount = false
             }
-        } else {
-            voucherCancelView.isHidden = true
-            self.voucherName.text = ""
-            isDiscount = false
-            self.voucherText.text = ""
-            self.voucherCode = ""
+            
+            btnUseVoucher.isHidden = true
+            usedVoucherContainerView.isHidden = false
         }
+        else {
+            isDiscount = false
+            
+            btnUseVoucher.isHidden = false
+            usedVoucherContainerView.isHidden = true
+        }
+        
         setDiscountView()
     }
     
@@ -223,14 +226,6 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             }
             additionalView.addArrangedSubview(space(15))
         }
-    }
-    
-    fileprivate func setVoucher() {
-        guard !self.cart.voucherCode.isEmpty else { return }
-        checkbox.on = true
-        setVoucherUsed()
-        voucherText.text = self.cart.voucherCode
-        getVoucher()
     }
     
     fileprivate func setLabelAndValue(label:String, value:String) -> OAStackView {
@@ -269,20 +264,8 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         setExpandButton()
 
         container.isHidden = true
-        voucherInputView.isHidden = true
-        voucherCancelView.isHidden = true
         discountView.isHidden = true
         textBoxView.isHidden = true
-        
-        self.checkbox.boxType = .square
-        self.checkbox.lineWidth = 1
-        self.checkbox.onTintColor = UIColor.white
-        self.checkbox.onCheckColor = UIColor.white
-        self.checkbox.onFillColor = UIColor.tpGreen()
-        self.checkbox.animationDuration = 0
-        self.checkbox.delegate = self
-        self.checkbox.accessibilityIdentifier = "donationCheckBox"
-        self.checkbox.isAccessibilityElement = true
         
         let tap = UITapGestureRecognizer(target: self, action: #selector(self.dismissKeyboard))
         view.addGestureRecognizer(tap)
@@ -291,11 +274,13 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         noResultView.delegate = self
         noResultView.generateAllElements("icon_no_data_grey.png", title: "Whoops!\nTidak ada koneksi Internet", desc: "Harap coba lagi", btnTitle: "Coba Kembali")
         checkoutButton.addSubview(activityIndicator)
-        gunakanButton.addSubview(actIndicator)
         
         let keyboard =  MMNumberKeyboard(frame: CGRect.zero)
         keyboard.allowsDecimalPoint = false
         self.inputText.inputView = keyboard
+        
+        usedVoucherContainerView.layer.borderColor = UIColor.tpGreen().cgColor
+        usedVoucherContainerView.layer.borderWidth = 1
     }
     
     fileprivate func setData() {
@@ -303,7 +288,6 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         setInputView()
         setMainInfo()
         setAdditionalInfo()
-        setVoucher()
         
         categoryLabel.setText(self.cart.categoryName, animated: true)
         operatorLabel.setText(self.cart.operatorName, animated: true)
@@ -335,6 +319,13 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
                 
                         self?.mainActivityIndicator.stopAnimating()
                         AnalyticsManager.trackRechargeEvent(event: .homepage, cart: cart, action: "View Checkout Page")
+                
+                        if cart.isCouponActive == "1" {
+                            self?.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
+                        }
+                        else {
+                            self?.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
+                        }
                     },
                        onError: { [unowned self] error in
                         self.mainActivityIndicator.stopAnimating()
@@ -365,9 +356,6 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             amount = 0
         }
         
-        if (checkbox.on) {
-            self.voucherCode = self.voucherText.text!
-        }
         checkoutButton.setTitle("Sedang proses...", for: .normal)
         checkoutButton.isEnabled = false
         
@@ -375,7 +363,7 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Lanjut - Checkout Page")
         
         DigitalProvider()
-            .request(.payment(voucherCode: self.voucherCode, transactionAmount: amount, transactionId:self.transactionId))
+            .request(.payment(voucherCode: voucher.voucherCode, transactionAmount: amount, transactionId:self.transactionId))
             .map(to: DigitalCartPayment.self)
             .do(
                 onNext: { [weak self] payment in
@@ -411,73 +399,8 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
             .disposed(by: self.rx_disposeBag)
     }
     
-    fileprivate func getVoucher() {
-        voucherCode = self.voucherText.text!
-        voucherCode = voucherCode.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
-        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Gunakan Voucher - \(voucherCode)")
-        if (!voucherCode.isEmpty) {
-            self.dismissKeyboard()
-            gunakanButton.setTitle("", for: .normal)
-            gunakanButton.isEnabled = false
-            actIndicator.startAnimating()
-            DigitalProvider()
-                .request(.voucher(categoryId: categoryId, voucherCode: voucherCode))
-                .map(to: DigitalVoucher.self)
-                .do(
-                    onNext: { [weak self] voucher in
-                        self?.revertGunakanButton()
-                    },
-                    onError: { [unowned self] error in
-                        var errorMessage = ""
-                        if let response = (error as! MoyaError).response {
-                            let data = response.data
-                            do {
-                                let obj = try Unboxer(data:data)
-                                errorMessage = try! obj.unbox(keyPath: "errors.0.title") as String
-                                StickyAlertView.showErrorMessage([errorMessage])
-                            } catch {
-                                print(error.localizedDescription)
-                                errorMessage = error.localizedDescription
-                            }
-                        } else {
-                            errorMessage = "Kendala koneksi internet, silakan coba kembali"
-                            StickyAlertView.showErrorMessage([errorMessage])
-                        }
-                        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(self.voucherCode)")
-                        self.isVoucherUsed = false
-                        self.setVoucherCanceled()
-                        self.revertGunakanButton()
-                    }
-                )
-                .subscribe(onNext: { [weak self] voucher in
-                    self?.voucher = voucher
-                    self?.isVoucherUsed = true
-                    self?.setVoucherCanceled()
-                })
-                .disposed(by: self.rx_disposeBag)
-        } else {
-            StickyAlertView.showErrorMessage(["Kode promo tidak boleh kosong"])
-        }
-    }
-
-    @IBAction func voucherUse(_ sender: Any) {
-        getVoucher()
-    }
-    
-    @IBAction func voucherCancel(_ sender: Any) {
-        isVoucherUsed = false
-        setVoucherCanceled()
-        checkbox.on = false
-        setVoucherUsed()
-        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
-    }
-    
     @IBAction func payment(_ sender: Any) {
         payment()
-    }
-    
-    func didTap(_ checkBox: BEMCheckBox) {
-        setVoucherUsed()
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -511,10 +434,25 @@ class DigitalCartViewController:UIViewController, BEMCheckBoxDelegate, UITextFie
         activityIndicator.stopAnimating()
     }
     
-    func revertGunakanButton() {
-        gunakanButton.setTitle("Gunakan", for: .normal)
-        gunakanButton.isEnabled = true
+    @IBAction func btnUseVoucherDidTapped(_ sender: Any) {
+        let vc = InputPromoViewController(serviceType: .digital, cart: self.cart, couponEnabled: (self.cart.isCouponActive == "1"))
+        vc.delegate = self
+        let nvc = UINavigationController(rootViewController: vc)
+        self.navigationController?.present(nvc, animated: true, completion: nil)
+    }
+    
+    @IBAction func btnCancelVoucherDidTapped(_ sender: Any) {
+        isVoucherUsed = false
+        setVoucherCanceled()
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
+    }
+    
+    // InputPromoViewDelegate
+    func didUseVoucher(_ inputPromoViewController: InputPromoViewController, voucherData: Any, serviceType: PromoServiceType, promoType: PromoType) {
+        self.voucher = voucherData as! DigitalVoucher
+        self.isVoucherUsed = true
+        self.promoType = promoType
         
-        actIndicator.stopAnimating()
+        self.setVoucherCanceled()
     }
 }

@@ -514,6 +514,8 @@ typedef enum TagRequest {
     [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs removeObjectForKey:@"total_cart"];
+    [prefs removeObjectForKey:@"hachiko_enabled"];
+    [prefs removeObjectForKey:@"coupon_onboarding_shown"];
     [prefs synchronize];
     
     [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];

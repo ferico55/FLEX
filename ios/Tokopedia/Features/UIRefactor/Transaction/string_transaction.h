@@ -390,6 +390,4 @@ typedef enum
 #define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@"1"}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@"0"}]
 #define ARRAY_IF_STOCK_AVAILABLE_PARTIALLY @[@{DATA_NAME_KEY:@"Batalkan keseluruhan pesanan", DATA_VALUE_KEY:@(0)}, @{DATA_NAME_KEY:@"Kirimkan stok yang tersedia", DATA_VALUE_KEY:@(1)}]
 
-#define TAG_BUTTON_VOUCHER 12
-
 #endif

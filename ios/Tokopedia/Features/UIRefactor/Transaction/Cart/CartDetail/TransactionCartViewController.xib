@@ -1,34 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TransactionCartViewController">
             <connections>
                 <outlet property="LPCashbackCell" destination="pzN-dJ-cAl" id="eDJ-Ge-0Hf"/>
-                <outlet property="buttonCancelVoucher" destination="Ykh-pd-XjA" id="SFH-lB-YJV"/>
-                <outlet property="buttonVoucherInfo" destination="0sG-Mm-AAO" id="5h4-6f-HTh"/>
+                <outlet property="btnCancelUseVoucher" destination="KMj-Un-yZ8" id="bSr-TA-P9M"/>
+                <outlet property="btnUseVoucher" destination="gDf-i1-2h0" id="TER-kf-2cW"/>
                 <outlet property="checkoutButton" destination="IRs-zw-g4I" id="Zsn-QE-48w"/>
                 <outlet property="checkoutView" destination="esW-Te-z8M" id="EpC-ez-KgJ"/>
                 <outlet property="donasiCell" destination="Hth-1j-ch6" id="5Gq-yT-1rX"/>
                 <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
+                <outlet property="lblUsedVoucherCode" destination="8ap-bG-kTV" id="FFX-zF-fFv"/>
+                <outlet property="lblUsedVoucherMessage" destination="nlZ-Wy-zpw" id="LEN-Hy-x5O"/>
                 <outlet property="promoCTALabel" destination="LWQ-Nw-ahA" id="xwT-U7-daD"/>
                 <outlet property="promoCell" destination="Lim-s6-WuC" id="NPY-zP-Q6Z"/>
                 <outlet property="promoLabel" destination="v6i-4Z-WfW" id="veO-aH-YRh"/>
                 <outlet property="tableView" destination="QKG-0J-91A" id="2Rb-96-CmS"/>
                 <outlet property="totalPaymentCell" destination="hTf-We-spw" id="2vh-Vl-d0W"/>
                 <outlet property="usedLPCell" destination="3NZ-AS-z69" id="2CC-69-3ac"/>
+                <outlet property="usedVoucherCell" destination="RJ9-NL-KXe" id="XYs-gM-ECS"/>
                 <outlet property="view" destination="Gh7-DV-yXN" id="azQ-xw-Yce"/>
-                <outlet property="voucerCell" destination="v13-pk-jca" id="l4Z-or-uXE"/>
-                <outlet property="voucerCodeBeforeTapView" destination="7jP-3s-t2c" id="PGj-wW-pwn"/>
-                <outlet property="voucherAmountLabel" destination="7cA-0f-cDL" id="Eyr-7G-sZt"/>
-                <outlet property="voucherCodeButton" destination="fjF-sg-pi6" id="iyh-8E-9t7"/>
+                <outlet property="voucherCell" destination="Ax1-wK-r6k" id="KhK-TI-Rg5"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -57,115 +57,6 @@
             </constraints>
             <point key="canvasLocation" x="-373.5" y="191.5"/>
         </view>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="v13-pk-jca" userLabel="Voucher Table View Cell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="v13-pk-jca" id="pFk-He-4KN">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7jP-3s-t2c">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                        <subviews>
-                            <button opaque="NO" tag="10" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fjF-sg-pi6">
-                                <rect key="frame" x="15" y="0.0" width="253" height="43"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="UYt-83-21l"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <state key="normal" title="Punya Kode Promo Tokopedia?">
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="-1" eventType="touchUpInside" id="0OF-yP-udi"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0sG-Mm-AAO">
-                                <rect key="frame" x="277" y="0.0" width="43" height="43"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="Rck-qc-WJI"/>
-                                    <constraint firstAttribute="width" constant="43" id="dwJ-8s-sVO"/>
-                                </constraints>
-                                <inset key="contentEdgeInsets" minX="0.0" minY="0.0" maxX="15" maxY="0.0"/>
-                                <state key="normal" image="icon_info_grey">
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="-1" eventType="touchUpInside" id="XaI-qD-r8i"/>
-                                </connections>
-                            </button>
-                            <button hidden="YES" opaque="NO" tag="12" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Ykh-pd-XjA">
-                                <rect key="frame" x="276" y="0.0" width="44" height="44"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="44" id="Ujl-vO-pMp"/>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="44" id="YUC-7m-aWx"/>
-                                </constraints>
-                                <state key="normal" image="icon_cancel_grey">
-                                    <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                                <connections>
-                                    <action selector="tap:" destination="-1" eventType="touchUpInside" id="GJW-We-M4W"/>
-                                </connections>
-                            </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="HLR-Sq-S8H">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="qQQ-t3-xuU"/>
-                                </constraints>
-                            </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="M4J-HH-6Sc">
-                                <rect key="frame" x="0.0" y="42" width="320" height="1"/>
-                                <color key="backgroundColor" red="0.73699933290481567" green="0.73166358470916748" blue="0.75551497936248779" alpha="0.40000000000000002" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="1" id="9N3-73-tUz"/>
-                                </constraints>
-                            </view>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7cA-0f-cDL">
-                                <rect key="frame" x="15" y="8" width="261" height="27"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="27" id="VoF-Ox-giC"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstAttribute="bottom" secondItem="0sG-Mm-AAO" secondAttribute="bottom" id="06U-mQ-akj"/>
-                            <constraint firstItem="fjF-sg-pi6" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" constant="15" id="14G-IY-1kN"/>
-                            <constraint firstItem="M4J-HH-6Sc" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" id="3Ah-Hq-nXK"/>
-                            <constraint firstAttribute="bottom" secondItem="fjF-sg-pi6" secondAttribute="bottom" id="3S0-Yb-YLi"/>
-                            <constraint firstItem="Ykh-pd-XjA" firstAttribute="leading" secondItem="7cA-0f-cDL" secondAttribute="trailing" id="6eG-3d-LGX"/>
-                            <constraint firstItem="0sG-Mm-AAO" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="8Ss-xS-a0l"/>
-                            <constraint firstItem="fjF-sg-pi6" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="9S2-WK-RFT"/>
-                            <constraint firstAttribute="trailing" secondItem="0sG-Mm-AAO" secondAttribute="trailing" id="9We-wu-MUJ"/>
-                            <constraint firstAttribute="trailing" secondItem="Ykh-pd-XjA" secondAttribute="trailing" id="AhY-rp-JHk"/>
-                            <constraint firstItem="Ykh-pd-XjA" firstAttribute="leading" secondItem="fjF-sg-pi6" secondAttribute="trailing" constant="8" id="Amq-4W-326"/>
-                            <constraint firstAttribute="trailing" secondItem="M4J-HH-6Sc" secondAttribute="trailing" id="IeB-BR-nMs"/>
-                            <constraint firstItem="HLR-Sq-S8H" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" id="JiR-g6-eTY"/>
-                            <constraint firstItem="Ykh-pd-XjA" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="SXt-o7-oZE"/>
-                            <constraint firstItem="HLR-Sq-S8H" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" id="Txz-IK-1WC"/>
-                            <constraint firstAttribute="bottom" secondItem="7cA-0f-cDL" secondAttribute="bottom" constant="8" id="YZp-s5-8qg"/>
-                            <constraint firstItem="7cA-0f-cDL" firstAttribute="top" secondItem="7jP-3s-t2c" secondAttribute="top" constant="8" id="Yd5-sq-UCQ"/>
-                            <constraint firstAttribute="bottom" secondItem="Ykh-pd-XjA" secondAttribute="bottom" constant="-1" id="fFo-gi-2dA"/>
-                            <constraint firstAttribute="trailing" secondItem="HLR-Sq-S8H" secondAttribute="trailing" id="hhG-OU-fRc"/>
-                            <constraint firstAttribute="bottom" secondItem="M4J-HH-6Sc" secondAttribute="bottom" id="jaU-mE-FJz"/>
-                            <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="pkJ-0D-dpF"/>
-                            <constraint firstItem="7cA-0f-cDL" firstAttribute="leading" secondItem="7jP-3s-t2c" secondAttribute="leading" constant="15" id="xRr-rV-6zX"/>
-                        </constraints>
-                    </view>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="7jP-3s-t2c" firstAttribute="top" secondItem="pFk-He-4KN" secondAttribute="top" id="5Ad-du-8Jv"/>
-                    <constraint firstAttribute="bottom" secondItem="7jP-3s-t2c" secondAttribute="bottom" id="TkE-Nx-emT"/>
-                    <constraint firstAttribute="trailing" secondItem="7jP-3s-t2c" secondAttribute="trailing" id="hZH-Bo-iaK"/>
-                    <constraint firstItem="7jP-3s-t2c" firstAttribute="leading" secondItem="pFk-He-4KN" secondAttribute="leading" id="vSI-H6-43s"/>
-                </constraints>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="567" y="85"/>
-        </tableViewCell>
         <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="85" id="Hth-1j-ch6" userLabel="Donasi Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="75"/>
             <autoresizingMask key="autoresizingMask"/>
@@ -257,13 +148,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u1p-Qm-vqC">
-                        <rect key="frame" x="15" y="13" width="125.5" height="18"/>
+                        <rect key="frame" x="16" y="13" width="125.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6yM-Im-p4G">
-                        <rect key="frame" x="261.5" y="13" width="43.5" height="18"/>
+                        <rect key="frame" x="260.5" y="13" width="43.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <nil key="highlightedColor"/>
@@ -280,14 +171,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="TopPoints Terpakai" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nZG-Eg-QJw">
-                        <rect key="frame" x="15" y="13" width="130.5" height="18"/>
+                        <rect key="frame" x="16" y="13" width="130" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="LIO-AO-bc5">
-                        <rect key="frame" x="262.5" y="13" width="42.5" height="18"/>
+                        <rect key="frame" x="261.5" y="13" width="42.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -306,7 +197,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Potensi Cashback" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jo7-Lt-mKx">
-                        <rect key="frame" x="15" y="13" width="126" height="18"/>
+                        <rect key="frame" x="16" y="13" width="126" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -314,7 +205,7 @@
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ets-VU-8MP">
-                        <rect key="frame" x="261.5" y="13" width="43.5" height="18"/>
+                        <rect key="frame" x="260.5" y="13" width="43.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
@@ -413,14 +304,79 @@
             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
             <point key="canvasLocation" x="956" y="866"/>
         </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="73" id="RJ9-NL-KXe" userLabel="Used Voucher Table View Cell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="73"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="RJ9-NL-KXe" id="OHo-eY-s1R">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="72.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Kode Voucher: GRATISJNE10" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8ap-bG-kTV">
+                        <rect key="frame" x="20" y="8" width="305" height="16"/>
+                        <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" tag="1833" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMj-Un-yZ8">
+                        <rect key="frame" x="325" y="0.0" width="50" height="73"/>
+                        <state key="normal" image="icon_close"/>
+                        <connections>
+                            <action selector="tap:" destination="-1" eventType="touchUpInside" id="I9p-Y4-SmM"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Potensi mendapatkan potongan untuk ongkos kirim adalah Rp 10.000" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nlZ-Wy-zpw">
+                        <rect key="frame" x="20" y="24" width="305" height="40.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="nlZ-Wy-zpw" secondAttribute="bottom" constant="8" id="2ji-ds-AaI"/>
+                    <constraint firstAttribute="trailing" secondItem="8ap-bG-kTV" secondAttribute="trailing" constant="50" id="2lJ-OS-Jg5"/>
+                    <constraint firstItem="nlZ-Wy-zpw" firstAttribute="leading" secondItem="OHo-eY-s1R" secondAttribute="leading" constant="20" id="4bx-uk-MYp"/>
+                    <constraint firstAttribute="trailing" secondItem="nlZ-Wy-zpw" secondAttribute="trailing" constant="50" id="7Ps-zB-ZUb"/>
+                    <constraint firstItem="KMj-Un-yZ8" firstAttribute="leading" secondItem="nlZ-Wy-zpw" secondAttribute="trailing" id="H4j-Xh-fVu"/>
+                    <constraint firstItem="nlZ-Wy-zpw" firstAttribute="top" secondItem="8ap-bG-kTV" secondAttribute="bottom" id="HvB-la-RR8"/>
+                    <constraint firstItem="8ap-bG-kTV" firstAttribute="top" secondItem="OHo-eY-s1R" secondAttribute="top" constant="8" id="V0N-iM-q2d"/>
+                    <constraint firstAttribute="bottom" secondItem="KMj-Un-yZ8" secondAttribute="bottom" id="XA9-Ay-To1"/>
+                    <constraint firstItem="KMj-Un-yZ8" firstAttribute="top" secondItem="OHo-eY-s1R" secondAttribute="top" id="b11-KQ-ptq"/>
+                    <constraint firstItem="8ap-bG-kTV" firstAttribute="leading" secondItem="OHo-eY-s1R" secondAttribute="leading" constant="20" id="bl0-zE-Vy9"/>
+                    <constraint firstAttribute="trailing" secondItem="KMj-Un-yZ8" secondAttribute="trailing" id="e0e-aF-qj7"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="575.5" y="214.5"/>
+        </tableViewCell>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="Ax1-wK-r6k" userLabel="New Voucher Table View Cell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="41"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Ax1-wK-r6k" id="D5v-6W-A1u">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="40.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <button opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDf-i1-2h0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="40.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <inset key="contentEdgeInsets" minX="16" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <inset key="titleEdgeInsets" minX="4" minY="0.0" maxX="0.0" maxY="0.0"/>
+                        <state key="normal" title="Gunakan Kode Promo atau Kupon" image="kupon">
+                            <color key="titleColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                        </state>
+                    </button>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="gDf-i1-2h0" secondAttribute="bottom" id="Chf-sP-FtR"/>
+                    <constraint firstItem="gDf-i1-2h0" firstAttribute="leading" secondItem="D5v-6W-A1u" secondAttribute="leading" id="DoD-FY-M1D"/>
+                    <constraint firstAttribute="trailing" secondItem="gDf-i1-2h0" secondAttribute="trailing" id="HW4-vI-zFj"/>
+                    <constraint firstItem="gDf-i1-2h0" firstAttribute="top" secondItem="D5v-6W-A1u" secondAttribute="top" id="M2u-w7-gGV"/>
+                </constraints>
+            </tableViewCellContentView>
+            <point key="canvasLocation" x="575.5" y="314.5"/>
+        </tableViewCell>
     </objects>
     <resources>
-        <image name="icon_cancel_grey" width="14" height="14"/>
+        <image name="icon_close" width="18" height="18"/>
         <image name="icon_info_grey" width="14" height="14"/>
+        <image name="kupon" width="24" height="24"/>
     </resources>
-    <simulatedMetricsContainer key="defaultSimulatedMetrics">
-        <simulatedStatusBarMetrics key="statusBar"/>
-        <simulatedOrientationMetrics key="orientation"/>
-        <simulatedScreenMetrics key="destination" type="retina4_7.fullscreen"/>
-    </simulatedMetricsContainer>
 </document>

@@ -191,6 +191,11 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         hideLoadingIndicators()
+                
+        let title = webView.title
+        if let title = title, !title.isEmpty && strTitle.isEmpty {
+            self.navigationItem.title = title
+        }
     }
     
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {

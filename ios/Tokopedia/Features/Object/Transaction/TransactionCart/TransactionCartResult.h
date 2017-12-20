@@ -36,5 +36,6 @@
 @property (nonatomic, strong) PromoSuggestion *promoSuggestion;
 @property (nonatomic,strong) NSString *keroToken;
 @property (nonatomic,strong) NSString *ut;
+@property (nonatomic,strong) NSString *is_coupon_active;
 
 @end

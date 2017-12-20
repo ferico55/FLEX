@@ -127,6 +127,32 @@
 		E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518111F838DA7008FDBCF /* WishlistTest.swift */; };
 		E56A634B1F8789F400F86F15 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A634A1F8789F400F86F15 /* Page.swift */; };
 		E576A0A01FB172E7007EDE27 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E576A09F1FB172E7007EDE27 /* main.jsbundle */; };
+		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
+		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
+		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
+		E57974CF1FEA741F00610655 /* CouponTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C51FEA741F00610655 /* CouponTableViewCell.swift */; };
+		E57974D01FEA741F00610655 /* CouponTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974C61FEA741F00610655 /* CouponTableViewCell.xib */; };
+		E57974D11FEA741F00610655 /* InputPromoCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C71FEA741F00610655 /* InputPromoCodeViewController.swift */; };
+		E57974D21FEA741F00610655 /* InputPromoCodeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974C81FEA741F00610655 /* InputPromoCodeViewController.xib */; };
+		E57974D31FEA741F00610655 /* InputPromoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C91FEA741F00610655 /* InputPromoViewController.swift */; };
+		E57974D41FEA741F00610655 /* InputPromoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CA1FEA741F00610655 /* InputPromoViewController.xib */; };
+		E57974D51FEA741F00610655 /* MyCouponListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974CB1FEA741F00610655 /* MyCouponListTableViewController.swift */; };
+		E57974D61FEA741F00610655 /* MyCouponListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */; };
+		E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CD1FEA741F00610655 /* NoCouponView.xib */; };
+		E57974D81FEA741F00610655 /* SelectCouponLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */; };
+		E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */; };
+		E57974DE1FEA743600610655 /* TokopointsSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */; };
+		E57974DF1FEA743600610655 /* TokopointsSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */; };
+		E57974E01FEA743600610655 /* TokopointsSmallSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */; };
+		E57974E81FEA746D00610655 /* DrawerData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974E21FEA746C00610655 /* DrawerData.swift */; };
+		E57974E91FEA746D00610655 /* PopUpNotification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974E31FEA746C00610655 /* PopUpNotification.swift */; };
+		E57974EA1FEA746D00610655 /* UserTier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974E41FEA746C00610655 /* UserTier.swift */; };
+		E57974EB1FEA746D00610655 /* Coupon.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974E61FEA746D00610655 /* Coupon.swift */; };
+		E57974EC1FEA746D00610655 /* GetCouponResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974E71FEA746D00610655 /* GetCouponResponse.swift */; };
+		E57974EE1FEA748200610655 /* TokopointsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974ED1FEA748100610655 /* TokopointsTarget.swift */; };
+		E57974F21FEA749300610655 /* TokopointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F11FEA749200610655 /* TokopointsService.swift */; };
+		E57974F61FEA754C00610655 /* PointsAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F41FEA754A00610655 /* PointsAlertView.swift */; };
+		E57974F71FEA754C00610655 /* PointsAlertViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */; };
 		E581B53E1FE8FDAE00E6D1DA /* NotificationTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E581B5381FE8FDAB00E6D1DA /* NotificationTableViewController.xib */; };
 		E581B53F1FE8FDAE00E6D1DA /* NotificationTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E581B5391FE8FDAB00E6D1DA /* NotificationTableViewCell.xib */; };
 		E581B5401FE8FDAE00E6D1DA /* NotificationTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B53A1FE8FDAC00E6D1DA /* NotificationTableViewController.swift */; };
@@ -242,11 +268,6 @@
 		F977003A1FE8AB8500183A85 /* FavoritedShopResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F92D1FE8AB7600183A85 /* FavoritedShopResult.m */; };
 		F977003B1FE8AB8500183A85 /* FavoritedShop.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9321FE8AB7600183A85 /* FavoritedShop.m */; };
 		F977003C1FE8AB8500183A85 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9351FE8AB7600183A85 /* Errors.swift */; };
-		F977003D1FE8AB8500183A85 /* LoyaltyPoint.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9381FE8AB7600183A85 /* LoyaltyPoint.m */; };
-		F977003E1FE8AB8500183A85 /* LoyaltyPointBuyer.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F93B1FE8AB7600183A85 /* LoyaltyPointBuyer.m */; };
-		F977003F1FE8AB8500183A85 /* LoyaltyPointResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F93C1FE8AB7600183A85 /* LoyaltyPointResult.m */; };
-		F97700401FE8AB8500183A85 /* LoyaltyPointMerchant.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F93E1FE8AB7600183A85 /* LoyaltyPointMerchant.m */; };
-		F97700411FE8AB8500183A85 /* LoyaltyPointDetail.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F93F1FE8AB7600183A85 /* LoyaltyPointDetail.m */; };
 		F97700421FE8AB8500183A85 /* InboxTalkResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9451FE8AB7600183A85 /* InboxTalkResult.m */; };
 		F97700431FE8AB8500183A85 /* InboxTalkList.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9461FE8AB7600183A85 /* InboxTalkList.m */; };
 		F97700441FE8AB8500183A85 /* InboxTalk.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9471FE8AB7600183A85 /* InboxTalk.m */; };
@@ -1148,7 +1169,6 @@
 		F977FD1B1FE8AB7F00183A85 /* WebviewPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F35B1FE8AB7200183A85 /* WebviewPopover.swift */; };
 		F977FD1C1FE8AB7F00183A85 /* WebViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F35D1FE8AB7200183A85 /* WebViewController.xib */; };
 		F977FD1D1FE8AB7F00183A85 /* PivotNavigationView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F35F1FE8AB7200183A85 /* PivotNavigationView.xib */; };
-		F977FD1E1FE8AB7F00183A85 /* TopPointRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3601FE8AB7200183A85 /* TopPointRequest.swift */; };
 		F977FD1F1FE8AB7F00183A85 /* TKPDTabNavigationController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3641FE8AB7200183A85 /* TKPDTabNavigationController.xib */; };
 		F977FD201FE8AB7F00183A85 /* TKPDTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3651FE8AB7200183A85 /* TKPDTabViewController.xib */; };
 		F977FD211FE8AB7F00183A85 /* TKPDTabBarController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3661FE8AB7200183A85 /* TKPDTabBarController.xib */; };
@@ -2099,8 +2119,6 @@
 		DADB9F331F3C46CE002B1FAE /* UIImage+Resize.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+Resize.h"; sourceTree = "<group>"; };
 		DADB9F341F3C46CE002B1FAE /* UIImage+Resize.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+Resize.m"; sourceTree = "<group>"; };
 		DADB9F361F3C46CE002B1FAE /* UIImageView%2BAFNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIImageView%2BAFNetworking.swift"; sourceTree = "<group>"; };
-		DADB9F381F3C46CE002B1FAE /* vt-iOSlib-1.0.1.tar.gz */ = {isa = PBXFileReference; lastKnownFileType = archive.gzip; path = "vt-iOSlib-1.0.1.tar.gz"; sourceTree = "<group>"; };
-		DADB9F391F3C46CE002B1FAE /* vt-iOSlib-1.0.1.zip */ = {isa = PBXFileReference; lastKnownFileType = archive.zip; path = "vt-iOSlib-1.0.1.zip"; sourceTree = "<group>"; };
 		DADB9F3B1F3C46CE002B1FAE /* XYPieChart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XYPieChart.h; sourceTree = "<group>"; };
 		DADB9F3C1F3C46CE002B1FAE /* XYPieChart.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XYPieChart.m; sourceTree = "<group>"; };
 		DADB9F6C1F3C56D9002B1FAE /* FacebookSDKStrings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; name = FacebookSDKStrings.bundle; path = Tokopedia/ThirdParty/FacebookSDKStrings.bundle; sourceTree = "<group>"; };
@@ -2137,6 +2155,32 @@
 		E52518111F838DA7008FDBCF /* WishlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistTest.swift; sourceTree = "<group>"; };
 		E56A634A1F8789F400F86F15 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		E576A09F1FB172E7007EDE27 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
+		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
+		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
+		E57974C51FEA741F00610655 /* CouponTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CouponTableViewCell.swift; sourceTree = "<group>"; };
+		E57974C61FEA741F00610655 /* CouponTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CouponTableViewCell.xib; sourceTree = "<group>"; };
+		E57974C71FEA741F00610655 /* InputPromoCodeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputPromoCodeViewController.swift; sourceTree = "<group>"; };
+		E57974C81FEA741F00610655 /* InputPromoCodeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputPromoCodeViewController.xib; sourceTree = "<group>"; };
+		E57974C91FEA741F00610655 /* InputPromoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InputPromoViewController.swift; sourceTree = "<group>"; };
+		E57974CA1FEA741F00610655 /* InputPromoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InputPromoViewController.xib; sourceTree = "<group>"; };
+		E57974CB1FEA741F00610655 /* MyCouponListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyCouponListTableViewController.swift; sourceTree = "<group>"; };
+		E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCouponListTableViewController.xib; sourceTree = "<group>"; };
+		E57974CD1FEA741F00610655 /* NoCouponView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoCouponView.xib; sourceTree = "<group>"; };
+		E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectCouponLoadingView.xib; sourceTree = "<group>"; };
+		E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokoCashSmallSectionViewController.xib; sourceTree = "<group>"; };
+		E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsSectionViewController.swift; sourceTree = "<group>"; };
+		E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokopointsSectionViewController.xib; sourceTree = "<group>"; };
+		E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokopointsSmallSectionViewController.xib; sourceTree = "<group>"; };
+		E57974E21FEA746C00610655 /* DrawerData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DrawerData.swift; sourceTree = "<group>"; };
+		E57974E31FEA746C00610655 /* PopUpNotification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PopUpNotification.swift; sourceTree = "<group>"; };
+		E57974E41FEA746C00610655 /* UserTier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserTier.swift; sourceTree = "<group>"; };
+		E57974E61FEA746D00610655 /* Coupon.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Coupon.swift; sourceTree = "<group>"; };
+		E57974E71FEA746D00610655 /* GetCouponResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetCouponResponse.swift; sourceTree = "<group>"; };
+		E57974ED1FEA748100610655 /* TokopointsTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsTarget.swift; sourceTree = "<group>"; };
+		E57974F11FEA749200610655 /* TokopointsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsService.swift; sourceTree = "<group>"; };
+		E57974F41FEA754A00610655 /* PointsAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsAlertView.swift; sourceTree = "<group>"; };
+		E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsAlertViewButton.swift; sourceTree = "<group>"; };
 		E581B5381FE8FDAB00E6D1DA /* NotificationTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationTableViewController.xib; sourceTree = "<group>"; };
 		E581B5391FE8FDAB00E6D1DA /* NotificationTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationTableViewCell.xib; sourceTree = "<group>"; };
 		E581B53A1FE8FDAC00E6D1DA /* NotificationTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewController.swift; sourceTree = "<group>"; };
@@ -3245,7 +3289,6 @@
 		F977F35D1FE8AB7200183A85 /* WebViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebViewController.xib; sourceTree = "<group>"; };
 		F977F35E1FE8AB7200183A85 /* MoreViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreViewController.h; sourceTree = "<group>"; };
 		F977F35F1FE8AB7200183A85 /* PivotNavigationView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PivotNavigationView.xib; sourceTree = "<group>"; };
-		F977F3601FE8AB7200183A85 /* TopPointRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPointRequest.swift; sourceTree = "<group>"; };
 		F977F3611FE8AB7200183A85 /* WebViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewController.h; sourceTree = "<group>"; };
 		F977F3621FE8AB7200183A85 /* SalesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SalesViewController.h; sourceTree = "<group>"; };
 		F977F3641FE8AB7200183A85 /* TKPDTabNavigationController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TKPDTabNavigationController.xib; sourceTree = "<group>"; };
@@ -4575,16 +4618,6 @@
 		F977F9321FE8AB7600183A85 /* FavoritedShop.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FavoritedShop.m; sourceTree = "<group>"; };
 		F977F9331FE8AB7600183A85 /* FavoritedShopResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FavoritedShopResult.h; sourceTree = "<group>"; };
 		F977F9351FE8AB7600183A85 /* Errors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		F977F9371FE8AB7600183A85 /* LoyaltyPointMerchant.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPointMerchant.h; sourceTree = "<group>"; };
-		F977F9381FE8AB7600183A85 /* LoyaltyPoint.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPoint.m; sourceTree = "<group>"; };
-		F977F9391FE8AB7600183A85 /* LoyaltyPointResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPointResult.h; sourceTree = "<group>"; };
-		F977F93A1FE8AB7600183A85 /* LoyaltyPointDetail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPointDetail.h; sourceTree = "<group>"; };
-		F977F93B1FE8AB7600183A85 /* LoyaltyPointBuyer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPointBuyer.m; sourceTree = "<group>"; };
-		F977F93C1FE8AB7600183A85 /* LoyaltyPointResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPointResult.m; sourceTree = "<group>"; };
-		F977F93D1FE8AB7600183A85 /* LoyaltyPoint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPoint.h; sourceTree = "<group>"; };
-		F977F93E1FE8AB7600183A85 /* LoyaltyPointMerchant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPointMerchant.m; sourceTree = "<group>"; };
-		F977F93F1FE8AB7600183A85 /* LoyaltyPointDetail.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoyaltyPointDetail.m; sourceTree = "<group>"; };
-		F977F9401FE8AB7600183A85 /* LoyaltyPointBuyer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoyaltyPointBuyer.h; sourceTree = "<group>"; };
 		F977F9421FE8AB7600183A85 /* InboxTalkResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkResult.h; sourceTree = "<group>"; };
 		F977F9431FE8AB7600183A85 /* InboxTalk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalk.h; sourceTree = "<group>"; };
 		F977F9441FE8AB7600183A85 /* InboxTalkList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InboxTalkList.h; sourceTree = "<group>"; };
@@ -4874,6 +4907,7 @@
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				E57974BE1FEA733100610655 /* MoreView.storyboard */,
 				F977EED61FE8AB6E00183A85 /* Extensions */,
 				F977EF0D1FE8AB6E00183A85 /* Features */,
 				F977F9C71FE8AB7800183A85 /* Helper */,
@@ -4965,7 +4999,6 @@
 				DADB9ED81F3C46CE002B1FAE /* CMPopTipView */,
 				DADB9EE11F3C46CE002B1FAE /* FBTweak */,
 				DADB9EFF1F3C46CE002B1FAE /* GoogleTM */,
-				DADB9F051F3C46CE002B1FAE /* HPGrowingTextView */,
 				DADB9F081F3C46CE002B1FAE /* HPTextViewInternal */,
 				DADB9F0B1F3C46CE002B1FAE /* iCarousel */,
 				DADB9F0F1F3C46CE002B1FAE /* MarqueeLabel */,
@@ -4978,7 +5011,6 @@
 				DADB9F2F1F3C46CE002B1FAE /* SwipeView */,
 				DADB9F321F3C46CE002B1FAE /* UIImage+Resize */,
 				DADB9F351F3C46CE002B1FAE /* UIImageView+AFNetworking */,
-				DADB9F371F3C46CE002B1FAE /* Veritrans */,
 				DADB9F3A1F3C46CE002B1FAE /* XYPieChart */,
 			);
 			path = ThirdParty;
@@ -5039,13 +5071,6 @@
 				DADB9F041F3C46CE002B1FAE /* TAGManager.h */,
 			);
 			path = GoogleTM;
-			sourceTree = "<group>";
-		};
-		DADB9F051F3C46CE002B1FAE /* HPGrowingTextView */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = HPGrowingTextView;
 			sourceTree = "<group>";
 		};
 		DADB9F081F3C46CE002B1FAE /* HPTextViewInternal */ = {
@@ -5168,15 +5193,6 @@
 				DADB9F361F3C46CE002B1FAE /* UIImageView%2BAFNetworking.swift */,
 			);
 			path = "UIImageView+AFNetworking";
-			sourceTree = "<group>";
-		};
-		DADB9F371F3C46CE002B1FAE /* Veritrans */ = {
-			isa = PBXGroup;
-			children = (
-				DADB9F381F3C46CE002B1FAE /* vt-iOSlib-1.0.1.tar.gz */,
-				DADB9F391F3C46CE002B1FAE /* vt-iOSlib-1.0.1.zip */,
-			);
-			path = Veritrans;
 			sourceTree = "<group>";
 		};
 		DADB9F3A1F3C46CE002B1FAE /* XYPieChart */ = {
@@ -5307,6 +5323,67 @@
 			path = Wishlist;
 			sourceTree = "<group>";
 		};
+		E57974C41FEA741F00610655 /* InputPromo */ = {
+			isa = PBXGroup;
+			children = (
+				E57974C51FEA741F00610655 /* CouponTableViewCell.swift */,
+				E57974C61FEA741F00610655 /* CouponTableViewCell.xib */,
+				E57974C71FEA741F00610655 /* InputPromoCodeViewController.swift */,
+				E57974C81FEA741F00610655 /* InputPromoCodeViewController.xib */,
+				E57974C91FEA741F00610655 /* InputPromoViewController.swift */,
+				E57974CA1FEA741F00610655 /* InputPromoViewController.xib */,
+				E57974CB1FEA741F00610655 /* MyCouponListTableViewController.swift */,
+				E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */,
+				E57974CD1FEA741F00610655 /* NoCouponView.xib */,
+				E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */,
+			);
+			path = InputPromo;
+			sourceTree = "<group>";
+		};
+		E57974E11FEA746C00610655 /* Tokopoints */ = {
+			isa = PBXGroup;
+			children = (
+				E57974E21FEA746C00610655 /* DrawerData.swift */,
+				E57974E31FEA746C00610655 /* PopUpNotification.swift */,
+				E57974E41FEA746C00610655 /* UserTier.swift */,
+			);
+			path = Tokopoints;
+			sourceTree = "<group>";
+		};
+		E57974E51FEA746D00610655 /* Coupon */ = {
+			isa = PBXGroup;
+			children = (
+				E57974E61FEA746D00610655 /* Coupon.swift */,
+				E57974E71FEA746D00610655 /* GetCouponResponse.swift */,
+			);
+			path = Coupon;
+			sourceTree = "<group>";
+		};
+		E57974EF1FEA749200610655 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				E57974F01FEA749200610655 /* Tokopoints */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		E57974F01FEA749200610655 /* Tokopoints */ = {
+			isa = PBXGroup;
+			children = (
+				E57974F11FEA749200610655 /* TokopointsService.swift */,
+			);
+			path = Tokopoints;
+			sourceTree = "<group>";
+		};
+		E57974F31FEA754A00610655 /* Points */ = {
+			isa = PBXGroup;
+			children = (
+				E57974F41FEA754A00610655 /* PointsAlertView.swift */,
+				E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */,
+			);
+			path = Points;
+			sourceTree = "<group>";
+		};
 		E581B5441FE8FF9100E6D1DA /* Notification */ = {
 			isa = PBXGroup;
 			children = (
@@ -5424,6 +5501,7 @@
 		F977EEBB1FE8AB6D00183A85 /* Networking */ = {
 			isa = PBXGroup;
 			children = (
+				E57974EF1FEA749200610655 /* Service */,
 				F977EEBC1FE8AB6D00183A85 /* Util */,
 				F977EEBE1FE8AB6D00183A85 /* Target */,
 				F977EED21FE8AB6D00183A85 /* TokocashNetworkProvider.swift */,
@@ -5445,6 +5523,7 @@
 		F977EEBE1FE8AB6D00183A85 /* Target */ = {
 			isa = PBXGroup;
 			children = (
+				E57974ED1FEA748100610655 /* TokopointsTarget.swift */,
 				E581B5541FE900B500E6D1DA /* TopchatTarget.swift */,
 				E581B54F1FE8FFE300E6D1DA /* NotificationTarget.swift */,
 				F977EEBF1FE8AB6D00183A85 /* ReplacementTarget.swift */,
@@ -5482,6 +5561,7 @@
 		F977EED71FE8AB6E00183A85 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E57974C01FEA73D600610655 /* Modal.swift */,
 				F977EED81FE8AB6E00183A85 /* UIFont+Theme.h */,
 				F977EED91FE8AB6E00183A85 /* UIViewController+Swizzling.m */,
 				F977EEDA1FE8AB6E00183A85 /* UITableView+IndexPath.h */,
@@ -5518,6 +5598,7 @@
 		F977EEF41FE8AB6E00183A85 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */,
 				F977EEF51FE8AB6E00183A85 /* NSDictionaryCategory.m */,
 				F977EEF61FE8AB6E00183A85 /* NSURL+TKPURL.h */,
 				F977EEF71FE8AB6E00183A85 /* NSString+URLEncoding.h */,
@@ -5781,6 +5862,7 @@
 		F977EF5F1FE8AB6F00183A85 /* UIRefactor */ = {
 			isa = PBXGroup;
 			children = (
+				E57974C41FEA741F00610655 /* InputPromo */,
 				F977EF601FE8AB6F00183A85 /* HVDLayout */,
 				F977EF631FE8AB6F00183A85 /* Handler */,
 				F977EF661FE8AB6F00183A85 /* Transaction */,
@@ -6135,6 +6217,10 @@
 		F977EFEF1FE8AB6F00183A85 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
+				E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */,
+				E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */,
+				E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */,
+				E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */,
 				F977EFF01FE8AB6F00183A85 /* OfficialStoreSectionViewController.xib */,
 				F977EFF11FE8AB6F00183A85 /* HomePageCategoryData.swift */,
 				F977EFF21FE8AB6F00183A85 /* AnnouncementTickerRequest.swift */,
@@ -6929,6 +7015,7 @@
 		F977F1EA1FE8AB7100183A85 /* Alert */ = {
 			isa = PBXGroup;
 			children = (
+				E57974F31FEA754A00610655 /* Points */,
 				F977F1EB1FE8AB7100183A85 /* TKPDAlert.xib */,
 				F977F1EC1FE8AB7100183A85 /* TKPDAlertView.h */,
 				F977F1ED1FE8AB7100183A85 /* AlertVerifyOTP.xib */,
@@ -7532,7 +7619,6 @@
 				F977F35D1FE8AB7200183A85 /* WebViewController.xib */,
 				F977F35E1FE8AB7200183A85 /* MoreViewController.h */,
 				F977F35F1FE8AB7200183A85 /* PivotNavigationView.xib */,
-				F977F3601FE8AB7200183A85 /* TopPointRequest.swift */,
 				F977F3611FE8AB7200183A85 /* WebViewController.h */,
 				F977F3621FE8AB7200183A85 /* SalesViewController.h */,
 			);
@@ -8310,6 +8396,8 @@
 		F977F5531FE8AB7400183A85 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				E57974E51FEA746D00610655 /* Coupon */,
+				E57974E11FEA746C00610655 /* Tokopoints */,
 				E581B5511FE9007C00E6D1DA /* Topchat */,
 				E581B5441FE8FF9100E6D1DA /* Notification */,
 				F977F5541FE8AB7400183A85 /* InboxReview */,
@@ -8373,7 +8461,6 @@
 				F977F9281FE8AB7600183A85 /* RequestObject.m */,
 				F977F9291FE8AB7600183A85 /* FavoritedShop */,
 				F977F9341FE8AB7600183A85 /* Error */,
-				F977F9361FE8AB7600183A85 /* LoyaltyPoint */,
 				F977F9411FE8AB7600183A85 /* InboxTalk */,
 				F977F9481FE8AB7600183A85 /* ProductEditDetail.swift */,
 				F977F9491FE8AB7600183A85 /* Promo */,
@@ -10052,23 +10139,6 @@
 			path = Error;
 			sourceTree = "<group>";
 		};
-		F977F9361FE8AB7600183A85 /* LoyaltyPoint */ = {
-			isa = PBXGroup;
-			children = (
-				F977F9371FE8AB7600183A85 /* LoyaltyPointMerchant.h */,
-				F977F9381FE8AB7600183A85 /* LoyaltyPoint.m */,
-				F977F9391FE8AB7600183A85 /* LoyaltyPointResult.h */,
-				F977F93A1FE8AB7600183A85 /* LoyaltyPointDetail.h */,
-				F977F93B1FE8AB7600183A85 /* LoyaltyPointBuyer.m */,
-				F977F93C1FE8AB7600183A85 /* LoyaltyPointResult.m */,
-				F977F93D1FE8AB7600183A85 /* LoyaltyPoint.h */,
-				F977F93E1FE8AB7600183A85 /* LoyaltyPointMerchant.m */,
-				F977F93F1FE8AB7600183A85 /* LoyaltyPointDetail.m */,
-				F977F9401FE8AB7600183A85 /* LoyaltyPointBuyer.h */,
-			);
-			path = LoyaltyPoint;
-			sourceTree = "<group>";
-		};
 		F977F9411FE8AB7600183A85 /* InboxTalk */ = {
 			isa = PBXGroup;
 			children = (
@@ -10684,6 +10754,7 @@
 				F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */,
 				F977FD1C1FE8AB7F00183A85 /* WebViewController.xib in Resources */,
 				F977FAB61FE8AB7A00183A85 /* SettingNotificationCell.xib in Resources */,
+				E57974D81FEA741F00610655 /* SelectCouponLoadingView.xib in Resources */,
 				F977FDEA1FE8AB8000183A85 /* EtalaseViewController.xib in Resources */,
 				F977FD0B1FE8AB7E00183A85 /* ProductWishlistCell.xib in Resources */,
 				F977FB151FE8AB7B00183A85 /* ProductCell.xib in Resources */,
@@ -10710,6 +10781,7 @@
 				F977FABB1FE8AB7A00183A85 /* SettingBankDetailViewController.xib in Resources */,
 				7A4672021EB2FEB400A72105 /* Images.xcassets in Resources */,
 				F977FB701FE8AB7B00183A85 /* CategoryPageViewController.xib in Resources */,
+				E57974DF1FEA743600610655 /* TokopointsSectionViewController.xib in Resources */,
 				F977FC301FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				F977FCAC1FE8AB7E00183A85 /* TKPMapView.xib in Resources */,
 				F954C4551FC55B6D008C0B30 /* icon_cart@3x.png in Resources */,
@@ -10895,6 +10967,7 @@
 				F977FDCF1FE8AB8000183A85 /* ResolutionCenterCreateStepTwoViewController.xib in Resources */,
 				F977FAC21FE8AB7A00183A85 /* SettingBankAccountViewController.xib in Resources */,
 				F954C4461FC55B6C008C0B30 /* icon_home_active@3x.png in Resources */,
+				E57974D41FEA741F00610655 /* InputPromoViewController.xib in Resources */,
 				F977FC2A1FE8AB7D00183A85 /* AlertVerifyOTP.xib in Resources */,
 				F977FC6D1FE8AB7D00183A85 /* CatalogSectionHeaderView.xib in Resources */,
 				F954C4421FC55B6C008C0B30 /* loading-icon.gif in Resources */,
@@ -10925,14 +10998,18 @@
 				F977FB821FE8AB7B00183A85 /* CategoryNavigationTableViewCell.xib in Resources */,
 				F97700B71FE8AB8600183A85 /* Foundation.ttf in Resources */,
 				F977FAA31FE8AB7A00183A85 /* TransactionCartShippingViewController.xib in Resources */,
+				E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */,
 				F977FCF21FE8AB7E00183A85 /* ProductEditImageViewController.xib in Resources */,
 				F977FB9F1FE8AB7C00183A85 /* FilterShipmentStatusViewController.xib in Resources */,
 				F977FA801FE8AB7A00183A85 /* CCAuthenticationViewController.xib in Resources */,
+				E57974D21FEA741F00610655 /* InputPromoCodeViewController.xib in Resources */,
 				F954C4621FC55B6D008C0B30 /* LaunchScreen.xib in Resources */,
 				F977FBC21FE8AB7C00183A85 /* PickupAddressView.xib in Resources */,
 				F977FC311FE8AB7D00183A85 /* AlertListBankView.xib in Resources */,
+				E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */,
 				F977FBD01FE8AB7C00183A85 /* ProductQuantityViewController.xib in Resources */,
 				F977FCAF1FE8AB7E00183A85 /* TKPInfoWindowMapView.xib in Resources */,
+				E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
 				F977FBDA1FE8AB7C00183A85 /* RejectReasonEmptyStockViewController.xib in Resources */,
 				F977FAD61FE8AB7A00183A85 /* HomeTabViewController.xib in Resources */,
@@ -11002,6 +11079,7 @@
 				F977FE5B1FE8AB8100183A85 /* FeedEmptyState.json in Resources */,
 				F977FE1A1FE8AB8100183A85 /* MyShopNoteDetailViewController.xib in Resources */,
 				F977FBAE1FE8AB7C00183A85 /* ShipmentConfirmationViewController.xib in Resources */,
+				E57974D01FEA741F00610655 /* CouponTableViewCell.xib in Resources */,
 				F977FDEC1FE8AB8000183A85 /* ShopTalkPageViewController.xib in Resources */,
 				F977FB6B1FE8AB7B00183A85 /* ResolutionInputReceiptViewController.xib in Resources */,
 				F97700BD1FE8AB8600183A85 /* MaterialIcons.ttf in Resources */,
@@ -11014,6 +11092,7 @@
 				F977FAF91FE8AB7A00183A85 /* FavoritedShopCell.xib in Resources */,
 				F977FAAE1FE8AB7A00183A85 /* SettingPasswordViewController.xib in Resources */,
 				F977FA991FE8AB7A00183A85 /* TransactionCartViewController.xib in Resources */,
+				E57974D61FEA741F00610655 /* MyCouponListTableViewController.xib in Resources */,
 				F977FD001FE8AB7E00183A85 /* ProductListMyShopCell.xib in Resources */,
 				F97700B91FE8AB8600183A85 /* FontAwesome.ttf in Resources */,
 				F97700B81FE8AB8600183A85 /* Ionicons.ttf in Resources */,
@@ -11030,6 +11109,7 @@
 				F977FBE91FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 				F977FC831FE8AB7D00183A85 /* EditShopTypeViewCell.xib in Resources */,
 				C05A0FD41FC6A251000A95FB /* assets in Resources */,
+				E57974E01FEA743600610655 /* TokopointsSmallSectionViewController.xib in Resources */,
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				F977FBD51FE8AB7C00183A85 /* OrderRejectExplanationViewController.xib in Resources */,
 				F954C4521FC55B6D008C0B30 /* icon_login_active@3x.png in Resources */,
@@ -11575,6 +11655,7 @@
 				F977FC221FE8AB7D00183A85 /* ReplacementSplitViewController.swift in Sources */,
 				F977FB971FE8AB7C00183A85 /* CategoryIntermediaryProduct.swift in Sources */,
 				F977FC111FE8AB7C00183A85 /* ShipmentPostalCodeViewCell.m in Sources */,
+				E57974F21FEA749300610655 /* TokopointsService.swift in Sources */,
 				F977FF801FE8AB8400183A85 /* Logout.m in Sources */,
 				F97700331FE8AB8500183A85 /* ShipmentCourierPackage.m in Sources */,
 				F977FA151FE8AB7900183A85 /* HadesTarget.swift in Sources */,
@@ -11600,6 +11681,7 @@
 				F977FEFA1FE8AB8300183A85 /* Deposit.m in Sources */,
 				F977FADE1FE8AB7A00183A85 /* TokoCashSectionViewController.swift in Sources */,
 				F977FD9B1FE8AB8000183A85 /* ListOrderShopComponent.mm in Sources */,
+				E57974E91FEA746D00610655 /* PopUpNotification.swift in Sources */,
 				F977FB991FE8AB7C00183A85 /* RequestSales.swift in Sources */,
 				F977000B1FE8AB8500183A85 /* FavoriteShopResult.m in Sources */,
 				F977FAAF1FE8AB7A00183A85 /* SettingPasswordViewController.m in Sources */,
@@ -11609,11 +11691,12 @@
 				F977FB111FE8AB7B00183A85 /* ProductThumbCell.m in Sources */,
 				F977FB7D1FE8AB7B00183A85 /* CategoryNavigationTableViewController.swift in Sources */,
 				F977FFE61FE8AB8400183A85 /* UploadDataImage.m in Sources */,
+				E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */,
 				F977FE511FE8AB8100183A85 /* FeedKOLRecommendationComponentView.swift in Sources */,
 				F97700A71FE8AB8600183A85 /* TKPMappingManager.m in Sources */,
+				E57974EE1FEA748200610655 /* TokopointsTarget.swift in Sources */,
 				F977FA231FE8AB7900183A85 /* MojitoTarget.swift in Sources */,
 				F97700161FE8AB8500183A85 /* WalletCashBack.swift in Sources */,
-				F977003D1FE8AB8500183A85 /* LoyaltyPoint.m in Sources */,
 				F977FFD21FE8AB8400183A85 /* ShipmentPackage.m in Sources */,
 				F977FDF61FE8AB8100183A85 /* PulsaProductPromo.swift in Sources */,
 				F977FF451FE8AB8300183A85 /* CatalogReview.m in Sources */,
@@ -11671,9 +11754,9 @@
 				F977FFD31FE8AB8400183A85 /* Address.m in Sources */,
 				F977FDD01FE8AB8000183A85 /* ResolutionCenterCreateData.m in Sources */,
 				F977FE381FE8AB8100183A85 /* ImageDownloader.m in Sources */,
+				E57974CF1FEA741F00610655 /* CouponTableViewCell.swift in Sources */,
 				F97700621FE8AB8500183A85 /* DigitalCart.swift in Sources */,
 				F977FA9C1FE8AB7A00183A85 /* TransactionCartCell.m in Sources */,
-				F97700401FE8AB8500183A85 /* LoyaltyPointMerchant.m in Sources */,
 				F977FF811FE8AB8400183A85 /* RegisterResult.m in Sources */,
 				F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */,
 				F97700A11FE8AB8600183A85 /* AuthenticationServiceExtension.swift in Sources */,
@@ -11869,6 +11952,7 @@
 				F977FB6D1FE8AB7B00183A85 /* ResolutionCenterDetailCell.m in Sources */,
 				F977FD901FE8AB8000183A85 /* TxOrderConfirmedCell.m in Sources */,
 				F977FBFC1FE8AB7C00183A85 /* TrackOrderViewController.m in Sources */,
+				E57974EB1FEA746D00610655 /* Coupon.swift in Sources */,
 				F977001B1FE8AB8500183A85 /* ProductEditImages.swift in Sources */,
 				F977FD101FE8AB7E00183A85 /* RequestMoveTo.m in Sources */,
 				F977FE611FE8AB8200183A85 /* InboxReviewProductOwner.m in Sources */,
@@ -11882,6 +11966,7 @@
 				F977FFFA1FE8AB8500183A85 /* BankAccountFormList.m in Sources */,
 				F977FD361FE8AB7F00183A85 /* SpellCheckRequest.m in Sources */,
 				F977FBC81FE8AB7C00183A85 /* OrderButtonView.swift in Sources */,
+				E57974C11FEA73D700610655 /* Modal.swift in Sources */,
 				F977FF011FE8AB8300183A85 /* HotlistDetailResult.m in Sources */,
 				F97700721FE8AB8500183A85 /* RemoteConfig.swift in Sources */,
 				F977FD7B1FE8AB7F00183A85 /* MiniSlideObject.m in Sources */,
@@ -11908,6 +11993,7 @@
 				F977FC611FE8AB7D00183A85 /* TKPImagePickerUIDelegate.swift in Sources */,
 				F977FF0F1FE8AB8300183A85 /* ResolutionLast.m in Sources */,
 				F977FCC01FE8AB7E00183A85 /* ChangePhoneNumberViewController.swift in Sources */,
+				E57974EA1FEA746D00610655 /* UserTier.swift in Sources */,
 				F977FFE31FE8AB8400183A85 /* UploadImageHelper.m in Sources */,
 				F977FDB11FE8AB8000183A85 /* SortViewController.m in Sources */,
 				F977FE361FE8AB8100183A85 /* AFNetworkingImageDownloader.mm in Sources */,
@@ -11951,6 +12037,7 @@
 				F977FB881FE8AB7B00183A85 /* CategoryIntermediaryHotListItem.swift in Sources */,
 				F977FFB31FE8AB8400183A85 /* AddShopResult.m in Sources */,
 				F977FF711FE8AB8400183A85 /* DiscoverResponse.swift in Sources */,
+				E57974F71FEA754C00610655 /* PointsAlertViewButton.swift in Sources */,
 				F977FAF81FE8AB7A00183A85 /* FavoriteShopRequest.m in Sources */,
 				F977FFDA1FE8AB8400183A85 /* SettingPaymentResult.m in Sources */,
 				F977FCC91FE8AB7E00183A85 /* AuthenticationService.swift in Sources */,
@@ -11993,6 +12080,7 @@
 				E581B54C1FE8FF9200E6D1DA /* NotificationInbox.swift in Sources */,
 				F977FD6E1FE8AB7F00183A85 /* UserContainerViewController.m in Sources */,
 				F977FED41FE8AB8200183A85 /* InboxTicketPaging.m in Sources */,
+				E57974D31FEA741F00610655 /* InputPromoViewController.swift in Sources */,
 				F977FCE61FE8AB7E00183A85 /* GalleryPhotoView.m in Sources */,
 				F977FCEC1FE8AB7E00183A85 /* DetailProductVideoLinks.swift in Sources */,
 				D89EA8FE1FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m in Sources */,
@@ -12038,7 +12126,6 @@
 				F977FC901FE8AB7D00183A85 /* CloseShopResponse.m in Sources */,
 				F977FDB81FE8AB8000183A85 /* FilterViewController.m in Sources */,
 				F977FFEB1FE8AB8400183A85 /* Upload.m in Sources */,
-				F977003E1FE8AB8500183A85 /* LoyaltyPointBuyer.m in Sources */,
 				F977FA201FE8AB7900183A85 /* ReputationTarget.swift in Sources */,
 				F977FB0D1FE8AB7B00183A85 /* CatalogModelView.m in Sources */,
 				F977FE371FE8AB8100183A85 /* LabelMenu.m in Sources */,
@@ -12237,6 +12324,7 @@
 				F977FCC51FE8AB7E00183A85 /* AuthTokenRequest.swift in Sources */,
 				F977FFAB1FE8AB8400183A85 /* ShopProductPageCampaignInfo.swift in Sources */,
 				F977FF4C1FE8AB8300183A85 /* Catalog.m in Sources */,
+				E57974E81FEA746D00610655 /* DrawerData.swift in Sources */,
 				F977FA651FE8AB7A00183A85 /* ProductDetailDiscussionNode.swift in Sources */,
 				F977FE951FE8AB8200183A85 /* TransactionVoucherData.m in Sources */,
 				F977FFA41FE8AB8400183A85 /* SearchAutoCompleteHotlist.m in Sources */,
@@ -12248,6 +12336,7 @@
 				F977FEBD1FE8AB8200183A85 /* GoogleplaceDetailResult.m in Sources */,
 				F977FD711FE8AB7F00183A85 /* ProfileFavoriteShopCell.m in Sources */,
 				F977FC881FE8AB7D00183A85 /* EditShopNoteViewCell.m in Sources */,
+				E57974EC1FEA746D00610655 /* GetCouponResponse.swift in Sources */,
 				DADB9F5F1F3C46CF002B1FAE /* README.md in Sources */,
 				F977FC231FE8AB7D00183A85 /* ReplacementSortViewController.swift in Sources */,
 				F977FE091FE8AB8100183A85 /* PulsaProduct.swift in Sources */,
@@ -12267,6 +12356,8 @@
 				F977FCB81FE8AB7E00183A85 /* SecurityQuestionTweaks.m in Sources */,
 				F977FAD21FE8AB7A00183A85 /* ProfileSettingViewController.m in Sources */,
 				F977FC431FE8AB7D00183A85 /* TooltipAlert.swift in Sources */,
+				E57974DE1FEA743600610655 /* TokopointsSectionViewController.swift in Sources */,
+				E57974D51FEA741F00610655 /* MyCouponListTableViewController.swift in Sources */,
 				DADB9F521F3C46CE002B1FAE /* HPTextViewInternal.m in Sources */,
 				F977FF271FE8AB8300183A85 /* CategoryResult.swift in Sources */,
 				F977FFC01FE8AB8400183A85 /* POSIndonesia.m in Sources */,
@@ -12310,7 +12401,6 @@
 				F977FA2D1FE8AB7900183A85 /* UIViewController+Presentation.swift in Sources */,
 				F977FA9F1FE8AB7A00183A85 /* TransactionCartDonationCell.swift in Sources */,
 				F977FED91FE8AB8200183A85 /* Breadcrumb.m in Sources */,
-				F977FD1E1FE8AB7F00183A85 /* TopPointRequest.swift in Sources */,
 				F97700421FE8AB8500183A85 /* InboxTalkResult.m in Sources */,
 				F977FC4B1FE8AB7D00183A85 /* AlertListBankCell.m in Sources */,
 				F977FEC71FE8AB8200183A85 /* SearchAWS.m in Sources */,
@@ -12365,6 +12455,7 @@
 				F977FF831FE8AB8400183A85 /* SignInProvider.swift in Sources */,
 				F977FEC11FE8AB8200183A85 /* GooglePlacesDetail.m in Sources */,
 				F977FD141FE8AB7E00183A85 /* ActivatePushInstructionViewController.swift in Sources */,
+				E57974F61FEA754C00610655 /* PointsAlertView.swift in Sources */,
 				F977FD231FE8AB7F00183A85 /* TKPDTabInboxTalkNavigationController.m in Sources */,
 				F977FC9F1FE8AB7D00183A85 /* OpenShopViewController.swift in Sources */,
 				F977FAE41FE8AB7A00183A85 /* HomeSliderView.swift in Sources */,
@@ -12557,7 +12648,6 @@
 				F977FA141FE8AB7900183A85 /* ReplacementTarget.swift in Sources */,
 				F977FD081FE8AB7E00183A85 /* RequestAddEditProduct.swift in Sources */,
 				F977FA301FE8AB7900183A85 /* UITableView+RefreshControl.m in Sources */,
-				F977003F1FE8AB8500183A85 /* LoyaltyPointResult.m in Sources */,
 				F977FC861FE8AB7D00183A85 /* ClosedScheduleDetail.m in Sources */,
 				F977FA5D1FE8AB7900183A85 /* DistrictRecommendation.swift in Sources */,
 				DADB9F5E1F3C46CF002B1FAE /* MHVerticalTabBarController.m in Sources */,
@@ -12639,7 +12729,6 @@
 				F977FD181FE8AB7E00183A85 /* MoreViewController.m in Sources */,
 				F977FA1A1FE8AB7900183A85 /* WalletTarget.swift in Sources */,
 				F977FF6E1FE8AB8400183A85 /* EnvelopeHeader.swift in Sources */,
-				F97700411FE8AB8500183A85 /* LoyaltyPointDetail.m in Sources */,
 				F977FBBA1FE8AB7C00183A85 /* OrderInfoView.swift in Sources */,
 				F977FF381FE8AB8300183A85 /* OrderBookingData.m in Sources */,
 				F97700001FE8AB8500183A85 /* UserInfo.m in Sources */,
@@ -12663,6 +12752,7 @@
 				F977FEF41FE8AB8300183A85 /* FavoriteShopAction.m in Sources */,
 				F977FEDD1FE8AB8200183A85 /* ProductImages.m in Sources */,
 				F977FC3C1FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
+				E57974D11FEA741F00610655 /* InputPromoCodeViewController.swift in Sources */,
 				F977FA251FE8AB7900183A85 /* V4Target.swift in Sources */,
 				F977FF521FE8AB8300183A85 /* TrackOrderDetail.m in Sources */,
 				F977005A1FE8AB8500183A85 /* DigitalOperatorTableViewCell.swift in Sources */,

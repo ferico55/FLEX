@@ -8,24 +8,33 @@
 
 import UIKit
 import CFAlertViewController
-import SnapKit
 
-@objc(TokoCashSectionViewController)
+enum TokoCashSectionViewType {
+    case compact
+    case normal
+}
+
 class TokoCashSectionViewController: UIViewController {
     
-    @IBOutlet private var icon: UIImageView!
-    @IBOutlet private var lblBalance: UILabel!
     @IBOutlet private var btnTopUp: UIButton!
     @IBOutlet private var lblTitle: UILabel!
-    @IBOutlet private var lblPending: UILabel!
-    @IBOutlet private var iconPending: UIImageView!
+    @IBOutlet weak var lblBalance: UILabel!
+    @IBOutlet weak var imgInfo: UIImageView!
     
-    fileprivate let wallet: WalletStore
+    fileprivate var wallet: WalletStore
     fileprivate let userManager = UserAuthentificationManager()
     
-    init(wallet: WalletStore) {
+    init(wallet: WalletStore, viewType: TokoCashSectionViewType = .normal) {
         self.wallet = wallet
-        super.init(nibName: nil, bundle: nil)
+        
+        switch viewType {
+        case .normal:
+            super.init(nibName: "TokoCashSectionViewController", bundle: nil)
+            break
+        case .compact:
+            super.init(nibName: "TokoCashSmallSectionViewController", bundle: nil)
+            break
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -34,29 +43,42 @@ class TokoCashSectionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        btnTopUp.setTitle(wallet.data?.action?.text, for: .normal)
-        lblBalance.setText(wallet.data?.balance, animated: false)
-        lblTitle.setText(wallet.data?.text, animated: false)
-        if (wallet.data?.hasPendingCashback)! {
-            lblPending.isHidden = false
-            iconPending.isHidden = false
-        }
         
         let gestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(tapResponse))
         gestureRecognizer.numberOfTapsRequired = 1
         view.isUserInteractionEnabled = true
         view.addGestureRecognizer(gestureRecognizer)
         
-        if let isTopupVisible = wallet.data?.action?.visibility {
-            btnTopUp.isHidden = isTopupVisible != "1"
-        } else {
-            btnTopUp.isHidden = false
-        }
-        
+        arrangeDisplay()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func setWallet(wallet: WalletStore) {
+        self.wallet = wallet
+        
+        arrangeDisplay()
+    }
+    
+    func arrangeDisplay() {
+        guard let data = wallet.data else {
+            return
+        }
+        
+        btnTopUp.setTitle(data.action?.text, for: .normal)
+        lblBalance.setText(data.balance, animated: false)
+        lblTitle.setText(data.text, animated: false)
+        
+        if data.hasPendingCashback {
+            imgInfo.isHidden = false
+            lblBalance.textColor = UIColor(white: 0, alpha: 0.38)
+            btnTopUp.isHidden = true    // btn aktivasi
+        }
+        else if data.link == 1 {
+            btnTopUp.isHidden = true    // btn aktivasi
+        }
     }
     
     @IBAction func didTap(_ sender: Any) {
@@ -95,7 +117,7 @@ class TokoCashSectionViewController: UIViewController {
         }
         
         controller.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(controller, animated: false)
+        navigationController?.pushViewController(controller, animated: true)
     }
 
     func openActivationPage() {

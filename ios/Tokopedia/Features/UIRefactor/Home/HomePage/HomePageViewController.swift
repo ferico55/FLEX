@@ -13,11 +13,19 @@ import RestKit
 import JLPermissions
 import RxCocoa
 import Moya
+import RxSwift
+
+enum TokoCashTokoPointsActiveState {
+    case both
+    case none
+    case tokocash
+    case tokopoints
+}
 
 @IBDesignable
 @objc
 
-class HomePageViewController: UIViewController {
+class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     
     private var digitalGoodsDataSource: DigitalGoodsDataSource!
     
@@ -32,7 +40,7 @@ class HomePageViewController: UIViewController {
     private var sliderPlaceholder: UIView!
     private var pulsaPlaceholder: UIView!
     private var tickerPlaceholder: UIView!
-    private var tokocashPlaceholder: UIView!
+    private var tokocashPlaceholder: OAStackView!
     private var categoryPlaceholder: OAStackView!
     private var homePageCategoryData: HomePageCategoryData?
     private var pulsaActiveCategories: [PulsaCategory]?
@@ -62,10 +70,16 @@ class HomePageViewController: UIViewController {
     private var isShowTokoCash: Bool = false
     //    private var categoryId = ""
     
+    private let tokocashRequestCountLimit = 5
+    private var tokocashRequestCount = 0
+    
     private let officialStorePlaceholder = UIView()
     fileprivate let authenticationService = AuthenticationService.shared
     fileprivate let userManager = UserAuthentificationManager()
     fileprivate var homeSliderView: HomeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! HomeSliderView
+    
+    private var tokopointsSectionViewController: TokopointsSectionViewController? = nil
+    private var tokoCashSectionViewController: TokoCashSectionViewController? = nil
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -77,6 +91,7 @@ class HomePageViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         self.homePageScrollView.keyboardDismissMode = .onDrag
         self.homePageScrollView.delegate = self
         self.initOuterStackView()
@@ -131,7 +146,8 @@ class HomePageViewController: UIViewController {
         
         DispatchQueue.global(qos: .default).async {
             if self.userManager.isLogin {
-                self.requestTokocash()
+                self.tokocashRequestCount = 0
+                self.requestTokocashAndTokopoints()
             } else {
                 DispatchQueue.main.async {
                     self.tokocashPlaceholder.isHidden = true
@@ -324,7 +340,8 @@ class HomePageViewController: UIViewController {
     }
     
     private func initViewLayout() {
-        self.tokocashPlaceholder = UIView()
+        self.tokocashPlaceholder = OAStackView()
+        self.setStackViewAttribute(self.tokocashPlaceholder, axis: .horizontal, alignment: .fill, distribution: .fill, spacing: 2.0)
         self.sliderPlaceholder = UIView()
         self.sliderPlaceholder.backgroundColor = self.backgroundColor
         self.tickerPlaceholder = UIView(frame: .zero)
@@ -577,52 +594,165 @@ class HomePageViewController: UIViewController {
         }
     }
     
-    private func requestTokocash() {
-        
-        guard let phoneNumber = self.userManager.getUserPhoneNumber(),
-            !phoneNumber.isEmpty else {
-            return
-        }
-        
-        WalletService.getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
-            .subscribe(onNext: { [weak self] wallet in
-                if wallet.isExpired() {
-                    self?.requestTokocashWithNewToken()
-                } else {
-                    
-                    guard wallet.data != nil else { return }
-                    
-                    let tokocash = TokoCashSectionViewController(wallet: wallet)
-                    self?.addChildViewController(tokocash)
-                    self?.tokocashPlaceholder.addSubview(tokocash.view)
-                    tokocash.view.mas_makeConstraints { make in
-                        make?.edges.equalTo()(self?.tokocashPlaceholder)
-                    }
-                    
-                    self?.tokocashPlaceholder.mas_makeConstraints { make in
-                        make?.left.right().equalTo()(self?.view)
-                        make?.height.mas_equalTo()(tokocash.view.frame.height)
-                    }
-                    
-                    self?.tokocashPlaceholder.isHidden = false
-                }
-            }, onError: { [weak self] error in
-                if #available(iOS 8.3, *) {
-                    StickyAlertView.showErrorMessage([error.localizedDescription])
-                } else {
-                    self?.tokocashPlaceholder.isHidden = true
-                }
-            }).disposed(by: self.rx_disposeBag)
-    }
-    
     private func requestTokocashWithNewToken() {
         AuthenticationService.shared.getNewToken { (token: OAuthToken?, _: Any?) in
             if token != nil {
-                self.requestTokocash()
+                self.requestTokocashAndTokopoints()
             } else {
                 LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/token")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: TkpdNotificationForcedLogout), object: nil)
             }
+        }
+    }
+    
+    func requestTokocashAndTokopoints() {
+        let _ = Observable.zip(requestTokopoints(), requestTokocash()) { drawerData, wallet in
+                return (drawerData, wallet)
+            }
+            .subscribe(onNext: { [weak self] (drawerData, wallet) in
+                guard let `self` = self else {
+                    return
+                }
+                
+                if wallet != nil && wallet!.isExpired() && self.tokocashRequestCount < self.tokocashRequestCountLimit {
+                    self.tokocashRequestCount += 1
+                    self.requestTokocashWithNewToken()
+                }
+                else {
+                    if let drawerData = drawerData {
+                        if (drawerData.offFlag == "0") {
+                            // hachiko enabled
+                            if (drawerData.hasNotification == "1") {
+                                AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "impression on any pop up", label: "pop up")
+                                
+                                let button = PointsAlertViewButton(type: .system)
+                                button.initialize(title: drawerData.popUpNotification.buttonText, titleColor: .tpGreen(), image: nil, alignment: .center) {
+                                    AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "click any pop up button", label: "pop up button")
+                                    
+                                    let wv = WKWebViewController(urlString: drawerData.popUpNotification.buttonUrl)
+                                    wv.hidesBottomBarWhenPushed = true
+                                    self.navigationController?.pushViewController(wv, animated: true)
+                                    wv.hidesBottomBarWhenPushed = false
+                                }
+                                let alert = PointsAlertView(title: drawerData.popUpNotification.title, image: nil, imageUrl: drawerData.popUpNotification.imageUrl, message: drawerData.popUpNotification.text, buttons: [button])
+                                alert.delegate = self
+                                alert.show(animated: true)
+                            }
+                        }
+                        
+                        UserDefaults.standard.set(drawerData.offFlag == "0", forKey: "hachiko_enabled")
+                        UserDefaults.standard.synchronize()
+                    }
+                    
+                    self.setTokocashAndTokopointsView(drawerData: drawerData, walletData: wallet)
+                }
+            })
+    }
+    
+    func requestTokopoints() -> Observable<DrawerData?> {
+        return TokopointsService.getDrawerData()
+    }
+    
+    func requestTokocash() -> Observable<WalletStore?> {
+        guard let phoneNumber = self.userManager.getUserPhoneNumber(),
+            !phoneNumber.isEmpty else {
+                return .just(nil)
+        }
+        
+        return WalletService
+            .getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
+            .map({ (wallet) -> WalletStore? in
+                return wallet
+            })
+            .catchError { (error) -> Observable<WalletStore?> in
+                return .just(nil)
+            }
+    }
+    
+    func setTokocashAndTokopointsView(drawerData: DrawerData?, walletData: WalletStore?) {
+        var activeState: TokoCashTokoPointsActiveState = .none
+        
+        if drawerData != nil && drawerData?.offFlag == "0" && walletData?.data != nil {
+            activeState = .both
+        }
+        else if drawerData != nil && drawerData?.offFlag == "0" {
+            activeState = .tokopoints
+        }
+        else if walletData?.data != nil {
+            activeState = .tokocash
+        }
+        
+        // reset view
+        self.tokocashPlaceholder.removeAllSubviews()
+        self.tokoCashSectionViewController?.removeFromParentViewController()
+        self.tokopointsSectionViewController?.removeFromParentViewController()
+        self.tokocashPlaceholder.isHidden = false
+        
+        // set view
+        switch activeState {
+        case .tokocash:
+            guard let walletData = walletData else {
+                return
+            }
+            self.tokoCashSectionViewController = TokoCashSectionViewController(wallet: walletData)
+            let tokocash = self.tokoCashSectionViewController!
+            self.addChildViewController(tokocash)
+            self.tokocashPlaceholder.addArrangedSubview(tokocash.view)
+            
+            self.tokocashPlaceholder.mas_makeConstraints { make in
+                make?.left.right().equalTo()(self.view)
+                make?.height.mas_equalTo()(tokocash.view.frame.height)
+            }
+            
+            break
+        case .tokopoints:
+            guard let drawerData = drawerData else {
+                return
+            }
+            self.tokopointsSectionViewController = TokopointsSectionViewController(drawerData: drawerData)
+            let tokopoints = self.tokopointsSectionViewController!
+            self.addChildViewController(tokopoints)
+            self.tokocashPlaceholder.addArrangedSubview(tokopoints.view)
+            
+            self.tokocashPlaceholder.mas_makeConstraints { make in
+                make?.left.right().equalTo()(self.view)
+                make?.height.mas_equalTo()(tokopoints.view.frame.height)
+            }
+            
+            break
+        case .both:
+            guard let walletData = walletData else {
+                return
+            }
+            self.tokoCashSectionViewController = TokoCashSectionViewController(wallet: walletData, viewType: .compact)
+            let tokocash = self.tokoCashSectionViewController!
+            self.addChildViewController(tokocash)
+            self.tokocashPlaceholder.addArrangedSubview(tokocash.view)
+            
+            let bg = UIView()
+            bg.backgroundColor = .tpBorder()
+            self.tokocashPlaceholder.addArrangedSubview(bg)
+            
+            bg.widthAnchor.constraint(equalTo: self.tokocashPlaceholder.widthAnchor, multiplier: 0.001).isActive = true
+            tokocash.view.widthAnchor.constraint(equalTo: self.tokocashPlaceholder.widthAnchor, multiplier: 0.499).isActive = true
+            
+            guard let drawerData = drawerData else {
+                return
+            }
+            self.tokopointsSectionViewController = TokopointsSectionViewController(drawerData: drawerData, viewType: .compact)
+            let tokopoints = self.tokopointsSectionViewController!
+            self.addChildViewController(tokopoints)
+            self.tokocashPlaceholder.addArrangedSubview(tokopoints.view)
+            
+            self.tokocashPlaceholder.mas_makeConstraints { make in
+                make?.left.right().equalTo()(self.view)
+                make?.height.mas_equalTo()(tokopoints.view.frame.height)
+            }
+            
+            break
+        case .none:
+            self.tokocashPlaceholder.isHidden = true
+            break
         }
     }
     
@@ -731,6 +861,11 @@ class HomePageViewController: UIViewController {
     
     private func isHomePage(page: Int) -> Bool {
         return page == 0 ? true : false
+    }
+    
+    // PointsAlertViewDelegate
+    func didDismissed(_ pointsAlertView: PointsAlertView) {
+        AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "Tokopoint - Notification", action: "click close button", label: "close")
     }
 }
 

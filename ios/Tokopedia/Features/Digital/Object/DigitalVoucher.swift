@@ -11,6 +11,7 @@ import Unbox
 
 final class DigitalVoucher:Unboxable {
     var voucherCode = ""
+    var couponTitle = ""
     var userId = ""
     var discount = ""
     var discountAmount:Double = 0

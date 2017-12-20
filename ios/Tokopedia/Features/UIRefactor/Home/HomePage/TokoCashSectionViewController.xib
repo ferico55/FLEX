@@ -1,66 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
-        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashSectionViewController">
             <connections>
                 <outlet property="btnTopUp" destination="sKS-Gu-X41" id="jCh-Ql-BZq"/>
-                <outlet property="icon" destination="qaR-gw-FeV" id="8UI-O5-2sh"/>
-                <outlet property="iconPending" destination="JZW-hx-4fz" id="GCo-Jb-pFd"/>
-                <outlet property="lblBalance" destination="kkr-dh-Rlc" id="3ve-rf-rzo"/>
-                <outlet property="lblPending" destination="Gf6-Ow-nh6" id="4CL-mP-GCy"/>
+                <outlet property="imgInfo" destination="K9s-u7-c1k" id="gjl-2a-FRD"/>
+                <outlet property="lblBalance" destination="Rqg-v6-Nm6" id="0WV-bF-kL5"/>
                 <outlet property="lblTitle" destination="mzd-qc-iwJ" id="D7w-bz-SfQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
-            <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
+            <rect key="frame" x="0.0" y="0.0" width="375" height="48"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_wallet" translatesAutoresizingMaskIntoConstraints="NO" id="qaR-gw-FeV">
-                    <rect key="frame" x="10" y="10" width="32" height="32"/>
+                    <rect key="frame" x="11" y="12" width="24" height="24"/>
                     <constraints>
-                        <constraint firstAttribute="width" constant="32" id="3Wj-WE-jd3"/>
-                        <constraint firstAttribute="height" constant="32" id="fFj-5n-YW6"/>
+                        <constraint firstAttribute="width" constant="24" id="3Wj-WE-jd3"/>
+                        <constraint firstAttribute="height" constant="24" id="fFj-5n-YW6"/>
                     </constraints>
                 </imageView>
                 <label opaque="NO" userInteractionEnabled="NO" alpha="0.69999999999999996" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="TokoCash" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mzd-qc-iwJ">
-                    <rect key="frame" x="52" y="18.5" width="203" height="15"/>
+                    <rect key="frame" x="40" y="16.5" width="335" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                    <nil key="textColor"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" alpha="0.54000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp -" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kkr-dh-Rlc">
-                    <rect key="frame" x="15" y="47" width="29.5" height="18"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
-                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_information" translatesAutoresizingMaskIntoConstraints="NO" id="JZW-hx-4fz" userLabel="Icon Information">
-                    <rect key="frame" x="153.5" y="51" width="10" height="10"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="10" id="Daa-WW-ZaL"/>
-                        <constraint firstAttribute="width" secondItem="JZW-hx-4fz" secondAttribute="height" multiplier="1:1" id="gOC-2t-0er"/>
-                    </constraints>
-                </imageView>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sKS-Gu-X41">
-                    <rect key="frame" x="285" y="20" width="80" height="40"/>
-                    <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="deviceRGB"/>
+                    <rect key="frame" x="283" y="0.0" width="80" height="48"/>
                     <constraints>
-                        <constraint firstAttribute="height" constant="40" id="9P1-oi-kNV"/>
                         <constraint firstAttribute="width" constant="80" id="gzF-Xe-IJB"/>
                     </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                     <state key="normal" title="Aktivasi">
-                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="titleColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -71,31 +54,35 @@
                         <action selector="didTap:" destination="-1" eventType="touchUpInside" id="Buo-vd-Xud"/>
                     </connections>
                 </button>
-                <label hidden="YES" opaque="NO" userInteractionEnabled="NO" alpha="0.54000000000000004" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pending Cashback" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Gf6-Ow-nh6" userLabel="Lbl Pending">
-                    <rect key="frame" x="49.5" y="49.5" width="100" height="13.5"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="100" id="Kmk-LD-ufz"/>
-                    </constraints>
-                    <fontDescription key="fontDescription" type="system" pointSize="11"/>
-                    <nil key="textColor"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Rp. " textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="Rqg-v6-Nm6">
+                    <rect key="frame" x="184" y="17" width="163" height="14.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_information" translatesAutoresizingMaskIntoConstraints="NO" id="K9s-u7-c1k">
+                    <rect key="frame" x="351" y="18" width="12" height="12"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="12" id="isz-Gk-Xix"/>
+                        <constraint firstAttribute="height" constant="12" id="paR-MH-Hfj"/>
+                    </constraints>
+                </imageView>
             </subviews>
-            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
             <constraints>
-                <constraint firstItem="qaR-gw-FeV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="10" id="AUO-zg-jeg"/>
-                <constraint firstItem="sKS-Gu-X41" firstAttribute="leading" secondItem="mzd-qc-iwJ" secondAttribute="trailing" constant="30" id="JdH-dP-p2R"/>
-                <constraint firstItem="Gf6-Ow-nh6" firstAttribute="centerY" secondItem="kkr-dh-Rlc" secondAttribute="centerY" id="Tcx-8K-s1u"/>
-                <constraint firstItem="Gf6-Ow-nh6" firstAttribute="leading" secondItem="kkr-dh-Rlc" secondAttribute="trailing" constant="5" id="X8D-bH-ODY"/>
-                <constraint firstItem="kkr-dh-Rlc" firstAttribute="top" secondItem="qaR-gw-FeV" secondAttribute="bottom" constant="5" id="Xl4-cT-aFb"/>
-                <constraint firstItem="sKS-Gu-X41" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="ZG1-sw-5ti"/>
-                <constraint firstItem="JZW-hx-4fz" firstAttribute="centerY" secondItem="Gf6-Ow-nh6" secondAttribute="centerY" id="nfX-M8-mw5"/>
-                <constraint firstItem="JZW-hx-4fz" firstAttribute="leading" secondItem="Gf6-Ow-nh6" secondAttribute="trailing" constant="4" id="nvP-zY-ydt"/>
-                <constraint firstAttribute="trailing" secondItem="sKS-Gu-X41" secondAttribute="trailing" constant="10" id="rKa-0w-Ua7"/>
-                <constraint firstItem="mzd-qc-iwJ" firstAttribute="leading" secondItem="qaR-gw-FeV" secondAttribute="trailing" constant="10" id="sR7-Kw-lNs"/>
-                <constraint firstItem="qaR-gw-FeV" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="10" id="uU4-fB-kuL"/>
-                <constraint firstItem="kkr-dh-Rlc" firstAttribute="leading" secondItem="qaR-gw-FeV" secondAttribute="leading" constant="5" id="wbD-kj-iyr"/>
+                <constraint firstItem="K9s-u7-c1k" firstAttribute="centerY" secondItem="mzd-qc-iwJ" secondAttribute="centerY" id="4m5-xB-d0j"/>
+                <constraint firstItem="qaR-gw-FeV" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="8lx-Ca-oWK"/>
+                <constraint firstItem="qaR-gw-FeV" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="11" id="AUO-zg-jeg"/>
+                <constraint firstItem="Rqg-v6-Nm6" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="184" id="G2P-fE-SuE"/>
+                <constraint firstAttribute="trailing" secondItem="K9s-u7-c1k" secondAttribute="trailing" constant="12" id="a2H-FO-GUm"/>
+                <constraint firstAttribute="bottom" secondItem="sKS-Gu-X41" secondAttribute="bottom" id="bAn-cE-hXP"/>
+                <constraint firstItem="sKS-Gu-X41" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="fqp-0y-AIQ"/>
+                <constraint firstItem="K9s-u7-c1k" firstAttribute="leading" secondItem="Rqg-v6-Nm6" secondAttribute="trailing" constant="4" id="hcX-n1-p7w"/>
+                <constraint firstAttribute="trailing" secondItem="mzd-qc-iwJ" secondAttribute="trailing" id="hft-eh-8zg"/>
+                <constraint firstAttribute="trailing" secondItem="sKS-Gu-X41" secondAttribute="trailing" constant="12" id="rKa-0w-Ua7"/>
+                <constraint firstItem="mzd-qc-iwJ" firstAttribute="leading" secondItem="qaR-gw-FeV" secondAttribute="trailing" constant="5" id="sR7-Kw-lNs"/>
                 <constraint firstItem="mzd-qc-iwJ" firstAttribute="centerY" secondItem="qaR-gw-FeV" secondAttribute="centerY" id="wdu-DA-SBq"/>
+                <constraint firstItem="Rqg-v6-Nm6" firstAttribute="centerY" secondItem="qaR-gw-FeV" secondAttribute="centerY" id="xXV-x3-HCT"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <point key="canvasLocation" x="-19.5" y="90"/>

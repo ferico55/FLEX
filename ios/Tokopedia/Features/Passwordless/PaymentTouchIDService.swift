@@ -34,7 +34,7 @@ class PaymentTouchIDService: NSObject {
         let signature = getPublicKey.flatMap { _ in
             self.getSignature(dateString: currentDate).shareReplay(1)
         }
-
+        
         return
             authorizeTouchID(reason: "Touch ID menggantikan SMS OTP. Scan sidik jari Anda untuk kemudahan transaksi", cancelButtonTitle: "Tutup").flatMap({ _ in
                 Observable.zip(getPublicKey, signature)

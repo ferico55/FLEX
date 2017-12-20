@@ -12,6 +12,8 @@ import Unbox
 
 final class DigitalCart:Unboxable {
     var cartId = ""
+    var productId = ""
+    var categoryId = ""
     var userId = ""
     var clientNumber = ""
     var title = ""
@@ -27,9 +29,12 @@ final class DigitalCart:Unboxable {
     var mainInfo = [DigitalCartInfoDetail]()
     var additionalInfo:[DigitalCartInfo]?
     var userInputPrice:DigitalCartUserInputPrice?
+    var isCouponActive = ""
     
-    init(cartId:String = "", userId:String = "", clientNumber:String = "", title:String = "", categoryName:String = "", operatorName:String = "", icon:String = "", priceText:String = "", price:Double = 0.0, instantCheckout:Bool = false, needOTP:Bool = false, smsState:String = "", voucherCode:String = "", mainInfo:[DigitalCartInfoDetail] = [], additionalInfo:[DigitalCartInfo]? = nil, userInputPrice:DigitalCartUserInputPrice? = nil) {
+    init(cartId:String = "", productId:String = "", categoryId:String = "", userId:String = "", clientNumber:String = "", title:String = "", categoryName:String = "", operatorName:String = "", icon:String = "", priceText:String = "", price:Double = 0.0, instantCheckout:Bool = false, needOTP:Bool = false, smsState:String = "", voucherCode:String = "", mainInfo:[DigitalCartInfoDetail] = [], additionalInfo:[DigitalCartInfo]? = nil, userInputPrice:DigitalCartUserInputPrice? = nil, isCouponActive: String = "") {
         self.cartId = cartId
+        self.productId = productId
+        self.categoryId = categoryId
         self.userId = userId
         self.clientNumber = clientNumber
         self.title = title
@@ -45,10 +50,13 @@ final class DigitalCart:Unboxable {
         self.mainInfo = mainInfo
         self.additionalInfo = additionalInfo
         self.userInputPrice = userInputPrice
+        self.isCouponActive = isCouponActive
     }
     
     convenience init(unboxer: Unboxer) throws {
         let cartId = try unboxer.unbox(keyPath: "data.id") as String
+        let productId = try unboxer.unbox(keyPath: "data.relationships.product.data.id") as String
+        let categoryId = try unboxer.unbox(keyPath: "data.relationships.category.data.id") as String
         let userId = try unboxer.unbox(keyPath: "data.attributes.user_id") as String
         let clientNumber = try unboxer.unbox(keyPath: "data.attributes.client_number") as String
         let title = try unboxer.unbox(keyPath: "data.attributes.title") as String
@@ -64,8 +72,11 @@ final class DigitalCart:Unboxable {
         let mainInfo = try unboxer.unbox(keyPath: "data.attributes.main_info") as [DigitalCartInfoDetail]
         let additionalInfo = try? unboxer.unbox(keyPath: "data.attributes.additional_info") as [DigitalCartInfo]
         let userInputPrice = try? unboxer.unbox(keyPath: "data.attributes.user_input_price") as DigitalCartUserInputPrice
+        let isCouponActive = try? unboxer.unbox(keyPath: "data.attributes.is_coupon_active") as String
         
         self.init(cartId:cartId,
+                  productId:productId,
+                  categoryId:categoryId,
                   userId:userId,
                   clientNumber:clientNumber,
                   title:title,
@@ -80,6 +91,7 @@ final class DigitalCart:Unboxable {
                   voucherCode:voucherCode,
                   mainInfo:mainInfo,
                   additionalInfo:additionalInfo,
-                  userInputPrice:userInputPrice)
+                  userInputPrice:userInputPrice,
+                  isCouponActive:isCouponActive ?? "0")
     }
 }

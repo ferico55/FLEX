@@ -436,4 +436,16 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     return [urls objectForKey:TPUrlIndex];
 }
 
++ (NSString*)tokopointsUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://gw.tokopedia.com",
+                           @(TPUrlStaging) : @"http://gw-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"http://gw-staging.tokopedia.com",
+                           @(TPUrlDevelopment) : @"http://gw-staging.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
 @end

@@ -42,7 +42,6 @@
 #import "NavigateViewController.h"
 
 #import "NavigateViewController.h"
-#import "LoyaltyPoint.h"
 
 #import <MessageUI/MessageUI.h>
 
@@ -60,7 +59,7 @@
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
-@interface MoreViewController () <EtalaseViewControllerDelegate, CMPopTipViewDelegate> {
+@interface MoreViewController () <EtalaseViewControllerDelegate, CMPopTipViewDelegate, PointsAlertViewDelegate> {
     NSDictionary *_auth;
     
     Deposit *_deposit;
@@ -73,7 +72,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UISplitViewController *splitViewController;
     NavigateViewController *_navigate;
     
-    LoyaltyPointResult *_LPResult;
     TAGContainer *_gtmContainer;
     
     DepositRequest *_request;
@@ -82,11 +80,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     BOOL _shouldDisplayPushNotificationCell;
     BOOL _shouldDisplayWalletCell;
-    BOOL _shouldDisplayTopPointsCell;
     NSString* _walletUrl;
     BOOL _isWalletActive;
     CGRect _defaultTableFrame;
     BOOL _shouldShowAppShare;
+    
+    BOOL _hachikoEnabled;
+    NSString *tokopointsMainpageUrl;
+    
+    NSInteger _profileCompleted;
 }
 
 @property (weak, nonatomic) IBOutlet UILabel *depositLabel;
@@ -119,6 +121,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 
 @property (strong, nonatomic) CMPopTipView *popTipView;
+
+@property (weak, nonatomic) IBOutlet UIView *viewTokopoints;
+@property (weak, nonatomic) IBOutlet UIImageView *imgPointsTierView;
+@property (weak, nonatomic) IBOutlet UILabel *lblPoints;
+@property (weak, nonatomic) IBOutlet UIButton *btnRedeemPoints;
 
 @end
 
@@ -176,7 +183,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     [super viewDidLoad];
     
-    
     // Add logo in navigation bar
     self.title = kTKPDMORE_TITLE;
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
@@ -217,6 +223,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     _request = [DepositRequest new];
     
+    _profileCompleted = 0;
+    
     [self updateShopInformation];
     [self configureGTM];
     [self.tableView setShowsVerticalScrollIndicator:NO];
@@ -233,15 +241,26 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     [self showProfileProgress];
     _shouldShowAppShare = NO;
     [self showHideAppShareCell];
+    
+    [_btnRedeemPoints setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0.01, 0)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
+    _hachikoEnabled = [[NSUserDefaults standardUserDefaults] boolForKey:@"hachiko_enabled"];
+    if (_hachikoEnabled) {
+        _viewTokopoints.hidden = false;
+    }
+    else {
+        _viewTokopoints.hidden = true;
+    }
+    
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
     [self showProfileProgress];
+    [self requestTokopoints];
     [self showHideAppShareCell];
 }
 
@@ -287,7 +306,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     if(self.popTipView !=nil && ![self.popTipView isHidden])
         return;
     BOOL isTargetVisible = [self.tableView.indexPathsForVisibleRows bk_any:^(NSIndexPath *indexPath) {
-        BOOL result = indexPath.row == 0 && indexPath.section == 2;
+        BOOL result = indexPath.row == 0 && indexPath.section == 1;
         return result;
     }];
     
@@ -308,7 +327,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             self.popTipView.animation = CMPopTipAnimationPop;
             self.popTipView.dismissTapAnywhere = YES;
             
-            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:2]];
+            UITableViewCell *cell = [self.tableView cellForRowAtIndexPath:[NSIndexPath indexPathForRow:0 inSection:1]];
             [self.popTipView presentPointingAtView:cell inView:self.view animated:YES];
         });
     }
@@ -365,9 +384,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
     }];
 }
-
-
-
 
 - (void)appDidResume {
     [self togglePushNotificationCellVisibility];
@@ -480,7 +496,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 #pragma mark - Table view data source
 
 - (void) tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if(indexPath.section == 2 && indexPath.row == 0) {
+    if(indexPath.section == 1 && indexPath.row == 0) {
         [self showTooltipView];
     }
 }
@@ -499,36 +515,34 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 }
             }
         }
-            
-        case 1: return _shouldDisplayTopPointsCell?1:0;
-        case 2: return 3;
-        case 3:
+        case 1: return 3;
+        case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
                 return 5;
             else return 0;
             break;
             
-        case 4:
+        case 3:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
                 return 0;
             else return 1;
             break;
             
-        case 5:
+        case 4:
             return 5;
             break;
             
-        case 6:
+        case 5:
             return 4;
             break;
             
-        case 7:
+        case 6:
             return _shouldDisplayPushNotificationCell?1:0;
             break;
             
-        case 8 :
+        case 7 :
             return 1;
             break;
             
@@ -546,31 +560,33 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
  */
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.section) {
-        case 2:
+        case 1:
         switch (indexPath.row) {
-                case 0: return 189;
+            case 0: {
+                return 200;
+            }
             default:
                 return 52;
         }
-        case 3:
+        case 2:
         switch (indexPath.row) {
                 case 0: return 120;
             default:
                 return 52;
         }
-        case 4:
+        case 3:
             switch (indexPath.row) {
                 case 0: return 127;
                 default:
                     return 52;
             }
-        case 5:
+        case 4:
             switch (indexPath.row) {
                 case 0: return 90;
                 default:
                     return 52;
             }
-        case 6:
+        case 5:
             switch (indexPath.row) {
                 case 0:
                     if (_shouldShowAppShare) {
@@ -616,47 +632,36 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
         }
     }
-    if (indexPath.section == 1 && indexPath.row == 0) {
-        UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-        WebViewController *webViewController = [WebViewController new];
-        
-        webViewController.isLPWebView = YES;
-        webViewController.shouldAuthorizeRequest = YES;
-        webViewController.strURL = [userManager webViewUrlFromUrl: _LPResult.uri];
-        webViewController.strTitle = @"TopPoints";
-        [AnalyticsManager trackScreenName:@"Top Points Page"];
-        [wrapperController.navigationController pushViewController:webViewController animated:YES];
-    }
-    if (indexPath.section == 2) {
+    if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0: {
                 NavigateViewController *navigateController = [NavigateViewController new];
-                [AnalyticsManager trackClickNavigateFromMore:@"Profile" parent:MORE_SECTION_2];
+                [AnalyticsManager trackClickNavigateFromMore:@"Profile" parent:MORE_SECTION_1];
 
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
                 [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
             }
                 break;
             case 1: {
-                [AnalyticsManager trackClickNavigateFromMore:@"Pembelian" parent:MORE_SECTION_2];
+                [AnalyticsManager trackClickNavigateFromMore:@"Pembelian" parent:MORE_SECTION_1];
                 PurchaseViewController *purchaseController = [PurchaseViewController new];
                 purchaseController.hidesBottomBarWhenPushed = YES;
                 [wrapperController.navigationController pushViewController:purchaseController animated:YES];
             }
                 break;
             case 2:
-                [AnalyticsManager trackClickNavigateFromMore:@"Wishlist" parent:MORE_SECTION_2];
+                [AnalyticsManager trackClickNavigateFromMore:@"Wishlist" parent:MORE_SECTION_1];
                 [wrapperController.tabBarController setSelectedIndex:2];
                 break;
             default:
                 break;
         }
     }
-    else if (indexPath.section == 3) {
+    else if (indexPath.section == 2) {
         if(indexPath.row == 0) {
             UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
             
-            [AnalyticsManager trackClickNavigateFromMore:@"Shop" parent:MORE_SECTION_3];
+            [AnalyticsManager trackClickNavigateFromMore:@"Shop" parent:MORE_SECTION_2];
             ShopViewController *container = [[ShopViewController alloc] init];
             container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
                                MORE_AUTH : _auth,
@@ -664,18 +669,18 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                                };
             [wrapperController.navigationController pushViewController:container animated:YES];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Penjualan" parent:MORE_SECTION_3];
+            [AnalyticsManager trackClickNavigateFromMore:@"Penjualan" parent:MORE_SECTION_2];
             SalesViewController *salesController = [SalesViewController new];
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Daftar Produk" parent:MORE_SECTION_3];
+            [AnalyticsManager trackClickNavigateFromMore:@"Daftar Produk" parent:MORE_SECTION_2];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_3];
+            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
             EtalaseViewController *vc = [EtalaseViewController new];
             vc.delegate = self;
             vc.isEditable = YES;
@@ -687,26 +692,24 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [vc setShopId:shopId];
             [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if(indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_3];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_2];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }
-        
     }
-    
-    else if (indexPath.section == 5) {
+    else if (indexPath.section == 4) {
         if(indexPath.row == 0) {
-            [AnalyticsManager trackClickNavigateFromMore:@"TopChat" parent: MORE_SECTION_5];
+            [AnalyticsManager trackClickNavigateFromMore:@"TopChat" parent: MORE_SECTION_4];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topchat"]];
         } else if(indexPath.row == 1) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Diskusi" parent:MORE_SECTION_5];
+            [AnalyticsManager trackClickNavigateFromMore:@"Diskusi" parent:MORE_SECTION_4];
             [_navigate navigateToInboxTalkFromViewController:wrapperController];
         } else if (indexPath.row == 2) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Ulasan" parent:MORE_SECTION_5];
+            [AnalyticsManager trackClickNavigateFromMore:@"Ulasan" parent:MORE_SECTION_4];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://review"]];
             _wrapperViewController.hidesBottomBarWhenPushed = NO;
             return;
         } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Layanan Pengguna" parent:MORE_SECTION_5];
+            [AnalyticsManager trackClickNavigateFromMore:@"Layanan Pengguna" parent:MORE_SECTION_4];
             
             UserAuthentificationManager* userManager = [UserAuthentificationManager new];
             
@@ -714,7 +717,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             
             [wrapperController.navigationController pushViewController:wkWebViewController animated:YES];
         } else if (indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_5];
+            [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_4];
             if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
                 InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
                 controller.hidesBottomBarWhenPushed = YES;
@@ -727,8 +730,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }
         }
     }
-    
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 5) {
         if (indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Share ke Teman" parent:MORE_SECTION_OTHERS];
             [self shareToFriend];
@@ -756,13 +758,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [wrapperController presentViewController:controller animated:YES completion:nil];
         }
     }
-
-    else if (indexPath.section == 7) {
+    else if (indexPath.section == 6) {
         [AnalyticsManager trackClickNavigateFromMore:@"Push Notifikasi" parent:MORE_SECTION_OTHERS];
         [self activatePushNotification];
     }
-    
-    else if (indexPath.section == 8) {
+    else if (indexPath.section == 7) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Keluar" parent:MORE_SECTION_OTHERS];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -839,21 +839,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         _loadingSaldo.hidden = YES;
         [_loadingSaldo stopAnimating];
         _isNoDataDeposit = NO;
-        
-        [self requestTopPoint];
     } onFailure:^(NSError *errorResult) {
         
-        
-    }];
-}
-
--(void)requestTopPoint{
-    [TopPointRequest fetchTopPoint:^(LoyaltyPointResult * data) {
-        
-        _LPResult = data;
-        _LPointLabel.text = data.loyalty_point.amount;
-        _shouldDisplayTopPointsCell = data.active;
-        [[self tableView]reloadData];
         
     }];
 }
@@ -912,41 +899,128 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 }
 
 -(void)showProfileProgress {
+    self.progressBar.hidden = false;
+    self.completeProfileButton.hidden = true;
+    self.progressLabel.hidden = false;
+    self.completeProfileLabel.hidden = false;
+    
+    _verifiedAccountIcon.hidden = true;
+    _verifiedAccountLabel.hidden = true;
+    _verifiedAccountLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.54];
+    
     [UserRequest getUserCompletionOnSuccess:^(ProfileCompletionInfo *profileInfo) {
-        int profileCompleted = profileInfo.completion;
+        _profileCompleted = profileInfo.completion;
         //progress color
         self.progressBarTrack = [UIColor colorWithRed:200.0/225.0 green:200.0/225.0 blue:200.0/225.0 alpha:1];
         self.progressBarColor = [UIColor colorWithRed:175.0/225.0 green:213.0/225.0 blue:100.0/225.0 alpha:1]; //default: 0.5
         self.progressLabel.text = @"50%";
-        _completeProfileButton.hidden = false;
-        _verifiedAccountLabel.textColor = [UIColor clearColor];
-        _verifiedAccountIcon.hidden = true;
-        if (profileCompleted == 60) {
+        if (_profileCompleted == 60) {
             self.progressBarColor = [UIColor colorWithRed:127.0/225.0 green:190.0/225.0 blue:51.0/225.0 alpha:1];
             self.progressLabel.text = @"60%";
-        } else if (profileCompleted == 70) {
+        } else if (_profileCompleted == 70) {
             self.progressBarColor = [UIColor colorWithRed:78.0/225.0 green:188.0/225.0 blue:74.0/225.0 alpha:1];
             self.progressLabel.text = @"70%";
-        } else if (profileCompleted == 80) {
+        } else if (_profileCompleted == 80) {
             self.progressBarColor = [UIColor colorWithRed:39.0/225.0 green:160.0/225.0 blue:46.0/225.0 alpha:1];
             self.progressLabel.text = @"80%";
-        } else if (profileCompleted == 90) {
+        } else if (_profileCompleted == 90) {
             self.progressBarColor = [UIColor colorWithRed:8.0/225.0 green:132.0/225.0 blue:31.0/225.0 alpha:1];
             self.progressLabel.text = @"90%";
-        } else if (profileCompleted == 100) {
+        } else if (_profileCompleted == 100) {
             self.progressBarColor = [UIColor colorWithRed:0.0/225.0 green:112.0/225.0 blue:20.0/225.0 alpha:1];
             self.progressLabel.text = @"100%";
-            _completeProfileButton.hidden = true;
-            _verifiedAccountLabel.textColor = [UIColor colorWithRed:0 green:0 blue:0 alpha:0.54];
+            _verifiedAccountLabel.hidden = false;
             _verifiedAccountIcon.hidden = false;
         }
-        double progress = profileCompleted/100.0;
+        double progress = _profileCompleted/100.0;
         [self.progressBar setProgress:progress animated:true];
         [self.progressBar setTrackTintColor:self.progressBarTrack];
         [self.progressBar setProgressTintColor:self.progressBarColor];
-    } onFailure:^() {
         
+        if (_profileCompleted < 100) {
+            self.completeProfileButton.hidden = false;
+        }
+        
+        [self.tableView reloadData];
+        
+    } onFailure:^() {
+        [self.tableView reloadData];
     }];
+}
+
+- (IBAction)btnRedeemPointsDidTapped:(id)sender {
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - user profile page" action:@"click tokopoints" label:@"tokopoints"];
+    
+    WKWebViewController *wv = [[WKWebViewController alloc] initWithUrlString:tokopointsMainpageUrl];
+    wv.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:wv animated:YES];
+    wv.hidesBottomBarWhenPushed = NO;
+}
+
+- (void)requestTokopoints {
+    [TokopointsService getDrawerDataOnSuccess:^(DrawerData * drawerData) {
+        if ([drawerData.offFlag isEqualToString:@"0"]) {
+            // hachiko enabled
+            _hachikoEnabled = true;
+            _viewTokopoints.hidden = false;
+            [self showProfileProgress];
+            
+            _lblPoints.text = drawerData.userTier.rewardPointsString;
+            [_imgPointsTierView setBackgroundColor:[UIColor tpGray]];
+            
+            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:drawerData.userTier.tierImageUrl]];
+            [_imgPointsTierView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                [_imgPointsTierView setImage:image];
+                [_imgPointsTierView setBackgroundColor:nil];
+            } failure:nil];
+            
+            if ([drawerData.hasNotification isEqualToString:@"1"]) {
+                [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - pop up" action:@"impression on any pop up" label:@"pop up"];
+                
+                PointsAlertViewButton *button = [PointsAlertViewButton buttonWithType:UIButtonTypeSystem];
+                [button initializeWithTitle:drawerData.popUpNotification.buttonText titleColor:[UIColor tpGreen] image:nil alignment:NSTextAlignmentCenter callback:^{
+                    [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - pop up" action:@"click any pop up button" label:@"pop up button"];
+                    WKWebViewController *wv = [[WKWebViewController alloc] initWithUrlString:drawerData.popUpNotification.buttonUrl];
+                    wv.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:wv animated:true];
+                    wv.hidesBottomBarWhenPushed = NO;
+                }];
+                
+                PointsAlertView *alertView = [[PointsAlertView alloc] initWithTitle:drawerData.popUpNotification.title image:nil imageUrl:drawerData.popUpNotification.imageUrl message:drawerData.popUpNotification.text buttons:@[button]];
+                alertView.delegate = self;
+                [alertView showSelfWithAnimated:true];
+            }
+            
+            tokopointsMainpageUrl = drawerData.mainpageUrl;
+        }
+        else {
+            // hachiko disabled
+            _hachikoEnabled = false;
+            _viewTokopoints.hidden = true;
+            [self showProfileProgress];
+        }
+        
+        [[NSUserDefaults standardUserDefaults] setBool:_hachikoEnabled forKey:@"hachiko_enabled"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self.tableView reloadData];
+    } onFailure:^(NSError * error) {
+        NSLog(@"%@", error.localizedDescription);
+        
+        // hachiko disabled
+        _hachikoEnabled = false;
+        _viewTokopoints.hidden = true;
+        [self showProfileProgress];
+        
+        [[NSUserDefaults standardUserDefaults] setBool:_hachikoEnabled forKey:@"hachiko_enabled"];
+        [[NSUserDefaults standardUserDefaults] synchronize];
+        
+        [self.tableView reloadData];
+    }];
+}
+
+- (void)didDismissed:(PointsAlertView *)pointsAlertView {
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"Tokopoint - Notification" action:@"click close button" label:@"close"];
 }
 
 @end
