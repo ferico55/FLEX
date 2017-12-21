@@ -11,6 +11,7 @@
 #import <React/RCTRootView.h>
 #import <React/RCTUIManager.h>
 #import "AnalyticsManager.h"
+#import "Tokopedia-Swift.h"
 
 @implementation TKPReactAnalytics
 
@@ -49,6 +50,35 @@ RCT_EXPORT_METHOD(trackPromoClickWithDictionary:(NSDictionary*)promotionsDict di
 
 RCT_EXPORT_METHOD(gtmTrack:(NSDictionary *)data) {
     [AnalyticsManager trackData:data];
+}
+
+RCT_EXPORT_METHOD(appsFlyerTrack:(NSDictionary *)data) {
+    [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:data];
+}
+
+RCT_EXPORT_METHOD(branchTrack:(NSDictionary *)data) {
+    NSMutableArray<BNCProduct*>* products = [NSMutableArray new];
+    for(NSDictionary *pItem in data[@"products"]) {
+        BNCProduct* product = [BNCProduct new];
+        product.sku = pItem[@"id"];
+        product.name = pItem[@"name"];
+        product.price = pItem[@"price"];
+        product.quantity = pItem[@"quantity"];
+        [products addObject:product];
+    }
+    BNCCommerceEvent *commerceEvent = [BNCCommerceEvent new];
+    commerceEvent.currency = data[@"currency"];
+    commerceEvent.revenue = data[@"revenue"];
+    commerceEvent.products = products;
+    [[Branch getInstance] sendCommerceEvent:commerceEvent metadata:@{} withCompletion:^(NSDictionary *response, NSError *error) {
+    }];
+}
+
+RCT_EXPORT_METHOD(moeTrack:(NSDictionary *)data) {
+    [AnalyticsManager moEngageTrackEventWithName:data[@"name"]
+                                      attributes:@{@"payment_type": data[@"payment_type"],
+                                                   @"purchase_site": @"Marketplace",
+                                                   @"total_price": data[@"total_price"]}];
 }
 
 @end
