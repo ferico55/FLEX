@@ -32,6 +32,8 @@ import CategoryResultPage from './src/category-result/CategoryResultPage'
 import { createEpicMiddleware } from 'redux-observable'
 
 import ThankYou from './src/thankyou-page'
+import TopPicksStore from './src/top-picks/store/store'
+import TopPicks from './src/top-picks/containers/TopPicksContainer'
 
 const styles = StyleSheet.create({
   container: {
@@ -57,6 +59,12 @@ const NotFoundComponent = () => (
     <Text style={styles.welcome}>Screen not found!</Text>
   </View>
 )
+
+Navigator.registerScreen('TopPicks', () => props => (
+  <Provider store={TopPicksStore}>
+    <TopPicks pageId={props.page_id} />
+  </Provider>
+))
 
 moment.relativeTimeThreshold('ss', 1)
 moment.relativeTimeThreshold('s', 60)

@@ -679,6 +679,17 @@ class TPRoutes: NSObject {
 
             return true
         }
+        
+        JLRoutes.global().add(["/discovery/:id", "/b/:id"]) { (params: [String: Any]) -> Bool in
+            guard let id = params["id"] as? String else { return false }
+            
+            let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject])
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushReactViewController(viewController, animated: true)
+            
+            return true
+        }
 
         // MARK: Search Result (Native)
         JLRoutes.global().addRoute("/search/*") { (params: [String: Any]!) -> Bool in
