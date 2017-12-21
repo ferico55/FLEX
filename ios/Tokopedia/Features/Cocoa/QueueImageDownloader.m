@@ -27,6 +27,7 @@
         [imageView setImageWithURLRequest:[NSURLRequest requestWithURL:nsurl]
                          placeholderImage:nil
                                   success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
+                                      if (!image) return;
                                       [result addObject:image];
                                       totalSuccess += 1;
                                       
