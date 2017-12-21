@@ -131,7 +131,7 @@ def common_pods
     pod 'MoyaUnbox/RxSwift', '~> 1.0.0'
     pod 'SwiftyJSON', '~> 3.1.4'
     #Referrals
-    pod "Branch", '0.18.8'
+    pod "Branch", '0.20.3'
 end
 
 target "Tokopedia" do

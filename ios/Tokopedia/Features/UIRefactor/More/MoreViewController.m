@@ -748,14 +748,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         } else if(indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Bagikan Aplikasi" parent:MORE_SECTION_OTHERS];
             [AnalyticsManager trackScreenName:@"Share App"];
-            
-            NSString *title = @"Download Aplikasi Tokopedia Sekarang Juga! \nNikmati kemudahan jual beli online di tanganmu.";
-            NSURL *url = [NSURL URLWithString:@"https://itunes.apple.com/id/app/tokopedia/id1001394201"];
-            UIActivityViewController *controller = [UIActivityViewController shareDialogWithTitle:title
-                                                                                              url:url
-                                                                                           anchor:[tableView cellForRowAtIndexPath:indexPath]];
-            
-            [wrapperController presentViewController:controller animated:YES completion:nil];
+            [ReferralRemoteConfig.shared getAppShareDescriptionOnCompletion:^(NSString * _Nonnull description) {
+                AppSharing *appSharing = [AppSharing new];
+                appSharing.buoDescription = description;
+                [[ReferralManager new] shareWithObject:appSharing from: wrapperController anchor:[tableView cellForRowAtIndexPath:indexPath]];
+            }];
         }
     }
     else if (indexPath.section == 6) {

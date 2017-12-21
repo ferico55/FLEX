@@ -10,11 +10,17 @@ import Foundation
 class SearchProductWrapperReferable:NSObject, Referable {
     var shareUrl: String?
     var desktopUrl: String {
-        let desktopUrl = (shareUrl ?? NSString.tokopediaUrl())
+        let desktopUrl = (self.shareUrl?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? NSString.tokopediaUrl())
         return desktopUrl
     }
     var deeplinkPath: String {
-        let subpath = "search?" + ((URL(string:self.desktopUrl)?.query) ?? "")
+        var subpath = "search"
+        if var query = URL(string:self.desktopUrl)?.query {
+            if query.hasPrefix("&") {
+                query.remove(at: query.startIndex)
+            }
+            subpath += "?" + query
+        }
         return subpath
     }
     var feature = "Discovery"

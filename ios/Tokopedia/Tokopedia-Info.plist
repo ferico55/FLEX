@@ -184,5 +184,7 @@
 		<key>test</key>
 		<string>key_test_nabIaHb4sQdBUygwSl7EYdjoqDmDsjRN</string>
 	</dict>
+	<key>branch_universal_link_domains</key>
+	<string>tokopedia.link</string>
 </dict>
 </plist>
