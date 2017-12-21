@@ -31,7 +31,6 @@
 #import "RequestResolutionData.h"
 #import "RequestOrderData.h"
 #import "RequestResolutionData.h"
-#import "ResolutionCenterCreateViewController.h"
 
 #import "OrderDataManager.h"
 #import "Tokopedia-Swift.h"
@@ -46,7 +45,7 @@
 #define DATA_ORDER_REORDER_KEY @"data_reorder"
 #define DATA_ORDER_COMPLAIN_KEY @"data_complain"
 
-@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, ResolutionCenterCreateDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
+@interface TxOrderStatusViewController () <UIAlertViewDelegate, FilterSalesTransactionListDelegate, TrackOrderViewControllerDelegate, InboxResolutionCenterOpenViewControllerDelegate, LoadingViewDelegate, NoResultDelegate, RetryViewDelegate>
 {
     NSString *_URINext;
     
@@ -608,20 +607,10 @@
 }
 
 -(void)createComplainOrder:(TxOrderStatusList*)order isReceived:(BOOL)isReceived{
-    ResolutionCenterCreateViewController *vc = [ResolutionCenterCreateViewController new];
-    vc.order = order;
-    vc.product_is_received = isReceived;
-    
-    __weak typeof(self) weakSelf = self;
-    vc.didCreateComplaint = ^(TxOrderStatusList *order){
-        [AnalyticsManager moEngageTrackEventWithName:@"Shipping_Received_Confirmation" attributes:@{@"is_received" : @(isReceived)}];
-        [weakSelf refreshRequest];
-    };
-    
-    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:vc];
-    [navigationController.navigationBar setTranslucent:NO];
-    navigationController.modalPresentationStyle = UIModalPresentationFormSheet;
-    [self.navigationController presentViewController:navigationController animated:YES completion:nil];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"ResolutionCenterCreate" bundle:nil];
+    CreateComplainViewController *viewController = (CreateComplainViewController*)[storyboard instantiateInitialViewController];
+    viewController.order = order;
+    [self.navigationController pushViewController:viewController animated:YES];
 }
 
 #pragma mark - Methods
@@ -660,38 +649,25 @@
 
 - (void)tapComplaint:(TxOrderStatusList *)order {
     __weak typeof(self) weakSelf = self;
-    
-    BOOL isNotReceived = (order.order_button.button_open_complaint_not_received == 1);
-    
-    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithAttributedString:[NSAttributedString attributedStringFromHTML:order.order_detail.detail_complaint_popup_msg normalFont:[UIFont largeTheme] boldFont:[UIFont largeThemeMedium] italicFont:[UIFont largeTheme]]];
-    
-    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:order.order_detail.detail_complaint_popup_title
+    NSMutableAttributedString *messageString = [[NSMutableAttributedString alloc] initWithString:@"Apakah pesanan dari "];
+    UIFont *boldFont = [UIFont boldSystemFontOfSize:15];
+    NSAttributedString *boldToko = [[NSAttributedString alloc] initWithString:order.order_shop.shop_name attributes:@{NSFontAttributeName: boldFont}];
+    [messageString appendAttributedString:boldToko];
+    [messageString appendAttributedString:[[NSAttributedString alloc] initWithString:@" berkendala?"]];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:@"Komplain"
                                                                              message:@""
                                                                       preferredStyle:UIAlertControllerStyleAlert];
     
-    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Sudah Sampai"
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Batal"
+                                                           style:UIAlertActionStyleDefault
+                                                         handler:nil];
+    UIAlertAction *receivedAction = [UIAlertAction actionWithTitle:@"Ya"
                                                              style:UIAlertActionStyleDefault
                                                            handler:^(UIAlertAction * _Nonnull action) {
                                                                [weakSelf createComplainOrder:order isReceived:YES];
                                                            }];
-    
-    UIAlertAction *notReceivedAction = [UIAlertAction actionWithTitle:@"Belum Sampai"
-                                                                style:UIAlertActionStyleDefault
-                                                              handler:^(UIAlertAction * _Nonnull action) {
-                                                                  [weakSelf createComplainOrder:order isReceived:NO];
-                                                              }];
-    
-    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"Kembali"
-                                                           style:UIAlertActionStyleCancel
-                                                         handler:nil];
-    
-    [alertController addAction:receivedAction];
-    
-    if (isNotReceived) {
-        [alertController addAction:notReceivedAction];
-    }
-    
     [alertController addAction:cancelAction];
+    [alertController addAction:receivedAction];
     [alertController setValue:messageString forKey:@"attributedMessage"];
     
     [self presentViewController:alertController animated:YES completion:nil];

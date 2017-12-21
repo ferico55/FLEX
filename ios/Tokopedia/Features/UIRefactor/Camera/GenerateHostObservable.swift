@@ -38,10 +38,9 @@ class GenerateHostObservable: NSObject {
                     observer.onCompleted()
                     
             }) { (error) in
-                observer.onError(RequestError.networkError as Error)
-                StickyAlertView.showErrorMessage(["Error"])
-            }
-            
+                observer.onError(error)
+                StickyAlertView.showErrorMessage([error.localizedDescription])
+            }            
             return Disposables.create()
         })
     }

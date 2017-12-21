@@ -285,6 +285,14 @@ extension UIView {
         }
     }
     
+    @IBInspectable var shadowOffset: CGSize {
+        get {
+            return layer.shadowOffset
+        } set {
+            layer.shadowOffset = newValue
+        }
+    }
+
     @IBInspectable var borderWidth: CGFloat {
         get {
             return layer.borderWidth

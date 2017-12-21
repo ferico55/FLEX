@@ -27,4 +27,20 @@
                  onSuccess:(void (^)(ImageResult *))success
                  onFailure:(void (^)(NSError *))failure;
 
++ (void)requestUploadImageResolution:(UIImage*)image
+            withUploadHost:(NSString*)host
+                      path:(NSString*)path
+                      name:(NSString*)name
+                  fileName:(NSString*)fileName
+             requestObject:(id)object
+                 onSuccess:(void (^)(ImageResult *))success
+                 onFailure:(void (^)(NSError *))failure;
++ (void)requestUploadVideo:(NSURL*)videoUrl
+            withUploadHost:(NSString*)host
+                      path:(NSString*)path
+                      name:(NSString*)name
+                  fileName:(NSString*)fileName
+             requestObject:(id)object
+                 onSuccess:(void (^)(ImageResult *imageResult))success
+                 onFailure:(void (^)(NSError *errorResult))failure;
 @end

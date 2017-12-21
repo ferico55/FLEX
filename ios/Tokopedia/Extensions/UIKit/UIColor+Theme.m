@@ -77,6 +77,9 @@
     +(UIColor *)tpDarkPurple{
         return [UIColor fromHexString:@"#8f43b8"];
     }
+    +(UIColor *)tpGray2{
+        return [UIColor fromHexString:@"#eeeeee"];
+    }
 
     +(UIColor *)tpRedError{
         return [UIColor fromHexString:@"#d50000"];

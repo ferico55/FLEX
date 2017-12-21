@@ -132,6 +132,7 @@ extension DigitalTarget: TargetType {
             let clientID = tracker?.get(kGAIClientId) ?? ""
             let idfa = ASIdentifierManager.shared().advertisingIdentifier.uuidString
             let appsflyerID = AppsFlyerTracker.shared().appsFlyerDevKey ?? ""
+            debugPrint("appsflyerID " + appsflyerID)
             let bundleID = Bundle.main.bundleIdentifier ?? "com.tokopedia.Tokopedia"
             return [
                 "data": [

@@ -86,4 +86,29 @@ static RKObjectManager *_objectManager;
     return _objectManager;
 }
 
++ (RKObjectManager *)resolutionObjectManagerWithBaseURL:(NSString*)baseURL
+                                            pathPattern:(NSString*)pathPattern {
+    RKObjectManager* objectManager = [RKObjectManager sharedClient:baseURL];
+    
+    RKRequestDescriptor *requestDescriptor = [RKRequestDescriptor requestDescriptorWithMapping:[[RequestObjectUploadImage mapping] inverseMapping]
+                                                                                   objectClass:[RequestObjectUploadImage class]
+                                                                                   rootKeyPath:nil
+                                                                                        method:RKRequestMethodPOST];
+    
+    [objectManager addRequestDescriptor:requestDescriptor];
+    
+    
+    RKResponseDescriptor *responseStatusDescriptor = [RKResponseDescriptor responseDescriptorWithMapping:[ImageResult mapping]
+                                                                                                  method:RKRequestMethodPOST
+                                                                                             pathPattern:pathPattern
+                                                                                                 keyPath:@""
+                                                                                             statusCodes:kTkpdIndexSetStatusCodeOK];
+    
+    [objectManager addResponseDescriptor:responseStatusDescriptor];
+    
+    return objectManager;
+}
+
+
+
 @end

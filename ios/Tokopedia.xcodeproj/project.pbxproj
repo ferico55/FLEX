@@ -24,6 +24,58 @@
 		7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */; };
+		848FA6DE1FEBF8BE00A22EDE /* RCCreateComplaintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */; };
+		848FA6DF1FEBF8BE00A22EDE /* RCCreateComplaintResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */; };
+		848FA6E01FEBF8BE00A22EDE /* ConfirmAlertViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69C1FEBF8BD00A22EDE /* ConfirmAlertViewController.swift */; };
+		848FA6E11FEBF8BE00A22EDE /* CreateComplainTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69D1FEBF8BD00A22EDE /* CreateComplainTableViewController.swift */; };
+		848FA6E21FEBF8BE00A22EDE /* CreateComplainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69E1FEBF8BD00A22EDE /* CreateComplainViewController.swift */; };
+		848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A01FEBF8BD00A22EDE /* RCAmount.swift */; };
+		848FA6E41FEBF8BE00A22EDE /* RCCreateStep1Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A11FEBF8BD00A22EDE /* RCCreateStep1Response.swift */; };
+		848FA6E51FEBF8BE00A22EDE /* RCCreateStep1ResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A21FEBF8BD00A22EDE /* RCCreateStep1ResponseData.swift */; };
+		848FA6E61FEBF8BE00A22EDE /* RCOrder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A31FEBF8BD00A22EDE /* RCOrder.swift */; };
+		848FA6E71FEBF8BF00A22EDE /* RCOrderDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A41FEBF8BD00A22EDE /* RCOrderDetail.swift */; };
+		848FA6E81FEBF8BF00A22EDE /* RCProblem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A51FEBF8BD00A22EDE /* RCProblem.swift */; };
+		848FA6E91FEBF8BF00A22EDE /* RCProblemItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A61FEBF8BD00A22EDE /* RCProblemItem.swift */; };
+		848FA6EA1FEBF8BF00A22EDE /* RCProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A71FEBF8BD00A22EDE /* RCProduct.swift */; };
+		848FA6EB1FEBF8BF00A22EDE /* RCShipping.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A81FEBF8BD00A22EDE /* RCShipping.swift */; };
+		848FA6EC1FEBF8BF00A22EDE /* RCShippingDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6A91FEBF8BD00A22EDE /* RCShippingDetail.swift */; };
+		848FA6ED1FEBF8BF00A22EDE /* RCStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6AA1FEBF8BD00A22EDE /* RCStatus.swift */; };
+		848FA6EE1FEBF8BF00A22EDE /* RCStatusDeliveryInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6AB1FEBF8BD00A22EDE /* RCStatusDeliveryInfo.swift */; };
+		848FA6EF1FEBF8BF00A22EDE /* RCTrouble.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6AC1FEBF8BD00A22EDE /* RCTrouble.swift */; };
+		848FA6F01FEBF8BF00A22EDE /* RCManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6AE1FEBF8BD00A22EDE /* RCManager.swift */; };
+		848FA6F11FEBF8BF00A22EDE /* ResolutionCenterCreate.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 848FA6AF1FEBF8BD00A22EDE /* ResolutionCenterCreate.storyboard */; };
+		848FA6F21FEBF8BF00A22EDE /* ProblematicProductCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6B21FEBF8BD00A22EDE /* ProblematicProductCell.swift */; };
+		848FA6F31FEBF8BF00A22EDE /* ProblemsListHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6B31FEBF8BD00A22EDE /* ProblemsListHeaderView.swift */; };
+		848FA6F41FEBF8BF00A22EDE /* ProblemsListTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6B51FEBF8BD00A22EDE /* ProblemsListTableViewController.swift */; };
+		848FA6F51FEBF8BF00A22EDE /* ProblemsListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6B61FEBF8BD00A22EDE /* ProblemsListViewController.swift */; };
+		848FA6F61FEBF8BF00A22EDE /* GoodCountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6B91FEBF8BD00A22EDE /* GoodCountCell.swift */; };
+		848FA6F71FEBF8BF00A22EDE /* ProblemProductInfoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BA1FEBF8BD00A22EDE /* ProblemProductInfoCell.swift */; };
+		848FA6F81FEBF8BF00A22EDE /* RCButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BB1FEBF8BD00A22EDE /* RCButtonCell.swift */; };
+		848FA6F91FEBF8BF00A22EDE /* RCCountdownTimerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BC1FEBF8BD00A22EDE /* RCCountdownTimerView.swift */; };
+		848FA6FA1FEBF8BF00A22EDE /* RCOrderStatusCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BD1FEBF8BD00A22EDE /* RCOrderStatusCell.swift */; };
+		848FA6FB1FEBF8BF00A22EDE /* RCTextInputCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BE1FEBF8BD00A22EDE /* RCTextInputCell.swift */; };
+		848FA6FC1FEBF8BF00A22EDE /* SelectTroubleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6BF1FEBF8BD00A22EDE /* SelectTroubleCell.swift */; };
+		848FA6FD1FEBF8BF00A22EDE /* ProblemDetailTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C11FEBF8BD00A22EDE /* ProblemDetailTableViewController.swift */; };
+		848FA6FE1FEBF8BF00A22EDE /* ProblemDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C21FEBF8BD00A22EDE /* ProblemDetailViewController.swift */; };
+		848FA6FF1FEBF8BF00A22EDE /* RCReachingInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C31FEBF8BD00A22EDE /* RCReachingInfoViewController.swift */; };
+		848FA7001FEBF8BF00A22EDE /* SelectTroubleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C41FEBF8BD00A22EDE /* SelectTroubleViewController.swift */; };
+		848FA7011FEBF8BF00A22EDE /* RCPhotosCollectionCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C71FEBF8BD00A22EDE /* RCPhotosCollectionCell.swift */; };
+		848FA7021FEBF8BF00A22EDE /* RCProblemTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6C81FEBF8BD00A22EDE /* RCProblemTextCell.swift */; };
+		848FA7031FEBF8BF00A22EDE /* RCProofPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6CA1FEBF8BD00A22EDE /* RCProofPhotosViewController.swift */; };
+		848FA7041FEBF8BF00A22EDE /* RCProofTableController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6CB1FEBF8BD00A22EDE /* RCProofTableController.swift */; };
+		848FA7051FEBF8BF00A22EDE /* RCProofViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6CC1FEBF8BD00A22EDE /* RCProofViewController.swift */; };
+		848FA7061FEBF8BF00A22EDE /* RCCreateSolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6CF1FEBF8BD00A22EDE /* RCCreateSolution.swift */; };
+		848FA7071FEBF8BF00A22EDE /* RCCreateSolutionData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D01FEBF8BD00A22EDE /* RCCreateSolutionData.swift */; };
+		848FA7081FEBF8BF00A22EDE /* RCCreateSolutionResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D11FEBF8BD00A22EDE /* RCCreateSolutionResponse.swift */; };
+		848FA7091FEBF8BF00A22EDE /* RCFreeReturn.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D21FEBF8BD00A22EDE /* RCFreeReturn.swift */; };
+		848FA70A1FEBF8BF00A22EDE /* RCSolutionRequire.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D31FEBF8BD00A22EDE /* RCSolutionRequire.swift */; };
+		848FA70B1FEBF8BF00A22EDE /* SolutionFreeReturnCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D51FEBF8BD00A22EDE /* SolutionFreeReturnCell.swift */; };
+		848FA70C1FEBF8BF00A22EDE /* SolutionTextCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D61FEBF8BD00A22EDE /* SolutionTextCell.swift */; };
+		848FA70D1FEBF8BF00A22EDE /* ReturnAmountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D81FEBF8BD00A22EDE /* ReturnAmountViewController.swift */; };
+		848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D91FEBF8BD00A22EDE /* SolutionListViewController.swift */; };
+		848FA70F1FEBF8BF00A22EDE /* RCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6DB1FEBF8BD00A22EDE /* RCService.swift */; };
+		848FA7101FEBF8BF00A22EDE /* RCServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -1331,35 +1383,21 @@
 		F977FDBE1FE8AB8000183A85 /* TPRoutes.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F46A1FE8AB7300183A85 /* TPRoutes.swift */; };
 		F977FDBF1FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F46C1FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.m */; };
 		F977FDC01FE8AB8000183A85 /* ResolutionCenterCreatePOSTData.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F46D1FE8AB7300183A85 /* ResolutionCenterCreatePOSTData.m */; };
-		F977FDC11FE8AB8000183A85 /* ResolutionCenterCreateStepOneViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F46F1FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.m */; };
-		F977FDC21FE8AB8000183A85 /* ResolutionCenterCreateStepOneCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4701FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.xib */; };
-		F977FDC31FE8AB8000183A85 /* ResolutionCenterCreateStepThreeViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4711FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.xib */; };
 		F977FDC41FE8AB8000183A85 /* ResolutionCenterCreateSolutionList.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4741FE8AB7300183A85 /* ResolutionCenterCreateSolutionList.m */; };
-		F977FDC51FE8AB8000183A85 /* ResolutionCenterCreateStepTwoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4761FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.m */; };
 		F977FDC61FE8AB8000183A85 /* ResolutionCenterCreatePOSTResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4771FE8AB7300183A85 /* ResolutionCenterCreatePOSTResponse.m */; };
 		F977FDC71FE8AB8000183A85 /* ResolutionCenterCreateList.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F47D1FE8AB7300183A85 /* ResolutionCenterCreateList.m */; };
-		F977FDC81FE8AB8000183A85 /* ResolutionCenterCreateStepTwoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F47E1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.m */; };
 		F977FDC91FE8AB8000183A85 /* ResolutionCenterCreatePOSTProduct.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F47F1FE8AB7300183A85 /* ResolutionCenterCreatePOSTProduct.m */; };
-		F977FDCA1FE8AB8000183A85 /* ResolutionCenterCreateViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4801FE8AB7300183A85 /* ResolutionCenterCreateViewController.xib */; };
 		F977FDCB1FE8AB8000183A85 /* ResolutionCenterCreateTroubleList.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4811FE8AB7300183A85 /* ResolutionCenterCreateTroubleList.m */; };
 		F977FDCC1FE8AB8000183A85 /* ResolutionCenterChooseProblemViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4821FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.xib */; };
-		F977FDCD1FE8AB8000183A85 /* ResolutionCenterCreateStepThreeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4841FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.m */; };
 		F977FDCE1FE8AB8000183A85 /* ResolutionCenterSellerEditProductCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4851FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.m */; };
-		F977FDCF1FE8AB8000183A85 /* ResolutionCenterCreateStepTwoViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4861FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.xib */; };
 		F977FDD01FE8AB8000183A85 /* ResolutionCenterCreateData.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4871FE8AB7300183A85 /* ResolutionCenterCreateData.m */; };
 		F977FDD11FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4881FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.xib */; };
-		F977FDD21FE8AB8000183A85 /* ResolutionCenterCreateStepOneViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4891FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.xib */; };
 		F977FDD31FE8AB8000183A85 /* ResolutionCenterCreateResult.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F48C1FE8AB7300183A85 /* ResolutionCenterCreateResult.m */; };
-		F977FDD41FE8AB8000183A85 /* ResolutionCenterChooseSolutionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F48D1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.xib */; };
-		F977FDD51FE8AB8000183A85 /* ResolutionCenterChooseSolutionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F48F1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.m */; };
 		F977FDD61FE8AB8000183A85 /* ResolutionProductData.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4901FE8AB7300183A85 /* ResolutionProductData.m */; };
 		F977FDD71FE8AB8000183A85 /* ResolutionProductResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4911FE8AB7300183A85 /* ResolutionProductResponse.m */; };
 		F977FDD81FE8AB8000183A85 /* ResolutionCenterCreateResponse.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4941FE8AB7300183A85 /* ResolutionCenterCreateResponse.m */; };
 		F977FDD91FE8AB8000183A85 /* ResolutionCenterChooseProblemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4961FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.m */; };
-		F977FDDA1FE8AB8000183A85 /* ResolutionCenterCreateViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F49B1FE8AB7300183A85 /* ResolutionCenterCreateViewController.m */; };
 		F977FDDB1FE8AB8000183A85 /* ResolutionCenterCreatePOSTRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F49C1FE8AB7300183A85 /* ResolutionCenterCreatePOSTRequest.m */; };
-		F977FDDC1FE8AB8000183A85 /* ResolutionCenterCreateStepTwoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F49D1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.xib */; };
-		F977FDDD1FE8AB8000183A85 /* ResolutionCenterCreateStepOneCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A01FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.m */; };
 		F977FDDE1FE8AB8000183A85 /* ResolutionCenterSellerEditProductCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4A11FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.xib */; };
 		F977FDDF1FE8AB8000183A85 /* ShopNotesPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */; };
 		F977FDE01FE8AB8000183A85 /* ShopProductPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */; };
@@ -1986,6 +2024,58 @@
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
+		848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainCell.swift; sourceTree = "<group>"; };
+		848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponse.swift; sourceTree = "<group>"; };
+		848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponseData.swift; sourceTree = "<group>"; };
+		848FA69C1FEBF8BD00A22EDE /* ConfirmAlertViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmAlertViewController.swift; sourceTree = "<group>"; };
+		848FA69D1FEBF8BD00A22EDE /* CreateComplainTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainTableViewController.swift; sourceTree = "<group>"; };
+		848FA69E1FEBF8BD00A22EDE /* CreateComplainViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainViewController.swift; sourceTree = "<group>"; };
+		848FA6A01FEBF8BD00A22EDE /* RCAmount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCAmount.swift; sourceTree = "<group>"; };
+		848FA6A11FEBF8BD00A22EDE /* RCCreateStep1Response.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateStep1Response.swift; sourceTree = "<group>"; };
+		848FA6A21FEBF8BD00A22EDE /* RCCreateStep1ResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateStep1ResponseData.swift; sourceTree = "<group>"; };
+		848FA6A31FEBF8BD00A22EDE /* RCOrder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCOrder.swift; sourceTree = "<group>"; };
+		848FA6A41FEBF8BD00A22EDE /* RCOrderDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCOrderDetail.swift; sourceTree = "<group>"; };
+		848FA6A51FEBF8BD00A22EDE /* RCProblem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProblem.swift; sourceTree = "<group>"; };
+		848FA6A61FEBF8BD00A22EDE /* RCProblemItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProblemItem.swift; sourceTree = "<group>"; };
+		848FA6A71FEBF8BD00A22EDE /* RCProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProduct.swift; sourceTree = "<group>"; };
+		848FA6A81FEBF8BD00A22EDE /* RCShipping.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCShipping.swift; sourceTree = "<group>"; };
+		848FA6A91FEBF8BD00A22EDE /* RCShippingDetail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCShippingDetail.swift; sourceTree = "<group>"; };
+		848FA6AA1FEBF8BD00A22EDE /* RCStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCStatus.swift; sourceTree = "<group>"; };
+		848FA6AB1FEBF8BD00A22EDE /* RCStatusDeliveryInfo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCStatusDeliveryInfo.swift; sourceTree = "<group>"; };
+		848FA6AC1FEBF8BD00A22EDE /* RCTrouble.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTrouble.swift; sourceTree = "<group>"; };
+		848FA6AE1FEBF8BD00A22EDE /* RCManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCManager.swift; sourceTree = "<group>"; };
+		848FA6AF1FEBF8BD00A22EDE /* ResolutionCenterCreate.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ResolutionCenterCreate.storyboard; sourceTree = "<group>"; };
+		848FA6B21FEBF8BD00A22EDE /* ProblematicProductCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblematicProductCell.swift; sourceTree = "<group>"; };
+		848FA6B31FEBF8BD00A22EDE /* ProblemsListHeaderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemsListHeaderView.swift; sourceTree = "<group>"; };
+		848FA6B51FEBF8BD00A22EDE /* ProblemsListTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemsListTableViewController.swift; sourceTree = "<group>"; };
+		848FA6B61FEBF8BD00A22EDE /* ProblemsListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemsListViewController.swift; sourceTree = "<group>"; };
+		848FA6B91FEBF8BD00A22EDE /* GoodCountCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GoodCountCell.swift; sourceTree = "<group>"; };
+		848FA6BA1FEBF8BD00A22EDE /* ProblemProductInfoCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemProductInfoCell.swift; sourceTree = "<group>"; };
+		848FA6BB1FEBF8BD00A22EDE /* RCButtonCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCButtonCell.swift; sourceTree = "<group>"; };
+		848FA6BC1FEBF8BD00A22EDE /* RCCountdownTimerView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCountdownTimerView.swift; sourceTree = "<group>"; };
+		848FA6BD1FEBF8BD00A22EDE /* RCOrderStatusCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCOrderStatusCell.swift; sourceTree = "<group>"; };
+		848FA6BE1FEBF8BD00A22EDE /* RCTextInputCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTextInputCell.swift; sourceTree = "<group>"; };
+		848FA6BF1FEBF8BD00A22EDE /* SelectTroubleCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTroubleCell.swift; sourceTree = "<group>"; };
+		848FA6C11FEBF8BD00A22EDE /* ProblemDetailTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemDetailTableViewController.swift; sourceTree = "<group>"; };
+		848FA6C21FEBF8BD00A22EDE /* ProblemDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProblemDetailViewController.swift; sourceTree = "<group>"; };
+		848FA6C31FEBF8BD00A22EDE /* RCReachingInfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCReachingInfoViewController.swift; sourceTree = "<group>"; };
+		848FA6C41FEBF8BD00A22EDE /* SelectTroubleViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SelectTroubleViewController.swift; sourceTree = "<group>"; };
+		848FA6C71FEBF8BD00A22EDE /* RCPhotosCollectionCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCPhotosCollectionCell.swift; sourceTree = "<group>"; };
+		848FA6C81FEBF8BD00A22EDE /* RCProblemTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProblemTextCell.swift; sourceTree = "<group>"; };
+		848FA6CA1FEBF8BD00A22EDE /* RCProofPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProofPhotosViewController.swift; sourceTree = "<group>"; };
+		848FA6CB1FEBF8BD00A22EDE /* RCProofTableController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProofTableController.swift; sourceTree = "<group>"; };
+		848FA6CC1FEBF8BD00A22EDE /* RCProofViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCProofViewController.swift; sourceTree = "<group>"; };
+		848FA6CF1FEBF8BD00A22EDE /* RCCreateSolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateSolution.swift; sourceTree = "<group>"; };
+		848FA6D01FEBF8BD00A22EDE /* RCCreateSolutionData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateSolutionData.swift; sourceTree = "<group>"; };
+		848FA6D11FEBF8BD00A22EDE /* RCCreateSolutionResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateSolutionResponse.swift; sourceTree = "<group>"; };
+		848FA6D21FEBF8BD00A22EDE /* RCFreeReturn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCFreeReturn.swift; sourceTree = "<group>"; };
+		848FA6D31FEBF8BD00A22EDE /* RCSolutionRequire.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCSolutionRequire.swift; sourceTree = "<group>"; };
+		848FA6D51FEBF8BD00A22EDE /* SolutionFreeReturnCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolutionFreeReturnCell.swift; sourceTree = "<group>"; };
+		848FA6D61FEBF8BD00A22EDE /* SolutionTextCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolutionTextCell.swift; sourceTree = "<group>"; };
+		848FA6D81FEBF8BD00A22EDE /* ReturnAmountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReturnAmountViewController.swift; sourceTree = "<group>"; };
+		848FA6D91FEBF8BD00A22EDE /* SolutionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolutionListViewController.swift; sourceTree = "<group>"; };
+		848FA6DB1FEBF8BD00A22EDE /* RCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCService.swift; sourceTree = "<group>"; };
+		848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCServiceProvider.swift; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -3530,56 +3620,35 @@
 		F977F46C1FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditViewController.m; sourceTree = "<group>"; };
 		F977F46D1FE8AB7300183A85 /* ResolutionCenterCreatePOSTData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTData.m; sourceTree = "<group>"; };
 		F977F46E1FE8AB7300183A85 /* ResolutionCenterCreateResult.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateResult.h; sourceTree = "<group>"; };
-		F977F46F1FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepOneViewController.m; sourceTree = "<group>"; };
-		F977F4701FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepOneCell.xib; sourceTree = "<group>"; };
-		F977F4711FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepThreeViewController.xib; sourceTree = "<group>"; };
 		F977F4721FE8AB7300183A85 /* ResolutionCenterCreateData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateData.h; sourceTree = "<group>"; };
 		F977F4731FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterChooseProblemViewController.h; sourceTree = "<group>"; };
 		F977F4741FE8AB7300183A85 /* ResolutionCenterCreateSolutionList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateSolutionList.m; sourceTree = "<group>"; };
 		F977F4751FE8AB7300183A85 /* ResolutionCenterCreateResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateResponse.h; sourceTree = "<group>"; };
-		F977F4761FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepTwoCell.m; sourceTree = "<group>"; };
 		F977F4771FE8AB7300183A85 /* ResolutionCenterCreatePOSTResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTResponse.m; sourceTree = "<group>"; };
 		F977F4781FE8AB7300183A85 /* ResolutionProductResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductResponse.h; sourceTree = "<group>"; };
 		F977F4791FE8AB7300183A85 /* ResolutionProductData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionProductData.h; sourceTree = "<group>"; };
-		F977F47A1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterChooseSolutionViewController.h; sourceTree = "<group>"; };
 		F977F47B1FE8AB7300183A85 /* ResolutionCenterCreatePOSTRequest.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTRequest.h; sourceTree = "<group>"; };
-		F977F47C1FE8AB7300183A85 /* ResolutionCenterCreateViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateViewController.h; sourceTree = "<group>"; };
 		F977F47D1FE8AB7300183A85 /* ResolutionCenterCreateList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateList.m; sourceTree = "<group>"; };
-		F977F47E1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepTwoViewController.m; sourceTree = "<group>"; };
 		F977F47F1FE8AB7300183A85 /* ResolutionCenterCreatePOSTProduct.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTProduct.m; sourceTree = "<group>"; };
-		F977F4801FE8AB7300183A85 /* ResolutionCenterCreateViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateViewController.xib; sourceTree = "<group>"; };
 		F977F4811FE8AB7300183A85 /* ResolutionCenterCreateTroubleList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateTroubleList.m; sourceTree = "<group>"; };
 		F977F4821FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterChooseProblemViewController.xib; sourceTree = "<group>"; };
-		F977F4831FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepOneCell.h; sourceTree = "<group>"; };
-		F977F4841FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepThreeViewController.m; sourceTree = "<group>"; };
 		F977F4851FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterSellerEditProductCell.m; sourceTree = "<group>"; };
-		F977F4861FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepTwoViewController.xib; sourceTree = "<group>"; };
 		F977F4871FE8AB7300183A85 /* ResolutionCenterCreateData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateData.m; sourceTree = "<group>"; };
 		F977F4881FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditViewController.xib; sourceTree = "<group>"; };
-		F977F4891FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepOneViewController.xib; sourceTree = "<group>"; };
-		F977F48A1FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepOneViewController.h; sourceTree = "<group>"; };
 		F977F48B1FE8AB7300183A85 /* ResolutionCenterCreatePOSTData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTData.h; sourceTree = "<group>"; };
 		F977F48C1FE8AB7300183A85 /* ResolutionCenterCreateResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateResult.m; sourceTree = "<group>"; };
-		F977F48D1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterChooseSolutionViewController.xib; sourceTree = "<group>"; };
 		F977F48E1FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditViewController.h; sourceTree = "<group>"; };
-		F977F48F1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterChooseSolutionViewController.m; sourceTree = "<group>"; };
 		F977F4901FE8AB7300183A85 /* ResolutionProductData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductData.m; sourceTree = "<group>"; };
 		F977F4911FE8AB7300183A85 /* ResolutionProductResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionProductResponse.m; sourceTree = "<group>"; };
 		F977F4921FE8AB7300183A85 /* ResolutionCenterCreatePOSTResponse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTResponse.h; sourceTree = "<group>"; };
-		F977F4931FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepTwoCell.h; sourceTree = "<group>"; };
 		F977F4941FE8AB7300183A85 /* ResolutionCenterCreateResponse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateResponse.m; sourceTree = "<group>"; };
 		F977F4951FE8AB7300183A85 /* ResolutionCenterCreateSolutionList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateSolutionList.h; sourceTree = "<group>"; };
 		F977F4961FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterChooseProblemViewController.m; sourceTree = "<group>"; };
 		F977F4971FE8AB7300183A85 /* ResolutionCenterCreateTroubleList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateTroubleList.h; sourceTree = "<group>"; };
 		F977F4981FE8AB7300183A85 /* ResolutionCenterCreatePOSTProduct.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreatePOSTProduct.h; sourceTree = "<group>"; };
-		F977F4991FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepTwoViewController.h; sourceTree = "<group>"; };
 		F977F49A1FE8AB7300183A85 /* ResolutionCenterCreateList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateList.h; sourceTree = "<group>"; };
-		F977F49B1FE8AB7300183A85 /* ResolutionCenterCreateViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateViewController.m; sourceTree = "<group>"; };
 		F977F49C1FE8AB7300183A85 /* ResolutionCenterCreatePOSTRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreatePOSTRequest.m; sourceTree = "<group>"; };
-		F977F49D1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterCreateStepTwoCell.xib; sourceTree = "<group>"; };
 		F977F49E1FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterSellerEditProductCell.h; sourceTree = "<group>"; };
-		F977F49F1FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResolutionCenterCreateStepThreeViewController.h; sourceTree = "<group>"; };
-		F977F4A01FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResolutionCenterCreateStepOneCell.m; sourceTree = "<group>"; };
 		F977F4A11FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ResolutionCenterSellerEditProductCell.xib; sourceTree = "<group>"; };
 		F977F4A21FE8AB7300183A85 /* MiniSlide.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniSlide.h; sourceTree = "<group>"; };
 		F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesPageViewController.m; sourceTree = "<group>"; };
@@ -4926,6 +4995,225 @@
 				7A466B751EB2FEAE00A72105 /* AppDelegate.h */,
 			);
 			path = Tokopedia;
+			sourceTree = "<group>";
+		};
+		848FA6941FEBF8BD00A22EDE /* Revamp */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6951FEBF8BD00A22EDE /* CreateComplain */,
+				848FA69F1FEBF8BD00A22EDE /* Models */,
+				848FA6AD1FEBF8BD00A22EDE /* Others */,
+				848FA6B01FEBF8BD00A22EDE /* ProblematicProducts */,
+				848FA6B71FEBF8BD00A22EDE /* ProblemDetail */,
+				848FA6C51FEBF8BD00A22EDE /* ProofSubmission */,
+				848FA6CD1FEBF8BD00A22EDE /* Solution */,
+				848FA6DA1FEBF8BD00A22EDE /* WebService */,
+			);
+			path = Revamp;
+			sourceTree = "<group>";
+		};
+		848FA6951FEBF8BD00A22EDE /* CreateComplain */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6961FEBF8BD00A22EDE /* Cell */,
+				848FA6981FEBF8BD00A22EDE /* Model */,
+				848FA69B1FEBF8BD00A22EDE /* ViewController */,
+			);
+			path = CreateComplain;
+			sourceTree = "<group>";
+		};
+		848FA6961FEBF8BD00A22EDE /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		848FA6981FEBF8BD00A22EDE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */,
+				848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		848FA69B1FEBF8BD00A22EDE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				848FA69C1FEBF8BD00A22EDE /* ConfirmAlertViewController.swift */,
+				848FA69D1FEBF8BD00A22EDE /* CreateComplainTableViewController.swift */,
+				848FA69E1FEBF8BD00A22EDE /* CreateComplainViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		848FA69F1FEBF8BD00A22EDE /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6A01FEBF8BD00A22EDE /* RCAmount.swift */,
+				848FA6A11FEBF8BD00A22EDE /* RCCreateStep1Response.swift */,
+				848FA6A21FEBF8BD00A22EDE /* RCCreateStep1ResponseData.swift */,
+				848FA6A31FEBF8BD00A22EDE /* RCOrder.swift */,
+				848FA6A41FEBF8BD00A22EDE /* RCOrderDetail.swift */,
+				848FA6A51FEBF8BD00A22EDE /* RCProblem.swift */,
+				848FA6A61FEBF8BD00A22EDE /* RCProblemItem.swift */,
+				848FA6A71FEBF8BD00A22EDE /* RCProduct.swift */,
+				848FA6A81FEBF8BD00A22EDE /* RCShipping.swift */,
+				848FA6A91FEBF8BD00A22EDE /* RCShippingDetail.swift */,
+				848FA6AA1FEBF8BD00A22EDE /* RCStatus.swift */,
+				848FA6AB1FEBF8BD00A22EDE /* RCStatusDeliveryInfo.swift */,
+				848FA6AC1FEBF8BD00A22EDE /* RCTrouble.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		848FA6AD1FEBF8BD00A22EDE /* Others */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6AE1FEBF8BD00A22EDE /* RCManager.swift */,
+				848FA6AF1FEBF8BD00A22EDE /* ResolutionCenterCreate.storyboard */,
+			);
+			path = Others;
+			sourceTree = "<group>";
+		};
+		848FA6B01FEBF8BD00A22EDE /* ProblematicProducts */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6B11FEBF8BD00A22EDE /* Cells */,
+				848FA6B41FEBF8BD00A22EDE /* ViewController */,
+			);
+			path = ProblematicProducts;
+			sourceTree = "<group>";
+		};
+		848FA6B11FEBF8BD00A22EDE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6B21FEBF8BD00A22EDE /* ProblematicProductCell.swift */,
+				848FA6B31FEBF8BD00A22EDE /* ProblemsListHeaderView.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		848FA6B41FEBF8BD00A22EDE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6B51FEBF8BD00A22EDE /* ProblemsListTableViewController.swift */,
+				848FA6B61FEBF8BD00A22EDE /* ProblemsListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		848FA6B71FEBF8BD00A22EDE /* ProblemDetail */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6B81FEBF8BD00A22EDE /* Cells */,
+				848FA6C01FEBF8BD00A22EDE /* ViewController */,
+			);
+			path = ProblemDetail;
+			sourceTree = "<group>";
+		};
+		848FA6B81FEBF8BD00A22EDE /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6B91FEBF8BD00A22EDE /* GoodCountCell.swift */,
+				848FA6BA1FEBF8BD00A22EDE /* ProblemProductInfoCell.swift */,
+				848FA6BB1FEBF8BD00A22EDE /* RCButtonCell.swift */,
+				848FA6BC1FEBF8BD00A22EDE /* RCCountdownTimerView.swift */,
+				848FA6BD1FEBF8BD00A22EDE /* RCOrderStatusCell.swift */,
+				848FA6BE1FEBF8BD00A22EDE /* RCTextInputCell.swift */,
+				848FA6BF1FEBF8BD00A22EDE /* SelectTroubleCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		848FA6C01FEBF8BD00A22EDE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6C11FEBF8BD00A22EDE /* ProblemDetailTableViewController.swift */,
+				848FA6C21FEBF8BD00A22EDE /* ProblemDetailViewController.swift */,
+				848FA6C31FEBF8BD00A22EDE /* RCReachingInfoViewController.swift */,
+				848FA6C41FEBF8BD00A22EDE /* SelectTroubleViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		848FA6C51FEBF8BD00A22EDE /* ProofSubmission */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6C61FEBF8BD00A22EDE /* ViewCells */,
+				848FA6C91FEBF8BD00A22EDE /* ViewController */,
+			);
+			path = ProofSubmission;
+			sourceTree = "<group>";
+		};
+		848FA6C61FEBF8BD00A22EDE /* ViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6C71FEBF8BD00A22EDE /* RCPhotosCollectionCell.swift */,
+				848FA6C81FEBF8BD00A22EDE /* RCProblemTextCell.swift */,
+			);
+			path = ViewCells;
+			sourceTree = "<group>";
+		};
+		848FA6C91FEBF8BD00A22EDE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6CA1FEBF8BD00A22EDE /* RCProofPhotosViewController.swift */,
+				848FA6CB1FEBF8BD00A22EDE /* RCProofTableController.swift */,
+				848FA6CC1FEBF8BD00A22EDE /* RCProofViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		848FA6CD1FEBF8BD00A22EDE /* Solution */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6CE1FEBF8BD00A22EDE /* Model */,
+				848FA6D41FEBF8BD00A22EDE /* TableViewCells */,
+				848FA6D71FEBF8BD00A22EDE /* ViewController */,
+			);
+			path = Solution;
+			sourceTree = "<group>";
+		};
+		848FA6CE1FEBF8BD00A22EDE /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6CF1FEBF8BD00A22EDE /* RCCreateSolution.swift */,
+				848FA6D01FEBF8BD00A22EDE /* RCCreateSolutionData.swift */,
+				848FA6D11FEBF8BD00A22EDE /* RCCreateSolutionResponse.swift */,
+				848FA6D21FEBF8BD00A22EDE /* RCFreeReturn.swift */,
+				848FA6D31FEBF8BD00A22EDE /* RCSolutionRequire.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		848FA6D41FEBF8BD00A22EDE /* TableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6D51FEBF8BD00A22EDE /* SolutionFreeReturnCell.swift */,
+				848FA6D61FEBF8BD00A22EDE /* SolutionTextCell.swift */,
+			);
+			path = TableViewCells;
+			sourceTree = "<group>";
+		};
+		848FA6D71FEBF8BD00A22EDE /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6D81FEBF8BD00A22EDE /* ReturnAmountViewController.swift */,
+				848FA6D91FEBF8BD00A22EDE /* SolutionListViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		848FA6DA1FEBF8BD00A22EDE /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				848FA6DB1FEBF8BD00A22EDE /* RCService.swift */,
+				848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */,
+			);
+			path = WebService;
 			sourceTree = "<group>";
 		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
@@ -8065,59 +8353,39 @@
 		F977F46B1FE8AB7300183A85 /* ResolutionCenter */ = {
 			isa = PBXGroup;
 			children = (
+				848FA6941FEBF8BD00A22EDE /* Revamp */,
 				F977F46C1FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.m */,
 				F977F46D1FE8AB7300183A85 /* ResolutionCenterCreatePOSTData.m */,
 				F977F46E1FE8AB7300183A85 /* ResolutionCenterCreateResult.h */,
-				F977F46F1FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.m */,
-				F977F4701FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.xib */,
-				F977F4711FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.xib */,
 				F977F4721FE8AB7300183A85 /* ResolutionCenterCreateData.h */,
 				F977F4731FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.h */,
 				F977F4741FE8AB7300183A85 /* ResolutionCenterCreateSolutionList.m */,
 				F977F4751FE8AB7300183A85 /* ResolutionCenterCreateResponse.h */,
-				F977F4761FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.m */,
 				F977F4771FE8AB7300183A85 /* ResolutionCenterCreatePOSTResponse.m */,
 				F977F4781FE8AB7300183A85 /* ResolutionProductResponse.h */,
 				F977F4791FE8AB7300183A85 /* ResolutionProductData.h */,
-				F977F47A1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.h */,
 				F977F47B1FE8AB7300183A85 /* ResolutionCenterCreatePOSTRequest.h */,
-				F977F47C1FE8AB7300183A85 /* ResolutionCenterCreateViewController.h */,
 				F977F47D1FE8AB7300183A85 /* ResolutionCenterCreateList.m */,
-				F977F47E1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.m */,
 				F977F47F1FE8AB7300183A85 /* ResolutionCenterCreatePOSTProduct.m */,
-				F977F4801FE8AB7300183A85 /* ResolutionCenterCreateViewController.xib */,
 				F977F4811FE8AB7300183A85 /* ResolutionCenterCreateTroubleList.m */,
 				F977F4821FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.xib */,
-				F977F4831FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.h */,
-				F977F4841FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.m */,
 				F977F4851FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.m */,
-				F977F4861FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.xib */,
 				F977F4871FE8AB7300183A85 /* ResolutionCenterCreateData.m */,
 				F977F4881FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.xib */,
-				F977F4891FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.xib */,
-				F977F48A1FE8AB7300183A85 /* ResolutionCenterCreateStepOneViewController.h */,
 				F977F48B1FE8AB7300183A85 /* ResolutionCenterCreatePOSTData.h */,
 				F977F48C1FE8AB7300183A85 /* ResolutionCenterCreateResult.m */,
-				F977F48D1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.xib */,
 				F977F48E1FE8AB7300183A85 /* ResolutionCenterSellerEditViewController.h */,
-				F977F48F1FE8AB7300183A85 /* ResolutionCenterChooseSolutionViewController.m */,
 				F977F4901FE8AB7300183A85 /* ResolutionProductData.m */,
 				F977F4911FE8AB7300183A85 /* ResolutionProductResponse.m */,
 				F977F4921FE8AB7300183A85 /* ResolutionCenterCreatePOSTResponse.h */,
-				F977F4931FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.h */,
 				F977F4941FE8AB7300183A85 /* ResolutionCenterCreateResponse.m */,
 				F977F4951FE8AB7300183A85 /* ResolutionCenterCreateSolutionList.h */,
 				F977F4961FE8AB7300183A85 /* ResolutionCenterChooseProblemViewController.m */,
 				F977F4971FE8AB7300183A85 /* ResolutionCenterCreateTroubleList.h */,
 				F977F4981FE8AB7300183A85 /* ResolutionCenterCreatePOSTProduct.h */,
-				F977F4991FE8AB7300183A85 /* ResolutionCenterCreateStepTwoViewController.h */,
 				F977F49A1FE8AB7300183A85 /* ResolutionCenterCreateList.h */,
-				F977F49B1FE8AB7300183A85 /* ResolutionCenterCreateViewController.m */,
 				F977F49C1FE8AB7300183A85 /* ResolutionCenterCreatePOSTRequest.m */,
-				F977F49D1FE8AB7300183A85 /* ResolutionCenterCreateStepTwoCell.xib */,
 				F977F49E1FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.h */,
-				F977F49F1FE8AB7300183A85 /* ResolutionCenterCreateStepThreeViewController.h */,
-				F977F4A01FE8AB7300183A85 /* ResolutionCenterCreateStepOneCell.m */,
 				F977F4A11FE8AB7300183A85 /* ResolutionCenterSellerEditProductCell.xib */,
 			);
 			path = ResolutionCenter;
@@ -10947,7 +11215,6 @@
 				F977FDE61FE8AB8000183A85 /* ShopNotesPageViewController.xib in Resources */,
 				7A466BC11EB2FEAE00A72105 /* LaunchScreen.xib in Resources */,
 				F977FBDF1FE8AB7C00183A85 /* RejectReasonProductDescriptionViewController.xib in Resources */,
-				F977FDC21FE8AB8000183A85 /* ResolutionCenterCreateStepOneCell.xib in Resources */,
 				F977FCAE1FE8AB7E00183A85 /* InfoAddressView.xib in Resources */,
 				F977FB1D1FE8AB7B00183A85 /* InboxTicketCell.xib in Resources */,
 				F977FD621FE8AB7F00183A85 /* ProfileCompletionProgressViewController.xib in Resources */,
@@ -10962,13 +11229,12 @@
 				F977FC3F1FE8AB7D00183A85 /* AlertInfoView.xib in Resources */,
 				F977FE311FE8AB8100183A85 /* AccountActivationViewController.xib in Resources */,
 				F977FAE21FE8AB7A00183A85 /* HomeSliderView.xib in Resources */,
-				F977FDCA1FE8AB8000183A85 /* ResolutionCenterCreateViewController.xib in Resources */,
 				F977FCB21FE8AB7E00183A85 /* TKPPlacePickerViewController.xib in Resources */,
-				F977FDCF1FE8AB8000183A85 /* ResolutionCenterCreateStepTwoViewController.xib in Resources */,
 				F977FAC21FE8AB7A00183A85 /* SettingBankAccountViewController.xib in Resources */,
 				F954C4461FC55B6C008C0B30 /* icon_home_active@3x.png in Resources */,
 				E57974D41FEA741F00610655 /* InputPromoViewController.xib in Resources */,
 				F977FC2A1FE8AB7D00183A85 /* AlertVerifyOTP.xib in Resources */,
+				848FA6F11FEBF8BF00A22EDE /* ResolutionCenterCreate.storyboard in Resources */,
 				F977FC6D1FE8AB7D00183A85 /* CatalogSectionHeaderView.xib in Resources */,
 				F954C4421FC55B6C008C0B30 /* loading-icon.gif in Resources */,
 				F977FD061FE8AB7E00183A85 /* ProductListMyShopViewController.xib in Resources */,
@@ -11088,7 +11354,6 @@
 				F977FD5B1FE8AB7F00183A85 /* ProgressBarView.xib in Resources */,
 				F977FA981FE8AB7A00183A85 /* TransactionCartWebViewViewController.xib in Resources */,
 				F977FD2B1FE8AB7F00183A85 /* SearchAutoCompleteCategoryCell.xib in Resources */,
-				F977FDDC1FE8AB8000183A85 /* ResolutionCenterCreateStepTwoCell.xib in Resources */,
 				F977FAF91FE8AB7A00183A85 /* FavoritedShopCell.xib in Resources */,
 				F977FAAE1FE8AB7A00183A85 /* SettingPasswordViewController.xib in Resources */,
 				F977FA991FE8AB7A00183A85 /* TransactionCartViewController.xib in Resources */,
@@ -11116,7 +11381,6 @@
 				F977FBA01FE8AB7C00183A85 /* ChangeReceiptNumberViewController.xib in Resources */,
 				F977FC031FE8AB7C00183A85 /* ResizeableImageCell.xib in Resources */,
 				F977FBF01FE8AB7C00183A85 /* ProductQuantityCell.xib in Resources */,
-				F977FDD41FE8AB8000183A85 /* ResolutionCenterChooseSolutionViewController.xib in Resources */,
 				F977FC441FE8AB7D00183A85 /* AlertListFilterView.xib in Resources */,
 				F977FE231FE8AB8100183A85 /* ProductTalkFormViewController.xib in Resources */,
 				F954C4471FC55B6C008C0B30 /* icon_more_active.png in Resources */,
@@ -11132,8 +11396,6 @@
 				F977FAA01FE8AB7A00183A85 /* TransactionCartHeaderView.xib in Resources */,
 				F977FCAA1FE8AB7E00183A85 /* ShopStatView.xib in Resources */,
 				F977FD2F1FE8AB7F00183A85 /* SearchAutoCompleteViewController.xib in Resources */,
-				F977FDD21FE8AB8000183A85 /* ResolutionCenterCreateStepOneViewController.xib in Resources */,
-				F977FDC31FE8AB8000183A85 /* ResolutionCenterCreateStepThreeViewController.xib in Resources */,
 				F977FDB31FE8AB8000183A85 /* FilterLocationViewCell.xib in Resources */,
 				F977FD1D1FE8AB7F00183A85 /* PivotNavigationView.xib in Resources */,
 				F977FBBD1FE8AB7C00183A85 /* OrderDetailViewController.xib in Resources */,
@@ -11645,6 +11907,7 @@
 				F977FF461FE8AB8300183A85 /* CatalogInfo.m in Sources */,
 				F977FF911FE8AB8400183A85 /* CarouselDataSource.m in Sources */,
 				F977FFE71FE8AB8400183A85 /* UploadImageImage.m in Sources */,
+				848FA7051FEBF8BF00A22EDE /* RCProofViewController.swift in Sources */,
 				F977FA8F1FE8AB7A00183A85 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				F977FF9D1FE8AB8400183A85 /* ReplacementData.swift in Sources */,
 				F977FD6F1FE8AB7F00183A85 /* ProfileFavoriteShopViewController.m in Sources */,
@@ -11725,6 +11988,7 @@
 				F977FEC31FE8AB8200183A85 /* SearchProductResult.swift in Sources */,
 				F977FADB1FE8AB7A00183A85 /* AnnouncementTickerRequest.swift in Sources */,
 				F977FA431FE8AB7900183A85 /* NSOperationQueue+SharedQueue.m in Sources */,
+				848FA6ED1FEBF8BF00A22EDE /* RCStatus.swift in Sources */,
 				F977FC341FE8AB7D00183A85 /* StickyAlertView.m in Sources */,
 				F977FD2E1FE8AB7F00183A85 /* SearchAutoCompleteViewModel.m in Sources */,
 				F977FDAE1FE8AB8000183A85 /* OfficialStorePromoViewController.m in Sources */,
@@ -11736,6 +12000,7 @@
 				F977FC631FE8AB7D00183A85 /* MiniSlide.m in Sources */,
 				F977FD4A1FE8AB7F00183A85 /* MyShopAddressDetailViewController.m in Sources */,
 				F977FD9E1FE8AB8000183A85 /* TxOrderStatusDetailViewController.m in Sources */,
+				848FA70A1FEBF8BF00A22EDE /* RCSolutionRequire.swift in Sources */,
 				F977FC2D1FE8AB7D00183A85 /* AlertDonation.swift in Sources */,
 				F977FF071FE8AB8300183A85 /* DepartmentTree.m in Sources */,
 				F977FCD31FE8AB7E00183A85 /* LoginTableViewController+Tweaks.m in Sources */,
@@ -11774,6 +12039,7 @@
 				F977FBBB1FE8AB7C00183A85 /* OrderTotalView.swift in Sources */,
 				F977FF8F1FE8AB8400183A85 /* DepositSummary.m in Sources */,
 				F977FE6E1FE8AB8200183A85 /* TxOrderCancelPaymentForm.m in Sources */,
+				848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */,
 				F977FB831FE8AB7B00183A85 /* CategoryIntermediaryResponse.swift in Sources */,
 				F977FEA41FE8AB8200183A85 /* TransactionATCFormResult.m in Sources */,
 				F977FD441FE8AB7F00183A85 /* TokoCashActivationSuccessViewController.swift in Sources */,
@@ -11796,6 +12062,7 @@
 				F97700111FE8AB8500183A85 /* AddressCity.m in Sources */,
 				F977FC081FE8AB7C00183A85 /* CourierOptionViewCell.m in Sources */,
 				F977FD461FE8AB7F00183A85 /* TokoCashActivationViewController.swift in Sources */,
+				848FA6E41FEBF8BE00A22EDE /* RCCreateStep1Response.swift in Sources */,
 				F97700791FE8AB8500183A85 /* ReactHybridViewController.m in Sources */,
 				F977FD431FE8AB7F00183A85 /* LoginSecurity.m in Sources */,
 				F977FCA11FE8AB7D00183A85 /* OpenShopNameViewCell.m in Sources */,
@@ -11804,10 +12071,10 @@
 				F977FC711FE8AB7D00183A85 /* CatalogShopCell.m in Sources */,
 				F977FD8F1FE8AB8000183A85 /* ListDetailBankViewController.swift in Sources */,
 				F977FCB41FE8AB7E00183A85 /* SignInProviderListView.swift in Sources */,
+				848FA6E81FEBF8BF00A22EDE /* RCProblem.swift in Sources */,
 				F977FEAA1FE8AB8200183A85 /* TransactionSummaryBCAParam.m in Sources */,
 				F977000A1FE8AB8500183A85 /* ListFavoriteShop.m in Sources */,
 				F977FE351FE8AB8100183A85 /* ViewLabelUser.m in Sources */,
-				F977FDDA1FE8AB8000183A85 /* ResolutionCenterCreateViewController.m in Sources */,
 				F977FCE51FE8AB7E00183A85 /* DetailProductRequest.swift in Sources */,
 				F97700501FE8AB8500183A85 /* WishListObject.m in Sources */,
 				F977FF761FE8AB8400183A85 /* SecurityAnswer.m in Sources */,
@@ -11818,6 +12085,7 @@
 				F977FFA91FE8AB8400183A85 /* FeaturedProduct.swift in Sources */,
 				F977FDE31FE8AB8000183A85 /* ShopPageRequest.m in Sources */,
 				D89EA8F81FC677CE005EDDA6 /* AIRGoogleMapCircle.m in Sources */,
+				848FA6F71FEBF8BF00A22EDE /* ProblemProductInfoCell.swift in Sources */,
 				F97700481FE8AB8500183A85 /* PromoShopImage.m in Sources */,
 				F977FF441FE8AB8300183A85 /* CatalogShops.m in Sources */,
 				F977FF1F1FE8AB8300183A85 /* ResolutionShop.m in Sources */,
@@ -11825,7 +12093,6 @@
 				F977FE881FE8AB8200183A85 /* TxOrderStatusList.m in Sources */,
 				F977FE051FE8AB8100183A85 /* PulsaOperatorRoot.swift in Sources */,
 				F977FAAB1FE8AB7A00183A85 /* RequestCart.m in Sources */,
-				F977FDC81FE8AB8000183A85 /* ResolutionCenterCreateStepTwoViewController.m in Sources */,
 				F977FAA61FE8AB7A00183A85 /* TransactionCartWebViewViewController.m in Sources */,
 				F977FB711FE8AB7B00183A85 /* CategoryNavigationViewController.swift in Sources */,
 				F977FF2D1FE8AB8300183A85 /* OrderResult.m in Sources */,
@@ -11908,6 +12175,7 @@
 				F977FF971FE8AB8400183A85 /* Replacement.swift in Sources */,
 				F977FFD81FE8AB8400183A85 /* SettingLocationResult.m in Sources */,
 				F977FADA1FE8AB7A00183A85 /* HomePageCategoryData.swift in Sources */,
+				848FA6FD1FEBF8BF00A22EDE /* ProblemDetailTableViewController.swift in Sources */,
 				DADB9F4E1F3C46CE002B1FAE /* FBTweakShakeWindow.m in Sources */,
 				F977FA281FE8AB7900183A85 /* NetworkProvider.swift in Sources */,
 				F977FF4F1FE8AB8300183A85 /* HistoryProductList.m in Sources */,
@@ -11934,6 +12202,7 @@
 				F977FF991FE8AB8400183A85 /* ReplacementProduct.swift in Sources */,
 				F977FF3A1FE8AB8300183A85 /* OrderCustomer.m in Sources */,
 				F977FA451FE8AB7900183A85 /* NSURL+TKPURL.m in Sources */,
+				848FA6EA1FEBF8BF00A22EDE /* RCProduct.swift in Sources */,
 				F977FF921FE8AB8400183A85 /* ResponseSpeed.m in Sources */,
 				F977FEC51FE8AB8200183A85 /* SearchProduct.swift in Sources */,
 				F977FE911FE8AB8200183A85 /* TxOrderConfirmedDetail.m in Sources */,
@@ -11979,7 +12248,6 @@
 				F954C4631FC55B6D008C0B30 /* main.m in Sources */,
 				F977FDFE1FE8AB8100183A85 /* PulsaCategory.swift in Sources */,
 				F977FEA61FE8AB8200183A85 /* TransactionSystemBank.m in Sources */,
-				F977FDD51FE8AB8000183A85 /* ResolutionCenterChooseSolutionViewController.m in Sources */,
 				F977FA291FE8AB7900183A85 /* JSONAbleType.swift in Sources */,
 				F977FAA41FE8AB7A00183A85 /* CartValidation.m in Sources */,
 				DADB9F601F3C46CF002B1FAE /* RequestUtils.m in Sources */,
@@ -11995,6 +12263,7 @@
 				F977FCC01FE8AB7E00183A85 /* ChangePhoneNumberViewController.swift in Sources */,
 				E57974EA1FEA746D00610655 /* UserTier.swift in Sources */,
 				F977FFE31FE8AB8400183A85 /* UploadImageHelper.m in Sources */,
+				848FA6EE1FEBF8BF00A22EDE /* RCStatusDeliveryInfo.swift in Sources */,
 				F977FDB11FE8AB8000183A85 /* SortViewController.m in Sources */,
 				F977FE361FE8AB8100183A85 /* AFNetworkingImageDownloader.mm in Sources */,
 				F977006D1FE8AB8500183A85 /* DigitalProduct.swift in Sources */,
@@ -12006,19 +12275,20 @@
 				F977FE7E1FE8AB8200183A85 /* TxOrderPaymentEditSystemBank.m in Sources */,
 				F977FF0D1FE8AB8300183A85 /* ResolutionDispute.m in Sources */,
 				F977FFDE1FE8AB8400183A85 /* AddProductSubmitResult.m in Sources */,
-				F977FDCD1FE8AB8000183A85 /* ResolutionCenterCreateStepThreeViewController.m in Sources */,
 				F977FC481FE8AB7D00183A85 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				F97700441FE8AB8500183A85 /* InboxTalk.m in Sources */,
 				F97700241FE8AB8500183A85 /* GeneralActionResult.m in Sources */,
+				848FA6FC1FEBF8BF00A22EDE /* SelectTroubleCell.swift in Sources */,
+				848FA6FB1FEBF8BF00A22EDE /* RCTextInputCell.swift in Sources */,
 				F977FC4C1FE8AB7D00183A85 /* CustomNotificationView.m in Sources */,
 				F977FFB41FE8AB8400183A85 /* AddShop.m in Sources */,
 				F977FA561FE8AB7900183A85 /* FeedCardShopState+Referable.swift in Sources */,
 				F977FBE21FE8AB7C00183A85 /* RejectReasonData.m in Sources */,
 				F977FA6F1FE8AB7A00183A85 /* ProductDetailViewController.swift in Sources */,
 				DADB9F661F3C46CF002B1FAE /* UIImageView%2BAFNetworking.swift in Sources */,
-				F977FDC51FE8AB8000183A85 /* ResolutionCenterCreateStepTwoCell.m in Sources */,
 				F977FEB01FE8AB8200183A85 /* Shipment.swift in Sources */,
 				F977FF511FE8AB8300183A85 /* Track.m in Sources */,
+				848FA6E71FEBF8BF00A22EDE /* RCOrderDetail.swift in Sources */,
 				F977FF021FE8AB8300183A85 /* Hotlist.m in Sources */,
 				F977FD7E1FE8AB7F00183A85 /* FilterSortViewController.swift in Sources */,
 				F977FFA21FE8AB8400183A85 /* SearchAutoCompleteObject.m in Sources */,
@@ -12044,6 +12314,7 @@
 				F977FBBE1FE8AB7C00183A85 /* OrderDetailViewController.m in Sources */,
 				E581B54A1FE8FF9100E6D1DA /* NotificationCache.swift in Sources */,
 				F977008F1FE8AB8600183A85 /* ReactEventManager.m in Sources */,
+				848FA6E91FEBF8BF00A22EDE /* RCProblemItem.swift in Sources */,
 				F977FB531FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */,
 				F977FF2B1FE8AB8300183A85 /* OrderPayment.m in Sources */,
@@ -12064,6 +12335,7 @@
 				D89EA9021FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m in Sources */,
 				F977FF2C1FE8AB8300183A85 /* Order.m in Sources */,
 				F977FC971FE8AB7D00183A85 /* ShopFavoritedCell.m in Sources */,
+				848FA7031FEBF8BF00A22EDE /* RCProofPhotosViewController.swift in Sources */,
 				F977FC331FE8AB7D00183A85 /* AlertListFilterView.m in Sources */,
 				F977FE251FE8AB8100183A85 /* ProductTalkViewController.m in Sources */,
 				F977FB391FE8AB7B00183A85 /* DepositListBankCell.m in Sources */,
@@ -12115,9 +12387,11 @@
 				F977FB461FE8AB7B00183A85 /* HotlistViewModel.m in Sources */,
 				F977FB281FE8AB7B00183A85 /* TopAdsInfoActionSheet.swift in Sources */,
 				F977FFF21FE8AB8400183A85 /* PrivacyFormPrivacy.m in Sources */,
+				848FA6EF1FEBF8BF00A22EDE /* RCTrouble.swift in Sources */,
 				DADB9F621F3C46CF002B1FAE /* EDStarRating.m in Sources */,
 				F977FD841FE8AB7F00183A85 /* RequestFilterCategory.swift in Sources */,
 				F977FEE11FE8AB8200183A85 /* Product.m in Sources */,
+				848FA6E51FEBF8BE00A22EDE /* RCCreateStep1ResponseData.swift in Sources */,
 				F977FF3C1FE8AB8300183A85 /* OrderSellerShop.m in Sources */,
 				F977002E1FE8AB8500183A85 /* ShipmentCourier.m in Sources */,
 				F977001D1FE8AB8500183A85 /* LikeDislikePostResult.m in Sources */,
@@ -12135,6 +12409,7 @@
 				F977FCCD1FE8AB7E00183A85 /* LoginAnalytics.swift in Sources */,
 				F977FBF81FE8AB7C00183A85 /* FuzzySearchProduct.swift in Sources */,
 				F977FB241FE8AB7B00183A85 /* InboxTicketDetailViewController.m in Sources */,
+				848FA6DE1FEBF8BE00A22EDE /* RCCreateComplaintResponse.swift in Sources */,
 				F977FE921FE8AB8200183A85 /* TxOrderConfirmedList.m in Sources */,
 				F977FFF61FE8AB8400183A85 /* NotificationForm.m in Sources */,
 				F977FA171FE8AB7900183A85 /* TalkTarget.swift in Sources */,
@@ -12148,6 +12423,7 @@
 				F977FFC41FE8AB8400183A85 /* ShopShipping.m in Sources */,
 				F977FBD21FE8AB7C00183A85 /* ProductQuantityCell.m in Sources */,
 				F977006A1FE8AB8500183A85 /* DigitalCartInfo.swift in Sources */,
+				848FA6E61FEBF8BE00A22EDE /* RCOrder.swift in Sources */,
 				F977FFC51FE8AB8400183A85 /* District.m in Sources */,
 				F977FC8F1FE8AB7D00183A85 /* EditShopViewController.m in Sources */,
 				F977FCC71FE8AB7E00183A85 /* UserRequest.swift in Sources */,
@@ -12206,6 +12482,7 @@
 				F977FE791FE8AB8200183A85 /* TxOrderConfirmationListOrder.m in Sources */,
 				F977FFCA1FE8AB8400183A85 /* ShopTransactionStats.m in Sources */,
 				F977FE971FE8AB8200183A85 /* TransactionVoucherResult.m in Sources */,
+				848FA6F01FEBF8BF00A22EDE /* RCManager.swift in Sources */,
 				DADB9F531F3C46CE002B1FAE /* iCarousel.m in Sources */,
 				F97700461FE8AB8500183A85 /* PromoResponse.m in Sources */,
 				F977FE9F1FE8AB8200183A85 /* MethodList.m in Sources */,
@@ -12246,6 +12523,7 @@
 				F977FA6B1FE8AB7A00183A85 /* ProductSellerNode.swift in Sources */,
 				F97700141FE8AB8500183A85 /* AddressResult.m in Sources */,
 				F977FEE91FE8AB8300183A85 /* Talk.m in Sources */,
+				848FA7081FEBF8BF00A22EDE /* RCCreateSolutionResponse.swift in Sources */,
 				F977008E1FE8AB8600183A85 /* ReactOrderManager.m in Sources */,
 				F977FE851FE8AB8200183A85 /* TransactionActionResult.m in Sources */,
 				F977000C1FE8AB8500183A85 /* FavoriteShop.m in Sources */,
@@ -12276,6 +12554,7 @@
 				F977FEBB1FE8AB8200183A85 /* GoogleDistanceMatrixElements.m in Sources */,
 				F977000F1FE8AB8500183A85 /* ContactUsActionResult.m in Sources */,
 				F977FFA81FE8AB8400183A85 /* SearchResult.m in Sources */,
+				848FA6F31FEBF8BF00A22EDE /* ProblemsListHeaderView.swift in Sources */,
 				D89EA8FA1FC677CE005EDDA6 /* AIRGoogleMapManager.m in Sources */,
 				F977FA2F1FE8AB7900183A85 /* UIColor+Theme.m in Sources */,
 				F977FA351FE8AB7900183A85 /* UIKitExtension.swift in Sources */,
@@ -12300,6 +12579,7 @@
 				F977FA621FE8AB7900183A85 /* PromoUnbox.swift in Sources */,
 				F977FE631FE8AB8200183A85 /* TransactionCalculatePriceResult.m in Sources */,
 				F977FB0E1FE8AB7B00183A85 /* CatalogModelView.swift in Sources */,
+				848FA6F41FEBF8BF00A22EDE /* ProblemsListTableViewController.swift in Sources */,
 				F977FE741FE8AB8200183A85 /* TxOrderConfirmationResult.m in Sources */,
 				F97700571FE8AB8500183A85 /* DigitalCategoriesComponentView.swift in Sources */,
 				F977FF1E1FE8AB8300183A85 /* EditResolutionFormData.swift in Sources */,
@@ -12309,11 +12589,13 @@
 				F977FB981FE8AB7C00183A85 /* CategoryIntermediaryViewController.swift in Sources */,
 				F977FFFD1FE8AB8500183A85 /* AddressFormList.m in Sources */,
 				F977FEB71FE8AB8200183A85 /* GoogleDistanceMatrixRow.m in Sources */,
+				848FA6FF1FEBF8BF00A22EDE /* RCReachingInfoViewController.swift in Sources */,
 				F977FDC41FE8AB8000183A85 /* ResolutionCenterCreateSolutionList.m in Sources */,
 				F977FF8A1FE8AB8400183A85 /* SendOTPResult.m in Sources */,
 				F977FAF01FE8AB7A00183A85 /* MyWishlistWholesalePrice.swift in Sources */,
 				F977FEEA1FE8AB8300183A85 /* TalkCommentResult.m in Sources */,
 				F97700201FE8AB8500183A85 /* DetailTotalLikeDislike.m in Sources */,
+				848FA6F21FEBF8BF00A22EDE /* ProblematicProductCell.swift in Sources */,
 				F977FAEA1FE8AB7A00183A85 /* HistoryProductViewController.m in Sources */,
 				F977FFCE1FE8AB8400183A85 /* Shop.m in Sources */,
 				F977FFC31FE8AB8400183A85 /* JNE.m in Sources */,
@@ -12373,9 +12655,11 @@
 				F977FA2B1FE8AB7900183A85 /* UIViewController+Swizzling.m in Sources */,
 				DADB9F4A1F3C46CE002B1FAE /* FBTweak.m in Sources */,
 				F977FCB51FE8AB7E00183A85 /* SecureStorageManager.swift in Sources */,
+				848FA6FA1FEBF8BF00A22EDE /* RCOrderStatusCell.swift in Sources */,
 				D89EA8F41FC677CE005EDDA6 /* AIRGMSPolyline.m in Sources */,
 				F977FA9D1FE8AB7A00183A85 /* CartCell.m in Sources */,
 				F977FA1F1FE8AB7900183A85 /* TokocashTarget.swift in Sources */,
+				848FA7071FEBF8BF00A22EDE /* RCCreateSolutionData.swift in Sources */,
 				F977FA131FE8AB7900183A85 /* ProductAndWishlistNetworkManager.swift in Sources */,
 				F97700971FE8AB8600183A85 /* PublicKeyResult.swift in Sources */,
 				F977FF1D1FE8AB8300183A85 /* EditResolution.swift in Sources */,
@@ -12391,6 +12675,7 @@
 				F977FB7C1FE8AB7B00183A85 /* FilterCategoryViewController.m in Sources */,
 				F977FB7E1FE8AB7B00183A85 /* CategoryIntermediarySubCategoryCellView.swift in Sources */,
 				F977FE7D1FE8AB8200183A85 /* TxOrderPaymentEditResult.m in Sources */,
+				848FA6E11FEBF8BE00A22EDE /* CreateComplainTableViewController.swift in Sources */,
 				F977FC941FE8AB7D00183A85 /* ShopFavoritedViewController.m in Sources */,
 				F977FF621FE8AB8300183A85 /* GeneralMetaData.swift in Sources */,
 				F977FDE81FE8AB8000183A85 /* EtalaseViewController.m in Sources */,
@@ -12410,6 +12695,7 @@
 				F977FB181FE8AB7B00183A85 /* CartModelView.m in Sources */,
 				F977FF4A1FE8AB8300183A85 /* CatalogImages.m in Sources */,
 				F977FB3C1FE8AB7B00183A85 /* DepositSummaryCell.m in Sources */,
+				848FA70C1FEBF8BF00A22EDE /* SolutionTextCell.swift in Sources */,
 				F97700C21FE8AB8600183A85 /* LogEntriesHelper.swift in Sources */,
 				F977FCC31FE8AB7E00183A85 /* AuthTokenSource.swift in Sources */,
 				F97700961FE8AB8600183A85 /* CryptoExportImportManager.swift in Sources */,
@@ -12425,6 +12711,7 @@
 				F977FCED1FE8AB7E00183A85 /* DetailProductVideoResponse.swift in Sources */,
 				F977FDE21FE8AB8000183A85 /* ShopHeaderView.mm in Sources */,
 				F977FAA51FE8AB7A00183A85 /* TransactionCartViewController.m in Sources */,
+				848FA6EC1FEBF8BF00A22EDE /* RCShippingDetail.swift in Sources */,
 				F977FDC71FE8AB8000183A85 /* ResolutionCenterCreateList.m in Sources */,
 				F977FEDE1FE8AB8200183A85 /* DetailProductResult.m in Sources */,
 				F977FFB91FE8AB8400183A85 /* NoteDetails.swift in Sources */,
@@ -12584,6 +12871,7 @@
 				F977FE141FE8AB8100183A85 /* InboxTalkSplitViewController.m in Sources */,
 				F977FEE81FE8AB8300183A85 /* TalkList.m in Sources */,
 				F977FD971FE8AB8000183A85 /* ListOrderComponent.mm in Sources */,
+				848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */,
 				F977FD471FE8AB7F00183A85 /* ReportViewController.m in Sources */,
 				F977FA441FE8AB7900183A85 /* NSString+URLEncoding.m in Sources */,
 				F977FEEF1FE8AB8300183A85 /* PriceAlert.m in Sources */,
@@ -12592,10 +12880,12 @@
 				F977FCB31FE8AB7E00183A85 /* TagManagerHandler.m in Sources */,
 				F977FEF61FE8AB8300183A85 /* PreorderDetail.m in Sources */,
 				F977FF8D1FE8AB8400183A85 /* DepositSummaryList.m in Sources */,
+				848FA6F51FEBF8BF00A22EDE /* ProblemsListViewController.swift in Sources */,
 				F977FBF71FE8AB7C00183A85 /* Redirection.swift in Sources */,
 				F977FE901FE8AB8200183A85 /* TxOrderConfirmedDetailResult.m in Sources */,
 				F977FAA91FE8AB7A00183A85 /* TransactionCartPayment.swift in Sources */,
 				F977FE681FE8AB8200183A85 /* ResponseError.m in Sources */,
+				848FA6F81FEBF8BF00A22EDE /* RCButtonCell.swift in Sources */,
 				F977FCB01FE8AB7E00183A85 /* TKPMapView.swift in Sources */,
 				F977FB231FE8AB7B00183A85 /* InboxTicketSplitViewController.m in Sources */,
 				F977FEED1FE8AB8300183A85 /* TalkResult.m in Sources */,
@@ -12616,9 +12906,11 @@
 				F977FD771FE8AB7F00183A85 /* AddressViewController.m in Sources */,
 				F977FD371FE8AB7F00183A85 /* ProductBadge.swift in Sources */,
 				F977FB5E1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.swift in Sources */,
+				848FA7011FEBF8BF00A22EDE /* RCPhotosCollectionCell.swift in Sources */,
 				F977FDAD1FE8AB8000183A85 /* OfficialStoreBrandsViewController.m in Sources */,
 				F97700B01FE8AB8600183A85 /* ScreenshotHelper.swift in Sources */,
 				F977FA881FE8AB7A00183A85 /* RedirectHandler.m in Sources */,
+				848FA7101FEBF8BF00A22EDE /* RCServiceProvider.swift in Sources */,
 				F97700511FE8AB8500183A85 /* ProductWishlistCheckResult.swift in Sources */,
 				F977FBF11FE8AB7C00183A85 /* SalesOrderCell.m in Sources */,
 				F977FC511FE8AB7D00183A85 /* AlertInfoPaymentConfirmationView.m in Sources */,
@@ -12629,6 +12921,7 @@
 				F977FCC61FE8AB7E00183A85 /* UserInfoRequest.swift in Sources */,
 				F977FC751FE8AB7D00183A85 /* CatalogShopViewController.m in Sources */,
 				F977FF4D1FE8AB8300183A85 /* CatalogPrice.m in Sources */,
+				848FA70B1FEBF8BF00A22EDE /* SolutionFreeReturnCell.swift in Sources */,
 				F977FCFC1FE8AB7E00183A85 /* ProductCellSize.swift in Sources */,
 				F97700AC1FE8AB8600183A85 /* ViewControllerSwipeGestureProtocol.swift in Sources */,
 				F977FA9A1FE8AB7A00183A85 /* TransactionCartHeaderView.m in Sources */,
@@ -12640,6 +12933,7 @@
 				F977FDCB1FE8AB8000183A85 /* ResolutionCenterCreateTroubleList.m in Sources */,
 				DADB9F641F3C46CF002B1FAE /* SwipeView.m in Sources */,
 				F977FC5F1FE8AB7D00183A85 /* AddCaptionTextFieldCell.swift in Sources */,
+				848FA7001FEBF8BF00A22EDE /* SelectTroubleViewController.swift in Sources */,
 				F977FF301FE8AB8300183A85 /* OrderTransaction.m in Sources */,
 				F977FD981FE8AB8000183A85 /* OrderDataManager.mm in Sources */,
 				E581B54E1FE8FF9200E6D1DA /* NotificationSales.swift in Sources */,
@@ -12659,11 +12953,13 @@
 				F977FDF11FE8AB8000183A85 /* PulsaView.swift in Sources */,
 				E581B5431FE8FDAE00E6D1DA /* NotificationTableViewCell.swift in Sources */,
 				F977FEAF1FE8AB8200183A85 /* TransactionCartResult.m in Sources */,
+				848FA7041FEBF8BF00A22EDE /* RCProofTableController.swift in Sources */,
 				F977FB491FE8AB7B00183A85 /* HotlistResultHeaderView.swift in Sources */,
 				F977FA401FE8AB7900183A85 /* NSString+TPBaseUrl.m in Sources */,
 				F977FE341FE8AB8100183A85 /* EmptyStateView.swift in Sources */,
 				F977FCAB1FE8AB7E00183A85 /* TKPInfoWindowMapView.swift in Sources */,
 				F977FD1A1FE8AB7E00183A85 /* PurchaseViewController.m in Sources */,
+				848FA6E21FEBF8BE00A22EDE /* CreateComplainViewController.swift in Sources */,
 				F977FC391FE8AB7D00183A85 /* AlertInfoView.m in Sources */,
 				F977FF4E1FE8AB8300183A85 /* HistoryProduct.m in Sources */,
 				F977FA591FE8AB7900183A85 /* ProductUnbox+Referable.swift in Sources */,
@@ -12682,9 +12978,11 @@
 				F977FB1C1FE8AB7B00183A85 /* TalkModelView.m in Sources */,
 				F977FE3F1FE8AB8100183A85 /* TKPDStackView.m in Sources */,
 				F977FFB71FE8AB8400183A85 /* NoteActionResult.swift in Sources */,
+				848FA6F91FEBF8BF00A22EDE /* RCCountdownTimerView.swift in Sources */,
 				F977FF111FE8AB8300183A85 /* ResolutionDetail.m in Sources */,
 				F97700C01FE8AB8600183A85 /* URLCacheController.m in Sources */,
 				F977008A1FE8AB8600183A85 /* ReactDynamicFilterBridge.swift in Sources */,
+				848FA70F1FEBF8BF00A22EDE /* RCService.swift in Sources */,
 				F977FEFB1FE8AB8300183A85 /* DepositResult.m in Sources */,
 				F977FDAB1FE8AB8000183A85 /* SystemBank.swift in Sources */,
 				F97700011FE8AB8500183A85 /* ProfileInfo.m in Sources */,
@@ -12704,6 +13002,7 @@
 				F977FB921FE8AB7B00183A85 /* CategoryIntermediaryHotListImagePortrait.swift in Sources */,
 				F977000E1FE8AB8500183A85 /* TicketCategory.m in Sources */,
 				E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */,
+				848FA7061FEBF8BF00A22EDE /* RCCreateSolution.swift in Sources */,
 				F977FDEB1FE8AB8000183A85 /* ShopProductPageViewController.m in Sources */,
 				F977FE3C1FE8AB8100183A85 /* NSMutableAttributedString+TKPCategory.m in Sources */,
 				F977FE8D1FE8AB8200183A85 /* TxOrderConfirmedDetailInvoice.m in Sources */,
@@ -12725,6 +13024,7 @@
 				E581B5531FE9007D00E6D1DA /* TopchatUnreadData.swift in Sources */,
 				F97700A01FE8AB8600183A85 /* TPSpotlight.m in Sources */,
 				F977FEFD1FE8AB8300183A85 /* ProductTalkFormResult.m in Sources */,
+				848FA7091FEBF8BF00A22EDE /* RCFreeReturn.swift in Sources */,
 				F977FF311FE8AB8300183A85 /* WarehouseResult.m in Sources */,
 				F977FD181FE8AB7E00183A85 /* MoreViewController.m in Sources */,
 				F977FA1A1FE8AB7900183A85 /* WalletTarget.swift in Sources */,
@@ -12844,12 +13144,14 @@
 				F977FEAD1FE8AB8200183A85 /* InstallmentBank.m in Sources */,
 				F977FEF81FE8AB8300183A85 /* EnvelopeResponse.swift in Sources */,
 				F977FC5D1FE8AB7D00183A85 /* DetailedImageCell.swift in Sources */,
+				848FA6F61FEBF8BF00A22EDE /* GoodCountCell.swift in Sources */,
 				F977FCD61FE8AB7E00183A85 /* Slide.m in Sources */,
 				F977FBE41FE8AB7C00183A85 /* RejectReasonEmptyStockViewController.m in Sources */,
 				F977FBDC1FE8AB7C00183A85 /* RejectReasonEmptyStockCell.m in Sources */,
 				F977FA551FE8AB7900183A85 /* HotlistBannerResult+Referable.swift in Sources */,
 				F977FCFF1FE8AB7E00183A85 /* ProductEditWholesaleViewController.m in Sources */,
 				F977FEF51FE8AB8300183A85 /* FavoriteShopActionResult.m in Sources */,
+				848FA6E01FEBF8BE00A22EDE /* ConfirmAlertViewController.swift in Sources */,
 				F977FA711FE8AB7A00183A85 /* ProductDescriptionViewController.swift in Sources */,
 				F977FAE01FE8AB7A00183A85 /* LayoutRowType.swift in Sources */,
 				F977FF3B1FE8AB8300183A85 /* OrderDeadline.m in Sources */,
@@ -12875,6 +13177,7 @@
 				F977FC841FE8AB7D00183A85 /* EditShopDescriptionViewCell.m in Sources */,
 				F977FBFF1FE8AB7C00183A85 /* MiniSlideData.m in Sources */,
 				F977FB011FE8AB7B00183A85 /* GeneralTextFieldCell.m in Sources */,
+				848FA6DF1FEBF8BE00A22EDE /* RCCreateComplaintResponseData.swift in Sources */,
 				F977FD611FE8AB7F00183A85 /* ProfileCompletionProgressViewController.swift in Sources */,
 				F977FA741FE8AB7A00183A85 /* OneClickResponse.swift in Sources */,
 				F977FE531FE8AB8100183A85 /* FeedDetailHeaderComponentView.swift in Sources */,
@@ -12895,7 +13198,6 @@
 				F977FF731FE8AB8400183A85 /* CreatePassword.m in Sources */,
 				F97700081FE8AB8500183A85 /* ProfileEditForm.m in Sources */,
 				F977FAF51FE8AB7A00183A85 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
-				F977FDDD1FE8AB8000183A85 /* ResolutionCenterCreateStepOneCell.m in Sources */,
 				F977FFED1FE8AB8400183A85 /* UploadImageResult.m in Sources */,
 				F977FF9F1FE8AB8400183A85 /* List.m in Sources */,
 				F977FF421FE8AB8300183A85 /* CatalogMarketPlace.m in Sources */,
@@ -12962,11 +13264,11 @@
 				F977FFB11FE8AB8400183A85 /* Etalase.m in Sources */,
 				F977FECF1FE8AB8200183A85 /* DetailInboxTicket.m in Sources */,
 				F977FED51FE8AB8200183A85 /* ReplyInboxTicket.m in Sources */,
-				F977FDC11FE8AB8000183A85 /* ResolutionCenterCreateStepOneViewController.m in Sources */,
 				F977FF361FE8AB8300183A85 /* OrderRequestCancel.m in Sources */,
 				F977FFF31FE8AB8400183A85 /* PrivacyFormResult.m in Sources */,
 				F977004F1FE8AB8500183A85 /* WishListObjectResult.m in Sources */,
 				F977FEDB1FE8AB8200183A85 /* Rating.m in Sources */,
+				848FA6FE1FEBF8BF00A22EDE /* ProblemDetailViewController.swift in Sources */,
 				E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */,
 				F977FEBA1FE8AB8200183A85 /* GoogleDistanceMatrixDetail.m in Sources */,
 				F977FF371FE8AB8300183A85 /* DriverInfo.m in Sources */,
@@ -13017,13 +13319,16 @@
 				F977FA5E1FE8AB7900183A85 /* DistrictViewController.swift in Sources */,
 				F977FEB21FE8AB8200183A85 /* ShipmentPackage.swift in Sources */,
 				F977FB591FE8AB7B00183A85 /* ProductResolutionViewModel.swift in Sources */,
+				848FA6EB1FEBF8BF00A22EDE /* RCShipping.swift in Sources */,
 				F977FA731FE8AB7A00183A85 /* CCAuthenticationViewModel.swift in Sources */,
 				F977FEF31FE8AB8300183A85 /* ToppersLocation.m in Sources */,
 				F977FFDC1FE8AB8400183A85 /* AddProductValidation.m in Sources */,
 				F977FA241FE8AB7900183A85 /* AccountTarget.swift in Sources */,
 				F977FEB51FE8AB8200183A85 /* Cart.swift in Sources */,
+				848FA70D1FEBF8BF00A22EDE /* ReturnAmountViewController.swift in Sources */,
 				F97700221FE8AB8500183A85 /* FavoritedResult.m in Sources */,
 				F977FC1B1FE8AB7C00183A85 /* ReplacementListCell.swift in Sources */,
+				848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */,
 				F977FAF61FE8AB7A00183A85 /* MyWishlistShopReputation.swift in Sources */,
 				F977FD311FE8AB7F00183A85 /* SearchAutoCompleteHeaderView.m in Sources */,
 				F977009F1FE8AB8600183A85 /* TkpdHMAC.m in Sources */,
@@ -13041,6 +13346,7 @@
 				F977FF131FE8AB8300183A85 /* InboxResolutionCenterResult.m in Sources */,
 				F977FE711FE8AB8200183A85 /* TxEMoneyResult.m in Sources */,
 				F977FA191FE8AB7900183A85 /* PaymentTarget.swift in Sources */,
+				848FA7021FEBF8BF00A22EDE /* RCProblemTextCell.swift in Sources */,
 				F977FA2C1FE8AB7900183A85 /* UIApplication+React.m in Sources */,
 				F977FC851FE8AB7D00183A85 /* EditShopDataSource.m in Sources */,
 				F977FACD1FE8AB7A00183A85 /* SettingUserPhoneViewController.m in Sources */,
