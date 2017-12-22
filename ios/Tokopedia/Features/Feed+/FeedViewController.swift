@@ -44,10 +44,10 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         let accountsAuth = "\(tokenType) \(accessToken)" as String
         
         let headers: [AnyHashable: Any] = ["Tkpd-UserId": userManager.getUserId(),
-                       "Tkpd-SessionId": userManager.getMyDeviceToken(),
-                       "X-Device": "ios-\(appVersion)",
-                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
-                       "Accounts-Authorization": accountsAuth]
+                                           "Tkpd-SessionId": userManager.getMyDeviceToken(),
+                                           "X-Device": "ios-\(appVersion)",
+                                           "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
+                                           "Accounts-Authorization": accountsAuth]
         
         configuration.httpAdditionalHeaders = headers
         
@@ -63,6 +63,8 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogin), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(self.didSwipeHomeTab), name: NSNotification.Name(rawValue: "didSwipeHomeTab"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onDeleteComment(notification:)), name: NSNotification.Name(rawValue: "OnDeleteComment"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.onCreateComment(notification:)), name: NSNotification.Name(rawValue: "OnCreateComment"), object: nil)
         
         self.view.backgroundColor = .tpBackground()
         self.setupView()
@@ -79,7 +81,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
     
     private func setupView() {
         self.tableView.rowHeight = UITableViewAutomaticDimension
-        self.tableView.estimatedRowHeight = 100
+        self.tableView.estimatedRowHeight = 1000
         self.tableView.backgroundColor = .tpBackground()
         self.tableView.separatorStyle = .none
         self.tableView.showsVerticalScrollIndicator = false
@@ -393,10 +395,10 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         let accountsAuth = "\(tokenType) \(accessToken)" as String
         
         let headers: [AnyHashable: Any] = ["Tkpd-UserId": userManager.getUserId(),
-                       "Tkpd-SessionId": userManager.getMyDeviceToken(),
-                       "X-Device": "ios-\(appVersion)",
-                       "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
-                       "Accounts-Authorization": accountsAuth]
+                                           "Tkpd-SessionId": userManager.getMyDeviceToken(),
+                                           "X-Device": "ios-\(appVersion)",
+                                           "Device-Type": ((UI_USER_INTERFACE_IDIOM() == .phone) ? "iphone" : "ipad"),
+                                           "Accounts-Authorization": accountsAuth]
         
         configuration.httpAdditionalHeaders = headers
         
@@ -536,6 +538,46 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 
                 self.feedCardSource.onNext(self.feedCards)
             }
+        }
+    }
+    
+    @objc private func onDeleteComment(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+            let state = userInfo["state"] as? [String: Any] {
+            var newState = FeedCardKOLPostState(stateDict: state)
+            newState.commentCount = newState.commentCount - 1
+            
+            var newCard = FeedCardState()
+            newCard.content.kolPost = newState
+            newCard.content.type = .KOLPost
+            
+            for (index, element) in self.feedCards.enumerated() {
+                if element.content.kolPost?.cardID == newState.cardID {
+                    self.feedCards[index] = newCard
+                }
+            }
+            
+            self.feedCardSource.onNext(self.feedCards)
+        }
+    }
+    
+    @objc private func onCreateComment(notification: NSNotification) {
+        if let userInfo = notification.userInfo,
+            let state = userInfo["state"] as? [String: Any] {
+            var newState = FeedCardKOLPostState(stateDict: state)
+            newState.commentCount = newState.commentCount + 1
+            
+            var newCard = FeedCardState()
+            newCard.content.kolPost = newState
+            newCard.content.type = .KOLPost
+            
+            for (index, element) in self.feedCards.enumerated() {
+                if element.content.kolPost?.cardID == newState.cardID {
+                    self.feedCards[index] = newCard
+                }
+            }
+            
+            self.feedCardSource.onNext(self.feedCards)
         }
     }
 }

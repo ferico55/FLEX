@@ -55,7 +55,9 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
                 self.horizontalLine(),
                 self.headerView(state: state, size: size),
                 self.contentImage(state: state, size: size),
-                self.description(state: state, size: size)
+                self.description(state: state, size: size),
+                self.horizontalLine(),
+                self.actionButtons(state: state, size: size)
             ]),
             self.blankSpace()
         ])
@@ -153,7 +155,7 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             layout.marginLeft = 8
             layout.marginRight = 8
             
-        }.add(child:
+        }.add(children: [
             Node<UIView>() { _, layout, _ in
                 layout.flexDirection = .row
                 layout.alignItems = .center
@@ -161,8 +163,9 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             }.add(children: [
                 influencerImage,
                 influencerInfo
-            ])
-        )
+            ]),
+            (state.isFollowed && !state.tempFollowing) ? NilNode() : followButton
+        ])
         
         return Node<UIView> { view, layout, size in
             layout.flexDirection = .column
@@ -233,21 +236,6 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             label.textColor = .tpSecondaryBlackText()
             label.isUserInteractionEnabled = true
             
-            let gestureRecognizer = UITapGestureRecognizer()
-            gestureRecognizer.rx.event.subscribe(onNext: { _ in
-                let viewController = ReactViewController(
-                    moduleName: "FeedKOLActivityComment",
-                    props: ["cardState": state.dictionary as AnyObject]
-                )
-                viewController.hidesBottomBarWhenPushed = true
-                
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushReactViewController(viewController, animated: true)
-            }).disposed(by: self.rx_disposeBag)
-            
-            label.addGestureRecognizer(gestureRecognizer)
-            
             if descriptionString.characters.count > 150 {
                 let substring = descriptionString.substring(to: descriptionString.index(descriptionString.startIndex, offsetBy: 150))
                 let paragraphStyle = NSMutableParagraphStyle()
@@ -270,6 +258,16 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
                         NSParagraphStyleAttributeName: paragraphStyle
                     ]
                 ))
+                
+                let gestureRecognizer = UITapGestureRecognizer()
+                gestureRecognizer.rx.event.subscribe(onNext: { _ in
+                    var newState = state
+                    newState.descriptionShownAll = !state.descriptionShownAll
+                    
+                    self.onTapLongDescription(newState)
+                }).disposed(by: self.rx_disposeBag)
+                
+                label.addGestureRecognizer(gestureRecognizer)
                 
                 if state.descriptionShownAll {
                     label.attributedText = NSAttributedString(
