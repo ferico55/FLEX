@@ -135,12 +135,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
-    if (self){
-        [[NSNotificationCenter defaultCenter] addObserver:self
-                                                 selector:@selector(reloadNotification)
-                                                     name:@"reloadNotification"
-                                                   object:nil];
-        
+    if (self){        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(updateSaldoTokopedia)
                                                      name:@"updateSaldoTokopedia"
