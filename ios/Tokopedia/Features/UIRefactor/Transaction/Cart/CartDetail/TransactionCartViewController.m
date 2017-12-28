@@ -201,10 +201,6 @@ InputPromoViewDelegate
                                                  name:@"AddErrorMessage"
                                                object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self
-                                             selector:@selector(reloadNotification)
-                                                 name:@"reloadNotification"
-                                               object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(refreshRequestCart)
                                                  name:@"doRefreshingCart" object:nil];
     
@@ -253,13 +249,6 @@ InputPromoViewDelegate
     else {
         self.navigationItem.rightBarButtonItem = nil;
     }
-}
-
-#pragma mark - Notification delegate
-
-- (void)reloadNotification
-{
-    [self initNotificationManager];
 }
 
 -(void)initAllNoResult{
@@ -1474,7 +1463,7 @@ InputPromoViewDelegate
         
         [self adjustGrandTotal];
         [self isLoading:NO];
-        [self reloadNotification];
+        [self initNotificationManager];
         [self setPromoSuggestion];
         
     } onFailure:^(NSError *error) {

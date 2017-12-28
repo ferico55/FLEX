@@ -726,7 +726,6 @@ typedef enum TagRequest {
     [_notLoggedInView removeFromSuperview];
     [_noResultScrollView removeFromSuperview];
     [self initNotificationManager];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
 }
 
 - (void)resetWishlist {

@@ -77,6 +77,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         NotificationCenter.default.addObserver(self, selector: #selector(statusBarDidChangeFrame), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationRead), name: NSNotification.Name(rawValue: "NotificationRead"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationUpdate(_:)), name: NSNotification.Name(rawValue: "NotificationUpdate"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(reloadNotifications), name: NSNotification.Name(rawValue: "reloadNotification"), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {

@@ -44,8 +44,6 @@
     
     [AnalyticsManager trackScreenName:@"Hot List Page"];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(initNotificationManager) name:@"reloadNotification" object:nil];
-    
     [self checkForPhoneVerification];
     
     [self initNotificationManager];
