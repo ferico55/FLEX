@@ -80,8 +80,22 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         
         self.safeAreaView.translatesAutoresizingMaskIntoConstraints = false
         
+        // Hacking for iOS 11 except iPhone X
+        var topAnchor: NSLayoutYAxisAnchor = self.view.topAnchor
+        var topConstant: CGFloat = 0
+        
+        if #available(iOS 11, *) {
+            if UIDevice.current.modelName.caseInsensitiveCompare("iPhone X") == ComparisonResult.orderedSame {
+                topAnchor = self.view.safeAreaTopAnchor
+                topConstant = 0
+            } else {
+                topAnchor = self.view.topAnchor
+                topConstant = -UIApplication.shared.statusBarFrame.size.height
+            }
+        }
+        
         NSLayoutConstraint.activate([
-            self.safeAreaView.topAnchor.constraint(equalTo: self.view.safeAreaTopAnchor, constant: 0),
+            self.safeAreaView.topAnchor.constraint(equalTo: topAnchor, constant: topConstant),
             self.safeAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0),
             self.safeAreaView.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor, constant: 0),
             self.safeAreaView.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor, constant: 0)

@@ -286,8 +286,19 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 }
                 self.fullNavigationView = view
                 self.accessibilityLabel = "productDetailView"
+                
+                var topConstant: CGFloat = 0
+                
+                if #available(iOS 11, *) {
+                    if UIDevice.current.modelName.caseInsensitiveCompare("iPhone X") == ComparisonResult.orderedSame {
+                        topConstant = 0
+                    } else {
+                        topConstant = UIApplication.shared.statusBarFrame.size.height
+                    }
+                }
+                
                 layout.position = .absolute
-                layout.top = 0
+                layout.top = topConstant
                 layout.width = size.width
                 layout.height = 64
                 layout.justifyContent = .center
@@ -644,6 +655,12 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 if let productStatus = self.state?.productDetail?.info.status,
                     productStatus != .active {
                     layout.height = size.height
+                }
+                
+                if #available(iOS 11, *) {
+                    if UIDevice.current.modelName.caseInsensitiveCompare("iPhone X") != ComparisonResult.orderedSame {
+                        layout.top = UIApplication.shared.statusBarFrame.size.height
+                    }
                 }
                 
                 view.backgroundColor = UIColor.tpBackground()
