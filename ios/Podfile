@@ -8,9 +8,7 @@ static_frameworks
 
 inhibit_all_warnings!
 
-project 'Tokopedia', 'Debug-Optimized' => :debug
-
-$DEBUG_CONFIGS = ['Debug', 'Debug-Optimized']
+$DEBUG_CONFIGS = ['Debug']
 
 def react_pods
     pod 'React', :path => '../node_modules/react-native', :subspecs => [
@@ -162,10 +160,10 @@ post_install do |installer|
         target.build_configurations.each do |config|
             config.build_settings['PROVISIONING_PROFILE_SPECIFIER'] = ''
 
-            if config.name == 'Release'
-                config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
-            elsif config.name == 'Debug-Optimized'
-                config.build_settings['SWIFT_WHOLE_MODULE_OPTIMIZATION'] = 'YES'
+            config.build_settings['SWIFT_OPTIMIZATION_LEVEL'] = '-Owholemodule'
+
+            if config.name == 'Debug'
+                config.build_settings['OTHER_SWIFT_FLAGS'] = ['$(inherited)', '-Onone']
             end
 
             if target.name == "MoEngage-iOS-SDK"
