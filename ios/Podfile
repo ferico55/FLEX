@@ -136,6 +136,7 @@ target "Tokopedia" do
     common_pods
     react_pods
     pod 'Reveal-iOS-SDK', :configurations => $DEBUG_CONFIGS
+    pod 'HockeySDK', '~> 5.0.0', :subspecs => ['CrashOnlyLib'], :configurations => $DEBUG_CONFIGS
 end
 
 target "ServiceExtension" do

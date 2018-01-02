@@ -36,6 +36,7 @@
 
 #ifdef DEBUG
 @import FLEX;
+@import HockeySDK;
 #import "ReactOnboardingHelper.h"
 #endif
 @import FirebaseCore;
@@ -165,6 +166,9 @@
     
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
+    [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"4b779275ebcf4c80ba9ead4639424033"];
+    [[BITHockeyManager sharedHockeyManager] startManager];
+    [[BITHockeyManager sharedHockeyManager].crashManager setCrashManagerStatus:BITCrashManagerStatusAutoSend];
 #endif
 	
     dispatch_async(dispatch_get_main_queue(), ^{

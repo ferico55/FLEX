@@ -769,7 +769,6 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     // MARK: Method
     
     private func didTapCategory(layoutRow: HomePageCategoryLayoutRow, sectionTitle: String) {
-        
         let categoryName = layoutRow.name
         
         if let layoutRowType = layoutRow.type, let categoryName = categoryName {

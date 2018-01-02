@@ -86,6 +86,8 @@ platform :ios do
       export_method: "app-store"
     )
     
+    save_artifacts
+    
     upload_symbols_to_crashlytics(dsym_path: lane_context[SharedValues::DSYM_OUTPUT_PATH], binary_path: 'ios/Pods/Fabric/upload-symbols', api_token: ENV["CRASHLYTICS_API_KEY"])
     
     pilot(
@@ -155,14 +157,24 @@ platform :ios do
       export_options: { "compileBitcode": false }
     )
 
+    save_artifacts
+
     hockeyapp
+  end
+  
+  def save_artifacts
+    copy_artifacts(
+      target_path: ENV['CIRCLE_ARTIFACTS'],
+      artifacts: ['*.dSYM.zip', '*.ipa']
+    )
   end
 
   # Push to Hockey
   def hockeyapp
     hockey(
+      dsym: lane_context[SharedValues::DSYM_ZIP_PATH],
       api_token: ENV['HOCKEY_API_TOKEN'],
-      notes: changelogs
+      notes: changelogs,
     )
   end
 
