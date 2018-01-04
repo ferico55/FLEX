@@ -96,10 +96,12 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 }
 
 - (void)carouselDidEndScrollingAnimation:(iCarousel *)carousel {
-    NSNumber *currentItemIndex = [NSNumber numberWithInteger:carousel.currentItemIndex];
-    if(_bannerType == BannerTypeHome  && ![_usedBannerIndex containsObject:currentItemIndex]) {
-        [AnalyticsManager trackHomeBanner:[_banners objectAtIndex:carousel.currentItemIndex] index:carousel.currentItemIndex type: HomeBannerPromotionTrackerTypeView];
-        [_usedBannerIndex addObject:currentItemIndex];
+    if (carousel.indexesForVisibleItems.count > 0) {
+        NSNumber *currentItemIndex = [NSNumber numberWithInteger:carousel.currentItemIndex];
+        if(_bannerType == BannerTypeHome  && ![_usedBannerIndex containsObject:currentItemIndex]) {
+            [AnalyticsManager trackHomeBanner:[_banners objectAtIndex:carousel.currentItemIndex] index:carousel.currentItemIndex type: HomeBannerPromotionTrackerTypeView];
+            [_usedBannerIndex addObject:currentItemIndex];
+        }
     }
 }
 
