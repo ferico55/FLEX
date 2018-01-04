@@ -45,7 +45,7 @@
     "react-apollo": "^2.0.0",
     "react-native": "0.51.0",
     "react-native-code-push": "^3.0.1-beta",
-    "react-native-dash": "0.0.7",
+    "react-native-dash": "0.0.8",
     "react-native-device-info": "^0.10.2",
     "react-native-htmlview": "^0.12.1",
     "react-native-interactable": "0.1.3",

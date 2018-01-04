@@ -4443,9 +4443,9 @@ react-native-code-push@^3.0.1-beta:
     plist "1.2.0"
     xcode "0.9.2"
 
-react-native-dash@0.0.7:
-  version "0.0.7"
-  resolved "https://registry.yarnpkg.com/react-native-dash/-/react-native-dash-0.0.7.tgz#d01862dfd45f6bd88eac958a25c4d496392b5242"
+react-native-dash@0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/react-native-dash/-/react-native-dash-0.0.8.tgz#92cd0259255a7e07e1378463cb5656f74b57ea24"
   dependencies:
     prop-types "^15.5.10"
     react-native-measureme "0.0.1"

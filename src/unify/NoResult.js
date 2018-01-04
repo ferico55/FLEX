@@ -1,5 +1,12 @@
 import React from 'react'
-import { View, Image, Text, TouchableOpacity, StyleSheet } from 'react-native'
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  ViewPropTypes,
+} from 'react-native'
 
 import PropTypes from 'prop-types'
 
@@ -41,7 +48,7 @@ const NoResult = ({
 )
 
 NoResult.propTypes = {
-  style: View.propTypes.style,
+  style: ViewPropTypes.style,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
   onButtonPress: PropTypes.func,
