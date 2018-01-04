@@ -15,12 +15,12 @@ import Swipeable from 'react-native-swipeable'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 import moment from 'moment'
+import SearchBar from 'react-native-search-bar'
 
 import color from '../Helper/Color'
 import DateSettingsButton from '../Components/DateSettingsButton'
 import NoResultView from '../Components/NoResultView'
 import PromoInfoCell from '../Components/PromoInfoCell'
-import SearchBar from '../Components/SearchBar'
 
 import * as PromoListActions from '../Redux/Actions/PromoListActions'
 import * as FilterActions from '../Redux/Actions/FilterActions'

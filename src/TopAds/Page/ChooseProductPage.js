@@ -13,9 +13,9 @@ import {
   FlatList,
   RefreshControl,
 } from 'react-native'
+import SearchBar from 'react-native-search-bar'
 
 import color from '../Helper/Color'
-import SearchBar from '../Components/SearchBar'
 import NoResultView from '../Components/NoResultView'
 import * as Actions from '../Redux/Actions/AddPromoActions'
 

@@ -17,7 +17,6 @@ def react_pods
         'RCTWebSocket',
         'RCTNetwork',
         'DevSupport',
-        'RCTAdSupport',
         'RCTVibration',
         'RCTImage',
         'RCTGeolocation',
@@ -26,10 +25,10 @@ def react_pods
         'RCTSettings',
         'RCTLinkingIOS',
         'BatchedBridge',
-        'RCTCameraRoll'
+        'RCTCameraRoll',
     ]
     
-    pod 'Yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
+    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
     pod 'native-navigation', :path => '../node_modules/native-navigation'
     pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
     pod 'CodePush', :path => '../node_modules/react-native-code-push'
