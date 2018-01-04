@@ -262,6 +262,9 @@ class Promo extends React.PureComponent {
     if (this.state.page === -1) {
       return null
     }
+    if (!this.state.isLoading) {
+      return null
+    }
     return (
       <ActivityIndicator
         animating
@@ -330,7 +333,7 @@ class Promo extends React.PureComponent {
   }
 
   loadData(page = 1) {
-    if (this.state.page === -1) {
+    if (this.state.page < 1) {
       return
     }
 
@@ -425,7 +428,7 @@ class Promo extends React.PureComponent {
             isErrorOnScroll: false,
           })
         },
-        err => {
+        _ => {
           ReactInteractionHelper.showDangerAlert('Tidak ada koneksi internet')
           this.setState({
             isLoading: false,
