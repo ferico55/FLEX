@@ -154,12 +154,15 @@ class ProductReviewScreen extends Component {
         title: this.onboardingTitle[index],
         message: this.onboardingMessage[index],
         currentStep: index + 1,
-        totalStep: 2,
+        totalStep: this.state.reviews[1].data.length === 0 ? 1 : 2,
         anchor: index === 0 ? target : this.onboardingRefs[index].getLikeTag(),
       },
       status => {
         switch (status) {
           case 1:
+            if (this.state.reviews[1].data.length === 0) {
+              return
+            }
             // next
             if (this.onboardingState === 1) {
               this.props.enableOnboardingScroll()
@@ -347,6 +350,17 @@ class ProductReviewScreen extends Component {
             page:
               reviews.data.paging.uri_next === '' ? -1 : this.state.page + 1,
           })
+          ReactOnboardingHelper.getOnboardingStatus(
+            'product_onboarding',
+            `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
+            isOnboardingShown => {
+              if (!isOnboardingShown) {
+                this.startOnboarding()
+              } else {
+                this.props.enableOnboardingScroll()
+              }
+            },
+          )
         },
         err => {
           console.log(err)
@@ -852,20 +866,6 @@ class ProductReviewScreen extends Component {
           }}
           onLayout={event => {
             this.onboardingTags[0] = event.target
-            if (this.onboardingTags[0] === 0) {
-              return
-            }
-            ReactOnboardingHelper.getOnboardingStatus(
-              'product_onboarding',
-              `${this.state.authInfo ? this.state.authInfo.user_id : 0}`,
-              isOnboardingShown => {
-                if (!isOnboardingShown) {
-                  this.startOnboarding()
-                } else {
-                  this.props.enableOnboardingScroll()
-                }
-              },
-            )
           }}
         >
           <FlatList
