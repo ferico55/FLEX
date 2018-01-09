@@ -79,7 +79,7 @@
 }
 
 - (void) enableSendButton {
-    [_sendButton setTintColor:[UIColor whiteColor]];
+    [_sendButton setTintColor:UINavigationBar.appearance.tintColor];
 }
 
 - (void)textViewDidBeginEditing:(UITextView *)textView

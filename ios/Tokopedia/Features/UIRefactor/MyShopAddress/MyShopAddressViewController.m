@@ -226,9 +226,9 @@
                               onSuccess:^(RKMappingResult *mappingResult,
                                           RKObjectRequestOperation *operation) {
                                   SettingLocation *response = [mappingResult.dictionary objectForKey:@""];
+                                  self.keroToken = response.result.keroToken;
                                   if (response.result.list.count > 0) {
                                       self.list = [NSMutableArray arrayWithArray:response.result.list];
-                                      self.keroToken = response.result.keroToken;
                                       self.tableView.tableFooterView = nil;
                                   } else {
                                       self.tableView.tableFooterView = self.noResultView;
