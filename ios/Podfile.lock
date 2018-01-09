@@ -255,12 +255,12 @@ PODS:
   - RSKGrowingTextView (2.0.0):
     - RSKPlaceholderTextView (= 2.0.0)
   - RSKPlaceholderTextView (2.0.0)
-  - RxCocoa (3.3.1):
-    - RxSwift (~> 3.3)
+  - RxCocoa (3.6.1):
+    - RxSwift (~> 3.6)
   - RxDataSources (1.0.4):
     - RxCocoa (~> 3.0)
     - RxSwift (~> 3.0)
-  - RxSwift (3.3.1)
+  - RxSwift (3.6.1)
   - SnapKit (3.2.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.1.0)
@@ -359,9 +359,9 @@ DEPENDENCIES:
   - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
   - RSKGrowingTextView (~> 2.0)
   - RSKPlaceholderTextView (~> 2.0)
-  - RxCocoa (~> 3.3.1)
+  - RxCocoa (~> 3.6.1)
   - RxDataSources (~> 1.0)
-  - RxSwift (~> 3.3.1)
+  - RxSwift (~> 3.6.1)
   - SnapKit (~> 3.2.0)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
   - SwiftLint (~> 0.22.0)
@@ -538,9 +538,9 @@ SPEC CHECKSUMS:
   RNVectorIcons: 6d98d83e944d15014d8071dd9819beb094c61133
   RSKGrowingTextView: 1d9c64f1e9f8ed9b47d883548a3fd76dfdfe1353
   RSKPlaceholderTextView: 301f0f30e70e7c42fe4e941e3a08365ab0d890d5
-  RxCocoa: 7dcb7a1860fc9cd0e23dae67ab105fc2916670b6
+  RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
-  RxSwift: 8fc9f2de6275a9101d518444e00bf32f1a42caac
+  RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
@@ -558,6 +558,6 @@ SPEC CHECKSUMS:
   yoga: b5d96400ca8b2936965a7a6516da7c1177f432a3
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 035cded578ba3c704a4e17b0004cc698cce96715
+PODFILE CHECKSUM: 4fd132496f5f14cea6487c99d52ddf1155eb11e5
 
 COCOAPODS: 1.3.1
