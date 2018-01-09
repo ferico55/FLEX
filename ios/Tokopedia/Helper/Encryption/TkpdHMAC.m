@@ -15,6 +15,7 @@
 
 #include <CommonCrypto/CommonDigest.h>
 #include <CommonCrypto/CommonHMAC.h>
+#import "Tokopedia-Swift.h"
 
 @implementation TkpdHMAC
 
@@ -420,7 +421,8 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
                                       @"carrier" : [carrier carrierName] ?: @"NoCarrier",
                                       @"screen_resolution" : [NSString stringWithFormat:@"%.fx%.f", [[UIScreen mainScreen] bounds].size.height, [[UIScreen mainScreen] bounds].size.width],
                                       @"location_latitude" : user.userLatitude,
-                                      @"location_longitude" : user.userLongitude
+                                      @"location_longitude" : user.userLongitude,
+                                      @"unique_id" : DeviceIdentifier.deviceId
                                       };
         
         return fingerprint;

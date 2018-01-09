@@ -654,6 +654,7 @@
 		DADB9F741F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */; };
 		DADB9F751F3C56D9002B1FAE /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
+		E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
 		E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CB1F838508008FDBCF /* AddToCartPage.swift */; };
@@ -3131,6 +3132,7 @@
 		DADB9F6E1F3C56D9002B1FAE /* FBSDKMessengerShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKMessengerShareKit.framework; path = Tokopedia/ThirdParty/FBSDKMessengerShareKit.framework; sourceTree = "<group>"; };
 		DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Tokopedia/ThirdParty/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
+		E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceIdentifier.swift; sourceTree = "<group>"; };
 		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
 		E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopChatManager.m; sourceTree = "<group>"; };
 		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
@@ -10614,6 +10616,7 @@
 				F977F9DB1FE8AB7800183A85 /* CollectionViewCellType.swift */,
 				F977F9DD1FE8AB7800183A85 /* Constants */,
 				F977F9E31FE8AB7800183A85 /* DelayedActionManager.swift */,
+				E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */,
 				F977F9CA1FE8AB7800183A85 /* Encryption */,
 				F977F9FD1FE8AB7800183A85 /* Fonts */,
 				F977F9C91FE8AB7800183A85 /* FoundationHelper.swift */,
@@ -12349,6 +12352,7 @@
 				62C7706C1FF33C3200F66527 /* ShopInfo.m in Sources */,
 				DADB9F5C1F3C46CF002B1FAE /* MHVerticalTabBar.m in Sources */,
 				F977FD6E1FE8AB7F00183A85 /* UserContainerViewController.m in Sources */,
+				E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */,
 				E57974D31FEA741F00610655 /* InputPromoViewController.swift in Sources */,
 				62C771AB1FF33C3500F66527 /* ListFavorited.m in Sources */,
 				F977FCE61FE8AB7E00183A85 /* GalleryPhotoView.m in Sources */,
