@@ -247,8 +247,8 @@ export default class SendChatMessageComposer extends Component {
         if (this.props.data.source === 'pdp') {
           const trackerParams = {
             name: 'clickProductPage',
-            category: 'click on template chat',
-            action: '',
+            category: 'product page',
+            action: 'click on template chat',
             label: '',
           }
 
@@ -256,8 +256,8 @@ export default class SendChatMessageComposer extends Component {
         } else if (this.props.data.source === 'shop') {
           const trackerParams = {
             name: 'clickShopPage',
-            category: 'click on template chat',
-            action: '',
+            category: 'shop page',
+            action: 'click on template chat',
             label: '',
           }
 

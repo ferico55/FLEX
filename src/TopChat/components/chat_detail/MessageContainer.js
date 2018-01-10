@@ -182,8 +182,8 @@ export default class MessageContainer extends Component {
       () => {
         const trackerParams = {
           name: 'clickInboxChat',
-          category: 'click on template chat',
-          action: '',
+          category: 'inbox-chat',
+          action: 'click on template chat',
           label: '',
         }
         TKPReactAnalytics.trackEvent(trackerParams)

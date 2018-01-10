@@ -61,6 +61,19 @@ RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
                                                                   action:nil];
 }
 
+RCT_EXPORT_METHOD(showErrorStickyAlertWithCallback:(NSString*) message callback:(RCTResponseSenderBlock)callback) {
+    [self destroyLastNotificationView];
+    
+    lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                    type:NotificationTypeError
+                                                                duration:6.0
+                                                             buttonTitle:@"Coba Lagi"
+                                                             dismissable:YES
+                                                                  action:^{
+                                                                      callback(@[[NSNull null]]);
+                                                                  }];
+}
+
 -(void)destroyLastNotificationView {
     if(lastNotificationView) {
         [lastNotificationView setHidden:YES];
