@@ -106,6 +106,7 @@ platform :ios do
       skip_deploy: true
     )
   end
+  
 
   lane :devel do
     scheme = 'Tokopedia'
@@ -168,6 +169,24 @@ platform :ios do
       artifacts: ['*.dSYM.zip', '*.ipa']
     )
   end
+
+  desc "Codepush to Staging"
+  lane :codepush do
+    sh "npm install -g code-push-cli"
+    codepush
+  end
+
+   # Push to Codepush Staging
+  def codepush
+    code_push_login(access_key: ENV["CODEPUSH_ACCESS_KEY"])
+    code_push_release_react(
+      app_name: "Tokopedia",
+      target_binary_version: current_version,
+      platform: "ios",
+      description: changelogs
+    )
+  end
+
 
   # Push to Hockey
   def hockeyapp

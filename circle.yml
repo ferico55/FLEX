@@ -38,3 +38,9 @@ deployment:
     commands:
       - fastlane beta:
         timeout: 1800
+
+
+  codepush_distribution:
+    branch: [master]
+    commands:
+      - fastlane codepush    

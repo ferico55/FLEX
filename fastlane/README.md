@@ -52,11 +52,11 @@ Deploy a new version to the App Store
 fastlane ios devel
 ```
 
-### ios adhoc
+### ios codepush
 ```
-fastlane ios adhoc
+fastlane ios codepush
 ```
-
+Codepush to Staging
 
 ----
 
