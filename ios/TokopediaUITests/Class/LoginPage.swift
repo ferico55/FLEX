@@ -21,6 +21,7 @@ class LoginPage : Page, TokopediaTabBar {
     let passwordTextField = app.secureTextFields["passwordTextField"]
     let resetPassword = app.buttons["Lupa kata sandi?"]
     let loginButton = app.buttons["loginButton"]
+    let touchIdAlert = app.alerts["Integrasi dengan Touch ID"]
     
     func waitForPageLoaded(){
         waitFor(element: loginView, status: .Exists)
@@ -80,10 +81,16 @@ class LoginPage : Page, TokopediaTabBar {
             return false
         }
     }
+    
+    func swithAccountSeller() {
+        more.goToLogout().doLogout()
+        doLogin(email: "julius.gonawan+seller@tokopedia.com", password: "tokopedia2016").loginSuccess()
+    }
 }
 
 class CheckLogin : LoginPage {
     func loginSuccess(){
+        
         waitFor(element: feed.feedView, status: .Exists)
         XCTAssert(feed.feedView.exists)
     }

@@ -160,6 +160,7 @@
         cell.textLabel.text = list.location_address_name;
         cell.detailTextLabel.text = @"";
         cell.type = kTKPDGENERALCELL_DATATYPEONEBUTTONKEY;
+        cell.accessibilityIdentifier = @"listLocationCell";
     }
     return cell;
 }

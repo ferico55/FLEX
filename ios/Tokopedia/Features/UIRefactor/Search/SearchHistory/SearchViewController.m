@@ -81,6 +81,7 @@ NSString *const RECENT_SEARCH = @"recent_search";
     
     _searchSuggestionDataArray = [NSMutableArray new];
     _searchBar.delegate = self;
+    self.collectionView.accessibilityLabel = @"searchView";
 
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(clearAllHistory) name:kTKPD_REMOVE_SEARCH_HISTORY object:nil];

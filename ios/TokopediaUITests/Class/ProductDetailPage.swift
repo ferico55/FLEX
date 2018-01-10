@@ -18,7 +18,7 @@ class ProductDetail : Page, TokopediaTabBar {
     let PDPView = app.otherElements["productDetailView"];
     let reviewButton = app.staticTexts["reviewButton"];
     let talkButton = app.images["icon_discussion_green"]
-    let courierButton = app.buttons.element(boundBy : 4)
+    let courierButton = app.staticTexts["courierButton"]
     let shareButton = app.buttons["icon share white"]
     let cartButton = app.buttons["icon cart white"]
     let moreButton = app.buttons["icon more plain"]
@@ -27,6 +27,7 @@ class ProductDetail : Page, TokopediaTabBar {
     let productScrollView = app.scrollViews["productScrollView"]
     let wishlistButton = app.otherElements["wishlistButton"]
     let buyButton = app.buttons["Beli"]
+    let preorderButton = app.buttons["Preorder"]
     let favoriteButton = app.buttons["favoriteButton"]
     let unfavoriteButton = app.buttons["unfavoriteButton"]
     let sellerName = app.otherElements["sellerName"]
@@ -115,6 +116,11 @@ class ProductDetail : Page, TokopediaTabBar {
     func clickBuy() {
         waitFor(element: buyButton, status: .Exists)
         buyButton.tap()
+    }
+    
+    func clickPreorder() {
+        waitFor(element: preorderButton, status: .Exists)
+        preorderButton.tap()
     }
     
     func clickWishlist() {

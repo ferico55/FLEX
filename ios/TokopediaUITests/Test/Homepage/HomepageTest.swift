@@ -12,6 +12,7 @@ class HomepageTest: XCTestCase {
     
     var homepage = HomePage()
     var login = LoginPage()
+    var promo = PromoPage()
     var tokocashActivation = TokoCashActivationPage()
     var digitalProduct = DigitalProductPage()
     var officialStorePage = OfficialStorePage()
@@ -20,11 +21,12 @@ class HomepageTest: XCTestCase {
     var feed = FeedPage()
     var lastseen = LastSeenPage()
     var productDetail = ProductDetail()
+    var more = MorePage()
     
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
@@ -39,7 +41,7 @@ class HomepageTest: XCTestCase {
     func testActivatedTokocash() {
         if login.isLogout() {
             login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
+            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
             homepage.goHomePage()
             if !homepage.isActivatedTokocash() {
                 homepage.clickActivatedTokoCash().clickActivated()
@@ -142,7 +144,7 @@ class HomepageTest: XCTestCase {
         if login.isLogout()
         {
             login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
+            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
             feed.goToFeedPage()
             feed.swipeFeed()
             
@@ -157,7 +159,7 @@ class HomepageTest: XCTestCase {
     func testLastSeen() {
         if login.isLogout() {
             login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
+            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
             homepage.goToLastSeenPage()
             lastseen.swipeLastSeen()
             lastseen.tapLastSeenCell()
@@ -168,5 +170,4 @@ class HomepageTest: XCTestCase {
         lastseen.tapLastSeenCell()
         XCTAssert(productDetail.PDPView.exists)
     }
-    
 }

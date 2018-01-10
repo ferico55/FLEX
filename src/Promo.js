@@ -457,6 +457,7 @@ class Promo extends React.PureComponent {
         this.props.navigation.navigate('tproutes', { url: item.item.link })
       }}
       style={styles.photoContainer}
+      accessibilityLabel = {'promoReactView'}
     >
       <View style={{ borderWidth: 1, borderColor: 'rgba(0,0,0,0.12)' }}>
         <PreAnimatedImage
@@ -572,6 +573,7 @@ class Promo extends React.PureComponent {
     return (
       <View style={{ backgroundColor: '#F1F1F1', flex: 1 }}>
         <FlatList
+        accessibilityLabel = {'promoScrollView'}
           ref={ref => {
             this.flatList = ref
           }}

@@ -18,7 +18,7 @@ class IntermediaryTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()

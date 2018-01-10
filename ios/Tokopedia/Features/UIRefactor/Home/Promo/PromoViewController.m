@@ -19,7 +19,7 @@
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"
                                               initialProperties:@{@"name" : @"Promo", @"params" : @{} }];
-    
+    rootView.accessibilityLabel = @"promoMainView";
     self.view = rootView;
 }
 

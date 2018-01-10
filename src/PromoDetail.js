@@ -421,6 +421,7 @@ class PromoDetail extends React.PureComponent {
           <TouchableOpacity
             style={styles.innerCodeHolder}
             onPress={() => this.copyPromoCode(this.state.data.meta.promo_code)}
+            accessibilityLabel = {'promoCopyCode'}
           >
             <Text style={[styles.greyText, { fontSize: 14 }]}>Salin Kode</Text>
           </TouchableOpacity>
@@ -440,6 +441,7 @@ class PromoDetail extends React.PureComponent {
         }}
       />
       <TouchableOpacity
+        accessibilityLabel = {'sharePromoView'}
         style={{ zIndex: 10 }}
         onPress={e =>
           ReactInteractionHelper.share(
@@ -461,10 +463,11 @@ class PromoDetail extends React.PureComponent {
           <Image
             style={styles.shareImage}
             source={{ uri: 'icon_share_gradient' }}
+            accessibilityLabel = {'sharePromo'}
           />
         </View>
       </TouchableOpacity>
-      <View style={styles.titleHolder}>
+      <View style={styles.titleHolder} accessibilityLabel = {'promoHeader'}>
         <Text style={styles.title}>
           {entities.decodeHTML(this.state.data.title.rendered)}
         </Text>
@@ -566,6 +569,7 @@ class PromoDetail extends React.PureComponent {
                 <Image
                   source={{ uri: 'icon_information' }}
                   style={{ width: 14, height: 14, marginTop: 1 }}
+                  accessibilityLabel = {'promoInfo'}
                 />
               </TouchableOpacity>
             )}
@@ -586,16 +590,18 @@ class PromoDetail extends React.PureComponent {
 
   render() {
     return (
-      <View style={{ backgroundColor: 'rgb(241,241,241)', flex: 1 }}>
+      <View style={{ backgroundColor: 'rgb(241,241,241)', flex: 1 }} accessibilityLabel = {'promoView'}>
         {!this.state.data &&
         !this.state.isLoading && (
           <NoResultView
+            accessibilityLabel = {'noResultView'}
             onRefresh={() => {
               this.loadData()
             }}
           />
         )}
         <ScrollView
+        accessibilityLabel = {'promoScrollView'}
           style={
             this.state.data && this.state.data.meta.app_link !== '' ? (
               { marginBottom: 52 }
@@ -609,6 +615,7 @@ class PromoDetail extends React.PureComponent {
               animating={this.state.isLoading}
               style={[styles.centering, { height: 44 }]}
               size="small"
+              accessibilityLabel = {'promoLoadingView'}
             />
           )}
           {this.state.data != null && this.renderMainContent()}
@@ -617,6 +624,7 @@ class PromoDetail extends React.PureComponent {
         this.state.data &&
         this.state.data.meta.app_link !== '' && (
           <TouchableOpacity
+            accessibilityLabel = {'promoBuyView'}
             style={[styles.shopButton]}
             onPress={() =>
               this.props.navigation.navigate('tproutes', {

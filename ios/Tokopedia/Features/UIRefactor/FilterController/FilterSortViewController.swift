@@ -94,6 +94,7 @@ class FilterSortViewController: UIViewController {
         
         refreshControl.addTarget(self, action: #selector(FilterSortViewController.requestFilter), for: UIControlEvents.valueChanged)
         tableView.addSubview(refreshControl)
+        tableView.accessibilityLabel = "filterSortPage"
     }
     
     // MARK: Table View Rx

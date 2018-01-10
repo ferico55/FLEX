@@ -12,7 +12,7 @@ import XCTest
 class HotlistPage : Page, TokopediaTabBar {
     
     let hotlistResultView = app.collectionViews["hotlistResultView"]
-    let hotlistCell = app.otherElements.element(boundBy: 3)
+    let hotlistCell = app.otherElements.matching(identifier: "hotlistCell").element(boundBy: 2)
     
     func clickHotlist() {
         waitFor(element: hotlistCell, status: .Exists)

@@ -104,6 +104,7 @@
     
     _table.rowHeight = UITableViewAutomaticDimension;
     _table.estimatedRowHeight = 44;
+    _table.accessibilityLabel = @"addEditTable";
     
     _section1Cells = [NSArray sortViewsWithTagInArray:_section1Cells];
 

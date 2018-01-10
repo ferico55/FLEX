@@ -16,6 +16,7 @@ NSInteger const maxNumberOfCharacterForDescription = 120;
 - (void)awakeFromNib {
     [super awakeFromNib];
     [self updateCountLabel];
+    self.textView.accessibilityIdentifier = @"editShopTextView";
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

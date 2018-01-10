@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16E195" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="17A405" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -47,6 +46,7 @@
                                             </label>
                                             <button opaque="NO" contentMode="center" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q9q-Wi-l6h">
                                                 <rect key="frame" x="260" y="0.0" width="40" height="51"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="elipseButton"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="40" id="0PR-Bu-OEa"/>
                                                     <constraint firstAttribute="height" constant="51" id="lL4-NH-Ebq"/>
@@ -99,6 +99,7 @@
                                             </view>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KsD-0b-3FJ">
                                                 <rect key="frame" x="197" y="10" width="93" height="21"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="invoice"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="21" id="58c-Y5-el7"/>
                                                 </constraints>
@@ -112,6 +113,7 @@
                                             </button>
                                             <button opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="249" ambiguous="YES" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jbu-UK-3O1">
                                                 <rect key="frame" x="197" y="36" width="95" height="20"/>
+                                                <accessibility key="accessibilityConfiguration" identifier="seeProof"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="20" id="hZJ-AV-zfy"/>
                                                 </constraints>
@@ -264,6 +266,7 @@
                                 <subviews>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="2vk-bO-mqo">
                                         <rect key="frame" x="0.0" y="1" width="300" height="50"/>
+                                        <accessibility key="accessibilityConfiguration" identifier="uploadProof"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <inset key="titleEdgeInsets" minX="6" minY="0.0" maxX="0.0" maxY="0.0"/>
                                         <inset key="imageEdgeInsets" minX="-6" minY="-2" maxX="0.0" maxY="0.0"/>

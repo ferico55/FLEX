@@ -21,6 +21,19 @@
     
     [super awakeFromNib];
     
+    self.invoiceNumberLabel.accessibilityLabel = @"invoiceNumber";
+    self.remainingDaysLabel.accessibilityLabel = @"remainingDays";
+    self.automaticallyCanceledLabel.accessibilityLabel = @"automaticallyCancel";
+    self.userView.accessibilityLabel = @"userView";
+    self.userNameLabel.accessibilityLabel = @"userName";
+    self.purchaseDateLabel.accessibilityLabel = @"purchaseDate";
+    self.paymentAmountLabel.accessibilityLabel = @"paymentAmount";
+    self.dueDateLabel.accessibilityLabel = @"dueDate";
+    self.statusView.accessibilityLabel = @"statusView";
+    self.priceView.accessibilityLabel = @"priceView";
+    self.lastStatusLabel.accessibilityLabel = @"lastStatusLabel";
+    
+    
     self.remainingDaysLabel.layer.cornerRadius = 1;
 
     [self.acceptButton.titleLabel setFont:[UIFont microTheme]];

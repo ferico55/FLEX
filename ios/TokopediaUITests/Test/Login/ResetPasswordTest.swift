@@ -18,7 +18,7 @@ class ResetPasswordTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
@@ -34,7 +34,7 @@ class ResetPasswordTest: XCTestCase {
     }
     
     func testResetPassword() {
-        resetPassword.fillEmail(email : "julius.gonawan+buyer@tokopedia.com")
+        resetPassword.fillEmail(email : "julius.gonawan+automationbuyer@tokopedia.com")
         resetPassword.resetPasswordButton.tap()
         XCTAssert(resetPassword.resetPasswordButton.exists)
     }

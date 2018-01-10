@@ -696,6 +696,7 @@ class ProductHeaderNode: ContainerNode {
             },
             Node<UILabel>() { view, layout, _ in
                 layout.alignSelf = .center
+                view.accessibilityLabel = "courierButton"
                 view.text = "\(shipments) Kurir"
                 view.textColor = .tpGreen()
                 view.highlightedTextColor = .tpLightGreen()

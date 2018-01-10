@@ -126,7 +126,8 @@ NoResultDelegate
 
     _tableView.estimatedRowHeight = 86;
     _tableView.rowHeight = UITableViewAutomaticDimension;
-
+    //_tableView.accessibilityIdentifier = @"productList";
+    
     _isNeedToSearch = YES;
 
     _products = [NSMutableArray new];
@@ -228,6 +229,7 @@ NoResultDelegate
     NSString *cellid = kTKPDSETTINGPRODUCTCELL_IDENTIFIER;
 
     cell = (ProductListMyShopCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    
     if (cell == nil) {
         cell = [ProductListMyShopCell newcell];
         ((ProductListMyShopCell*)cell).delegate = self;
@@ -235,6 +237,7 @@ NoResultDelegate
 
     if (_products.count > indexPath.row ) {
         ManageProductList *list = _products[indexPath.row];
+        cell.accessibilityIdentifier = @"productList";
         [((ProductListMyShopCell*)cell).labelname setText:list.product_name animated:NO];
         [((ProductListMyShopCell*)cell).labeletalase setText:list.product_etalase animated:NO];
         NSString *price = list.product_normal_price;
@@ -650,11 +653,16 @@ NoResultDelegate
         ManageProductList *product = _products[indexPath.row];
         [_dataInput setObject:@(product.product_id) forKey:kTKPDDETAILPRODUCT_APIPRODUCTIDKEY];
 
+        
         MGSwipeButton *deleteButton = [self deleteButtonForRowAtIndexPath:indexPath];
+        deleteButton.accessibilityIdentifier = @"swipeDelete";
         MGSwipeButton *etalaseButton = [self etalaseButtonForRowAtIndexPath:indexPath];
+        etalaseButton.accessibilityIdentifier = @"swipeEtalase";
         MGSwipeButton *duplicateButton = [self duplicateButtonForRowAtIndexPath:indexPath];
+        duplicateButton.accessibilityIdentifier = @"swipeDuplicate";
 
         MGSwipeButton *warehouseButton = [self warehouseButtonForRowAtIndexPath:indexPath];
+        warehouseButton.accessibilityIdentifier = @"swipeWarehouse";
         warehouseButton.frame = etalaseButton.frame;
 
         if ([product.product_status integerValue] == PRODUCT_STATE_WAREHOUSE) {

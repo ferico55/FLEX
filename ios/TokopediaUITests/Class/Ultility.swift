@@ -16,7 +16,7 @@ protocol TokopediaTabBar {
     func goWishlistPage() -> WishlistPage
     func goCartPage() -> CartPage
     func goLoginPage() -> LoginPage
-    func goMorePage() -> MorePage
+    func goMorePage() 
 }
 
 extension TokopediaTabBar {
@@ -85,11 +85,9 @@ extension TokopediaTabBar {
         return LoginPage()
     }
     
-    @discardableResult
-    func goMorePage() -> MorePage
+    func goMorePage()
     {
         moreTabBar.tap()
-        return MorePage()
     }
 }
 
@@ -99,9 +97,9 @@ protocol SearchBar {
 }
 
 extension SearchBar {
-    fileprivate var searchTextField: XCUIElement
+    var searchTextField: XCUIElement
     {
-        return Page.app.navigationBars["Home"].searchFields["Cari produk atau toko"]
+       return Page.app.navigationBars["Home"].searchFields["Cari Produk atau Toko"]
     }
     
     func goToSearchPage() -> SearchPage

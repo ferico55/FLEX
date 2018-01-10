@@ -20,7 +20,7 @@ class RegisterTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
@@ -42,13 +42,13 @@ class RegisterTest: XCTestCase {
     }
 
     func testLoginFromRegister() {
-        register.registerWithEmail().fillRegisterForm(email: "julius.gonawan+buyer@tokopedia.com", name: "auto generated", handphone: "08121111313", password: "tokopedia2016")
+        register.registerWithEmail().fillRegisterForm(email: "julius.gonawan+automationbuyer@tokopedia.com", name: "auto generated", handphone: "08121111313", password: "tokopedia2016")
         waitFor(element: feed.feedTab, status: .Exists)
         XCTAssert(feed.feedTab.exists)
     }
 
     func testResetPasswordRegister() {
-        register.registerWithEmail().fillRegisterForm(email: "julius.gonawan+buyer@tokopedia.com", name: "auto generated", handphone: "08121111313", password: "tokopedia201d6")
+        register.registerWithEmail().fillRegisterForm(email: "julius.gonawan+automationbuyer@tokopedia.com", name: "auto generated", handphone: "08121111313", password: "tokopedia201d6")
         waitFor(element: resetPasswordSuccess.resetPasswordView , status: .Exists)
         XCTAssert(resetPasswordSuccess.resetPasswordView.exists)
     }

@@ -21,6 +21,7 @@
                                     options:nil];
         [self.view setFrame:CGRectMake(0, 0, frame.size.width?:[[UIScreen mainScreen]bounds].size.width, 200)];
         [self addSubview:self.view];
+        self.accessibilityIdentifier = @"noResultView";
     }
     return self;
 }

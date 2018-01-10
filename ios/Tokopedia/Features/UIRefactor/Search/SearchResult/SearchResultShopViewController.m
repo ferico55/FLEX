@@ -101,6 +101,7 @@ static NSString const *rows = @"12";
         [_params addEntriesFromDictionary:_data];
     }
     
+    _table.accessibilityLabel=@"shopResultTable";
     _table.tableFooterView = _footer;
     [_act startAnimating];
     
@@ -195,7 +196,7 @@ static NSString const *rows = @"12";
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     SearchResultShopCell* cell = [tableView dequeueReusableCellWithIdentifier:@"SearchResultShopCellIdentifier" forIndexPath:indexPath];
-    
+    cell.accessibilityLabel = @"shopResultCell";
     SearchAWSShop *shop = [_shops objectAtIndex:indexPath.row];
     cell.modelView = shop.modelView;
    

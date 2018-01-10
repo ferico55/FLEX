@@ -56,6 +56,7 @@
     }];
 
     _textView.placeholder = @"Tulis Keterangan";
+    _textView.accessibilityIdentifier = @"rejectOrderTextView";
 }
 
 - (void)viewDidAppear:(BOOL)animated

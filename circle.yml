@@ -14,6 +14,10 @@ dependencies:
 test:
   override:
     - yarn danger
+    - if [ $CIRCLE_BRANCH = 'feature/UITest' ]; then fastlane test ; fi
+  post:
+    - if [ $CIRCLE_BRANCH = 'feature/UITest' ]; then mkdir -p $CIRCLE_TEST_REPORTS/junit && cat fastlane/test_output/report.junit > $CIRCLE_TEST_REPORTS/junit/report.xml; fi
+
 
 general:
   branches:

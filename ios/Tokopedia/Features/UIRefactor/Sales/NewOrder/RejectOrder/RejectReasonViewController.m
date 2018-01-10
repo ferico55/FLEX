@@ -66,6 +66,7 @@
     RejectReason *reason = [_rejectReasons objectAtIndex:indexPath.row];
     
     UITableViewCell *cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+    tableView.accessibilityIdentifier = @"rejectReasonTable";
     cell.textLabel.font = [UIFont title2Theme];
     cell.textLabel.text = reason.reason_text;
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;

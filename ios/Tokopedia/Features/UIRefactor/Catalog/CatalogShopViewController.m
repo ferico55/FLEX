@@ -117,6 +117,7 @@
     _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     
     self.title = @"Daftar Toko";
+    self.tableView.accessibilityLabel = @"ShopResultTable";
     
     UIBarButtonItem *backButton = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                    style:UIBarButtonItemStyleBordered

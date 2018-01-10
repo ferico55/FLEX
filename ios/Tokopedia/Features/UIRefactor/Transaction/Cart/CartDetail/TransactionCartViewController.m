@@ -189,7 +189,10 @@ InputPromoViewDelegate
     [self refreshRequestCart];
     
     [AnalyticsManager trackScreenName:@"Shopping Cart"];
- 
+    _tableView.accessibilityLabel = @"cartTableView";
+    _noResultScrollView.accessibilityLabel = @"noResultView";
+    _noLoginView.accessibilityLabel = @"noLoginView";
+    
     _barButton = [[NotificationBarButton alloc] initWithParentViewController:self];
     
     _userManager = [UserAuthentificationManager new];

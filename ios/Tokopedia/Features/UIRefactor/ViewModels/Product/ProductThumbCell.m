@@ -36,6 +36,13 @@
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.accessibilityLabel = @"productThumbCell";
+}
+
+
+
 #pragma mark wishlist actions
 - (void) setupWishlistButton {
     self.setWishlistAnimationView = [LOTAnimationView animationNamed:@"activateWishlist"];
@@ -47,6 +54,7 @@
     [self.setWishlistAnimationView addGestureRecognizer: tap];
     self.setWishlistAnimationView.frame = CGRectMake(self.contentView.frame.size.width - 36, 0, 36, 36);
     [self.contentView addSubview:self.setWishlistAnimationView];
+    
     
     
     self.unsetWishlistAnimationView = [LOTAnimationView animationNamed:@"deactivateWishlist"];

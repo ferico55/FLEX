@@ -17,7 +17,7 @@ class LoginTest: XCTestCase {
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
@@ -34,12 +34,11 @@ class LoginTest: XCTestCase {
     
     
     func testLoginValid() {
-        login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        
+        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
     }
     
     func testLoginInvalid() {
-        login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "tokopedia1111").loginUnsuccess()
+        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia1111").loginUnsuccess()
     }
 
     
@@ -48,6 +47,6 @@ class LoginTest: XCTestCase {
     }
 
     func testLoginEmptyEmail() {
-        login.doLogin(email: "julius.gonawan+buyer@tokopedia.com", password: "").loginUnsuccess()
+        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "").loginUnsuccess()
     }
 }

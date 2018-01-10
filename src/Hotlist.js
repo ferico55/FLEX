@@ -217,6 +217,7 @@ class Hotlist extends PureComponent {
 
   renderItem = item => (
     <TouchableOpacity
+    accessibilityLabel={'hotlistCell'}
     activeOpacity={0.9}
       onPress={() => {
         TKPReactAnalytics.trackEvent({
@@ -237,8 +238,8 @@ class Hotlist extends PureComponent {
       }}
       style={styles.photoContainer}
     >
-      <Image source={{ uri: item.item.image_url_600 }} style={styles.photo} />
-      <View style={styles.textWrapper}>
+      <Image source={{ uri: item.item.image_url_600 }} style={styles.photo} accessibilityLabel={'hotlistImage'}/>
+      <View style={styles.textWrapper} accessibilityLabel={'hotlistText'}>
         <Text style={{ fontSize: 12, flexShrink: 1 }}>{item.item.title}</Text>
         <View style={{ flexDirection: 'row' }}>
           <Text style={styles.textStartFrom}>Mulai dari</Text>
@@ -272,6 +273,7 @@ class Hotlist extends PureComponent {
 
     return (
       <FlatList
+        accessibilityLabel={'hotlistList'}
         ref={ref => {
           this.flatList = ref
         }}

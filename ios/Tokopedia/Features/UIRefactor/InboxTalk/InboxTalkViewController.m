@@ -92,6 +92,8 @@
     [super viewDidLoad];
 
     [self initNotification];
+    [UIActivityIndicatorView setAnimationsEnabled:NO];
+
 
     _page = 1;
     isFirstShow = YES;
@@ -103,6 +105,7 @@
 
     _table.delegate = self;
     _table.dataSource = self;
+    _table.accessibilityLabel = @"talkList";
 
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
@@ -143,10 +146,12 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     TalkList *list = [_talkList objectAtIndex:indexPath.row];
+    
 
     TalkCell *cell = [tableView dequeueReusableCellWithIdentifier:@"TalkCellIdentifier" forIndexPath:indexPath];
     cell.delegate = self;
     cell.enableDeepNavigation = NO;
+    
 
     cell.talk = list;
 

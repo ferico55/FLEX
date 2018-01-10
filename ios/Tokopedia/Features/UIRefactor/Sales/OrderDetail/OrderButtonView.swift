@@ -26,6 +26,7 @@ class OrderButtonView: UIView {
     
     func addAcceptButton(_ onTap:(() -> Void)?) {
         onTapAccept = onTap
+        //self.accessibilityIdentifier = "Terima"
         self.addButtonWithTitle("Terima", imageName:"icon_order_check", action:#selector(self.tapAccept(_:)))
     }
     
@@ -150,6 +151,8 @@ class OrderButtonView: UIView {
         button.titleEdgeInsets.left = 6;
         button.layer.borderWidth = 0.5
         button.layer.borderColor = UIColor(red:188.0/255.0, green:187.0/255.0, blue:193.0/255.0, alpha:0.5).cgColor
+        button.accessibilityLabel = title
+        button.accessibilityIdentifier = title
         
         self.buttonsStackView().addArrangedSubview(button)
         

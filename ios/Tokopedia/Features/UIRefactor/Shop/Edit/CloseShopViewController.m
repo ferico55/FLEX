@@ -164,6 +164,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     [attribString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:NSMakeRange(0, [_explanationLabel.text length])];
     [attribString addAttribute:NSFontAttributeName value:font range:NSMakeRange(0, [_explanationLabel.text length])];
     
+    _catatanTextView.accessibilityIdentifier = @"closedNote";
     _explanationLabel.attributedText = attribString;
     _explanationLabel.numberOfLines = 0;
     [_explanationLabel sizeToFit];
@@ -524,6 +525,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
 }
 
 -(void)setDateButton{
+    _mulaiDariButton.accessibilityIdentifier = @"dateMulaiDari";
     if(_dateMulaiDari){
         [_mulaiDariButton setTitle:[self stringFromNSDate:_dateMulaiDari]
                           forState:UIControlStateNormal];
@@ -531,6 +533,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
         [_mulaiDariButton setTitle:@"Pilih Tanggal"
                           forState:UIControlStateNormal];
     }
+    _sampaiDenganButton.accessibilityIdentifier = @"dateSampaiDengan";
     if(_dateSampaiDengan){
         [_sampaiDenganButton setTitle:[self stringFromNSDate:_dateSampaiDengan]
                              forState:UIControlStateNormal];
@@ -637,6 +640,7 @@ typedef NS_ENUM(NSInteger, AlertDatePickerType){
     }
     
     //DESIGN CENTER VIEW
+    _hapusButton.accessibilityIdentifier = @"hapusButton";
     if(_scheduleDetail.close_status == CLOSE_STATUS_OPEN){
         _tutupTokoSekarangLabel.text = @"Tutup Toko Sekarang";
         [_tutupSekarangSwitch setHidden:NO];

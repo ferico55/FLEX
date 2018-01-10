@@ -93,6 +93,7 @@
     NSString *cellid = @"GeneralSwitchCellIdentifier";
     
     GeneralSwitchCell *cell = (GeneralSwitchCell*)[tableView dequeueReusableCellWithIdentifier:cellid];
+    cell.accessibilityLabel = @"dropshipper";
     if (cell == nil) {
         cell = [GeneralSwitchCell newcell];
         cell.delegate = tableView.delegate;

@@ -152,6 +152,7 @@
             ((GeneralList1GestureCell*)cell).detailTextLabel.hidden = YES;
             ((GeneralList1GestureCell*)cell).indexpath = indexPath;            
             ((GeneralList1GestureCell*)cell).type = kTKPDGENERALCELL_DATATYPETWOBUTTONKEY;
+            cell.accessibilityIdentifier = @"listNotesCell";
         }
         
 		return cell;

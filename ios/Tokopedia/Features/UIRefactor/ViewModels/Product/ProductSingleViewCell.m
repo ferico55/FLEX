@@ -31,6 +31,12 @@
     TokopediaNetworkManager *tokopediaNetworkManagerWishList;
 }
 
+- (void)awakeFromNib {
+    [super awakeFromNib];
+    self.accessibilityLabel = @"productSingleView";
+}
+
+
 #pragma mark wishlist actions
 - (void) setupWishlistButton {
     self.setWishlistAnimationView = [LOTAnimationView animationNamed:@"activateWishlist"];
@@ -361,6 +367,7 @@
     self.catalogPriceLabel.text = viewModel.catalogPrice;
     self.catalogPriceLabel.font = [UIFont largeThemeSemibold];
     self.catalogPriceLabel.hidden = NO;
+    
     
     [self.productShop setText:[viewModel.catalogSeller isEqualToString:@"0"] ? @"Tidak ada produk" : [NSString stringWithFormat:@"%@ Produk", viewModel.catalogSeller]];
     self.productShop.font = [UIFont microTheme];

@@ -1,8 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="10117" systemVersion="15B42" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="16D30" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
@@ -25,6 +28,7 @@
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="y1T-oN-hxg">
                             <rect key="frame" x="106" y="8" width="199" height="30"/>
+                            <accessibility key="accessibilityConfiguration" identifier="subtotalCost"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="Lag-L0-oGf"/>
                             </constraints>
@@ -42,6 +46,7 @@
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="SL7-AP-vsr">
                             <rect key="frame" x="135" y="38" width="170" height="30"/>
+                            <accessibility key="accessibilityConfiguration" identifier="insuranceCost"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="o48-H0-86Q"/>
                             </constraints>
@@ -59,6 +64,7 @@
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JaX-pk-Gmv">
                             <rect key="frame" x="121" y="68" width="184" height="30"/>
+                            <accessibility key="accessibilityConfiguration" identifier="shippingCost"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="llg-aO-F8I"/>
                             </constraints>
@@ -76,6 +82,7 @@
                         </label>
                         <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="value" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H2J-xi-6Ls">
                             <rect key="frame" x="69" y="98" width="236" height="30"/>
+                            <accessibility key="accessibilityConfiguration" identifier="totalCost"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="ZT7-aW-eR7"/>
                             </constraints>
@@ -84,7 +91,7 @@
                         </label>
                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0mY-JK-tYw" userLabel="Border Bottom">
                             <rect key="frame" x="0.0" y="135" width="320" height="1"/>
-                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <color key="backgroundColor" red="0.7843137255" green="0.78039215689999997" blue="0.80000000000000004" alpha="0.69999999999999996" colorSpace="custom" customColorSpace="sRGB"/>
                             <constraints>
                                 <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="1" id="6nw-XA-whR"/>
                                 <constraint firstAttribute="height" constant="1" id="VeL-9l-IOF"/>
@@ -92,19 +99,20 @@
                         </view>
                         <button hidden="YES" opaque="NO" tag="11" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GUK-6j-tsW">
                             <rect key="frame" x="121" y="38" width="30" height="30"/>
+                            <accessibility key="accessibilityConfiguration" identifier="insuranceInfoButton"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="30" id="cP3-8C-amM"/>
                                 <constraint firstAttribute="width" constant="30" id="zkJ-Kp-661"/>
                             </constraints>
                             <state key="normal" image="icon_info_grey_small.png">
-                                <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                <color key="titleShadowColor" red="0.5" green="0.5" blue="0.5" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </state>
                             <connections>
                                 <action selector="tap:" destination="kPn-7Y-V3S" eventType="touchUpInside" id="Upl-l8-woc"/>
                             </connections>
                         </button>
                     </subviews>
-                    <color key="backgroundColor" red="0.97647058823529409" green="0.97647058823529409" blue="0.97647058823529409" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <color key="backgroundColor" red="0.97037827968597412" green="0.97034925222396851" blue="0.97036570310592651" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <constraints>
                         <constraint firstItem="0mY-JK-tYw" firstAttribute="leading" secondItem="vpu-4S-8c9" secondAttribute="leading" id="1t3-Nd-sI4"/>
                         <constraint firstItem="lrv-m5-puj" firstAttribute="top" secondItem="vpu-4S-8c9" secondAttribute="top" constant="8" id="2qM-oz-n6m"/>
@@ -136,7 +144,7 @@
                     </constraints>
                 </view>
             </subviews>
-            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="vpu-4S-8c9" firstAttribute="top" secondItem="kPn-7Y-V3S" secondAttribute="top" id="CVT-hZ-Aqh"/>
                 <constraint firstAttribute="trailing" secondItem="vpu-4S-8c9" secondAttribute="trailing" id="Rgh-ZM-InL"/>

@@ -11,6 +11,7 @@ import XCTest
 
 class HomePage : Page, SearchBar, TokopediaTabBar {
     
+    let promoTab = app.buttons["PROMO"]
     let feedTab = app.buttons["FEED"]
     let lastSeenTab = app.buttons["TERAKHIR DILIHAT"]
     let activationHomepage = app.buttons["Aktivasi"]
@@ -83,6 +84,12 @@ class HomePage : Page, SearchBar, TokopediaTabBar {
         goHomePage()
         waitFor(element: feedTab, status: .Exists)
         feedTab.tap()
+    }
+    
+    func goToPromoPage() {
+        goHomePage()
+        waitFor(element: promoTab, status: .Exists)
+        promoTab.tap()
     }
     
     func goToLastSeenPage() {

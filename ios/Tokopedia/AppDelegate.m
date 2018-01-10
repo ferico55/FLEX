@@ -394,7 +394,9 @@
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 #ifdef DEBUG
-    [FLEXManager.sharedManager showExplorer];
+    if (![NSProcessInfo.processInfo.arguments containsObject:@"UI_TESTING"]) {
+        [FLEXManager.sharedManager showExplorer];
+    }
     [ReactOnboardingHelper resetOnboarding];
 #endif
     

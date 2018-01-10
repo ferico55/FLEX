@@ -40,6 +40,7 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      disableMainThreadChecker = "YES"
       language = ""
       shouldUseLaunchSchemeArgsEnv = "YES">
       <Testables>
@@ -52,20 +53,6 @@
                BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">
             </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "HotlistTest/testHotlistPDP()">
-               </Test>
-               <Test
-                  Identifier = "OnBoardingTest">
-               </Test>
-               <Test
-                  Identifier = "TokopediaUITests">
-               </Test>
-               <Test
-                  Identifier = "WishlistTest">
-               </Test>
-            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

@@ -19,11 +19,12 @@ class PDPTest: XCTestCase {
     var addToCart = AddToCartPage()
     var wholesale = Wholesale()
     var productDescription = ProductDescription()
+    var more = MorePage()
     
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
-        XCUIApplication().launch()
+        Page.app.launch()
         UITest.sharedInstance.testCase = self
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
@@ -35,7 +36,7 @@ class PDPTest: XCTestCase {
     }
     
     func testGoPDPFromSearch() {
-        homepage.goToSearchPage().search("iPhone 7").clickProduct()
+        homepage.goToSearchPage().searchProduct("iPhone 7").clickProduct()
         XCTAssert(productDetail.PDPView.exists)
     }
     
@@ -49,32 +50,20 @@ class PDPTest: XCTestCase {
     }
 
     func testPreorder() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
+        homepage.goToSearchPage().searchProduct("iPhone po").clickProduct()
+        waitFor(element: productDetail.preorderView, status: .Exists)
         XCTAssert(productDetail.preorderView.exists)
     }
 
     func testOfficialStoreBadge() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
+        homepage.goToSearchPage().searchProduct("jbl t205").clickProduct()
+        waitFor(element: productDetail.officialStoreBadge, status: .Exists)
         XCTAssert(productDetail.officialStoreBadge.exists)
     }
 
     func testFreeReturn() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
+        homepage.goToSearchPage().searchProduct("jam tangan casio").clickProduct()
+        waitFor(element: productDetail.freeReturnView, status: .Exists)
         XCTAssert(productDetail.freeReturnView.exists)
     }
 
@@ -154,13 +143,11 @@ class PDPTest: XCTestCase {
     }
     
     func testBuyProduct() {
-        testGoPDPFromSearch()
-        productDetail.clickBuy()
-        
-        if login.isShouldLogin(){
+        if login.isLogout(){
             login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-            productDetail.clickBuy()
         }
+        testGoPDPFromWishlist()
+        productDetail.clickBuy()
         XCTAssert(addToCart.ATCNavigation.exists)
     }
 
@@ -277,4 +264,25 @@ class PDPTest: XCTestCase {
         productDetail.readMoreTalk().isTalkDetailPage()
     }
     
+/*    func testPromotedProduct() {
+        var i = 1
+        while i <= 10 {
+            if login.isLogout() {
+                login.goLoginPage()
+                login.doLogin(email: "cancertainly16@gmail.com", password: "tokopedia2016").loginSuccess()
+            }
+            more.goToProductList()
+            let promoButton = Page.app.buttons["Promosi"]
+            promoButton.tap()
+            let okAlert = Page.app.alerts.buttons["OK"]
+            okAlert.tap()
+            productDetail.backButton.tap()
+            Page.app.buttons["Back"].tap()
+            more.goToLogout().doLogout()
+            waitFor(element: more.logoutCell, status: .NotExists)
+            i += 1
+            }
+        
+        }
+ */
 }
