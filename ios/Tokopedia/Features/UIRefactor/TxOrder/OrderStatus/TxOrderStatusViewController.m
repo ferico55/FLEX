@@ -151,6 +151,19 @@
     _loadingView = [LoadingView new];
     _loadingView.delegate = self;
     
+    _page = 1;
+    
+    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
+    [dateFormatter setDateFormat:@"dd/MM/yyyy"];
+    NSString *filterStartDate = [_dataInput objectForKey:API_TRANSACTION_START_DATE_KEY]?:@"";
+    if ([filterStartDate isEqualToString:@""]) {
+        [_dataInput setObject:[dateFormatter stringFromDate:[[NSDate date] dateByAddingTimeInterval:-30*24*60*60]] forKey:API_TRANSACTION_START_DATE_KEY];
+    }
+    NSString *filterEndDate = [_dataInput objectForKey:API_TRANSACTION_END_DATE_KEY]?:@"";
+    if ([filterEndDate isEqualToString:@""]) {
+        [_dataInput setObject:[dateFormatter stringFromDate:[NSDate date]] forKey:API_TRANSACTION_END_DATE_KEY];
+    }
+    
     [self doRequestList];
     
     _collectionView.backgroundColor = [UIColor colorWithRed:231.0f/255.0f green:231.0f/255.0f blue:231.0f/255.0f alpha:1];
