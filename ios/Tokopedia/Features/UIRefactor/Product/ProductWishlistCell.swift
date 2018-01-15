@@ -52,7 +52,6 @@ class ProductWishlistCell : UICollectionViewCell {
     var tappedTrashButton: ((ProductWishlistCell) -> Void)?
     
     func setViewModel(_ viewModel : ProductModelView) {
-        let url = URL(string: viewModel.productThumbUrl!)!
         self.accessibilityLabel = "wishlistCell"
         productName.text = viewModel.productName
         productName.accessibilityLabel = viewModel.productName
@@ -61,7 +60,11 @@ class ProductWishlistCell : UICollectionViewCell {
         
         locationLabel.text = viewModel.shopLocation
         
-        productImage.setImageWithUrl(url, placeHolderImage: UIImage(named: "grey-bg.png"))
+        if let urlString = viewModel.productThumbUrl, let url = URL(string: urlString) {
+            productImage.setImageWithUrl(url, placeHolderImage: #imageLiteral(resourceName: "grey-bg"))
+        } else {
+            productImage.setImage(#imageLiteral(resourceName: "grey-bg"), animated: false)
+        }
         
         let trashGesture = UITapGestureRecognizer(target: self, action: #selector(ProductWishlistCell.tapTrashButton))
         productTrashButton.addGestureRecognizer(trashGesture)
