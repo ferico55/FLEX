@@ -536,9 +536,15 @@ extension ShopViewController: MXSegmentedPagerDelegate {
 
 extension ShopViewController: CustomTopMostViewController {
     func customTopMostViewController() -> UIViewController? {
-        if self.isOfficial {
-            return tabChildren[3].viewController
+        if self.segmentedPagerController == nil {
+            return nil
         }
-        return tabChildren[2].viewController
+        if tabChildren.count > 3 {
+            if self.isOfficial {
+                return tabChildren[3].viewController
+            }
+            return tabChildren[2].viewController
+        }
+        return nil
     }
 }
