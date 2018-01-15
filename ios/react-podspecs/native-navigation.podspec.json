@@ -1,0 +1,23 @@
+{
+  "name": "native-navigation",
+  "version": "0.2.1",
+  "summary": "Native navigation library for React Native applications",
+  "authors": {
+    "intelligibabble": "leland.m.richardson@gmail.com"
+  },
+  "homepage": "https://github.com/airbnb/native-navigation#readme",
+  "license": "MIT",
+  "platforms": {
+    "ios": "8.0"
+  },
+  "module_name": "NativeNavigation",
+  "source": {
+    "git": "https://github.com/esam091/native-navigation",
+    "commit": "628e284ac5ba8ac71fdb71e6d7829767ae627e46"
+  },
+  "source_files": "lib/ios/native-navigation/*.{h,m,swift}",
+  "dependencies": {
+    "React": []
+  },
+  "frameworks": "UIKit"
+}

@@ -7,6 +7,13 @@ https://itunes.apple.com/id/app/tokopedia/id1001394201?mt=8
 
 This readme was made, hopefully to improve overall view even for new comers.
 
+# Building the project
+## Native devs/QA
+Open `Tokopedia.xcworkspace` and build using Xcode
+
+## React Native devs
+Write JS codes in the [submodule repo](https://github.com/tokopedia/reactnative-apps)
+
 #Third Party Library :
 - Restkit + AFNetworking (https://github.com/RestKit/RestKit)
 A framework for consuming and modelling web resource

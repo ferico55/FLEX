@@ -7,8 +7,7 @@ machine:
 
 dependencies:
   override:
-    - yarn
-    - yarn run postinstall
+    - yarn install
     - gem install fastlane
 
 test:

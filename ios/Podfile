@@ -11,7 +11,7 @@ inhibit_all_warnings!
 $DEBUG_CONFIGS = ['Debug']
 
 def react_pods
-    pod 'React', :path => '../node_modules/react-native', :subspecs => [
+    pod 'React', :podspec => './react-podspecs/React.podspec.json', :subspecs => [
         'Core',
         'RCTText',
         'RCTWebSocket',
@@ -28,14 +28,14 @@ def react_pods
         'RCTCameraRoll',
     ]
     
-    pod 'yoga', :path => '../node_modules/react-native/ReactCommon/yoga'
-    pod 'native-navigation', :path => '../node_modules/native-navigation'
-    pod 'RNDeviceInfo', :path => '../node_modules/react-native-device-info'
-    pod 'CodePush', :path => '../node_modules/react-native-code-push'
-    pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
-    pod 'RNSVG', :path => '../node_modules/react-native-svg'
-    pod 'react-native-maps', :path => '../node_modules/react-native-maps'
-    pod 'Interactable', :path => '../node_modules/react-native-interactable'
+    pod 'yoga', :podspec => './react-podspecs/yoga.podspec.json'
+    pod 'native-navigation', :podspec => './react-podspecs/native-navigation.podspec.json'
+    pod 'RNDeviceInfo', :podspec => './react-podspecs/RNDeviceInfo.podspec.json'
+    pod 'CodePush', :podspec => './react-podspecs/CodePush.podspec.json'
+    pod 'RNVectorIcons', :podspec => './react-podspecs/RNVectorIcons.podspec.json'
+    pod 'RNSVG', :podspec => './react-podspecs/RNSVG.podspec.json'
+    pod 'react-native-maps', :podspec => './react-podspecs/react-native-maps.podspec.json'
+    pod 'Interactable', :podspec => './react-podspecs/Interactable.podspec.json'
 end
 
 def common_pods
@@ -144,6 +144,9 @@ target "ServiceExtension" do
 end
 
 post_install do |installer|
+
+    `sed -i '' 's/#import <RCTAnimation\\/RCTValueAnimatedNode.h>/#import \"RCTValueAnimatedNode.h\"/' ./Pods/React/Libraries/NativeAnimation/RCTNativeAnimatedNodesManager.h`
+    `sed -i '' 's#<fishhook/fishhook.h>#\"fishhook.h\"#g' ./Pods/React/Libraries/WebSocket/RCTReconnectingWebSocket.m`
 
     # https://github.com/CocoaPods/CocoaPods/issues/7003#issuecomment-329677763
     installer.aggregate_targets.each do |target|

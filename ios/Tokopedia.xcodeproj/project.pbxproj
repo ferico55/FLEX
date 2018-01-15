@@ -595,28 +595,11 @@
 		85C494BD1AD790C2008A314A /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BC1AD790C2008A314A /* QuickLook.framework */; };
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
+		923D971F20048A7800EADE79 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 923D971E20048A7700EADE79 /* main.jsbundle */; };
+		923D972120048A8500EADE79 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 923D972020048A8500EADE79 /* assets */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
-		C05A0FD41FC6A251000A95FB /* assets in Resources */ = {isa = PBXBuildFile; fileRef = C05A0FD31FC6A251000A95FB /* assets */; };
-		D89EA8F21FC677CE005EDDA6 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8CD1FC677CE005EDDA6 /* AIRGMSMarker.m */; };
-		D89EA8F31FC677CE005EDDA6 /* AIRGMSPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8CF1FC677CE005EDDA6 /* AIRGMSPolygon.m */; };
-		D89EA8F41FC677CE005EDDA6 /* AIRGMSPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8D11FC677CE005EDDA6 /* AIRGMSPolyline.m */; };
-		D89EA8F51FC677CE005EDDA6 /* AIRGoogleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8D31FC677CE005EDDA6 /* AIRGoogleMap.m */; };
-		D89EA8F61FC677CE005EDDA6 /* AIRGoogleMapCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8D51FC677CE005EDDA6 /* AIRGoogleMapCallout.m */; };
-		D89EA8F71FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8D71FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.m */; };
-		D89EA8F81FC677CE005EDDA6 /* AIRGoogleMapCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8D91FC677CE005EDDA6 /* AIRGoogleMapCircle.m */; };
-		D89EA8F91FC677CE005EDDA6 /* AIRGoogleMapCircleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8DB1FC677CE005EDDA6 /* AIRGoogleMapCircleManager.m */; };
-		D89EA8FA1FC677CE005EDDA6 /* AIRGoogleMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8DD1FC677CE005EDDA6 /* AIRGoogleMapManager.m */; };
-		D89EA8FB1FC677CE005EDDA6 /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8DF1FC677CE005EDDA6 /* AIRGoogleMapMarker.m */; };
-		D89EA8FC1FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8E11FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.m */; };
-		D89EA8FD1FC677CE005EDDA6 /* AIRGoogleMapPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8E31FC677CE005EDDA6 /* AIRGoogleMapPolygon.m */; };
-		D89EA8FE1FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8E51FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m */; };
-		D89EA8FF1FC677CE005EDDA6 /* AIRGoogleMapPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8E71FC677CE005EDDA6 /* AIRGoogleMapPolyline.m */; };
-		D89EA9001FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8E91FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.m */; };
-		D89EA9011FC677CE005EDDA6 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8EB1FC677CE005EDDA6 /* AIRGoogleMapUrlTile.m */; };
-		D89EA9021FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8ED1FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m */; };
-		D89EA9031FC677CE005EDDA6 /* DummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8EF1FC677CE005EDDA6 /* DummyView.m */; };
-		D89EA9041FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m in Sources */ = {isa = PBXBuildFile; fileRef = D89EA8F11FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m */; };
+		9284DAE51FFF2BD900FEC877 /* AirGoogleMaps in Resources */ = {isa = PBXBuildFile; fileRef = 9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -657,7 +640,29 @@
 		E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
-		E576A0A01FB172E7007EDE27 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = E576A09F1FB172E7007EDE27 /* main.jsbundle */; };
+		E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CB1F838508008FDBCF /* AddToCartPage.swift */; };
+		E52517D91F838508008FDBCF /* CategoryIntermediaryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */; };
+		E52517DA1F838508008FDBCF /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CD1F838508008FDBCF /* HomePage.swift */; };
+		E52517DB1F838508008FDBCF /* HotlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CE1F838508008FDBCF /* HotlistPage.swift */; };
+		E52517DC1F838508008FDBCF /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CF1F838508008FDBCF /* LoginPage.swift */; };
+		E52517DD1F838508008FDBCF /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D01F838508008FDBCF /* MorePage.swift */; };
+		E52517DE1F838509008FDBCF /* OnBoardingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D11F838508008FDBCF /* OnBoardingObject.swift */; };
+		E52517DF1F838509008FDBCF /* ProductDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D21F838508008FDBCF /* ProductDetailPage.swift */; };
+		E52517E01F838509008FDBCF /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D31F838508008FDBCF /* RegisterPage.swift */; };
+		E52517E21F838509008FDBCF /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D51F838508008FDBCF /* SearchPage.swift */; };
+		E52517E31F838509008FDBCF /* Ultility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D61F838508008FDBCF /* Ultility.swift */; };
+		E52517E41F838509008FDBCF /* WishlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D71F838508008FDBCF /* WishlistPage.swift */; };
+		E52518121F838DA7008FDBCF /* SearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518021F838DA7008FDBCF /* SearchTest.swift */; };
+		E52518131F838DA7008FDBCF /* HomepageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518041F838DA7008FDBCF /* HomepageTest.swift */; };
+		E52518141F838DA7008FDBCF /* HotlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518061F838DA7008FDBCF /* HotlistTest.swift */; };
+		E52518151F838DA7008FDBCF /* IntermediaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518071F838DA7008FDBCF /* IntermediaryTest.swift */; };
+		E52518161F838DA7008FDBCF /* LoginTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518091F838DA7008FDBCF /* LoginTest.swift */; };
+		E52518171F838DA7008FDBCF /* ResetPasswordTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */; };
+		E52518181F838DA7008FDBCF /* OnBoardingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */; };
+		E52518191F838DA7008FDBCF /* PDPTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180D1F838DA7008FDBCF /* PDPTest.swift */; };
+		E525181A1F838DA7008FDBCF /* RegisterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180F1F838DA7008FDBCF /* RegisterTest.swift */; };
+		E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518111F838DA7008FDBCF /* WishlistTest.swift */; };
+		E56A634B1F8789F400F86F15 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A634A1F8789F400F86F15 /* Page.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
 		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
@@ -3037,54 +3042,18 @@
 		85C494BE1AD790DD008A314A /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
+		923D971E20048A7700EADE79 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = React/main.jsbundle; sourceTree = "<group>"; };
+		923D972020048A8500EADE79 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
 		925BA62E1E518A54001CED3A /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
+		9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AirGoogleMaps; sourceTree = "<group>"; };
 		A0F5145A10D2BD8B3CD9E4C6 /* Pods-ServiceExtension.debug-optimized.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug-optimized.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug-optimized.xcconfig"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		C05A0FD31FC6A251000A95FB /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../../assets; sourceTree = "<group>"; };
 		CA2761CE1F85E68EB1B7FA22 /* Pods-Tokopedia.debug-optimized.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug-optimized.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug-optimized.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D89EA8CC1FC677CE005EDDA6 /* AIRGMSMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSMarker.h; sourceTree = "<group>"; };
-		D89EA8CD1FC677CE005EDDA6 /* AIRGMSMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
-		D89EA8CE1FC677CE005EDDA6 /* AIRGMSPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSPolygon.h; sourceTree = "<group>"; };
-		D89EA8CF1FC677CE005EDDA6 /* AIRGMSPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSPolygon.m; sourceTree = "<group>"; };
-		D89EA8D01FC677CE005EDDA6 /* AIRGMSPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSPolyline.h; sourceTree = "<group>"; };
-		D89EA8D11FC677CE005EDDA6 /* AIRGMSPolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSPolyline.m; sourceTree = "<group>"; };
-		D89EA8D21FC677CE005EDDA6 /* AIRGoogleMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMap.h; sourceTree = "<group>"; };
-		D89EA8D31FC677CE005EDDA6 /* AIRGoogleMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMap.m; sourceTree = "<group>"; };
-		D89EA8D41FC677CE005EDDA6 /* AIRGoogleMapCallout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCallout.h; sourceTree = "<group>"; };
-		D89EA8D51FC677CE005EDDA6 /* AIRGoogleMapCallout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCallout.m; sourceTree = "<group>"; };
-		D89EA8D61FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCalloutManager.h; sourceTree = "<group>"; };
-		D89EA8D71FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCalloutManager.m; sourceTree = "<group>"; };
-		D89EA8D81FC677CE005EDDA6 /* AIRGoogleMapCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCircle.h; sourceTree = "<group>"; };
-		D89EA8D91FC677CE005EDDA6 /* AIRGoogleMapCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCircle.m; sourceTree = "<group>"; };
-		D89EA8DA1FC677CE005EDDA6 /* AIRGoogleMapCircleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCircleManager.h; sourceTree = "<group>"; };
-		D89EA8DB1FC677CE005EDDA6 /* AIRGoogleMapCircleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCircleManager.m; sourceTree = "<group>"; };
-		D89EA8DC1FC677CE005EDDA6 /* AIRGoogleMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapManager.h; sourceTree = "<group>"; };
-		D89EA8DD1FC677CE005EDDA6 /* AIRGoogleMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapManager.m; sourceTree = "<group>"; };
-		D89EA8DE1FC677CE005EDDA6 /* AIRGoogleMapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarker.h; sourceTree = "<group>"; };
-		D89EA8DF1FC677CE005EDDA6 /* AIRGoogleMapMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapMarker.m; sourceTree = "<group>"; };
-		D89EA8E01FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
-		D89EA8E11FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapMarkerManager.m; sourceTree = "<group>"; };
-		D89EA8E21FC677CE005EDDA6 /* AIRGoogleMapPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolygon.h; sourceTree = "<group>"; };
-		D89EA8E31FC677CE005EDDA6 /* AIRGoogleMapPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolygon.m; sourceTree = "<group>"; };
-		D89EA8E41FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolygonManager.h; sourceTree = "<group>"; };
-		D89EA8E51FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolygonManager.m; sourceTree = "<group>"; };
-		D89EA8E61FC677CE005EDDA6 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
-		D89EA8E71FC677CE005EDDA6 /* AIRGoogleMapPolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolyline.m; sourceTree = "<group>"; };
-		D89EA8E81FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolylineManager.h; sourceTree = "<group>"; };
-		D89EA8E91FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolylineManager.m; sourceTree = "<group>"; };
-		D89EA8EA1FC677CE005EDDA6 /* AIRGoogleMapUrlTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapUrlTile.h; sourceTree = "<group>"; };
-		D89EA8EB1FC677CE005EDDA6 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
-		D89EA8EC1FC677CE005EDDA6 /* AIRGoogleMapUrlTileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapUrlTileManager.h; sourceTree = "<group>"; };
-		D89EA8ED1FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapURLTileManager.m; sourceTree = "<group>"; };
-		D89EA8EE1FC677CE005EDDA6 /* DummyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyView.h; sourceTree = "<group>"; };
-		D89EA8EF1FC677CE005EDDA6 /* DummyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyView.m; sourceTree = "<group>"; };
-		D89EA8F01FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+GMSMapViewType.h"; sourceTree = "<group>"; };
-		D89EA8F11FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+GMSMapViewType.m"; sourceTree = "<group>"; };
 		DADB9ED91F3C46CE002B1FAE /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		DADB9EE21F3C46CE002B1FAE /* _FBTweakArrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FBTweakArrayViewController.h; sourceTree = "<group>"; };
@@ -3164,7 +3133,29 @@
 		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E576A09F1FB172E7007EDE27 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
+		E52517CB1F838508008FDBCF /* AddToCartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddToCartPage.swift; path = Class/AddToCartPage.swift; sourceTree = "<group>"; };
+		E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategoryIntermediaryPage.swift; path = Class/CategoryIntermediaryPage.swift; sourceTree = "<group>"; };
+		E52517CD1F838508008FDBCF /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
+		E52517CE1F838508008FDBCF /* HotlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotlistPage.swift; path = Class/HotlistPage.swift; sourceTree = "<group>"; };
+		E52517CF1F838508008FDBCF /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginPage.swift; path = Class/LoginPage.swift; sourceTree = "<group>"; };
+		E52517D01F838508008FDBCF /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
+		E52517D11F838508008FDBCF /* OnBoardingObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnBoardingObject.swift; path = Class/OnBoardingObject.swift; sourceTree = "<group>"; };
+		E52517D21F838508008FDBCF /* ProductDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductDetailPage.swift; path = Class/ProductDetailPage.swift; sourceTree = "<group>"; };
+		E52517D31F838508008FDBCF /* RegisterPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegisterPage.swift; path = Class/RegisterPage.swift; sourceTree = "<group>"; };
+		E52517D51F838508008FDBCF /* SearchPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchPage.swift; path = Class/SearchPage.swift; sourceTree = "<group>"; };
+		E52517D61F838508008FDBCF /* Ultility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ultility.swift; path = Class/Ultility.swift; sourceTree = "<group>"; };
+		E52517D71F838508008FDBCF /* WishlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WishlistPage.swift; path = Class/WishlistPage.swift; sourceTree = "<group>"; };
+		E52518021F838DA7008FDBCF /* SearchTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTest.swift; sourceTree = "<group>"; };
+		E52518041F838DA7008FDBCF /* HomepageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomepageTest.swift; sourceTree = "<group>"; };
+		E52518061F838DA7008FDBCF /* HotlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotlistTest.swift; sourceTree = "<group>"; };
+		E52518071F838DA7008FDBCF /* IntermediaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntermediaryTest.swift; sourceTree = "<group>"; };
+		E52518091F838DA7008FDBCF /* LoginTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTest.swift; sourceTree = "<group>"; };
+		E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordTest.swift; sourceTree = "<group>"; };
+		E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardingTest.swift; sourceTree = "<group>"; };
+		E525180D1F838DA7008FDBCF /* PDPTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDPTest.swift; sourceTree = "<group>"; };
+		E525180F1F838DA7008FDBCF /* RegisterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTest.swift; sourceTree = "<group>"; };
+		E52518111F838DA7008FDBCF /* WishlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistTest.swift; sourceTree = "<group>"; };
+		E56A634A1F8789F400F86F15 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
 		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
@@ -6874,7 +6865,6 @@
 				F977F9C71FE8AB7800183A85 /* Helper */,
 				7A466B151EB2FEAD00A72105 /* Images.xcassets */,
 				7A465FCB1EB2FEA900A72105 /* LaunchScreen.xib */,
-				E576A09F1FB172E7007EDE27 /* main.jsbundle */,
 				7A465FC81EB2FEA900A72105 /* Main.storyboard */,
 				E57974BE1FEA733100610655 /* MoreView.storyboard */,
 				F977EEBB1FE8AB6D00183A85 /* Networking */,
@@ -7118,60 +7108,14 @@
 		CC986A6F2F7B402EAE979B0E /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
-				D89EA8CB1FC677CE005EDDA6 /* AirGoogleMaps */,
 			);
 			name = Libraries;
-			sourceTree = "<group>";
-		};
-		D89EA8CB1FC677CE005EDDA6 /* AirGoogleMaps */ = {
-			isa = PBXGroup;
-			children = (
-				D89EA8CC1FC677CE005EDDA6 /* AIRGMSMarker.h */,
-				D89EA8CD1FC677CE005EDDA6 /* AIRGMSMarker.m */,
-				D89EA8CE1FC677CE005EDDA6 /* AIRGMSPolygon.h */,
-				D89EA8CF1FC677CE005EDDA6 /* AIRGMSPolygon.m */,
-				D89EA8D01FC677CE005EDDA6 /* AIRGMSPolyline.h */,
-				D89EA8D11FC677CE005EDDA6 /* AIRGMSPolyline.m */,
-				D89EA8D21FC677CE005EDDA6 /* AIRGoogleMap.h */,
-				D89EA8D31FC677CE005EDDA6 /* AIRGoogleMap.m */,
-				D89EA8D41FC677CE005EDDA6 /* AIRGoogleMapCallout.h */,
-				D89EA8D51FC677CE005EDDA6 /* AIRGoogleMapCallout.m */,
-				D89EA8D61FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.h */,
-				D89EA8D71FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.m */,
-				D89EA8D81FC677CE005EDDA6 /* AIRGoogleMapCircle.h */,
-				D89EA8D91FC677CE005EDDA6 /* AIRGoogleMapCircle.m */,
-				D89EA8DA1FC677CE005EDDA6 /* AIRGoogleMapCircleManager.h */,
-				D89EA8DB1FC677CE005EDDA6 /* AIRGoogleMapCircleManager.m */,
-				D89EA8DC1FC677CE005EDDA6 /* AIRGoogleMapManager.h */,
-				D89EA8DD1FC677CE005EDDA6 /* AIRGoogleMapManager.m */,
-				D89EA8DE1FC677CE005EDDA6 /* AIRGoogleMapMarker.h */,
-				D89EA8DF1FC677CE005EDDA6 /* AIRGoogleMapMarker.m */,
-				D89EA8E01FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.h */,
-				D89EA8E11FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.m */,
-				D89EA8E21FC677CE005EDDA6 /* AIRGoogleMapPolygon.h */,
-				D89EA8E31FC677CE005EDDA6 /* AIRGoogleMapPolygon.m */,
-				D89EA8E41FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.h */,
-				D89EA8E51FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m */,
-				D89EA8E61FC677CE005EDDA6 /* AIRGoogleMapPolyline.h */,
-				D89EA8E71FC677CE005EDDA6 /* AIRGoogleMapPolyline.m */,
-				D89EA8E81FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.h */,
-				D89EA8E91FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.m */,
-				D89EA8EA1FC677CE005EDDA6 /* AIRGoogleMapUrlTile.h */,
-				D89EA8EB1FC677CE005EDDA6 /* AIRGoogleMapUrlTile.m */,
-				D89EA8EC1FC677CE005EDDA6 /* AIRGoogleMapUrlTileManager.h */,
-				D89EA8ED1FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m */,
-				D89EA8EE1FC677CE005EDDA6 /* DummyView.h */,
-				D89EA8EF1FC677CE005EDDA6 /* DummyView.m */,
-				D89EA8F01FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.h */,
-				D89EA8F11FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m */,
-			);
-			name = AirGoogleMaps;
-			path = "../node_modules/react-native-maps/lib/ios/AirGoogleMaps";
 			sourceTree = "<group>";
 		};
 		DADB9ED71F3C46CE002B1FAE /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
+				9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */,
 				DADB9ED81F3C46CE002B1FAE /* CMPopTipView */,
 				DADB9EE11F3C46CE002B1FAE /* FBTweak */,
 				DADB9EFF1F3C46CE002B1FAE /* GoogleTM */,
@@ -7611,7 +7555,8 @@
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				C05A0FD31FC6A251000A95FB /* assets */,
+				923D972020048A8500EADE79 /* assets */,
+				923D971E20048A7700EADE79 /* main.jsbundle */,
 				F954BD241FC55B65008C0B30 /* Database */,
 				F954BD261FC55B65008C0B30 /* Images */,
 				F954BD4C1FC55B66008C0B30 /* Language */,
@@ -10997,11 +10942,9 @@
 			buildConfigurationList = FC36DFAF19B0656400AF74C1 /* Build configuration list for PBXNativeTarget "Tokopedia" */;
 			buildPhases = (
 				9852790493753292549B327E /* [CP] Check Pods Manifest.lock */,
-				9273F6661F427AD1001A8048 /* Start React Packager */,
 				FC36DF7F19B0656400AF74C1 /* Sources */,
 				9273F6671F427B2A001A8048 /* Include RCTJSCProfiler */,
 				FC36DF8019B0656400AF74C1 /* Frameworks */,
-				F92F2ADF1F7CD6660088D59D /* Bundling React Native Script */,
 				270CBF0B5FC08042843CD1B4 /* [CP] Copy Pods Resources */,
 				7041848328563DD0D68C3890 /* [CP] Embed Pods Frameworks */,
 				FC36DF8119B0656400AF74C1 /* Resources */,
@@ -11158,6 +11101,7 @@
 				F977FAB11FE8AB7A00183A85 /* SettingPrivacyViewController.xib in Resources */,
 				F977FA8E1FE8AB7A00183A85 /* TransactionATCViewController.xib in Resources */,
 				F977FC3E1FE8AB7D00183A85 /* AlertListViewCell.xib in Resources */,
+				923D972120048A8500EADE79 /* assets in Resources */,
 				F977FC7A1FE8AB7D00183A85 /* ShopInfoViewController.xib in Resources */,
 				F977FD3E1FE8AB7F00183A85 /* SearchResultViewController.xib in Resources */,
 				F977FD121FE8AB7E00183A85 /* MyShopPaymentCell.xib in Resources */,
@@ -11223,7 +11167,6 @@
 				F977FB5B1FE8AB7B00183A85 /* EditSolutionBuyerViewController.xib in Resources */,
 				F977FBA51FE8AB7C00183A85 /* ShipmentStatusViewController.xib in Resources */,
 				F977FAEF1FE8AB7A00183A85 /* MyWishlistSearchCollectionReusableView.xib in Resources */,
-				E576A0A01FB172E7007EDE27 /* main.jsbundle in Resources */,
 				F977FAEE1FE8AB7A00183A85 /* MyWishlistViewController.xib in Resources */,
 				F977FAD81FE8AB7A00183A85 /* ProductFeedViewController.xib in Resources */,
 				F977FB1B1FE8AB7B00183A85 /* TalkCell.xib in Resources */,
@@ -11400,6 +11343,7 @@
 				E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
 				F977FBDA1FE8AB7C00183A85 /* RejectReasonEmptyStockViewController.xib in Resources */,
+				923D971F20048A7800EADE79 /* main.jsbundle in Resources */,
 				F977FAD61FE8AB7A00183A85 /* HomeTabViewController.xib in Resources */,
 				F977FBAD1FE8AB7C00183A85 /* FilterShipmentConfirmationViewController.xib in Resources */,
 				F977FD4B1FE8AB7F00183A85 /* MyShopAddressDetailViewController.xib in Resources */,
@@ -11440,6 +11384,7 @@
 				DADB9F5B1F3C46CF002B1FAE /* LICENSE in Resources */,
 				F977FBD91FE8AB7C00183A85 /* RejectReasonViewController.xib in Resources */,
 				F977FB331FE8AB7B00183A85 /* DepositFormAccountBankViewController.xib in Resources */,
+				9284DAE51FFF2BD900FEC877 /* AirGoogleMaps in Resources */,
 				F977FBA41FE8AB7C00183A85 /* DetailShipmentStatusViewController.xib in Resources */,
 				F977FB5F1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				F977FB411FE8AB7B00183A85 /* MaintenanceViewController.xib in Resources */,
@@ -11495,7 +11440,6 @@
 				F977FD3A1FE8AB7F00183A85 /* SearchResultShopViewController.xib in Resources */,
 				F977FBE91FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 				F977FC831FE8AB7D00183A85 /* EditShopTypeViewCell.xib in Resources */,
-				C05A0FD41FC6A251000A95FB /* assets in Resources */,
 				E57974E01FEA743600610655 /* TokopointsSmallSectionViewController.xib in Resources */,
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				F977FBD51FE8AB7C00183A85 /* OrderRejectExplanationViewController.xib in Resources */,
@@ -11584,16 +11528,16 @@
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDismissKey@3x.png",
 				"${PODS_ROOT}/MoEngage-iOS-SDK/MOInbox/MOInbox.storyboard",
 				$PODS_CONFIGURATION_BUILD_DIR/OAStackView/OAStackView.bundle,
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Entypo.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Foundation.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Octicons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/SimpleLineIcons.ttf",
-				"${PODS_ROOT}/../../node_modules/react-native-vector-icons/Fonts/Zocial.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/Entypo.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/EvilIcons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/FontAwesome.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/Foundation.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/Ionicons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/MaterialCommunityIcons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/MaterialIcons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/Octicons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/SimpleLineIcons.ttf",
+				"${PODS_ROOT}/RNVectorIcons/Fonts/Zocial.ttf",
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/icons/bg_color.png",
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/icons/bg_color@2x.png",
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/icons/bold.png",
@@ -11857,20 +11801,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/SwiftLint/swiftlint\" autocorrect";
 		};
-		9273F6661F427AD1001A8048 /* Start React Packager */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Start React Packager";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\nif nc -w 5 -z localhost 8081 ; then\nif ! curl -s \"http://localhost:8081/status\" | grep -q \"packager-status:running\" ; then\necho \"Port 8081 already in use, packager is either not running or not running correctly\"\nexit 2\nfi\nelse\nopen \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\nfi\nfi";
-		};
 		9273F6671F427B2A001A8048 /* Include RCTJSCProfiler */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -11935,20 +11865,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
-		};
-		F92F2ADF1F7CD6660088D59D /* Bundling React Native Script */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 12;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Bundling React Native Script";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "npm run bundling";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -12112,7 +12028,6 @@
 				F977FAE61FE8AB7A00183A85 /* HomePageCategoryLayoutRow.swift in Sources */,
 				F977FA1D1FE8AB7900183A85 /* ReactTarget.swift in Sources */,
 				62C770D71FF33C3300F66527 /* TrackOrderDetail.m in Sources */,
-				D89EA9041FC677CE005EDDA6 /* RCTConvert+GMSMapViewType.m in Sources */,
 				F977FB551FE8AB7B00183A85 /* ReplayConversationPostData.swift in Sources */,
 				F977FAD41FE8AB7A00183A85 /* HomeTabViewController.m in Sources */,
 				E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */,
@@ -12246,7 +12161,6 @@
 				F977FC5C1FE8AB7D00183A85 /* AddImageCaptionViewController.swift in Sources */,
 				F977FB561FE8AB7B00183A85 /* EditSolutionSellerViewController.swift in Sources */,
 				F977FDE31FE8AB8000183A85 /* ShopPageRequest.m in Sources */,
-				D89EA8F81FC677CE005EDDA6 /* AIRGoogleMapCircle.m in Sources */,
 				848FA6F71FEBF8BF00A22EDE /* ProblemProductInfoCell.swift in Sources */,
 				62C771BD1FF33C3500F66527 /* ShipmentCourierPackage.m in Sources */,
 				F977FE051FE8AB8100183A85 /* PulsaOperatorRoot.swift in Sources */,
@@ -12258,7 +12172,6 @@
 				F977FB711FE8AB7B00183A85 /* CategoryNavigationViewController.swift in Sources */,
 				62C771251FF33C3400F66527 /* ReplacementDetail.swift in Sources */,
 				F977FD041FE8AB7E00183A85 /* ProcessingAddProducts.m in Sources */,
-				D89EA9011FC677CE005EDDA6 /* AIRGoogleMapUrlTile.m in Sources */,
 				DADB9F611F3C46CF002B1FAE /* RichEditorViewKeyboardManager.swift in Sources */,
 				F977FA221FE8AB7900183A85 /* DigitalTarget.swift in Sources */,
 				F977FB681FE8AB7B00183A85 /* RequestResolutionData.m in Sources */,
@@ -12438,7 +12351,6 @@
 				F977FD7E1FE8AB7F00183A85 /* FilterSortViewController.swift in Sources */,
 				F977FDA21FE8AB8000183A85 /* ListOrderButtonsComponent.mm in Sources */,
 				F977FAC71FE8AB7A00183A85 /* SettingAddressViewController.m in Sources */,
-				D89EA8F71FC677CE005EDDA6 /* AIRGoogleMapCalloutManager.m in Sources */,
 				F977FC201FE8AB7C00183A85 /* ActivityIndicator.swift in Sources */,
 				62C771581FF33C3400F66527 /* ShopCloseDetail.m in Sources */,
 				E581B5401FE8FDAE00E6D1DA /* NotificationTableViewController.swift in Sources */,
@@ -12477,7 +12389,6 @@
 				62C76FFD1FF33C3200F66527 /* OrderConfirmationDetail.m in Sources */,
 				62C770F21FF33C3300F66527 /* CatalogShopAWSResult.m in Sources */,
 				F977FDBE1FE8AB8000183A85 /* TPRoutes.swift in Sources */,
-				D89EA9021FC677CE005EDDA6 /* AIRGoogleMapURLTileManager.m in Sources */,
 				F977FC971FE8AB7D00183A85 /* ShopFavoritedCell.m in Sources */,
 				848FA7031FEBF8BF00A22EDE /* RCProofPhotosViewController.swift in Sources */,
 				F977FC331FE8AB7D00183A85 /* AlertListFilterView.m in Sources */,
@@ -12502,7 +12413,6 @@
 				62C771AB1FF33C3500F66527 /* ListFavorited.m in Sources */,
 				F977FCE61FE8AB7E00183A85 /* GalleryPhotoView.m in Sources */,
 				F977FCEC1FE8AB7E00183A85 /* DetailProductVideoLinks.swift in Sources */,
-				D89EA8FE1FC677CE005EDDA6 /* AIRGoogleMapPolygonManager.m in Sources */,
 				DADB9F4F1F3C46CE002B1FAE /* FBTweakStore.m in Sources */,
 				F977FAC31FE8AB7A00183A85 /* SettingTouchIDViewController.swift in Sources */,
 				62C770041FF33C3200F66527 /* TxOrderPaymentEditForm.m in Sources */,
@@ -12615,7 +12525,6 @@
 				F977006B1FE8AB8500183A85 /* DigitalOperatorSelectionViewController.swift in Sources */,
 				F977FBA31FE8AB7C00183A85 /* DetailShipmentStatusViewController.m in Sources */,
 				62C770B91FF33C3300F66527 /* OrderDestination.m in Sources */,
-				D89EA9031FC677CE005EDDA6 /* DummyView.m in Sources */,
 				DADB9F4D1F3C46CE002B1FAE /* FBTweakInline.m in Sources */,
 				F977FA391FE8AB7900183A85 /* UITextView+UITextView_Placeholder.m in Sources */,
 				F977FE401FE8AB8100183A85 /* TextMenu.m in Sources */,
@@ -12674,7 +12583,6 @@
 				62C771C31FF33C3500F66527 /* SimpleFavoritedShopResult.m in Sources */,
 				F977FB431FE8AB7B00183A85 /* ProductDataSource.swift in Sources */,
 				F977005D1FE8AB8500183A85 /* DigitalFavouriteNumberViewController.swift in Sources */,
-				D89EA8F51FC677CE005EDDA6 /* AIRGoogleMap.m in Sources */,
 				F977FC6B1FE8AB7D00183A85 /* FilterCatalogViewController.m in Sources */,
 				62C7702B1FF33C3200F66527 /* TransactionSystemBank.m in Sources */,
 				F977FDE41FE8AB8000183A85 /* EtalaseCell.m in Sources */,
@@ -12693,7 +12601,6 @@
 				62C7709A1FF33C3300F66527 /* InboxResolutionPendingAmount.m in Sources */,
 				F977FB621FE8AB7B00183A85 /* InboxResolSplitViewController.m in Sources */,
 				62C770431FF33C3200F66527 /* GooglePlaceDetailLocation.m in Sources */,
-				D89EA8FF1FC677CE005EDDA6 /* AIRGoogleMapPolyline.m in Sources */,
 				62C770961FF33C3300F66527 /* ResolutionDetail.m in Sources */,
 				62C770B51FF33C3300F66527 /* OrderTransaction.m in Sources */,
 				F977FC091FE8AB7C00183A85 /* ShipmentLocationPickupViewCell.m in Sources */,
@@ -12704,7 +12611,6 @@
 				F977FDE51FE8AB8000183A85 /* ShopTalkPageViewController.m in Sources */,
 				848FA6F31FEBF8BF00A22EDE /* ProblemsListHeaderView.swift in Sources */,
 				62C76FFF1FF33C3200F66527 /* TxOrderConfirmationList.m in Sources */,
-				D89EA8FA1FC677CE005EDDA6 /* AIRGoogleMapManager.m in Sources */,
 				F977FA2F1FE8AB7900183A85 /* UIColor+Theme.m in Sources */,
 				62C771A61FF33C3500F66527 /* TotalLikeDislikePost.m in Sources */,
 				62C7702E1FF33C3200F66527 /* TransactionSummaryResult.m in Sources */,
@@ -12805,7 +12711,6 @@
 				F977FCB51FE8AB7E00183A85 /* SecureStorageManager.swift in Sources */,
 				62C770EC1FF33C3300F66527 /* ReputationList.m in Sources */,
 				848FA6FA1FEBF8BF00A22EDE /* RCOrderStatusCell.swift in Sources */,
-				D89EA8F41FC677CE005EDDA6 /* AIRGMSPolyline.m in Sources */,
 				F977FA9D1FE8AB7A00183A85 /* CartCell.m in Sources */,
 				62C770B71FF33C3300F66527 /* OrderProduct.m in Sources */,
 				F977FA1F1FE8AB7900183A85 /* TokocashTarget.swift in Sources */,
@@ -13048,7 +12953,6 @@
 				F977FD281FE8AB7F00183A85 /* SearchAutoCompleteCell.m in Sources */,
 				F977FE2F1FE8AB8100183A85 /* AccountActivationViewController.swift in Sources */,
 				F977FA581FE8AB7900183A85 /* HotlistBannerData.swift in Sources */,
-				D89EA8FB1FC677CE005EDDA6 /* AIRGoogleMapMarker.m in Sources */,
 				F977FD771FE8AB7F00183A85 /* AddressViewController.m in Sources */,
 				F977FD371FE8AB7F00183A85 /* ProductBadge.swift in Sources */,
 				62C7714E1FF33C3400F66527 /* ShippingInfoResult.m in Sources */,
@@ -13131,7 +13035,6 @@
 				F977FC621FE8AB7D00183A85 /* ImageThumbnailCell.swift in Sources */,
 				62C770051FF33C3200F66527 /* TxOrderPaymentEditBankAccount.m in Sources */,
 				F97700581FE8AB8500183A85 /* DigitalProductSelectionViewController.swift in Sources */,
-				D89EA8FC1FC677CE005EDDA6 /* AIRGoogleMapMarkerManager.m in Sources */,
 				F977FA961FE8AB7A00183A85 /* NoLoginView.swift in Sources */,
 				62C770DD1FF33C3300F66527 /* DepositForm.m in Sources */,
 				F977FCDD1FE8AB7E00183A85 /* TopPicksGroup.swift in Sources */,
@@ -13221,7 +13124,6 @@
 				F977FC061FE8AB7C00183A85 /* ShipmentLocationViewCell.m in Sources */,
 				62C7711B1FF33C3400F66527 /* ManageProduct.m in Sources */,
 				F977FC731FE8AB7D00183A85 /* CatalogSpecificationCell.m in Sources */,
-				D89EA8F91FC677CE005EDDA6 /* AIRGoogleMapCircleManager.m in Sources */,
 				62C771521FF33C3400F66527 /* ShopInfoResult.m in Sources */,
 				62C770521FF33C3200F66527 /* InboxTicket.m in Sources */,
 				62C76FE81FF33C3100F66527 /* TransactionCalculatePriceResult.m in Sources */,
@@ -13239,7 +13141,6 @@
 				F977FE4A1FE8AB8100183A85 /* FeedDetailState.swift in Sources */,
 				F977FBD41FE8AB7C00183A85 /* RejectOrderRequest.m in Sources */,
 				F977FE301FE8AB8100183A85 /* RegisterSocialMediaViewController.swift in Sources */,
-				D89EA9001FC677CE005EDDA6 /* AIRGoogleMapPolylineManager.m in Sources */,
 				F977FBF41FE8AB7C00183A85 /* FuzzySearchDataSuggestionInstead.swift in Sources */,
 				F977FA631FE8AB7900183A85 /* ProductUnbox.swift in Sources */,
 				62C771BE1FF33C3500F66527 /* ShipmentProvinceData.m in Sources */,
@@ -13281,7 +13182,6 @@
 				F977FC5E1FE8AB7D00183A85 /* RequestUploadImage.m in Sources */,
 				F977FA951FE8AB7A00183A85 /* TransactionCartCostView.m in Sources */,
 				F977FA671FE8AB7A00183A85 /* ProductRecommendationNode.swift in Sources */,
-				D89EA8FD1FC677CE005EDDA6 /* AIRGoogleMapPolygon.m in Sources */,
 				F977FC5B1FE8AB7D00183A85 /* TKPImagePickerCameraCell.swift in Sources */,
 				F977FBB31FE8AB7C00183A85 /* CancelOrderShipmentViewController.swift in Sources */,
 				DADB9F471F3C46CE002B1FAE /* _FBTweakCollectionViewController.m in Sources */,
@@ -13327,7 +13227,6 @@
 				F977FCF31FE8AB7E00183A85 /* MedalComponent.mm in Sources */,
 				62C770A91FF33C3300F66527 /* ResolutionAction.m in Sources */,
 				F977FA481FE8AB7900183A85 /* NSURL+Dictionary.m in Sources */,
-				D89EA8F61FC677CE005EDDA6 /* AIRGoogleMapCallout.m in Sources */,
 				F977FABC1FE8AB7A00183A85 /* SettingBankAccountViewController.m in Sources */,
 				F977FBB41FE8AB7C00183A85 /* CancelShipmentViewController.m in Sources */,
 				F977FE431FE8AB8100183A85 /* DBManager.m in Sources */,
@@ -13431,7 +13330,6 @@
 				F977FBA91FE8AB7C00183A85 /* ChangeReceiptNumberViewController.m in Sources */,
 				62C771041FF33C3300F66527 /* LogoutResult.m in Sources */,
 				62C770971FF33C3300F66527 /* ResolutionOrder.m in Sources */,
-				D89EA8F31FC677CE005EDDA6 /* AIRGMSPolygon.m in Sources */,
 				F977FD3C1FE8AB7F00183A85 /* SpellCheckResult.m in Sources */,
 				F977FBE11FE8AB7C00183A85 /* RejectReasonEditPriceViewController.m in Sources */,
 				62C771241FF33C3400F66527 /* ReplacementData.swift in Sources */,
@@ -13440,7 +13338,6 @@
 				F977FDD61FE8AB8000183A85 /* ResolutionProductData.m in Sources */,
 				F977FDF51FE8AB8100183A85 /* PulsaOperatorViewController.swift in Sources */,
 				F977FE441FE8AB8100183A85 /* FeedDetailViewController.swift in Sources */,
-				D89EA8F21FC677CE005EDDA6 /* AIRGMSMarker.m in Sources */,
 				F97700C11FE8AB8600183A85 /* AnalyticsManager.m in Sources */,
 				62C7705E1FF33C3200F66527 /* Breadcrumb.m in Sources */,
 				62C771651FF33C3400F66527 /* AddProductSubmitResult.m in Sources */,

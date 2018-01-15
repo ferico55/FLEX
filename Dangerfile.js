@@ -1,6 +1,6 @@
 // Removed import
-import fs from 'fs'
-import lodash from 'lodash'
+const fs = require('fs')
+const lodash = require('lodash')
 
 var errorCount = 0;
 

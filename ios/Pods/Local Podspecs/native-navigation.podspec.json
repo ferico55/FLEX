@@ -12,8 +12,8 @@
   },
   "module_name": "NativeNavigation",
   "source": {
-    "git": "https://github.com/airbnb/native-navigation.git",
-    "tag": "v0.2.1"
+    "git": "https://github.com/esam091/native-navigation",
+    "commit": "628e284ac5ba8ac71fdb71e6d7829767ae627e46"
   },
   "source_files": "lib/ios/native-navigation/*.{h,m,swift}",
   "dependencies": {

@@ -288,7 +288,7 @@ DEPENDENCIES:
   - BlocksKit (~> 2.2.5)
   - Branch (= 0.20.3)
   - CFAlertViewController (from `https://github.com/digitkhrisnaa/CFAlertViewController`, branch `modifications`)
-  - CodePush (from `../node_modules/react-native-code-push`)
+  - CodePush (from `./react-podspecs/CodePush.podspec.json`)
   - ComponentKit (~> 0.14)
   - Crashlytics (~> 3.9.0)
   - DKImagePickerController (from `https://github.com/ferico55/DKImagePickerController.git`, branch `3.6.2-tkpd`)
@@ -309,7 +309,7 @@ DEPENDENCIES:
   - GoogleTagManager (~> 3.15.2)
   - HMSegmentedControl (from `https://github.com/billionssg/HMSegmentedControl`)
   - HockeySDK/CrashOnlyLib (~> 5.0.0)
-  - Interactable (from `../node_modules/react-native-interactable`)
+  - Interactable (from `./react-podspecs/Interactable.podspec.json`)
   - JDStatusBarNotification (~> 1.5.6)
   - JLPermissions/Contacts (= 2.2.8)
   - JLPermissions/Location (= 2.2.8)
@@ -326,37 +326,37 @@ DEPENDENCIES:
   - Moya/RxSwift (~> 8.0.3)
   - MoyaUnbox/RxSwift (~> 1.0.0)
   - MXSegmentedPager (~> 3.2.0)
-  - native-navigation (from `../node_modules/native-navigation`)
+  - native-navigation (from `./react-podspecs/native-navigation.podspec.json`)
   - NJKWebViewProgress (~> 0.2.3)
   - NSAttributedString-DDHTML (= 1.2.0)
   - NSObject+Rx (~> 2.0.0)
   - OAStackView (~> 1.0.1)
   - Popover (from `https://github.com/corin8823/Popover.git`, branch `master`)
   - RATreeView (~> 2.1.2)
-  - react-native-maps (from `../node_modules/react-native-maps`)
-  - React/BatchedBridge (from `../node_modules/react-native`)
-  - React/Core (from `../node_modules/react-native`)
-  - React/DevSupport (from `../node_modules/react-native`)
-  - React/RCTActionSheet (from `../node_modules/react-native`)
-  - React/RCTAnimation (from `../node_modules/react-native`)
-  - React/RCTCameraRoll (from `../node_modules/react-native`)
-  - React/RCTGeolocation (from `../node_modules/react-native`)
-  - React/RCTImage (from `../node_modules/react-native`)
-  - React/RCTLinkingIOS (from `../node_modules/react-native`)
-  - React/RCTNetwork (from `../node_modules/react-native`)
-  - React/RCTSettings (from `../node_modules/react-native`)
-  - React/RCTText (from `../node_modules/react-native`)
-  - React/RCTVibration (from `../node_modules/react-native`)
-  - React/RCTWebSocket (from `../node_modules/react-native`)
+  - react-native-maps (from `./react-podspecs/react-native-maps.podspec.json`)
+  - React/BatchedBridge (from `./react-podspecs/React.podspec.json`)
+  - React/Core (from `./react-podspecs/React.podspec.json`)
+  - React/DevSupport (from `./react-podspecs/React.podspec.json`)
+  - React/RCTActionSheet (from `./react-podspecs/React.podspec.json`)
+  - React/RCTAnimation (from `./react-podspecs/React.podspec.json`)
+  - React/RCTCameraRoll (from `./react-podspecs/React.podspec.json`)
+  - React/RCTGeolocation (from `./react-podspecs/React.podspec.json`)
+  - React/RCTImage (from `./react-podspecs/React.podspec.json`)
+  - React/RCTLinkingIOS (from `./react-podspecs/React.podspec.json`)
+  - React/RCTNetwork (from `./react-podspecs/React.podspec.json`)
+  - React/RCTSettings (from `./react-podspecs/React.podspec.json`)
+  - React/RCTText (from `./react-podspecs/React.podspec.json`)
+  - React/RCTVibration (from `./react-podspecs/React.podspec.json`)
+  - React/RCTWebSocket (from `./react-podspecs/React.podspec.json`)
   - Render (from `https://github.com/esam091/Render.git`, branch `change-namespace`)
   - RestKit (~> 0.27.0)
   - RestKit/Testing (~> 0.27.0)
   - ReSwift (~> 3.0.0)
   - Reveal-iOS-SDK
   - RichEditorView (~> 4.0.0)
-  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
-  - RNSVG (from `../node_modules/react-native-svg`)
-  - RNVectorIcons (from `../node_modules/react-native-vector-icons`)
+  - RNDeviceInfo (from `./react-podspecs/RNDeviceInfo.podspec.json`)
+  - RNSVG (from `./react-podspecs/RNSVG.podspec.json`)
+  - RNVectorIcons (from `./react-podspecs/RNVectorIcons.podspec.json`)
   - RSKGrowingTextView (~> 2.0)
   - RSKPlaceholderTextView (~> 2.0)
   - RxCocoa (~> 3.6.1)
@@ -374,7 +374,7 @@ DEPENDENCIES:
   - Unbox (~> 2.4)
   - VMaskTextField (~> 1.0.8)
   - Wrap
-  - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
+  - yoga (from `./react-podspecs/yoga.podspec.json`)
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
@@ -382,7 +382,7 @@ EXTERNAL SOURCES:
     :branch: modifications
     :git: https://github.com/digitkhrisnaa/CFAlertViewController
   CodePush:
-    :path: ../node_modules/react-native-code-push
+    :podspec: ./react-podspecs/CodePush.podspec.json
   DKImagePickerController:
     :branch: 3.6.2-tkpd
     :git: https://github.com/ferico55/DKImagePickerController.git
@@ -395,25 +395,25 @@ EXTERNAL SOURCES:
   HMSegmentedControl:
     :git: https://github.com/billionssg/HMSegmentedControl
   Interactable:
-    :path: ../node_modules/react-native-interactable
+    :podspec: ./react-podspecs/Interactable.podspec.json
   native-navigation:
-    :path: ../node_modules/native-navigation
+    :podspec: ./react-podspecs/native-navigation.podspec.json
   Popover:
     :branch: master
     :git: https://github.com/corin8823/Popover.git
   React:
-    :path: ../node_modules/react-native
+    :podspec: ./react-podspecs/React.podspec.json
   react-native-maps:
-    :path: ../node_modules/react-native-maps
+    :podspec: ./react-podspecs/react-native-maps.podspec.json
   Render:
     :branch: change-namespace
     :git: https://github.com/esam091/Render.git
   RNDeviceInfo:
-    :path: ../node_modules/react-native-device-info
+    :podspec: ./react-podspecs/RNDeviceInfo.podspec.json
   RNSVG:
-    :path: ../node_modules/react-native-svg
+    :podspec: ./react-podspecs/RNSVG.podspec.json
   RNVectorIcons:
-    :path: ../node_modules/react-native-vector-icons
+    :podspec: ./react-podspecs/RNVectorIcons.podspec.json
   SPTPersistentCache:
     :branch: master
     :git: https://github.com/spotify/SPTPersistentCache.git
@@ -421,7 +421,7 @@ EXTERNAL SOURCES:
     :branch: modifications
     :git: https://github.com/digitkhrisnaa/SwiftOverlays.git
   yoga:
-    :path: ../node_modules/react-native/ReactCommon/yoga
+    :podspec: ./react-podspecs/yoga.podspec.json
 
 CHECKOUT OPTIONS:
   CFAlertViewController:
@@ -516,7 +516,7 @@ SPEC CHECKSUMS:
   MXParallaxHeader: 2997592b8349baf8557ae0e4346f6b17e141de39
   MXSegmentedPager: f529de7ac9ee78c1ab727e4cae9483779ca5d4c7
   nanopb: 5601e6bca2dbf1ed831b519092ec110f66982ca3
-  native-navigation: bfb4dd993e94160c9d71804332c39f7e56f0283b
+  native-navigation: 52f3ab79cfed9f387fa36bfadaa234f4827aafbb
   NJKWebViewProgress: f481fd424cb5ecc27eacae11b5397db92fba9a4d
   NSAttributedString-DDHTML: 59a7bcd44b92cb7f6f6ef26f52c4baad6b1d01ba
   NSObject+Rx: 2a9cd801d9c847e6d2486cbad8d7701b67834e70
@@ -555,9 +555,9 @@ SPEC CHECKSUMS:
   Unbox: c8b2ab69d3337597b4a3f47a0538807dc12db670
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   Wrap: 9cc7da7551bb81d0846cb3df9fb624c6c32d267d
-  yoga: b5d96400ca8b2936965a7a6516da7c1177f432a3
+  yoga: c8a06e50634d2d2b08c9500b71f3b734a13aa360
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 4fd132496f5f14cea6487c99d52ddf1155eb11e5
+PODFILE CHECKSUM: 5b9e376375765b1e585aaf53ad602dd89bffa60b
 
 COCOAPODS: 1.3.1
