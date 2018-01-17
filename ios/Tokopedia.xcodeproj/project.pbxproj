@@ -597,9 +597,27 @@
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		923D971F20048A7800EADE79 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 923D971E20048A7700EADE79 /* main.jsbundle */; };
 		923D972120048A8500EADE79 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 923D972020048A8500EADE79 /* assets */; };
+		924B14ED200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */; };
+		924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */; };
+		924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CE200DB28A00CB65D2 /* AIRGoogleMapMarker.m */; };
+		924B14F0200DB28A00CB65D2 /* AIRGMSPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14D1200DB28A00CB65D2 /* AIRGMSPolygon.m */; };
+		924B14F1200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14D2200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m */; };
+		924B14F2200DB28A00CB65D2 /* AIRGoogleMapCircle.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14D3200DB28A00CB65D2 /* AIRGoogleMapCircle.m */; };
+		924B14F3200DB28A00CB65D2 /* DummyView.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14D6200DB28A00CB65D2 /* DummyView.m */; };
+		924B14F4200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14D8200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m */; };
+		924B14F5200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14DA200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.m */; };
+		924B14F6200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14DB200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m */; };
+		924B14F7200DB28A00CB65D2 /* AIRGoogleMapPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14DD200DB28A00CB65D2 /* AIRGoogleMapPolyline.m */; };
+		924B14F8200DB28A00CB65D2 /* AIRGMSPolyline.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14DF200DB28A00CB65D2 /* AIRGMSPolyline.m */; };
+		924B14F9200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14E0200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m */; };
+		924B14FA200DB28A00CB65D2 /* AIRGoogleMapManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14E1200DB28A00CB65D2 /* AIRGoogleMapManager.m */; };
+		924B14FB200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14E4200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.m */; };
+		924B14FC200DB28A00CB65D2 /* AIRGoogleMapCallout.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14E5200DB28A00CB65D2 /* AIRGoogleMapCallout.m */; };
+		924B14FD200DB28A00CB65D2 /* AIRGoogleMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14E6200DB28A00CB65D2 /* AIRGoogleMap.m */; };
+		924B14FE200DB28A00CB65D2 /* AIRGoogleMapPolygon.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14EA200DB28A00CB65D2 /* AIRGoogleMapPolygon.m */; };
+		924B14FF200DB28A00CB65D2 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14EB200DB28A00CB65D2 /* AIRGMSMarker.m */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
-		9284DAE51FFF2BD900FEC877 /* AirGoogleMaps in Resources */ = {isa = PBXBuildFile; fileRef = 9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -640,29 +658,6 @@
 		E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
-		E52517D81F838508008FDBCF /* AddToCartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CB1F838508008FDBCF /* AddToCartPage.swift */; };
-		E52517D91F838508008FDBCF /* CategoryIntermediaryPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */; };
-		E52517DA1F838508008FDBCF /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CD1F838508008FDBCF /* HomePage.swift */; };
-		E52517DB1F838508008FDBCF /* HotlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CE1F838508008FDBCF /* HotlistPage.swift */; };
-		E52517DC1F838508008FDBCF /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517CF1F838508008FDBCF /* LoginPage.swift */; };
-		E52517DD1F838508008FDBCF /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D01F838508008FDBCF /* MorePage.swift */; };
-		E52517DE1F838509008FDBCF /* OnBoardingObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D11F838508008FDBCF /* OnBoardingObject.swift */; };
-		E52517DF1F838509008FDBCF /* ProductDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D21F838508008FDBCF /* ProductDetailPage.swift */; };
-		E52517E01F838509008FDBCF /* RegisterPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D31F838508008FDBCF /* RegisterPage.swift */; };
-		E52517E21F838509008FDBCF /* SearchPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D51F838508008FDBCF /* SearchPage.swift */; };
-		E52517E31F838509008FDBCF /* Ultility.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D61F838508008FDBCF /* Ultility.swift */; };
-		E52517E41F838509008FDBCF /* WishlistPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52517D71F838508008FDBCF /* WishlistPage.swift */; };
-		E52518121F838DA7008FDBCF /* SearchTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518021F838DA7008FDBCF /* SearchTest.swift */; };
-		E52518131F838DA7008FDBCF /* HomepageTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518041F838DA7008FDBCF /* HomepageTest.swift */; };
-		E52518141F838DA7008FDBCF /* HotlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518061F838DA7008FDBCF /* HotlistTest.swift */; };
-		E52518151F838DA7008FDBCF /* IntermediaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518071F838DA7008FDBCF /* IntermediaryTest.swift */; };
-		E52518161F838DA7008FDBCF /* LoginTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518091F838DA7008FDBCF /* LoginTest.swift */; };
-		E52518171F838DA7008FDBCF /* ResetPasswordTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */; };
-		E52518181F838DA7008FDBCF /* OnBoardingTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */; };
-		E52518191F838DA7008FDBCF /* PDPTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180D1F838DA7008FDBCF /* PDPTest.swift */; };
-		E525181A1F838DA7008FDBCF /* RegisterTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525180F1F838DA7008FDBCF /* RegisterTest.swift */; };
-		E525181B1F838DA7008FDBCF /* WishlistTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52518111F838DA7008FDBCF /* WishlistTest.swift */; };
-		E56A634B1F8789F400F86F15 /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56A634A1F8789F400F86F15 /* Page.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
 		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
@@ -3044,11 +3039,48 @@
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		923D971E20048A7700EADE79 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = React/main.jsbundle; sourceTree = "<group>"; };
 		923D972020048A8500EADE79 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
+		924B14C7200DB28A00CB65D2 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
+		924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
+		924B14C9200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
+		924B14CA200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCalloutManager.h; sourceTree = "<group>"; };
+		924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolygonManager.m; sourceTree = "<group>"; };
+		924B14CC200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RCTConvert+GMSMapViewType.h"; sourceTree = "<group>"; };
+		924B14CD200DB28A00CB65D2 /* AIRGoogleMapManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapManager.h; sourceTree = "<group>"; };
+		924B14CE200DB28A00CB65D2 /* AIRGoogleMapMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapMarker.m; sourceTree = "<group>"; };
+		924B14CF200DB28A00CB65D2 /* AIRGMSPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSPolyline.h; sourceTree = "<group>"; };
+		924B14D0200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolylineManager.h; sourceTree = "<group>"; };
+		924B14D1200DB28A00CB65D2 /* AIRGMSPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSPolygon.m; sourceTree = "<group>"; };
+		924B14D2200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapURLTileManager.m; sourceTree = "<group>"; };
+		924B14D3200DB28A00CB65D2 /* AIRGoogleMapCircle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCircle.m; sourceTree = "<group>"; };
+		924B14D4200DB28A00CB65D2 /* AIRGoogleMap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMap.h; sourceTree = "<group>"; };
+		924B14D5200DB28A00CB65D2 /* AIRGoogleMapCallout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCallout.h; sourceTree = "<group>"; };
+		924B14D6200DB28A00CB65D2 /* DummyView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DummyView.m; sourceTree = "<group>"; };
+		924B14D7200DB28A00CB65D2 /* AIRGMSMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSMarker.h; sourceTree = "<group>"; };
+		924B14D8200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCircleManager.m; sourceTree = "<group>"; };
+		924B14D9200DB28A00CB65D2 /* AIRGoogleMapPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolygon.h; sourceTree = "<group>"; };
+		924B14DA200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCalloutManager.m; sourceTree = "<group>"; };
+		924B14DB200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapMarkerManager.m; sourceTree = "<group>"; };
+		924B14DC200DB28A00CB65D2 /* AIRGoogleMapUrlTile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapUrlTile.h; sourceTree = "<group>"; };
+		924B14DD200DB28A00CB65D2 /* AIRGoogleMapPolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolyline.m; sourceTree = "<group>"; };
+		924B14DE200DB28A00CB65D2 /* AIRGMSPolygon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGMSPolygon.h; sourceTree = "<group>"; };
+		924B14DF200DB28A00CB65D2 /* AIRGMSPolyline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSPolyline.m; sourceTree = "<group>"; };
+		924B14E0200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolylineManager.m; sourceTree = "<group>"; };
+		924B14E1200DB28A00CB65D2 /* AIRGoogleMapManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapManager.m; sourceTree = "<group>"; };
+		924B14E2200DB28A00CB65D2 /* AIRGoogleMapMarker.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarker.h; sourceTree = "<group>"; };
+		924B14E3200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolygonManager.h; sourceTree = "<group>"; };
+		924B14E4200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "RCTConvert+GMSMapViewType.m"; sourceTree = "<group>"; };
+		924B14E5200DB28A00CB65D2 /* AIRGoogleMapCallout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapCallout.m; sourceTree = "<group>"; };
+		924B14E6200DB28A00CB65D2 /* AIRGoogleMap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMap.m; sourceTree = "<group>"; };
+		924B14E7200DB28A00CB65D2 /* AIRGoogleMapCircle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCircle.h; sourceTree = "<group>"; };
+		924B14E8200DB28A00CB65D2 /* AIRGoogleMapUrlTileManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapUrlTileManager.h; sourceTree = "<group>"; };
+		924B14E9200DB28A00CB65D2 /* AIRGoogleMapCircleManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapCircleManager.h; sourceTree = "<group>"; };
+		924B14EA200DB28A00CB65D2 /* AIRGoogleMapPolygon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapPolygon.m; sourceTree = "<group>"; };
+		924B14EB200DB28A00CB65D2 /* AIRGMSMarker.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGMSMarker.m; sourceTree = "<group>"; };
+		924B14EC200DB28A00CB65D2 /* DummyView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DummyView.h; sourceTree = "<group>"; };
 		925BA62E1E518A54001CED3A /* ServiceExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ServiceExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		925BA6321E518A54001CED3A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		925BA63A1E518ACE001CED3A /* NotificationService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationService.swift; sourceTree = "<group>"; };
 		925BA63B1E518ACE001CED3A /* ServiceExtension.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = ServiceExtension.entitlements; sourceTree = "<group>"; };
-		9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */ = {isa = PBXFileReference; lastKnownFileType = folder; path = AirGoogleMaps; sourceTree = "<group>"; };
 		A0F5145A10D2BD8B3CD9E4C6 /* Pods-ServiceExtension.debug-optimized.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug-optimized.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug-optimized.xcconfig"; sourceTree = "<group>"; };
 		AAA12C6A69BF6CB5F8EE3287 /* Pods-Tokopedia.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug.xcconfig"; sourceTree = "<group>"; };
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -3133,29 +3165,6 @@
 		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E52517CB1F838508008FDBCF /* AddToCartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AddToCartPage.swift; path = Class/AddToCartPage.swift; sourceTree = "<group>"; };
-		E52517CC1F838508008FDBCF /* CategoryIntermediaryPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = CategoryIntermediaryPage.swift; path = Class/CategoryIntermediaryPage.swift; sourceTree = "<group>"; };
-		E52517CD1F838508008FDBCF /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
-		E52517CE1F838508008FDBCF /* HotlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HotlistPage.swift; path = Class/HotlistPage.swift; sourceTree = "<group>"; };
-		E52517CF1F838508008FDBCF /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginPage.swift; path = Class/LoginPage.swift; sourceTree = "<group>"; };
-		E52517D01F838508008FDBCF /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
-		E52517D11F838508008FDBCF /* OnBoardingObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = OnBoardingObject.swift; path = Class/OnBoardingObject.swift; sourceTree = "<group>"; };
-		E52517D21F838508008FDBCF /* ProductDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ProductDetailPage.swift; path = Class/ProductDetailPage.swift; sourceTree = "<group>"; };
-		E52517D31F838508008FDBCF /* RegisterPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = RegisterPage.swift; path = Class/RegisterPage.swift; sourceTree = "<group>"; };
-		E52517D51F838508008FDBCF /* SearchPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SearchPage.swift; path = Class/SearchPage.swift; sourceTree = "<group>"; };
-		E52517D61F838508008FDBCF /* Ultility.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = Ultility.swift; path = Class/Ultility.swift; sourceTree = "<group>"; };
-		E52517D71F838508008FDBCF /* WishlistPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WishlistPage.swift; path = Class/WishlistPage.swift; sourceTree = "<group>"; };
-		E52518021F838DA7008FDBCF /* SearchTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SearchTest.swift; sourceTree = "<group>"; };
-		E52518041F838DA7008FDBCF /* HomepageTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomepageTest.swift; sourceTree = "<group>"; };
-		E52518061F838DA7008FDBCF /* HotlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HotlistTest.swift; sourceTree = "<group>"; };
-		E52518071F838DA7008FDBCF /* IntermediaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntermediaryTest.swift; sourceTree = "<group>"; };
-		E52518091F838DA7008FDBCF /* LoginTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginTest.swift; sourceTree = "<group>"; };
-		E525180A1F838DA7008FDBCF /* ResetPasswordTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResetPasswordTest.swift; sourceTree = "<group>"; };
-		E525180C1F838DA7008FDBCF /* OnBoardingTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnBoardingTest.swift; sourceTree = "<group>"; };
-		E525180D1F838DA7008FDBCF /* PDPTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PDPTest.swift; sourceTree = "<group>"; };
-		E525180F1F838DA7008FDBCF /* RegisterTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterTest.swift; sourceTree = "<group>"; };
-		E52518111F838DA7008FDBCF /* WishlistTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WishlistTest.swift; sourceTree = "<group>"; };
-		E56A634A1F8789F400F86F15 /* Page.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
 		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
@@ -7094,6 +7103,51 @@
 			path = WebService;
 			sourceTree = "<group>";
 		};
+		924B14C6200DB28A00CB65D2 /* AirGoogleMaps */ = {
+			isa = PBXGroup;
+			children = (
+				924B14C7200DB28A00CB65D2 /* AIRGoogleMapPolyline.h */,
+				924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */,
+				924B14C9200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.h */,
+				924B14CA200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.h */,
+				924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */,
+				924B14CC200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.h */,
+				924B14CD200DB28A00CB65D2 /* AIRGoogleMapManager.h */,
+				924B14CE200DB28A00CB65D2 /* AIRGoogleMapMarker.m */,
+				924B14CF200DB28A00CB65D2 /* AIRGMSPolyline.h */,
+				924B14D0200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.h */,
+				924B14D1200DB28A00CB65D2 /* AIRGMSPolygon.m */,
+				924B14D2200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m */,
+				924B14D3200DB28A00CB65D2 /* AIRGoogleMapCircle.m */,
+				924B14D4200DB28A00CB65D2 /* AIRGoogleMap.h */,
+				924B14D5200DB28A00CB65D2 /* AIRGoogleMapCallout.h */,
+				924B14D6200DB28A00CB65D2 /* DummyView.m */,
+				924B14D7200DB28A00CB65D2 /* AIRGMSMarker.h */,
+				924B14D8200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m */,
+				924B14D9200DB28A00CB65D2 /* AIRGoogleMapPolygon.h */,
+				924B14DA200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.m */,
+				924B14DB200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m */,
+				924B14DC200DB28A00CB65D2 /* AIRGoogleMapUrlTile.h */,
+				924B14DD200DB28A00CB65D2 /* AIRGoogleMapPolyline.m */,
+				924B14DE200DB28A00CB65D2 /* AIRGMSPolygon.h */,
+				924B14DF200DB28A00CB65D2 /* AIRGMSPolyline.m */,
+				924B14E0200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m */,
+				924B14E1200DB28A00CB65D2 /* AIRGoogleMapManager.m */,
+				924B14E2200DB28A00CB65D2 /* AIRGoogleMapMarker.h */,
+				924B14E3200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.h */,
+				924B14E4200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.m */,
+				924B14E5200DB28A00CB65D2 /* AIRGoogleMapCallout.m */,
+				924B14E6200DB28A00CB65D2 /* AIRGoogleMap.m */,
+				924B14E7200DB28A00CB65D2 /* AIRGoogleMapCircle.h */,
+				924B14E8200DB28A00CB65D2 /* AIRGoogleMapUrlTileManager.h */,
+				924B14E9200DB28A00CB65D2 /* AIRGoogleMapCircleManager.h */,
+				924B14EA200DB28A00CB65D2 /* AIRGoogleMapPolygon.m */,
+				924B14EB200DB28A00CB65D2 /* AIRGMSMarker.m */,
+				924B14EC200DB28A00CB65D2 /* DummyView.h */,
+			);
+			path = AirGoogleMaps;
+			sourceTree = "<group>";
+		};
 		925BA62F1E518A54001CED3A /* ServiceExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -7115,7 +7169,7 @@
 		DADB9ED71F3C46CE002B1FAE /* ThirdParty */ = {
 			isa = PBXGroup;
 			children = (
-				9284DAE41FFF2BD800FEC877 /* AirGoogleMaps */,
+				924B14C6200DB28A00CB65D2 /* AirGoogleMaps */,
 				DADB9ED81F3C46CE002B1FAE /* CMPopTipView */,
 				DADB9EE11F3C46CE002B1FAE /* FBTweak */,
 				DADB9EFF1F3C46CE002B1FAE /* GoogleTM */,
@@ -11384,7 +11438,6 @@
 				DADB9F5B1F3C46CF002B1FAE /* LICENSE in Resources */,
 				F977FBD91FE8AB7C00183A85 /* RejectReasonViewController.xib in Resources */,
 				F977FB331FE8AB7B00183A85 /* DepositFormAccountBankViewController.xib in Resources */,
-				9284DAE51FFF2BD900FEC877 /* AirGoogleMaps in Resources */,
 				F977FBA41FE8AB7C00183A85 /* DetailShipmentStatusViewController.xib in Resources */,
 				F977FB5F1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				F977FB411FE8AB7B00183A85 /* MaintenanceViewController.xib in Resources */,
@@ -11949,6 +12002,7 @@
 				F97700BE1FE8AB8600183A85 /* URLCacheAlert.m in Sources */,
 				62C7716A1FF33C3400F66527 /* UploadImageHelper.m in Sources */,
 				F977FBCB1FE8AB7C00183A85 /* OrderBuyerView.swift in Sources */,
+				924B14F5200DB28A00CB65D2 /* AIRGoogleMapCalloutManager.m in Sources */,
 				F977FD891FE8AB8000183A85 /* FilterResponse.swift in Sources */,
 				62C771181FF33C3400F66527 /* CarouselDataSource.m in Sources */,
 				F977FCDC1FE8AB7E00183A85 /* TopPickItem.swift in Sources */,
@@ -11958,6 +12012,7 @@
 				F977FD861FE8AB8000183A85 /* RequestFilter.swift in Sources */,
 				F977FAF31FE8AB7A00183A85 /* MyWishlistData.swift in Sources */,
 				62C7713B1FF33C3400F66527 /* AddShop.m in Sources */,
+				924B14FE200DB28A00CB65D2 /* AIRGoogleMapPolygon.m in Sources */,
 				62C771CE1FF33C3500F66527 /* PromoShopImage.m in Sources */,
 				62C771011FF33C3300F66527 /* SecurityQuestionResult.m in Sources */,
 				62C76FE51FF33C3100F66527 /* InboxReviewActionResult.m in Sources */,
@@ -12093,6 +12148,7 @@
 				62C770A41FF33C3300F66527 /* ResolutionShop.m in Sources */,
 				F977FA9C1FE8AB7A00183A85 /* TransactionCartCell.m in Sources */,
 				62C7703E1FF33C3200F66527 /* GoogleDistanceMatrix.m in Sources */,
+				924B14F6200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m in Sources */,
 				62C770BA1FF33C3300F66527 /* OrderDetail.m in Sources */,
 				F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */,
 				F97700A11FE8AB8600183A85 /* AuthenticationServiceExtension.swift in Sources */,
@@ -12204,6 +12260,8 @@
 				F977FBB81FE8AB7C00183A85 /* OrderDetailDropshipView.swift in Sources */,
 				F977FD961FE8AB8000183A85 /* OrderCellContext.mm in Sources */,
 				F977FAE51FE8AB7A00183A85 /* OfficialStoreHomeItem.swift in Sources */,
+				924B14F4200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m in Sources */,
+				924B14F3200DB28A00CB65D2 /* DummyView.m in Sources */,
 				DADB9F4B1F3C46CE002B1FAE /* FBTweakCategory.m in Sources */,
 				F977FD741FE8AB7F00183A85 /* TopPicksResponseData.swift in Sources */,
 				62C770061FF33C3200F66527 /* TxOrderPaymentEditOrder.m in Sources */,
@@ -12215,8 +12273,10 @@
 				F977FB401FE8AB7B00183A85 /* TokopediaNetworkManager.m in Sources */,
 				F977FA5B1FE8AB7900183A85 /* BranchAnalytics.swift in Sources */,
 				F977FB851FE8AB7B00183A85 /* CategoryIntermediaryProductShop.swift in Sources */,
+				924B14F0200DB28A00CB65D2 /* AIRGMSPolygon.m in Sources */,
 				62C770211FF33C3200F66527 /* TxOrderConfirmPaymentForm.m in Sources */,
 				62C770651FF33C3200F66527 /* CountRatingResult.m in Sources */,
+				924B14FF200DB28A00CB65D2 /* AIRGMSMarker.m in Sources */,
 				F977FAB21FE8AB7A00183A85 /* SettingPrivacyViewController.m in Sources */,
 				F977FD0D1FE8AB7E00183A85 /* ReportProductGetTypeResult.swift in Sources */,
 				F977FD381FE8AB7F00183A85 /* SearchResultShopCell.m in Sources */,
@@ -12276,6 +12336,7 @@
 				F977FE3B1FE8AB8100183A85 /* OAStackViewCategory.m in Sources */,
 				F977FDA71FE8AB8000183A85 /* HeaderInvoiceComponent.mm in Sources */,
 				F977FA381FE8AB7900183A85 /* UITableView+IndexPath.m in Sources */,
+				924B14FC200DB28A00CB65D2 /* AIRGoogleMapCallout.m in Sources */,
 				F977FC2B1FE8AB7D00183A85 /* TKPDAlert.m in Sources */,
 				F977FB931FE8AB7B00183A85 /* CategoryIntermediaryVideo.swift in Sources */,
 				F977FC681FE8AB7D00183A85 /* CatalogProductViewController.m in Sources */,
@@ -12356,6 +12417,7 @@
 				E581B5401FE8FDAE00E6D1DA /* NotificationTableViewController.swift in Sources */,
 				62C771B91FF33C3500F66527 /* ShipmentCourierData.m in Sources */,
 				62C7705D1FF33C3200F66527 /* ProductReturnInfo.swift in Sources */,
+				924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */,
 				F977FDEE1FE8AB8000183A85 /* EtalaseRequest.m in Sources */,
 				F977007B1FE8AB8600183A85 /* ReactNotificationCenter.m in Sources */,
 				62C771591FF33C3400F66527 /* ShipmentPackage.m in Sources */,
@@ -12373,6 +12435,7 @@
 				848FA6E91FEBF8BF00A22EDE /* RCProblemItem.swift in Sources */,
 				F977FB531FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				62C771261FF33C3400F66527 /* List.m in Sources */,
+				924B14F1200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m in Sources */,
 				F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */,
 				E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */,
 				62C770B01FF33C3300F66527 /* OrderPayment.m in Sources */,
@@ -12571,9 +12634,11 @@
 				62C7708D1FF33C3300F66527 /* HotlistBannerInfo.m in Sources */,
 				62C770331FF33C3200F66527 /* PromoSuggestion.swift in Sources */,
 				F977FB0C1FE8AB7B00183A85 /* GeneralProductCollectionViewCell.m in Sources */,
+				924B14F8200DB28A00CB65D2 /* AIRGMSPolyline.m in Sources */,
 				62C7701E1FF33C3200F66527 /* CartShipmentForm.swift in Sources */,
 				F977FA831FE8AB7A00183A85 /* OneClickEditViewController.swift in Sources */,
 				F977FD4F1FE8AB7F00183A85 /* ProfileContactViewController.m in Sources */,
+				924B14FA200DB28A00CB65D2 /* AIRGoogleMapManager.m in Sources */,
 				F977FCCC1FE8AB7E00183A85 /* TouchIdPromptViewController.swift in Sources */,
 				F977FCD11FE8AB7E00183A85 /* LoginPreference.swift in Sources */,
 				F977FA6B1FE8AB7A00183A85 /* ProductSellerNode.swift in Sources */,
@@ -12739,6 +12804,7 @@
 				62C771931FF33C3400F66527 /* FavoriteShop.m in Sources */,
 				F977FC941FE8AB7D00183A85 /* ShopFavoritedViewController.m in Sources */,
 				F977FDE81FE8AB8000183A85 /* EtalaseViewController.m in Sources */,
+				924B14FB200DB28A00CB65D2 /* RCTConvert+GMSMapViewType.m in Sources */,
 				F97700AD1FE8AB8600183A85 /* MigrationHelper.swift in Sources */,
 				F977FB081FE8AB7B00183A85 /* GeneralAlertCell.m in Sources */,
 				62C770E21FF33C3300F66527 /* NotificationCache.swift in Sources */,
@@ -12748,11 +12814,13 @@
 				F977FA9F1FE8AB7A00183A85 /* TransactionCartDonationCell.swift in Sources */,
 				62C7719D1FF33C3500F66527 /* WalletCashBack.swift in Sources */,
 				F977FC4B1FE8AB7D00183A85 /* AlertListBankCell.m in Sources */,
+				924B14F7200DB28A00CB65D2 /* AIRGoogleMapPolyline.m in Sources */,
 				62C770C51FF33C3300F66527 /* OrderLast.m in Sources */,
 				F977FB6C1FE8AB7B00183A85 /* ResolutionCenterSystemCell.m in Sources */,
 				62C7704B1FF33C3200F66527 /* SearchAWSShop.m in Sources */,
 				F977FE1C1FE8AB8100183A85 /* IntroViewController.swift in Sources */,
 				F977FB181FE8AB7B00183A85 /* CartModelView.m in Sources */,
+				924B14F9200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m in Sources */,
 				62C771B61FF33C3500F66527 /* ShipmentDistrictData.m in Sources */,
 				F977FB3C1FE8AB7B00183A85 /* DepositSummaryCell.m in Sources */,
 				848FA70C1FEBF8BF00A22EDE /* SolutionTextCell.swift in Sources */,
@@ -12862,6 +12930,7 @@
 				F977FB771FE8AB7B00183A85 /* ProductCategoryPrediction.swift in Sources */,
 				F977FC8D1FE8AB7D00183A85 /* CloseShopResult.m in Sources */,
 				F977FAD11FE8AB7A00183A85 /* SettingUserProfileViewController.m in Sources */,
+				924B14ED200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m in Sources */,
 				F977FAB31FE8AB7A00183A85 /* SettingPrivacyCell.m in Sources */,
 				F977FB611FE8AB7B00183A85 /* EditProductTroubleCell.swift in Sources */,
 				F977FD581FE8AB7F00183A85 /* ScrollViewSimultaneousGesture.m in Sources */,
@@ -13099,6 +13168,7 @@
 				F977FA3A1FE8AB7900183A85 /* UIViewController+NavigationItem.swift in Sources */,
 				62C771331FF33C3400F66527 /* ShopProductPageList.swift in Sources */,
 				F97700871FE8AB8600183A85 /* ReactUserManager.m in Sources */,
+				924B14FD200DB28A00CB65D2 /* AIRGoogleMap.m in Sources */,
 				62C770BF1FF33C3300F66527 /* OrderCustomer.m in Sources */,
 				F977FC0E1FE8AB7C00183A85 /* ShipmentWebViewController.m in Sources */,
 				F977FAE71FE8AB7A00183A85 /* AnnouncementTickerView.m in Sources */,
@@ -13320,6 +13390,7 @@
 				62C770981FF33C3300F66527 /* InboxResolutionCenterResult.m in Sources */,
 				F977FA361FE8AB7900183A85 /* UIFont+Theme.m in Sources */,
 				F977FB271FE8AB7B00183A85 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
+				924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */,
 				F977FCB11FE8AB7E00183A85 /* InfoAddressView.swift in Sources */,
 				62C7718F1FF33C3400F66527 /* ProfileEditForm.m in Sources */,
 				848FA6FE1FEBF8BF00A22EDE /* ProblemDetailViewController.swift in Sources */,
@@ -13335,6 +13406,7 @@
 				62C771241FF33C3400F66527 /* ReplacementData.swift in Sources */,
 				F977FE391FE8AB8100183A85 /* TopAlignedLabel.m in Sources */,
 				62C770641FF33C3200F66527 /* ShopStats.m in Sources */,
+				924B14F2200DB28A00CB65D2 /* AIRGoogleMapCircle.m in Sources */,
 				F977FDD61FE8AB8000183A85 /* ResolutionProductData.m in Sources */,
 				F977FDF51FE8AB8100183A85 /* PulsaOperatorViewController.swift in Sources */,
 				F977FE441FE8AB8100183A85 /* FeedDetailViewController.swift in Sources */,
