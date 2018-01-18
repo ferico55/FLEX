@@ -310,6 +310,7 @@ class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
                 action: GA_EVENT_ACTION_VERIFY_FAILED,
                 label: "Uncomplete OTP"
             )
+            self.showVerificationButtonIsLoading(false)
             StickyAlertView.showErrorMessage(["Kode OTP harus terdiri dari 6 angka"])
             return
         }
