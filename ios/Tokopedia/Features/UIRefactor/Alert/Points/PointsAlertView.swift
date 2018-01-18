@@ -17,7 +17,7 @@ class PointsAlertView: UIView, Modal {
     
     var delegate: PointsAlertViewDelegate? = nil
 
-    var backgroundView = UIView()
+    var backgroundView = UIScrollView()
     var dialogView = UIView()
     
     convenience init(title: String, image: UIImage?, imageUrl: String?, message: String, buttons: [UIButton]?) {
@@ -34,12 +34,9 @@ class PointsAlertView: UIView, Modal {
         
         // setup background view
         backgroundView.frame = frame
-        backgroundView.backgroundColor = UIColor.black
-        backgroundView.alpha = 0.6
+        backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.66)
         backgroundView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(didTappedOnBackgroundView)))
         addSubview(backgroundView)
-        
-        // ENHANCEMENT: use scroll view to accommodate long dialog view
         
         // dialog view constants
         let dialogViewWidth = min(frame.width - 32, 300)
@@ -118,7 +115,11 @@ class PointsAlertView: UIView, Modal {
         dialogView.frame.size = CGSize(width: dialogViewWidth, height: dialogViewHeight)
         dialogView.backgroundColor = UIColor.white
         dialogView.layer.cornerRadius = 6
-        addSubview(dialogView)
+        backgroundView.addSubview(dialogView)
+        
+        // setup content size
+        backgroundView.isScrollEnabled = true
+        backgroundView.contentSize = CGSize(width: frame.width, height: max(dialogView.frame.height + 32, frame.height))
     }
     
     func buttonDidTapped(sender: PointsAlertViewButton) {
