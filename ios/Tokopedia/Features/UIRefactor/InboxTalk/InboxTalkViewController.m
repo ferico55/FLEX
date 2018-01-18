@@ -92,7 +92,6 @@
     [super viewDidLoad];
 
     [self initNotification];
-    [UIActivityIndicatorView setAnimationsEnabled:NO];
 
 
     _page = 1;

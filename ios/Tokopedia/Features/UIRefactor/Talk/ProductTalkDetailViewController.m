@@ -155,7 +155,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [UIActivityIndicatorView setAnimationsEnabled:NO];
     
     [self adjustSendButtonAvailability];
     [_table registerNib:[UINib nibWithNibName:@"GeneralTalkCommentCell" bundle:nil] forCellReuseIdentifier:kTKPDGENERALTALKCOMMENTCELL_IDENTIFIER];

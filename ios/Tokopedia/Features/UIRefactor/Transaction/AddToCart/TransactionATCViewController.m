@@ -106,7 +106,6 @@
 #pragma mark - View Lifecycle
 - (void)viewDidLoad {
     [super viewDidLoad];
-    [UIActivityIndicatorView setAnimationsEnabled:NO];
     _detailProduct = (DetailProductResult*)[_data valueForKeyPath:@"product"];
     _isProductPreorder = _detailProduct.preorder.preorder_status;
     [_preorderButton setHidden:!_isProductPreorder];
