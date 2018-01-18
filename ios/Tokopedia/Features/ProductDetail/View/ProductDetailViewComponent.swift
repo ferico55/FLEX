@@ -13,7 +13,6 @@ import RxSwift
 import QuartzCore
 import youtube_ios_player_helper
 import EZYGradientView_ObjC
-import UIAlertController_Blocks
 import TTTAttributedLabel
 import Lottie
 import SwiftOverlays
@@ -991,74 +990,67 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                 title = "Apakah stok produk ini kosong?"
             }
             
-            UIAlertController.showAlert(in: self.viewController,
-                                        withTitle: title,
-                                        message: nil,
-                                        cancelButtonTitle: "Tidak",
-                                        destructiveButtonTitle: nil,
-                                        otherButtonTitles: ["Ya"],
-                                        tap: { controller, _, buttonIndex in
-                                            if buttonIndex != controller.firstOtherButtonIndex {
-                                                return
-                                            }
-                                            
-                                            if productDetail.info.status == .active {
-                                                let provider = NetworkProvider<V4Target>()
-                                                provider.request(.moveToWarehouse(withProductId: productDetail.id))
-                                                    .subscribe(onNext: { _ in
-                                                        productDetail.info.status = .warehouse
-                                                        self.store.dispatch(ProductDetailAction.receive(productDetail, .sellerInactive))
-                                                    },
-                                                               onError: { _ in
-                                                        print("error")
-                                                    })
-                                                    .disposed(by: self.rx_disposeBag)
-                                            } else {
-                                                let selectedEtalase = EtalaseList()
-                                                selectedEtalase.etalase_id = productDetail.info.etalaseId
-                                                selectedEtalase.etalase_name = productDetail.info.etalaseName
-                                                
-                                                let vc = EtalaseViewController()
-                                                vc.delegate = self.viewController
-                                                vc.shopId = productDetail.shop.id
-                                                vc.isEditable = false
-                                                vc.showOtherEtalase = false
-                                                vc.enableAddEtalase = true
-                                                vc.initialSelectedEtalase = selectedEtalase
-                                                self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                            }
+            let alertController = UIAlertController(title: title, message: nil, preferredStyle: .alert)
+            
+            alertController.addAction(UIAlertAction(title: "Tidak", style: .cancel, handler: nil))
+            
+            alertController.addAction(UIAlertAction(title: "Ya", style: .default) { _ in
+                if productDetail.info.status == .active {
+                    let provider = NetworkProvider<V4Target>()
+                    provider.request(.moveToWarehouse(withProductId: productDetail.id))
+                        .subscribe(onNext: { _ in
+                            productDetail.info.status = .warehouse
+                            self.store.dispatch(ProductDetailAction.receive(productDetail, .sellerInactive))
+                        },
+                                   onError: { _ in
+                                    print("error")
+                        })
+                        .disposed(by: self.rx_disposeBag)
+                } else {
+                    let selectedEtalase = EtalaseList()
+                    selectedEtalase.etalase_id = productDetail.info.etalaseId
+                    selectedEtalase.etalase_name = productDetail.info.etalaseName
+                    
+                    let vc = EtalaseViewController()
+                    vc.delegate = self.viewController
+                    vc.shopId = productDetail.shop.id
+                    vc.isEditable = false
+                    vc.showOtherEtalase = false
+                    vc.enableAddEtalase = true
+                    vc.initialSelectedEtalase = selectedEtalase
+                    self.viewController.navigationController?.pushViewController(vc, animated: true)
+                }
             })
+            self.viewController.present(alertController, animated: true, completion: nil)
             
             return
         }
         
         if state?.productDetailActivity == .normal {
-            UIAlertController.showActionSheet(in: self.viewController,
-                                              withTitle: nil,
-                                              message: productDetail.name,
-                                              cancelButtonTitle: "Cancel",
-                                              destructiveButtonTitle: nil,
-                                              otherButtonTitles: ["Laporkan Produk"],
-                                              popoverPresentationControllerBlock: { popover in
-                                                  popover.sourceView = self.viewController.view
-                                                  popover.sourceRect = CGRect(x: self.scrollView.bounds.size.width - 60, y: 20, width: 44, height: 44)
-            }) { controller, _, buttonIndex in
-                if buttonIndex >= controller.firstOtherButtonIndex {
-                    
-                    let userAuthManager = UserAuthentificationManager()
-                    if !userAuthManager.isLogin {
-                        AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
-                            NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
-                        }
-                        return
+            let alertController = UIAlertController(title: nil, message: productDetail.name, preferredStyle: .actionSheet)
+            
+            alertController.addAction(UIAlertAction(title: "Batal", style: .cancel, handler: nil))
+
+            alertController.addAction(UIAlertAction(title: "Laporkan Produk", style: .default) { _ in
+                
+                let userAuthManager = UserAuthentificationManager()
+                if !userAuthManager.isLogin {
+                    AuthenticationService.shared.ensureLoggedInFromViewController(self.viewController) {
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: ADD_PRODUCT_POST_NOTIFICATION_NAME), object: productDetail.id)
                     }
-                    
-                    AnalyticsManager.trackEventName("clickReport", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Report")
-                    let vc = ReportProductViewController()
-                    vc.productId = productDetail.id
-                    self.viewController.navigationController?.pushViewController(vc, animated: true)
+                    return
                 }
-            }
+                
+                AnalyticsManager.trackEventName("clickReport", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Report")
+                let vc = ReportProductViewController()
+                vc.productId = productDetail.id
+                self.viewController.navigationController?.pushViewController(vc, animated: true)
+            })
+            
+            alertController.popoverPresentationController?.sourceView = self.viewController.view
+            alertController.popoverPresentationController?.sourceRect = CGRect(x: self.scrollView.bounds.size.width - 60, y: 20, width: 44, height: 44)
+            
+            self.viewController.present(alertController, animated: true, completion: nil)
         }
     }
     

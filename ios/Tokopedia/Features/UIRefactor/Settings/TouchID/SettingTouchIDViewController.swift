@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UIAlertController_Blocks
 import LocalAuthentication
 
 @objc(SettingTouchIDViewController)
@@ -42,46 +41,41 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
     func removeButtonDidTap(_ index: Int) {
         AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Attempt")
         
-        UIAlertController.showAlert(in: self,
-                                    withTitle: "Touch ID",
-                                    message: "Apakah Anda ingin menghapus integrasi dengan akun ini?",
-                                    cancelButtonTitle: "Tidak",
-                                    destructiveButtonTitle: "Hapus",
-                                    otherButtonTitles: nil) { (controller, action, buttonIndex) in
-                                        if buttonIndex == controller.destructiveButtonIndex {
-                                            let context = LAContext()
-                                            context.localizedFallbackTitle = "";
-                                            let reason = "Otentikasikan untuk Melanjutkan Proses"
-                                            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason, reply: { (success, error) in
-                                                if success {
-                                                    DispatchQueue.main.async {
-                                                        //Authentication was successful
-                                                        self.removeTouchID(_: index)
-                                                        
-                                                        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Success")
-                                                    }
-                                                } else {
-                                                    DispatchQueue.main.async {
-                                                        //Authentication failed. Show alert indicating what error occurred
-                                                        if let error = error as? LAError ,
-                                                            error.code != LAError.userCancel {
-                                                            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
-                                                            
-                                                            UIAlertController.showAlert(in: self,
-                                                                                        withTitle: "Touch ID",
-                                                                                        message: error.localizedDescription,
-                                                                                        cancelButtonTitle: "Ok",
-                                                                                        destructiveButtonTitle: nil,
-                                                                                        otherButtonTitles: nil,
-                                                                                        tap: nil)
-                                                        }
-                                                    }
-                                                }
-                                            })
-                                        } else {
-                                            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
-                                        }
-        }
+        let alertController = UIAlertController(title: "Touch ID", message: "Apakah Anda ingin menghapus integrasi dengan akun ini?", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Tidak", style: .default) { _ in
+            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
+        })
+        
+        alertController.addAction(UIAlertAction(title: "Hapus", style: .destructive) { _ in
+            let context = LAContext()
+            context.localizedFallbackTitle = "";
+            let reason = "Otentikasikan untuk Melanjutkan Proses"
+            context.evaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, localizedReason: reason, reply: { (success, error) in
+                if success {
+                    DispatchQueue.main.async {
+                        //Authentication was successful
+                        self.removeTouchID(_: index)
+                        
+                        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Success")
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        //Authentication failed. Show alert indicating what error occurred
+                        if let error = error as? LAError ,
+                            error.code != LAError.userCancel {
+                            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
+                            
+                            let alertController = UIAlertController(title: "Touch ID", message: error.localizedDescription, preferredStyle: .alert)
+                            
+                            alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
+                            self.present(alertController, animated: true, completion: nil)
+                        }
+                    }
+                }
+            })
+        })
+        self.present(alertController, animated: true, completion: nil)
     }
 
     func removeTouchID(_ index: Int) {

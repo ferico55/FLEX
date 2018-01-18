@@ -8,7 +8,6 @@
 
 import UIKit
 import KeychainAccess
-import UIAlertController_Blocks
 import LocalAuthentication
 
 struct KeychainAccessService {

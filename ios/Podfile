@@ -75,7 +75,6 @@ def common_pods
     pod 'RichEditorView', '~> 4.0.0'
     pod 'TPKeyboardAvoiding', '~> 1.3.1'
     pod 'TTTAttributedLabel',  '~> 1.13.4'
-    pod 'UIAlertController+Blocks', '~> 0.9'
     pod 'UITableView+FDTemplateLayoutCell', '~> 1.4'
     pod 'VMaskTextField', '~>1.0.8'
     

@@ -122,24 +122,23 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             touchIdHelper.loadTouchID(withEmail: emailIds.first!)
             return
         }
-        UIAlertController.showActionSheet(in: self,
-                                          withTitle: "Silahkan pilih akun anda",
-                                          message: nil,
-                                          cancelButtonTitle: "Batal",
-                                          destructiveButtonTitle: nil,
-                                          otherButtonTitles: emailIds,
-                                          popoverPresentationControllerBlock: { [unowned self] (popover: UIPopoverPresentationController) in
-                                              if let touchIdButton = self.providersListView.buttons.first {
-                                                  popover.sourceView = touchIdButton
-                                                  popover.sourceRect = touchIdButton.bounds
-                                              }
-                                          }, tap: { (controller: UIAlertController, _: UIAlertAction, buttonIndex: Int) in
-                                              if buttonIndex >= controller.firstOtherButtonIndex {
-                                                  let index = buttonIndex - controller.firstOtherButtonIndex
-                                                  touchIdHelper.loadTouchID(withEmail: emailIds[index])
-                                              }
+        
+        let alertController = UIAlertController(title: "Silahkan pilih akun anda", message: nil, preferredStyle: .actionSheet)
+        
+        alertController.addAction(UIAlertAction(title: "Batal", style: .cancel, handler: nil))
+        
+        emailIds.forEach({ emailId in
+            alertController.addAction(UIAlertAction(title: emailId, style: .default) { _ in
+                touchIdHelper.loadTouchID(withEmail: emailId)
+            })
         })
+        if let touchIdButton = self.providersListView.buttons.first {
+            alertController.popoverPresentationController?.sourceView = self.view
+            alertController.popoverPresentationController?.sourceRect = touchIdButton.frame
+        }
+        self.present(alertController, animated: true, completion: nil)
     }
+    
     func doLoginWithUser(profile: CreatePasswordUserProfile) {
         guard let parent = self.parentController?.parentController else {return}
         parent.makeActivityIndicator(toShow: true)

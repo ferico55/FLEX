@@ -133,20 +133,19 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
     }
     fileprivate func requestToActivateTouchIDForLogin() {
-        UIAlertController.showAlert(in: self,
-                                    withTitle: "Integrasi dengan Touch ID",
-                                    message: "Integrasikan akun \(self.emailId!) dengan Touch ID?",
-                                    cancelButtonTitle: "Lewatkan",
-                                    destructiveButtonTitle: nil,
-                                    otherButtonTitles: ["Ya"]) { [unowned self] (controller: UIAlertController, _: UIAlertAction, buttonIndex: Int) in
-            if buttonIndex == controller.cancelButtonIndex {
-                LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - No")
-                self.loginSuccess(login: self.loginResult!)
-            } else {
-                LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - Yes")
-                TouchIDHelper.sharedInstance.saveTouchID(forEmail: self.emailId!, password: self.password!)
-            }
-        }
+        let alertController = UIAlertController(title: "Integrasi dengan Touch ID", message: "Integrasikan akun \(self.emailId!) dengan Touch ID?", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "Lewatkan", style: .cancel) { _ in
+            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - No")
+            self.loginSuccess(login: self.loginResult!)
+        })
+        
+        alertController.addAction(UIAlertAction(title: "Ya", style: .default) { _ in
+            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - Yes")
+            TouchIDHelper.sharedInstance.saveTouchID(forEmail: self.emailId!, password: self.password!)
+        })
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     //    MARK: - Notifications
     fileprivate func notifyUserDidLogin() {
@@ -226,14 +225,14 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     }
     func touchIDHelperActivationFailed(_ helper: TouchIDHelper) {
         LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - Cancel")
-        UIAlertController.showAlert(in: self,
-                                    withTitle: "Integrasikan dengan Touch ID",
-                                    message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali",
-                                    cancelButtonTitle: "OK",
-                                    destructiveButtonTitle: nil,
-                                    otherButtonTitles: nil) { [unowned self] (_: UIAlertController, _: UIAlertAction, _: Int) in
+        
+        let alertController = UIAlertController(title: "Integrasikan dengan Touch ID", message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
             self.loginSuccess(login: self.loginResult!)
-        }
+        })
+        
+        self.present(alertController, animated: true, completion: nil)
     }
     func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String) {
         self.isUsingTouchID = true
@@ -249,12 +248,10 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         self.doLoginWithEmail(email: email, password: password)
     }
     func touchIDHelperLoadFailed(_ helper: TouchIDHelper) {
-        UIAlertController.showAlert(in: self,
-                                    withTitle: "Integrasikan dengan Touch ID",
-                                    message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali",
-                                    cancelButtonTitle: "OK",
-                                    destructiveButtonTitle: nil,
-                                    otherButtonTitles: nil,
-                                    tap: nil)
+        let alertController = UIAlertController(title: "Integrasikan dengan Touch ID", message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali", preferredStyle: .alert)
+        
+        alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
+        
+        self.present(alertController, animated: true, completion: nil)
     }
 }
