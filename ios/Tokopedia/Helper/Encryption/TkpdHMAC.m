@@ -292,7 +292,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
         return @"application/json";
     }
     
-    if ([baseUrl isEqual:[NSString pulsaUrl]] && [[self getTkpdPath] isEqualToString: @"/v1.4/track/thankyou"]){
+    if ([baseUrl isEqual:[NSString pulsaApiUrl]] && [[self getTkpdPath] isEqualToString: @"/v1.4/track/thankyou"]){
         return @"application/json";
     }
     
