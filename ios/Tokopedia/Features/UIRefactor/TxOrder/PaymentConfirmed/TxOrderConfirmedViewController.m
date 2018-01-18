@@ -244,8 +244,6 @@
                                                NSString* imageNameFull = dict[@"PHImageFileSandboxExtensionTokenKey"];
                                                NSString* imageNameOnly = imageNameFull.lastPathComponent.lowercaseString;
                                                
-                                               [_dataInput setObject:imageNameOnly forKey:API_FILE_NAME_KEY];
-                                               
                                                [_loadingAlert show];
                                                
                                                TxOrderConfirmedList *selectedConfirmation = [_dataInput objectForKey:DATA_SELECTED_ORDER_KEY];

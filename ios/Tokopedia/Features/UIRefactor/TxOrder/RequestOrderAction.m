@@ -152,6 +152,8 @@ static failedCompletionBlock onFailure;
                                  
                                  if (response.data.is_success == 1) {
                                      success(response.data);
+                                     [StickyAlertView showSuccessMessage:response.message_status?:@[@"Anda telah berhasil mengunggah bukti pembayaran."]];
+
                                  }
                                  else{
                                      [StickyAlertView showErrorMessage:response.message_error?:@[@"Permintaan anda gagal. Mohon coba kembali"]];

@@ -18,4 +18,6 @@
 
 @property (strong,nonatomic) NSArray *secondPickerData;
 
+@property (nonatomic, copy) void(^didTapDoneButton)(NSDictionary *);
+
 @end

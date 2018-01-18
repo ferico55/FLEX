@@ -195,6 +195,11 @@
     if(self.superview != nil){
         [self dismissindex:buttonIndex silent:NO animated:animated];
     }
+    
+    if (self.didTapDoneButton){
+        self.didTapDoneButton(_pickerData[[_data[DATA_INDEX_KEY] integerValue]]);
+    }
+
 }
 
 @end
