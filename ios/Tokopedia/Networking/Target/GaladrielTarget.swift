@@ -10,7 +10,7 @@ import Moya
 import MoyaUnbox
 
 enum GaladrielTarget {
-    case getPromoWidget()
+    case getPromoWidget(shopType: String)
 }
 
 extension GaladrielTarget: TargetType {
@@ -36,9 +36,10 @@ extension GaladrielTarget: TargetType {
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
-        case .getPromoWidget():
+        case let .getPromoWidget(shopType):
             return [
-                "target_type": getUserType()
+                "target_type": getUserType(),
+                "shop_type": shopType
             ]
         }
     }

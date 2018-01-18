@@ -535,7 +535,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
     //MARK: - PromoWidget
     func loadPromo() {
         let provider = NetworkProvider<GaladrielTarget>()
-        provider.request(.getPromoWidget())
+        provider.request(.getPromoWidget(shopType: (self.product?.shop.isOfficial ?? false) ? "os" : "merchant"))
         .map(to: PromoUnbox.self)
         .subscribe(onNext: { (promoUnbox) in
             guard let data = promoUnbox.list.first else {
