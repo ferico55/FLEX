@@ -13,6 +13,7 @@ class SignInProviderListView: UIView {
     var onFacebookSelected: ((SignInProvider) -> Void)?
     var onGoogleSelected: ((SignInProvider) -> Void)?
     var onTouchIdSelected: ((SignInProvider) -> Void)?
+    var onPhoneNumberSelected : ((SignInProvider) -> Void)?
     var buttons: [UIButton] = []
     //    MARK: - Lifecycle
     required init?(coder aDecoder: NSCoder) {
@@ -28,10 +29,16 @@ class SignInProviderListView: UIView {
         var providers = SignInProvider.defaultProviders()
         let isAvailable = TouchIDHelper.sharedInstance.isTouchIDAvailable()
         let connectedAccounts = TouchIDHelper.sharedInstance.numberOfConnectedAccounts()
+        let phoneNumberProvider = SignInProvider.phoneNumberProvider()
         if isAvailable == true && connectedAccounts > 0 {
             let touchIdProvider = SignInProvider.touchIdProvider()
             providers.insert(touchIdProvider, at: 0)
+            providers.insert(phoneNumberProvider, at: 3)
         }
+        else{
+            providers.insert(phoneNumberProvider, at: 2)
+        }
+        
         self.buttons = self.setProviders(providers: providers, isRegister: isRegister)
         self.updateViewWithButtons()
     }
@@ -57,7 +64,7 @@ class SignInProviderListView: UIView {
             button.setTitle(isRegister ? "Daftar dengan \(provider.name)" : "Masuk dengan \(provider.name)", for: .normal)
             button.backgroundColor = UIColor.fromHexString(provider.color)
             button.setTitleColor(textColorForBackground(button.backgroundColor!), for: .normal)
-            if provider.id == "gplus" || provider.id == "touchid" {
+            if provider.id == "gplus" || provider.id == "touchid" || provider.id == "phoneNumber" {
                 button.borderWidth = 1
                 button.borderColor = UIColor(red: 231.0 / 255.0, green: 231.0 / 255.0, blue: 231.0 / 255.0, alpha: 1)
             }
@@ -73,13 +80,17 @@ class SignInProviderListView: UIView {
                 })
             } else if provider.id == "touchid" {
                 button.setImage(UIImage(named: "touchId")?.resizedImage(to: CGSize(width: 20, height: 20)), for: .normal)
+            } else if provider.id == "phoneNumber" {
+                button.setImage(UIImage(named: "tokoCashPhone")?.resizedImage(to: CGSize(width: 11.5, height: 18)), for: .normal)
             }
+            
             button.bk_addEventHandler({ [unowned self] _ in
                 switch provider.id {
                 case "facebook": self.onFacebookSelected?(provider)
                 case "gplus": self.onGoogleSelected?(provider)
                 case "touchid": self.onTouchIdSelected?(provider)
                 case "yahoo": self.onWebViewProviderSelected?(provider)
+                case "phoneNumber": self.onPhoneNumberSelected?(provider)
                 default: return
                 }
             }, for: .touchUpInside)

@@ -62,4 +62,12 @@ class SignInProvider: NSObject {
         provider.color = "#ffffff"
         return provider
     }
+    class func phoneNumberProvider() -> SignInProvider {
+        let provider = SignInProvider()
+        provider.name = "Nomor Ponsel"
+        provider.id = "phoneNumber"
+        provider.imageUrl = ""
+        provider.color = "#ffffff"
+        return provider
+    }
 }

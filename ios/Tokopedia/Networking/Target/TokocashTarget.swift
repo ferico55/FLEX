@@ -21,12 +21,16 @@ class TokocashProvider: TokocashNetworkProvider {
         return TokocashNetworkProvider.defaultEndpointCreatorTokocash(for: target)
             .adding(
                 httpHeaderFields: headers
-            )
+        )
     }
 }
 
 enum TokocashTarget {
     case getPendingCashBack(phoneNumber: String)
+    case sendOTP(phoneNumber: String, accept: OTPAcceptType)
+    case verifyOTP(phoneNumber: String, otpCode: String)
+    case checkPhoneNumber(phoneNumber: String)
+    case getCodeFromTokocash(key: String, email:String)
 }
 
 extension TokocashTarget: TargetType {
@@ -37,6 +41,10 @@ extension TokocashTarget: TargetType {
     var path: String {
         switch self {
         case .getPendingCashBack : return "/api/v1/me/cashback/balance"
+        case .sendOTP: return "/oauth/otp"
+        case .verifyOTP: return "/oauth/verify_native"
+        case .checkPhoneNumber: return "/oauth/check/msisdn"
+        case .getCodeFromTokocash: return "/oauth/authorize_native"
         }
     }
     
@@ -44,6 +52,10 @@ extension TokocashTarget: TargetType {
     var method: Moya.Method {
         switch self {
         case .getPendingCashBack: return .get
+        case .sendOTP: return .post
+        case .verifyOTP: return .post
+        case .checkPhoneNumber: return .post
+        case .getCodeFromTokocash: return .post
         }
     }
     
@@ -52,8 +64,26 @@ extension TokocashTarget: TargetType {
         switch self {
         case let .getPendingCashBack(phoneNumber) :
             return ["msisdn": phoneNumber]
+        case let .sendOTP(phoneNumber, accept):
+            return [
+                "msisdn": phoneNumber,
+                "accept": accept
+            ]
+        case let .verifyOTP(phoneNumber, otpCode):
+            return [
+                "msisdn": phoneNumber,
+                "otp": otpCode
+            ]
+        case let .checkPhoneNumber(phoneNumber):
+            return [
+                "msisdn": phoneNumber
+            ]
+        case let .getCodeFromTokocash(key, email):
+            return [
+                "key":key,
+                "email":email
+            ]
         }
-        
     }
     
     /// The method used for parameter encoding.

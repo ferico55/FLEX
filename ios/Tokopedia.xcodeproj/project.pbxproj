@@ -740,6 +740,22 @@
 		E5CDEB672004C7E700C41219 /* CartTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEB4C2004C7E500C41219 /* CartTest.swift */; };
 		E5CDEB682004C7E700C41219 /* IntermediaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEB4D2004C7E500C41219 /* IntermediaryTest.swift */; };
 		E5CDEB692004C7E700C41219 /* PurchaseStatusTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEB4F2004C7E600C41219 /* PurchaseStatusTest.swift */; };
+		E5D8A5742010A311003E66BA /* LoginPhoneNumberOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5632010A311003E66BA /* LoginPhoneNumberOTPViewController.swift */; };
+		E5D8A5752010A311003E66BA /* OtherVerificationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A5642010A311003E66BA /* OtherVerificationViewController.xib */; };
+		E5D8A5762010A311003E66BA /* LoginPhoneNumberOTPViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A5652010A311003E66BA /* LoginPhoneNumberOTPViewController.xib */; };
+		E5D8A5772010A311003E66BA /* AccountCustomCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5662010A311003E66BA /* AccountCustomCell.swift */; };
+		E5D8A5782010A311003E66BA /* LoginPhoneNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A5672010A311003E66BA /* LoginPhoneNumberViewController.xib */; };
+		E5D8A5792010A311003E66BA /* ListAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A5682010A311003E66BA /* ListAccountViewController.xib */; };
+		E5D8A57A2010A311003E66BA /* AccountCustomCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A5692010A311003E66BA /* AccountCustomCell.xib */; };
+		E5D8A57B2010A311003E66BA /* NoAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A56A2010A311003E66BA /* NoAccountViewController.swift */; };
+		E5D8A57C2010A311003E66BA /* NoAccountViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5D8A56B2010A311003E66BA /* NoAccountViewController.xib */; };
+		E5D8A57D2010A311003E66BA /* OtherVerificationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A56C2010A311003E66BA /* OtherVerificationViewController.swift */; };
+		E5D8A57E2010A311003E66BA /* TokoCashGetCodeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A56E2010A311003E66BA /* TokoCashGetCodeResponse.swift */; };
+		E5D8A57F2010A311003E66BA /* TokoCashLoginSendOTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A56F2010A311003E66BA /* TokoCashLoginSendOTPResponse.swift */; };
+		E5D8A5802010A311003E66BA /* TokoCashLoginVerifyOTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5702010A311003E66BA /* TokoCashLoginVerifyOTPResponse.swift */; };
+		E5D8A5812010A311003E66BA /* TokoCashGetTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5712010A311003E66BA /* TokoCashGetTokenResponse.swift */; };
+		E5D8A5822010A311003E66BA /* ListAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5722010A311003E66BA /* ListAccountViewController.swift */; };
+		E5D8A5832010A312003E66BA /* LoginPhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5732010A311003E66BA /* LoginPhoneNumberViewController.swift */; };
 		F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = F954BD251FC55B65008C0B30 /* TokopediaDB.db */; };
 		F954C43F1FC55B6C008C0B30 /* icon_snap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD271FC55B65008C0B30 /* icon_snap@2x.png */; };
 		F954C4401FC55B6C008C0B30 /* badge_official_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD281FC55B65008C0B30 /* badge_official_small.png */; };
@@ -3247,6 +3263,22 @@
 		E5CDEB4C2004C7E500C41219 /* CartTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartTest.swift; sourceTree = "<group>"; };
 		E5CDEB4D2004C7E500C41219 /* IntermediaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IntermediaryTest.swift; sourceTree = "<group>"; };
 		E5CDEB4F2004C7E600C41219 /* PurchaseStatusTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PurchaseStatusTest.swift; sourceTree = "<group>"; };
+		E5D8A5632010A311003E66BA /* LoginPhoneNumberOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPhoneNumberOTPViewController.swift; sourceTree = "<group>"; };
+		E5D8A5642010A311003E66BA /* OtherVerificationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OtherVerificationViewController.xib; sourceTree = "<group>"; };
+		E5D8A5652010A311003E66BA /* LoginPhoneNumberOTPViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginPhoneNumberOTPViewController.xib; sourceTree = "<group>"; };
+		E5D8A5662010A311003E66BA /* AccountCustomCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccountCustomCell.swift; sourceTree = "<group>"; };
+		E5D8A5672010A311003E66BA /* LoginPhoneNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoginPhoneNumberViewController.xib; sourceTree = "<group>"; };
+		E5D8A5682010A311003E66BA /* ListAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ListAccountViewController.xib; sourceTree = "<group>"; };
+		E5D8A5692010A311003E66BA /* AccountCustomCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AccountCustomCell.xib; sourceTree = "<group>"; };
+		E5D8A56A2010A311003E66BA /* NoAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoAccountViewController.swift; sourceTree = "<group>"; };
+		E5D8A56B2010A311003E66BA /* NoAccountViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoAccountViewController.xib; sourceTree = "<group>"; };
+		E5D8A56C2010A311003E66BA /* OtherVerificationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherVerificationViewController.swift; sourceTree = "<group>"; };
+		E5D8A56E2010A311003E66BA /* TokoCashGetCodeResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashGetCodeResponse.swift; sourceTree = "<group>"; };
+		E5D8A56F2010A311003E66BA /* TokoCashLoginSendOTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashLoginSendOTPResponse.swift; sourceTree = "<group>"; };
+		E5D8A5702010A311003E66BA /* TokoCashLoginVerifyOTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashLoginVerifyOTPResponse.swift; sourceTree = "<group>"; };
+		E5D8A5712010A311003E66BA /* TokoCashGetTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashGetTokenResponse.swift; sourceTree = "<group>"; };
+		E5D8A5722010A311003E66BA /* ListAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAccountViewController.swift; sourceTree = "<group>"; };
+		E5D8A5732010A311003E66BA /* LoginPhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPhoneNumberViewController.swift; sourceTree = "<group>"; };
 		F954BD251FC55B65008C0B30 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		F954BD271FC55B65008C0B30 /* icon_snap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_snap@2x.png"; sourceTree = "<group>"; };
 		F954BD281FC55B65008C0B30 /* badge_official_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badge_official_small.png; sourceTree = "<group>"; };
@@ -7606,6 +7638,37 @@
 			path = Purchase;
 			sourceTree = "<group>";
 		};
+		E5D8A5622010A311003E66BA /* LoginPhoneNumber */ = {
+			isa = PBXGroup;
+			children = (
+				E5D8A5632010A311003E66BA /* LoginPhoneNumberOTPViewController.swift */,
+				E5D8A5642010A311003E66BA /* OtherVerificationViewController.xib */,
+				E5D8A5652010A311003E66BA /* LoginPhoneNumberOTPViewController.xib */,
+				E5D8A5662010A311003E66BA /* AccountCustomCell.swift */,
+				E5D8A5672010A311003E66BA /* LoginPhoneNumberViewController.xib */,
+				E5D8A5682010A311003E66BA /* ListAccountViewController.xib */,
+				E5D8A5692010A311003E66BA /* AccountCustomCell.xib */,
+				E5D8A56A2010A311003E66BA /* NoAccountViewController.swift */,
+				E5D8A56B2010A311003E66BA /* NoAccountViewController.xib */,
+				E5D8A56C2010A311003E66BA /* OtherVerificationViewController.swift */,
+				E5D8A56D2010A311003E66BA /* Model */,
+				E5D8A5722010A311003E66BA /* ListAccountViewController.swift */,
+				E5D8A5732010A311003E66BA /* LoginPhoneNumberViewController.swift */,
+			);
+			path = LoginPhoneNumber;
+			sourceTree = "<group>";
+		};
+		E5D8A56D2010A311003E66BA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E5D8A56E2010A311003E66BA /* TokoCashGetCodeResponse.swift */,
+				E5D8A56F2010A311003E66BA /* TokoCashLoginSendOTPResponse.swift */,
+				E5D8A5702010A311003E66BA /* TokoCashLoginVerifyOTPResponse.swift */,
+				E5D8A5712010A311003E66BA /* TokoCashGetTokenResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -7833,6 +7896,7 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				E5D8A5622010A311003E66BA /* LoginPhoneNumber */,
 				F977EF2D1FE8AB6E00183A85 /* Cache */,
 				F977F5181FE8AB7400183A85 /* Cocoa */,
 				F977F9611FE8AB7600183A85 /* Digital */,
@@ -11260,6 +11324,7 @@
 				F977FDFF1FE8AB8100183A85 /* PulsaProductCell.xib in Resources */,
 				F977FB371FE8AB7B00183A85 /* DepositListBankCell.xib in Resources */,
 				F977FB021FE8AB7B00183A85 /* GeneralList1GestureCell.xib in Resources */,
+				E5D8A5762010A311003E66BA /* LoginPhoneNumberOTPViewController.xib in Resources */,
 				F977FD9C1FE8AB8000183A85 /* TxOrderStatusDetailViewController.xib in Resources */,
 				F977FB571FE8AB7B00183A85 /* EditSolutionSellerCell.xib in Resources */,
 				F97700B41FE8AB8600183A85 /* Octicons.ttf in Resources */,
@@ -11281,6 +11346,7 @@
 				F977FB651FE8AB7B00183A85 /* InboxResolutionCenterOpenViewController.xib in Resources */,
 				F977FC781FE8AB7D00183A85 /* ShopSettingViewController.xib in Resources */,
 				F977FBEB1FE8AB7C00183A85 /* RejectReasonEditPriceViewController.xib in Resources */,
+				E5D8A5782010A311003E66BA /* LoginPhoneNumberViewController.xib in Resources */,
 				F977FB001FE8AB7B00183A85 /* GeneralTextFieldCell.xib in Resources */,
 				F977FBFE1FE8AB7C00183A85 /* TrackOrderViewController.xib in Resources */,
 				F977FC741FE8AB7D00183A85 /* CatalogViewController.xib in Resources */,
@@ -11290,6 +11356,7 @@
 				F977FD651FE8AB7F00183A85 /* ProfileBiodataCell.xib in Resources */,
 				F977FBC31FE8AB7C00183A85 /* OrderDetailProductInformationCell.xib in Resources */,
 				F977FDCC1FE8AB8000183A85 /* ResolutionCenterChooseProblemViewController.xib in Resources */,
+				E5D8A57C2010A311003E66BA /* NoAccountViewController.xib in Resources */,
 				F977FBA71FE8AB7C00183A85 /* ShipmentStatusCell.xib in Resources */,
 				F977FAEB1FE8AB7A00183A85 /* HistoryProductViewController.xib in Resources */,
 				F977FC0F1FE8AB7C00183A85 /* CourierProductViewCell.xib in Resources */,
@@ -11334,6 +11401,7 @@
 				F977FDE61FE8AB8000183A85 /* ShopNotesPageViewController.xib in Resources */,
 				7A466BC11EB2FEAE00A72105 /* LaunchScreen.xib in Resources */,
 				F977FBDF1FE8AB7C00183A85 /* RejectReasonProductDescriptionViewController.xib in Resources */,
+				E5D8A5752010A311003E66BA /* OtherVerificationViewController.xib in Resources */,
 				F977FCAE1FE8AB7E00183A85 /* InfoAddressView.xib in Resources */,
 				F977FB1D1FE8AB7B00183A85 /* InboxTicketCell.xib in Resources */,
 				F977FD621FE8AB7F00183A85 /* ProfileCompletionProgressViewController.xib in Resources */,
@@ -11449,6 +11517,7 @@
 				F977FC041FE8AB7C00183A85 /* CourierOptionViewCell.xib in Resources */,
 				F977FC791FE8AB7D00183A85 /* ShopInfoShipmentCell.xib in Resources */,
 				F977FC991FE8AB7D00183A85 /* SendChatViewController.xib in Resources */,
+				E5D8A57A2010A311003E66BA /* AccountCustomCell.xib in Resources */,
 				F977FB9B1FE8AB7C00183A85 /* FilterSalesTransactionListViewController.xib in Resources */,
 				F977FAD31FE8AB7A00183A85 /* HomeTabHeaderViewController.xib in Resources */,
 				F977FD191FE8AB7E00183A85 /* ActivatePushInstructionViewController.xib in Resources */,
@@ -11497,6 +11566,7 @@
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				F977FBD51FE8AB7C00183A85 /* OrderRejectExplanationViewController.xib in Resources */,
 				F954C4521FC55B6D008C0B30 /* icon_login_active@3x.png in Resources */,
+				E5D8A5792010A311003E66BA /* ListAccountViewController.xib in Resources */,
 				F977FBA01FE8AB7C00183A85 /* ChangeReceiptNumberViewController.xib in Resources */,
 				F977FC031FE8AB7C00183A85 /* ResizeableImageCell.xib in Resources */,
 				F977FBF01FE8AB7C00183A85 /* ProductQuantityCell.xib in Resources */,
@@ -11565,13 +11635,13 @@
 				"${PODS_ROOT}/DBPrivacyHelper/DBPrivacyHelper/DBPrivacyHelperLocalizations/zh-Hant.lproj",
 				"${PODS_ROOT}/DKImagePickerController/DKImagePickerController/DKImagePickerController.bundle",
 				"${PODS_ROOT}/DKImagePickerController/DKCamera/DKCameraResource.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/DownPicker/DownPicker.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/DownPicker/DownPicker.bundle,
 				"${PODS_ROOT}/FBSDKCoreKit/FacebookSDKStrings.bundle",
 				"${PODS_ROOT}/GoogleAuthUtilities/Frameworks/frameworks/GoogleAuthUtilities.framework/Resources/GTMOAuth2ViewTouch.xib",
 				"${PODS_ROOT}/GoogleMaps/Maps/Frameworks/GoogleMaps.framework/Versions/A/Resources/GoogleMaps.bundle",
 				"${PODS_ROOT}/GooglePlaces/Frameworks/GooglePlaces.framework/Versions/A/Resources/GooglePlaces.bundle",
 				"${PODS_ROOT}/GoogleSignIn/Resources/GoogleSignIn.bundle",
-				"$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/HockeySDK/HockeySDKResources.bundle,
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDeleteKey.png",
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDeleteKey@2x.png",
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDeleteKey@3x.png",
@@ -11579,7 +11649,7 @@
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDismissKey@2x.png",
 				"${PODS_ROOT}/MMNumberKeyboard/Images/MMNumberKeyboardDismissKey@3x.png",
 				"${PODS_ROOT}/MoEngage-iOS-SDK/MOInbox/MOInbox.storyboard",
-				"$PODS_CONFIGURATION_BUILD_DIR/OAStackView/OAStackView.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/OAStackView/OAStackView.bundle,
 				"${PODS_ROOT}/RNVectorIcons/Fonts/Entypo.ttf",
 				"${PODS_ROOT}/RNVectorIcons/Fonts/EvilIcons.ttf",
 				"${PODS_ROOT}/RNVectorIcons/Fonts/FontAwesome.ttf",
@@ -11649,7 +11719,7 @@
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/editor/rich_editor_tests.html",
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/editor/rich_editor_tests.js",
 				"${PODS_ROOT}/RichEditorView/RichEditorView/Assets/editor/style.css",
-				"$PODS_CONFIGURATION_BUILD_DIR/VMaskTextField/VMaskTextField.bundle",
+				$PODS_CONFIGURATION_BUILD_DIR/VMaskTextField/VMaskTextField.bundle,
 				"${PODS_ROOT}/youtube-ios-player-helper/youtube-ios-player-helper/Assets.bundle",
 			);
 			name = "[CP] Copy Pods Resources";
@@ -12086,6 +12156,7 @@
 				F977FAD41FE8AB7A00183A85 /* HomeTabViewController.m in Sources */,
 				E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */,
 				62C770AC1FF33C3300F66527 /* CategoryResult.swift in Sources */,
+				E5D8A5812010A311003E66BA /* TokoCashGetTokenResponse.swift in Sources */,
 				F977FCA81FE8AB7E00183A85 /* ShopStatView.m in Sources */,
 				62C771761FF33C3400F66527 /* ImageResult.m in Sources */,
 				F977FCF51FE8AB7E00183A85 /* ImageStorage.m in Sources */,
@@ -12262,6 +12333,7 @@
 				924B14F4200DB28A00CB65D2 /* AIRGoogleMapCircleManager.m in Sources */,
 				924B14F3200DB28A00CB65D2 /* DummyView.m in Sources */,
 				DADB9F4B1F3C46CE002B1FAE /* FBTweakCategory.m in Sources */,
+				E5D8A5772010A311003E66BA /* AccountCustomCell.swift in Sources */,
 				F977FD741FE8AB7F00183A85 /* TopPicksResponseData.swift in Sources */,
 				62C770061FF33C3200F66527 /* TxOrderPaymentEditOrder.m in Sources */,
 				F977FA7E1FE8AB7A00183A85 /* CreditCardCell.swift in Sources */,
@@ -12588,6 +12660,7 @@
 				F977FBA31FE8AB7C00183A85 /* DetailShipmentStatusViewController.m in Sources */,
 				62C770B91FF33C3300F66527 /* OrderDestination.m in Sources */,
 				DADB9F4D1F3C46CE002B1FAE /* FBTweakInline.m in Sources */,
+				E5D8A5822010A311003E66BA /* ListAccountViewController.swift in Sources */,
 				F977FA391FE8AB7900183A85 /* UITextView+UITextView_Placeholder.m in Sources */,
 				F977FE401FE8AB8100183A85 /* TextMenu.m in Sources */,
 				F977FCA71FE8AB7E00183A85 /* ShopDescriptionView.m in Sources */,
@@ -12601,6 +12674,7 @@
 				62C7716D1FF33C3400F66527 /* UploadDataImage.m in Sources */,
 				F977FA3D1FE8AB7900183A85 /* NSDictionaryCategory.m in Sources */,
 				62C7718A1FF33C3400F66527 /* ChangePhoneNumber.m in Sources */,
+				E5D8A57D2010A311003E66BA /* OtherVerificationViewController.swift in Sources */,
 				62C771111FF33C3300F66527 /* VerifiedStatusMSISDN.m in Sources */,
 				F97700651FE8AB8500183A85 /* DigitalCartPayment.swift in Sources */,
 				62C770EE1FF33C3300F66527 /* CatalogResult.m in Sources */,
@@ -12796,6 +12870,7 @@
 				F977FB7C1FE8AB7B00183A85 /* FilterCategoryViewController.m in Sources */,
 				62C771C01FF33C3500F66527 /* RequestObject.m in Sources */,
 				62C7717C1FF33C3400F66527 /* NotificationFormResult.m in Sources */,
+				E5D8A5742010A311003E66BA /* LoginPhoneNumberOTPViewController.swift in Sources */,
 				62C771071FF33C3300F66527 /* Register.m in Sources */,
 				F977FB7E1FE8AB7B00183A85 /* CategoryIntermediarySubCategoryCellView.swift in Sources */,
 				848FA6E11FEBF8BE00A22EDE /* CreateComplainTableViewController.swift in Sources */,
@@ -12868,6 +12943,7 @@
 				62C771391FF33C3400F66527 /* EtalaseList.m in Sources */,
 				62C770CE1FF33C3300F66527 /* DetailCatalogResult.m in Sources */,
 				F977FAE41FE8AB7A00183A85 /* HomeSliderView.swift in Sources */,
+				E5D8A57F2010A311003E66BA /* TokoCashLoginSendOTPResponse.swift in Sources */,
 				62C76FF51FF33C3200F66527 /* TxOrderCancelPaymentResult.m in Sources */,
 				62C770011FF33C3200F66527 /* TxOrderPaymentEditMethod.m in Sources */,
 				62C7705B1FF33C3200F66527 /* ReplyInboxTicketResult.m in Sources */,
@@ -12903,6 +12979,7 @@
 				62C770B81FF33C3300F66527 /* OrderBooking.m in Sources */,
 				F977FB481FE8AB7B00183A85 /* HotlistBannerRequest.m in Sources */,
 				F977FABD1FE8AB7A00183A85 /* SettingBankEditViewController.m in Sources */,
+				E5D8A57E2010A311003E66BA /* TokoCashGetCodeResponse.swift in Sources */,
 				F977FB5C1FE8AB7B00183A85 /* ResolutionValidation.swift in Sources */,
 				F977FB791FE8AB7B00183A85 /* MerlinRecommendationData.swift in Sources */,
 				F977FD601FE8AB7F00183A85 /* TKPDTextView.m in Sources */,
@@ -13027,6 +13104,7 @@
 				62C770F81FF33C3300F66527 /* CreatePassword.m in Sources */,
 				62C770541FF33C3200F66527 /* DetailInboxTicket.m in Sources */,
 				F977FB5E1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.swift in Sources */,
+				E5D8A5832010A312003E66BA /* LoginPhoneNumberViewController.swift in Sources */,
 				848FA7011FEBF8BF00A22EDE /* RCPhotosCollectionCell.swift in Sources */,
 				62C7714D1FF33C3400F66527 /* Tiki.m in Sources */,
 				F977FDAD1FE8AB8000183A85 /* OfficialStoreBrandsViewController.m in Sources */,
@@ -13183,6 +13261,7 @@
 				F977FBEA1FE8AB7C00183A85 /* RejectReason.m in Sources */,
 				F977FE551FE8AB8100183A85 /* FeedNoShopComponentView.swift in Sources */,
 				62C7714A1FF33C3400F66527 /* JNE.m in Sources */,
+				E5D8A57B2010A311003E66BA /* NoAccountViewController.swift in Sources */,
 				F977FC3C1FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
 				E57974D11FEA741F00610655 /* InputPromoCodeViewController.swift in Sources */,
 				F977FA251FE8AB7900183A85 /* V4Target.swift in Sources */,
@@ -13365,6 +13444,7 @@
 				F97700B11FE8AB8600183A85 /* VersionChecker.swift in Sources */,
 				F977FE581FE8AB8100183A85 /* FeedComponentView.swift in Sources */,
 				F977FC4A1FE8AB7D00183A85 /* AlertPhoneVerification.m in Sources */,
+				E5D8A5802010A311003E66BA /* TokoCashLoginVerifyOTPResponse.swift in Sources */,
 				62C770AB1FF33C3300F66527 /* CategoryData.swift in Sources */,
 				F977FBE51FE8AB7C00183A85 /* RejectReasonWrongPriceCell.m in Sources */,
 				F977FBF61FE8AB7C00183A85 /* FuzzySearchData.swift in Sources */,
@@ -13859,7 +13939,10 @@
 					"$(PROJECT_DIR)/Tokopedia/ThirdPartyLibs",
 					"$(PROJECT_DIR)/Tokopedia/ThirdParty",
 				);
-				"FRAMEWORK_SEARCH_PATHS[arch=*]" = "$(inherited) $(PROJECT_DIR)";
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "Tokopedia/Resources/SupportingFiles/Tokopedia-Prefix.pch";
 				HEADERMAP_USES_VFS = YES;

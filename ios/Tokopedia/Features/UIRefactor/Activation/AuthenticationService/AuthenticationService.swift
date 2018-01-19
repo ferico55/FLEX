@@ -61,6 +61,13 @@ import RestKit
         parameter["password_type"] = "activation_code"
         self.doLogin(parameter: parameter)
     }
+    func login(withTokocashCode code: String){
+        var parameter: [String: String] = [:]
+        parameter["grant_type"] = "extension"
+        parameter["social_type"] = "5"
+        parameter["access_token"] = code
+        self.doLogin(parameter: parameter)
+    }
     func reloginAccount() {
         let userInfo = UserAuthentificationManager().getUserLoginData()
         let tokenType: String = userInfo?["oAuthToken.tokenType"] as? String ?? ""
@@ -136,7 +143,12 @@ import RestKit
                 
                 self.accountInfo = info
                 self.authToken = token
-                self.analyzeAccountInfo()
+                // MARK : Login With Phone number
+                if let socialType = parameter["social_type"] , socialType == "5" {
+                    self.authenticateToMarketplace()
+                } else {
+                    self.analyzeAccountInfo()
+                }
             } else {
                 let error = NSError(domain: "AccountInfo", code: -112233, userInfo: [:])
                 self.onLoginComplete(nil, error)

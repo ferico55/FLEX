@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ListAccountViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="contentStackView" destination="M9O-NA-8lR" id="3bF-Oc-shc"/>
+                <outlet property="contentStackViewHeightConstraint" destination="m3q-hu-GHo" id="JIV-ln-AxE"/>
+                <outlet property="informationText" destination="lzO-J9-CJm" id="qJf-WR-HYV"/>
+                <outlet property="titleLabelLeading" destination="7lb-WA-9F6" id="3BD-1s-pKo"/>
+                <outlet property="view" destination="Gpj-ba-Vkg" id="ahR-5g-4sK"/>
+                <outlet property="wrapperLeading" destination="wMh-aX-27u" id="EdD-ig-wBN"/>
+                <outlet property="wrapperTrailing" destination="cCi-tn-StM" id="NeR-Ij-RnZ"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="Gpj-ba-Vkg">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FN0-uI-RIz">
+                    <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Pilih Akun" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ygi-uH-fCJ">
+                            <rect key="frame" x="24" y="32" width="280" height="24"/>
+                            <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Anda memiliki 4 akun dengan nomor ponsel 0856-1552-0031. Pilih salah satu akun untuk masuk." lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lzO-J9-CJm">
+                            <rect key="frame" x="24" y="64" width="280" height="47"/>
+                            <fontDescription key="fontDescription" name=".AppleSystemUIFont" family=".AppleSystemUIFont" pointSize="13"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6cA-DX-zOK">
+                            <rect key="frame" x="0.0" y="127" width="320" height="441"/>
+                            <subviews>
+                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="M9O-NA-8lR">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="71"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="71" id="m3q-hu-GHo"/>
+                                    </constraints>
+                                </stackView>
+                            </subviews>
+                            <constraints>
+                                <constraint firstItem="M9O-NA-8lR" firstAttribute="leading" secondItem="6cA-DX-zOK" secondAttribute="leading" id="7F5-cu-Op3"/>
+                                <constraint firstAttribute="trailing" secondItem="M9O-NA-8lR" secondAttribute="trailing" id="Rod-BB-z2Z"/>
+                                <constraint firstItem="M9O-NA-8lR" firstAttribute="centerX" secondItem="6cA-DX-zOK" secondAttribute="centerX" id="m9K-nR-YTU"/>
+                                <constraint firstItem="M9O-NA-8lR" firstAttribute="top" secondItem="6cA-DX-zOK" secondAttribute="top" id="npD-vf-8ev"/>
+                                <constraint firstAttribute="bottom" secondItem="M9O-NA-8lR" secondAttribute="bottom" id="tgO-gD-8PR"/>
+                            </constraints>
+                        </scrollView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="Ygi-uH-fCJ" firstAttribute="leading" secondItem="FN0-uI-RIz" secondAttribute="leading" constant="24" id="7lb-WA-9F6"/>
+                        <constraint firstItem="6cA-DX-zOK" firstAttribute="leading" secondItem="FN0-uI-RIz" secondAttribute="leading" id="9mD-72-lgB"/>
+                        <constraint firstItem="lzO-J9-CJm" firstAttribute="leading" secondItem="Ygi-uH-fCJ" secondAttribute="leading" id="Amd-kH-Sla"/>
+                        <constraint firstAttribute="trailing" secondItem="Ygi-uH-fCJ" secondAttribute="trailing" constant="16" id="GqQ-sP-fau"/>
+                        <constraint firstItem="Ygi-uH-fCJ" firstAttribute="top" secondItem="FN0-uI-RIz" secondAttribute="top" constant="32" id="Qsl-bQ-2nh"/>
+                        <constraint firstItem="6cA-DX-zOK" firstAttribute="top" secondItem="lzO-J9-CJm" secondAttribute="bottom" constant="16" id="SmV-ab-XOr"/>
+                        <constraint firstAttribute="trailing" secondItem="6cA-DX-zOK" secondAttribute="trailing" id="T7i-cS-PKy"/>
+                        <constraint firstAttribute="bottom" secondItem="6cA-DX-zOK" secondAttribute="bottom" id="jtV-FP-iSE"/>
+                        <constraint firstItem="lzO-J9-CJm" firstAttribute="top" secondItem="Ygi-uH-fCJ" secondAttribute="bottom" constant="8" id="kGq-l0-7iS"/>
+                        <constraint firstItem="lzO-J9-CJm" firstAttribute="trailing" secondItem="Ygi-uH-fCJ" secondAttribute="trailing" id="men-F2-v6L"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="ecF-2d-114" firstAttribute="bottom" secondItem="FN0-uI-RIz" secondAttribute="bottom" id="WEK-6n-VbI"/>
+                <constraint firstItem="ecF-2d-114" firstAttribute="trailing" secondItem="FN0-uI-RIz" secondAttribute="trailing" id="cCi-tn-StM"/>
+                <constraint firstItem="FN0-uI-RIz" firstAttribute="top" secondItem="Gpj-ba-Vkg" secondAttribute="top" id="hC3-Kk-p0s"/>
+                <constraint firstItem="FN0-uI-RIz" firstAttribute="leading" secondItem="ecF-2d-114" secondAttribute="leading" id="wMh-aX-27u"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="ecF-2d-114"/>
+            <point key="canvasLocation" x="-125.5" y="35.5"/>
+        </view>
+    </objects>
+</document>

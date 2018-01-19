@@ -18,6 +18,11 @@ enum WalletError: Swift.Error {
     case noOAuthToken
 }
 
+enum OTPAcceptType: String {
+    case sms = "sms"
+    case call = "call"
+}
+
 class WalletService: NSObject {
     class func getBalance(_ userId: String, onSuccess: @escaping ((WalletStore) -> Void), onFailure: @escaping ((Swift.Error) -> Void)) {
         self.getBalance(userId: userId)
@@ -123,6 +128,49 @@ class WalletService: NSObject {
                     }
                 }
                 return success
+        }
+    }
+    
+    class func checkPhoneNumberTokoCash(phoneNumber: String) -> Observable<TokoCashLoginSendOTPResponse> {
+        return TokocashProvider().request(.checkPhoneNumber(phoneNumber: phoneNumber))
+            .mapJSON()
+            .flatMap({ (response) -> Observable<TokoCashLoginSendOTPResponse> in
+                let response = JSON(response)
+                let responseCode = response["code"].stringValue
+                let isAccountExist = response["data"]["tokopedia_account_exist"].boolValue
+                let isTokoCashExist = response["data"]["tokocash_account_exist"].boolValue
+                // MARK : Response code from check msisdn is 2000000 or Success
+                if responseCode  == "200000" && isAccountExist || isTokoCashExist {
+                    return self.requestOTPLoginTokoCash(phoneNumber: phoneNumber, accept: .sms)
+                }
+                return Observable.of(TokoCashLoginSendOTPResponse(code: "", otpAttempLeft: 0, sent: false, phoneNumber: phoneNumber))
+            })
+    }
+    
+    class func requestOTPLoginTokoCash(phoneNumber: String, accept: OTPAcceptType ) -> Observable<TokoCashLoginSendOTPResponse> {
+        return TokocashProvider().request(.sendOTP(phoneNumber: phoneNumber, accept: accept))
+            .mapJSON()
+            .map{ response -> TokoCashLoginSendOTPResponse in
+                let response = JSON(response)
+                return TokoCashLoginSendOTPResponse(json: response, phoneNumber: phoneNumber)
+        }
+    }
+    
+    class func verifyOTPLoginTokoCash(phoneNumber: String, otpCode: String) -> Observable<TokoCashLoginVerifyOTPResponse> {
+        return TokocashProvider().request(.verifyOTP(phoneNumber: phoneNumber, otpCode: otpCode))
+            .mapJSON()
+            .map{ response -> TokoCashLoginVerifyOTPResponse in
+                let response = JSON(response)
+                return TokoCashLoginVerifyOTPResponse(json: response)
+        }
+    }
+    
+    class func getCodeToHandshakeWithAccount(key: String, email: String) -> Observable<TokoCashGetCodeResponse> {
+        return TokocashProvider().request(.getCodeFromTokocash(key: key, email:email))
+            .mapJSON()
+            .map { response -> TokoCashGetCodeResponse in
+                let response = JSON(response)
+                return TokoCashGetCodeResponse(json: response)
         }
     }
 }

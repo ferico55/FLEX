@@ -72,6 +72,9 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             LoginAnalytics().trackLoginClickEvent(label: provider.name)
             self.webViewLoginWithProvider(provider: provider)
         }
+        self.providersListView.onPhoneNumberSelected = { (provider: SignInProvider) in
+            self.loginWithPhoneNumber()
+        }
     }
     func showTouchIdUsagePrompt() {
         let touchIdHelper = TouchIDHelper.sharedInstance
@@ -90,6 +93,14 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         }
     }
     //    MARK: - Do Login
+    
+    // MARK : Login With Tokocash Phone Number
+    func loginWithPhoneNumber () {
+        let controller = LoginPhoneNumberViewController(nibName: nil, bundle: nil)
+        controller.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(controller, animated: true)
+    }
+    
     func webViewLoginWithProvider(provider: SignInProvider) {
         let controller = WebViewSignInViewController(provider: provider)
         controller.onReceiveToken = { (token: String) in
