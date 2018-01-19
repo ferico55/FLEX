@@ -97,11 +97,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             guard let parent = self.parentController?.parentController else {return}
             service.loginDelegate = parent
             service.onLoginComplete = { (_ login: Login?, _ error: Error?) -> Void in
-                if let error = error {
-                    SecureStorageManager().resetKeychain()
-                    let message = error.localizedDescription
-                    StickyAlertView.showErrorMessage([message])
-                } else if let login = login {
+                if let login = login {
                     login.medium = provider.name
                     LoginAnalytics().trackLoginSuccessEvent(label: provider.name)
                     parent.loginSuccess(login: login)
@@ -165,8 +161,6 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     func facebookLoginCompleted(result: FBSDKLoginManagerLoginResult?, error: Error?) {
         guard let parent = self.parentController?.parentController else {return}
         guard error == nil else {
-            StickyAlertView.showErrorMessage([error!.localizedDescription])
-            SecureStorageManager().resetKeychain()
             parent.makeActivityIndicator(toShow: false)
             return
         }
@@ -203,11 +197,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     //    MARK: - GIDSignInDelegate
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         guard let parent = self.parentController?.parentController else {return}
-        if let error = error {
-            SecureStorageManager().resetKeychain()
-            StickyAlertView.showErrorMessage([error.localizedDescription])
+        if error != nil {
             parent.makeActivityIndicator(toShow: false)
-            debugPrint(error.localizedDescription)
             return
         }
         let profile = CreatePasswordUserProfile.fromGoogle(user: user)
