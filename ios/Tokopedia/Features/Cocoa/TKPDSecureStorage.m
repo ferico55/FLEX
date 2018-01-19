@@ -9,7 +9,9 @@
 #import "TKPDSecureStorage.h"
 #import "NSDictionaryCategory.h"
 
-@implementation TKPDSecureStorage
+@implementation TKPDSecureStorage {
+    NSDictionary *_cachedKeychain;
+}
 
 #pragma mark - Factory Methods
 + (TKPDSecureStorage*)standardKeyChains
@@ -25,25 +27,18 @@
 }
 
 #pragma mark - Properties
-- (void)resetKeychain
-{
+- (void)resetKeychain {
     OSStatus status = noErr;
     CFTypeRef values;
-    
     NSDictionary* savedKeychain = nil;
-    
+
     status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYVALUES, &values) == noErr) ;
-    
-    if(status)
-    {
+    if(status) {
         savedKeychain = [NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary*)(values)];
-        
         status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
         
-        if(status)
-        {
+        if(status) {
             [((NSMutableDictionary*)savedKeychain)setObject:(__bridge id)(values) forKey:(__bridge id)kSecValueData];
-            
             [((NSMutableDictionary*)savedKeychain) setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
             
             status = SecItemDelete((__bridge CFDictionaryRef)savedKeychain);
@@ -52,16 +47,20 @@
     }
 }
 
+- (void) invalidateCache {
+    _cachedKeychain = nil;
+}
 
-- (NSDictionary *)keychainDictionary
-{
+- (NSDictionary *)keychainDictionary {
+    if ([_cachedKeychain count] > 0) {
+        return _cachedKeychain;
+    }
+
     OSStatus status = noErr;
     CFTypeRef values;
-    
     status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
-    
-    if(status)
-    {
+
+    if(status) {
         NSDictionary *savedKeychainDictData = [NSKeyedUnarchiver unarchiveObjectWithData:(__bridge NSData *)(values)];
         NSInteger size = savedKeychainDictData.allKeys.count;
         
@@ -76,149 +75,103 @@
             dictionary[key] = value;
         }
         
+        _cachedKeychain = dictionary;
         return dictionary;
     }
-    else
-    {
-        return nil;
-    }
+    return nil;
 }
 
-- (void)setKeychainWithValue:(id)value withKey:(NSString *)key
-{
+- (void) setKeychainWithDictionary: (NSDictionary<NSString*, id>*) newDictionary {
     OSStatus status = noErr;
-    CFTypeRef values;
-    
     NSDictionary* oldKeychainDict = [self keychainDictionary];
-    
-    id oldKeychainValue = [oldKeychainDict objectForKey:key];
-    
-    if([oldKeychainValue isEqual:value])
-    {
-        return;
-    }
-    
+    CFTypeRef values;
     status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYVALUES, &values) == noErr) ;
-    
-    if(status)
-    {   //update
+
+    if(status) {   //update
         NSMutableDictionary* oldSavedDict = [NSMutableDictionary dictionaryWithDictionary:(__bridge_transfer NSDictionary*)(values)];
         NSMutableDictionary* newDict= [oldSavedDict mutableCopy];
         
         [oldSavedDict setObject:[kTKPDSECURESTORAGE_GLOBALQUERYDATA objectForKey:(__bridge id)kSecClass] forKey:(__bridge id)kSecClass];
-        
-        if(![oldKeychainDict isMutable])
-        {
+        if(![oldKeychainDict isMutable]) {
             [oldKeychainDict mutableCopy];
         }
-        
-        NSMutableArray* allKeys = [[oldKeychainDict allKeys]mutableCopy];
-        NSMutableArray* allValues = [[oldKeychainDict allValues]mutableCopy];
-        
-        NSData* valueData;
-        NSData* keyData;
-        
-        NSMutableDictionary* newKeychainDict = [[NSMutableDictionary alloc]initWithCapacity:([allKeys count]+1)];
-        
-        NSData *newKeychainDictData;
-        
-        for (int i = 0;i < [allKeys count]; i++)
-        {
-            keyData = [allKeys[i] dataUsingEncoding:NSUTF8StringEncoding];
-            
-            if([allValues[i] isKindOfClass:[NSString class]])
-            {
-                valueData = [allValues[i] dataUsingEncoding:NSUTF8StringEncoding];
-            }
-            else if([allValues[i] isKindOfClass:[NSNumber class]])
-            {
-                valueData = [[allValues[i] stringValue] dataUsingEncoding:NSUTF8StringEncoding];
+
+        NSArray* allKeys = [oldKeychainDict allKeys];
+        NSMutableDictionary* newKeychainDict = [[NSMutableDictionary alloc]initWithCapacity: MAX(oldKeychainDict.count, newDictionary.count)];
+        for (NSString* key in allKeys) {
+            NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+            id value = [oldKeychainDict objectForKey:key];
+            NSData *valueData;
+            if([value isKindOfClass:[NSString class]]) {
+                valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
+            } else if([value isKindOfClass:[NSNumber class]]) {
+                valueData = [[value stringValue] dataUsingEncoding:NSUTF8StringEncoding];
             }
             
-            if(valueData)
-            {
+            if (valueData) {
+                [newKeychainDict setObject:valueData forKey:keyData];
+            } else {
+                [newKeychainDict setObject:value forKey:keyData];
+            }
+        }
+        
+        NSArray* keys = [newDictionary allKeys];
+        for (NSString* key in keys) {
+            NSData *keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+            id value = [newDictionary objectForKey:key];
+            NSData *valueData;
+            if([value isKindOfClass:[NSString class]]) {
+                valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
+            } else if([value isKindOfClass:[NSNumber class]]) {
+                valueData = [[value stringValue] dataUsingEncoding:NSUTF8StringEncoding];
+            }
+            
+            if (valueData) {
                 [newKeychainDict setObject:valueData forKey:keyData];
             }
-            else
-            {
-                [newKeychainDict setObject:allValues[i] forKey:keyData];
-            }
-            
         }
         
-        keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-        
-        if([value isKindOfClass:[NSString class]])
-        {
-            valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        else if([value isKindOfClass:[NSNumber class]])
-        {
-            valueData = [[value stringValue] dataUsingEncoding:NSUTF8StringEncoding];
-            
-        }
-        
-        if (valueData != nil) {
-            [newKeychainDict setObject:valueData forKey:keyData];   
-        }
-        
-        newKeychainDictData = [NSKeyedArchiver archivedDataWithRootObject:newKeychainDict];
-        
+        NSData *newKeychainDictData = [NSKeyedArchiver archivedDataWithRootObject:newKeychainDict];
         [newDict setObject:newKeychainDictData forKey:(__bridge id)kSecValueData];
         
         status = SecItemUpdate((__bridge CFDictionaryRef)oldSavedDict, (__bridge CFDictionaryRef)newDict);
         NSAssert( status == noErr, @"Couldn't update the Keychain Item." );
-    }
-    else if(status < 1)
-    {   //insert
-        NSData* savedKeychainData = nil;
-        NSDictionary* savedKeychainDict = nil;
+    } else if(status < 1) {
+        //insert (keychain still empty)
+        NSMutableDictionary* savedKeychainDict = [NSMutableDictionary new];
+        [savedKeychainDict setObject:kTKPDSECURESTORAGE_DATASECURESTORAGEKEY forKey:(__bridge id<NSCopying>)(kSecAttrAccount)];
+        [savedKeychainDict setObject:kTKPDSECURESTORAGE_DATASECURESTORAGEKEY forKey:(__bridge id<NSCopying>)kSecAttrGeneric];
+        [savedKeychainDict setObject:kTKPDSECURESTORAGE_DATATOKOPEDIAUNIQUEKEY forKey:(__bridge id<NSCopying>)kSecAttrService];
+        [savedKeychainDict setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
         
-        NSData* valueData;
-        NSData* keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
-        
-        if(!savedKeychainDict)
-        {   //keychain still empty
-            savedKeychainDict = [[NSDictionary alloc]init];
-            
-            if(![savedKeychainDict isMutable])
-            {
-                savedKeychainDict = [savedKeychainDict mutableCopy];
+        NSMutableDictionary *rootDictionary = [[NSMutableDictionary alloc] initWithCapacity: newDictionary.count];
+        NSArray *keys = [newDictionary allKeys];
+        for (NSString* key in keys) {
+            NSData* keyData = [key dataUsingEncoding:NSUTF8StringEncoding];
+            id value = [newDictionary objectForKey:key];
+            NSData* valueData;
+            if([value isKindOfClass:[NSString class]]) {
+                valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
+            } else if([value isKindOfClass:[NSNumber class]]) {
+                valueData = [[value stringValue] dataUsingEncoding:NSUTF8StringEncoding];
             }
             
-            [((NSMutableDictionary*)savedKeychainDict) setObject:kTKPDSECURESTORAGE_DATASECURESTORAGEKEY forKey:(__bridge id<NSCopying>)(kSecAttrAccount)];
-            [((NSMutableDictionary*)savedKeychainDict) setObject:kTKPDSECURESTORAGE_DATASECURESTORAGEKEY forKey:(__bridge id<NSCopying>)kSecAttrGeneric];
-            [((NSMutableDictionary*)savedKeychainDict) setObject:kTKPDSECURESTORAGE_DATATOKOPEDIAUNIQUEKEY forKey:(__bridge id<NSCopying>)kSecAttrService];
-            [((NSMutableDictionary*)savedKeychainDict) setObject:@"" forKey:(__bridge id)kSecValueData];
+            if (valueData) {
+                [rootDictionary setObject:valueData forKey:keyData];
+            }
         }
-        
-        [((NSMutableDictionary*)savedKeychainDict) setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
-        
-        if([value isKindOfClass:[NSString class]])
-        {
-            valueData = [value dataUsingEncoding:NSUTF8StringEncoding];
-        }
-        else if([value isKindOfClass:[NSNumber class]])
-        {
-            valueData = [[value stringValue] dataUsingEncoding:NSUTF8StringEncoding];
-            
-        }
-        if(valueData)
-        {
-            savedKeychainData = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary dictionaryWithObject:valueData forKey:keyData]];
-        }
-        else
-        {
-            savedKeychainData = [NSKeyedArchiver archivedDataWithRootObject:[NSMutableDictionary dictionaryWithObject:value forKey:keyData]];
-        }
+        NSData* savedKeychainData = [NSKeyedArchiver archivedDataWithRootObject:rootDictionary];
         
         [((NSMutableDictionary*)savedKeychainDict) setObject:savedKeychainData forKey:(__bridge id)(kSecValueData)];
-        
         status = SecItemAdd((__bridge CFDictionaryRef)savedKeychainDict, NULL);
         
         NSAssert( status == noErr, @"Couldn't add the Keychain Item." );
     }
+    [self invalidateCache];
 }
 
+- (void)setKeychainWithValue:(id)value withKey:(NSString *)key {
+    [self setKeychainWithDictionary:@{key: value}];
+}
 
 @end

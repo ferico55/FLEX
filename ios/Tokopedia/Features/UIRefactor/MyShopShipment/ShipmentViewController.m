@@ -706,9 +706,12 @@ TKPPlacePickerDelegate
                                               [self openShopPicture];
                                           } else {
                                               TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                              [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
-                                              [secureStorage setKeychainWithValue:[[self parameters] objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
-                                              [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+                                              NSMutableDictionary *shopDictionary = @{
+                                                                                      kTKPD_SHOPIDKEY: response.result.shop_id,
+                                                                                      kTKPD_SHOPNAMEKEY: [[self parameters] objectForKey:@"shop_name"],
+                                                                                      kTKPD_SHOPISGOLD: @(0)
+                                                                                      };
+                                              [secureStorage setKeychainWithDictionary:shopDictionary];
                                               
                                               [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
                                               
@@ -767,10 +770,14 @@ TKPPlacePickerDelegate
                                       AddShop *response = [mappingResult.dictionary objectForKey:@""];
                                       if ([response.result.is_success boolValue]) {
                                           TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-                                          [secureStorage setKeychainWithValue:response.result.shop_id withKey:kTKPD_SHOPIDKEY];
-                                          [secureStorage setKeychainWithValue:[[self parameters] objectForKey:@"shop_name"] withKey:kTKPD_SHOPNAMEKEY];
-                                          [secureStorage setKeychainWithValue:self.shopLogo withKey:kTKPD_SHOPIMAGEKEY];
-                                          [secureStorage setKeychainWithValue:@(0) withKey:kTKPD_SHOPISGOLD];
+                                          NSDictionary *shopDictionary = @{
+                                                                                  kTKPD_SHOPIDKEY: response.result.shop_id,
+                                                                                  kTKPD_SHOPNAMEKEY: [[self parameters] objectForKey:@"shop_name"],
+                                                                                  kTKPD_SHOPIMAGEKEY: self.shopLogo,
+                                                                                  kTKPD_SHOPISGOLD: @(0),
+                                                                                  };
+                                          [secureStorage setKeychainWithDictionary:shopDictionary];
+
                                           [[NSNotificationCenter defaultCenter] postNotificationName:@"shopCreated" object:self];
                                           OpenShopSuccessViewController *controller = [[OpenShopSuccessViewController alloc] initWithNibName:@"OpenShopSuccessViewController" bundle:nil];
                                           controller.shopName = [[self parameters] objectForKey:@"shop_name"];

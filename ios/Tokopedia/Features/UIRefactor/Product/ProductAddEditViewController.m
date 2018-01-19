@@ -756,8 +756,11 @@ FilterCategoryViewDelegate
     _form.product.product_category = category;
     if (_type == TYPE_ADD_EDIT_PRODUCT_ADD) {
         TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
-        [secureStorage setKeychainWithValue:category.categoryId withKey:LAST_CATEGORY_VALUE];
-        [secureStorage setKeychainWithValue:category.name withKey:LAST_CATEGORY_NAME];
+        NSDictionary *dictionary = @{
+                                     LAST_CATEGORY_VALUE: category.categoryId,
+                                     LAST_CATEGORY_NAME: category.name
+                                     };
+        [secureStorage setKeychainWithDictionary: dictionary];
     }
     [self fetchGetCatalogWithProductName:_productNameTextField.text andDepartmentID:_form.product.product_category.categoryId];
     [self.tableView reloadData];

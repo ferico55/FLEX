@@ -47,5 +47,7 @@ nil]
 - (NSDictionary*)keychainDictionary;    //Get dictionary of keychain value and key list
 
 - (void)setKeychainWithValue:(id)value withKey:(NSString*)key;  //Set keychain with value and specific key
+- (void) setKeychainWithDictionary: (NSDictionary*) newDictionary; // set keychain with dictionary
+- (void) invalidateCache;
 
 @end

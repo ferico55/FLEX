@@ -288,9 +288,12 @@
             
             A2DynamicDelegate* dd = locationManager.bk_dynamicDelegate;
             [dd implementMethod:@selector(locationManager:didUpdateLocations:) withBlock:^(CLLocationManager* manager, NSArray* location) {
-                [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:[NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude] withKey:@"user_latitude"];
-                [[TKPDSecureStorage standardKeyChains] setKeychainWithValue:[NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude] withKey:@"user_longitude"];
+                NSDictionary *locationDictionary = @{
+                                                     @"user_latitude": [NSString stringWithFormat:@"%f", locationManager.location.coordinate.latitude],
+                                                     @"user_longitude": [NSString stringWithFormat:@"%f", locationManager.location.coordinate.longitude]
+                                                     };
                 [locationManager stopUpdatingLocation];
+                [[TKPDSecureStorage standardKeyChains] setKeychainWithDictionary: locationDictionary];
             }];
             locationManager.delegate = dd;
             [locationManager startUpdatingLocation];

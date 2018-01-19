@@ -188,9 +188,14 @@ import RestKit
             }
         } else {
             let storage = TKPDSecureStorage.standardKeyChains()
-            storage?.setKeychainWithValue(self.authToken?.accessToken, withKey: "oAuthToken.accessToken")
-            storage?.setKeychainWithValue(self.authToken?.refreshToken, withKey: "oAuthToken.refreshToken")
-            storage?.setKeychainWithValue(self.authToken?.tokenType, withKey: "oAuthToken.tokenType")
+            let tokenDictionary: [String: Any] = [
+                "oAuthToken.accessToken": self.authToken?.accessToken,
+                "oAuthToken.refreshToken": self.authToken?.refreshToken,
+                "oAuthToken.tokenType": self.authToken?.tokenType
+            ]
+            
+            storage?.setKeychainWith(tokenDictionary)
+            
             let storageManager = SecureStorageManager()
             storageManager.storeLoginInformation(login.result)
             let userManager = UserAuthentificationManager()
@@ -198,10 +203,11 @@ import RestKit
                 withUserID: userManager.getUserId(),
                 onSuccess: { _ in
                     AnalyticsManager.moEngageTrackUserAttributes()
-            },
+                },
                 onFailure: {
                     
-            })
+                }
+            )
             if self.didEnterCreatePassword, let delegate = self.loginDelegate {
                 delegate.successLoginAfterCreatePassword(sender: self, login: login)
             } else {
