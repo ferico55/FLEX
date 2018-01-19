@@ -1,3 +1,4 @@
 [submodule "reactnative-apps"]
 	path = reactnative-apps
-	url = git@github.com:tokopedia/reactnative-apps.git
+	url = https://github.com/tokopedia/reactnative-apps.git
+	branch = devel
