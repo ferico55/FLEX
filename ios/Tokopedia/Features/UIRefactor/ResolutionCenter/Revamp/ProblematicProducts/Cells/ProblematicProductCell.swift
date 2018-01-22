@@ -29,12 +29,16 @@ class ProblematicProductCell: UITableViewCell {
         if item.problem.type == 1 {
             self.productImageView.image = #imageLiteral(resourceName: "shippingChargeIssue")
         } else {
-            if let imageUrl = URL(string: item.order.product.thumb) {
+            if let urlString = item.order?.product.thumb, let imageUrl = URL(string: urlString) {
                 self.productImageView.setImageWith(imageUrl)
             }
         }
         self.productTitleLabel.text = item.problem.name
-        self.freeReturnView.isHidden = !item.order.detail.isFreeReturn
+        if let show = item.order?.detail.isFreeReturn, show == true {
+            self.freeReturnView.isHidden = false
+        } else {
+            self.freeReturnView.isHidden = true
+        }
         if item.isSelected {
             self.checkboxButton.setImage(#imageLiteral(resourceName: "checkboxOn"), for: .normal)
         } else {

@@ -12,7 +12,7 @@ class ProblemsListTableViewController: UITableViewController {
     weak var parentController: ProblemsListViewController?
     //MARK:- Temporary variables to be removed after modal classes
     var isPostageDifference = true
-//    MARK:- Lifecycle
+    //    MARK:- Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         self.tableView.tableFooterView = UIView()
@@ -32,7 +32,7 @@ class ProblemsListTableViewController: UITableViewController {
         super.viewDidAppear(animated)
         self.tableView.reloadData()
     }
-//    MARK:-
+    //    MARK:-
     private func loadProblemItemsIfNeeded() {
         guard RCManager.shared.rcCreateStep1Data == nil else {return}
         self.parentController?.makeActivityIndicator(toShow: true)
@@ -100,6 +100,7 @@ class ProblemsListTableViewController: UITableViewController {
                 }
             }
             problemCell.updateWithProblem(item: problem)
+            data.solutionData = nil
             self.parentController?.updateSaveButton()
         }
         return cell
@@ -128,10 +129,12 @@ class ProblemsListTableViewController: UITableViewController {
                 cell.updateWithProblem(item: problem)
                 self.parentController?.updateSaveButton()
             }
+            data.solutionData = nil
         } else {
             self.showDetailScreenWith(problem: problem)
         }
     }
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
-    }}
+    }
+}

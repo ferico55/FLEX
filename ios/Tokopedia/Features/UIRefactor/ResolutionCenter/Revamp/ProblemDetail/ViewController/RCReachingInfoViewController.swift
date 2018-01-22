@@ -30,11 +30,13 @@ class RCReachingInfoViewController: UIViewController {
         let semiBoldFont = UIFont.semiboldSystemFont(ofSize: 14.0) ?? UIFont.boldSystemFont(ofSize: 14.0)
         let color = UIColor(white: 0.0, alpha: 0.54)
         let part1 = NSAttributedString(string: "Untuk pengiriman menggunakan", attributes: [NSFontAttributeName:regFont, NSForegroundColorAttributeName:color])
-        let part2String = String(format: "\n%@ %@\n", problemItem.order.shipping.name, problemItem.order.shipping.detail.name)
-        let part2 = NSAttributedString(string: part2String, attributes: [NSFontAttributeName:semiBoldFont, NSForegroundColorAttributeName:color])
-        let part3 = NSAttributedString(string: "komplain “barang belum diterima” dapat dilakukan setelah:", attributes: [NSFontAttributeName:regFont, NSForegroundColorAttributeName:color])
         let mutableString = NSMutableAttributedString(attributedString: part1)
-        mutableString.append(part2)
+        if let shippingName = problemItem.order?.shipping.name, let detailName = problemItem.order?.shipping.detail.name {
+            let part2String = String(format: "\n%@ %@\n",shippingName , detailName)
+            let part2 = NSAttributedString(string: part2String, attributes: [NSFontAttributeName:semiBoldFont, NSForegroundColorAttributeName:color])
+            mutableString.append(part2)
+        }
+        let part3 = NSAttributedString(string: "komplain “barang belum diterima” dapat dilakukan setelah:", attributes: [NSFontAttributeName:regFont, NSForegroundColorAttributeName:color])
         mutableString.append(part3)
         self.infoLabel.attributedText = mutableString
     }

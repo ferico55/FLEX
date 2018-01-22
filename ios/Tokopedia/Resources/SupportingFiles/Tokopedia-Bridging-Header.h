@@ -236,7 +236,8 @@
 #import "SalesTransactionListViewController.h"
 #import "TxOrderStatusViewController.h"
 #import "TxOrderConfirmedViewController.h"
-
+#import "TxOrderStatusDetailViewController.h"
+#import "PurchaseViewController.h"
 #import "BannerType.h"
 #import "ReactDynamicFilterModule.h"
 

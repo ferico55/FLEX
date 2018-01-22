@@ -14,7 +14,6 @@ class RCTextInputCell: UITableViewCell, UITextViewDelegate {
     @IBOutlet private weak var minimumCharacterLabel: UILabel?
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.textView.heightAnchor.constraint(equalToConstant: 40)
     }
     func updateWith(status: RCStatus) {
         if status.trouble.count > 0 {

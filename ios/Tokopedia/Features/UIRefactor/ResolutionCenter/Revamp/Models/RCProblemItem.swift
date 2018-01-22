@@ -9,7 +9,7 @@
 import SwiftyJSON
 final class RCProblemItem: NSObject {
     var problem: RCProblem = RCProblem()
-    var order: RCOrder = RCOrder()
+    var order: RCOrder?
     var status: [RCStatus] = []
 //    MARK:- User Values
     var isSelected = false
@@ -19,7 +19,11 @@ final class RCProblemItem: NSObject {
     func setSelectedStatus(isDeliveredType: Bool) {
         for item in self.status {
             if item.delivered == isDeliveredType {
-                self.selectedStatus?.selectedTrouble = nil
+                if isDeliveredType {
+                    item.selectedTrouble = nil
+                } else {
+                    item.selectedTrouble = item.trouble.first
+                }
                 self.selectedStatus = item
                 break
             }

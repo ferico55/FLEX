@@ -17,7 +17,7 @@ class SelectTroubleViewController: UITableViewController {
     }
 //    MARK:- UI
     private func setupUI() {
-        self.title = "Plih Masalah"
+        self.title = "Pilih Masalah"
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 44
         self.tableView.tableFooterView = UIView()
@@ -41,6 +41,8 @@ class SelectTroubleViewController: UITableViewController {
                 handler()
             }
             self.navigationController?.popViewController(animated: true)
+        } else {
+            StickyAlertView.showErrorMessage(["Mohon pilih masalah yang diinginkan"])
         }
     }
     // MARK: - Table view data source

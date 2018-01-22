@@ -13,7 +13,7 @@ class SolutionFreeReturnCell: UITableViewCell {
     func updateWith(returnInfo: RCFreeReturn) {
         let attribute = [NSDocumentTypeDocumentAttribute: NSHTMLTextDocumentType]
         let info = returnInfo.info.replacingOccurrences(of: "\n", with: "")
-        let htmlString = "<html><head><style>body{font-family: -apple-system; font-weight: lighter; font-size:12; color: rgba(0, 0, 0, 0.38);} a{color:rgb(66, 181, 73)}</style></head><body><p>\(info)</p></body></html>"
+        let htmlString = "<html><head><style>body{font-family: -apple-system; font-weight: lighter; font-size:12; color: rgba(0, 0, 0, 0.38); margin: 0px; padding: 0px;} a{color:rgb(66, 181, 73)}</style></head><body>\(info)</body></html>"
         if let htmlData = NSString(string: htmlString).data(using: String.Encoding.unicode.rawValue) {
             do {
                 let attributedString = try NSAttributedString(data: htmlData, options: attribute, documentAttributes: nil)

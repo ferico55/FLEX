@@ -67,52 +67,56 @@ extension RCService: TargetType {
     var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
 //    MARK:- Helpers
     func bodyJsonToCreateComplaint(cacheKey: String, images: [ImageResult])->[String:Any] {
-        let list: [String] = images.map { (item) in
-            item.pic_obj
-        }
-        var body: [String:Any] = ["pictures":list]
+        let imageList = images.filter(){!$0.isVideo}
+        let videoList = images.filter(){$0.isVideo}
+        let list1: [String] = imageList.map {$0.pic_obj}
+        let list2: [String] = videoList.map {$0.pic_obj}
+        var body: [String:Any] = ["pictures":list1]
+        body["videos"] = list2
         body["cacheKey"] = cacheKey
         return body
     }
     func bodyJsonForCacheKeyToCreateComplaint(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
         let selectedProblems = rcStep1Data.selectedProblemItem
-        let list: [[String:Any]] = selectedProblems.map { (item) in
-            [
-                "type": item.problem.type,
-                "trouble": item.selectedStatus?.selectedTrouble?.id ?? 0,
-                "quantity": item.goodsCount,
-                "order": ["detail": ["id": item.order.detail.id]],
-                "remark": item.remark ?? ""
-            ]
+        var list: [[String:Any]] = []
+        for item in selectedProblems {
+            var temp:[String:Any] = [:]
+            temp["type"] = item.problem.type
+            temp["trouble"] = item.selectedStatus?.selectedTrouble?.id ?? 0
+            if item.order != nil {
+                temp["quantity"] = item.goodsCount
+                temp["order"] = ["detail": ["id": item.order?.detail.id]]
+                temp["remark"] = item.remark ?? ""
+            }
+            list.append(temp)
         }
         var body: [String:Any] = ["problem":list]
         body["solution"] = rcStep1Data.solutionData?.selectedSolution?.id
-        if let solutionData = rcStep1Data.solutionData  {
-            if solutionData.require.attachment {
-                if let photos = rcStep1Data.selectedPhotos {
-                    body["attachmentCount"] = photos.count
-                }
-                let remark = ["remark":rcStep1Data.attchmentMessage]
-                body["message"] = remark
+        if rcStep1Data.isProofSubmissionRequired {
+            if let photos = rcStep1Data.selectedPhotos {
+                body["attachmentCount"] = photos.count
             }
+            let remark = ["remark":rcStep1Data.attchmentMessage]
+            body["message"] = remark
         }
         if let expected = rcStep1Data.solutionData?.selectedSolution?.returnExpected {
             body["refundAmount"] = expected
         }
-        debugPrint(body)
         return body
     }
     func bodyJsonForSolutions(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
         let selectedProblems = rcStep1Data.selectedProblemItem
-        let list: [[String:Any]] = selectedProblems.map { (item) in
-            [
-                "type": item.problem.type,
-                "trouble": item.selectedStatus?.selectedTrouble?.id ?? 0,
-                "quantity": item.goodsCount,
-                "order": ["detail": ["id": item.order.detail.id]]
-            ]
+        var list: [[String:Any]] = []
+        for item in selectedProblems {
+            var temp:[String:Any] = [:]
+            temp["type"] = item.problem.type
+            temp["trouble"] = item.selectedStatus?.selectedTrouble?.id ?? 0
+            if item.order != nil {
+                temp["quantity"] = item.goodsCount
+                temp["order"] = ["detail": ["id": item.order?.detail.id]]
+            }
+            list.append(temp)
         }
-        debugPrint(["problem":list])
         return ["problem":list]
     }
 }

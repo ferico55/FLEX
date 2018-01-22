@@ -16,6 +16,7 @@ class ProblemDetailTableViewController: UITableViewController {
     @IBOutlet private weak var addMoreItemsCell: RCButtonCell!
     @IBOutlet private weak var continueButtonCell: RCButtonCell!
     @IBOutlet private weak var cancelButtonCell: RCButtonCell!
+    @IBOutlet private weak var moreButtonHeight: NSLayoutConstraint!
     var problemItem: RCProblemItem?
     weak var parentController: ProblemDetailViewController?
 //    MARK:- Lifecycle
@@ -23,15 +24,15 @@ class ProblemDetailTableViewController: UITableViewController {
         super.viewDidLoad()
         self.tableView.rowHeight = UITableViewAutomaticDimension;
         self.tableView.estimatedRowHeight = 100.0
-        NotificationCenter.default.addObserver(self, selector: #selector(ProblemDetailTableViewController.textview1DidEndEditing(sender:)), name: NSNotification.Name.UITextViewTextDidEndEditing, object: self.singleLineInputCell1.textView)
         NotificationCenter.default.addObserver(self, selector: #selector(ProblemDetailTableViewController.textview2DidEndEditing(sender:)), name: NSNotification.Name.UITextViewTextDidEndEditing, object: self.singleLineInputCell2.textView)
-        
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: NSNotification.Name.UIKeyboardWillHide, object: self.singleLineInputCell2.textView)
         
         self.modalPresentationStyle = .overCurrentContext
         self.singleLineInputCell1.textView.returnKeyType = .continue
         self.singleLineInputCell2.textView.returnKeyType = .continue
-        
+        if let data = RCManager.shared.rcCreateStep1Data, data.itemsCountLeftToSelect == 1 {
+            self.moreButtonHeight.constant = 0
+            self.addMoreItemsCell.button.setTitle("", for: .normal)
+        }
     }
     override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
@@ -78,10 +79,12 @@ class ProblemDetailTableViewController: UITableViewController {
         if let date = problem.getStatus(isDelivered: false)?.info?.date {
             self.rcOrderStatusCell.isDeliveryDatePassed = (date.timeIntervalSinceNow <= 0)
         }
-        if problem.goodsCount == 0 {
-            problem.goodsCount = problem.order.product.quantity
+        if problem.goodsCount == 0, let count = problem.order?.product.quantity {
+            problem.goodsCount = count
         }
-        self.goodsCountCell.orderedQuantity = problem.order.product.quantity
+        if let quantity = problem.order?.product.quantity {
+            self.goodsCountCell.orderedQuantity = quantity
+        }
         self.goodsCountCell.quantity = problem.goodsCount
         self.goodsCountCell.refresh()
         self.goodsCountCell.valueChangedHandler = {
@@ -122,13 +125,18 @@ class ProblemDetailTableViewController: UITableViewController {
             self.singleLineInputCell1.updateWith(status: status)
         }
         if self.validateFields() {
-            self.continueButtonCell.markButtonEnabled()
-            self.addMoreItemsCell.markButtonHighlighted()
+            if let data = RCManager.shared.rcCreateStep1Data, data.itemsCountLeftToSelect == 1 {
+                self.continueButtonCell.markButtonHighlighted()
+            } else {
+                self.addMoreItemsCell.markButtonHighlighted()
+                self.continueButtonCell.markButtonEnabled()
+            }
         } else {
             self.addMoreItemsCell.markButtonDisabled()
             self.continueButtonCell.markButtonDisabled()
         }
         self.singleLineInputCell2.textView.text = problem.remark
+        self.tableView.reloadData()
     }
     private func validateFields() -> Bool {
         guard let problem = self.problemItem else { return false}
@@ -162,23 +170,8 @@ class ProblemDetailTableViewController: UITableViewController {
         }
     }
 //    MARK:- Notification Handler
-    func textview1DidEndEditing(sender: Notification) {
-        self.tableView.reloadData()
-        guard let problem = self.problemItem else { return }
-        problem.selectedStatus?.userTypedTrouble = self.singleLineInputCell1.textView.text
-        self.updateUI()
-    }
     func textview2DidEndEditing(sender: Notification) {
-        self.tableView.reloadData()
         guard let problem = self.problemItem else { return }
-        problem.remark = self.singleLineInputCell2.textView.text
-        self.updateUI()
-    }
-    
-    func keyboardWillHide(sender: Notification) {
-        self.tableView.reloadData()
-        guard let problem = self.problemItem else { return }
-        problem.selectedStatus?.userTypedTrouble = self.singleLineInputCell1.textView.text
         problem.remark = self.singleLineInputCell2.textView.text
         self.updateUI()
     }

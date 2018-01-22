@@ -26,6 +26,7 @@
 @property (nonatomic, strong, nonnull) UploadDataImage *image;
 @property (nonatomic, strong, nonnull) UploadDataImage *upload;
 @property (nonatomic, strong, nonnull) UploadDataImage *data;
+@property (nonatomic) BOOL isVideo;
 
 + (RKObjectMapping *_Nonnull)mapping;
 

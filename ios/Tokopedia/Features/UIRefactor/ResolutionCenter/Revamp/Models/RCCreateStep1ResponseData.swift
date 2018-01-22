@@ -12,21 +12,14 @@ final class RCCreateStep1ResponseData: NSObject {
     var createInfo: [RCProblemItem] = []
 //    MARK:- User computation
     var postageIssueProblem: RCProblemItem? {
-        for item in createInfo {
-            if item.problem.type == 1 {
-                return item
-            }
-        }
-        return nil
+        return self.createInfo.filter({ (item) -> Bool in
+            return item.problem.type == 1
+        }).first
     }
     var selectedProblemItem: [RCProblemItem] {
-        var selected: [RCProblemItem] = []
-        for item in self.createInfo {
-            if item.isSelected {
-                selected.append(item)
-            }
-        }
-        return selected
+        return self.createInfo.filter({ (item) -> Bool in
+            return item.isSelected
+        })
     }
     var solutionData: RCCreateSolutionData?
     var selectedPhotos: [DKAsset]?
@@ -47,8 +40,14 @@ final class RCCreateStep1ResponseData: NSObject {
         return false
     }
     var isProofAdded: Bool {
-        guard let solution = RCManager.shared.rcCreateStep1Data?.solutionData  else {return false}
-        return (!solution.require.attachment || (solution.require.attachment && self.attchmentMessage != nil && self.selectedPhotos != nil))
+        return (!self.isProofSubmissionRequired || (self.isProofSubmissionRequired && self.attchmentMessage != nil && self.selectedPhotos != nil))
+    }
+    var isProofSubmissionRequired: Bool {
+        guard let solution = RCManager.shared.rcCreateStep1Data?.solutionData  else {return true}
+        return (solution.require.attachment)
+    }
+    var itemsCountLeftToSelect: Int {
+        return  self.createInfo.count - self.selectedProblemItem.count
     }
     var titleForItemsAdded: String {
         var count = self.selectedProblemItem.count
@@ -89,6 +88,19 @@ final class RCCreateStep1ResponseData: NSObject {
         } else {
             return "Upload Bukti & Keterangan"
         }
+    }
+    //    MARK:- Private
+    private var isAnyItemDelivered: Bool {
+        let selected = self.selectedProblemItem
+        for item in selected {
+            if item.problem.type == 1 {
+                return true
+            }
+            if let status = item.selectedStatus, status.delivered {
+                return true
+            }
+        }
+        return false
     }
 //    MARK:- Mapping
     override init(){}

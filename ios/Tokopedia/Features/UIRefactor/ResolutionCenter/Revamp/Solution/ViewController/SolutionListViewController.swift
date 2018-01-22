@@ -75,8 +75,10 @@ class SolutionListViewController: UITableViewController {
     }
     func doneButtonTapped(sender: UIBarButtonItem) {
         guard let solutionData = self.solutionData else {return}
-        solutionData.selectedSolution = self.selectedSolution
-        self.navigationController?.popViewController(animated: true)
+        if self.selectedSolution != nil {
+            solutionData.selectedSolution = self.selectedSolution
+            self.navigationController?.popViewController(animated: true)
+        }
     }
     // MARK: - Table view data source
     override func numberOfSections(in tableView: UITableView) -> Int {

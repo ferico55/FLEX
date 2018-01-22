@@ -9,7 +9,7 @@
 import UIKit
 
 class RCButtonCell: UITableViewCell {
-    @IBOutlet private weak var button: UIButton!
+    @IBOutlet weak var button: UIButton!
     var buttonHandler: (()->Void)?
     @IBAction private func buttonTapped(sender: UIButton) {
         if let handler = self.buttonHandler {

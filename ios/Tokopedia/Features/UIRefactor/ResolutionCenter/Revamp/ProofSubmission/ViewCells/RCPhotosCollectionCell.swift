@@ -10,4 +10,12 @@ import UIKit
 
 class RCPhotosCollectionCell: UICollectionViewCell {
     @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var removeButton: UIButton!
+    var removeButtonHandler: (()->Void)?
+    
+    @IBAction private func removeImage(sender: UIButton) {
+        if let handler = self.removeButtonHandler {
+            handler()
+        }
+    }
 }

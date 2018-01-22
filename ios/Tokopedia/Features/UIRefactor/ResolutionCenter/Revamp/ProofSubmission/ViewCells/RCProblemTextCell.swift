@@ -8,7 +8,7 @@
 
 import UIKit
 
-class RCProblemTextCell: UITableViewCell {
+class RCProblemTextCell: UITableViewCell,UITextViewDelegate {
 
     @IBOutlet weak var textView: UITextView!
     @IBOutlet private weak var minimumCharacterLabel: UILabel!

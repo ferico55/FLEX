@@ -45,10 +45,14 @@ class CreateComplainTableViewController: UITableViewController {
             self.itemsCell.setCompleted()
             if data.isSolutionAdded {
                 self.solutionCell.setCompleted()
-                if data.isProofAdded {
-                    self.proofCell.setCompleted()
+                if data.isProofSubmissionRequired {
+                    if data.isProofAdded {
+                        self.proofCell.setCompleted()
+                    } else {
+                        self.proofCell.setActive()
+                    }
                 } else {
-                    self.proofCell.setActive()
+                    self.proofCell.setDisabled()
                 }
             } else {
                 self.solutionCell.setActive()
@@ -78,7 +82,7 @@ class CreateComplainTableViewController: UITableViewController {
         guard let data = RCManager.shared.rcCreateStep1Data else { return }
         if indexPath.section == 1 && data.isItemsAdded {
             self.parentController?.showSolutionsListScreen()
-        } else if data.isSolutionAdded {
+        } else if data.isSolutionAdded && data.isProofSubmissionRequired {
             self.parentController?.showProofSubmissionScreen()
         }
     }

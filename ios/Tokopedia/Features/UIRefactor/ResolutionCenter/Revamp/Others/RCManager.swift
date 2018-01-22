@@ -28,8 +28,6 @@ class RCManager: NSObject {
             _ = self.provider.request(.getStep1(orderId: id), completion: { (result) in
                     switch result {
                     case let .success(response):
-                        let responseString = String(data: response.data, encoding: .utf8)
-                        debugPrint(responseString)
                         let json = JSON(data: response.data)
                         let response = RCCreateStep1Response(json: json)
                         if response.message_error.count > 0 {
@@ -52,8 +50,6 @@ class RCManager: NSObject {
             _ = self.provider.request(.getSolutions(orderId: id, rcStep1Data: data), completion: { (result) in
                 switch result {
                 case let .success(response):
-                    let responseString = String(data: response.data, encoding: .utf8)
-                    debugPrint(responseString)
                     let json = JSON(data: response.data)
                     let solution = RCCreateSolutionResponse(json: json)
                     if solution.message_error.count > 0 {
@@ -82,11 +78,7 @@ class RCManager: NSObject {
                 StickyAlertView.showErrorMessage([error.localizedDescription])
                 onCompletion(nil, error)
             } else {
-                guard let isAttachment = data.solutionData?.require.attachment else {
-                    onCompletion(nil,NSError(domain: "", code: 999, userInfo: nil))
-                    return
-                }
-                if isAttachment {
+                if data.isProofSubmissionRequired {
                     _ = GenerateHostObservable.getGeneratedHost()
                         .subscribe(onNext: { (host) in
                             self.uploadedImages.removeAll()
@@ -168,6 +160,7 @@ class RCManager: NSObject {
                                                             request: postObject,
                                                             onSuccess: { (imageResult) in
                                                                 if let result = imageResult {
+                                                                    result.isVideo = false
                                                                     self.uploadedImages.append(result)
                                                                     if index+1 < photos.count {
                                                                         self.uploadPhotos(host: host, token: token, index: index+1, onCompletion: onCompletion)
@@ -215,6 +208,7 @@ class RCManager: NSObject {
                                                                 } catch {
                                                                 }
                                                                 if let result = imageResult {
+                                                                    result.isVideo = true
                                                                     self.uploadedImages.append(result)
                                                                     if index+1 < photos.count {
                                                                         self.uploadPhotos(host: host, token: token, index: index+1, onCompletion: onCompletion)

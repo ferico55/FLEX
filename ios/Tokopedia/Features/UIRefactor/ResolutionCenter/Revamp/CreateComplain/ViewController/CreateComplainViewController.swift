@@ -80,11 +80,18 @@ class CreateComplainViewController: UIViewController {
         let url = String(format:"%@/resolution/%d/mobile",NSString.mobileSiteUrl(),resolutionId)
         let authenticatedUrl = UserAuthentificationManager().webViewUrl(fromUrl: url)
         let webViewController = WKWebViewController(urlString:authenticatedUrl, shouldAuthorizeRequest: true)
-        if var controllers = self.navigationController?.viewControllers {
-            controllers.removeLast()
-            controllers.removeLast()
+        if let navigationController = self.navigationController {
+            var controllers = navigationController.viewControllers
+            if let index = controllers.index(where: { (controller) -> Bool in
+                return controller is PurchaseViewController
+            }) {
+                controllers.removeLast(controllers.count - index - 1)
+            } else {
+                controllers.removeLast(1)
+            }
             controllers.append(webViewController)
-            self.navigationController?.setViewControllers(controllers, animated: true)
+            navigationController.hidesBottomBarWhenPushed = true
+            navigationController.setViewControllers(controllers, animated: true)
         }
     }
     //    MARK:- Web Services

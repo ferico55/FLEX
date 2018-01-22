@@ -31,8 +31,8 @@ class RCProofViewController: UIViewController {
         }
     }
     private func validate()->Bool {
-        guard let solution = RCManager.shared.rcCreateStep1Data?.solutionData  else {return false}
-        if solution.require.attachment && self.selectedPhotos == nil {
+        guard let data = RCManager.shared.rcCreateStep1Data  else {return false}
+        if data.isProofSubmissionRequired && self.selectedPhotos == nil {
             return false
         }
         if let text = self.attchmentMessage {

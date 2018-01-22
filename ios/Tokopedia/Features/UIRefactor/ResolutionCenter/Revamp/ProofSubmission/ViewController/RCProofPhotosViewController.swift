@@ -52,12 +52,18 @@ class RCProofPhotosViewController: UICollectionViewController {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RCPhotosCollectionCell", for: indexPath) as? RCPhotosCollectionCell else {return UICollectionViewCell()}
         if indexPath.item >= self.selectedPhotos.count {
             cell.imageView.image = #imageLiteral(resourceName: "camera_reso")
+            cell.removeButton.isHidden = true
         } else {
             let asset = self.selectedPhotos[indexPath.item]
             let size = CGSize(width: 160, height: 160)
             asset.fetchImageWithSize(size, completeBlock: { (image, info:[AnyHashable : Any]?) in
                 cell.imageView.image = image
             })
+            cell.removeButton.isHidden = false
+            cell.removeButtonHandler = {[weak self]()->Void in
+                self?.selectedPhotos.remove(at: indexPath.item)
+                self?.collectionView?.reloadData()
+            }
         }
         
         return cell

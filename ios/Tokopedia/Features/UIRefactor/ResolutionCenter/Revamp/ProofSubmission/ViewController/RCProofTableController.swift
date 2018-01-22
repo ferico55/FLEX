@@ -31,7 +31,6 @@ class RCProofTableController: UITableViewController {
         self.tableView.tableFooterView = UIView()
         NotificationCenter.default.addObserver(self, selector: #selector(RCProofTableController.textviewDidEndEditing(sender:)), name: NSNotification.Name.UITextViewTextDidEndEditing, object: self.rcProblemTextCell.textView)
         self.rcProblemTextCell.textView.text = RCManager.shared.rcCreateStep1Data?.attchmentMessage
-        self.rcProblemTextCell.textView.returnKeyType = .continue
     }
 
 //    MARK:- Notification Handler
@@ -40,6 +39,7 @@ class RCProofTableController: UITableViewController {
         self.parentController?.attchmentMessage = self.rcProblemTextCell.textView.text
         self.parentController?.refreshUI()
     }
+    
 //    MARK:- Table View Delegate
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableViewAutomaticDimension
