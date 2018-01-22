@@ -618,6 +618,8 @@
 		924B14FF200DB28A00CB65D2 /* AIRGMSMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14EB200DB28A00CB65D2 /* AIRGMSMarker.m */; };
 		925BA6351E518A54001CED3A /* ServiceExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 925BA62E1E518A54001CED3A /* ServiceExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		925BA63C1E518ACE001CED3A /* NotificationService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 925BA63A1E518ACE001CED3A /* NotificationService.swift */; };
+		D86EC25E200F6A6400388574 /* ReactLocationServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */; };
+		D86EC25F200F6A6400388574 /* ReactLocationServiceManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -3102,6 +3104,8 @@
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA2761CE1F85E68EB1B7FA22 /* Pods-Tokopedia.debug-optimized.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug-optimized.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug-optimized.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactLocationServiceManager.swift; sourceTree = "<group>"; };
+		D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactLocationServiceManagerBridge.m; sourceTree = "<group>"; };
 		DADB9ED91F3C46CE002B1FAE /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		DADB9EE21F3C46CE002B1FAE /* _FBTweakArrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FBTweakArrayViewController.h; sourceTree = "<group>"; };
@@ -10716,6 +10720,8 @@
 		F977F9891FE8AB7700183A85 /* React */ = {
 			isa = PBXGroup;
 			children = (
+				D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */,
+				D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */,
 				F977F9A61FE8AB7700183A85 /* AppNavigationDelegate.h */,
 				F977F9A71FE8AB7700183A85 /* HybridNavigationManager.h */,
 				F977F98E1FE8AB7700183A85 /* HybridNavigationManager.m */,
@@ -12627,6 +12633,7 @@
 				62C770FA1FF33C3300F66527 /* DiscoverResult.swift in Sources */,
 				F977FBA61FE8AB7C00183A85 /* ShipmentStatusCell.m in Sources */,
 				62C770551FF33C3200F66527 /* InboxTicketTicket.m in Sources */,
+				D86EC25F200F6A6400388574 /* ReactLocationServiceManagerBridge.m in Sources */,
 				F977FD811FE8AB7F00183A85 /* FiltersController.swift in Sources */,
 				F977FE521FE8AB8100183A85 /* ProductCellComponentView.swift in Sources */,
 				62C76FE61FF33C3100F66527 /* InboxReviewProductOwner.m in Sources */,
@@ -13216,6 +13223,7 @@
 				F977FDA51FE8AB8000183A85 /* TxOrderTransactionDetailViewController.m in Sources */,
 				62C771701FF33C3400F66527 /* GenerateHost.m in Sources */,
 				62C771D11FF33C3500F66527 /* PromoProductImage.m in Sources */,
+				D86EC25E200F6A6400388574 /* ReactLocationServiceManager.swift in Sources */,
 				F977FD451FE8AB7F00183A85 /* TokoCashActivationOTPViewController.swift in Sources */,
 				62C770171FF33C3200F66527 /* TxOrderConfirmedList.m in Sources */,
 				62C770441FF33C3200F66527 /* GooglePlaceDetailGeometry.m in Sources */,
