@@ -13,6 +13,7 @@
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
+		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6284EE1C1FFB89580070D37A /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */; };
@@ -1208,7 +1209,6 @@
 		F977FB3C1FE8AB7B00183A85 /* DepositSummaryCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F08A1FE8AB7000183A85 /* DepositSummaryCell.m */; };
 		F977FB3D1FE8AB7B00183A85 /* DepositListBankViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F08C1FE8AB7000183A85 /* DepositListBankViewController.m */; };
 		F977FB3E1FE8AB7B00183A85 /* DepositSummaryViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F08D1FE8AB7000183A85 /* DepositSummaryViewController.xib */; };
-		F977FB3F1FE8AB7B00183A85 /* MaintenanceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F08F1FE8AB7000183A85 /* MaintenanceViewController.m */; };
 		F977FB401FE8AB7B00183A85 /* TokopediaNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F0911FE8AB7000183A85 /* TokopediaNetworkManager.m */; };
 		F977FB411FE8AB7B00183A85 /* MaintenanceViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F0921FE8AB7000183A85 /* MaintenanceViewController.xib */; };
 		F977FB421FE8AB7B00183A85 /* TokopediaCacheManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F0941FE8AB7000183A85 /* TokopediaCacheManager.m */; };
@@ -2056,6 +2056,7 @@
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
@@ -3730,11 +3731,9 @@
 		F977F08B1FE8AB7000183A85 /* DepositFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DepositFormViewController.h; sourceTree = "<group>"; };
 		F977F08C1FE8AB7000183A85 /* DepositListBankViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DepositListBankViewController.m; sourceTree = "<group>"; };
 		F977F08D1FE8AB7000183A85 /* DepositSummaryViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = DepositSummaryViewController.xib; sourceTree = "<group>"; };
-		F977F08F1FE8AB7000183A85 /* MaintenanceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MaintenanceViewController.m; sourceTree = "<group>"; };
 		F977F0901FE8AB7000183A85 /* TokopediaCacheManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokopediaCacheManager.h; sourceTree = "<group>"; };
 		F977F0911FE8AB7000183A85 /* TokopediaNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaNetworkManager.m; sourceTree = "<group>"; };
 		F977F0921FE8AB7000183A85 /* MaintenanceViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MaintenanceViewController.xib; sourceTree = "<group>"; };
-		F977F0931FE8AB7000183A85 /* MaintenanceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MaintenanceViewController.h; sourceTree = "<group>"; };
 		F977F0941FE8AB7000183A85 /* TokopediaCacheManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TokopediaCacheManager.m; sourceTree = "<group>"; };
 		F977F0951FE8AB7000183A85 /* TokopediaNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TokopediaNetworkManager.h; sourceTree = "<group>"; };
 		F977F0961FE8AB7000183A85 /* MiniSlideObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniSlideObject.h; sourceTree = "<group>"; };
@@ -8753,8 +8752,7 @@
 		F977F08E1FE8AB7000183A85 /* TokopediaNetworkManager */ = {
 			isa = PBXGroup;
 			children = (
-				F977F0931FE8AB7000183A85 /* MaintenanceViewController.h */,
-				F977F08F1FE8AB7000183A85 /* MaintenanceViewController.m */,
+				622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */,
 				F977F0921FE8AB7000183A85 /* MaintenanceViewController.xib */,
 				F977F0901FE8AB7000183A85 /* TokopediaCacheManager.h */,
 				F977F0941FE8AB7000183A85 /* TokopediaCacheManager.m */,
@@ -13325,6 +13323,7 @@
 				F977FCF81FE8AB7E00183A85 /* ProductEditImageViewController.m in Sources */,
 				F977FE4B1FE8AB8100183A85 /* FeedOfficialStoreComponentView.swift in Sources */,
 				F977FD871FE8AB8000183A85 /* ListFilter.swift in Sources */,
+				622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */,
 				62C771A51FF33C3500F66527 /* PopUpNotification.swift in Sources */,
 				62C770A51FF33C3300F66527 /* ResolutionCenterDetail.m in Sources */,
 				F977FBBF1FE8AB7C00183A85 /* PickupAddressView.swift in Sources */,
@@ -13517,7 +13516,6 @@
 				62C771171FF33C3400F66527 /* GetCouponResponse.swift in Sources */,
 				62C770761FF33C3200F66527 /* PriceAlertResult.m in Sources */,
 				F97700771FE8AB8500183A85 /* ReactDynamicFilterModule.m in Sources */,
-				F977FB3F1FE8AB7B00183A85 /* MaintenanceViewController.m in Sources */,
 				62C7713C1FF33C3400F66527 /* Notes.swift in Sources */,
 				62C771001FF33C3300F66527 /* SecurityQuestion.m in Sources */,
 				F977FA6A1FE8AB7A00183A85 /* ProductDetailViewComponent.swift in Sources */,

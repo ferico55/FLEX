@@ -8,7 +8,6 @@
 //
 
 #import "TokopediaNetworkManager.h"
-#import "MaintenanceViewController.h"
 #import "StickyAlertView.h"
 #import "NSString+MD5.h"
 #import "TkpdHMAC.h"
@@ -55,6 +54,7 @@
 
 - (void)requestMaintenance  {
     MaintenanceViewController *maintenanceController = [MaintenanceViewController new];
+    maintenanceController.hidesBottomBarWhenPushed = YES;
     UIViewController* vc = [UIApplication topViewController:[[[UIApplication sharedApplication] keyWindow] rootViewController]];
     
     if(vc.navigationController != nil) {

@@ -46,7 +46,6 @@
 #import "SalesTransactionListViewController.h"
 #import "TxOrderConfirmedViewController.h"
 #import "TxOrderStatusViewController.h"
-#import "MaintenanceViewController.h"
 #import "PromoDetailViewController.h"
 #import "TransactionATCViewController.h"
 #import "OfficialStoreBrandsViewController.h"
@@ -744,6 +743,7 @@
 
 + (void)navigateToMaintenanceViewController {
     MaintenanceViewController *viewController = [MaintenanceViewController new];
+    viewController.hidesBottomBarWhenPushed = YES;
     UIViewController * topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
     [topViewController.navigationController pushViewController:viewController animated:YES];
 }
