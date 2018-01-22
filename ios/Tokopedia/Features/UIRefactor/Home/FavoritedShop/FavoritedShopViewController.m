@@ -112,6 +112,8 @@ FavoriteShopRequestDelegate
 //    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:@"notifyFav" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didSwipeHomeTab:) name:@"didSwipeHomeTab" object:nil];
     
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshAfterLogin:) name:TKPDUserDidLoginNotification object:nil];
+    
     //Check login with different id
     TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
     NSDictionary *_auth = [secureStorage keychainDictionary];
@@ -136,7 +138,6 @@ FavoriteShopRequestDelegate
     [super viewWillAppear:animated];
     
     [AnalyticsManager trackScreenName:@"Home - Favorited Shop"];
-    
 }
 
 -(void)viewWillDisappear:(BOOL)animated {
@@ -471,12 +472,6 @@ FavoriteShopRequestDelegate
     [self.navigationController pushViewController:container animated:YES];
 }
 
-- (void)resetView {
-    [_shops removeAllObjects];
-    [_promoShops removeAllObjects];
-    [self refreshView:nil];
-}
-
 -(void)refreshView:(UIRefreshControl*)refresh
 {
     [_favoriteShopRequest cancelAllOperation];
@@ -560,6 +555,10 @@ FavoriteShopRequestDelegate
 - (void)showInternetProblemStickyAlert{
     StickyAlertView *stickyView = [[StickyAlertView alloc] initWithWarningMessages:@[@"Kendala koneksi internet."] delegate:self];
     [stickyView show];
+}
+
+- (void)refreshAfterLogin:(id)sender {
+    [self refreshView:nil];
 }
 
 @end
