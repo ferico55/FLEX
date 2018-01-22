@@ -107,7 +107,10 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
                         if error == nil {
                             AuthenticationService.shared.reloginAccount()
                         } else {
-                            LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/token")
+                            if let urlString = response.request?.url?.absoluteString {
+                                LogEntriesHelper.logForceLogout(lastURL: urlString)
+                            }
+                            
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                         }
                     })

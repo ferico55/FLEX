@@ -362,7 +362,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         if (token != nil) {
             [weakSelf requestWallet];
         } else {
-            [LogEntriesHelper logForceLogoutWithLastURL:@"https://accounts.tokopedia.com/token"];
+            [LogEntriesHelper logForceLogoutWithLastURL:@"https://accounts.tokopedia.com/api/v1/wallet/balance"];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         }
     }];

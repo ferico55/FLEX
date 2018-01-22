@@ -274,7 +274,9 @@
                         if (error == nil) {
                             [authService reloginAccount];
                         } else {
-                            [LogEntriesHelper logForceLogoutWithLastURL:@"https://accounts.tokopedia.com/token"];
+                            NSString *baseURL = [response.baseURL absoluteString];
+                            
+                            [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", baseURL, path]];
                             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
                         }
                     }];

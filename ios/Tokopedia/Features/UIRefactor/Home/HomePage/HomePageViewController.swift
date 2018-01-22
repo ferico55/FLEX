@@ -599,7 +599,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
             if token != nil {
                 self.requestTokocashAndTokopoints()
             } else {
-                LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/token")
+                LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/api/v1/wallet/balance")
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: TkpdNotificationForcedLogout), object: nil)
             }
         }

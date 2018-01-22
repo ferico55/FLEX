@@ -19,15 +19,37 @@ class LogEntriesHelper: NSObject {
     }
     
     class func logForceLogout(lastURL: String) {
+        guard let loginData = UserAuthentificationManager().getUserLoginData() else {
+            return
+        }
+        
+        let userID = UserAuthentificationManager().getUserId() ?? "0"
+        let email = UserAuthentificationManager().getUserEmail() ?? "0"
+        let deviceToken = UserAuthentificationManager().getMyDeviceToken()
+        let refreshToken = loginData["oAuthToken.refreshToken"] as? String ?? ""
+        
+        if userID == "0" || email == "0" || deviceToken == "0" {
+            return
+        }
+        
+        var buildMode = ""
+        #if DEBUG
+            buildMode = "DEBUG"
+        #else
+            buildMode = "RELEASE"
+        #endif
+        
         let data = [
             "event": "FORCE_LOGOUT",
-            "userID": UserAuthentificationManager().getUserId(),
-            "email": UserAuthentificationManager().getUserEmail(),
+            "buildMode": buildMode,
+            "userID": userID,
+            "email": email,
             "device": UIDevice.current.modelName,
             "ios_version": UIDevice.current.systemVersion,
-            "device_token": UserAuthentificationManager().getMyDeviceToken(),
+            "device_token": deviceToken,
             "url": lastURL,
             "app_version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "",
+            "refresh_token": refreshToken,
         ]
         
         self.logOnLogEntries(data: data)
