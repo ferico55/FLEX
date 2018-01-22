@@ -18,6 +18,8 @@
 #import "AlertListView.h"
 #import "AlertPickerView.h"
 #import "RequestUploadImage.h"
+#import "WebViewController.h"
+#import "UserAuthentificationManager.h"
 
 #import "SettingUserProfileViewController.h"
 #import "SettingUserPhoneViewController.h"
@@ -57,8 +59,11 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (weak, nonatomic) IBOutlet UILabel *fullNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *birthdateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sexLabel;
-@property (weak, nonatomic) IBOutlet UILabel *phoneNumberLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberStatusLabel;
+
+// Button
+@property (weak, nonatomic) IBOutlet UIButton *phoneNumberButton;
+
 
 // Verification phone number view
 @property (weak, nonatomic) IBOutlet UIView *verificationPhoneView;
@@ -220,7 +225,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     self.hobbyTextField.text = userData.hobby;
     self.emailTextField.text = userData.user_email;
     self.messengerTextField.text = userData.user_messenger?:@"-";
-    self.phoneNumberLabel.text = userData.user_phone;
+    [self.phoneNumberButton setTitle:userData.user_phone forState:UIControlStateNormal];
     
     // Set user profile picture
     [self setUserProfilePicture];
@@ -249,12 +254,14 @@ typedef NS_ENUM(NSInteger, PickerView) {
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.061 green:0.648 blue:0.275 alpha:1];
         self.verificationPhoneView.hidden = YES;
         self.verificationPhoneViewHeight.constant = 20;
+        self.phoneNumberButton.enabled = YES;
     }else{
         self.phoneNumberStatusLabel.hidden = NO;
         self.phoneNumberStatusLabel.text = @"Belum Terverifikasi";
         self.phoneNumberStatusLabel.textColor = [UIColor colorWithRed:0.882 green:0.296 blue:0.209 alpha:1];
         self.verificationPhoneView.hidden = NO;
         self.verificationPhoneViewHeight.constant = 100;
+        self.phoneNumberButton.enabled = NO;
     }
 }
 
@@ -266,6 +273,23 @@ typedef NS_ENUM(NSInteger, PickerView) {
                                           success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
                                               self.profileImageView.image = image;
                                           } failure:nil];
+}
+
+- (void)pushToWebView {
+    __weak typeof(self) weakSelf = self;
+    
+    UserAuthentificationManager *userAuth = [UserAuthentificationManager new];
+    WebViewController *webViewController = [WebViewController new];
+    NSString *urlInString = [NSString stringWithFormat:@"%@/msisdn-change.pl?action=update&device=ios", [NSString mobileSiteUrl]];
+    webViewController.strURL = [userAuth webViewUrlFromUrl:urlInString];
+    webViewController.strTitle = @"Ubah Nomor Ponsel";
+    webViewController.shouldAuthorizeRequest = YES;
+    webViewController.onTapLinkWithUrl = ^(NSURL* url){
+        if([url.absoluteString containsString:@"people"]) {
+            [weakSelf.navigationController popViewControllerAnimated:YES];
+        }
+    };
+    [self.navigationController pushViewController:webViewController animated:YES];
 }
 
 #pragma mark - Scroll delegate
@@ -427,6 +451,30 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (void)didTapSaveButton:(UIBarButtonItem *)saveButton {
     [self requestSubmitData];
+}
+
+- (IBAction)didTapPhoneNumber:(UIButton *)sender {
+    UIAlertController *actionSheet = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *firstButton = [UIAlertAction actionWithTitle:@"Ubah Nomor Ponsel" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action){
+        [self pushToWebView];
+    }];
+    
+    UIAlertAction *cancelButton = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action){
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }];
+    [cancelButton setValue:[UIColor tpRed] forKey:@"titleTextColor"];
+    
+    [actionSheet addAction:firstButton];
+    [actionSheet addAction:cancelButton];
+    
+    if(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad){
+        UIPopoverPresentationController *popPresenter = [actionSheet popoverPresentationController];
+        popPresenter.sourceView = self.phoneNumberButton;
+        popPresenter.sourceRect = self.phoneNumberButton.bounds;
+    }
+    
+    [self.navigationController presentViewController:actionSheet animated:YES completion:nil];
 }
 
 -(void)notifySuccessEditProfileImageWithURLString:(NSString*)imageURLString{
