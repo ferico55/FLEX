@@ -18,9 +18,11 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
     var title = ""
     var commentCount = 0
     var likeCount = 0
+    var showComment = true
     var imageURL = ""
     var description = ""
     var createTime = ""
+    var tagID = 0
     var tagType = ""
     var tagURL = ""
     var tagCaption = ""
@@ -32,6 +34,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
     var descriptionShownAll = false
     var page = 0
     var row = 0
+    var contentType = ""
     var dictionary: [String: Any] {
         return [
             "cardID": cardID,
@@ -41,9 +44,11 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
             "title": title,
             "commentCount": commentCount,
             "likeCount": likeCount,
+            "showComment": showComment,
             "imageURL": imageURL,
             "description": description,
             "createTime": createTime,
+            "tagID": tagID,
             "tagType": tagType,
             "tagURL": tagURL,
             "tagCaption": tagCaption,
@@ -55,6 +60,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
             "descriptionShownAll": descriptionShownAll,
             "page": page,
             "row": row,
+            "contentType": contentType,
         ]
     }
     
@@ -65,6 +71,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
         self.title = post.headerTitle ?? ""
         self.isFollowed = post.isFollowed ?? false
         self.isLiked = post.isLiked ?? false
+        self.showComment = post.showComment ?? true
         self.commentCount = post.commentCount ?? 0
         self.likeCount = post.likeCount ?? 0
         self.description = post.description ?? ""
@@ -76,8 +83,9 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
         self.userURL = post.userUrl ?? ""
         self.page = page
         self.row = row
+        self.contentType = "kolpost"
         
-        if self.description.characters.count > 150 {
+        if self.description.count > 150 {
             self.descriptionShownAll = false
         }
         
@@ -88,6 +96,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
                 self.tagType = tag.type ?? ""
                 self.tagURL = tag.link ?? ""
                 self.tagCaption = tag.caption ?? ""
+                self.tagID = tag.id ?? 0
             }
         }
     }
@@ -99,6 +108,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
         self.isLiked = post.isLiked ?? false
         self.commentCount = post.commentCount ?? 0
         self.likeCount = post.likeCount ?? 0
+        self.showComment = post.showComment ?? true
         self.description = post.description ?? ""
         self.userName = post.userName ?? ""
         self.userPhoto = post.userPhoto ?? ""
@@ -108,8 +118,9 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
         self.createTime = post.createTime ?? ""
         self.page = page
         self.row = row
+        self.contentType = "followedkolpost"
         
-        if self.description.characters.count > 150 {
+        if self.description.count > 150 {
             self.descriptionShownAll = false
         }
         
@@ -129,6 +140,7 @@ struct FeedCardKOLPostState: Render.StateType, ReSwift.StateType {
         self.isFollowed = stateDict["isFollowed"] as? Bool ?? false
         self.tempFollowing = stateDict["tempFollowing"] as? Bool ?? false
         self.isLiked = stateDict["isLiked"] as? Bool ?? false
+        self.showComment = stateDict["showComment"] as? Bool ?? true
         self.title = stateDict["title"] as? String ?? ""
         self.commentCount = stateDict["commentCount"] as? Int ?? 0
         self.likeCount = stateDict["likeCount"] as? Int ?? 0

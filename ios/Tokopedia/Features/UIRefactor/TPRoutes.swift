@@ -738,6 +738,26 @@ class TPRoutes: NSObject {
             }
             return true
         }
+        
+        //MARK: KOL Comment (Native)
+        JLRoutes.global().addRoute("/kolcomment/:cardID") { (params: [String: Any]!) -> Bool in
+            if let cardID = params["cardID"] as? String {
+                let props = ["cardID": cardID]
+                
+                let viewController = ReactViewController(
+                    moduleName: "FeedKOLActivityComment",
+                    props: ["cardState": props as AnyObject]
+                )
+                
+                viewController.hidesBottomBarWhenPushed = true
+                
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushReactViewController(viewController, animated: true)
+            }
+            
+            return true
+        }
 
         // MARK: Recently Viewed (Native)
         JLRoutes.global().addRoute("/recentlyviewed") { (_: [String: Any]!) -> Bool in

@@ -134,6 +134,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 					description
 					commentCount
 					likeCount
+					showComment
 					isLiked
 					isFollowed
 					createTime
@@ -160,6 +161,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 					description
 					commentCount
 					likeCount
+					showComment
 					isLiked
 					isFollowed
 					createTime

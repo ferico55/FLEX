@@ -10,9 +10,10 @@ import UIKit
 import Render
 import RxSwift
 
-class FeedKOLRecommendationComponentView: ComponentView<FeedCardKOLRecommendationState> {
+class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
     private var onTapFollowUser: ((FeedCardKOLRecommendationState) -> Void)!
-    var currentState: FeedCardKOLRecommendationState = FeedCardKOLRecommendationState()
+    private var currentState: FeedCardKOLRecommendationState = FeedCardKOLRecommendationState()
+    private var contentState = FeedCardContentState()
     
     init(onTapFollowUser: @escaping ((FeedCardKOLRecommendationState) -> Void)) {
         self.onTapFollowUser = onTapFollowUser
@@ -23,15 +24,16 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardKOLRecommendatio
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardKOLRecommendationState?, size: CGSize) -> NodeType {
-        guard let state = state else {
-            return Node<UIView>() { _, _, _ in
-                
-            }
+    override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+        if let contentState = state, let state = contentState.kolRecommendation {
+            self.contentState = contentState
+            self.currentState = state
+            return self.componentContainer(state: state, size: size)
         }
         
-        self.currentState = state
-        return self.componentContainer(state: state, size: size)
+        return Node<UIView>() { _, _, _ in
+            
+        }
     }
     
     private func componentContainer(state: FeedCardKOLRecommendationState, size: CGSize) -> NodeType {
@@ -168,6 +170,11 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardKOLRecommendatio
                             if element.userID == user.userID {
                                 newState.justFollowedUserID = user.userID
                                 newState.justFollowedUserIndex = index
+                                
+                                if !user.isFollowed {
+                                    AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: index)
+                                }
+                                
                             }
                         }
                         

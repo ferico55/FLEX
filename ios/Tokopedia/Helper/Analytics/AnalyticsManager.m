@@ -29,9 +29,6 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 
 @interface AnalyticsManager()
 
-@property (strong, nonatomic) TAGDataLayer *dataLayer;
-@property (strong, nonatomic) UserAuthentificationManager *userManager;
-
 @end
 
 @implementation AnalyticsManager
@@ -290,7 +287,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     AnalyticsManager *manager = [[self alloc] init];
     
     NSDictionary *data = @{
-                           @"event" : @"promotionClick",
+                           @"event" : @"promoClick",
                            @"ecommerce" : @{
                                    @"promoClick" : @{
                                            @"promotions" : @[promoResult.productFieldObjects]
@@ -305,7 +302,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     AnalyticsManager *manager = [[self alloc] init];
     
     NSDictionary *data = @{
-                           @"event" : @"promotionClick",
+                           @"event" : @"promoClick",
                            @"ecommerce" : @{
                                    @"promoClick" : @{
                                            @"promotions" : @[promotionsDict]
@@ -708,7 +705,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
                            };
     
     if (type == HomeBannerPromotionTrackerTypeClick) {
-        ecommercePromoDataLayer = [ecommercePromoDataLayer mergedWithDictionary:@{@"event": @"promotionClick"}];
+        ecommercePromoDataLayer = [ecommercePromoDataLayer mergedWithDictionary:@{@"event": @"promoClick"}];
     }
 
     NSDictionary* eventDataLayer = [self

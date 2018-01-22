@@ -15,6 +15,7 @@
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
+		6284EE1C1FFB89580070D37A /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		62C76FE31FF33C3100F66527 /* InboxReviewResult.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C76BDE1FF33C3000F66527 /* InboxReviewResult.m */; };
 		62C76FE41FF33C3100F66527 /* InboxReviewList.m in Sources */ = {isa = PBXBuildFile; fileRef = 62C76BDF1FF33C3000F66527 /* InboxReviewList.m */; };
@@ -2057,6 +2058,7 @@
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
 		62C6DDF21E8117A2006EDAD8 /* UserNotificationsUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotificationsUI.framework; path = System/Library/Frameworks/UserNotificationsUI.framework; sourceTree = SDKROOT; };
 		62C76BDE1FF33C3000F66527 /* InboxReviewResult.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = InboxReviewResult.m; sourceTree = "<group>"; };
@@ -10922,6 +10924,7 @@
 			children = (
 				F977FA121FE8AB7800183A85 /* AnalyticsManager.h */,
 				F977FA101FE8AB7800183A85 /* AnalyticsManager.m */,
+				6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */,
 				F977FA111FE8AB7800183A85 /* LogEntriesHelper.swift */,
 			);
 			path = Analytics;
@@ -13538,6 +13541,7 @@
 				848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */,
 				62C7710A1FF33C3300F66527 /* Login.m in Sources */,
 				F977FAF61FE8AB7A00183A85 /* MyWishlistShopReputation.swift in Sources */,
+				6284EE1C1FFB89580070D37A /* AnalyticsManager.swift in Sources */,
 				62C771CD1FF33C3500F66527 /* PromoShop.m in Sources */,
 				62C770A21FF33C3300F66527 /* EditResolution.swift in Sources */,
 				F977FD311FE8AB7F00183A85 /* SearchAutoCompleteHeaderView.m in Sources */,

@@ -31,6 +31,9 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 
 @interface AnalyticsManager : NSObject
 
+@property (strong, nonatomic) TAGDataLayer *dataLayer;
+@property (strong, nonatomic) UserAuthentificationManager *userManager;
+
 // Google Analytics (via GTM)
 + (void)trackScreenName:(NSString *)name;
 + (void)trackScreenName:(NSString *)name gridType:(NSInteger)gridType;
@@ -78,6 +81,6 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 + (void)trackClickSales:(NSString *)label;
 + (void)trackClickNavigateFromMore:(NSString *)page parent:(NSString *)parent;
 + (void)trackHomeBanner:(Slide *) slide index:(NSInteger) index type:(HomeBannerPromotionTrackerType) type;
-+ (BOOL) isSearchIDEqualToSearchSuggestion: (NSString *) searchID;
++ (BOOL)isSearchIDEqualToSearchSuggestion: (NSString *) searchID;
 
 @end

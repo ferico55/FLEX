@@ -11,10 +11,11 @@ import Render
 import RxSwift
 import NativeNavigation
 
-class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
+class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
     private var onTapLongDescription: ((FeedCardKOLPostState) -> Void)!
     private var onTapLikeButton: ((FeedCardKOLPostState) -> Void)!
     private var onTapFollowButton: ((FeedCardKOLPostState) -> Void)!
+    private var contentState = FeedCardContentState()
     
     init(onTapLongDescription: @escaping ((FeedCardKOLPostState) -> Void), onTapLikeButton: @escaping ((FeedCardKOLPostState) -> Void), onTapFollowButton: @escaping ((FeedCardKOLPostState) -> Void)) {
         self.onTapLongDescription = onTapLongDescription
@@ -27,14 +28,15 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardKOLPostState?, size: CGSize) -> NodeType {
-        guard let state = state else {
-            return Node<UIView>() { _, _, _ in
-                
-            }
+    override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+        if let contentState = state, let state = contentState.kolPost {
+            self.contentState = contentState
+            return self.componentContainer(state: state, size: size)
         }
         
-        return self.componentContainer(state: state, size: size)
+        return Node<UIView>() { _, _, _ in
+            
+        }
     }
     
     private func componentContainer(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
@@ -105,11 +107,12 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
         let influencerInfo = Node<UIButton>() { button, layout, _ in
             layout.flexDirection = .column
             layout.flexShrink = 1
-            layout.flexGrow = 1
             layout.marginLeft = 10
             
             button.rx.tap.subscribe(onNext: {
-                
+                if let url = URL(string: state.userURL) {
+                    TPRoutes.routeURL(url)
+                }
             }).disposed(by: self.rx_disposeBag)
         }.add(children: [
             Node<UILabel>() { label, layout, _ in
@@ -146,7 +149,7 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             layout.marginRight = 0
         }
         
-        let authorContainer = Node<UIView>() { _, layout, _ in
+        let authorContainer = Node<UIView>() { view, layout, _ in
             layout.flexDirection = .row
             layout.alignItems = .center
             layout.justifyContent = .spaceBetween
@@ -155,11 +158,23 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             layout.marginLeft = 8
             layout.marginRight = 8
             
+            view.isUserInteractionEnabled = true
+            
         }.add(children: [
-            Node<UIView>() { _, layout, _ in
+            Node<UIView>() { view, layout, _ in
                 layout.flexDirection = .row
                 layout.alignItems = .center
                 layout.flexShrink = 1
+                
+                let gestureRecognizer = UITapGestureRecognizer()
+                gestureRecognizer.rx.event.subscribe(onNext: { _ in
+                    if let url = URL(string: state.userURL) {
+                        TPRoutes.routeURL(url)
+                    }
+                }).disposed(by: self.rx_disposeBag)
+                
+                view.addGestureRecognizer(gestureRecognizer)
+                view.isUserInteractionEnabled = true
             }.add(children: [
                 influencerImage,
                 influencerInfo
@@ -207,6 +222,7 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
             let gestureRecognizer = UITapGestureRecognizer()
             gestureRecognizer.rx.event.subscribe(onNext: { _ in
                 if let url = URL(string: state.tagURL) {
+                    AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: 0)
                     TPRoutes.routeURL(url)
                 }
             }).disposed(by: self.rx_disposeBag)
@@ -311,9 +327,9 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardKOLPostState> {
                     .disposed(by: self.rx_disposeBag)
                 
                 layout.height = 52.0
-                layout.width = size.width / 2
+                layout.width = !state.showComment ? size.width : size.width / 2
             },
-            Node<UIButton>() { button, layout, size in
+            !state.showComment ? NilNode() : Node<UIButton>() { button, layout, size in
                 button.setTitle(state.commentCount == 0 ? " Comment" : " \(state.commentCount)", for: .normal)
                 button.setImage(#imageLiteral(resourceName: "icon_kol_comment"), for: .normal)
                 button.backgroundColor = .white

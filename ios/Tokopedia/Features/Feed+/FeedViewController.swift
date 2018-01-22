@@ -92,14 +92,21 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         self.footerView.frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40)
         self.footerView.backgroundColor = .clear
         self.tableView.rx.didScroll.buffer(timeSpan: 0.2, count: 10000, scheduler: MainScheduler.instance)
-            .filter { !$0.isEmpty }.subscribe(onNext: { [weak self] _ in
-                guard let `self` = self else { return }
-                guard (self.tableView.indexPathsForVisibleRows?.count)! > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
-                if self.feedCards[row].page > 0 && self.feedCards[row].row > 0 && !self.feedCards[row].isImpression {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[row].page).\(self.feedCards[row].row) - Product Feed")
-                    self.feedCards[row].isImpression = true
+            .filter { !$0.isEmpty }.subscribe(
+                onNext: { [weak self] _ in
+                    guard let `self` = self else { return }
+                    guard (self.tableView.indexPathsForVisibleRows?.count)! > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
+                    if self.feedCards[row].page > 0 && self.feedCards[row].row > 0 && !self.feedCards[row].isImpression {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[row].page).\(self.feedCards[row].row) - Product Feed")
+                        self.feedCards[row].isImpression = true
+                        
+                        if self.feedCards[row].content.isKOLContent {
+                            AnalyticsManager.trackKOLImpression(cardContent: self.feedCards[row].content)
+                        }
+                        
+                    }
                 }
-            }).disposed(by: rx_disposeBag)
+            ).disposed(by: rx_disposeBag)
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         self.footerView.addSubview(activityIndicator)
         activityIndicator.startAnimating()
@@ -195,6 +202,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
     
     @objc private func refreshFeed() {
         self.page = 1
+        self.row = 0
         self.isRefreshing = true
         self.feedClient = self.reinitApolloClient()
         self.feedCards = []
@@ -289,7 +297,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 self.feedState.hasNextPage = false
                 self.feedState.feedCards = [tryAgain]
                 
-                self.feedCards += self.feedState.feedCards
+                self.feedCards.append(contentsOf: self.feedState.feedCards)
                 self.feedCardSource.onNext(self.feedCards)
             } else {
                 var emptyStateCard = FeedCardState()
@@ -304,7 +312,6 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         
         self.refreshControl.endRefreshing()
         self.tableView.tableFooterView = nil
-        self.isRequesting = false
     }
     
     private func loadTopAdsContent(onPage page: Int, totalData: Int) {
@@ -318,17 +325,9 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 }
                 
                 guard ads.count > 0 else {
-                    self.feedCards += self.feedState.feedCards
-                    for (index, card) in self.feedCards.enumerated() {
-                        if card.page < self.page - 1 {
-                            self.feedCards[index].isImpression = true
-                        }
-                    }
+                    self.feedCards.append(contentsOf: self.feedState.feedCards)
                     self.feedCardSource.onNext(self.feedCards)
-                    if page == 1 {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[0].page).\(self.feedCards[0].row) - Product Feed")
-                        self.feedCards[0].isImpression = true
-                    }
+                    self.isRequesting = false
                     return
                 }
                 
@@ -338,17 +337,9 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                     card.topads = TopAdsFeedPlusState(topAds: ads, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
                     
                     self.feedState.feedCards.insert(card, at: 1)
-                    self.feedCards += self.feedState.feedCards
-                    for (index, card) in self.feedCards.enumerated() {
-                        if card.page < self.page - 1 {
-                            self.feedCards[index].isImpression = true
-                        }
-                    }
+                    self.feedCards.append(contentsOf: self.feedState.feedCards)
                     self.feedCardSource.onNext(self.feedCards)
-                    if page == 1 {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[0].page).\(self.feedCards[0].row) - Product Feed")
-                        self.feedCards[0].isImpression = true
-                    }
+                    self.isRequesting = false
                 } else {
                     for ad in ads {
                         var topAdsCard = FeedCardState()
@@ -364,21 +355,18 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                         topAdsCard.topads = TopAdsFeedPlusState(topAds: productAds, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
                         self.feedState.feedCards.append(topAdsCard)
                         
-                        self.feedCards += self.feedState.feedCards
+                        self.feedCards.append(contentsOf: self.feedState.feedCards)
                         self.feedCardSource.onNext(self.feedCards)
                     }, onFailure: { _ in
                         self.feedCardSource.onNext(self.feedCards)
                     })
+                    self.isRequesting = false
                 }
             },
             onFailure: { _ in
                 self.feedCards = self.feedState.feedCards
-                for (index, card) in self.feedCards.enumerated() {
-                    if card.page < self.page - 1 {
-                        self.feedCards[index].isImpression = true
-                    }
-                }
                 self.feedCardSource.onNext(self.feedCards)
+                self.isRequesting = false
             }
         )
     }
@@ -439,8 +427,6 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         var newCard = FeedCardState()
         newCard.topads = state
         newCard.content.type = .topAds
-        
-        let cards = self.feedCards
         
         self.feedCards[row] = newCard
         

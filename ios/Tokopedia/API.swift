@@ -920,6 +920,7 @@ public final class FeedsQuery: GraphQLQuery {
     "          description" +
     "          commentCount" +
     "          likeCount" +
+    "          showComment" +
     "          isLiked" +
     "          isFollowed" +
     "          createTime" +
@@ -949,6 +950,7 @@ public final class FeedsQuery: GraphQLQuery {
     "          description" +
     "          commentCount" +
     "          likeCount" +
+    "          showComment" +
     "          isLiked" +
     "          isFollowed" +
     "          createTime" +
@@ -2747,6 +2749,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("description", type: .scalar(String.self)),
               GraphQLField("commentCount", type: .scalar(Int.self)),
               GraphQLField("likeCount", type: .scalar(Int.self)),
+              GraphQLField("showComment", type: .scalar(Bool.self)),
               GraphQLField("isLiked", type: .scalar(Bool.self)),
               GraphQLField("isFollowed", type: .scalar(Bool.self)),
               GraphQLField("createTime", type: .scalar(String.self)),
@@ -2764,8 +2767,8 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
-              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
+            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, showComment: Bool? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
+              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "showComment": showComment, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
             }
 
             public var __typename: String {
@@ -2819,6 +2822,15 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "likeCount")
+              }
+            }
+
+            public var showComment: Bool? {
+              get {
+                return snapshot["showComment"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "showComment")
               }
             }
 
@@ -3048,6 +3060,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("description", type: .scalar(String.self)),
               GraphQLField("commentCount", type: .scalar(Int.self)),
               GraphQLField("likeCount", type: .scalar(Int.self)),
+              GraphQLField("showComment", type: .scalar(Bool.self)),
               GraphQLField("isLiked", type: .scalar(Bool.self)),
               GraphQLField("isFollowed", type: .scalar(Bool.self)),
               GraphQLField("createTime", type: .scalar(String.self)),
@@ -3065,8 +3078,8 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
-              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
+            public init(id: Int? = nil, headerTitle: String? = nil, description: String? = nil, commentCount: Int? = nil, likeCount: Int? = nil, showComment: Bool? = nil, isLiked: Bool? = nil, isFollowed: Bool? = nil, createTime: String? = nil, userId: Int? = nil, userName: String? = nil, userInfo: String? = nil, userPhoto: String? = nil, userUrl: String? = nil, content: [Content?]? = nil) {
+              self.init(snapshot: ["__typename": "FeedKolType", "id": id, "headerTitle": headerTitle, "description": description, "commentCount": commentCount, "likeCount": likeCount, "showComment": showComment, "isLiked": isLiked, "isFollowed": isFollowed, "createTime": createTime, "userId": userId, "userName": userName, "userInfo": userInfo, "userPhoto": userPhoto, "userUrl": userUrl, "content": content])
             }
 
             public var __typename: String {
@@ -3120,6 +3133,15 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "likeCount")
+              }
+            }
+
+            public var showComment: Bool? {
+              get {
+                return snapshot["showComment"]! as! Bool?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "showComment")
               }
             }
 

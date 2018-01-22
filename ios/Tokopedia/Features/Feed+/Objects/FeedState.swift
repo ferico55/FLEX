@@ -77,6 +77,7 @@ struct FeedCardSourceState: Render.StateType, ReSwift.StateType {
 struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
     var type: FeedContentType = .notHandled
+    var typeString = ""
     var totalProduct: Int? = 0
     var product: [FeedCardProductState?] = []
     var promotion: [FeedCardPromotionState] = []
@@ -90,6 +91,7 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var favoriteCTA: FeedCardFavoriteCTAState?
     var page = 0
     var row = 0
+    var isKOLContent = false
 }
 
 struct FeedCardFavoriteCTAState: Render.StateType, ReSwift.StateType {
@@ -607,8 +609,10 @@ class FeedStateManager: NSObject {
             
             if let kolPost = feedContent.kolpost {
                 content.kolPost = FeedCardKOLPostState(post: kolPost, page: page, row: row)
+                content.isKOLContent = true
             } else if let followedKOLPost = feedContent.followedkolpost {
                 content.kolPost = FeedCardKOLPostState(post: followedKOLPost, page: page, row: row)
+                content.isKOLContent = true
             } else {
                 content.type = .invalid
             }
@@ -622,6 +626,7 @@ class FeedStateManager: NSObject {
             if state.users.count > 0 {
                 content.kolRecommendation = FeedCardKOLRecommendationState(content: feedContent, page: page, row: row)
                 content.type = .KOLRecommendation
+                content.isKOLContent = true
             } else {
                 content.type = .invalid
             }
@@ -639,6 +644,7 @@ class FeedStateManager: NSObject {
         
         content.page = page
         content.row = row
+        content.typeString = type
         return content
     }
     

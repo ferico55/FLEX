@@ -91,9 +91,9 @@ class FeedComponentView: ComponentView<FeedCardState> {
         case .topAds:
             return topAdsComponent.construct(state: state.topads, size: size)
         case .KOLPost, .followedKOLPost:
-            return kolPostComponent.construct(state: state.content.kolPost, size: size)
+            return kolPostComponent.construct(state: state.content, size: size)
         case .KOLRecommendation:
-            return recommendationKOLComponent.construct(state: state.content.kolRecommendation, size: size)
+            return recommendationKOLComponent.construct(state: state.content, size: size)
         case .favoriteCTA:
             return FeedNoShopComponentView().construct(state: state.content.favoriteCTA, size: size)
         case .newProduct, .editProduct:

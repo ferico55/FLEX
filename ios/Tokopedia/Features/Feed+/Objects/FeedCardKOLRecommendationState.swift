@@ -17,6 +17,8 @@ struct FeedCardKOLRecommendationState: Render.StateType, ReSwift.StateType {
     var title = ""
     var justFollowedUserID = 0
     var justFollowedUserIndex = -1
+    var page = 0
+    var row = 0
     
     init() {}
     
@@ -25,6 +27,8 @@ struct FeedCardKOLRecommendationState: Render.StateType, ReSwift.StateType {
             self.cardID = recommendation.index ?? 0
             self.title = recommendation.headerTitle ?? ""
             self.redirectURL = recommendation.exploreLink ?? ""
+            self.page = page
+            self.row = row
             
             self.users = kols.map { kol in
                 if let recommendedUser = kol {
