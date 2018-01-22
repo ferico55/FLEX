@@ -11,29 +11,20 @@ import XCTest
 
 class PromoPage : HomePage {
     
-    let promoMainView = app.otherElements["promoMainView"]
-    let promoView = app.otherElements.matching(identifier: "promoReactView").element(boundBy: 0) //first data promo
-    
-    func swipePromo() {
-        waitFor(element: promoMainView, status: .Exists)
-        promoMainView.swipeUp()
-    }
+    let promoCell = app.otherElements.matching(identifier: "promoCell").element(boundBy: 0)
     
     func clickPromo() -> PromoDetailPage {
-        waitFor(element: promoView, status: .Exists)
-        promoView.tap()
+        waitFor(element: promoCell, status: .Exists)
+        promoCell.tap()
         return PromoDetailPage()
     }
 }
 
 class PromoDetailPage : PromoPage {
     
+    let promoDetailView = Page.app.navigationBars["PromoDetail"]
     let sharePromoButton = app.otherElements["sharePromoView"]
     let promoBuy = app.otherElements["promoBuyView"]
-
-    func isSuccess() {
-        XCTAssert(promoMainView.exists)
-    }
     
     func sharePromo() {
         waitFor(element: sharePromoButton, status: .Exists)
@@ -41,7 +32,13 @@ class PromoDetailPage : PromoPage {
     }
     
     func buyProduct() {
-        waitFor(element: promoBuy, status: .Exists)
-        promoBuy.tap()
+        if waitFor(element: promoBuy, status: .Exists) ==  .timedOut{
+            
+        }
+        else{
+           promoBuy.tap()
+           XCTAssert(!promoDetailView.exists)
+        }
+        
     }
 }

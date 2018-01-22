@@ -37,6 +37,8 @@ class MorePage : Page, TokopediaTabBar {
     
     //let productDetailCell = app.tables.cells.matching(identifier: "productListCell").element(boundBy: 0)
     
+    let logoutAlert = app.alerts["Apakah Anda ingin keluar?"]
+    
     func waitForPurchase() {
         waitFor(element: purchaseCell, status: .Exists)
     }
@@ -59,22 +61,11 @@ class MorePage : Page, TokopediaTabBar {
         shopCell.tap()
     }
     
-    func waitForLogout(){
-        waitFor(element: logoutCell, status: .Exists)
-    }
-    
     func goToInboxTalk()
     {
         goMorePage()
         waitFor(element: talkCell, status: .Exists)
         talkCell.tap()
-    }
-        
-    func goToLogout() -> Logout {
-        goMorePage()
-        waitForLogout()
-        logoutCell.tap()
-        return Logout()
     }
     
     func isBuyer() -> Bool {
@@ -88,20 +79,12 @@ class MorePage : Page, TokopediaTabBar {
         }
     }
     
-    /*func goToProductList() {
-        goMorePage()
-        waitFor(element: productListCell, status: .Exists)
-        productListCell.tap()
-        waitFor(element: productDetailCell, status: .Exists)
-        productDetailCell.tap()
-    }*/
-}
-
-class Logout : MorePage {
-    
-    let logoutAlert = app.alerts["Apakah Anda ingin keluar?"]
-    
-    func doLogout() {
+    func doLogout() -> Self {
+        waitFor(element: logoutCell, status: .Exists)
+        logoutCell.tap()
         logoutAlert.buttons["Iya"].tap()
+        return self
     }
 }
+
+

@@ -10,10 +10,8 @@ import XCTest
 
 class ResetPasswordTest: XCTestCase {
     
-    var login = LoginPage()
-    var register = Register()
-    var resetPassword = ResetPassword()
-    var more = MorePage()
+    var homePage : HomePage = HomePage()
+    var register : Register = Register()
     
     override func setUp() {
         super.setUp()
@@ -23,10 +21,9 @@ class ResetPasswordTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isUserLogin(){
-            more.goToLogout().doLogout()
+        if homePage.isUserLogin(){
+            homePage.goMorePage().doLogout()
         }
-        login.goToResetPassword()
     }
     
     override func tearDown() {
@@ -34,28 +31,29 @@ class ResetPasswordTest: XCTestCase {
     }
     
     func testResetPassword() {
+        let resetPassword = homePage.goLoginPage().goToResetPassword()
         resetPassword.fillEmail(email : "julius.gonawan+automationbuyer@tokopedia.com")
-        resetPassword.resetPasswordButton.tap()
         XCTAssert(resetPassword.resetPasswordButton.exists)
     }
     
     func testEmptyResetPassword() {
+        let resetPassword = homePage.goLoginPage().goToResetPassword()
         resetPassword.fillEmail(email : "")
-        resetPassword.resetPasswordButton.tap()
         XCTAssert(resetPassword.resetPasswordButton.exists)
     }
-    
+
     func testDoRegisterResetPassword() {
-        resetPassword.fillEmail(email : "hanyauntuktesting20171@gmail.com")
-        resetPassword.resetPasswordButton.tap()
-        Page.app.alerts["Email hanyauntuktesting20171@gmail.com belum terdaftar sebagai member Tokopedia"].buttons["OK"].tap()
+        let resetPassword = homePage.goLoginPage().goToResetPassword()
+        resetPassword.fillEmail(email : "hanyauntuktesting2018@gmail.com")
+        Page.app.alerts["Email hanyauntuktesting2018@gmail.com belum terdaftar sebagai member Tokopedia"].buttons["OK"].tap()
         XCTAssert(register.registerView.exists)
     }
-    
+
     func testDoNotRegisterResetPassword() {
-        resetPassword.fillEmail(email : "hanyauntuktesting20171@gmail.com")
-        resetPassword.resetPasswordButton.tap()
-        Page.app.alerts["Email hanyauntuktesting20171@gmail.com belum terdaftar sebagai member Tokopedia"].buttons["Tidak"].tap()
+        let resetPassword = homePage.goLoginPage().goToResetPassword()
+        resetPassword.fillEmail(email : "hanyauntuktesting2018@gmail.com")
+        Page.app.alerts["Email hanyauntuktesting2018@gmail.com belum terdaftar sebagai member Tokopedia"].buttons["Tidak"].tap()
         XCTAssert(resetPassword.resetPasswordButton.exists)
     }
 }
+

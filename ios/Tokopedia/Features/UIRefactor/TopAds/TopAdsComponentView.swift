@@ -74,6 +74,7 @@ class TopAdsNode: NSObject, NodeType {
                 imageView.isUserInteractionEnabled = true
                 imageView.contentMode = .scaleAspectFit
                 imageView.image = UIImage(named: "icon_information")
+                imageView.accessibilityLabel = "promotedInfo"
                 imageView.backgroundColor = .clear
                 imageView.addGestureRecognizer(tapGesture)
                 

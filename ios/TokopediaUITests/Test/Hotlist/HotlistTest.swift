@@ -10,7 +10,7 @@ import XCTest
 
 class HotlistTest: XCTestCase {
     
-    var hotlist = HotlistPage()
+    var homePage : HomePage = HomePage()
     
     override func setUp() {
         super.setUp()
@@ -20,7 +20,6 @@ class HotlistTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        hotlist.goHotlistPage()
     }
     
     override func tearDown() {
@@ -28,7 +27,8 @@ class HotlistTest: XCTestCase {
     }
     
     func testHotlist() {
-        hotlist.clickHotlist()
+        let hotlist = homePage.goHotlistPage().clickHotlist()
+        waitFor(element: hotlist.hotlistResultView, status: .Exists)
         XCTAssert(hotlist.hotlistResultView.exists)
     }
 }

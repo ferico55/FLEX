@@ -9,7 +9,8 @@
 workspace "ios/Tokopedia.xcworkspace"
 scheme "TokopediaUITests"
 slack_channel "#teamios-alert"
-slack_url "https://hooks.slack.com/services/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"
+slack_url "https://hooks.slack.com/services/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"
+# destination 'platform=iOS,id=f9535a7b828612ac1908ad5fb6eead435577b578'
 # open_report true
 
 # clean true

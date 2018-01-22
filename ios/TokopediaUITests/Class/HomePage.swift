@@ -9,8 +9,9 @@
 import Foundation
 import XCTest
 
-class HomePage : Page, SearchBar, TokopediaTabBar {
+class HomePage : Page, TokopediaTabBar {
     
+    let homeTab = app.buttons["HOME"]
     let promoTab = app.buttons["PROMO"]
     let feedTab = app.buttons["FEED"]
     let lastSeenTab = app.buttons["TERAKHIR DILIHAT"]
@@ -23,6 +24,17 @@ class HomePage : Page, SearchBar, TokopediaTabBar {
     let financeNavbar = app.navigationBars["Pinjaman Modal"]
     let topPicksWebView = app.otherElements["topPicksCell"].descendants(matching: .image).element(boundBy: 0)
     let topPicksHotList = app.otherElements["topPicksCell"].descendants(matching: .image).element(boundBy: 1)
+    
+    func isUserLogin() -> Bool {
+        if (moreTabBar.exists)
+        {
+            return true
+        }
+        else
+        {
+            return false
+        }
+    }
     
     func isActivatedTokocash() -> Bool {
         if (activationHomepage.exists)
@@ -81,19 +93,17 @@ class HomePage : Page, SearchBar, TokopediaTabBar {
     }
     
     func goToFeedPage() {
-        goHomePage()
         waitFor(element: feedTab, status: .Exists)
         feedTab.tap()
     }
     
-    func goToPromoPage() {
-        goHomePage()
+    func goToPromoPage() -> PromoPage {
         waitFor(element: promoTab, status: .Exists)
         promoTab.tap()
+        return PromoPage()
     }
     
     func goToLastSeenPage() {
-        goHomePage()
         waitFor(element: lastSeenTab, status: .Exists)
         lastSeenTab.tap()
     }

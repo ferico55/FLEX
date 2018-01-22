@@ -240,6 +240,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.titleLabel?.font = .title2ThemeSemibold()
                     view.setTitle("Preorder", for: .normal)
                     view.addTarget(self, action: #selector(self.buyButtonDidTap(_:)), for: .touchUpInside)
+                    view.accessibilityIdentifier = "buyButton"
                 }
             }
             
@@ -251,6 +252,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                     view.titleLabel?.font = .title2ThemeSemibold()
                     view.setTitle("Beli", for: .normal)
                     view.addTarget(self, action: #selector(self.buyButtonDidTap(_:)), for: .touchUpInside)
+                    view.accessibilityIdentifier = "buyButton"
                 }
             }
             

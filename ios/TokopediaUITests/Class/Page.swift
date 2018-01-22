@@ -20,6 +20,7 @@ class Page{
         app.launchArguments = ["UI_TESTING"]
         return app
     }()
+    
     let back = app.buttons["Back"]
     let cancel = app.buttons["Cancel"]
     let done = app.buttons["Selesai"]

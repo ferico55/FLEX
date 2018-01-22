@@ -136,6 +136,8 @@
             btnDownload.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleRightMargin|UIViewAutoresizingFlexibleBottomMargin|UIViewAutoresizingFlexibleWidth;
             [btnDownload setTitle:@"Download" forState:UIControlStateNormal];
             [btnDownload setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            btnDownload.isAccessibilityElement = true;
+            btnDownload.accessibilityIdentifier = @"btnDownload";
             
             
             contentDownload = [[UIView alloc] initWithFrame:CGRectMake(0, [[UIScreen mainScreen] bounds].size.height-100, [[UIScreen mainScreen] bounds].size.width, 70)];

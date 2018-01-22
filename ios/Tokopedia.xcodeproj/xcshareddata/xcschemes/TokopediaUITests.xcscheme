@@ -53,6 +53,53 @@
                BlueprintName = "TokopediaUITests"
                ReferencedContainer = "container:Tokopedia.xcodeproj">
             </BuildableReference>
+            <SkippedTests>
+               <Test
+                  Identifier = "AddToCartTest">
+               </Test>
+               <Test
+                  Identifier = "CartTest">
+               </Test>
+               <Test
+                  Identifier = "EditShopInfoTest">
+               </Test>
+               <Test
+                  Identifier = "EtalaseTabTest">
+               </Test>
+               <Test
+                  Identifier = "HomepageTest">
+               </Test>
+               <Test
+                  Identifier = "IntermediaryTest">
+               </Test>
+               <Test
+                  Identifier = "LocationTabTest">
+               </Test>
+               <Test
+                  Identifier = "MyShopTest">
+               </Test>
+               <Test
+                  Identifier = "NewOrderTest">
+               </Test>
+               <Test
+                  Identifier = "NotesTableTest">
+               </Test>
+               <Test
+                  Identifier = "ProductTabTest">
+               </Test>
+               <Test
+                  Identifier = "PurchaseTest">
+               </Test>
+               <Test
+                  Identifier = "ShopSettingTest">
+               </Test>
+               <Test
+                  Identifier = "ViewShopInfoTest">
+               </Test>
+               <Test
+                  Identifier = "inboxTest">
+               </Test>
+            </SkippedTests>
          </TestableReference>
       </Testables>
       <MacroExpansion>

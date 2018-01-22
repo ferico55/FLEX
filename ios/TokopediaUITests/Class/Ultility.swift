@@ -16,7 +16,8 @@ protocol TokopediaTabBar {
     func goWishlistPage() -> WishlistPage
     func goCartPage() -> CartPage
     func goLoginPage() -> LoginPage
-    func goMorePage() 
+    func goMorePage() -> MorePage
+    func goSearchPage() -> SearchPage
 }
 
 extension TokopediaTabBar {
@@ -50,9 +51,15 @@ extension TokopediaTabBar {
         return Page.app.tabBars.buttons["Lainnya"]
     }
     
+    var searchTextField: XCUIElement
+    {
+        return Page.app.navigationBars["Home"].searchFields["Cari Produk atau Toko"]
+    }
+    
     @discardableResult
     func goHomePage() -> HomePage
     {
+        waitFor(element: homeTabBar, status: .Exists)
         homeTabBar.tap()
         return HomePage()
     }
@@ -60,6 +67,7 @@ extension TokopediaTabBar {
     @discardableResult
     func goHotlistPage() -> HotlistPage
     {
+        waitFor(element: hotlistTabBar, status: .Exists)
         hotlistTabBar.tap()
         return HotlistPage()
     }
@@ -67,6 +75,7 @@ extension TokopediaTabBar {
     @discardableResult
     func goWishlistPage() -> WishlistPage
     {
+        waitFor(element: wishlistTabBar, status: .Exists)
         wishlistTabBar.tap()
         return WishlistPage()
     }
@@ -74,6 +83,7 @@ extension TokopediaTabBar {
     @discardableResult
     func goCartPage() -> CartPage
     {
+        waitFor(element: cartTabBar, status: .Exists)
         cartTabBar.tap()
         return CartPage()
     }
@@ -81,33 +91,28 @@ extension TokopediaTabBar {
     @discardableResult
     func goLoginPage() -> LoginPage
     {
+        waitFor(element: loginTabBar, status: .Exists)
         loginTabBar.tap()
         return LoginPage()
     }
     
-    func goMorePage()
+    @discardableResult
+    func goMorePage() -> MorePage
     {
+        waitFor(element: moreTabBar, status: .Exists)
         moreTabBar.tap()
-    }
-}
-
-// MARK: SearchBar
-protocol SearchBar {
-    func goToSearchPage() -> SearchPage
-}
-
-extension SearchBar {
-    var searchTextField: XCUIElement
-    {
-       return Page.app.navigationBars["Home"].searchFields["Cari Produk atau Toko"]
+        return MorePage()
     }
     
-    func goToSearchPage() -> SearchPage
+    @discardableResult
+    func goSearchPage() -> SearchPage
     {
+        waitFor(element: searchTextField, status: .Exists)
         searchTextField.tap()
         return SearchPage()
     }
 }
+
 
 // MARK: Wait element
 enum UIStatus: String
@@ -116,8 +121,9 @@ enum UIStatus: String
     case NotExists = "exists == false"
 }
 
-func waitFor(element: XCUIElement, status: UIStatus, timeout: TimeInterval = 20)
+func waitFor(element: XCUIElement, status: UIStatus, timeout: TimeInterval = 30) -> XCTWaiterResult
 {
-    UITest.sharedInstance.testCase.expectation(for: NSPredicate(format: status.rawValue), evaluatedWith: element, handler: nil)
-    UITest.sharedInstance.testCase.waitForExpectations(timeout: timeout, handler: nil)
+    let predicate = UITest.sharedInstance.testCase.expectation(for: NSPredicate(format: status.rawValue), evaluatedWith: element, handler: nil)
+    let result = XCTWaiter().wait(for: [predicate], timeout: timeout)
+    return result
 }

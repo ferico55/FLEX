@@ -10,17 +10,10 @@ import XCTest
 
 class PDPTest: XCTestCase {
     
-    var page = Page()
     var homepage = HomePage()
-    var login = LoginPage()
     var wishlist = WishlistPage()
     var productDetail = ProductDetail()
-    var reviewProductDetail  = ReviewProductDetailPage()
-    var addToCart = AddToCartPage()
-    var wholesale = Wholesale()
-    var productDescription = ProductDescription()
-    var more = MorePage()
-    
+
     override func setUp() {
         super.setUp()
         continueAfterFailure = false
@@ -29,260 +22,186 @@ class PDPTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
+        if !homepage.isUserLogin() {
+            LoginTest().testLoginBuyer()
+        }
     }
     
     override func tearDown() {
         super.tearDown()
     }
     
-    func testGoPDPFromSearch() {
-        homepage.goToSearchPage().searchProduct("iPhone 7").clickProduct()
-        XCTAssert(productDetail.PDPView.exists)
+    func testOpenProductFromWishlist() {
+        homepage.goWishlistPage()
+        wishlist.searchWishlist("Do More")
+        wishlist.clickWishlistCell()
     }
     
-    func testGoPDPFromWishlist() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
-    }
-
     func testPreorder() {
-        homepage.goToSearchPage().searchProduct("iPhone po").clickProduct()
+        testOpenProductFromWishlist()
         waitFor(element: productDetail.preorderView, status: .Exists)
         XCTAssert(productDetail.preorderView.exists)
     }
-
-    func testOfficialStoreBadge() {
-        homepage.goToSearchPage().searchProduct("jbl t205").clickProduct()
-        waitFor(element: productDetail.officialStoreBadge, status: .Exists)
-        XCTAssert(productDetail.officialStoreBadge.exists)
-    }
-
+    
     func testFreeReturn() {
-        homepage.goToSearchPage().searchProduct("jam tangan casio").clickProduct()
+        testOpenProductFromWishlist()
         waitFor(element: productDetail.freeReturnView, status: .Exists)
         XCTAssert(productDetail.freeReturnView.exists)
     }
 
+    func testOfficialStoreBadge() {
+        homepage.goSearchPage().searchProduct("jbl t205").clickProduct()
+        waitFor(element: productDetail.officialStoreBadge, status: .Exists)
+        XCTAssert(productDetail.officialStoreBadge.exists)
+    }
+
     func testCondition() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
+        testOpenProductFromWishlist()
+        waitFor(element: productDetail.conditionView, status: .Exists)
         XCTAssert(productDetail.conditionView.exists)
     }
 
     func testMinimumBuy() {
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
+        testOpenProductFromWishlist()
+        waitFor(element: productDetail.conditionView, status: .Exists)
         XCTAssert(productDetail.minimumBuyView.exists)
     }
 
     func testOpenReview() {
-        testGoPDPFromSearch()
-        productDetail.clickReview().backToPDP()
+        testOpenProductFromWishlist()
+        let reviewView = productDetail.clickReview()
+        waitFor(element: reviewView.reviewNavigation, status: .Exists)
+        XCTAssert(reviewView.reviewNavigation.exists)
     }
     
     func testOpenTalk() {
-        testGoPDPFromSearch()
-        productDetail.clickTalk().backToPDP()
+        testOpenProductFromWishlist()
+        let talkView = productDetail.clickTalk()
+        waitFor(element: talkView.talkNavigation, status: .Exists)
+        XCTAssert(talkView.talkNavigation.exists)
     }
-
-    func testOpenCourier() {
-        testGoPDPFromSearch()
-        productDetail.clickCourier().backToPDP()
-    }
-
+    
+//    func testOpenCourier() {
+//        homepage.goWishlistPage()
+//        testOpenProductFromWishlist()
+//        let courierView = productDetail.clickCourier()
+//        waitFor(element: courierView.courierNavigation, status: .Exists)
+//        XCTAssert(courierView.courierNavigation.exists)
+//    }
+    
     func testOpenCancelShare() {
-        testGoPDPFromSearch()
-        productDetail.clickShare()
+        testOpenProductFromWishlist()
+        waitFor(element: productDetail.shareButton, status: .Exists)
+        productDetail.shareButton.tap()
     }
 
     func testOpenCart() {
-        testGoPDPFromSearch()
-        productDetail.clickCart()
-        
-        if login.isShouldLogin(){
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-            productDetail.clickCart()
-        }
+        testOpenProductFromWishlist()
+        productDetail.cartButton.tap()
     }
 
-    func testReportProduct() {
-        testGoPDPFromSearch()
-        productDetail.clickReport().report()
-        if login.isShouldLogin(){
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-            productDetail.clickReport().report()
-        }
-        
-    }
-
-    func testBackPreviousPage() {
-        testGoPDPFromSearch()
-        productDetail.clickBackFromProductDetail()
-    }
-
+//    func testReportProduct() {
+//        homepage.goWishlistPage()
+//        testOpenProductFromWishlist()
+//        productDetail.report()
+//    }
+    
     func testDownloadProductImage() {
-        testGoPDPFromSearch()
-        productDetail.clickProductImage().downloadProductImage()
-    }
-
-    func testSwipeProductImage() {
-        testGoPDPFromSearch()
-        productDetail.swipeProductImage()
+        testOpenProductFromWishlist()
+        productDetail.clickProductImage()
     }
     
+    func testSwipeProductImage() {
+        testOpenProductFromWishlist()
+        productDetail.swipeProductImage()
+    }
+
     func testBuyProduct() {
-        if login.isLogout(){
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        testGoPDPFromWishlist()
-        productDetail.clickBuy()
+        testOpenProductFromWishlist()
+        let addToCart = productDetail.clickBuy()
+        waitFor(element: addToCart.ATCNavigation, status: .Exists)
         XCTAssert(addToCart.ATCNavigation.exists)
     }
 
     func testWishlist() {
-        testGoPDPFromSearch()
+        homepage.goSearchPage().searchProduct("jbl t205").clickProduct()
         productDetail.clickWishlist()
-        
-        if login.isShouldLogin(){
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-            productDetail.clickWishlist()
-        }
-        
     }
-    
+
     func testFavorite() {
-        testGoPDPFromSearch()
-        
-        if(productDetail.favoriteButton.exists)
+        testOpenProductFromWishlist()
+        if waitFor(element: productDetail.favoriteButton, status: .Exists) == .completed
         {
             productDetail.clickFavorite()
-            
-            if login.isShouldLogin(){
-                login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-                page.back.tap()
-                testGoPDPFromSearch()
-                if productDetail.isShopFavorite()
-                {
-                    productDetail.clickUnfavorite()
-                }
-                else
-                {
-                    productDetail.clickFavorite()
-                }
-                
-            }
         }
         else
         {
             productDetail.clickUnfavorite()
+        }
+    }
+    
+    func testUnfavorite() {
+        testOpenProductFromWishlist()
+        if waitFor(element: productDetail.unfavoriteButton, status: .Exists) == .completed
+        {
+            productDetail.clickUnfavorite()
+        }
+        else
+        {
+            productDetail.clickFavorite()
+            
         }
     }
 
-    func testUnfavorite() {
-        testGoPDPFromSearch()
-        
-        if(productDetail.unfavoriteButton.exists)
-        {
-            productDetail.clickUnfavorite()
-        }
-        else
-        {
-            productDetail.clickFavorite()
-            
-            if login.isShouldLogin(){
-                login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-                page.back.tap()
-                testGoPDPFromSearch()
-                if productDetail.isShopFavorite()
-                {
-                    productDetail.clickUnfavorite()
-                }
-                else
-                {
-                    productDetail.clickFavorite()
-                }
-                
-            }
-        }
-    }
-    
     func testReputationBadge() {
-        testGoPDPFromSearch()
+        testOpenProductFromWishlist()
+        waitFor(element: productDetail.reputationBadge, status: .Exists)
         XCTAssert(productDetail.reputationBadge.exists)
     }
 
-    func testGoToShop() {
-        testGoPDPFromSearch()
-        productDetail.goToShop()
-    }
-
+//    func testSellerName() {
+//        homepage.goWishlistPage()
+//        testOpenProductFromWishlist()
+//        waitFor(element: productDetail.sellerName, status: .Exists)
+//        productDetail.sellerName.tap()
+//    }
+    
     func testGoToCategory() {
-        testGoPDPFromSearch()
+        testOpenProductFromWishlist()
         productDetail.clickCategory()
     }
 
     func testGoToEtalase() {
-        testGoPDPFromSearch()
+        testOpenProductFromWishlist()
         productDetail.clickEtalase()
     }
 
     func testGoToWholesale() {
-        testGoPDPFromSearch()
-        productDetail.clickWholesale().isWholesaleDetail()
-    }
-    
-    func testReadMoreDescription() {
-        testGoPDPFromSearch()
-        productDetail.clickProductDescription().isDescriptionDetail()
+        testOpenProductFromWishlist()
+        productDetail.clickWholesale()
+        waitFor(element: productDetail.wholesaleNavigation, status: .Exists)
+        XCTAssert(productDetail.wholesaleNavigation.exists)
     }
 
-    func testOtherProduct() {
-        testGoPDPFromSearch()
-        productDetail.clickOtherProduct()
-        XCTAssert(productDetail.PDPView.exists)
+    func testReadMoreDescription() {
+        testOpenProductFromWishlist()
+        productDetail.clickProductDescription()
+        waitFor(element: productDetail.descriptionNavigation, status: .Exists)
+        XCTAssert(productDetail.descriptionNavigation.exists)
     }
-    
-    func testReadMoreReview() {
-        testGoPDPFromSearch()
-        productDetail.readMoreReview().isReviewDetailPage()
-    }
-    
-    func testReadMoreTalk() {
-        testGoPDPFromSearch()
-        productDetail.readMoreTalk().isTalkDetailPage()
-    }
-    
-/*    func testPromotedProduct() {
-        var i = 1
-        while i <= 10 {
-            if login.isLogout() {
-                login.goLoginPage()
-                login.doLogin(email: "cancertainly16@gmail.com", password: "tokopedia2016").loginSuccess()
-            }
-            more.goToProductList()
-            let promoButton = Page.app.buttons["Promosi"]
-            promoButton.tap()
-            let okAlert = Page.app.alerts.buttons["OK"]
-            okAlert.tap()
-            productDetail.backButton.tap()
-            Page.app.buttons["Back"].tap()
-            more.goToLogout().doLogout()
-            waitFor(element: more.logoutCell, status: .NotExists)
-            i += 1
-            }
         
-        }
- */
+    func testReadMoreReview() {
+        testOpenProductFromWishlist()
+        let reviewView = productDetail.readMoreReview()
+        waitFor(element: reviewView.reviewNavigation, status: .Exists)
+        XCTAssert(reviewView.reviewNavigation.exists)
+    }
+
+    func testReadMoreTalk() {
+        testOpenProductFromWishlist()
+        let talkView = productDetail.readMoreTalk()
+        waitFor(element: talkView.talkNavigation, status: .Exists)
+        XCTAssert(talkView.talkNavigation.exists)
+    }
+    
 }

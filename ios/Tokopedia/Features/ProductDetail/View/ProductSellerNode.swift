@@ -68,7 +68,6 @@ class ProductSellerInfoNode: ContainerNode {
             layout.width = 18
             layout.height = 18
             view.image = shop.badgeImage
-            view.accessibilityLabel = "officialStoreBadgeImage"
         }
     }
     
@@ -78,6 +77,7 @@ class ProductSellerInfoNode: ContainerNode {
         return Node<UIView>() { view, layout, _ in
             view.backgroundColor = .clear
             view.isUserInteractionEnabled = true
+            view.isAccessibilityElement = true
             view.accessibilityLabel = "sellerName"
             
             layout.flexDirection = .row

@@ -342,7 +342,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 return view
             }, configure: { view, layout, size in
                 layout.alignItems = .stretch
-                view.accessibilityLabel = "officialStoreView"
+                view.accessibilityIdentifier = "osView"
                 view.clipsToBounds = true
                 view.layer.cornerRadius = 3
                 view.layer.borderWidth = 1

@@ -11,7 +11,7 @@ import XCTest
 class AddToCartTest: XCTestCase {
     
     var page = Page()
-    var productDetailTest = PDPTest()
+//    var productDetailTest = PDPTest()
     var productDetail = ProductDetail()
     var addToCart = AddToCartPage()
     var login = LoginPage()
@@ -27,11 +27,11 @@ class AddToCartTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        productDetailTest.testBuyProduct()
+//        if login.isLogout() {
+//            login.goLoginPage()
+//            login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
+//        }
+//productDetailTest.testBuyProduct()
     }
     
     override func tearDown() {
@@ -41,7 +41,7 @@ class AddToCartTest: XCTestCase {
     func preCondition() {
 //        more.goToLogout().doLogout()
 //        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        productDetailTest.testGoPDPFromWishlist()
+//        productDetailTest.testGoPDPFromWishlist()
         productDetail.clickBuy()
     }
     

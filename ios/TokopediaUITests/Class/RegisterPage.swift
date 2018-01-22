@@ -38,11 +38,16 @@ class RegisterWithEmail : Register {
     let registerPasswordEye = app.buttons["passwordEyeButton"]
     let registerButton = app.buttons["registerButton"]
     
+    let accountActivationView = app.otherElements["accountActivationView"]
+    
+    let resetPasswordView = app.otherElements["resetPasswordSuccessView"]
+    let resetPasswordLoginButton = app.buttons["loginButton"]
+    
     override func waitForPageLoaded(){
         waitFor(element: registerWithEmailView, status: .Exists)
     }
     
-    func fillRegisterForm(email: String, name: String, handphone : String, password : String)
+    func fillRegisterForm(email: String, name: String, handphone : String, password : String) -> Self
     {
         registerEmailTextField.tap()
         registerEmailTextField.typeText(email)
@@ -54,15 +59,7 @@ class RegisterWithEmail : Register {
         registerPasswordTextField.typeText(password)
         registerPasswordTextField.tap()
         registerButton.tap()
+        return self
     }
-}
-
-class ActivationAccount : Register {
-    let accountActivationView = app.otherElements["accountActivationView"]
-}
-
-class ResetPasswordSuccess : Register {
-    let resetPasswordView = app.otherElements["resetPasswordSuccessView"]
-    let resetPasswordLoginButton = app.buttons["loginButton"]
 }
 

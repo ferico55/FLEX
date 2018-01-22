@@ -69,21 +69,6 @@
                ReferencedContainer = "container:Tokopedia.xcodeproj">
             </BuildableReference>
          </TestableReference>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E52517BA1F83840F008FDBCF"
-               BuildableName = "TokopediaUITests.xctest"
-               BlueprintName = "TokopediaUITests"
-               ReferencedContainer = "container:Tokopedia.xcodeproj">
-            </BuildableReference>
-            <SkippedTests>
-               <Test
-                  Identifier = "OnBoardingTest">
-               </Test>
-            </SkippedTests>
-         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

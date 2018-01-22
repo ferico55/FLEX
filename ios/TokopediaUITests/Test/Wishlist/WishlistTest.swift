@@ -10,11 +10,8 @@ import XCTest
 
 class WishlistTest: XCTestCase {
     
-    var login = LoginPage()
+    var homePage : HomePage = HomePage()
     var wishlist = WishlistPage()
-    var productDetail = ProductDetail()
-    var home = HomePage()
-    var more = MorePage()
     
     override func setUp() {
         super.setUp()
@@ -24,7 +21,10 @@ class WishlistTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        wishlist.goWishlistPage()
+        if !homePage.isUserLogin() {
+            LoginTest().testLoginBuyer()
+            homePage.homeTab.tap()
+        }
     }
     
     override func tearDown() {
@@ -32,15 +32,53 @@ class WishlistTest: XCTestCase {
     }
     
     func testWishlist() {
-        if login.isUserLogin() {
-            home.goMorePage()
-            more.goToLogout().doLogout()
-            sleep(1)
-        }
-        login.goLoginPage()
-        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        wishlist.goWishlistPage()
-        wishlist.clickWishlistCell(product: "Do More")
-        XCTAssert(productDetail.PDPView.exists)
+        homePage.goWishlistPage()
+        let openWishlist = wishlist.clickWishlistCell()
+        XCTAssert(openWishlist.PDPView.exists)
     }
+    
+    func testWishlistSearch(){
+        homePage.goWishlistPage()
+        wishlist.searchWishlist("wishlist")
+        waitFor(element: wishlist.resultCountLabel, status: .Exists)
+        XCTAssert(wishlist.resultCountLabel.exists)
+    }
+
+    func testResetWishlistSearch(){
+        homePage.goWishlistPage()
+        wishlist.searchWishlist("wishlist")
+        wishlist.resetWishlistSearch.tap()
+        XCTAssertTrue(wishlist.wishlistSearchTextField.placeholderValue as? String == "Cari wishlist kamu")
+    }
+
+    func testSeeAllWishlist(){
+        homePage.goWishlistPage()
+        wishlist.searchWishlist("wishlist")
+        wishlist.seeAllWishlist.tap()
+        XCTAssertTrue(wishlist.wishlistSearchTextField.placeholderValue as? String == "Cari wishlist kamu")
+    }
+
+    func testRemoveWishlist(){
+        homePage.goWishlistPage()
+        if wishlist.wishlistCount > 0 {
+            wishlist.removeWishlist("yes")
+        }
+        else
+        {
+            
+        }
+    }
+
+    func testCancelRemoveWishlist(){
+        homePage.goWishlistPage()
+        if wishlist.wishlistCount > 0 {
+            wishlist.removeWishlist("no")
+        }
+        else
+        {
+            
+        }
+    }
+
 }
+

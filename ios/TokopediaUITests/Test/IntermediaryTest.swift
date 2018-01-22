@@ -35,7 +35,7 @@ class IntermediaryTest: XCTestCase {
     }
     
     func testBanner() {
-        intermediary.swipeBanner()
+        intermediary.clickBanner()
     }
     
     func testSubcategory() {
@@ -52,13 +52,11 @@ class IntermediaryTest: XCTestCase {
     }
 
     func testSquareHotlist() {
-        intermediary.clickHorizontalHotlist()
-        XCTAssert(hotlist.hotlistResultView.exists)
+        intermediary.clickSquareHotlist()
     }
     
     func testVerticalHotlist() {
         intermediary.clickVerticalHotlist()
-        XCTAssert(hotlist.hotlistResultView.exists)
     }
     
     func testOfficialStore() {
@@ -76,5 +74,14 @@ class IntermediaryTest: XCTestCase {
     
     func testSeeAllCategoryResult() {
         intermediary.clickSeeAllCategory()
+    }
+    
+    func testPromoInfo() {
+        intermediary.clickPromotedInfo()
+    }
+    
+    func testTutupTopAds() {
+        intermediary.clickPromotedInfo()
+        intermediary.clickTutupTopAds()
     }
 }

@@ -10,15 +10,7 @@ import XCTest
 
 class SearchTest: XCTestCase {
     
-    var homepage = HomePage()
-    var search = SearchPage()
-    var product = SearchResultProductPage()
-    var catalog = SearchResultCatalogPage()
-    var shop = SearchResultShopPage()
-    var login = LoginTest()
-    var popular = SearchResultPopularSearch()
-    var bar = bottomBar()
-
+    var homepage : HomePage = HomePage()
     
     override func setUp() {
         super.setUp()
@@ -35,64 +27,64 @@ class SearchTest: XCTestCase {
     }
     
     func testSearchProduct() {
-        homepage.goToSearchPage().searchProduct("iPhone 7").clickProduct()
+        let searchResult = homepage.goSearchPage().searchProduct("iPhone 7")
+        waitFor(element: searchResult.productCell, status: .Exists)
+        XCTAssert(searchResult.productCell.exists)
     }
     
-    func testButtomBarProduct() {
-        homepage.goToSearchPage().searchProduct("iPhone 7")
-        bar.sorting()
-        bar.filtering()
-        bar.changeGrid()
-        bar.sharing()           
+    func testClickProductSearch() {
+        let productResult = homepage.goSearchPage().searchProduct("iPhone 7").clickProduct()
+        waitFor(element: productResult.PDPView, status: .Exists)
+        XCTAssert(productResult.PDPView.exists)
     }
     
-    //    func testSearchAutoComplete()
-    //    {
-    //        homepage.goToSearchPage()
-    //        waitFor(element: popular.rowsatu, status: .Exists)
-    //
-    //    }
+    func testSearchCatalog() {
+        let searchResult = homepage.goSearchPage().searchCatalog("iPhone 7")
+        waitFor(element: searchResult.productCell, status: .Exists)
+        XCTAssert(searchResult.productCell.exists)
+    }
     
-    func testSearchCatalog()
+    func testCatalogShopList() {
+        let catalogResult = homepage.goSearchPage().searchCatalog("iPhone 7").clickCatalog()
+        waitFor(element: catalogResult.catalogShopList, status: .Exists)
+        XCTAssert(catalogResult.catalogShopList.exists)
+    }
+    
+    func testBuyCatalog()
     {
-        homepage.goToSearchPage().searchCatalog("iPhone 7").clickCatalog()
-        //catalog.buttonGridType()
+        let catalogResult = homepage.goSearchPage().searchCatalog("iPhone 8").clickCatalog()
+        let result = catalogResult.buyCatalog()
+        waitFor(element: result.PDPView, status: .Exists)
+        XCTAssert(result.PDPView.exists)
     }
     
-    func testBottomBarCatalog()
-    {
-        homepage.goToSearchPage().searchCatalog("iPhone 7").clickCatalog()
-        bar.sorting()
-        bar.filtering()
-        bar.changeGrid()
-        bar.sharing()
-    }
-    
-    
-    func testCatalogDetail()
-    {
-        homepage.goToSearchPage().searchCatalog("iPhone 7").clickCatalog()
-        waitFor(element: bar.result, status: .Exists)
-        bar.result.tap()
-    }
-    
-    func testCatalogShopList()
-    {
-        homepage.goToSearchPage().searchCatalog("iPhone 7").clickCatalog()
-        waitFor(element: bar.result, status: .Exists)
-        bar.result.tap()
-        waitFor(element: catalog.catalogShopList, status: .Exists)
-        catalog.catalogShopList.tap()
-        waitFor(element: catalog.buyProductOnCatalog, status: .Exists)
-        XCTAssert(catalog.buyProductOnCatalog.exists)
-        catalog.buyProductOnCatalog.tap()
-    }
     
     func testSearchShop()
     {
-        homepage.goToSearchPage().searchShop("Cherrish Store").clickShop()
-        waitFor(element: shop.shopResultCell, status: .Exists)
-        shop.shopResultCell.tap()
+        let shopResult = homepage.goSearchPage().searchShop("Loving Store")
+        waitFor(element: shopResult.shopResultCell, status: .Exists)
+        XCTAssert(shopResult.shopResultCell.exists)
+        shopResult.clickShop()
     }
+
+//    func testButtomBarProduct() {
+//        homepage.goToSearchPage().searchProduct("iPhone 7")
+//        bar.sorting()
+//        bar.filtering()
+//        bar.changeGrid()
+//        bar.sharing()
+//    }
+    
+//    func testBottomBarCatalog()
+//    {
+//        homepage.goToSearchPage().searchCatalog("iPhone 7").clickCatalog()
+//        bar.sorting()
+//        bar.filtering()
+//        bar.changeGrid()
+//        bar.sharing()
+//    }
+//
+
+
 
 }

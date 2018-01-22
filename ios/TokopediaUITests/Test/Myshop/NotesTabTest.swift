@@ -24,13 +24,13 @@ class NotesTableTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "alwan.ubaidillah+007@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        if more.isBuyer() {
-            login.swithAccountSeller()
-        }
+//        if login.isLogout() {
+//            login.goLoginPage()
+//            login.doLogin(email: "alwan.ubaidillah+007@tokopedia.com", password: "tokopedia2016").loginSuccess()
+//        }
+//        if more.isBuyer() {
+//            login.swithAccountSeller()
+//        }
         more.goToMyShop()
     }
     

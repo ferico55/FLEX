@@ -131,10 +131,12 @@ typedef enum TagRequest {
 - (void)initNoResultView{
     _noResultView = [[NoResultReusableView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noResultView.delegate = self;
+    _noResultView.accessibilityIdentifier = @"noResultView";
     [_noResultView generateAllElements:@"toped_wishlist"
                                  title:@""
                                   desc:@"Wishlist Anda masih kosong"
                               btnTitle:@"Mulai cari produk"];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didAddedProductToWishList:) name:@"didAddedProductToWishList" object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didRemovedProductFromWishList:) name:@"didRemovedProductFromWishList" object:nil];
 }
@@ -579,6 +581,7 @@ typedef enum TagRequest {
         [self showNoResultView];
     }
     
+    self.searchResultCountLabel.accessibilityIdentifier = @"resultCountLabel";
     self.searchResultCountLabel.text  = [NSString stringWithFormat:@"%@ hasil", productStore.header.total_data];
     
     if(_refreshControl.isRefreshing || _refreshControlNoResult.isRefreshing) {

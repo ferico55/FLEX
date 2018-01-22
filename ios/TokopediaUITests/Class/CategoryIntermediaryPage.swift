@@ -24,13 +24,16 @@ class Intermediary : HomePage {
     let squareHotlist = app.otherElements.containing(.other, identifier: "squareHotlist").element(boundBy: 0)
     let verticalHotlist = app.otherElements.containing(.other, identifier: "verticalHotlist").element(boundBy: 0)
     
-    let intermediaryOfficialStoreCell = app.otherElements.containing(.other, identifier: "officialStoreView").element(boundBy: 0)
+    let intermediaryOfficialStoreCell = app.otherElements.containing(.other, identifier: "osView").element(boundBy: 0)
     
     let intermediaryVideo = app.otherElements["intermediaryVideo"]
     let seeAllCategory = app.buttons["seeAllCategory"]
     
     let expandSubcategory = app.buttons["expandSubcategory"]
     let hideSubcategory = app.buttons["hideSubcategory"]
+    
+    let promotedInfo = app.images["promotedInfo"]
+    let tutupTopAds = app.buttons["Tutup"]
     
     func swipeIntermediary() {
         waitFor(element: intermediaryScrollView, status: .Exists)
@@ -42,11 +45,11 @@ class Intermediary : HomePage {
         intermediaryScrollView.swipeDown()
     }
     
-    override func swipeBanner() {
+    override func clickBanner() {
         waitFor(element: intermediaryBanner, status: .Exists)
         intermediaryBanner.swipeLeft()
         intermediaryBanner.swipeLeft()
-        intermediaryBanner.swipeLeft()
+        intermediaryBanner.tap()
     }
     
     func clickSubcategory() {
@@ -97,6 +100,16 @@ class Intermediary : HomePage {
     func clickSeeAllCategory() {
         waitFor(element: seeAllCategory, status: .Exists)
         seeAllCategory.tap()
+    }
+    
+    func clickPromotedInfo() {
+        waitFor(element: promotedInfo, status: .Exists)
+        promotedInfo.tap()
+    }
+    
+    func clickTutupTopAds() {
+        waitFor(element: tutupTopAds, status: .Exists)
+        tutupTopAds.tap()
     }
     
 }

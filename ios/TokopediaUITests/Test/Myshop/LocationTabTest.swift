@@ -24,13 +24,13 @@ class LocationTabTest : XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "alwan.ubaidillah+101@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        if more.isBuyer() {
-            login.swithAccountSeller()
-        }
+//        if login.isLogout() {
+//            login.goLoginPage()
+//            login.doLogin(email: "alwan.ubaidillah+101@tokopedia.com", password: "tokopedia2016").loginSuccess()
+//        }
+//        if more.isBuyer() {
+//            login.swithAccountSeller()
+//        }
         more.goToMyShop()
     }
     

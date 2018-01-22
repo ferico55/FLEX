@@ -10,9 +10,9 @@ import XCTest
 
 class LoginTest: XCTestCase {
     
-    var login = LoginPage()
-    var more = MorePage()
-    var feed = FeedPage()
+    var homePage : HomePage = HomePage()
+    var feed : FeedPage = FeedPage()
+    var login : LoginPage = LoginPage()
     
     override func setUp() {
         super.setUp()
@@ -22,31 +22,41 @@ class LoginTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isUserLogin() {
-            more.goToLogout().doLogout()
+        if homePage.isUserLogin() {
+            homePage.goMorePage().doLogout()
         }
-        login.goLoginPage()
     }
     
     override func tearDown() {
         super.tearDown()
     }
     
-    
-    func testLoginValid() {
-        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016").loginSuccess()
+    func testLoginBuyer() {
+        homePage.goLoginPage().doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia2016")
+        waitFor(element: homePage.homeTab, status: .Exists)
+        homePage.homeTab.tap()
     }
     
-    func testLoginInvalid() {
-        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia1111").loginUnsuccess()
+    func testLoginSeller() {
+        homePage.goLoginPage().doLogin(email: "julius.gonawan+automationseller@tokopedia.com", password: "tokopedia2016")
+        waitFor(element: feed.feedView, status: .Exists)
+        XCTAssert(feed.feedView.exists)
+        homePage.homeTab.tap()
+    }
+    
+    func testLoginUnsuccess() {
+        homePage.goLoginPage().doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "tokopedia1111")
+        XCTAssert(login.loginButton.exists)
     }
 
     
     func testLoginEmptyPassword() {
-        login.doLogin(email: "", password: "tokopedia1111").loginUnsuccess()
+        homePage.goLoginPage().doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "")
+        XCTAssert(login.loginButton.exists)
     }
 
     func testLoginEmptyEmail() {
-        login.doLogin(email: "julius.gonawan+automationbuyer@tokopedia.com", password: "").loginUnsuccess()
+        homePage.goLoginPage().doLogin(email: "", password: "tokopedia2016")
+        XCTAssert(login.loginButton.exists)
     }
 }

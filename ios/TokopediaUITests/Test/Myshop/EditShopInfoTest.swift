@@ -25,10 +25,7 @@ class EditShopInfoTest: XCTestCase {
         }
         if login.isLogout() {
             login.goLoginPage()
-            login.doLogin(email: "alwan.ubaidillah+007@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        if more.isBuyer() {
-            login.swithAccountSeller()
+            login.doLogin(email: "elly.susilowati+089@tokopedia.com", password: "tokopedia2015")
         }
         more.goToMyShop()
     }

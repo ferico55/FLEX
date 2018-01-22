@@ -23,14 +23,14 @@ class NewOrderTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        if login.isLogout() {
-            login.goLoginPage()
-            login.doLogin(email: "julius.gonawan+seller@tokopedia.com", password: "tokopedia2016").loginSuccess()
-        }
-        if more.isBuyer() {
-            login.swithAccountSeller()
-        }
-        more.goToSales()
+//        if login.isLogout() {
+//            login.goLoginPage()
+//            login.doLogin(email: "julius.gonawan+seller@tokopedia.com", password: "tokopedia2016").loginSuccess()
+//        }
+//        if more.isBuyer() {
+////            login.swithAccountSeller()
+//        }
+//        more.goToSales()
     }
     
     override func tearDown() {

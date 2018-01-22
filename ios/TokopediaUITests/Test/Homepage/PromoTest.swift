@@ -10,8 +10,7 @@ import XCTest
 
 class PromoTest: XCTestCase {
     
-    var homepage = HomePage()
-    var promo = PromoPage()
+    var homePage : HomePage = HomePage()
     
     override func setUp() {
         super.setUp()
@@ -21,7 +20,6 @@ class PromoTest: XCTestCase {
         if onBoarding.isOnBoarding() {
             onBoarding.skipOnBoarding()
         }
-        homepage.goToPromoPage()
     }
     
     override func tearDown() {
@@ -29,12 +27,14 @@ class PromoTest: XCTestCase {
     }
 
     func testPromo() {
-        promo.swipePromo()
-        promo.clickPromo().isSuccess()
+        let promo = homePage.goToPromoPage().clickPromo()
+        waitFor(element: promo.promoDetailView, status: .Exists)
+        XCTAssert(promo.promoDetailView.exists)
+        
     }
     
     func testBuyPromo() {
-        homepage.goToPromoPage()
-        promo.clickPromo().buyProduct()
+        let promo = homePage.goToPromoPage().clickPromo()
+        promo.buyProduct()
     }
 }
