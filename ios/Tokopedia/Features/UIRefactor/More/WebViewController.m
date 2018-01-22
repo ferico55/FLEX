@@ -18,18 +18,18 @@
 #import "NavigateViewController.h"
 
 @interface WebViewController ()
-@property (strong, nonatomic) IBOutlet UIWebView *webView;
-@property (strong, nonatomic) WebviewPopover *popover;
+@property(strong, nonatomic) IBOutlet UIWebView *webView;
+@property(strong, nonatomic) WebviewPopover *popover;
 @end
 
-@implementation WebViewController
-{
+@implementation WebViewController {
     NJKWebViewProgress *progressProxy;
     NJKWebViewProgressView *progressView;
+    UserAuthentificationManager *userManager;
 }
 @synthesize strURL, strTitle, strContentHTML, strQuery;
 
--(id)init{
+- (id)init {
     if ((self = [super init])) {
         _navigationPivotVisible = YES;
     }
@@ -42,28 +42,35 @@
     _shouldAuthorizeRequest = YES;
     _isThankYouPage = NO;
     
+    userManager = [UserAuthentificationManager new];
+    
     self.navigationItem.title = strTitle;
     
-    if(strContentHTML != nil) {
+    if (strContentHTML != nil) {
         [_webView loadHTMLString:strContentHTML baseURL:nil];
-    }
-    else {
-        //SetUp URL
+    } else {
+        // SetUp URL
         progressProxy = [[NJKWebViewProgress alloc] init];
         _webView.delegate = progressProxy;
         progressProxy.webViewProxyDelegate = self;
         progressProxy.progressDelegate = self;
         
-        //SetUp Progress View
+        // SetUp Progress View
         CGFloat progressBarHeight = 2.f;
         CGRect navigaitonBarBounds = self.navigationController.navigationBar.bounds;
-        CGRect barFrame = CGRectMake(0,     navigaitonBarBounds.size.height - progressBarHeight, navigaitonBarBounds.size.width, progressBarHeight);
+        CGRect barFrame =
+        CGRectMake(0, navigaitonBarBounds.size.height - progressBarHeight,
+                   navigaitonBarBounds.size.width, progressBarHeight);
         progressView = [[NJKWebViewProgressView alloc] initWithFrame:barFrame];
         [self.navigationController.navigationBar addSubview:progressView];
         
-        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"icon_arrow_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backButtonDidTapped)];
+        self.navigationItem.leftBarButtonItem = [[UIBarButtonItem alloc]
+                                                 initWithImage:[UIImage imageNamed:@"icon_arrow_white"]
+                                                 style:UIBarButtonItemStylePlain
+                                                 target:self
+                                                 action:@selector(backButtonDidTapped)];
         
-        NSURL* url = [NSURL URLWithString:strURL];
+        NSURL *url = [NSURL URLWithString:strURL];
         if (strQuery == nil) {
             [_webView loadRequest:[self requestForUrl:url]];
         } else {
@@ -72,10 +79,12 @@
         }
     }
     
-    //popover
+    // popover
     if (_navigationPivotVisible) {
         _popover = [[WebviewPopover alloc] initWithViewController:self];
-        self.navigationItem.rightBarButtonItem = [UIBarButtonItem makeWithController:self selector:@selector(tapPopover)];
+        self.navigationItem.rightBarButtonItem =
+        [UIBarButtonItem makeWithController:self
+                                   selector:@selector(tapPopover)];
     }
 }
 
@@ -84,19 +93,18 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)viewWillDisappear:(BOOL)animated
-{
+- (void)viewWillDisappear:(BOOL)animated {
     [super viewWillDisappear:animated];
     [progressView removeFromSuperview];
 }
 
-- (void) backButtonDidTapped {
+- (void)backButtonDidTapped {
     if (self.webView.canGoBack) {
         if (_isThankYouPage) {
             [self.navigationController popToRootViewControllerAnimated:YES];
         } else {
             [self.webView goBack];
-            if(self.onTapBackButton) {
+            if (self.onTapBackButton) {
                 self.onTapBackButton(self.webView.request.URL);
             }
         }
@@ -106,13 +114,12 @@
 }
 
 #pragma mark - UIWebView Delegate
-- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error
-{
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(NSError *)error {
 }
 
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    NSString *documentTitle = [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
+- (void)webViewDidFinishLoad:(UIWebView *)webView {
+    NSString *documentTitle =
+    [webView stringByEvaluatingJavaScriptFromString:@"document.title"];
     if (documentTitle && ![documentTitle isEqualToString:@""] &&
         (!self.strTitle || [self.strTitle isEqualToString:@""])) {
         self.navigationItem.title = documentTitle;
@@ -122,19 +129,31 @@
     }
 }
 
-
-- (void)webViewDidStartLoad:(UIWebView *)webView
-{
+- (void)webViewDidStartLoad:(UIWebView *)webView {
 }
 
--(BOOL) webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
-    if ( inType == UIWebViewNavigationTypeLinkClicked && _isLPWebView) {
+- (BOOL)webView:(UIWebView *)inWeb shouldStartLoadWithRequest:(NSURLRequest *)inRequest navigationType:(UIWebViewNavigationType)inType {
+    NSURL *url = (NSURL *)inRequest.URL;
+    if ([[url absoluteString] containsString:@"https://accounts.tokopedia.com/authorize?"] && ![userManager isLogin]) {
+        [[AuthenticationService shared]
+         ensureLoggedInFromViewController:self
+         onSuccess:^{
+             [_webView goBack];
+             NSURL *url = [NSURL URLWithString:[[UserAuthentificationManager new] webViewUrlFromUrl:strURL]];
+             [_webView
+              loadRequest:[self requestForUrl:url]];
+         }];
+        
+        return NO;
+    }
+    
+    if (inType == UIWebViewNavigationTypeLinkClicked && _isLPWebView) {
         [[UIApplication sharedApplication] openURL:[inRequest URL]];
         
         return NO;
     }
     
-    if(self.onTapLinkWithUrl) {
+    if (self.onTapLinkWithUrl) {
         self.onTapLinkWithUrl([inRequest URL]);
     }
     
@@ -142,39 +161,46 @@
 }
 
 #pragma mark - NJKWebViewProgressDelegate
-- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress updateProgress:(float)progress
-{
+- (void)webViewProgress:(NJKWebViewProgress *)webViewProgress
+         updateProgress:(float)progress {
     [progressView setProgress:progress animated:YES];
 }
 
-- (NSMutableURLRequest*)requestForUrl:(NSURL*)url {
-    NSMutableURLRequest* request;
-    if(_shouldAuthorizeRequest) {
+- (NSMutableURLRequest *)requestForUrl:(NSURL *)url {
+    NSMutableURLRequest *request;
+    if (_shouldAuthorizeRequest) {
         request = [NSMutableURLRequest requestWithAuthorizedHeader:url];
     } else {
         request = [[NSMutableURLRequest alloc] init];
-        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac "
+         @"OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like "
+         @"Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
+       forHTTPHeaderField:@"User-Agent"];
         [request setURL:url];
     }
     
     return request;
 }
 
-- (NSMutableURLRequest*)requestForUrl:(NSURL*)url query:(NSString *)query {
-    NSMutableURLRequest* request;
-    if(_shouldAuthorizeRequest) {
+- (NSMutableURLRequest *)requestForUrl:(NSURL *)url query:(NSString *)query {
+    NSMutableURLRequest *request;
+    if (_shouldAuthorizeRequest) {
         request = [NSMutableURLRequest requestWithAuthorizedHeader:url];
     } else {
         request = [[NSMutableURLRequest alloc] init];
-        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
+        [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS "
+         @"X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) "
+         @"Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
+       forHTTPHeaderField:@"User-Agent"];
         [request setURL:url];
     }
     [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:[query dataUsingEncoding:NSUTF8StringEncoding allowLossyConversion:YES]];
+    [request setHTTPBody:[query dataUsingEncoding:NSUTF8StringEncoding
+                             allowLossyConversion:YES]];
     
     return request;
 }
-    
+
 #pragma mark - pop over
 - (void)tapPopover {
     [self.popover tapShowWithCoordinate:CGPointMake(self.view.frame.size.width - 26, self.navigationController.navigationBar.frame.origin.y + 40)];
