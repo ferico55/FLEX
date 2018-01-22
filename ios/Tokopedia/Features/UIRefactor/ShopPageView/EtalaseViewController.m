@@ -139,6 +139,7 @@
     }
     
     [cell.nameLabel setText:currentEtalase.etalase_name];
+    [cell.nameLabel sizeToFit];
     [cell.detailLabel setText:[NSString stringWithFormat:@"%@ Produk", currentEtalase.etalase_num_product]];
     
     if(_isEditable){
@@ -147,6 +148,14 @@
         [cell.detailLabel setHidden:YES];
     }
     cell.showCheckImage = !_isEditable;
+    UIImageView* badgeImage = [[UIImageView alloc] init];
+    [badgeImage setImageWithURL:[NSURL URLWithString:currentEtalase.etalase_badge]];
+    [cell addSubview:badgeImage];
+    
+    [badgeImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cell.nameLabel.mas_centerY);
+        make.left.equalTo(cell.nameLabel.mas_right).offset(10);
+    }];
     
     return cell;
 }

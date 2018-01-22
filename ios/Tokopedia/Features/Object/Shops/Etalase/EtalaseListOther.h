@@ -12,6 +12,7 @@
 @property (strong, nonatomic) NSString* etalase_url;
 @property (strong, nonatomic) NSString* etalase_id;
 @property (strong, nonatomic) NSString* etalase_name;
+@property (strong, nonatomic) NSString* etalase_badge;
 
 +(RKObjectMapping*)mapping;
 @end
