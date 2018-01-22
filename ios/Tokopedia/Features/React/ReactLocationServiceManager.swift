@@ -25,7 +25,7 @@ class ReactLocationServiceManager: NSObject {
                 resolve(dict)
             }
         } else {
-            let dict = ["locationServiceEnabled": false, "LocationServicePermission": false]
+            let dict = ["locationServiceEnabled": false, "locationServicePermission": false]
             resolve(dict)
         }
     }
