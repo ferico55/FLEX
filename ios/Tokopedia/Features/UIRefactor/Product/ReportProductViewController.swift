@@ -105,7 +105,7 @@ class ReportProductViewController: UIViewController, UITextViewDelegate{
     }
     
     func enableSubmitBarButtonItem() {
-        self.submitBarButtonItem.tintColor = UIColor(colorLiteralRed: 255/255, green: 255/255, blue: 255/255, alpha: 1.0)
+        self.submitBarButtonItem.tintColor = UINavigationBar.appearance().tintColor
         self.submitBarButtonItem.isEnabled = true
     }
     
