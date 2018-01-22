@@ -143,7 +143,6 @@
 #import "ShopNotesPageViewController.h"
 #import "ShopPageRequest.h"
 #import "NoResultReusableView.h"
-#import "ShopHeaderView.h"
 #import "ShopInfoViewController.h"
 #import "Slide.h"
 #import "LabelMenu.h"
@@ -200,6 +199,7 @@
 
 #import "AlertDatePickerView.h"
 #import "DetailShopResult.h"
+#import "ClosedInfo.h"
 #import "GAI.h"
 #import "GAIFields.h"
 #import "Branch/Branch.h"

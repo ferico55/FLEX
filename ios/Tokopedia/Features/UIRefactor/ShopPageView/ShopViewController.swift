@@ -29,9 +29,9 @@ class ShopViewController: UIViewController {
     fileprivate let authenticationService = AuthenticationService.shared
     fileprivate var tabChildren: [TabChild] = []
     fileprivate var segmentedPagerController: MXSegmentedPagerController!
-    fileprivate var header: ShopHeaderView!
-    fileprivate var headerHeight: CGFloat!
+    fileprivate var header: ShopHeaderView = ShopHeaderView.instanceFromNib()
     fileprivate var isOfficial: Bool = false
+    fileprivate var headerHeight: CGFloat!
     
     var delegate: ShopViewControllerDelegate?
     var productFilter: ShopProductFilter?
@@ -99,7 +99,6 @@ class ShopViewController: UIViewController {
                 SwiftOverlays.removeAllOverlaysFromView(self.view)
                 
                 self.displayShop(shop)
-                self.renderShopHeaderWithShop(shop)
                 self.renderBarButtonsWithShop(shop)
                 
                 self.segmentedPagerController.segmentedPager.scrollToTop(animated: false)
@@ -149,12 +148,26 @@ class ShopViewController: UIViewController {
         self.view.addSubview(noResultView)
     }
     
-    fileprivate func renderShopHeaderWithShop(_ shop: Shop) {
-        let viewModel = ShopHeaderViewModel()
-        viewModel.shop = shop.result
-        viewModel.ownShop = UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id)
-        
+    // update header content with model and sets the header height accordingly
+    fileprivate func updateHeaderContent(_ viewModel: ShopHeaderViewModel) {
         self.header.viewModel = viewModel
+        
+        self.header.setNeedsLayout()
+        self.header.layoutIfNeeded()
+        // manually set header height here
+        self.headerHeight = self.header.mainStackView.frame.size.height // grab height from the stack view not the main view (stack view determines content height)
+        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
+        self.segmentedPagerController.segmentedPager.scrollToTop(animated: false) // reset scroll to top
+    }
+    
+    fileprivate func displayShop(_ shop: Shop) {
+        guard self.segmentedPagerController == nil else { return }
+        self.isOfficial = shop.result.info.isOfficial
+        
+        let viewController = MXSegmentedPagerController()
+        segmentedPagerController = viewController
+        
+        // setup header callbacks
         header.onTapMessageButton = { [unowned self] in
             self.messageShopOwnerWithShop(shop)
         }
@@ -171,28 +184,14 @@ class ShopViewController: UIViewController {
             self.toggleFavoriteForShop(shop)
         }
         
-        self.headerHeight = self.header.sizeThatFits(self.view.bounds.size).height
-        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
-    }
-    
-    fileprivate func displayShop(_ shop: Shop) {
-        guard self.segmentedPagerController == nil else { return }
-        self.isOfficial = shop.result.info.isOfficial
+        viewController.segmentedPager.parallaxHeader.view = header
         
-        let viewController = MXSegmentedPagerController()
-        segmentedPagerController = viewController
-        
-        header = ShopHeaderView(shop: shop.result)
-        
-        let viewModel = ShopHeaderViewModel()
+        // update header
+        var viewModel = ShopHeaderViewModel()
         viewModel.shop = shop.result
         viewModel.ownShop = UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id)
+        self.updateHeaderContent(viewModel)
         
-        header.viewModel = viewModel
-        
-        renderShopHeaderWithShop(shop)
-        
-        viewController.segmentedPager.parallaxHeader.view = header
         viewController.segmentedPager.parallaxHeader.mode = .bottom
         viewController.segmentedPager.bounces = false
         viewController.segmentedPager.dataSource = self
@@ -329,12 +328,12 @@ class ShopViewController: UIViewController {
         
         self.navigationItem.rightBarButtonItems = [refreshBarButton, infoBarButton]
         
-        let viewModel = ShopHeaderViewModel()
+        var viewModel = ShopHeaderViewModel()
         viewModel.shop = shop.result
         viewModel.ownShop = UserAuthentificationManager().isMyShop(withShopId: shop.result.info.shop_id)
         viewModel.favoriteRequestInProgress = favoriteRequestInProgress
         
-        header.viewModel = viewModel
+        self.updateHeaderContent(viewModel)
     }
     
     fileprivate func refreshCurrentViewController() {

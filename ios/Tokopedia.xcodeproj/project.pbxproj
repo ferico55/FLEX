@@ -693,6 +693,13 @@
 		E581B5431FE8FDAE00E6D1DA /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B53D1FE8FDAD00E6D1DA /* NotificationTableViewCell.swift */; };
 		E581B5501FE8FFE300E6D1DA /* NotificationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B54F1FE8FFE300E6D1DA /* NotificationTarget.swift */; };
 		E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B5541FE900B500E6D1DA /* TopchatTarget.swift */; };
+		E58286271F8A1D1E002FA9A3 /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286261F8A1D1E002FA9A3 /* FeedPage.swift */; };
+		E58286291F8A4412002FA9A3 /* LastSeenPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E58286281F8A4412002FA9A3 /* LastSeenPage.swift */; };
+		E582862B1F8A4561002FA9A3 /* CartPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E582862A1F8A4561002FA9A3 /* CartPage.swift */; };
+		E595C6A31FF6596800A8665E /* ShopHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E595C6A21FF6596400A8665E /* ShopHeaderView.xib */; };
+		E595C6A71FF65A4E00A8665E /* ShopHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */; };
+		E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A81FFB2D0000A8665E /* ActionButton.swift */; };
+		E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */; };
 		E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */; };
 		E5CDEB0F2004C42900C41219 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF22004C41700C41219 /* HomePage.swift */; };
 		E5CDEB102004C42900C41219 /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF32004C41700C41219 /* MorePage.swift */; };
@@ -1863,7 +1870,6 @@
 		F977FDDF1FE8AB8000183A85 /* ShopNotesPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */; };
 		F977FDE01FE8AB8000183A85 /* ShopProductPageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */; };
 		F977FDE11FE8AB8000183A85 /* EtalaseCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4A61FE8AB7300183A85 /* EtalaseCell.xib */; };
-		F977FDE21FE8AB8000183A85 /* ShopHeaderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A71FE8AB7300183A85 /* ShopHeaderView.mm */; };
 		F977FDE31FE8AB8000183A85 /* ShopPageRequest.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A81FE8AB7300183A85 /* ShopPageRequest.m */; };
 		F977FDE41FE8AB8000183A85 /* EtalaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4A91FE8AB7300183A85 /* EtalaseCell.m */; };
 		F977FDE51FE8AB8000183A85 /* ShopTalkPageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4AA1FE8AB7300183A85 /* ShopTalkPageViewController.m */; };
@@ -3221,6 +3227,13 @@
 		E581B53D1FE8FDAD00E6D1DA /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		E581B54F1FE8FFE300E6D1DA /* NotificationTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTarget.swift; sourceTree = "<group>"; };
 		E581B5541FE900B500E6D1DA /* TopchatTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopchatTarget.swift; sourceTree = "<group>"; };
+		E58286261F8A1D1E002FA9A3 /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
+		E58286281F8A4412002FA9A3 /* LastSeenPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LastSeenPage.swift; sourceTree = "<group>"; };
+		E582862A1F8A4561002FA9A3 /* CartPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CartPage.swift; sourceTree = "<group>"; };
+		E595C6A21FF6596400A8665E /* ShopHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopHeaderView.xib; sourceTree = "<group>"; };
+		E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopHeaderView.swift; sourceTree = "<group>"; };
+		E595C6A81FFB2D0000A8665E /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
+		E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
 		E5CDEAF22004C41700C41219 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
 		E5CDEAF32004C41700C41219 /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
@@ -4653,7 +4666,6 @@
 		F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopNotesPageViewController.m; sourceTree = "<group>"; };
 		F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopProductPageViewController.xib; sourceTree = "<group>"; };
 		F977F4A61FE8AB7300183A85 /* EtalaseCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EtalaseCell.xib; sourceTree = "<group>"; };
-		F977F4A71FE8AB7300183A85 /* ShopHeaderView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ShopHeaderView.mm; sourceTree = "<group>"; };
 		F977F4A81FE8AB7300183A85 /* ShopPageRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopPageRequest.m; sourceTree = "<group>"; };
 		F977F4A91FE8AB7300183A85 /* EtalaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseCell.m; sourceTree = "<group>"; };
 		F977F4AA1FE8AB7300183A85 /* ShopTalkPageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopTalkPageViewController.m; sourceTree = "<group>"; };
@@ -4674,7 +4686,6 @@
 		F977F4B91FE8AB7300183A85 /* ShopHomeViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopHomeViewController.swift; sourceTree = "<group>"; };
 		F977F4BA1FE8AB7300183A85 /* EtalaseRequest.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EtalaseRequest.m; sourceTree = "<group>"; };
 		F977F4BB1FE8AB7300183A85 /* ShopViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ShopViewController.swift; sourceTree = "<group>"; };
-		F977F4BC1FE8AB7300183A85 /* ShopHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopHeaderView.h; sourceTree = "<group>"; };
 		F977F4BE1FE8AB7300183A85 /* PulsaStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaStatus.swift; sourceTree = "<group>"; };
 		F977F4BF1FE8AB7300183A85 /* PulsaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaView.swift; sourceTree = "<group>"; };
 		F977F4C01FE8AB7300183A85 /* PulsaCategoryAttribute.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PulsaCategoryAttribute.swift; sourceTree = "<group>"; };
@@ -10381,10 +10392,13 @@
 		F977F4A31FE8AB7300183A85 /* ShopPageView */ = {
 			isa = PBXGroup;
 			children = (
+				E595C6A81FFB2D0000A8665E /* ActionButton.swift */,
+				E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */,
 				F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */,
 				F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */,
 				F977F4A61FE8AB7300183A85 /* EtalaseCell.xib */,
-				F977F4A71FE8AB7300183A85 /* ShopHeaderView.mm */,
+				E595C6A21FF6596400A8665E /* ShopHeaderView.xib */,
+				E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */,
 				F977F4A81FE8AB7300183A85 /* ShopPageRequest.m */,
 				F977F4A91FE8AB7300183A85 /* EtalaseCell.m */,
 				F977F4AA1FE8AB7300183A85 /* ShopTalkPageViewController.m */,
@@ -10405,7 +10419,6 @@
 				F977F4B91FE8AB7300183A85 /* ShopHomeViewController.swift */,
 				F977F4BA1FE8AB7300183A85 /* EtalaseRequest.m */,
 				F977F4BB1FE8AB7300183A85 /* ShopViewController.swift */,
-				F977F4BC1FE8AB7300183A85 /* ShopHeaderView.h */,
 			);
 			path = ShopPageView;
 			sourceTree = "<group>";
@@ -11308,6 +11321,7 @@
 				F977FB321FE8AB7B00183A85 /* DepositListBankViewController.xib in Resources */,
 				F977FB6E1FE8AB7B00183A85 /* ResolutionCenterDetailCell.xib in Resources */,
 				F954C44B1FC55B6C008C0B30 /* icon_wishlist_active@2x.png in Resources */,
+				E595C6A31FF6596800A8665E /* ShopHeaderView.xib in Resources */,
 				F97700BA1FE8AB8600183A85 /* Zocial.ttf in Resources */,
 				F977FC2C1FE8AB7D00183A85 /* AlertListBankCell.xib in Resources */,
 				F977FD331FE8AB7F00183A85 /* SearchAutoCompleteShopCell.xib in Resources */,
@@ -12110,6 +12124,7 @@
 				F977FA8F1FE8AB7A00183A85 /* TransactionShipmentATCTableViewCell.m in Sources */,
 				F977FD6F1FE8AB7F00183A85 /* ProfileFavoriteShopViewController.m in Sources */,
 				F977FE1B1FE8AB8100183A85 /* MyShopNoteDetailViewController.m in Sources */,
+				E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */,
 				62C771D61FF33C3500F66527 /* WishListObject.m in Sources */,
 				F977FE071FE8AB8100183A85 /* PulsaRelationCategory.swift in Sources */,
 				F977FC1E1FE8AB7C00183A85 /* ReplacementListViewController.swift in Sources */,
@@ -12796,6 +12811,7 @@
 				F977FAB81FE8AB7A00183A85 /* BankAccountRequest.m in Sources */,
 				62C76FF81FF33C3200F66527 /* TxEmoney.m in Sources */,
 				F977FB981FE8AB7C00183A85 /* CategoryIntermediaryViewController.swift in Sources */,
+				E595C6A71FF65A4E00A8665E /* ShopHeaderView.swift in Sources */,
 				62C771841FF33C3400F66527 /* AddressFormList.m in Sources */,
 				848FA6FF1FEBF8BF00A22EDE /* RCReachingInfoViewController.swift in Sources */,
 				F977FDC41FE8AB8000183A85 /* ResolutionCenterCreateSolutionList.m in Sources */,
@@ -12926,7 +12942,6 @@
 				F977FB781FE8AB7B00183A85 /* MerlinProductCategory.swift in Sources */,
 				F977FD271FE8AB7F00183A85 /* GetSearchSuggestionGeneralResponse.swift in Sources */,
 				F977FCED1FE8AB7E00183A85 /* DetailProductVideoResponse.swift in Sources */,
-				F977FDE21FE8AB8000183A85 /* ShopHeaderView.mm in Sources */,
 				F977FAA51FE8AB7A00183A85 /* TransactionCartViewController.m in Sources */,
 				848FA6EC1FEBF8BF00A22EDE /* RCShippingDetail.swift in Sources */,
 				F977FDC71FE8AB8000183A85 /* ResolutionCenterCreateList.m in Sources */,
@@ -13337,6 +13352,7 @@
 				F977FBBF1FE8AB7C00183A85 /* PickupAddressView.swift in Sources */,
 				F977FB2D1FE8AB7B00183A85 /* RetryCollectionReusableView.m in Sources */,
 				F977FD131FE8AB7E00183A85 /* WKWebViewController.swift in Sources */,
+				E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */,
 				62C7712B1FF33C3400F66527 /* SearchAutoCompleteHotlist.m in Sources */,
 				F977FA7A1FE8AB7A00183A85 /* OneClickRegisterCell.swift in Sources */,
 				F977FD641FE8AB7F00183A85 /* UserPageHeader.m in Sources */,
