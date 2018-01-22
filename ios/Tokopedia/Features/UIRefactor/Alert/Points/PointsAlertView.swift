@@ -14,11 +14,12 @@ import NSAttributedString_DDHTML
 }
 
 class PointsAlertView: UIView, Modal {
+    typealias T = UIScrollView
     
     var delegate: PointsAlertViewDelegate? = nil
 
-    var backgroundView = UIScrollView()
-    var dialogView = UIView()
+    var backgroundView: T = UIScrollView()
+    var dialogView: UIView = UIView()
     
     convenience init(title: String, image: UIImage?, imageUrl: String?, message: String, buttons: [UIButton]?) {
         self.init(frame: UIScreen.main.bounds)

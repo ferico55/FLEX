@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NativeNPSView" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="bgView" destination="zuL-ma-5nq" id="SRI-mC-Whr"/>
+                <outlet property="contentView" destination="OQ1-gg-mEI" id="tQn-kq-QCM"/>
+                <outlet property="dialogViewHeightConstraint" destination="b7m-zY-X3O" id="S4b-ck-Tun"/>
+                <outlet property="dialogViewLeadingConstraint" destination="4rB-oO-4hX" id="83u-A3-We7"/>
+                <outlet property="dialogViewTrailingConstraint" destination="Lse-2q-OLs" id="xdv-0O-ydj"/>
+                <outlet property="parentView" destination="KWM-GC-Gcc" id="qRr-i4-RBF"/>
+                <outlet property="ratingEmoticonImageView" destination="pxs-WW-fyI" id="wcB-qH-7Mh"/>
+                <outlet property="ratingTextLabel" destination="rKx-af-QDp" id="Qjr-7D-rK9"/>
+                <outlet property="sendReviewButton" destination="unw-CY-riW" id="xWR-zE-riN"/>
+                <outlet property="starRatingView" destination="pGW-eM-gj8" id="3Qe-kO-408"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="KWM-GC-Gcc">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <subviews>
+                <view alpha="0.5" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zuL-ma-5nq">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="OQ1-gg-mEI">
+                    <rect key="frame" x="25" y="93.5" width="325" height="500"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Seberapa puaskah Anda untuk merekomendasikan aplikasi ini ke teman Anda?" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1fB-gA-bos">
+                            <rect key="frame" x="41" y="24" width="243.5" height="19.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="rating_five_emoticon" translatesAutoresizingMaskIntoConstraints="NO" id="pxs-WW-fyI">
+                            <rect key="frame" x="97.5" y="58.5" width="130" height="130"/>
+                            <constraints>
+                                <constraint firstAttribute="width" secondItem="pxs-WW-fyI" secondAttribute="height" multiplier="1:1" id="SGe-id-K3L"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Belum Memberi Rating" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rKx-af-QDp">
+                            <rect key="frame" x="16" y="203.5" width="293" height="17"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.52549019610000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pGW-eM-gj8" customClass="EDStarRating">
+                            <rect key="frame" x="57.5" y="235.5" width="211.5" height="40"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="40" id="m9M-o6-IHd"/>
+                            </constraints>
+                        </view>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="unw-CY-riW">
+                            <rect key="frame" x="16" y="320" width="293" height="52"/>
+                            <color key="backgroundColor" red="0.25882352941176467" green="0.70980392156862748" blue="0.28627450980392155" alpha="1" colorSpace="calibratedRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52" id="ea2-aW-wlT"/>
+                            </constraints>
+                            <state key="normal" title="KIRIM">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="sendReview:" destination="-1" eventType="touchUpInside" id="M0g-QN-82F"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Geser kanan atau kiri untuk memberikan rating" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XHj-8S-cXW">
+                            <rect key="frame" x="16" y="290.5" width="293" height="14.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" red="0.52549019610000003" green="0.52549019610000003" blue="0.52549019610000003" alpha="1" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="pGW-eM-gj8" firstAttribute="centerX" secondItem="OQ1-gg-mEI" secondAttribute="centerX" id="3kJ-QF-kvt"/>
+                        <constraint firstAttribute="trailing" secondItem="rKx-af-QDp" secondAttribute="trailing" constant="16" id="4IU-fr-MeG"/>
+                        <constraint firstItem="1fB-gA-bos" firstAttribute="top" secondItem="OQ1-gg-mEI" secondAttribute="top" constant="24" id="60C-qS-nPi"/>
+                        <constraint firstItem="pxs-WW-fyI" firstAttribute="top" secondItem="1fB-gA-bos" secondAttribute="bottom" constant="15" id="HMb-hM-KoJ"/>
+                        <constraint firstItem="XHj-8S-cXW" firstAttribute="top" secondItem="pGW-eM-gj8" secondAttribute="bottom" constant="15" id="Ibs-2Y-Uo9"/>
+                        <constraint firstItem="pxs-WW-fyI" firstAttribute="width" secondItem="OQ1-gg-mEI" secondAttribute="width" multiplier="0.4" id="LVO-Ke-gNk"/>
+                        <constraint firstItem="pGW-eM-gj8" firstAttribute="top" secondItem="rKx-af-QDp" secondAttribute="bottom" constant="15" id="MOR-tZ-zA5"/>
+                        <constraint firstItem="1fB-gA-bos" firstAttribute="width" secondItem="OQ1-gg-mEI" secondAttribute="width" multiplier="0.75" id="Mq9-Ib-Ovh"/>
+                        <constraint firstItem="1fB-gA-bos" firstAttribute="centerX" secondItem="OQ1-gg-mEI" secondAttribute="centerX" id="Uq3-He-xvP"/>
+                        <constraint firstAttribute="height" constant="500" id="b7m-zY-X3O"/>
+                        <constraint firstAttribute="trailing" secondItem="XHj-8S-cXW" secondAttribute="trailing" constant="16" id="f72-py-N21"/>
+                        <constraint firstAttribute="trailing" secondItem="unw-CY-riW" secondAttribute="trailing" constant="16" id="kwk-g9-hW5"/>
+                        <constraint firstItem="XHj-8S-cXW" firstAttribute="leading" secondItem="OQ1-gg-mEI" secondAttribute="leading" constant="16" id="mvr-BU-PH8"/>
+                        <constraint firstItem="rKx-af-QDp" firstAttribute="leading" secondItem="OQ1-gg-mEI" secondAttribute="leading" constant="16" id="qQm-0C-EYl"/>
+                        <constraint firstItem="pGW-eM-gj8" firstAttribute="width" secondItem="OQ1-gg-mEI" secondAttribute="width" multiplier="0.65" id="rab-SE-nHf"/>
+                        <constraint firstItem="unw-CY-riW" firstAttribute="top" secondItem="XHj-8S-cXW" secondAttribute="bottom" constant="15" id="tgg-GB-aLi"/>
+                        <constraint firstItem="rKx-af-QDp" firstAttribute="top" secondItem="pxs-WW-fyI" secondAttribute="bottom" constant="15" id="tzp-nj-5wF"/>
+                        <constraint firstItem="pxs-WW-fyI" firstAttribute="centerX" secondItem="OQ1-gg-mEI" secondAttribute="centerX" id="vvd-KU-Cji"/>
+                        <constraint firstItem="unw-CY-riW" firstAttribute="leading" secondItem="OQ1-gg-mEI" secondAttribute="leading" constant="16" id="zVf-Bt-UQI"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="2"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="zuL-ma-5nq" firstAttribute="centerY" secondItem="KWM-GC-Gcc" secondAttribute="centerY" id="3nk-sh-gfq"/>
+                <constraint firstItem="OQ1-gg-mEI" firstAttribute="leading" secondItem="GFL-ob-J9H" secondAttribute="leading" constant="25" id="4rB-oO-4hX"/>
+                <constraint firstItem="OQ1-gg-mEI" firstAttribute="centerX" secondItem="KWM-GC-Gcc" secondAttribute="centerX" id="D8X-Ng-InP"/>
+                <constraint firstItem="zuL-ma-5nq" firstAttribute="width" secondItem="KWM-GC-Gcc" secondAttribute="width" id="KvW-hv-rzc"/>
+                <constraint firstItem="GFL-ob-J9H" firstAttribute="trailing" secondItem="OQ1-gg-mEI" secondAttribute="trailing" constant="25" id="Lse-2q-OLs"/>
+                <constraint firstItem="zuL-ma-5nq" firstAttribute="height" secondItem="KWM-GC-Gcc" secondAttribute="height" id="Pn9-rr-vc7"/>
+                <constraint firstItem="zuL-ma-5nq" firstAttribute="centerX" secondItem="KWM-GC-Gcc" secondAttribute="centerX" id="fhJ-6Q-BGh"/>
+                <constraint firstItem="OQ1-gg-mEI" firstAttribute="centerY" secondItem="GFL-ob-J9H" secondAttribute="centerY" id="rZ9-tm-Y4h"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="GFL-ob-J9H"/>
+            <point key="canvasLocation" x="120.5" y="-679.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="rating_five_emoticon" width="118" height="119"/>
+    </resources>
+</document>

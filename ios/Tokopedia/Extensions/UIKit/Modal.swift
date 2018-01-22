@@ -9,18 +9,29 @@
 import UIKit
 
 protocol Modal {
-    func show(animated:Bool)
+    associatedtype T: UIView
+    func show(animated:Bool, isWindow: Bool)
     func dismiss(animated:Bool)
-    var backgroundView:UIScrollView {get}
-    var dialogView:UIView {get set}
+    var backgroundView:T { get }
+    var dialogView:UIView { get }
 }
 
 extension Modal where Self:UIView{
     
-    func show(animated: Bool) {
+    func show(animated: Bool, isWindow: Bool = false) {
         self.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0)
         self.dialogView.frame.origin = CGPoint(x: (self.frame.width - self.dialogView.frame.width) / 2, y: self.frame.height)
-        UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(self)
+        
+        if isWindow {
+            if let superView = UIApplication.shared.delegate?.window ?? UIApplication.shared.keyWindow {
+                superView.addSubview(self)
+            } else {
+                fatalError("TPDialog need key window to display")
+            }
+        } else {
+            UIApplication.shared.delegate?.window??.rootViewController?.view.addSubview(self)
+        }
+        
         if animated {
             UIView.animate(withDuration: 0.33, animations: {
                 self.backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.66)

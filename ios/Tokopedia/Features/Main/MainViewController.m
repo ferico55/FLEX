@@ -155,6 +155,10 @@ typedef enum TagRequest {
              [self.screenshotHelper takeScreenshot];
          }
      }];
+    
+    FBTweakAction(@"Others", @"NPS Review", @"Reset NPS Review", ^{
+        [NSUserDefaults standardUserDefaults].lastVersionNPSRated = NULL;
+    });
 }
 
 - (void)makeSureDeviceTokenExists {
@@ -701,23 +705,7 @@ typedef enum TagRequest {
 }
 
 - (void)showRatingAlertFromNotification:(NSNotification *)notification {
-    NSString *title = @"Suka dengan aplikasi iOS Tokopedia?";
-    NSString *message = @"Rate 5 bintang untuk aplikasi ini. Setiap rating yang kalian berikan adalah semangat bagi kami! Terima kasih Toppers.";
-    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:title
-                                                    message:message
-                                                   delegate:self
-                                          cancelButtonTitle:@"Tidak"
-                                          otherButtonTitles:@"Ya", nil];
-
-    if ([[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT]) {
-        if ([[[notification userInfo] objectForKey:kTKPD_ALWAYS_SHOW_RATING_ALERT] boolValue]) {
-            alert.tag = 1;
-        }
-    } else {
-        alert.tag = 2;
-    }
-    alert.delegate = self;
-    [alert show];
+    [NativeNPS show];
 }
 
 - (void)ratingAlertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex {

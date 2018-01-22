@@ -662,6 +662,13 @@
 		DADB9F751F3C56D9002B1FAE /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */; };
 		DB3C6924F13454DEB3F855DF /* Pods_Tokopedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */; };
 		E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */; };
+		E50465C020159F3000FD0872 /* NativeNPSManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465B920159F3000FD0872 /* NativeNPSManager.swift */; };
+		E50465C120159F3000FD0872 /* NativeNPSManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E50465BA20159F3000FD0872 /* NativeNPSManagerBridge.m */; };
+		E50465C220159F3100FD0872 /* NativeNPS.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465BB20159F3000FD0872 /* NativeNPS.swift */; };
+		E50465C320159F3100FD0872 /* UserDefaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465BD20159F3000FD0872 /* UserDefaults.swift */; };
+		E50465C420159F3100FD0872 /* NativeNPSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465BE20159F3000FD0872 /* NativeNPSView.swift */; };
+		E50465C520159F3100FD0872 /* NativeNPSView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50465BF20159F3000FD0872 /* NativeNPSView.xib */; };
+		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
@@ -3193,6 +3200,13 @@
 		DADB9F6F1F3C56D9002B1FAE /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = FBSDKShareKit.framework; path = Tokopedia/ThirdParty/FBSDKShareKit.framework; sourceTree = "<group>"; };
 		DB9E9811F1DF49916DEE9078 /* Pods-ServiceExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.release.xcconfig"; sourceTree = "<group>"; };
 		E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeviceIdentifier.swift; sourceTree = "<group>"; };
+		E50465B920159F3000FD0872 /* NativeNPSManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeNPSManager.swift; sourceTree = "<group>"; };
+		E50465BA20159F3000FD0872 /* NativeNPSManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NativeNPSManagerBridge.m; sourceTree = "<group>"; };
+		E50465BB20159F3000FD0872 /* NativeNPS.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeNPS.swift; sourceTree = "<group>"; };
+		E50465BD20159F3000FD0872 /* UserDefaults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserDefaults.swift; sourceTree = "<group>"; };
+		E50465BE20159F3000FD0872 /* NativeNPSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeNPSView.swift; sourceTree = "<group>"; };
+		E50465BF20159F3000FD0872 /* NativeNPSView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeNPSView.xib; sourceTree = "<group>"; };
+		E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
 		E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopChatManager.m; sourceTree = "<group>"; };
 		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
@@ -7443,6 +7457,35 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		E50465B720159F3000FD0872 /* NPS */ = {
+			isa = PBXGroup;
+			children = (
+				E50465B820159F3000FD0872 /* NativeNPSBridge */,
+				E50465BB20159F3000FD0872 /* NativeNPS.swift */,
+				E50465BC20159F3000FD0872 /* Extensions */,
+				E50465BE20159F3000FD0872 /* NativeNPSView.swift */,
+				E50465BF20159F3000FD0872 /* NativeNPSView.xib */,
+			);
+			path = NPS;
+			sourceTree = "<group>";
+		};
+		E50465B820159F3000FD0872 /* NativeNPSBridge */ = {
+			isa = PBXGroup;
+			children = (
+				E50465B920159F3000FD0872 /* NativeNPSManager.swift */,
+				E50465BA20159F3000FD0872 /* NativeNPSManagerBridge.m */,
+			);
+			path = NativeNPSBridge;
+			sourceTree = "<group>";
+		};
+		E50465BC20159F3000FD0872 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E50465BD20159F3000FD0872 /* UserDefaults.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		E52517BC1F838410008FDBCF /* TokopediaUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -7909,6 +7952,7 @@
 				F977EF051FE8AB6E00183A85 /* NSURL+TKPURL.m */,
 				F977EEF81FE8AB6E00183A85 /* PHAssetCategory.swift */,
 				F977EEFD1FE8AB6E00183A85 /* UserDefaultsCategory.swift */,
+				E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -7924,6 +7968,7 @@
 				F977F5151FE8AB7400183A85 /* EmptyState */,
 				F977F5361FE8AB7400183A85 /* Feed+ */,
 				F977F9811FE8AB7600183A85 /* Main */,
+				E50465B720159F3000FD0872 /* NPS */,
 				62C76BDC1FF33C3000F66527 /* Object */,
 				F977F9BF1FE8AB7700183A85 /* Passwordless */,
 				F977EF441FE8AB6F00183A85 /* Payment */,
@@ -11273,6 +11318,7 @@
 				F97700BC1FE8AB8600183A85 /* SimpleLineIcons.ttf in Resources */,
 				F97700601FE8AB8500183A85 /* DigitalFavouriteNumberViewController.xib in Resources */,
 				F954C4411FC55B6C008C0B30 /* icon_snap@3x.png in Resources */,
+				E50465C520159F3100FD0872 /* NativeNPSView.xib in Resources */,
 				F977FA9E1FE8AB7A00183A85 /* TransactionCartEditViewController.xib in Resources */,
 				F977FC051FE8AB7C00183A85 /* ShipmentPostalCodeViewCell.xib in Resources */,
 				F977FCD91FE8AB7E00183A85 /* MyShopEtalaseDetailViewController.xib in Resources */,
@@ -12176,6 +12222,7 @@
 				F97700981FE8AB8600183A85 /* TouchIDHelper.swift in Sources */,
 				62C76FFB1FF33C3200F66527 /* OrderExtraFee.m in Sources */,
 				F977FD791FE8AB7F00183A85 /* AddressCell.m in Sources */,
+				E50465C320159F3100FD0872 /* UserDefaults.swift in Sources */,
 				F977FDD81FE8AB8000183A85 /* ResolutionCenterCreateResponse.m in Sources */,
 				F977FAE61FE8AB7A00183A85 /* HomePageCategoryLayoutRow.swift in Sources */,
 				F977FA1D1FE8AB7900183A85 /* ReactTarget.swift in Sources */,
@@ -12233,6 +12280,7 @@
 				62C7701B1FF33C3200F66527 /* TransactionVoucher.m in Sources */,
 				62C770C71FF33C3300F66527 /* CatalogMarketPlace.m in Sources */,
 				62C7704E1FF33C3200F66527 /* SearchAWSResult.m in Sources */,
+				E50465C120159F3000FD0872 /* NativeNPSManagerBridge.m in Sources */,
 				62C770B21FF33C3300F66527 /* OrderResult.m in Sources */,
 				62C770F01FF33C3300F66527 /* CatalogAddProduct.m in Sources */,
 				62C76FF11FF33C3200F66527 /* TransactionAddressShipping.m in Sources */,
@@ -12431,6 +12479,7 @@
 				62C770E81FF33C3300F66527 /* AnnouncementTickerResult.swift in Sources */,
 				62C770671FF33C3200F66527 /* OtherProduct.m in Sources */,
 				F977FD031FE8AB7E00183A85 /* ProductAddEditViewController.m in Sources */,
+				E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */,
 				62C7713A1FF33C3400F66527 /* AddShopResult.m in Sources */,
 				F977FE3B1FE8AB8100183A85 /* OAStackViewCategory.m in Sources */,
 				F977FDA71FE8AB8000183A85 /* HeaderInvoiceComponent.mm in Sources */,
@@ -13102,10 +13151,12 @@
 				848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */,
 				F977FD471FE8AB7F00183A85 /* ReportViewController.m in Sources */,
 				62C770461FF33C3200F66527 /* GooglePlacesDetail.m in Sources */,
+				E50465C220159F3100FD0872 /* NativeNPS.swift in Sources */,
 				F977FA441FE8AB7900183A85 /* NSString+URLEncoding.m in Sources */,
 				62C7713F1FF33C3400F66527 /* NoteAction.swift in Sources */,
 				62C7707D1FF33C3300F66527 /* EnvelopeResponse.swift in Sources */,
 				62C7719C1FF33C3500F66527 /* AddressObj.m in Sources */,
+				E50465C020159F3000FD0872 /* NativeNPSManager.swift in Sources */,
 				F977FE451FE8AB8100183A85 /* FeedService.swift in Sources */,
 				F977FA821FE8AB7A00183A85 /* PaymentViewController.swift in Sources */,
 				F977FCB31FE8AB7E00183A85 /* TagManagerHandler.m in Sources */,
@@ -13461,6 +13512,7 @@
 				62C771D71FF33C3500F66527 /* ProductWishlistCheckResult.swift in Sources */,
 				62C771B41FF33C3500F66527 /* ShipmentKeroToken.swift in Sources */,
 				F977FAE91FE8AB7A00183A85 /* OfficialStoreSectionViewController.swift in Sources */,
+				E50465C420159F3100FD0872 /* NativeNPSView.swift in Sources */,
 				F977FC141FE8AB7C00183A85 /* CourierInfoViewCell.m in Sources */,
 				F977FBC71FE8AB7C00183A85 /* OrderProductView.swift in Sources */,
 				F977FBC91FE8AB7C00183A85 /* OrderDetailProductInformationCell.m in Sources */,

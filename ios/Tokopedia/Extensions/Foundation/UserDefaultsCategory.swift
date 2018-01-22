@@ -10,6 +10,7 @@ import Foundation
 
 private let IS_INSTANT_PAYMENT_ENABLED = "isInstantPaymentEnabled"
 
+@objc
 extension UserDefaults {
 
     var isInstantPaymentEnabled: Bool {
