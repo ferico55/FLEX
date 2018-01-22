@@ -8,11 +8,11 @@
 
 import UIKit
 
-class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDelegate, NotificationManagerDelegate {
+class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDelegate {
     
     private let lblCount = UILabel()
     
-    private let notificationManager = NotificationManager()
+    private let notificationManager = NotificationManager.sharedManager
     private let notificationView = NotificationTableViewController()
     private var notificationWindow: UIWindow? = nil
     private var triangleView: UIImageView? = nil
@@ -49,9 +49,6 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         // add tap action
         self.customView?.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonTapped)))
         
-        // set notification manager delegate
-        notificationManager.delegate = self
-        
         // set notification view delegate
         notificationView.delegate = self
         
@@ -73,11 +70,10 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         triangleView?.frame = CGRect(x: screenWidth - 40, y: tableViewOriginY - 5, width: 10, height: 5)
         notificationWindow?.addSubview(triangleView!)
         
-        // add observer for status bar frame change
         NotificationCenter.default.addObserver(self, selector: #selector(statusBarDidChangeFrame), name: NSNotification.Name.UIApplicationDidChangeStatusBarFrame, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationRead), name: NSNotification.Name(rawValue: "NotificationRead"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(notificationUpdate(_:)), name: NSNotification.Name(rawValue: "NotificationUpdate"), object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(reloadNotifications), name: NSNotification.Name(rawValue: "reloadNotification"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(notificationLoaded(_:)), name: NSNotification.Name(rawValue: "NotificationLoaded"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(resetCount), name: NSNotification.Name(rawValue: "clearCacheNotificationBar"), object: nil)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -115,14 +111,38 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         notificationWindow?.addSubview(notificationView.view)
     }
     
-    func notificationUpdate(_ notification: Notification) {
-        if let count = notification.userInfo?["count"], let totalCount = count as? Int {
-            setCount(count: totalCount)
+    func notificationLoaded(_ notification: Notification) {
+        guard let notificationData = notification.userInfo?["notification"] as? NotificationData else {
+            return
         }
         
-        if let read = notification.userInfo?["isRead"], let isRead = read as? Bool {
-            setRead(read: isRead)
+        setCount(count: notificationData.totalNotif)
+        
+        if (notificationData.incrNotif > 0) {
+            setRead(read: false)
         }
+        else {
+            setRead(read: true)
+        }
+        
+        notificationView.setNotification(notification: notificationData)
+        
+        // set cart count
+        if (notificationData.totalCart > 0) {
+            parentViewController?.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = String(notificationData.totalCart)
+        }
+        else {
+            parentViewController?.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
+        }
+        
+        let prefs = UserDefaults.standard
+        prefs.set(String(notificationData.totalCart), forKey: "total_cart")
+        prefs.synchronize()
+    }
+    
+    func resetCount() {
+        self.lblCount.text = "0"
+        self.lblCount.isHidden = true
     }
     
     private func setCount(count: Int) {
@@ -190,7 +210,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         notificationWindow?.transform = transformForOrientation(orientation: orientation)
         
         // set read
-        setRead(read: true)
+        NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationRead"), object: nil)
         
         isOpen = true
         
@@ -244,36 +264,6 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         self.hideNotificationView { (_) in
             TPRoutes.routeURL(URL(string: urlString)!)
         }
-    }
-    
-    // NotificationManagerDelegate
-    func notificationManager(_ notificationManager: Any, notificationLoaded notification: Any) {
-        guard let notificationData: NotificationData = notification as? NotificationData else {
-            return
-        }
-        
-        setCount(count: notificationData.totalNotif)
-        
-        if (notificationData.incrNotif > 0) {
-            setRead(read: false)
-        }
-        else {
-            setRead(read: true)
-        }
-        
-        notificationView.setNotification(notification: notificationData)
-        
-        // set cart count
-        if (notificationData.totalCart > 0) {
-            parentViewController?.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = String(notificationData.totalCart)
-        }
-        else {
-            parentViewController?.tabBarController?.viewControllers?[3].tabBarItem.badgeValue = nil
-        }
-        
-        let prefs = UserDefaults.standard
-        prefs.set(String(notificationData.totalCart), forKey: "total_cart")
-        prefs.synchronize()
     }
     
     // notification observer action

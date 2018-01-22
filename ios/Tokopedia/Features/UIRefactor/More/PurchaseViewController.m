@@ -13,7 +13,7 @@
 #import "TxOrderStatusViewController.h"
 #import "Tokopedia-Swift.h"
 
-@interface PurchaseViewController ()<NotificationManagerDelegate, UITableViewDelegate, UITableViewDataSource>
+@interface PurchaseViewController ()<UITableViewDelegate, UITableViewDataSource>
 {
     NotificationManager *_notificationManager;
     NotificationData *_notification;
@@ -46,8 +46,12 @@
                                                 name:UPDATE_MORE_PAGE_POST_NOTIFICATION_NAME
                                               object:nil];
     
-    _notificationManager = [NotificationManager new];
-    _notificationManager.delegate = self;
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(notificationLoaded:)
+                                                name:@"NotificationLoaded"
+                                              object:nil];
+    
+    _notificationManager = [NotificationManager sharedManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -158,9 +162,12 @@
     [_notificationManager loadNotifications];
 }
 
-- (void)notificationManager:(id)notificationManager notificationLoaded:(id)notification {
-    _notification = notification;
-    [tableView reloadData];
+-(void)notificationLoaded:(NSNotification*)notification
+{
+    if (notification.userInfo != nil && [notification.userInfo objectForKey:@"notification"] != nil && [[notification.userInfo objectForKey:@"notification"] isKindOfClass:NotificationData.class]) {
+        _notification = (NotificationData *)[notification.userInfo objectForKey:@"notification"];
+        [tableView reloadData];
+    }
 }
 
 -(void)dealloc

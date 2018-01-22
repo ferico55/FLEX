@@ -10,21 +10,18 @@ import UIKit
 import Moya
 import RxSwift
 
-@objc protocol NotificationManagerDelegate {
-    @objc optional func notificationManager(_ notificationManager: Any, notificationLoaded notification: Any)
-}
-
 class NotificationManager: NSObject {
     
-    @objc var delegate: NotificationManagerDelegate? = nil
-    
-    var notification: NotificationData? = nil
+    static let sharedManager = NotificationManager()
     
     override init() {
         super.init()
         
         // add observer for clearing notification cache (in case logout)
         NotificationCenter.default.addObserver(self, selector: #selector(clearCache), name: NSNotification.Name(rawValue: "clearCacheNotificationBar"), object: nil)
+        
+        // add observer for reloading notification in case receiving push notification
+        NotificationCenter.default.addObserver(self, selector: #selector(loadNotifications), name: NSNotification.Name(rawValue: TokopediaNotificationReload), object: nil)
     }
     
     func clearCache() {
@@ -39,9 +36,9 @@ class NotificationManager: NSObject {
             guard let `self` = self else {
                 return
             }
-            
-            self.notification = notificationData
-            self.delegate?.notificationManager?(self, notificationLoaded: notificationData)
+            if let notification = notificationData {
+                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationLoaded"), object: nil, userInfo: ["notification": notification])
+            }
             self.loadNotificationsFromRemote()
         }
     }
@@ -50,8 +47,10 @@ class NotificationManager: NSObject {
         
         Observable.zip(requestNotifications(), requestChatUnreadCount()) { notification, chatUnreadData in
             return (notification, chatUnreadData)
-        }.subscribe(onNext: {[weak self] (notification, chatUnreadData) in
-            guard let `self` = self, let notification = notification else {
+        }
+        .subscribe(onNext: {(notification, chatUnreadData) in
+            
+            guard let `notification` = notification else {
                 return
             }
             
@@ -66,9 +65,7 @@ class NotificationManager: NSObject {
             let cacheManager = NotificationCache.sharedManager
             cacheManager.storeNotification(notification)
             
-            self.delegate?.notificationManager?(self, notificationLoaded: notification)
-            
-            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationUpdate"), object: nil, userInfo: ["count": notification.totalNotif, "isRead": notification.incrNotif <= 0])
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationLoaded"), object: nil, userInfo: ["notification": notification])
         })
         .disposed(by: rx_disposeBag)
     }

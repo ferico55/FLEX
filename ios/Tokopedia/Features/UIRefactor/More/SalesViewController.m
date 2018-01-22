@@ -17,7 +17,6 @@
 <
     UITableViewDelegate,
     UITableViewDataSource,
-    NotificationManagerDelegate,
     NewOrderDelegate,
     ShipmentConfirmationDelegate
 >
@@ -62,8 +61,12 @@
         make.edges.equalTo(self.view);
     }];
     
-    _notificationManager = [NotificationManager new];
-    _notificationManager.delegate = self;
+    [[NSNotificationCenter defaultCenter]addObserver:self
+                                            selector:@selector(notificationLoaded:)
+                                                name:@"NotificationLoaded"
+                                              object:nil];
+    
+    _notificationManager = [NotificationManager sharedManager];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -192,11 +195,12 @@
     }
 }
 
-#pragma mark - Notification Manager Delegate
-
-- (void)notificationManager:(id)notificationManager notificationLoaded:(id)notification {
-    _notification = notification;
-    [tableView reloadData];
+-(void)notificationLoaded:(NSNotification*)notification
+{
+    if (notification.userInfo != nil && [notification.userInfo objectForKey:@"notification"] != nil && [[notification.userInfo objectForKey:@"notification"] isKindOfClass:NotificationData.class]) {
+        _notification = (NotificationData *)[notification.userInfo objectForKey:@"notification"];
+        [tableView reloadData];
+    }
 }
 
 #pragma mark - Delegate
