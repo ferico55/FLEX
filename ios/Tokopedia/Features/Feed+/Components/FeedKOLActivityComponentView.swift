@@ -201,10 +201,22 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
             view.setImageWith(URL(string: state.imageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
             view.isUserInteractionEnabled = true
             
-            if let width = view.image?.size.width, let height = view.image?.size.height, height != 0 {
-                let aspectRatio = width / height
-                
-                layout.height = layout.width / aspectRatio
+            if let url = URL(string: state.imageURL) {
+                do {
+                    let imageData = try Data(contentsOf: url)
+                    if let image = UIImage(data: imageData) {
+                        let width = image.size.width
+                        let height = image.size.height
+                        
+                        if height != 0 {
+                            let aspectRatio = width / height
+                            
+                            layout.height = layout.width / aspectRatio
+                        }
+                    }
+                } catch {
+                    print("Unable to load data: \(error)")
+                }
             }
         }.add(child: (state.tagCaption != "") ? Node<UIView>() { view, layout, _ in
             layout.position = .absolute
@@ -212,9 +224,10 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
             layout.right = 0
             layout.padding = 5
             layout.height = 24
-            layout.width = 175
             layout.justifyContent = .center
             layout.alignItems = .center
+            layout.flexGrow = 1
+            layout.flexShrink = 1
             
             view.backgroundColor = UIColor.black.withAlphaComponent(0.40)
             view.isUserInteractionEnabled = true
@@ -230,8 +243,6 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
             view.addGestureRecognizer(gestureRecognizer)
             
         }.add(child: Node<UILabel>() { label, layout, _ in
-            layout.position = .absolute
-            
             label.text = state.tagCaption
             label.font = .microThemeSemibold()
             label.textColor = .white

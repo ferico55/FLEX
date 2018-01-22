@@ -27,6 +27,7 @@ enum FeedContentType {
     case KOLRecommendation
     case followedKOLPost
     case favoriteCTA
+    case kolCTA
     case emptyState
     case nextPageError
 }
@@ -89,6 +90,7 @@ struct FeedCardContentState: Render.StateType, ReSwift.StateType {
     var kolPost: FeedCardKOLPostState?
     var kolRecommendation: FeedCardKOLRecommendationState?
     var favoriteCTA: FeedCardFavoriteCTAState?
+    var kolCTA: FeedCardContentProductCommunicationState?
     var page = 0
     var row = 0
     var isKOLContent = false
@@ -635,6 +637,14 @@ class FeedStateManager: NSObject {
             
             if let favoriteCTA = feedContent.favoriteCta {
                 content.favoriteCTA = FeedCardFavoriteCTAState(favoriteCTA: favoriteCTA)
+            } else {
+                content.type = .invalid
+            }
+        case "kol_cta":
+            content.type = .kolCTA
+            
+            if let kolCTA = feedContent.kolCta {
+                content.kolCTA = FeedCardContentProductCommunicationState(data: kolCTA, page: page, row: row)
             } else {
                 content.type = .invalid
             }

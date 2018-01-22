@@ -96,8 +96,11 @@ class FeedComponentView: ComponentView<FeedCardState> {
             return recommendationKOLComponent.construct(state: state.content, size: size)
         case .favoriteCTA:
             return FeedNoShopComponentView().construct(state: state.content.favoriteCTA, size: size)
+        case .kolCTA:
+            return ContentProductCommunicationComponentView().construct(state: state.content.kolCTA, size: size)
         case .newProduct, .editProduct:
             return FeedActivityComponentView(viewController: vc).construct(state: state, size: size)
+            
         default:
             return Node<UIView>() { _, _, _ in
                 

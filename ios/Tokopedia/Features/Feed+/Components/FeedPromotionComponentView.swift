@@ -88,7 +88,7 @@ class FeedPromotionComponentView: ComponentView<FeedCardState> {
             })
             
             mainContent = Node<UIScrollView>(identifier: "scroll-view") { [weak self] view, layout, size in
-                guard let `self` = self else {
+                guard let `self` = self, size.width > 0 else {
                     return
                 }
                 

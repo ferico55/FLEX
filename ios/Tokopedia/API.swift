@@ -993,6 +993,15 @@ public final class FeedsQuery: GraphQLQuery {
     "          title_id" +
     "          subtitle_id" +
     "        }" +
+    "        kol_cta {" +
+    "          __typename" +
+    "          img_header" +
+    "          title" +
+    "          subtitle" +
+    "          button_text" +
+    "          click_url" +
+    "          click_applink" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -1374,6 +1383,7 @@ public final class FeedsQuery: GraphQLQuery {
             GraphQLField("followedkolpost", type: .object(Followedkolpost.self)),
             GraphQLField("kolrecommendation", type: .object(Kolrecommendation.self)),
             GraphQLField("favorite_cta", type: .object(FavoriteCtum.self)),
+            GraphQLField("kol_cta", type: .object(KolCtum.self)),
           ]
 
           public var snapshot: Snapshot
@@ -1382,8 +1392,8 @@ public final class FeedsQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil, favoriteCta: FavoriteCtum? = nil) {
-            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation, "favorite_cta": favoriteCta])
+          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil, favoriteCta: FavoriteCtum? = nil, kolCta: KolCtum? = nil) {
+            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation, "favorite_cta": favoriteCta, "kol_cta": kolCta])
           }
 
           public var __typename: String {
@@ -1518,6 +1528,15 @@ public final class FeedsQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue?.snapshot, forKey: "favorite_cta")
+            }
+          }
+
+          public var kolCta: KolCtum? {
+            get {
+              return (snapshot["kol_cta"]! as! Snapshot?).flatMap { KolCtum(snapshot: $0) }
+            }
+            set {
+              snapshot.updateValue(newValue?.snapshot, forKey: "kol_cta")
             }
           }
 
@@ -3558,6 +3577,93 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "subtitle_id")
+              }
+            }
+          }
+
+          public struct KolCtum: GraphQLSelectionSet {
+            public static let possibleTypes = ["FeedsKolCta"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("img_header", type: .scalar(String.self)),
+              GraphQLField("title", type: .scalar(String.self)),
+              GraphQLField("subtitle", type: .scalar(String.self)),
+              GraphQLField("button_text", type: .scalar(String.self)),
+              GraphQLField("click_url", type: .scalar(String.self)),
+              GraphQLField("click_applink", type: .scalar(String.self)),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(imgHeader: String? = nil, title: String? = nil, subtitle: String? = nil, buttonText: String? = nil, clickUrl: String? = nil, clickApplink: String? = nil) {
+              self.init(snapshot: ["__typename": "FeedsKolCta", "img_header": imgHeader, "title": title, "subtitle": subtitle, "button_text": buttonText, "click_url": clickUrl, "click_applink": clickApplink])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var imgHeader: String? {
+              get {
+                return snapshot["img_header"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "img_header")
+              }
+            }
+
+            public var title: String? {
+              get {
+                return snapshot["title"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "title")
+              }
+            }
+
+            public var subtitle: String? {
+              get {
+                return snapshot["subtitle"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "subtitle")
+              }
+            }
+
+            public var buttonText: String? {
+              get {
+                return snapshot["button_text"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "button_text")
+              }
+            }
+
+            public var clickUrl: String? {
+              get {
+                return snapshot["click_url"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "click_url")
+              }
+            }
+
+            public var clickApplink: String? {
+              get {
+                return snapshot["click_applink"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "click_applink")
               }
             }
           }

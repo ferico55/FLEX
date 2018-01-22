@@ -14,6 +14,8 @@
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
+		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
+		622A6AB92015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		6284EE1C1FFB89580070D37A /* AnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */; };
@@ -2057,6 +2059,8 @@
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
+		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
+		622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardContentProductCommunicationState.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		6284EE1B1FFB89580070D37A /* AnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsManager.swift; sourceTree = "<group>"; };
@@ -10613,6 +10617,7 @@
 		F977F53A1FE8AB7400183A85 /* Objects */ = {
 			isa = PBXGroup;
 			children = (
+				622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */,
 				F977F53C1FE8AB7400183A85 /* FeedCardKOLPostState.swift */,
 				F977F53B1FE8AB7400183A85 /* FeedCardKOLRecommendationState.swift */,
 				F977F53E1FE8AB7400183A85 /* FeedDetailState.swift */,
@@ -10624,6 +10629,7 @@
 		F977F53F1FE8AB7400183A85 /* Components */ = {
 			isa = PBXGroup;
 			children = (
+				622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */,
 				F977F54B1FE8AB7400183A85 /* FeedActivityComponentView.swift */,
 				F977F54D1FE8AB7400183A85 /* FeedComponentView.swift */,
 				F977F54C1FE8AB7400183A85 /* FeedDetailActionComponentView.swift */,
@@ -13072,6 +13078,7 @@
 				62C770401FF33C3200F66527 /* GoogleDistanceMatrixElements.m in Sources */,
 				62C76FEF1FF33C3200F66527 /* TransactionAddressShippingResult.m in Sources */,
 				F977FB511FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.m in Sources */,
+				622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */,
 				F977FB071FE8AB7B00183A85 /* GeneralTalkCommentCell.m in Sources */,
 				F977FD4E1FE8AB7F00183A85 /* MyShopAddressEditViewController.m in Sources */,
 				F977FD991FE8AB8000183A85 /* CancelOrderViewController.swift in Sources */,
@@ -13154,6 +13161,7 @@
 				F977FD081FE8AB7E00183A85 /* RequestAddEditProduct.swift in Sources */,
 				F977FA301FE8AB7900183A85 /* UITableView+RefreshControl.m in Sources */,
 				F977FC861FE8AB7D00183A85 /* ClosedScheduleDetail.m in Sources */,
+				622A6AB92015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift in Sources */,
 				F977FA5D1FE8AB7900183A85 /* DistrictRecommendation.swift in Sources */,
 				62C770DB1FF33C3300F66527 /* DepositFormBankAccountList.m in Sources */,
 				62C770121FF33C3200F66527 /* TxOrderConfirmedDetailInvoice.m in Sources */,
