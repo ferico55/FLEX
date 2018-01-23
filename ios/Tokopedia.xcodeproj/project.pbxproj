@@ -12,6 +12,8 @@
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
+		5259D23C200C8E320042385C /* whitelist.json in Resources */ = {isa = PBXBuildFile; fileRef = 5259D23B200C8E310042385C /* whitelist.json */; };
+		525DFA692011EB8000268548 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 525DFA682011EB8000268548 /* assets */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
@@ -600,7 +602,6 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		923D971F20048A7800EADE79 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 923D971E20048A7700EADE79 /* main.jsbundle */; };
-		923D972120048A8500EADE79 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 923D972020048A8500EADE79 /* assets */; };
 		924B14ED200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */; };
 		924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */; };
 		924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CE200DB28A00CB65D2 /* AIRGoogleMapMarker.m */; };
@@ -2070,6 +2071,8 @@
 		452E95821E64107E001191E0 /* donation.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = donation.json; sourceTree = "<group>"; };
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
+		5259D23B200C8E310042385C /* whitelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = whitelist.json; sourceTree = "<group>"; };
+		525DFA682011EB8000268548 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
@@ -3076,7 +3079,6 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		923D971E20048A7700EADE79 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = React/main.jsbundle; sourceTree = "<group>"; };
-		923D972020048A8500EADE79 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
 		924B14C7200DB28A00CB65D2 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
 		924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
 		924B14C9200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
@@ -6929,6 +6931,7 @@
 		7AA485291E9B34C20099D9CE /* Tokopedia */ = {
 			isa = PBXGroup;
 			children = (
+				5259D23B200C8E310042385C /* whitelist.json */,
 				6202EF1B1EE4F07200AE68B5 /* API.swift */,
 				7A466B751EB2FEAE00A72105 /* AppDelegate.h */,
 				7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */,
@@ -7734,7 +7737,7 @@
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
-				923D972020048A8500EADE79 /* assets */,
+				525DFA682011EB8000268548 /* assets */,
 				923D971E20048A7700EADE79 /* main.jsbundle */,
 				F954BD241FC55B65008C0B30 /* Database */,
 				F954BD261FC55B65008C0B30 /* Images */,
@@ -11288,7 +11291,6 @@
 				F977FAB11FE8AB7A00183A85 /* SettingPrivacyViewController.xib in Resources */,
 				F977FA8E1FE8AB7A00183A85 /* TransactionATCViewController.xib in Resources */,
 				F977FC3E1FE8AB7D00183A85 /* AlertListViewCell.xib in Resources */,
-				923D972120048A8500EADE79 /* assets in Resources */,
 				F977FC7A1FE8AB7D00183A85 /* ShopInfoViewController.xib in Resources */,
 				F977FD3E1FE8AB7F00183A85 /* SearchResultViewController.xib in Resources */,
 				F977FD121FE8AB7E00183A85 /* MyShopPaymentCell.xib in Resources */,
@@ -11547,6 +11549,7 @@
 				F977FBB91FE8AB7C00183A85 /* OrderDetailDropshipView.xib in Resources */,
 				F977FD0C1FE8AB7E00183A85 /* ProductAddEditDetailViewController.xib in Resources */,
 				F977FE151FE8AB8100183A85 /* InboxTalkViewController.xib in Resources */,
+				5259D23C200C8E320042385C /* whitelist.json in Resources */,
 				F977FBC11FE8AB7C00183A85 /* OrderInfoView.xib in Resources */,
 				F977FB251FE8AB7B00183A85 /* InboxTicketDetailViewController.xib in Resources */,
 				F954C4431FC55B6C008C0B30 /* icon_snap.png in Resources */,
@@ -11620,6 +11623,7 @@
 				E57974D61FEA741F00610655 /* MyCouponListTableViewController.xib in Resources */,
 				F977FD001FE8AB7E00183A85 /* ProductListMyShopCell.xib in Resources */,
 				F97700B91FE8AB8600183A85 /* FontAwesome.ttf in Resources */,
+				525DFA692011EB8000268548 /* assets in Resources */,
 				F97700B81FE8AB8600183A85 /* Ionicons.ttf in Resources */,
 				F977005F1FE8AB8500183A85 /* DigitalCartViewController.xib in Resources */,
 				F977FA7C1FE8AB7A00183A85 /* CreditCardCell.xib in Resources */,

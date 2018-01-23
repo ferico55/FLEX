@@ -194,15 +194,15 @@ class DigitalService {
         .map { $0! }
     }
     
-    func lastOrder(categoryId: String, favourites:DigitalFavourites?) -> Observable<DigitalLastOrder> {
+    func lastOrder(categoryId: String, favourites: DigitalFavourites?) -> Observable<DigitalLastOrder> {
         return Observable.concat(
             lastOrderFromFavourites(favourites: favourites),
             getCacheLastOrder(category: categoryId),
             getDefaultLastOrder(category: categoryId)
-            )
-            .filter { $0 != nil }
-            .take(1)
-            .map { $0! }
+        )
+        .filter { $0 != nil }
+        .take(1)
+        .map { $0! }
     }
     
     func getWSLastOrder(category: String) -> Observable<DigitalLastOrder?> {
@@ -211,8 +211,8 @@ class DigitalService {
         }
         
         return getFavouriteList(category: category).flatMap { favourites -> Observable<DigitalLastOrder?> in
-            guard let favs = favourites, favs.index >= 0 , let lastOrder = favs.list?[favs.index],
-                    let category = lastOrder.categoryID else { return Observable<DigitalLastOrder?>.empty() }
+            guard let favs = favourites, favs.index >= 0, let lastOrder = favs.list?[favs.index],
+                let category = lastOrder.categoryID else { return Observable<DigitalLastOrder?>.empty() }
             return Observable.just(DigitalLastOrder(categoryId: category, operatorId: lastOrder.operatorID, productId: lastOrder.productID, clientNumber: lastOrder.clientNumber))
         }
     }
@@ -247,7 +247,7 @@ class DigitalService {
         }
     }
     
-    func getFavouriteList(category: String) -> Observable<DigitalFavourites?> {
+    func getFavouriteList(category: String, operatorID: String = "", clientNumber: String = "", productID: String = "") -> Observable<DigitalFavourites?> {
         if !UserAuthentificationManager().isLogin {
             return Observable.create { observer -> Disposable in
                 observer.onNext(nil)
@@ -258,7 +258,7 @@ class DigitalService {
         }
         
         return DigitalProvider()
-            .request(.favourite(category))
+            .request(.favourite(category: category, operatorID: operatorID, clientNumber: clientNumber, productID: productID))
             .mapJSON()
             .map { response in
                 let result = JSON(response)
@@ -266,14 +266,14 @@ class DigitalService {
                     return DigitalFavourites.fromJSON(data)
                 }
                 return nil
-        }
-
+            }
+        
     }
     
-    func lastOrderFromFavourites(favourites:DigitalFavourites?) -> Observable<DigitalLastOrder?> {
+    func lastOrderFromFavourites(favourites: DigitalFavourites?) -> Observable<DigitalLastOrder?> {
         return Observable.create { observer -> Disposable in
             let order: DigitalLastOrder? = { () -> DigitalLastOrder? in
-                guard let favs = favourites, favs.index >= 0 , let lastOrder = favs.list?[favs.index],
+                guard let favs = favourites, favs.index >= 0, let lastOrder = favs.list?[favs.index],
                     let category = lastOrder.categoryID else { return nil }
                 return DigitalLastOrder(categoryId: category, operatorId: lastOrder.operatorID, productId: lastOrder.productID, clientNumber: lastOrder.clientNumber)
             }()

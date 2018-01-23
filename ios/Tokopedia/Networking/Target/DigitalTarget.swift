@@ -44,7 +44,7 @@ enum DigitalTarget {
     case getCart(String)
     case lastOrder(String)
     case deleteCart(String)
-    case favourite(String)
+    case favourite(category: String, operatorID: String, clientNumber: String, productID: String)
 }
 
 extension DigitalTarget: TargetType {
@@ -178,9 +178,12 @@ extension DigitalTarget: TargetType {
             return ["category_id": categoryId]
         case let .deleteCart(categoryId):
             return ["category_id": categoryId]
-        case let .favourite(categoryId) :
+        case let .favourite(categoryId, operatorID, clientNumber, productID) :
             return [
                 "category_id": categoryId,
+                "operator_id": operatorID,
+                "client_number": clientNumber,
+                "product_id": productID,
                 "sort": "label"
             ]
         default: return [:]

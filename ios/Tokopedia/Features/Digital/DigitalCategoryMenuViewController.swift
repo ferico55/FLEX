@@ -53,15 +53,17 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     fileprivate let provider = DigitalProvider()
     
     fileprivate let categoryId: String
+    fileprivate let operatorID: String
+    fileprivate let clientNumber: String
+    fileprivate let productID: String
     
-    required init(categoryId: String) {
+    required init(categoryId: String, operatorID: String = "", clientNumber: String = "", productID: String = "") {
         self.categoryId = categoryId
+        self.operatorID = operatorID
+        self.clientNumber = clientNumber
+        self.productID = productID
         super.init(nibName: nil, bundle: nil)
         self.hidesBottomBarWhenPushed = true
-    }
-    
-    convenience init() {
-        self.init(categoryId: "3")
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -75,7 +77,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         
         barButton.rx.tap.subscribe(onNext: { [unowned self] in
             let openWebView = { (_ urlString: String) -> Void in
-                guard let url = URL(string:urlString) else { return }
+                guard let url = URL(string: urlString) else { return }
                 TPRoutes.routeURL(url)
             }
             
@@ -112,7 +114,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
             state: state
         )
         
-        widgetView = DigitalWidgetView(store: store, categoryId: categoryId, viewController: self)
+        widgetView = DigitalWidgetView(store: store, categoryId: categoryId, operatorID: operatorID, clientNumber: clientNumber, productID: productID, viewController: self)
         
         self.view.addSubview(widgetView)
         
@@ -157,10 +159,16 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     fileprivate weak var viewController: UIViewController?
     fileprivate var favouriteNumber: DigitalFavourite?
     fileprivate let categoryId: String
+    fileprivate let operatorID: String
+    fileprivate let clientNumber: String
+    fileprivate let productID: String
     
-    init(store: Store<DigitalState>, categoryId: String, viewController: UIViewController) {
+    init(store: Store<DigitalState>, categoryId: String, operatorID: String, clientNumber: String, productID: String, viewController: UIViewController) {
         self.store = store
         self.categoryId = categoryId
+        self.operatorID = operatorID
+        self.clientNumber = clientNumber
+        self.productID = productID
         self.viewController = viewController
         super.init()
     }
@@ -302,7 +310,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     
     func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
         unowned let `self` = self
-        guard let `state` = state, let `form` = state.form else { return NilNode() }
+        guard let state = state, let form = state.form else { return NilNode() }
         let operatorSelector = { () -> NodeType in
             switch form.operatorSelectonStyle {
             case let .prefixChecking(textInput):
@@ -332,7 +340,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         
                         button.rx.tap
                             .flatMap { () -> Observable<DigitalOperator> in
-                                let viewController = DigitalOperatorSelectionViewController(operators: form.operators, title:form.operatorLabel, categoryName: form.name)
+                                let viewController = DigitalOperatorSelectionViewController(operators: form.operators, title: form.operatorLabel, categoryName: form.name)
                                 
                                 self.viewController?.navigationController?.pushViewController(viewController, animated: true)
                                 
@@ -812,7 +820,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let gestureRecognizer = UITapGestureRecognizer()
                             gestureRecognizer.rx.event
                                 .subscribe(onNext: { _ in
-                                    guard let url = URL(string:banner.url) else { return }
+                                    guard let url = URL(string: banner.url) else { return }
                                     TPRoutes.routeURL(url)
                                 })
                                 .disposed(by: self.rx_disposeBag)
@@ -907,7 +915,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let gestureRecognizer = UITapGestureRecognizer()
                             gestureRecognizer.rx.event
                                 .subscribe(onNext: { _ in
-                                    guard let url = URL(string:banner.url) else { return }
+                                    guard let url = URL(string: banner.url) else { return }
                                     TPRoutes.routeURL(url)
                                 })
                                 .disposed(by: self.rx_disposeBag)
@@ -1048,7 +1056,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             })
             .map(to: DigitalForm.self)
         
-        let lastOrder = DigitalService().getFavouriteList(category: categoryId).flatMap { [weak self] favourites -> Observable<DigitalLastOrder> in
+        let lastOrder = DigitalService().getFavouriteList(category: categoryId, operatorID: operatorID, clientNumber: clientNumber, productID: productID).flatMap { [weak self] favourites -> Observable<DigitalLastOrder> in
             guard let `self` = self else { return Observable.empty() }
             guard let list = favourites?.list else { return Observable.just(DigitalLastOrder(categoryId: self.categoryId)) }
             self.store.state.favourites = list

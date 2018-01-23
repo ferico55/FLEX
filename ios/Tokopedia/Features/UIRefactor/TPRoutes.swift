@@ -12,10 +12,22 @@ import RxSwift
 import NativeNavigation
 import FirebaseRemoteConfig
 
+struct LinkReroute {
+    let path: String
+    let applink: String
+
+    init(path: String, applink: String) {
+        self.path = path
+        self.applink = applink
+    }
+}
+
 class TPRoutes: NSObject {
 
     static func configureRoutes() {
         let navigator = NavigateViewController()
+
+        registerDigitalRouting()
 
         // MARK: Root
         JLRoutes.global().addRoute("/pop-to-root") { (_: [String: Any]!) -> Bool in
@@ -251,7 +263,11 @@ class TPRoutes: NSObject {
 
         // MARK: Digital Category - Any Product (Native)
         JLRoutes.global().addRoute("/digital/form") { params in
-            let viewController = DigitalCategoryMenuViewController(categoryId: params["category_id"] as! String)
+            let categoryID = params["category_id"] as? String ?? ""
+            let operatorID = params["operator_id"] as? String ?? ""
+            let clientNumber = params["client_number"] as? String ?? ""
+            let productID = params["product_id"] as? String ?? ""
+            let viewController = DigitalCategoryMenuViewController(categoryId: categoryID, operatorID: operatorID, clientNumber: clientNumber, productID: productID)
 
             UIApplication.topViewController()?
                 .navigationController?
@@ -374,14 +390,14 @@ class TPRoutes: NSObject {
 
                 NotificationCenter.default.rx.notification(Notification.Name("RideFinishPayment"))
                     .observeOn(MainScheduler.instance)
-                    .subscribe(onNext: { [weak viewController] notification in
+                    .subscribe(onNext: { [weak viewController] _ in
                         guard let viewController = viewController else { return }
                         UIApplication.topViewController()?.navigationController?.dismiss(animated: true, completion: {
-                          UIApplication.topViewController()?.navigationController?.popToViewController(viewController, animated: true)
+                            UIApplication.topViewController()?.navigationController?.popToViewController(viewController, animated: true)
                         })
                     })
                     .disposed(by: viewController.rx_disposeBag)
-                
+
                 NotificationCenter.default.rx.notification(Notification.Name("RideTokocashTopup"))
                     .observeOn(MainScheduler.instance)
                     .subscribe(onNext: { notification in
@@ -679,15 +695,15 @@ class TPRoutes: NSObject {
 
             return true
         }
-        
+
         JLRoutes.global().add(["/discovery/:id", "/b/:id"]) { (params: [String: Any]) -> Bool in
             guard let id = params["id"] as? String else { return false }
-            
+
             let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject])
             UIApplication.topViewController()?
                 .navigationController?
                 .pushReactViewController(viewController, animated: true)
-            
+
             return true
         }
 
@@ -738,24 +754,22 @@ class TPRoutes: NSObject {
             }
             return true
         }
-        
-        //MARK: KOL Comment (Native)
+
+        // MARK: KOL Comment (Native)
         JLRoutes.global().addRoute("/kolcomment/:cardID") { (params: [String: Any]!) -> Bool in
             if let cardID = params["cardID"] as? String {
                 let props = ["cardID": cardID]
-                
-                let viewController = ReactViewController(
-                    moduleName: "FeedKOLActivityComment",
-                    props: ["cardState": props as AnyObject]
-                )
-                
+
+                let viewController = ReactViewController(moduleName: "FeedKOLActivityComment",
+                                                         props: ["cardState": props as AnyObject])
+
                 viewController.hidesBottomBarWhenPushed = true
-                
+
                 UIApplication.topViewController()?
                     .navigationController?
                     .pushReactViewController(viewController, animated: true)
             }
-            
+
             return true
         }
 
@@ -855,14 +869,14 @@ class TPRoutes: NSObject {
                 let masterModule = ReactModule(name: "TopChatMain", props: [
                     "authInfo": auth as AnyObject,
                     "fromIpad": true as AnyObject
-                    ])
+                ])
                 let detailModule = ReactModule(name: "TopChatDetail", props: [
                     "fromIpad": true as AnyObject,
                     "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
                     "user_id": userID as AnyObject,
                     "full_name": name as AnyObject,
                     "shop_name": shopName as AnyObject
-                    ])
+                ])
 
                 viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
             } else {
@@ -892,7 +906,7 @@ class TPRoutes: NSObject {
                     "authInfo": auth as AnyObject,
                     "fromIpad": true as AnyObject,
                     "msg_id_applink": message_id as AnyObject
-                    ])
+                ])
                 let detailModule = ReactModule(name: "TopChatDetail", props: [
                     "fromIpad": true as AnyObject,
                     "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
@@ -900,8 +914,8 @@ class TPRoutes: NSObject {
                     "full_name": name as AnyObject,
                     "shop_name": shopName as AnyObject,
                     "msg_id_applink": message_id as AnyObject
-                    ])
-                
+                ])
+
                 viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
             } else {
                 viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
@@ -938,7 +952,6 @@ class TPRoutes: NSObject {
                     openWebView(url, title: title)
                 }
             })
-
             return true
         }
 
@@ -962,39 +975,38 @@ class TPRoutes: NSObject {
 
             return true
         }
-        
+
         JLRoutes.global().addRoute("/thankyou/:platform/:template") { (params: [String: Any]!) -> Bool in
-            
+
             guard let platform = params["platform"] as? String else { return false }
             let parameters = decodePlus(params: queryParams(params: params))
             let auth = UserAuthentificationManager()
             let userID = auth.getUserId()!
             let deviceToken = auth.getMyDeviceToken()
-            let viewController = ReactViewController(
-                moduleName: "ThankYouPage",
-                props: ["data": parameters as AnyObject,
-                        "deviceToken": deviceToken as AnyObject,
-                        "userID": userID as AnyObject]
-            )
+            let viewController = ReactViewController(moduleName: "ThankYouPage",
+                                                     props: [
+                                                         "data": parameters as AnyObject,
+                                                         "deviceToken": deviceToken as AnyObject,
+                                                         "userID": userID as AnyObject
+            ])
             viewController.title = "Pembayaran"
             viewController.hidesBottomBarWhenPushed = true
-            
+
             let navigationController = UIApplication.topViewController()?.navigationController
             if platform == "digital" {
                 navigationController?.popViewController(animated: false)
             }
-            
+
             navigationController?.replaceTopViewController(viewController: viewController)
-            
+
             return true
         }
-        
+
         // MARK: Product Detail - from Product URL (Native)
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String: Any]!) -> Bool in
             let url = params[kJLRouteURLKey] as! NSURL
             let productName = params["productName"] as! String
             let shopName = params["shopName"] as! String
-
             isShopExists(shopName, shopExists: { isExists in
                 if isExists {
                     NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: "", andName: productName, andPrice: "", andImageURL: "", andShopName: shopName)
@@ -1192,8 +1204,8 @@ class TPRoutes: NSObject {
         return urlComponents?.url
     }
 
-    static func queryParams(params: [String : Any]) -> [String : Any] {
-        var newParams: [String : Any] = params
+    static func queryParams(params: [String: Any]) -> [String: Any] {
+        var newParams: [String: Any] = params
 
         newParams[kJLRouteNamespaceKey] = nil
         newParams[kJLRouteWildcardComponentsKey] = nil
@@ -1202,15 +1214,39 @@ class TPRoutes: NSObject {
 
         return newParams
     }
-    
-    static func decodePlus(params: [String : Any]) -> [String : Any] {
+
+    static func decodePlus(params: [String: Any]) -> [String: Any] {
         var newParams = params
         newParams.forEach {
             if let newParam = newParams[$0.0] as? String {
                 newParams[$0.0] = newParam.replacingOccurrences(of: "+", with: " ")
             }
         }
-        
+
         return newParams
+    }
+
+    static func registerDigitalRouting() {
+        let entries: [LinkReroute] = loadWhitelist()
+        entries.forEach { entry in
+            JLRoutes.global().addRoute(entry.path, handler: { (_: [String: Any]?) -> Bool in
+                let urlString = URL(string: entry.applink)
+                guard let url = urlString else { return true }
+                TPRoutes.routeURL(url)
+                return true
+            })
+        }
+    }
+
+    static func loadWhitelist() -> [LinkReroute] {
+        guard let file = Bundle.main.url(forResource: "whitelist", withExtension: "json"),
+            let data = try? Data(contentsOf: file),
+            let dictionary = try? JSONSerialization.jsonObject(with: data, options: .mutableContainers) as? [String: Any],
+            let arrayWhitelist = dictionary?["data"] as? [Dictionary<String, String>] else { return [] }
+        let array = arrayWhitelist.map({ value -> LinkReroute in
+            guard let path = value["path"], let applink = value["applink"] else { fatalError("Invalid marketing link \(value)") }
+            return LinkReroute(path: path, applink: applink)
+        })
+        return array
     }
 }
