@@ -73,4 +73,5 @@
 - (nullable NSString *)getLastTransactionDate;
 - (nonnull NSNumber *)getTotalActiveProduct;
 - (nonnull NSNumber *)getShopScore;
+- (nullable NSString *) getTokoCashToken;
 @end

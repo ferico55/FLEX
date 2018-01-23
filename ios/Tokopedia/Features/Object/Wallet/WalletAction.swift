@@ -9,13 +9,13 @@
 import Foundation
 import Unbox
 
-final class WalletAction:NSObject, Unboxable {
+final class WalletAction: NSObject, Unboxable {
     let text: String
     let redirectUrl: String
     let applinks: String
     let visibility: String?
     
-    init(text:String, redirectUrl:String, applinks:String, visibility: String?) {
+    init(text: String = "", redirectUrl: String = "", applinks: String = "", visibility: String? = "0") {
         self.text = text
         self.redirectUrl = redirectUrl
         self.applinks = applinks
@@ -28,6 +28,6 @@ final class WalletAction:NSObject, Unboxable {
         let applinks = try unboxer.unbox(keyPath: "applinks") as String
         let visibility = unboxer.unbox(keyPath: "visibility") as String?
         
-        self.init(text:text, redirectUrl:redirectUrl, applinks:applinks, visibility: visibility)
+        self.init(text: text, redirectUrl: redirectUrl, applinks: applinks, visibility: visibility)
     }
 }

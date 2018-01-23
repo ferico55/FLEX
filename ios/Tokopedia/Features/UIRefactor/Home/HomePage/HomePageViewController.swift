@@ -78,8 +78,8 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     fileprivate let userManager = UserAuthentificationManager()
     fileprivate var homeSliderView: HomeSliderView = UINib(nibName: "HomeSliderView", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! HomeSliderView
     
-    private var tokopointsSectionViewController: TokopointsSectionViewController? = nil
-    private var tokoCashSectionViewController: TokoCashSectionViewController? = nil
+    private var tokopointsSectionViewController: TokopointsSectionViewController?
+    private var tokoCashSectionViewController: TokoCashSectionViewController?
     
     init() {
         super.init(nibName: "HomePageViewController", bundle: nil)
@@ -129,7 +129,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
         AnalyticsManager.moEngageTrackEvent(withName: "Beranda_Screen_Launched", attributes: ["logged_in_status": UserAuthentificationManager().isLogin])
         AnalyticsManager.trackScreenName("Top Category")
         
-        NotificationCenter.default.rx.notification(Notification.Name(rawValue: "didSwipeHomeTab")).subscribe(onNext: {[weak self] (notification) in
+        NotificationCenter.default.rx.notification(Notification.Name(rawValue: "didSwipeHomeTab")).subscribe(onNext: { [weak self] notification in
             guard let weakSelf = self, let page = notification.userInfo?["tag"] as? Int else { return }
             if weakSelf.isHomePage(page: page) {
                 weakSelf.handleBannerAutoScroll(needResetTrackerIndex: true)
@@ -142,7 +142,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        handleBannerAutoScroll(needResetTrackerIndex: true)
+        self.handleBannerAutoScroll(needResetTrackerIndex: true)
         
         DispatchQueue.global(qos: .default).async {
             if self.userManager.isLogin {
@@ -606,47 +606,46 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     }
     
     func requestTokocashAndTokopoints() {
-        let _ = Observable.zip(requestTokopoints(), requestTokocash()) { drawerData, wallet in
-                return (drawerData, wallet)
+        _ = Observable.zip(self.requestTokopoints(), self.requestTokocash()) { drawerData, wallet in
+            (drawerData, wallet)
+        }
+        .subscribe(onNext: { [weak self] drawerData, wallet in
+            guard let `self` = self else {
+                return
             }
-            .subscribe(onNext: { [weak self] (drawerData, wallet) in
-                guard let `self` = self else {
-                    return
-                }
-                
-                if wallet != nil && wallet!.isExpired() && self.tokocashRequestCount < self.tokocashRequestCountLimit {
-                    self.tokocashRequestCount += 1
-                    self.requestTokocashWithNewToken()
-                }
-                else {
-                    if let drawerData = drawerData {
-                        if (drawerData.offFlag == "0") {
-                            // hachiko enabled
-                            if (drawerData.hasNotification == "1") {
-                                AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "impression on any pop up", label: "pop up")
+            
+            if wallet != nil && wallet!.isExpired() && self.tokocashRequestCount < self.tokocashRequestCountLimit {
+                self.tokocashRequestCount += 1
+                self.requestTokocashWithNewToken()
+            } else {
+                if let drawerData = drawerData {
+                    if drawerData.offFlag == "0" {
+                        // hachiko enabled
+                        if drawerData.hasNotification == "1" {
+                            AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "impression on any pop up", label: "pop up")
+                            
+                            let button = PointsAlertViewButton(type: .system)
+                            button.initialize(title: drawerData.popUpNotification.buttonText, titleColor: .tpGreen(), image: nil, alignment: .center) {
+                                AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "click any pop up button", label: "pop up button")
                                 
-                                let button = PointsAlertViewButton(type: .system)
-                                button.initialize(title: drawerData.popUpNotification.buttonText, titleColor: .tpGreen(), image: nil, alignment: .center) {
-                                    AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "click any pop up button", label: "pop up button")
-                                    
-                                    let wv = WKWebViewController(urlString: drawerData.popUpNotification.buttonUrl)
-                                    wv.hidesBottomBarWhenPushed = true
-                                    self.navigationController?.pushViewController(wv, animated: true)
-                                    wv.hidesBottomBarWhenPushed = false
-                                }
-                                let alert = PointsAlertView(title: drawerData.popUpNotification.title, image: nil, imageUrl: drawerData.popUpNotification.imageUrl, message: drawerData.popUpNotification.text, buttons: [button])
-                                alert.delegate = self
-                                alert.show(animated: true)
+                                let wv = WKWebViewController(urlString: drawerData.popUpNotification.buttonUrl)
+                                wv.hidesBottomBarWhenPushed = true
+                                self.navigationController?.pushViewController(wv, animated: true)
+                                wv.hidesBottomBarWhenPushed = false
                             }
+                            let alert = PointsAlertView(title: drawerData.popUpNotification.title, image: nil, imageUrl: drawerData.popUpNotification.imageUrl, message: drawerData.popUpNotification.text, buttons: [button])
+                            alert.delegate = self
+                            alert.show(animated: true)
                         }
-                        
-                        UserDefaults.standard.set(drawerData.offFlag == "0", forKey: "hachiko_enabled")
-                        UserDefaults.standard.synchronize()
                     }
                     
-                    self.setTokocashAndTokopointsView(drawerData: drawerData, walletData: wallet)
+                    UserDefaults.standard.set(drawerData.offFlag == "0", forKey: "hachiko_enabled")
+                    UserDefaults.standard.synchronize()
                 }
-            })
+                
+                self.setTokocashAndTokopointsView(drawerData: drawerData, walletData: wallet)
+            }
+        })
     }
     
     func requestTokopoints() -> Observable<DrawerData?> {
@@ -656,17 +655,40 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     func requestTokocash() -> Observable<WalletStore?> {
         guard let phoneNumber = self.userManager.getUserPhoneNumber(),
             !phoneNumber.isEmpty else {
-                return .just(nil)
+            return .just(nil)
         }
         
-        return WalletService
-            .getTokoCash(userId: self.userManager.getUserId(), phoneNumber: phoneNumber)
-            .map({ (wallet) -> WalletStore? in
+        return TokoCashUseCase.requestBalance()
+            .map { (wallet) -> WalletStore? in
                 return wallet
-            })
-            .catchError { (error) -> Observable<WalletStore?> in
-                return .just(nil)
             }
+            .catchError { (error) -> Observable<WalletStore?> in
+                if let moyaError: MoyaError = error as? MoyaError {
+                    if let response: Response = moyaError.response {
+                        if response.statusCode == 402 {
+                            let walletAction = WalletAction(text: "Aktivasi")
+                            let walletData = WalletData(action: walletAction, text: "TokoCash", applinks: "tokopedia://wallet/activation")
+                            let walletStore = WalletStore(data: walletData)
+                            
+                            let cashback = WalletService.getPendingCashBack(phoneNumber: phoneNumber)
+                                .map { cashbackResponse -> WalletCashBackResponse? in
+                                    return cashbackResponse
+                                }
+                                .catchError({ (error) -> Observable<WalletCashBackResponse?> in
+                                    return Observable.just(nil)
+                                })
+                            
+                            return Observable.zip(Observable.of(walletStore), cashback, resultSelector: { (walletStore, cashback) -> WalletStore in
+                                guard let cashback = cashback, let amount = cashback.data?.amount, amount != "0" else { return walletStore }
+                                walletStore.data?.hasPendingCashback = true
+                                walletStore.data?.balance = cashback.data?.amountText ?? ""
+                                return walletStore
+                            })
+                        }
+                    }
+                }
+                return Observable.just(nil)
+        }
     }
     
     func setTokocashAndTokopointsView(drawerData: DrawerData?, walletData: WalletStore?) {
@@ -674,11 +696,9 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
         
         if drawerData != nil && drawerData?.offFlag == "0" && walletData?.data != nil {
             activeState = .both
-        }
-        else if drawerData != nil && drawerData?.offFlag == "0" {
+        } else if drawerData != nil && drawerData?.offFlag == "0" {
             activeState = .tokopoints
-        }
-        else if walletData?.data != nil {
+        } else if walletData?.data != nil {
             activeState = .tokocash
         }
         
@@ -798,14 +818,14 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
             //tokocash ID = 103
             if categoryId == "103" {
                 self.authenticationService.ensureLoggedInFromViewController(self, onSuccess: {
-                    WalletService.getBalance(userId: self.userManager.getUserId())
+                    TokoCashUseCase.requestBalance()
                         .subscribe(onNext: { wallet in
                             if wallet.isExpired() {
                                 LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/api/v1/wallet/balance")
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
                                 if wallet.shouldShowActivation {
-                                    let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                    let storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
                                     let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
                                     controller.hidesBottomBarWhenPushed = true
                                     self.navigationController?.pushViewController(controller, animated: true)

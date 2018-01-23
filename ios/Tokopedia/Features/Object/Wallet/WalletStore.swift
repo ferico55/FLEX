@@ -18,7 +18,7 @@ final class WalletStore: NSObject, Unboxable {
         return self.data?.link == 0
     }
     
-    init(code: String?, message: String?, error: String?, data: WalletData?) {
+    init(code: String? = "", message: String? = "", error: String? = "", data: WalletData?) {
         self.code = code
         self.message = message
         self.error = error

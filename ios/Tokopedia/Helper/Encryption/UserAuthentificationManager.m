@@ -417,6 +417,10 @@
     return [[self secureStorageDictionary] objectForKey:@"shop_score"] ?: @(0);
 }
 
+- (NSString *) getTokoCashToken {
+     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"tokocash_token"] ?: @""];
+}
+
 -(NSDate *)convertStringToDateWithLocaleID:(NSString *)str
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

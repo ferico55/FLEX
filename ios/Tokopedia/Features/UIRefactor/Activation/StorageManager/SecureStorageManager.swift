@@ -164,6 +164,10 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWith(analyticsDictionary)
     }
     
+    func storeTokoCashToken(_ token: String) {
+        self.storage.setKeychainWithValue(token, withKey: "tokocash_token")
+    }
+    
     private func getShortNameFromFullName(_ fullName: String) -> String {
         let fullNameArr = fullName.components(separatedBy: " ")
         

@@ -31,12 +31,12 @@
 
 @interface HomeTabViewController ()
 <
-    UIScrollViewDelegate,
-    RedirectHandlerDelegate,
-    UISearchControllerDelegate,
-    UISearchResultsUpdating,
-    UIImagePickerControllerDelegate,
-    UINavigationControllerDelegate
+UIScrollViewDelegate,
+RedirectHandlerDelegate,
+UISearchControllerDelegate,
+UISearchResultsUpdating,
+UIImagePickerControllerDelegate,
+UINavigationControllerDelegate
 >
 {
     NSInteger _page;
@@ -63,6 +63,7 @@
 @property (strong, nonatomic) NSArray<UIViewController*> *viewControllers;
 
 @property (strong, nonatomic) SearchBarWrapperView *searchBarWrapperView;
+@property (strong, nonatomic) UIButton *QRCodeButton;
 
 @end
 
@@ -105,7 +106,7 @@
     _shopViewController = [FavoritedShopViewController new];
     
     _homeHeaderController = [HomeTabHeaderViewController new];
-
+    
     _redirectHandler = [RedirectHandler new];
     
     _navigate = [NavigateViewController new];
@@ -126,7 +127,7 @@
     _scrollView.frame = frame;
     
     _scrollView.delegate = self;
-
+    
     [self addChildViewController:_homePageController];
     [self.scrollView addSubview:_homePageController.view];
     
@@ -165,7 +166,7 @@
                                    attribute:NSLayoutAttributeLeading
                                    multiplier:1.0f
                                    constant:0.f];
-
+    
     [self.scrollView addConstraints:@[width, height, top, leading]];
     [_homePageController.view setTranslatesAutoresizingMaskIntoConstraints:NO];
     
@@ -297,7 +298,7 @@
 
 - (void)goToPage:(NSInteger)page {
     if (!_viewControllers) return;
-
+    
     _shopViewController.isOpened = false;
     if(page == 4){
         _shopViewController.isOpened = true;
@@ -357,11 +358,29 @@
 
 - (void)initNotificationManager {
     if ([_userManager isLogin]) {
-        self.navigationItem.rightBarButtonItem = _barButton;
-        [_barButton reloadNotifications];
+        __weak typeof(self) weakSelf = self;
+        [TokoCashUseCase requestBalanceWithCompletionHandler:^(WalletStore * wallet) {
+            typeof(self) strongSelf = weakSelf;
+            if (strongSelf) {
+                NSMutableArray *arrayOfTabBar = [[NSMutableArray alloc] initWithObjects:_barButton, nil];
+                if ([wallet.data.abTags containsObject:@"QR"]) {
+                    _QRCodeButton = [[UIButton alloc] init];
+                    _QRCodeButton.frame = CGRectMake(0, 0, 20, 20);
+                    [_QRCodeButton setBackgroundImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
+                    [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
+                    [arrayOfTabBar addObject:[[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton]];
+                }
+        
+                self.navigationItem.rightBarButtonItems = [arrayOfTabBar copy];
+                [_barButton reloadNotifications];
+            }
+        } andErrorHandler:^(NSError * error) {
+            self.navigationItem.rightBarButtonItems = @[_barButton];
+            [_barButton reloadNotifications];
+        }];
     }
     else {
-        self.navigationItem.rightBarButtonItem = nil;
+        self.navigationItem.rightBarButtonItems = nil;
     }
 }
 
@@ -393,9 +412,9 @@
 
 - (void)willPresentSearchController:(UISearchController *)searchController {
     [self setSearchControllerHidden:NO];
-    self.navigationItem.rightBarButtonItem = nil;
+    self.navigationItem.rightBarButtonItems = nil;
     if (_searchBarWrapperView != nil)
-        _searchBarWrapperView.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+    _searchBarWrapperView.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
 }
 
 - (void)didDismissSearchController:(UISearchController *)searchController {
@@ -455,6 +474,15 @@
     if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
         [vcs[_page] scrollToTop];
     }
+}
+
+- (void) didTapQRCodeButton {
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TokoCash" bundle:nil];
+    TokoCashQRCodeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashQRCodeViewController"];
+    TokoCashQRCodeNavigator *navigator = [[TokoCashQRCodeNavigator alloc] initWithNavigationController:self.navigationController];
+    TokoCashQRCodeViewModel *viewModel = [[TokoCashQRCodeViewModel alloc] initWithNavigator:navigator];
+    vc.viewModel = viewModel;
+    [self.navigationController pushViewController:vc animated:YES];
 }
 
 @end

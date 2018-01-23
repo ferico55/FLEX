@@ -248,6 +248,23 @@ class TPRoutes: NSObject {
                 .pushViewController(viewController, animated: false)
             return true
         }
+        
+        JLRoutes.global().addRoute("/wallet/activation") { (params: [String: Any]!) -> Bool in
+            guard let nc = UIApplication.topViewController()?.navigationController else { return false }
+            let vc = UIStoryboard(name: "TokoCash", bundle: nil).instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+            nc.pushViewController(vc, animated: true)
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/wallet") { (params: [String: Any]!) -> Bool in
+            guard let nc = UIApplication.topViewController()?.navigationController else { return false }
+            let topUpVisible = params["top_up_visible"] as! String == "true"
+            let vc = UIStoryboard(name: "TokoCash", bundle: nil).instantiateViewController(ofType: TokoCashViewController.self)
+            let navigator = TokoCashNavigator(navigationController: nc)
+            vc.viewModel = TokoCashViewModel(topUpVisible, navigator: navigator)
+            nc.pushViewController(vc, animated: true)
+            return true
+        }
 
         // MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { _ in

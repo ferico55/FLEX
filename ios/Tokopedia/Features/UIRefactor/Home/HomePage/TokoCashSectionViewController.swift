@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import RxSwift
 import CFAlertViewController
 
 enum TokoCashSectionViewType {
@@ -15,7 +16,7 @@ enum TokoCashSectionViewType {
 }
 
 class TokoCashSectionViewController: UIViewController {
-    
+
     @IBOutlet private var btnTopUp: UIButton!
     @IBOutlet private var lblTitle: UILabel!
     @IBOutlet weak var lblBalance: UILabel!
@@ -85,9 +86,7 @@ class TokoCashSectionViewController: UIViewController {
         if wallet.shouldShowActivation {
             openActivationPage()
         }else {
-            guard let data = wallet.data,
-                let action = data.action,
-                let url = URL (string : action.applinks) else { return }
+            guard let data = wallet.data, let url = URL (string : data.applinks) else { return }
             TPRoutes.routeURL(url)
         }
     }
@@ -104,26 +103,13 @@ class TokoCashSectionViewController: UIViewController {
                 present(actionSheet, animated: true, completion: nil)
             }
         } else {
-            openWebView()
+            guard let data = wallet.data, let url = URL (string : data.applinks) else { return }
+            TPRoutes.routeURL(url)
         }
-    }
-    
-    func openWebView() {
-        let controller = WKWebViewController(urlString: userManager.webViewUrl(fromUrl: wallet.walletFullUrl()), shouldAuthorizeRequest: true)
-        controller.title = wallet.data?.text
-        
-        controller.didTapBack = { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-        
-        controller.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(controller, animated: true)
     }
 
     func openActivationPage() {
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
-        controller.hidesBottomBarWhenPushed = true
-        navigationController?.pushViewController(controller, animated: true)
+        guard let data = wallet.data, let url = URL (string : data.applinks) else { return }
+        TPRoutes.routeURL(url)
     }
 }

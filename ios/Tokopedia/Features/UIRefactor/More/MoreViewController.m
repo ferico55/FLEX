@@ -80,7 +80,9 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     BOOL _shouldDisplayPushNotificationCell;
     BOOL _shouldDisplayWalletCell;
-    NSString* _walletUrl;
+
+    NSString* _walletApplink;
+
     BOOL _isWalletActive;
     CGRect _defaultTableFrame;
     BOOL _shouldShowAppShare;
@@ -190,6 +192,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
+    
+    _isWalletActive = YES;
     
     _operationQueue = [[NSOperationQueue alloc] init];
     
@@ -330,29 +334,30 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 #pragma mark - Method
 - (void)requestWallet {
-    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     __weak typeof(self) weakSelf = self;
-    
-    [WalletService getBalance:[userManager getUserId]
-                    onSuccess:^(WalletStore * wallet) {
-                        if (wallet.isExpired) {
-                            [weakSelf requestWalletWithNewToken];
-                        } else {
-                            _walletNameLabel.text = wallet.data.text;
-                            _walletBalanceLabel.text = wallet.data.balance;
-                            _walletUrl = wallet.walletFullUrl;
-                            
-                            [weakSelf showActivationButton:wallet];
-                        }
-                        
-                    }
-                    onFailure:^(NSError * error) {
-                        _isWalletActive = YES;
-                        if(error.code == 9991) {
-                            [LogEntriesHelper logForceLogoutWithLastURL:@"https://accounts.tokopedia.com/api/v1/wallet/balance"];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-                        }
-                    }];
+    [TokoCashUseCase requestBalanceWithCompletionHandler:^(WalletStore * wallet) {
+        _walletNameLabel.text = wallet.data.text;
+        _walletBalanceLabel.text = wallet.data.balance;
+        _walletApplink = wallet.data.applinks;
+        
+        [weakSelf showActivationButton:wallet];
+    } andErrorHandler:^(NSError * error) {
+        _isWalletActive = YES;
+        if (error.code == 3) {
+            WalletAction *action = [[WalletAction alloc] initWithText:@"Aktivasi" redirectUrl:@"" applinks:@"" visibility:@"0"];
+            WalletData *data = [[WalletData alloc] initWithAction:action balance:@"" rawBalance:0 totalBalance:@"" rawTotalBalance:0 holdBalance:@"" rawHoldBalance:0 rawThreshold:0 text:@"TokoCash" redirectUrl:@"" link:0 hasPendingCashback:NO applinks:@"tokopedia://wallet/activation" abTags:[[NSArray alloc] init]];
+            WalletStore *wallet = [[WalletStore alloc] initWithCode:@"" message:@"" error:@"" data:data];
+          
+            _walletNameLabel.text = wallet.data.text;
+            _walletBalanceLabel.text = wallet.data.balance;
+            _walletApplink = wallet.data.applinks;
+            
+            [weakSelf showActivationButton:wallet];
+            
+        }else if(error.code == 9991) {
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        }
+    }];
 }
 
 - (void)requestWalletWithNewToken {
@@ -373,10 +378,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     _isWalletActive = wallet.shouldShowActivation;
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
-        UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-        TokoCashActivationViewController *tokoCashActivationVC = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashActivationViewController"];
-        tokoCashActivationVC.hidesBottomBarWhenPushed = YES;
-        [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
+        [TPRoutes routeURL:[NSURL URLWithString:_walletApplink]];
     }];
 }
 
@@ -611,15 +613,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }
         } else if (indexPath.row == 1) {
             if (!_isWalletActive) {
-                UserAuthentificationManager* userManager = [UserAuthentificationManager new];
-                WKWebViewController *controller = [[WKWebViewController alloc] initWithUrlString: [userManager webViewUrlFromUrl:_walletUrl] shouldAuthorizeRequest:YES];
-                controller.title = _walletNameLabel.text;
-                __weak typeof(WKWebViewController) *wcontroller = controller;
-                controller.didTapBack = ^{
-                    [wcontroller.navigationController popViewControllerAnimated:YES];
-                };
-                
-                [_wrapperViewController.navigationController pushViewController:controller animated:YES];
+                [TPRoutes routeURL:[NSURL URLWithString:_walletApplink]];
             } else {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];
             }

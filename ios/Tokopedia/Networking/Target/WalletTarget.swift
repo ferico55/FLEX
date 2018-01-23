@@ -11,7 +11,9 @@ import MoyaUnbox
 
 class WalletProvider: NetworkProvider<WalletTarget> {
     init() {
-        super.init(endpointClosure: WalletProvider.endpointClosure)
+        super.init(endpointClosure: WalletProvider.endpointClosure,
+                   manager: DefaultAlamofireManager.sharedManager,
+                   plugins: [NetworkLoggerPlugin(verbose: true), TokoCashNetworkPlugin()])
     }
     
     fileprivate class func endpointClosure(for target: WalletTarget) -> Endpoint<WalletTarget> {
@@ -19,24 +21,21 @@ class WalletProvider: NetworkProvider<WalletTarget> {
         let userInformation = userManager.getUserLoginData()
         
         let type = userInformation?["oAuthToken.tokenType"] as? String ?? ""
-        
         let token = userInformation?["oAuthToken.accessToken"] as? String ?? ""
         
         let headers = [
-            "Authorization" : "\(type) \(token)"
+            "Authorization": "\(type) \(token)"
         ]
         
         return NetworkProvider.defaultEndpointCreator(for: target)
-            .adding(
-                httpHeaderFields: headers
-        )
+            .adding(httpHeaderFields: headers)
     }
 }
 
 enum WalletTarget {
-    case fetchStatus(userId:String)
-    case activationTokoCash(verificationCode:String)
+    case activationTokoCash(verificationCode: String)
     case OTPTokoCash
+    case getToken
 }
 
 extension WalletTarget: TargetType {
@@ -46,30 +45,28 @@ extension WalletTarget: TargetType {
     /// The path to be appended to `baseURL` to form the full `URL`.
     var path: String {
         switch self {
-        case .fetchStatus: return "/api/v1/wallet/balance"
         case .activationTokoCash : return "/api/v1/wallet/link"
         case .OTPTokoCash : return "/api/v1/wallet/otp/request"
+        case .getToken: return "/api/v1/wallet/token"
         }
     }
     
     /// The HTTP method used in the request.
     var method: Moya.Method {
         switch self {
-        case .fetchStatus: return .get
         case .activationTokoCash: return .get
-        case .OTPTokoCash : return .get
+        case .OTPTokoCash: return .get
+        case .getToken: return .get
         }
     }
     
     /// The parameters to be incoded in the request.
     var parameters: [String: Any]? {
         switch self {
-        case let .fetchStatus(userId):
-            return ["user_id" : userId]
         case let .activationTokoCash(verificationCode):
             if !verificationCode.isEmpty {
-                return ["otp" : verificationCode]
-            }else {
+                return ["otp": verificationCode]
+            } else {
                 return [:]
             }
         default: return [:]

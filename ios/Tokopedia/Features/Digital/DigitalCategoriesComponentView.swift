@@ -69,11 +69,11 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                                 guard let topViewController = UIApplication.topViewController() else { return }
                                 
                                 AuthenticationService.shared.ensureLoggedInFromViewController(topViewController, onSuccess: {
-                                    WalletService.getBalance(userId: UserAuthentificationManager().getUserId())
+                                    TokoCashUseCase.requestBalance()
                                         .subscribe(onNext: { wallet in
                                             
                                             if wallet.shouldShowActivation {
-                                                let storyboard = UIStoryboard(name: "Main", bundle: nil)
+                                                let storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
                                                 let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
                                                 controller.hidesBottomBarWhenPushed = true
                                                 topViewController.navigationController?.pushViewController(controller, animated: true)

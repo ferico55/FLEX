@@ -54,9 +54,8 @@ extension DigitalForm: Unboxable {
             switch operatorStyleString {
             case "style_1":
                 let textInput: DigitalTextInput = try! unboxer.unbox(keyPath: "data.attributes.fields.0")
-                
                 return .prefixChecking(textInput)
-                
+ 
             case "style_99": return .implicit
                 
             default: return .choice

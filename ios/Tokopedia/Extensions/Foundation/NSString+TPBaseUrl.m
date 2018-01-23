@@ -250,7 +250,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     NSNumber *TPUrlIndex = [NSString urlIndex];
     
     NSDictionary* urls = @{
-                           @(TPUrlProduction) : @"https://wallet.tokopedia.id",
+                           @(TPUrlProduction) : @"https://www.tokocash.com",
                            @(TPUrlStaging) : @"https://wallet-staging.tokopedia.id",
                            @(TPUrlAlpha) : @"http://192.168.100.151:9096",
                            @(TPUrlDevelopment) : @"http://192.168.100.151:9096"
