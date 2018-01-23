@@ -169,6 +169,7 @@ class ProductDetailViewController: UIViewController, EtalaseViewControllerDelega
         
         AnalyticsManager.moEngageTrackEvent(withName: "Product_Page_Opened",
                                             attributes: self.moengageAttributes(product: product))
+        AnalyticsManager.trackProductView(product: product)
     }
     
     private func moengageAttributes(product: ProductUnbox) -> [String: Any] {

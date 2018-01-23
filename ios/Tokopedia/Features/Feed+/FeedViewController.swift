@@ -98,6 +98,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                     guard (self.tableView.indexPathsForVisibleRows?.count)! > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
                     if self.feedCards[row].page > 0 && self.feedCards[row].row > 0 && !self.feedCards[row].isImpression {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[row].page).\(self.feedCards[row].row) - Product Feed")
+                        AnalyticsManager.trackFeedImpression(card: self.feedCards[row])
                         self.feedCards[row].isImpression = true
                         
                         if self.feedCards[row].content.isKOLContent {

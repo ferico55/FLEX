@@ -141,9 +141,9 @@ struct FeedCardInspirationState: Render.StateType, ReSwift.StateType {
         self.title = data.title ?? ""
         
         if let recommendation = data.recommendation {
-            let productArray: [FeedCardProductState] = recommendation.map { product in
+            let productArray: [FeedCardProductState] = recommendation.enumerated().map { index,product in
                 if let product = product, let source = data.source {
-                    var productState = FeedCardProductState(recommendationProduct: product, row: row)
+                    var productState = FeedCardProductState(recommendationProduct: product, row: row, position:index)
                     productState.recommendationProductSource = source
                     
                     return productState
@@ -193,6 +193,7 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
     var productID = ""
     var productName = ""
     var productPrice = ""
+    var productPriceAmount = 0
     var productImageSmall = ""
     var productImageLarge = ""
     var productURL = ""
@@ -220,21 +221,24 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
     var isFreeReturns = false
     var page = 0
     var row = 0
-    
+    var position = 0
     init() {}
     
-    init(recommendationProduct: FeedsQuery.Data.Feed.Datum.Content.Inspirasi.Recommendation, row: Int) {
+    init(recommendationProduct: FeedsQuery.Data.Feed.Datum.Content.Inspirasi.Recommendation, row: Int, position: Int) {
         guard let name = recommendationProduct.name,
             let price = recommendationProduct.price,
             let image = recommendationProduct.imageUrl,
-            let url = recommendationProduct.appUrl else { return }
+            let url = recommendationProduct.appUrl,
+            let priceAmount = recommendationProduct.priceInt else { return }
         
         self.productName = name
         self.productPrice = price
+        self.productPriceAmount = priceAmount
         self.productImageSmall = image
         self.productURL = url
         self.isRecommendationProduct = true
         self.row = row
+        self.position = position
     }
     
     init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page: Int, row: Int) {
@@ -537,7 +541,7 @@ class FeedStateManager: NSObject {
             
             let productArray: [FeedCardProductState] = products.enumerated().map { index, product in
                 if let product = product {
-                    var productState = self.initFeedProduct(feedProduct: product, cardID: cardID, page: page, row: row)
+                    var productState = self.initFeedProduct(feedProduct: product, cardID: cardID, page: page, row: row, position:index)
                     
                     if products.count > 6 && index == 5 {
                         productState.isMore = true
@@ -676,7 +680,7 @@ class FeedStateManager: NSObject {
         return promo
     }
     
-    private func initFeedProduct(feedProduct: FeedsQuery.Data.Feed.Datum.Content.Product, cardID: String, page: Int, row: Int) -> FeedCardProductState {
+    private func initFeedProduct(feedProduct: FeedsQuery.Data.Feed.Datum.Content.Product, cardID: String, page: Int, row: Int, position: Int) -> FeedCardProductState {
         
         guard let productID = feedProduct.id,
             let name = feedProduct.name,
@@ -689,7 +693,8 @@ class FeedStateManager: NSObject {
             let freeReturns = feedProduct.freereturns,
             let wishlist = feedProduct.wishlist,
             let preorder = feedProduct.preorder,
-            let url = feedProduct.productLink else {
+            let url = feedProduct.productLink,
+            let priceAmount = feedProduct.priceInt else {
             return FeedCardProductState()
         }
         
@@ -701,6 +706,7 @@ class FeedStateManager: NSObject {
         product.productCashback = cashback
         product.productWholesale = (wholesale.count == 0)
         product.productPrice = price
+        product.productPriceAmount = priceAmount
         product.productImageSmall = image
         product.productImageLarge = imageLarge
         product.productFreeReturns = freeReturns
@@ -710,6 +716,7 @@ class FeedStateManager: NSObject {
         product.cardID = cardID
         product.page = page
         product.row = row
+        product.position = position
         return product
     }
 }

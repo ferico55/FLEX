@@ -881,6 +881,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             } else {
                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli from Widget")
             }
+            AnalyticsManager.trackDigitalProductAddToCart(category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, isInstant: self.saldoCheckBox.on)
+            
             let cache = PulsaCache()
             let lastOrder = DigitalLastOrder(categoryId: self.selectedCategory.id!, operatorId: self.selectedOperator.id, productId: self.selectedProduct.id, clientNumber: clientNumber)
             cache.storeLastOrder(lastOrder: lastOrder)

@@ -1,13 +1,98 @@
 //
-//  AnalyticsManager.swift
+//  FeedAnalyticsManager.swift
 //  Tokopedia
 //
-//  Created by Ronald Budianto on 12/11/17.
-//  Copyright © 2017 TOKOPEDIA. All rights reserved.
+//  Created by Ronald Budianto on 1/22/18.
+//  Copyright © 2018 TOKOPEDIA. All rights reserved.
 //
+
 import Foundation
 
 extension AnalyticsManager {
+    static func trackFeedProductClick(card: FeedCardProductState, position: Int) {
+        if !card.isCampaign {
+            let manager = AnalyticsManager()
+            let eventLabel = card.isRecommendationProduct ? "inspirasi - \(card.recommendationProductSource)" : "product upload"
+            let data = [
+                "event": "productClick",
+                "eventCategory": "homepage",
+                "eventAction": "feed - click card item",
+                "eventLabel": eventLabel,
+                "ecommerce": [
+                    "click": [
+                        "actionField": [
+                            "list": "/feed - product \(String(card.row)) - \(eventLabel)"
+                        ],
+                        "products": [[
+                            "name": card.productName,
+                            "id": card.productID,
+                            "price": String(card.productPriceAmount),
+                            "brand": "none / other",
+                            "variant": "none / other",
+                            "list": "/feed - product \(String(card.row)) - \(eventLabel)",
+                            "position": String(position + 1),
+                            "userId": UserAuthentificationManager().getUserId()
+                        ]]
+                    ]
+                ]
+            ] as [String: Any]
+            manager.dataLayer.push(data)
+        }
+    }
+    
+    static func trackFeedImpression(card: FeedCardState) {
+        let manager = AnalyticsManager()
+        var eventLabel = ""
+        if card.content.product.count > 0 ||
+            (card.content.inspiration != nil && (card.content.inspiration?.products.count)! > 0) {
+            // impression product
+            let products = card.content.product
+            var dictProduct = products.map { productData -> [String: Any] in
+                guard let product = productData else { return [:] }
+                var dict = [String: Any]()
+                eventLabel = "product upload"
+                dict["name"] = product.productName
+                dict["id"] = product.productID
+                dict["price"] = String(product.productPriceAmount)
+                dict["brand"] = "none / other"
+                dict["list"] = "/feed - product \(String(card.row)) - \(eventLabel)"
+                dict["variant"] = "none / other"
+                dict["position"] = String(product.position + 1)
+                dict["userId"] = UserAuthentificationManager().getUserId()
+                return dict
+            }
+            
+            if let inspiration = card.content.inspiration?.products {
+                dictProduct = inspiration.map { inspirasi -> [String: Any] in
+                    guard let inspiration = inspirasi else { return [:] }
+                    var dict = [String: Any]()
+                    eventLabel = "inspirasi - \(inspiration.recommendationProductSource)"
+                    dict["name"] = inspiration.productName
+                    dict["id"] = inspiration.productID
+                    dict["price"] = String(inspiration.productPriceAmount)
+                    dict["brand"] = "none / other"
+                    dict["list"] = "/feed - product \(String(card.row)) - \(eventLabel)"
+                    dict["variant"] = "none / other"
+                    dict["position"] = String(inspiration.position + 1)
+                    dict["userId"] = UserAuthentificationManager().getUserId()
+                    return dict
+                }
+            }
+            
+            let data = [
+                "event": "productView",
+                "eventCategory": "homepage",
+                "eventAction": "feed - item impression",
+                "eventLabel": eventLabel,
+                "ecommerce": [
+                    "currencyCode": "IDR",
+                    "impressions": dictProduct
+                ]
+            ] as [String: Any]
+            manager.dataLayer.push(data)
+        }
+    }
+    
     static func trackKOLImpression(cardContent: FeedCardContentState) {
         let manager = AnalyticsManager()
         

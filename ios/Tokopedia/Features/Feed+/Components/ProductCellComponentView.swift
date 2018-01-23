@@ -240,7 +240,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
                     } else {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
                     }
-                    
+                    AnalyticsManager.trackFeedProductClick(card: state, position: state.position)
                     TPRoutes.routeURL(URL(string: state.productURL)!)
                 })
             }

@@ -12,6 +12,7 @@ import Foundation
 struct ProductUnbox {
     let id: String
     let name: String
+    let key: String
     let url: String
     var info: ProductInfo
     let shop: ProductShop
@@ -45,6 +46,7 @@ extension ProductUnbox: Unboxable {
     init(unboxer: Unboxer) throws {
         self.id = try unboxer.unbox(keyPath: "data.info.product_id")
         self.name = try unboxer.unbox(keyPath: "data.info.product_name")
+        self.key = try unboxer.unbox(keyPath: "data.info.product_key")
         self.url = try unboxer.unbox(keyPath: "data.info.product_url")
         self.info = try unboxer.unbox(keyPath: "data.info")
         self.shop = try unboxer.unbox(keyPath: "data.shop_info")

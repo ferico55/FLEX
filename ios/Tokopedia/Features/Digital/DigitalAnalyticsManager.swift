@@ -9,12 +9,12 @@
 import Foundation
 
 extension AnalyticsManager {
-    enum DigitalEventName:String {
+    enum DigitalEventName: String {
         case homepage = "userInteractionHomePage"
         case tracking = "rechargeTracking"
     }
     
-    static func trackRechargeEvent(event:DigitalEventName, category:DigitalForm?, operators:DigitalOperator?, product:DigitalProduct?, action:String) {
+    static func trackRechargeEvent(event: DigitalEventName, category: DigitalForm?, operators: DigitalOperator?, product: DigitalProduct?, action: String) {
         var categoryName = ""
         var operatorName = ""
         var productName = ""
@@ -37,7 +37,7 @@ extension AnalyticsManager {
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
     }
     
-    static func trackRechargeEvent(event:DigitalEventName, cart:DigitalCart, action:String) {
+    static func trackRechargeEvent(event: DigitalEventName, cart: DigitalCart, action: String) {
         var categoryName = ""
         var labelName = ""
         
@@ -47,7 +47,7 @@ extension AnalyticsManager {
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
     }
     
-    static func trackRechargeEvent(event:DigitalEventName, category:PulsaCategory?, operators:PulsaOperator?, product:PulsaProduct?, action:String) {
+    static func trackRechargeEvent(event: DigitalEventName, category: PulsaCategory?, operators: PulsaOperator?, product: PulsaProduct?, action: String) {
         var categoryName = ""
         var operatorName = ""
         var productName = ""
@@ -77,16 +77,41 @@ extension AnalyticsManager {
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
     }
     
-    static func trackRechargeEvent(event:DigitalEventName, category:String, action:String) {
+    static func trackRechargeEvent(event: DigitalEventName, category: String, action: String) {
         let categoryName = "\(GA_EVENT_CATEGORY_RECHARGE) - \(category)"
         let labelName = category
         
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: labelName)
     }
     
-    static func trackRechargeEvent(event:DigitalEventName, category:String, action:String, label:String) {
+    static func trackRechargeEvent(event: DigitalEventName, category: String, action: String, label: String) {
         let categoryName = "\(GA_EVENT_CATEGORY_RECHARGE) - \(category)"
         
         AnalyticsManager.trackEventName(event.rawValue, category: categoryName, action: action, label: label)
+    }
+    
+    static func trackDigitalProductAddToCart(category: PulsaCategory, operators: PulsaOperator, product: PulsaProduct, isInstant: Bool) {
+        let manager = AnalyticsManager()
+        var data = [
+            "event": "addToCart",
+            "ecommerce": [
+                "currencyCode": "IDR",
+                "add": [
+                    "products": [[
+                        "name": "\(category.attributes.name) \(operators.attributes.name)",
+                        "id": product.id,
+                        "price": product.attributes.price,
+                        "brand": operators.attributes.name,
+                        "category": category.attributes.name,
+                        "variant": "\(operators.attributes.name) \(product.attributes.price)",
+                        "quantity": 1
+                    ]]
+                ]
+            ]
+        ] as [String: Any]
+        if isInstant {
+            data["cd3"] = "Bayar Instant"
+        }
+        manager.dataLayer.push(data)
     }
 }

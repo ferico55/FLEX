@@ -798,6 +798,7 @@ public final class FeedsQuery: GraphQLQuery {
     "          id" +
     "          name" +
     "          price" +
+    "          price_int" +
     "          image" +
     "          image_single" +
     "          wholesale {" +
@@ -910,6 +911,7 @@ public final class FeedsQuery: GraphQLQuery {
     "            app_url" +
     "            image_url" +
     "            price" +
+    "            price_int" +
     "            recommendation_type" +
     "          }" +
     "        }" +
@@ -1548,6 +1550,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("id", type: .scalar(Int.self)),
               GraphQLField("name", type: .scalar(String.self)),
               GraphQLField("price", type: .scalar(String.self)),
+              GraphQLField("price_int", type: .scalar(Int.self)),
               GraphQLField("image", type: .scalar(String.self)),
               GraphQLField("image_single", type: .scalar(String.self)),
               GraphQLField("wholesale", type: .list(.object(Wholesale.self))),
@@ -1566,8 +1569,8 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(id: Int? = nil, name: String? = nil, price: String? = nil, image: String? = nil, imageSingle: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Double? = nil) {
-              self.init(snapshot: ["__typename": "ProductFeedType", "id": id, "name": name, "price": price, "image": image, "image_single": imageSingle, "wholesale": wholesale, "freereturns": freereturns, "preorder": preorder, "cashback": cashback, "url": url, "productLink": productLink, "wishlist": wishlist, "rating": rating])
+            public init(id: Int? = nil, name: String? = nil, price: String? = nil, priceInt: Int? = nil, image: String? = nil, imageSingle: String? = nil, wholesale: [Wholesale?]? = nil, freereturns: Bool? = nil, preorder: Bool? = nil, cashback: String? = nil, url: String? = nil, productLink: String? = nil, wishlist: Bool? = nil, rating: Double? = nil) {
+              self.init(snapshot: ["__typename": "ProductFeedType", "id": id, "name": name, "price": price, "price_int": priceInt, "image": image, "image_single": imageSingle, "wholesale": wholesale, "freereturns": freereturns, "preorder": preorder, "cashback": cashback, "url": url, "productLink": productLink, "wishlist": wishlist, "rating": rating])
             }
 
             public var __typename: String {
@@ -1603,6 +1606,15 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "price")
+              }
+            }
+
+            public var priceInt: Int? {
+              get {
+                return snapshot["price_int"]! as! Int?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "price_int")
               }
             }
 
@@ -2662,6 +2674,7 @@ public final class FeedsQuery: GraphQLQuery {
                 GraphQLField("app_url", type: .scalar(String.self)),
                 GraphQLField("image_url", type: .scalar(String.self)),
                 GraphQLField("price", type: .scalar(String.self)),
+                GraphQLField("price_int", type: .scalar(Int.self)),
                 GraphQLField("recommendation_type", type: .scalar(String.self)),
               ]
 
@@ -2671,8 +2684,8 @@ public final class FeedsQuery: GraphQLQuery {
                 self.snapshot = snapshot
               }
 
-              public init(id: GraphQLID? = nil, name: String? = nil, url: String? = nil, clickUrl: String? = nil, appUrl: String? = nil, imageUrl: String? = nil, price: String? = nil, recommendationType: String? = nil) {
-                self.init(snapshot: ["__typename": "FeedInspirationItem", "id": id, "name": name, "url": url, "click_url": clickUrl, "app_url": appUrl, "image_url": imageUrl, "price": price, "recommendation_type": recommendationType])
+              public init(id: GraphQLID? = nil, name: String? = nil, url: String? = nil, clickUrl: String? = nil, appUrl: String? = nil, imageUrl: String? = nil, price: String? = nil, priceInt: Int? = nil, recommendationType: String? = nil) {
+                self.init(snapshot: ["__typename": "FeedInspirationItem", "id": id, "name": name, "url": url, "click_url": clickUrl, "app_url": appUrl, "image_url": imageUrl, "price": price, "price_int": priceInt, "recommendation_type": recommendationType])
               }
 
               public var __typename: String {
@@ -2744,6 +2757,15 @@ public final class FeedsQuery: GraphQLQuery {
                 }
                 set {
                   snapshot.updateValue(newValue, forKey: "price")
+                }
+              }
+
+              public var priceInt: Int? {
+                get {
+                  return snapshot["price_int"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "price_int")
                 }
               }
 

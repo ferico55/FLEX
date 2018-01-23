@@ -26,6 +26,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 					id
 					name
 					price
+                    price_int
 					image
 					image_single
 					wholesale {
@@ -125,6 +126,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 						app_url
 						image_url
 						price
+                        price_int
 						recommendation_type
 					}
 				}
