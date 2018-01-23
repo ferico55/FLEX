@@ -157,7 +157,13 @@
 
 - (void)showErrorAlert:(NSError*)error {
     NSArray *errors;
-    if(error.code == -1011 || error.code == -999) {
+    
+    NSHTTPURLResponse *response = error.userInfo[AFRKNetworkingOperationFailingURLResponseErrorKey];
+    
+    if (response.statusCode == 403) {
+        errors = @[@"Permintaan request ditolak"];
+    }
+    else if(error.code == -1011 || error.code == -999) {
         errors = @[@"Terjadi kendala pada server. Mohon coba beberapa saat lagi."];
     } else if (error.code == -1009) {
         errors = @[@"Tidak ada koneksi internet"];
