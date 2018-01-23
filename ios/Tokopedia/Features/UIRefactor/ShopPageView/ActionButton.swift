@@ -12,8 +12,11 @@ class ActionButton: UIButton {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        self.titleLabel?.textColor = UIColor(white: 0x6f/255.0, alpha: 1.0)
+    }
+    
+    override func didMoveToSuperview() {
+        super.didMoveToSuperview()
+        self.setTitleColor(UIColor(white: 0x6f/255.0, alpha: 1.0), for: .normal)
         self.titleLabel?.font      = UIFont.largeTheme()
         self.backgroundColor       = .white
         self.layer.borderWidth     = 1.0
