@@ -242,5 +242,8 @@
 #import "BannerType.h"
 #import "ReactDynamicFilterModule.h"
 
+#import "AddressFormResult.h"
+#import "ProfileSettingsResult.h"
+
 #import "RequestCart.h"
 #import "AlertPickerView.h"

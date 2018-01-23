@@ -45,8 +45,8 @@
 
 +(void)fetchATCProduct:(ProductDetail*)product address:(AddressFormList*)address shipment:(RateAttributes*)shipment shipmentPackage:(RateProduct*)shipmentPackage quantity:(NSString*)qty remark:(NSString *)remark success:(void(^)(TransactionAction* data))success failed:(void(^)(NSError * error))failed {
     
-    NSInteger productID = [ product.product_id integerValue];
-    NSInteger insuranceID = [product.product_insurance integerValue];
+    NSInteger productID = [product.product_id integerValue];
+    NSInteger insuranceID = [product.product_insurance integerValue]-1; //ID kero/rates beda sama ID orderApp -> orderApp No=0/Yes=1, kero/rates No=1/Yes=2
     NSString *shippingID = shipment.shipper_id;
     NSString *shippingProduct = shipmentPackage.shipper_product_id;
     

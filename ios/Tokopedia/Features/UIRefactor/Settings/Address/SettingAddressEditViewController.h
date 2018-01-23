@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AddressFormList.h"
-#import "profile.h"
+@class AddressFormList;
+@class profile;
 
 @class SettingAddressEditViewController;
 

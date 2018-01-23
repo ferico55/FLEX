@@ -7,6 +7,7 @@
 //
 
 #import "AddressForm.h"
+#import "AddressFormResult.h"
 
 @implementation AddressForm
 

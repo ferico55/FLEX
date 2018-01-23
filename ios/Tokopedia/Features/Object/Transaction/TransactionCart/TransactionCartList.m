@@ -35,6 +35,15 @@
     return _cart_insurance_price_idr ?: @"Rp 0";
 }
 
+-(NSString *)insuranceUsedType {
+    return _insuranceUsedType ?: @"1";
+}
+
+-(NSString *)insuranceUsedDefault {
+    NSString *productPrice = [_cart_total_product_price integerValue]>=1000000 ? @"2" : @"1";
+    return _insuranceUsedDefault ?: productPrice;
+}
+
 -(BOOL)isEditingEnabled {
     return ![[self.cart_products firstObject].product_hide_edit isEqualToString:@"1"];
 }
@@ -98,7 +107,13 @@
     [mapping addAttributeMappingsFromDictionary:@{@"cart_cat_id": @"categoryID",
                                                   @"cart_string": @"cartString",
                                                   @"cart_rates_string": @"rateString",
-                                                  @"cart_rates_value": @"rateValue"}];
+                                                  @"cart_rates_value": @"rateValue",
+                                                  @"insurance_used_type": @"insuranceUsedType",
+                                                  @"insurance_used_default": @"insuranceUsedDefault",
+                                                  @"insurance_used_info": @"insuranceUsedInfo",
+                                                  @"insurance_type": @"insuranceType",
+                                                  @"insurance_type_info": @"insuranceTypeInfo",
+                                                  @"insurance_price": @"insurancePrice"}];
     
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"cart_shipments" toKeyPath:@"cart_shipments" withMapping:[ShippingInfoShipments mapping]]];
     

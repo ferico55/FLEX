@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -17,7 +17,8 @@
                 <outlet property="checkoutButton" destination="IRs-zw-g4I" id="Zsn-QE-48w"/>
                 <outlet property="checkoutView" destination="esW-Te-z8M" id="EpC-ez-KgJ"/>
                 <outlet property="donasiCell" destination="Hth-1j-ch6" id="5Gq-yT-1rX"/>
-                <outlet property="grandTotalLabel" destination="6yM-Im-p4G" id="C1X-UC-14m"/>
+                <outlet property="grandTotalLabel" destination="r22-LF-c1X" id="qkE-nl-a1S"/>
+                <outlet property="insuranceLabel" destination="Voo-6p-SLr" id="jEu-zC-mgw"/>
                 <outlet property="lblUsedVoucherCode" destination="8ap-bG-kTV" id="FFX-zF-fFv"/>
                 <outlet property="lblUsedVoucherMessage" destination="nlZ-Wy-zpw" id="LEN-Hy-x5O"/>
                 <outlet property="promoCTALabel" destination="LWQ-Nw-ahA" id="xwT-U7-daD"/>
@@ -140,28 +141,66 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="559" y="191.5"/>
         </tableViewCell>
-        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="u1p-Qm-vqC" detailTextLabel="6yM-Im-p4G" style="IBUITableViewCellStyleValue1" id="hTf-We-spw" userLabel="Total payment 1Table View Cell">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="96" id="hTf-We-spw" userLabel="Total payment 1Table View Cell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="96"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="hTf-We-spw" id="Fl9-xG-6va">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="320" height="95.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u1p-Qm-vqC">
-                        <rect key="frame" x="16" y="13" width="125.5" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Total Pembayaran" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Kfy-Vx-73y">
+                        <rect key="frame" x="10" y="8" width="125.5" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="6wU-4T-2SI"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="6yM-Im-p4G">
-                        <rect key="frame" x="260.5" y="13" width="43.5" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Rp 0,-" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="r22-LF-c1X">
+                        <rect key="frame" x="266.5" y="8" width="43.5" height="23"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="23" id="m24-d1-Euz"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" weight="medium" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Voo-6p-SLr">
+                        <rect key="frame" x="10" y="39" width="300" height="44"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="44" id="ADb-8l-ggb"/>
+                        </constraints>
+                        <attributedString key="attributedText">
+                            <fragment content="label buat insurance">
+                                <attributes>
+                                    <color key="NSColor" red="0.38431372549999998" green="0.38431372549999998" blue="0.38431372549999998" alpha="1" colorSpace="calibratedRGB"/>
+                                    <font key="NSFont" size="13" name=".SFNSText"/>
+                                </attributes>
+                            </fragment>
+                        </attributedString>
+                        <color key="highlightedColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yaj-Z1-J5k">
+                        <rect key="frame" x="10" y="39" width="300" height="44"/>
+                        <connections>
+                            <action selector="insuranceButton:" destination="-1" eventType="touchUpInside" id="33A-JI-U3e"/>
+                        </connections>
+                    </button>
                 </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="r22-LF-c1X" secondAttribute="trailing" constant="10" id="1UX-Z1-0J5"/>
+                    <constraint firstItem="Yaj-Z1-J5k" firstAttribute="top" secondItem="Voo-6p-SLr" secondAttribute="top" id="B3h-ig-ICD"/>
+                    <constraint firstItem="Voo-6p-SLr" firstAttribute="leading" secondItem="Fl9-xG-6va" secondAttribute="leading" constant="10" id="Bhx-yJ-IAp"/>
+                    <constraint firstItem="Yaj-Z1-J5k" firstAttribute="trailing" secondItem="Voo-6p-SLr" secondAttribute="trailing" id="EL7-0H-lDW"/>
+                    <constraint firstItem="Kfy-Vx-73y" firstAttribute="top" secondItem="Fl9-xG-6va" secondAttribute="top" constant="8" id="Ig0-EW-W3M"/>
+                    <constraint firstItem="Yaj-Z1-J5k" firstAttribute="bottom" secondItem="Voo-6p-SLr" secondAttribute="bottom" id="PUh-P7-dvU"/>
+                    <constraint firstItem="Yaj-Z1-J5k" firstAttribute="leading" secondItem="Voo-6p-SLr" secondAttribute="leading" id="WBl-c2-Kr7"/>
+                    <constraint firstItem="r22-LF-c1X" firstAttribute="top" secondItem="Fl9-xG-6va" secondAttribute="top" constant="8" id="WWW-qJ-75c"/>
+                    <constraint firstAttribute="trailing" secondItem="Voo-6p-SLr" secondAttribute="trailing" constant="10" id="d16-eX-bKH"/>
+                    <constraint firstItem="Voo-6p-SLr" firstAttribute="top" secondItem="Kfy-Vx-73y" secondAttribute="bottom" constant="8" id="dBR-nG-WOV"/>
+                    <constraint firstItem="Kfy-Vx-73y" firstAttribute="leading" secondItem="Fl9-xG-6va" secondAttribute="leading" constant="10" id="qzK-qP-DjE"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="496" y="417"/>
+            <point key="canvasLocation" x="496" y="443"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="nZG-Eg-QJw" detailTextLabel="LIO-AO-bc5" style="IBUITableViewCellStyleValue1" id="3NZ-AS-z69" userLabel="Total LP Table View Cell">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>

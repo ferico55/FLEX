@@ -257,7 +257,7 @@ NSString * const ProductStatusWarehouse = @"3";
         case 0:
             cell = _section0TableViewCell[indexPath.row];
             if (indexPath.row == BUTTON_PRODUCT_INSURANCE) {
-                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURACE[([product.product_must_insurance integerValue]>0)?[product.product_must_insurance integerValue]:0]objectForKey:DATA_NAME_KEY];
+                NSString *productMustInsurance =[ARRAY_PRODUCT_INSURANCE[([product.product_must_insurance integerValue]>0)?[product.product_must_insurance integerValue]:0]objectForKey:DATA_NAME_KEY];
                 cell.detailTextLabel.text = productMustInsurance;
             }
             break;
@@ -351,7 +351,7 @@ NSString * const ProductStatusWarehouse = @"3";
                     AlertPickerView *alertView = [AlertPickerView newview];
                     alertView.tag = 10;
                     alertView.delegate = self;
-                    alertView.pickerData = ARRAY_PRODUCT_INSURACE;
+                    alertView.pickerData = ARRAY_PRODUCT_INSURANCE;
                     [alertView show];
                     break;
                 }
@@ -481,7 +481,7 @@ NSString * const ProductStatusWarehouse = @"3";
         case 10:
         {
             NSInteger index = [[alertView.data objectForKey:DATA_INDEX_KEY] integerValue];
-            NSString *value = [[ARRAY_PRODUCT_INSURACE[index] objectForKey:DATA_VALUE_KEY] stringValue];
+            NSString *value = [[ARRAY_PRODUCT_INSURANCE[index] objectForKey:DATA_VALUE_KEY] stringValue];
             product.product_must_insurance = value;
             [_tableView reloadData];
             break;

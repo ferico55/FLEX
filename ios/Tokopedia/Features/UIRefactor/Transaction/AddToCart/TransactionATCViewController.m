@@ -1,4 +1,4 @@
-//
+ //
 //  TransactionATCViewController.m
 //  Tokopedia
 //
@@ -9,6 +9,7 @@
 #import "Tokopedia-Swift.h"
 
 #import "AlertPickerView.h"
+#import "AlertInfoView.h"
 
 #import "SettingAddressViewController.h"
 #import "TransactionATCViewController.h"
@@ -20,13 +21,14 @@
 #import "MMNumberKeyboard.h"
 #import "PreorderDetail.h"
 #import "NSNumberFormatter+IDRFormater.h"
+#import "profile.h"
 #import "Tokopedia-Swift.h"
 #import "string_transaction.h"
 
 
 @import GoogleMaps;
 
-#define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(1)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(0)}]
+#define ARRAY_INSURACE @[@{DATA_NAME_KEY:@"Ya", DATA_VALUE_KEY:@(2)}, @{DATA_NAME_KEY:@"Tidak", DATA_VALUE_KEY:@(1)}]
 
 #pragma mark - Transaction Add To Cart View Controller
 
@@ -63,6 +65,9 @@
     DelayedActionManager *requestPriceDelayedActionManager;
     DelayedActionManager *quantityDelayedActionManager;
 }
+
+enum insurance {noInsurance = 1, optional = 2, mustInsurance = 3};
+
 @property (weak, nonatomic) IBOutlet UIButton *preorderButton;
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *headerTableView;
@@ -88,6 +93,8 @@
 @property (strong, nonatomic) IBOutlet UIView *messageZeroShipmentView;
 @property (weak, nonatomic) IBOutlet UILabel *messageZeroShipmentLabel;
 @property (strong, nonatomic) IBOutlet UITableViewCell *pinLocationCell;
+
+@property (weak, nonatomic) IBOutlet UIButton *insuranceInfoButton;
 
 @end
 
@@ -180,7 +187,6 @@
         _isFinishRequesting = NO;
         [self alertAndResetIfQtyTextFieldBelowMin];
         [self doCalculate];
-        [self requestRate];
     }
 }
 
@@ -268,6 +274,13 @@
     }
 }
 
+- (IBAction)tapInsuranceInfo:(id)sender {
+    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
+
+    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:@"Asuransi Pengiriman" subtitle:_selectedShipmentPackage.insuranceUsedInfo image:[UIImage imageNamed:@"icon_insurance-green"] buttons: @[closeAction] isAlternative: YES];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
+}
+
 -(void)requestFormWithAddressID:(NSString*)addressID{
     
     [self adjustViewIsLoading:YES];
@@ -297,7 +310,6 @@
     
     if ([_selectedAddress hasAddress]){
         [self doCalculate];
-        [self requestRate];
     }
     
     [self adjustViewIsLoading:NO];
@@ -355,6 +367,10 @@
     NSString *ut = _ATCForm.shop.ut;
     NSString *name = _ATCForm.shop.avail_shipping_code;
     NSArray *shipmentAvailable = _ATCForm.form.shipment;
+    NSString *insurance = @"1";
+    NSNumber *catID = _ATCForm.form.product_detail.product_cat_id;
+    NSString *orderValue = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] stringValue];
+    NSString *productInsurance = _ATCForm.form.product_detail.product_must_insurance;
     
     [RequestRates fetchRateWithName:name
                              origin:origin
@@ -362,6 +378,10 @@
                              weight:weight
                               token:token
                                  ut:ut
+                          insurance:insurance
+                              catID:catID
+                         orderValue:orderValue
+                   productInsurance:productInsurance
                   shipmentAvailable:shipmentAvailable
                           isShowOKE:_ATCForm.shop.show_oke
                           onSuccess:^(RateData *rateData) {
@@ -403,6 +423,7 @@
     }
     _selectedShipment = [self getSelectedShipmentFromShipments:shipments];
     _selectedShipmentPackage = _selectedShipment ? _selectedShipment.products.firstObject : nil;
+    _insuranceInfoButton.hidden = !(_selectedShipmentPackage && _selectedShipmentPackage.insuranceUsedInfo);
     
     [self adjustErrorMessageView];
 }
@@ -476,7 +497,6 @@
     //request when stepper is not clicked for 1 sec
     [requestPriceDelayedActionManager whenNotCalledFor:1 doAction:^{
         [self doCalculate];
-        [self requestRate];
     }];
     
 }
@@ -572,15 +592,15 @@
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryDisclosureIndicator isLoading:!_isFinishRequesting];
 
                         NSInteger insurance = [self insuranceStatus];
-                        if (insurance == 0) {
+                        if (insurance == noInsurance) {
                             label.text = @"Tidak didukung";
                             label.textColor = TEXT_COLOUR_DISABLE;
-                        } else if (insurance == 1) {
+                        } else if (insurance == mustInsurance) {
                             label.text = @"Wajib Asuransi";
                             label.textColor = TEXT_COLOUR_DISABLE;
                         } else {
                             NSInteger insuranceID = [product.product_insurance integerValue];
-                            label.text = (insuranceID==1)?@"Ya":@"Tidak";
+                            label.text = (insuranceID == optional) ? @"Ya" : @"Tidak";
                             label.textColor = TEXT_COLOUR_ENABLE;
                         }
                         break;
@@ -794,7 +814,7 @@
             case TAG_BUTTON_TRANSACTION_INSURANCE:
             {
                 NSInteger insurance = [self insuranceStatus];
-                if (insurance != 0 && insurance !=1) {
+                if (insurance != noInsurance && insurance != mustInsurance) {
                     AlertPickerView *alert = [AlertPickerView newview];
                     alert.tag = indexPath.row;
                     alert.delegate = self;
@@ -893,6 +913,7 @@
                               success:^(TransactionCalculatePriceResult *data) {
                                   
                                   [self successActionCalculate:data];
+                                  [self requestRate];
                                   
                               } failed:^(NSError *error) {
                                   [self failedActionCalculate:error];
@@ -933,6 +954,7 @@
         }
         _selectedShipment = shipmentObject;
         _selectedShipmentPackage = _selectedShipment.products.firstObject;
+        _insuranceInfoButton.hidden = _selectedShipmentPackage.insuranceUsedInfo==nil;
     }
     else if (indexPath.row == TAG_BUTTON_TRANSACTION_SERVICE_TYPE)
     {
@@ -941,6 +963,11 @@
                 for (RateProduct *package in shipment.products) {
                     if ([package.shipper_product_name isEqualToString:(NSString*)object]) {
                         _selectedShipmentPackage = package;
+                        if (_selectedShipmentPackage.insuranceUsedInfo != nil) {
+                            _insuranceInfoButton.hidden = NO;
+                        } else {
+                            _insuranceInfoButton.hidden = YES;
+                        }
                         break;
                     }
                 }
@@ -948,6 +975,7 @@
             }
         }
     }
+    _selectedProduct.product_insurance = _selectedShipmentPackage.insuranceUsedDefault ?: @"2";
     
     [_tableView reloadData];
 }
@@ -1016,7 +1044,7 @@
         _isFinishRequesting = NO;
         [self alertAndResetIfQtyTextFieldBelowMin];
         [self doCalculate];
-        [self requestRate];
+        
     }];
     
     return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
@@ -1029,7 +1057,6 @@
         _isFinishRequesting = NO;
         [self alertAndResetIfQtyTextFieldBelowMin];
         [self doCalculate];
-        [self requestRate];
     }];
     
     return [amount isNumber] && [amount integerValue] <= [ProductDetail maximumPurchaseQuantity];
@@ -1153,34 +1180,14 @@
     NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] integerValue];
     
     /* Untuk auto insurance*/
-    NSInteger insurance = 2;
+    NSInteger insurance = _selectedShipmentPackage ? [_selectedShipmentPackage.insuranceType integerValue] : 2;
     NSInteger shipmentID = [_selectedShipment.shipper_id integerValue];
     NSInteger ongkir = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedShipmentPackage.price] integerValue];
     
-    if (shipmentID == 1) {
-        if ((ongkir * 10) >= productPrice) {
-            insurance = 0;
-        } else {
-            insurance = 2;
-        };
-    } else if (shipmentID == 6) {
-        if (productPrice <= 299999) {
-            insurance = 0;
-        } else {
-            insurance = 1;
-        };
-    } else if (shipmentID == 7) {
-        if (productPrice <= 299999) {
-            insurance = 0;
-        } else {
-            insurance = 1;
-        };
-    } else if (shipmentID == 9) {
-        if ((ongkir * 10) >= productPrice) {
-            insurance = 0;
-        } else {
-            insurance = 2;
-        };
+    if (shipmentID == 6) { //wahana
+        if (productPrice >= 300000) {
+            insurance = 3;
+        }
     }
     
     return insurance;
@@ -1198,5 +1205,4 @@
         [alert show];
     }
 }
-
 @end

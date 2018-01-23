@@ -75,6 +75,13 @@
 @property (nonatomic, strong) NSString *categoryID;
 @property (nonatomic, strong) NSString *cartString;
 
+@property (nonatomic, strong) NSString *insuranceUsedType;
+@property (nonatomic, strong) NSString *insuranceUsedDefault;
+@property (nonatomic, strong) NSString *insuranceUsedInfo;
+@property (nonatomic, strong) NSString *insuranceType;
+@property (nonatomic, strong) NSString *insuranceTypeInfo;
+@property (nonatomic, strong) NSString *insurancePrice;
+
 @property (nonatomic) BOOL isEditingEnabled;
 
 @end

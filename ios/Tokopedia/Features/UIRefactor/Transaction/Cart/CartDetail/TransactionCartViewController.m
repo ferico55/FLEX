@@ -124,6 +124,8 @@ InputPromoViewDelegate
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *totalPaymentCell;
 @property (weak, nonatomic) IBOutlet UILabel *grandTotalLabel;
+@property (weak, nonatomic) IBOutlet UILabel *insuranceLabel;
+- (IBAction)insuranceButton:(id)sender;
 
 @property (strong, nonatomic) IBOutlet UITableViewCell *usedLPCell;
 @property (strong, nonatomic) IBOutlet UITableViewCell *LPCashbackCell;
@@ -413,10 +415,25 @@ InputPromoViewDelegate
         NSString *totalPayment;
         if ([self isUseGrandTotalWithoutLP]) {
             totalPayment = _cart.grand_total_without_lp_idr;
-        }
-        else
+        } else
             totalPayment = _cart.grand_total_idr;
-        [cell.detailTextLabel setText:totalPayment animated:YES];
+        [_grandTotalLabel setText:totalPayment animated:YES];
+        _insuranceLabel.text = @"Dengan membayar, saya menyetujui syarat dan ketentuan asuransi.";
+        NSString *text = _insuranceLabel.text;
+        NSMutableAttributedString *link = [[NSMutableAttributedString alloc] initWithString:text];
+        NSRange range = [text rangeOfString:@"syarat dan ketentuan asuransi"];
+        [link addAttribute:NSUnderlineStyleAttributeName value:@(NSUnderlineStyleSingle) range:range];
+        UIFont *font = [UIFont microTheme];
+        [link addAttribute:NSFontAttributeName value:font range:range];
+        [link addAttribute:NSForegroundColorAttributeName value:[UIColor tpGreen] range:range];
+        _insuranceLabel.attributedText = link;
+        
+        for (TransactionCartList* list in _cart.list) {
+            if ([list.insuranceUsedType isEqualToString:@"2"] && ![list.insurancePrice isEqualToString:@"0"]) {
+                _insuranceLabel.hidden = NO;
+                break;
+            }
+        }
     }
     
     UIView *lineView = [[UIView alloc] initWithFrame:CGRectMake(0, cell.contentView.frame.size.height-1, _tableView.frame.size.width,1)];
@@ -777,7 +794,6 @@ InputPromoViewDelegate
         TransactionCartList *list = _list[i];
         NSInteger shopID = [list.cart_shop.shop_id integerValue];
         NSInteger addressID =[list.cart_destination.address_id integerValue];
-        //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
         NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
         NSString *partialDetailKey = [NSString stringWithFormat:FORMAT_CART_CANCEL_PARTIAL_KEY,shopID,addressID, shipmentPackageID];
         
@@ -934,7 +950,6 @@ InputPromoViewDelegate
             TransactionCartList *list = _list[partialSection];
             NSInteger shopID = [list.cart_shop.shop_id integerValue];
             NSInteger addressID =[list.cart_destination.address_id integerValue];
-            //NSInteger shipmentID = [list.cart_shipments.shipment_id integerValue];
             NSInteger shipmentPackageID = [list.cart_shipments.shipment_package_id integerValue];
             
             if (index == 0){
@@ -1332,6 +1347,14 @@ InputPromoViewDelegate
         return (_cart.promoSuggestion.isVisible) ? UITableViewAutomaticDimension : 0; //promo
     } else if (indexPath.section == _list.count+3){
         return 75; // donasi
+    } else if (indexPath.section == _list.count+4){ //total pembayaran
+        for (TransactionCartList* list in _cart.list) {
+            if ([list.insuranceUsedType isEqualToString:@"2"] && ![list.insurancePrice isEqualToString:@"0"]) {
+                return 96;
+            }
+            return 44;
+        }
+        return UITableViewAutomaticDimension;
     }
     
     return DEFAULT_ROW_HEIGHT;
@@ -1686,4 +1709,10 @@ InputPromoViewDelegate
     [self useVoucher];
 }
 
+- (IBAction)insuranceButton:(id)sender {
+    WebViewController *webViewController = [WebViewController new];
+    webViewController.strURL = [NSString stringWithFormat: @"%@%@", [NSString v4Url], @"/v4/web-view/get_insurance_info.pl"];
+    webViewController.strTitle = @"Syarat dan Ketentuan";
+    [self.navigationController pushViewController:webViewController animated:YES];
+}
 @end

@@ -69,6 +69,13 @@
 @property (nonatomic, strong) NSDictionary *productFieldObjects;
 @property (nonatomic) BOOL isProductClickable;
 
+@property (nonatomic, strong) NSString *insurance_used_type;
+@property (nonatomic, strong) NSString *insurance_used_default;
+@property (nonatomic, strong) NSString *insurance_used_info;
+@property (nonatomic, strong) NSString *insurance_type;
+@property (nonatomic, strong) NSString *insurance_type_info;
+@property (nonatomic, strong) NSString *insurance_price;
+
 + (NSInteger)maximumPurchaseQuantity;
 
 @end

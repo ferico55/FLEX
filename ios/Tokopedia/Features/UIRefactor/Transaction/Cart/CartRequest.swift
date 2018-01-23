@@ -99,6 +99,13 @@ class CartRequest: NSObject {
             let networkManager: TokopediaNetworkManager = TokopediaNetworkManager()
             networkManager.isUsingDefaultError = false
             networkManager.isUsingHmac = true
+            
+            var productInsurance = "0"
+            if cart.cart_products.filter({ product -> Bool in
+                return (product.product_must_insurance == "1")
+            }).count > 0 {
+                productInsurance = "1"
+            }
 
             let param: [String:String] = [
                 "names": cart.cart_shipments.shipmentCode,
@@ -109,8 +116,8 @@ class CartRequest: NSObject {
                 "nocache": "1",
                 "cat_id": cart.categoryID,
                 "order_value": cart.cart_total_product_price,
-                "insurance": cart.cart_insurance_prod,
-                "product_insurance": cart.cart_force_insurance,
+                "insurance": "1",
+                "product_insurance": productInsurance,
                 "ut": ut
             ]
 
@@ -154,7 +161,9 @@ class CartRequest: NSObject {
 
         cart.cart_shipping_rate = rate.price
         cart.cart_shipping_rate_idr = rate.formatted_price
-        cart.cart_insurance_price = productRate?.insurancePrice
+        
+        let insurancePrice = calculateInsurancePrice(cart, productRate: productRate)
+        cart.cart_insurance_price = insurancePrice
 
         cart.cart_total_amount = "\(Int(cart.cart_shipping_rate)! + Int(cart.cart_total_product_price)! + Int(cart.cart_insurance_price)! + Int(cart.cart_logistic_fee)!)"
 
@@ -166,18 +175,27 @@ class CartRequest: NSObject {
             cart.cart_total_amount_idr = NumberFormatter.idr().string(from: NSNumber(value:totalAmount))
         }
 
-        cart.insuranceInfo = rate.insuranceTypeInfo
         cart.rateValue = "\(rate.price ?? "")|\(cart.cart_total_weight!)|\(rate.ut ?? "")|\(productRate?.check_sum ?? "")"
-
-        guard let type = productRate?.insuranceType else { return }
-        guard let insuranceType = InsuranceType(rawValue: type) else { return }
-
-        switch insuranceType {
-            case InsuranceType.noInsurace:
-                cart.cart_cannot_insurance = "1"
-            case InsuranceType.mustInsurance:
-                cart.cart_force_insurance = "1"
-            default: break
+        
+        cart.insuranceUsedType = rate.insuranceUsedType
+        cart.insuranceUsedDefault = rate.insuranceUsedDefault
+        cart.insuranceUsedInfo = rate.insuranceUsedInfo
+        cart.insuranceType = rate.insuranceType
+        cart.insuranceTypeInfo = rate.insuranceTypeInfo
+        cart.insurancePrice = insurancePrice
+    }
+    
+    private func calculateInsurancePrice(_ cart: TransactionCartList, productRate: RateProduct?) -> String {
+        var insurancePrice = "0"
+        if let price = productRate?.insurancePrice,
+            cart.cart_force_insurance == "1" ||
+                cart.cart_insurance_prod == "1" ||
+                cart.cart_products.filter({ product -> Bool in
+                    return (product.product_must_insurance == "1" ||
+                        product.product_use_insurance == "1")
+                }).count > 1 {
+            insurancePrice = price
         }
+        return insurancePrice;
     }
 }

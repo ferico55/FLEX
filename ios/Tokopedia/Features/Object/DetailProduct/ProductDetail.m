@@ -118,7 +118,14 @@
                       @"product_error_msg",
                       @"product_price_last",
                       @"product_picture",
-                      @"product_cat_name"
+                      @"product_cat_name",
+                      @"product_cat_id",
+                      @"insurance_used_default",
+                      @"insurance_used_info",
+                      @"insurance_used_type",
+                      @"insurance_type",
+                      @"insurance_type_info",
+                      @"insurance_price"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

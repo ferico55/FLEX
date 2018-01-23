@@ -14,7 +14,6 @@
 
 @property (nonatomic) NSInteger is_success;
 @property (strong, nonatomic, nonnull) NSString *cc_agent;
-@property (strong, nonatomic, nonnull) LuckyDeal *ld;
 @property (strong, nonatomic, nonnull) TxEMoneyData *emoney_data;
 @property (strong, nonatomic, nonnull) NSDictionary *parameter;
 @property (strong, nonatomic, nonnull) NSString *query_string;

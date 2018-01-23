@@ -42,6 +42,12 @@
     UIView *lastNotificationView;
 }
 
+typedef NS_ENUM(NSUInteger, InsuranceType) {
+    InsuranceTypeNoInsurance = 1,
+    InsuranceTypeOptional = 2,
+    InsuranceTypeMustInsurance = 3
+};
+
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewCell;
 @property (weak, nonatomic) IBOutlet UILabel *district;
@@ -51,6 +57,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *recieverNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *recieverPhoneLabel;
 
+@property (weak, nonatomic) IBOutlet UILabel *insuranceLabel;
+- (IBAction)insuranceInfoButton:(id)sender;
+
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *tableViewSummaryCell;
 @property (weak, nonatomic) IBOutlet UILabel *senderNameLabel;
 @property (weak, nonatomic) IBOutlet UILabel *senderPhoneLabel;
@@ -59,6 +68,8 @@
 @property (strong, nonatomic) IBOutlet UIButton *pinLocationNameButton;
 @property (weak, nonatomic) IBOutlet UIView *viewAddressCell;
 @property (strong, nonatomic) IBOutlet UIButton *pinLocationSummaryButton;
+
+@property (weak, nonatomic) IBOutlet UIButton *insuranceInfoButton;
 
 @end
 
@@ -325,7 +336,7 @@
 
 -(void)chooseInsurance
 {
-    if ([_cart.cart_force_insurance integerValue]!=1&&[_cart.cart_cannot_insurance integerValue]!=1) {
+    if ([_cart.insuranceType integerValue]==InsuranceTypeOptional || _cart.insuranceType==nil) {
         AlertPickerView *picker = [AlertPickerView newview];
         picker.delegate = self;
         picker.tag = TAG_PICKER_ALERT_INSURANCE;
@@ -471,19 +482,19 @@
             case 5:
             {
                 NSString *insuranceName;
-                if ([_cart.cart_cannot_insurance integerValue]==1) {
+                if ([_cart.insuranceType integerValue] == InsuranceTypeNoInsurance) {
                    insuranceName = _cart.insuranceInfo?:@"Tidak didukung";
-                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    _insuranceLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
-                else if ([_cart.cart_force_insurance integerValue]==1) {
+                else if ([_cart.insuranceType integerValue] == InsuranceTypeMustInsurance) {
                     insuranceName = _cart.insuranceInfo?:@"Wajib Asuransi";
-                    cell.detailTextLabel.textColor = [UIColor grayColor];
+                    _insuranceLabel.textColor = [UIColor grayColor];
                     cell.accessoryType = UITableViewCellAccessoryNone;
                 }
                 else{
-                    insuranceName = _cart.cart_insurance_name?:([_cart.cart_insurance_price integerValue]!=0)?@"Ya":@"Tidak";
-                     cell.detailTextLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
+                    insuranceName = _cart.cart_insurance_name?:([_cart.cart_insurance_price integerValue] > 0)?@"Ya":@"Tidak";
+                     _insuranceLabel.textColor = [UIColor colorWithRed:0.0 green:122.0/255.0 blue:1.0 alpha:1.0];
                     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
                 }
                 if (!_isFinishCalculate) {
@@ -495,7 +506,7 @@
                 else
                 {   cell.accessoryView = nil;
                 }
-                cell.detailTextLabel.text = insuranceName;
+                _insuranceLabel.text = insuranceName;
                 break;
             }
             default:
@@ -597,6 +608,8 @@
             [self showError:error];
         }
     }
+    
+    _insuranceInfoButton.hidden = _cart.insuranceUsedInfo==nil;
 }
 
 -(void)adjustLocationName:(NSString*)name{
@@ -679,6 +692,7 @@
                                                  
                                                  _isFinishCalculate = YES;
                                                  _shipments = data.shipment;
+                                                 
                                                  [_tableView reloadData];
                                                  
                                              } onFailure:^{
@@ -762,4 +776,10 @@
                                  }];
 }
 
+- (IBAction)insuranceInfoButton:(id)sender {
+    CFAlertAction* closeAction = [CFAlertAction actionWithTitle:@"Tutup" style:CFAlertActionStyleDefault alignment:CFAlertActionAlignmentJustified backgroundColor:[UIColor tpGreen] textColor:UIColor.whiteColor handler:nil];
+    
+    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:@"Asuransi Pengiriman" subtitle:_cart.insuranceUsedInfo image:[UIImage imageNamed:@"icon_insurance-green"] buttons: @[closeAction] isAlternative: YES];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:alertViewController animated:YES completion:nil];
+}
 @end

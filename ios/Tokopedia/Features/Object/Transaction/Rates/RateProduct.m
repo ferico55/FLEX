@@ -18,6 +18,15 @@
     return _insuranceType ?: @"0";
 }
 
+-(NSString *)insuranceUsedType {
+    return _insuranceUsedType ?: @"1";
+}
+
+-(NSString *)insuranceUsedDefault {
+    NSString *productPrice = [_price integerValue]>=1000000 ? @"2" : @"1";
+    return _insuranceUsedDefault ?: productPrice;
+}
+
 +(NSDictionary *)attributeMappingDictionary
 {
     NSArray *keys = @[
@@ -43,7 +52,10 @@
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
     [mapping addAttributeMappingsFromDictionary:@{@"insurance_price": @"insurancePrice",
                                                   @"insurance_type_info": @"insuranceTypeInfo",
-                                                  @"insurance_type": @"insuranceType"}];
+                                                  @"insurance_type": @"insuranceType",
+                                                  @"insurance_used_type": @"insuranceUsedType",
+                                                  @"insurance_used_default": @"insuranceUsedDefault",
+                                                  @"insurance_used_info": @"insuranceUsedInfo"}];
     return mapping;
 }
 

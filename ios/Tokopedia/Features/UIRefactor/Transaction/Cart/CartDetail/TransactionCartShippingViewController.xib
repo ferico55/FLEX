@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12120" systemVersion="17A405" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12088"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -12,6 +14,8 @@
             <connections>
                 <outlet property="addressStreetLabel" destination="gsN-AN-kC6" id="AJY-HA-4ho"/>
                 <outlet property="cellPinLocation" destination="VIz-4N-vEX" id="ntE-lz-DcF"/>
+                <outlet property="insuranceInfoButton" destination="3Bf-CR-hFN" id="Dhe-Dg-fDF"/>
+                <outlet property="insuranceLabel" destination="Hnh-VL-RkY" id="lKn-et-tDV"/>
                 <outlet property="pinLocationNameButton" destination="gF6-Lv-wGf" id="Mgy-ol-nzL"/>
                 <outlet property="pinLocationSummaryButton" destination="hU5-8T-Ozh" id="6Z6-WP-juh"/>
                 <outlet property="recieverNameLabel" destination="c7a-Pc-Vse" id="mQO-7H-Kut"/>
@@ -70,11 +74,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="FWA-vE-z1N" id="Mus-bf-GeG">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alamat Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="RsC-RT-UV6">
-                        <rect key="frame" x="15" y="13" width="97" height="18"/>
+                        <rect key="frame" x="16" y="13" width="97" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -83,7 +87,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="HyD-0S-Ygp">
                         <rect key="frame" x="248.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="addressDetail"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -100,15 +103,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Alamat Tujuan" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fL8-Vx-853">
-                        <rect key="frame" x="15" y="13" width="97" height="18"/>
+                        <rect key="frame" x="16" y="13" width="97" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="awF-wk-qTh">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="addressHeader"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -120,20 +122,18 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="r04-au-7GB" id="cLN-9b-JrA">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kurir Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PZX-VB-Fqg">
-                        <rect key="frame" x="15" y="13" width="113" height="18"/>
+                        <rect key="frame" x="16" y="13" width="113" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="courier"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="kNk-G2-19B">
                         <rect key="frame" x="248.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="courierDetail"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -150,15 +150,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kurir Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="cdQ-4E-uHU">
-                        <rect key="frame" x="15" y="13" width="113" height="18"/>
+                        <rect key="frame" x="16" y="13" width="113" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="nnU-qU-EHM">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="courierHeader"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -170,11 +169,11 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" contentMode="center" tableViewCell="kWI-ne-rhU" id="dAt-xP-nfF">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Paket Pengiriman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SFT-bG-1vW">
-                        <rect key="frame" x="15" y="13" width="119" height="18"/>
+                        <rect key="frame" x="16" y="13" width="119" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
@@ -182,7 +181,6 @@
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="T6L-Qj-gm2">
                         <rect key="frame" x="248.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="packageDetail"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -191,30 +189,46 @@
             </tableViewCellContentView>
             <point key="canvasLocation" x="843" y="320"/>
         </tableViewCell>
-        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="osA-6x-jI2" detailTextLabel="mHy-vz-ZEM" style="IBUITableViewCellStyleValue1" id="kAX-Lv-g0P">
+        <tableViewCell tag="15" contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="kAX-Lv-g0P">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
             <autoresizingMask key="autoresizingMask"/>
             <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="kAX-Lv-g0P" id="k9F-Ht-txy">
-                <rect key="frame" x="0.0" y="0.0" width="287" height="43.5"/>
+                <rect key="frame" x="0.0" y="0.0" width="286" height="43.5"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="osA-6x-jI2">
-                        <rect key="frame" x="15" y="13" width="99.5" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MeD-ki-FBG">
+                        <rect key="frame" x="16" y="12" width="99.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
-                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="mHy-vz-ZEM">
-                        <rect key="frame" x="248.5" y="13" width="36.5" height="18"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="insuranceDetail"/>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3Bf-CR-hFN">
+                        <rect key="frame" x="123.5" y="13" width="16" height="16"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="16" id="Dq9-KF-nui"/>
+                            <constraint firstAttribute="width" constant="16" id="uzH-MB-uJj"/>
+                        </constraints>
+                        <state key="normal" title="Button" image="icon_information"/>
+                        <connections>
+                            <action selector="insuranceInfoButton:" destination="-1" eventType="touchUpInside" id="NSZ-MV-70w"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Hnh-VL-RkY">
+                        <rect key="frame" x="241.5" y="12" width="36.5" height="18"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
+                <constraints>
+                    <constraint firstItem="3Bf-CR-hFN" firstAttribute="centerY" secondItem="k9F-Ht-txy" secondAttribute="centerY" id="LCl-wj-iVg"/>
+                    <constraint firstAttribute="trailingMargin" secondItem="Hnh-VL-RkY" secondAttribute="trailing" id="LG6-lv-UtD"/>
+                    <constraint firstItem="Hnh-VL-RkY" firstAttribute="centerY" secondItem="k9F-Ht-txy" secondAttribute="centerY" id="fJZ-P7-7cO"/>
+                    <constraint firstItem="3Bf-CR-hFN" firstAttribute="leading" secondItem="MeD-ki-FBG" secondAttribute="trailing" constant="8" id="jnC-To-usT"/>
+                    <constraint firstItem="MeD-ki-FBG" firstAttribute="leading" secondItem="k9F-Ht-txy" secondAttribute="leadingMargin" id="vmc-g6-zH9"/>
+                    <constraint firstItem="MeD-ki-FBG" firstAttribute="centerY" secondItem="k9F-Ht-txy" secondAttribute="centerY" id="vwF-V8-3IE"/>
+                </constraints>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="441" y="422"/>
+            <point key="canvasLocation" x="529" y="351"/>
         </tableViewCell>
         <tableViewCell clipsSubviews="YES" tag="15" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="yDe-Lh-Dju" detailTextLabel="dbL-Eb-blF" style="IBUITableViewCellStyleValue1" id="6Tc-Q4-wn6">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -224,14 +238,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Kirim Sebagian" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="yDe-Lh-Dju">
-                        <rect key="frame" x="15" y="13" width="103" height="18"/>
+                        <rect key="frame" x="16" y="13" width="102.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="partialOrder"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dbL-Eb-blF">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.25882352939999997" green="0.25882352939999997" blue="0.25882352939999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -249,13 +262,13 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Dropship" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="fRF-vg-cov">
-                        <rect key="frame" x="15" y="13" width="62.5" height="18"/>
+                        <rect key="frame" x="16" y="13" width="62.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Tnj-BL-TTA">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
@@ -272,15 +285,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Ongkos Kirim" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Ra9-V1-5xw">
-                        <rect key="frame" x="15" y="13" width="92" height="18"/>
+                        <rect key="frame" x="16" y="13" width="91.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Mhc-HN-8X7">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="shipping"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
@@ -297,23 +309,22 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="vSM-Gz-fsK">
-                        <rect key="frame" x="15" y="13" width="99.5" height="18"/>
+                        <rect key="frame" x="16" y="13" width="99.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qbN-tT-MZM">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" label="insurance"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
             </tableViewCellContentView>
-            <point key="canvasLocation" x="441" y="582"/>
+            <point key="canvasLocation" x="516" y="439"/>
         </tableViewCell>
         <tableViewCell tag="14" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" textLabel="ftm-RD-yPa" detailTextLabel="SN0-HD-3kR" style="IBUITableViewCellStyleValue1" id="yvR-8Y-t06">
             <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -323,15 +334,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Biaya Asuransi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ftm-RD-yPa">
-                        <rect key="frame" x="15" y="13" width="99.5" height="18"/>
+                        <rect key="frame" x="16" y="13" width="99.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="None" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="SN0-HD-3kR">
-                        <rect key="frame" x="268.5" y="13" width="36.5" height="18"/>
+                        <rect key="frame" x="267.5" y="13" width="36.5" height="18"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                        <accessibility key="accessibilityConfiguration" identifier="insuranceHeader"/>
                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
                         <nil key="highlightedColor"/>
                     </label>
@@ -369,7 +379,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="291" translatesAutoresizingMaskIntoConstraints="NO" id="gsN-AN-kC6">
                                 <rect key="frame" x="15" y="88" width="290" height="70"/>
-                                <accessibility key="accessibilityConfiguration" identifier="buyerAddress"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="70" id="qIw-V8-xjj"/>
                                 </constraints>
@@ -387,7 +396,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yXf-dG-oWL">
                                 <rect key="frame" x="15" y="187" width="290" height="21"/>
-                                <accessibility key="accessibilityConfiguration" identifier="buyerPhone"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="c1k-6f-6xF"/>
                                 </constraints>
@@ -396,7 +404,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="-" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="c7a-Pc-Vse">
                                 <rect key="frame" x="15" y="36" width="290" height="21"/>
-                                <accessibility key="accessibilityConfiguration" identifier="buyerName"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="dMU-cc-FBd"/>
                                 </constraints>
@@ -462,7 +469,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mnk-N0-OCT">
                                 <rect key="frame" x="15" y="36" width="290" height="21"/>
-                                <accessibility key="accessibilityConfiguration" identifier="sellerName"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="PUB-iu-8bp"/>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="PYD-zW-n8c"/>
@@ -482,7 +488,6 @@
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="middleTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="emy-IJ-6gK">
                                 <rect key="frame" x="15" y="88" width="290" height="21"/>
-                                <accessibility key="accessibilityConfiguration" identifier="sellerPhone"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="290" id="PgO-VT-4J8"/>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="21" id="wH9-D9-Eau"/>
@@ -543,7 +548,6 @@
                     </imageView>
                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gF6-Lv-wGf">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="70"/>
-                        <accessibility key="accessibilityConfiguration" identifier="mapButton"/>
                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                         <inset key="contentEdgeInsets" minX="93" minY="0.0" maxX="20" maxY="0.0"/>
                         <state key="normal" title="Tentukan Peta Lokasi">
@@ -614,6 +618,7 @@
         </tableViewCell>
     </objects>
     <resources>
+        <image name="icon_information" width="19" height="19"/>
         <image name="icon_pinpoin_toped.png" width="70" height="70"/>
         <image name="map_gokil.png" width="96" height="96"/>
     </resources>

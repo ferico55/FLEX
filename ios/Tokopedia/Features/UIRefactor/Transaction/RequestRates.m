@@ -20,7 +20,7 @@
     return @"/rates/v1";
 }
 
-+(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut shipmentAvailable:(NSArray*)shipmentAvailable isShowOKE:(NSString*)isShowOKE onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
++(void)fetchRateWithName:(NSString *)name origin:(NSString*)origin destination:(NSString *)destination weight:(NSString*)weight token:(NSString*)token ut:(NSString*)ut insurance:(NSString*)insurance catID:(NSNumber*)catID orderValue:(NSString*)orderValue productInsurance:(NSString*)productInsurance shipmentAvailable:(NSArray*)shipmentAvailable isShowOKE:(NSString*)isShowOKE onSuccess:(void(^)(RateData* rateData))success onFailure:(void(^)(NSError* errorResult)) error{
     
     [AnalyticsManager trackUserInformation];
     
@@ -28,12 +28,16 @@
     NSString *pathUrl = [RequestRates pathURL];
     
     NSDictionary *param = @{
-                            @"names"         :name?:@"",
-                            @"origin"        :origin?:@"",
-                            @"destination"   :destination?:@"",
-                            @"weight"        :weight,
-                            @"ut"            :ut,
-                            @"token"         :token
+                            @"names" : name?:@"",
+                           @"origin" : origin?:@"",
+                      @"destination" : destination?:@"",
+                           @"weight" : weight,
+                               @"ut" : ut,
+                            @"token" : token,
+                        @"insurance" : insurance,
+                           @"cat_id" : catID,
+                      @"order_value" : orderValue,
+                @"product_insurance" : productInsurance
                            };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingDefaultError = NO;

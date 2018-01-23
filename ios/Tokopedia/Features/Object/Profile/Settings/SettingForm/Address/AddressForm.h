@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "AddressFormResult.h"
+@class AddressFormResult;
 
 @interface AddressForm : NSObject <TKPObjectMapping>
 
