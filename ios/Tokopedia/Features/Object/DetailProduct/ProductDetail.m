@@ -35,6 +35,14 @@
     return [_product_name kv_decodeHTMLCharacterEntities];
 }
 
+- (BOOL)isProductClickable {
+    return
+    ([self.product_error_msg isEqualToString:@""] ||
+    [self.product_error_msg isEqualToString:@"0"] ||
+    self.product_error_msg == nil) &&
+    ![self.product_hide_edit isEqualToString:@"1"];
+}
+
 - (NSString *)product_etalase {
     return [_product_etalase kv_decodeHTMLCharacterEntities];
 }
@@ -132,6 +140,8 @@
 + (NSInteger)maximumPurchaseQuantity {
     return 10000;
 }
+
+
 
 
 @end

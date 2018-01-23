@@ -646,8 +646,7 @@ InputPromoViewDelegate
     NSInteger indexProduct = indexPath.row;
     NSArray *listProducts = list.cart_products;
     ProductDetail *product = listProducts[indexProduct];
-    
-    if ([product.product_error_msg isEqualToString:@""] || [product.product_error_msg isEqualToString:@"0"] || product.product_error_msg == nil) {
+    if (product.isProductClickable) {
         [NavigateViewController navigateToProductFromViewController:self
                                                       withProductID:product.product_id
                                                             andName:product.product_name

@@ -208,7 +208,8 @@ class ShopViewController: UIViewController {
             NSFontAttributeName: UIFont.largeTheme()
         ]
         
-        let homeViewController = ShopHomeViewController(url: shop.result.info.shop_official_top)
+        let homeUrl = UserAuthentificationManager().webViewUrl(fromUrl: shop.result.info.shop_official_top)
+        let homeViewController = ShopHomeViewController(url: homeUrl)
         homeViewController.data = data as [NSObject: AnyObject]?
         
         let productViewController = ShopProductPageViewController()

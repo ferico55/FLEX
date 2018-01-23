@@ -67,6 +67,7 @@
 @property (nonatomic, strong) ProductModelView *viewModel;
 
 @property (nonatomic, strong) NSDictionary *productFieldObjects;
+@property (nonatomic) BOOL isProductClickable;
 
 + (NSInteger)maximumPurchaseQuantity;
 

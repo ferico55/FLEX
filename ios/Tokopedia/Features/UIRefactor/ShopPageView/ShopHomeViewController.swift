@@ -89,8 +89,11 @@ class ShopHomeViewController: UIViewController {
         }
         
         webView.navigationDelegate = self
+        guard let shopUrl = URL(string: self.url) else {
+            return
+        }
         
-        webView.load(URLRequest(url: URL(string: self.url)!))
+        webView.load(requestForURL(shopUrl))
         
         webView.bk_addObserver(forKeyPath: "estimatedProgress") { [unowned self] (view: Any?) in
             let webView = view as! WKWebView
@@ -109,16 +112,31 @@ class ShopHomeViewController: UIViewController {
     deinit {
         webView.bk_removeAllBlockObservers()
     }
+    
+    fileprivate func requestForURL(_ url: URL) -> URLRequest {
+        var request: NSMutableURLRequest
+        
+        request = NSMutableURLRequest(authorizedHeader: url)
+        return request as URLRequest
+    }
 }
 
 extension ShopHomeViewController: ShopTabChild {
     func refreshContent() {
-        self.webView.load(URLRequest(url: URL(string: self.url)!))
+        guard let shopUrl = URL(string: self.url) else {
+            return
+        }
+        
+        webView.load(requestForURL(shopUrl))
     }
     
     func tabWillChange(to target: UIViewController) {
         if target !== self {
-            webView.load(URLRequest(url: URL(string: self.url)!))
+            guard let shopUrl = URL(string: self.url) else {
+                return
+            }
+            
+            webView.load(requestForURL(shopUrl))
         }
     }
 }
@@ -132,6 +150,8 @@ extension ShopHomeViewController: WKNavigationDelegate {
         } else if navigationAction.request.url!.absoluteString == self.url {
             decisionHandler(.allow)
         } else if let targetFrame = navigationAction.targetFrame, !targetFrame.isMainFrame {
+            decisionHandler(.allow)
+        } else if navigationAction.request.url!.absoluteString.contains("_apps/top"){
             decisionHandler(.allow)
         } else {
             let webViewController = WebViewController()
