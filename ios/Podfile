@@ -111,7 +111,7 @@ def common_pods
     pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
     
-    pod 'lottie-ios', '~> 1.5.2'
+    pod 'lottie-ios', '~> 2.0'
     pod 'Apollo', '~> 0.6.5'
     pod 'CFAlertViewController', :git => 'https://github.com/digitkhrisnaa/CFAlertViewController', :branch => 'modifications'
     pod 'Wrap'

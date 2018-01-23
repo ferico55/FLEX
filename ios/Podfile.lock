@@ -131,7 +131,7 @@ PODS:
   - KeychainAccess (3.0.1)
   - KMNavigationBarTransition (1.1.5)
   - LogEntries (0.0.1)
-  - lottie-ios (1.5.2)
+  - lottie-ios (2.1.5)
   - Masonry (1.0.1)
   - MMNumberKeyboard (0.1.8)
   - MoEngage-iOS-SDK (3.3.0)
@@ -317,7 +317,7 @@ DEPENDENCIES:
   - KeychainAccess (~> 3.0)
   - KMNavigationBarTransition (~> 1.1.5)
   - LogEntries (~> 0.0.1)
-  - lottie-ios (~> 1.5.2)
+  - lottie-ios (~> 2.0)
   - Masonry (~> 1.0.1)
   - MMNumberKeyboard (~> 0.1.8)
   - MoEngage-iOS-SDK (~> 3.3.0)
@@ -497,7 +497,7 @@ SPEC CHECKSUMS:
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
   LogEntries: a1f16e3c9edc0d6a52209fe6cd7281ab07fb7657
-  lottie-ios: 255a0e95973a5c4424e809d7a5c19f7384c73e84
+  lottie-ios: 836cdbba92f62f3c6a00e37a4ce485321fe317cf
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
   MMNumberKeyboard: 812487dc9f121a184d3d56e28d99114d7ba7b3bc
   MoEngage-iOS-SDK: 7862a1933fb5fd181309955b3a7dbe18dcaa717f
@@ -549,6 +549,6 @@ SPEC CHECKSUMS:
   yoga: c8a06e50634d2d2b08c9500b71f3b734a13aa360
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 1103a8d02f8b9966f1119a5c070e90359c305ce3
+PODFILE CHECKSUM: 1dfeea469cadb8d751de27a26ce77d3871e4bf42
 
 COCOAPODS: 1.3.1
