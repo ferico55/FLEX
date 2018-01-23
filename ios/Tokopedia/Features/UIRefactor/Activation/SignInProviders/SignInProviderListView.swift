@@ -26,17 +26,12 @@ class SignInProviderListView: UIView {
     }
     //    MARK: - Public
     func setSignInProviders(isRegister: Bool) {
-        var providers = SignInProvider.defaultProviders()
+        var providers = SignInProvider.defaultProviders(useFor: .login)
         let isAvailable = TouchIDHelper.sharedInstance.isTouchIDAvailable()
         let connectedAccounts = TouchIDHelper.sharedInstance.numberOfConnectedAccounts()
-        let phoneNumberProvider = SignInProvider.phoneNumberProvider()
         if isAvailable == true && connectedAccounts > 0 {
             let touchIdProvider = SignInProvider.touchIdProvider()
             providers.insert(touchIdProvider, at: 0)
-            providers.insert(phoneNumberProvider, at: 3)
-        }
-        else{
-            providers.insert(phoneNumberProvider, at: 2)
         }
         
         self.buttons = self.setProviders(providers: providers, isRegister: isRegister)

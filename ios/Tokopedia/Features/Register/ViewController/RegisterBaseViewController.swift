@@ -33,14 +33,14 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         googleSignIn?.uiDelegate = self
         googleSignIn?.allowsSignInWithWebView = false
         
-        self.setSignInProviders(provider: SignInProvider.defaultProviders())
+        self.setSignInProviders(provider: SignInProvider.defaultProviders(useFor: .register))
         
         AuthenticationService.shared.getThirdPartySignInOptions { [weak self] providers, _ in
-            guard let providers = providers else {
+            guard let `self` = self , let providers = providers else {
                 return
             }
             
-            self?.setSignInProviders(provider: providers)
+            self.setSignInProviders(provider: providers)
         }
         
         self.updateFormViewAppearance()
