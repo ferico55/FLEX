@@ -178,6 +178,55 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     [manager.dataLayer push:data];
 }
 
++ (void)trackProductListImpression:(NSArray *)products category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    AnalyticsManager *manager = [[self alloc] init];
+    NSMutableArray *impressions = [NSMutableArray new];
+    
+    for (id product in products) {
+        if ([product isKindOfClass:[FuzzySearchProduct class]] || [product isKindOfClass:[PromoResult class]]) {
+            [impressions addObject:[product productFieldObjectsForEnhancedEcommerceTracking]];
+        }
+    }
+    
+    NSDictionary *data = @{
+                           @"event" : @"productView",
+                           @"eventCategory" : category,
+                           @"eventAction" : action,
+                           @"eventLabel" : label,
+                           @"ecommerce" : @{
+                                   @"currencyCode" : @"IDR",
+                                   @"impressions" : impressions
+                                   }
+                        };
+    
+    [manager.dataLayer push:data];
+}
+
++ (void)trackProductListClick:(id)product category:(NSString *)category action:(NSString *)action label:(NSString *)label {
+    if (!product || (![product isKindOfClass:FuzzySearchProduct.class] && ![product isKindOfClass:PromoResult.class]))
+        return;
+    
+    AnalyticsManager *manager = [[self alloc] init];
+    
+    NSDictionary *productFieldObjects = [product productFieldObjectsForEnhancedEcommerceTracking];
+    NSDictionary *data = @{
+                           @"event" : @"productClick",
+                           @"eventCategory" : category,
+                           @"eventAction" : action,
+                           @"eventLabel" : label,
+                           @"ecommerce" : @{
+                                   @"click" : @{
+                                           @"actionField" : @{
+                                                   @"list" : [productFieldObjects objectForKey:@"list"] ?: @""
+                                                   },
+                                           @"products" : @[productFieldObjects]
+                                           }
+                                   }
+                           };
+    
+    [manager.dataLayer push:data];
+}
+
 + (void)trackProductView:(Product *)product {
     if (!product) return;
     if (product.data.breadcrumb.count == 0) return;

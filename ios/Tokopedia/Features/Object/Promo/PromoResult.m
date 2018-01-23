@@ -61,4 +61,21 @@
     return [_product productFieldObjects];
 }
 
+- (NSDictionary *)productFieldObjectsForEnhancedEcommerceTracking {
+    NSString *price = [[_product.price_format ?: @"" componentsSeparatedByCharactersInSet:
+                        [[NSCharacterSet decimalDigitCharacterSet] invertedSet]]
+                       componentsJoinedByString:@""];
+    
+    return @{
+             @"name" : _product.name?:@"",
+             @"id"   : _product.product_id?:@"",
+             @"price" : price,
+             @"brand" : @"None / other",
+             @"category" : _product.category.category_id,
+             @"variant" : @"None / other",
+             @"list" : _list,
+             @"position" : [NSString stringWithFormat:@"%ld", _position]
+             };
+}
+
 @end

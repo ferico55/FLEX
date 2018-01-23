@@ -685,6 +685,7 @@
 		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
+		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
 		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
@@ -3237,6 +3238,7 @@
 		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
 		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
 		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
@@ -7968,6 +7970,7 @@
 		F977EEF41FE8AB6E00183A85 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				E525C6DA20173930003CC99B /* NSDate+Formatter.swift */,
 				92A4CBA4201731A500C42D37 /* DateExtension.swift */,
 				E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */,
 				F977EEFB1FE8AB6E00183A85 /* NSArrayCategory.h */,
@@ -13125,6 +13128,7 @@
 				F977FE101FE8AB8100183A85 /* PulsaCache.swift in Sources */,
 				62C771121FF33C3400F66527 /* DepositSummaryList.m in Sources */,
 				F977FD9D1FE8AB8000183A85 /* DetailOrderButtonsView.mm in Sources */,
+				E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */,
 				F977FBD81FE8AB7C00183A85 /* RejectReasonWrongPriceViewController.m in Sources */,
 				F977009C1FE8AB8600183A85 /* EncodeDecoderManager.m in Sources */,
 				F977FE191FE8AB8100183A85 /* MyShopNoteRequest.swift in Sources */,

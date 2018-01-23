@@ -36,4 +36,6 @@
 @property (weak, nonatomic) id<ProductCellDelegate> delegate;
 @property (strong, nonatomic) ProductModelView *viewModel;
 
+@property (strong, nonatomic) NSString *searchTerm;
+
 @end

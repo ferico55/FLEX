@@ -125,13 +125,11 @@ final class ShopProductPageList: NSObject, Unboxable {
     }
     
     func productFieldObjects() -> [AnyHashable: Any] {
-        let characterSet = CharacterSet(charactersIn: "Rp.")
-        let productPrice = product_price.components(separatedBy: characterSet)
-        let price = productPrice.joined(separator: "")
+        let productPrice = product_price.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
         return [
             "name": self.product_name,
             "id": self.product_id,
-            "price": price,
+            "price": productPrice,
             "brand": self.shop_name,
             "url": self.product_url
         ]

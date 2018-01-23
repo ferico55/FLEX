@@ -30,6 +30,11 @@ final class FuzzySearchProduct: NSObject, Unboxable {
     var shop: FuzzySearchShop?
     var isOnWishlist: Bool = false
     
+    // GTM EE
+    var list = ""
+    var number = 0
+    var position = 0
+    
     var viewModel:ProductModelView {
         get {
             let vm = ProductModelView()
@@ -74,15 +79,27 @@ final class FuzzySearchProduct: NSObject, Unboxable {
     }
     
     func productFieldObjects() -> [String:String] {
-        let characterSet = CharacterSet(charactersIn: "Rp.")
-        let productPriceArray = price?.components(separatedBy: characterSet)
-        let productPrice = productPriceArray?.joined(separator: "")
+        let productPrice = price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
         return [
             "name"  : name!,
             "id"    : String(productId),
             "price" : productPrice!,
             "brand" : (shop?.name!)!,
             "url"   : URL!
+        ]
+    }
+    
+    func productFieldObjectsForEnhancedEcommerceTracking() -> [String:String] {
+        let productPrice = price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+        return [
+            "name"  : name ?? "",
+            "id"    : String(productId),
+            "price" : productPrice ?? "0",
+            "brand" : "None / other",
+            "category" : "",
+            "variant" : "None / other",
+            "list" : list,
+            "position": String(position)
         ]
     }
 }

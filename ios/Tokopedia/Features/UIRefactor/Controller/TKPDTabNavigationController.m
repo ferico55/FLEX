@@ -279,6 +279,21 @@
         }
         UIViewController* select = _viewControllers[selectedIndex];
         
+        NSString *eventLabel = @"";
+        if ([select isKindOfClass:SearchResultViewController.class]) {
+            if ([[((SearchResultViewController *)select).data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+                eventLabel = @"catalog";
+            }
+            else if ([[((SearchResultViewController *)select).data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHPRODUCTKEY]) {
+                eventLabel = @"product";
+            }
+        }
+        else if ([select isKindOfClass:SearchResultShopViewController.class]) {
+            eventLabel = @"shop";
+        }
+        
+        [AnalyticsManager trackEventName:@"clickSearchResult" category:@"searchTab" action:@"click - tab" label:eventLabel];
+        
         //      Did not remove this because of the todo
         //		UIEdgeInsets inset = [self contentInsetForContainerController];
         //		if ([select isKindOfClass:[UINavigationController class]]) {	//TODO: bars

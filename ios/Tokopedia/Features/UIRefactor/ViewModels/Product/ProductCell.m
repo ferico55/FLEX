@@ -231,6 +231,12 @@
                                                                                    AFEventParamCurrency : @"IDR",
                                                                                    AFEventParamQuantity : @(1)
                                                                                    }];
+    
+    if ([_parentViewController isKindOfClass:[SearchResultViewController class]]) {
+        NSString *now = [NSDate getNowWithFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [AnalyticsManager trackEventName:@"productView" category:@"search result" action:@"click - wishlist" label:[NSString stringWithFormat:@"add - %@ - %@", _searchTerm, now]];
+    }
+    
     __weak typeof(self) weakSelf = self;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
@@ -290,6 +296,11 @@
 
 - (void)setUnWishList
 {
+    if ([_parentViewController isKindOfClass:[SearchResultViewController class]]) {
+        NSString *now = [NSDate getNowWithFormat:@"yyyy-MM-dd HH:mm:ss"];
+        [AnalyticsManager trackEventName:@"productView" category:@"search result" action:@"click - wishlist" label:[NSString stringWithFormat:@"remove - %@ - %@", _searchTerm, now]];
+    }
+    
     __weak __typeof(self) weakSelf = self;
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];

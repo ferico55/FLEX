@@ -34,6 +34,8 @@
 @property (weak, nonatomic) id<ProductCellDelegate> delegate;
 @property (strong, nonatomic) ProductModelView *viewModel;
 
+@property (strong, nonatomic) NSString *searchTerm;
+
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 - (void) removeWishlistButton;
 

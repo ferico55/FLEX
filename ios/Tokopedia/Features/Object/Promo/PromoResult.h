@@ -23,11 +23,16 @@
 @property (nonatomic, strong) NSString* applinks;
 @property (nonatomic) BOOL isImpressionSent;
 
+@property (nonatomic, strong) NSString *list;
+@property (nonatomic, assign) long number;
+@property (nonatomic, assign) long position;
+
 @property (nonatomic, strong) PromoProduct* product;
 @property (nonatomic, strong) PromoShop* shop;
 @property (strong, nonatomic) ProductModelView *viewModel;
 
 + (RKObjectMapping *)mapping;
 - (NSDictionary *)productFieldObjects;
+- (NSDictionary *)productFieldObjectsForEnhancedEcommerceTracking;
 
 @end

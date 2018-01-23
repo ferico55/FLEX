@@ -49,6 +49,8 @@
 @property (strong, nonatomic) NSString* applinks;
 @property (strong, nonatomic) ProductModelView *viewModel;
 
+@property (strong, nonatomic) NSString *searchTerm;
+
 - (void) removeWishlistButton;
 - (void) updateLayout;
 @end

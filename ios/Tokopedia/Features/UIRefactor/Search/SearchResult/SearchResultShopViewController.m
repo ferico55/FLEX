@@ -186,6 +186,9 @@ static NSString const *rows = @"12";
     
     NSIndexPath* sortIndexPath = [_params objectForKey:kTKPDFILTERSORT_DATAINDEXPATHKEY]?:[NSIndexPath indexPathForRow:0 inSection:0];
     
+    NSString *searchTerm = [self.data objectForKey:kTKPDSEARCH_DATASEARCHKEY];
+    [AnalyticsManager trackEventName:@"clickSearchResult" category:@"search result" action:@"click - shop" label:[NSString stringWithFormat:@"%@ - %@ - %ld", searchTerm, shop.shop_name, indexPath.row]];
+    
     container.data = @{kTKPDDETAIL_APISHOPIDKEY : shop.shop_id,
                        kTKPDDETAIL_APISHOPNAMEKEY : shop.shop_name,
                        kTKPDFILTERSORT_DATAINDEXPATHKEY : sortIndexPath,

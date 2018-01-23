@@ -150,6 +150,14 @@
                                                                                    AFEventParamCurrency : @"IDR",
                                                                                    AFEventParamQuantity : @(1)
                                                                                    }];
+    
+    if ([_parentViewController isKindOfClass:[SearchResultViewController class]]) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *formattedDate = [formatter stringFromDate:[NSDate new]];
+        [AnalyticsManager trackEventName:@"productView" category:@"search result" action:@"click - wishlist" label:[NSString stringWithFormat:@"add - %@ - %@", _searchTerm, formattedDate]];
+    }
+    
     __weak typeof(self) weakSelf = self;
     tokopediaNetworkManagerWishList = [TokopediaNetworkManager new];
     tokopediaNetworkManagerWishList.isUsingDefaultError = NO;
@@ -209,6 +217,13 @@
 
 - (void)setUnWishList
 {
+    if ([_parentViewController isKindOfClass:[SearchResultViewController class]]) {
+        NSDateFormatter *formatter = [NSDateFormatter new];
+        [formatter setDateFormat:@"yyyy-MM-dd HH:mm:ss"];
+        NSString *formattedDate = [formatter stringFromDate:[NSDate new]];
+        [AnalyticsManager trackEventName:@"productView" category:@"search result" action:@"click - wishlist" label:[NSString stringWithFormat:@"remove - %@ - %@", _searchTerm, formattedDate]];
+    }
+    
     __weak __typeof(self) weakSelf = self;
     
     UserAuthentificationManager *_userManager = [UserAuthentificationManager new];

@@ -141,6 +141,9 @@ ProductCellDelegate
     BOOL _isLoadingData;
     
     ReactDynamicFilterBridge *_dynamicFilterBridge;
+    
+    NSString *screenName;
+    NSString *searchTerm;
 }
 
 #pragma mark - Initialization
@@ -200,15 +203,21 @@ ProductCellDelegate
     
     _collectionView.accessibilityLabel = @"productCellCollection";
     
+    screenName = @"";
     if ([self isSearchProductType] || [self isSearchDirectoryType]) {
         if(self.isFromAutoComplete) {
-            [AnalyticsManager trackScreenName:@"Product Search Results (From Auto Complete Search)" gridType:self.cellType];
+            screenName = @"Product Search Results (From Auto Complete Search)";
         } else {
-            [AnalyticsManager trackScreenName:@"Product Search Results" gridType:self.cellType];
+            screenName = @"Product Search Results";
         }
+        
+        [AnalyticsManager trackScreenName:screenName gridType:self.cellType];
     }else if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
+        screenName = @"Catalog Search Results";
         [AnalyticsManager trackScreenName:@"Catalog Search Results"];
     }
+    
+    searchTerm = [self.data objectForKey:kTKPDSEARCH_DATASEARCHKEY] ?: @"";
     
     if ([_data objectForKey:API_DEPARTMENT_ID_KEY]) {
         self.toolbarView.hidden = YES;
@@ -592,18 +601,23 @@ ProductCellDelegate
             referable.title = title;
             [referralManager shareWithObject:referable from:self anchor: button];
             
+            [AnalyticsManager trackEventName:@"clickSearchResult" category:@"search share" action:[NSString stringWithFormat:@"click tab - %@", screenName] label:@"-"];
+            
             break;
         }
         case 13:
         {
             TKPDSecureStorage* secureStorage = [TKPDSecureStorage standardKeyChains];
             if (self.cellType == CollectionViewCellTypeTypeOneColumn) {
+                [AnalyticsManager trackEventName:@"clickSearchResult" category:@"grid menu" action:@"click - small grid" label:screenName];
                 self.cellType = CollectionViewCellTypeTypeTwoColumn;
                 [self updateViewWithCellType];
             } else if (self.cellType == CollectionViewCellTypeTypeTwoColumn) {
+                [AnalyticsManager trackEventName:@"clickSearchResult" category:@"grid menu" action:@"click - list" label:screenName];
                 self.cellType = CollectionViewCellTypeTypeThreeColumn;
                 [self updateViewWithCellType];
             } else if (self.cellType == CollectionViewCellTypeTypeThreeColumn) {
+                [AnalyticsManager trackEventName:@"clickSearchResult" category:@"grid menu" action:@"click - large grid" label:screenName];
                 self.cellType = CollectionViewCellTypeTypeOneColumn;
                 [self updateViewWithCellType];
             }
@@ -726,6 +740,7 @@ ProductCellDelegate
                                                                           presentedVC:self
                                                                        rootCategoryID:_rootCategoryID
                                                                          onCompletion:^(ListOption * sort, NSDictionary*paramSort) {
+                                                                             [AnalyticsManager trackEventName:@"clickSearchResult" category:@"sort by" action:[NSString stringWithFormat:@"sort by - %@", screenName] label:sort.name];
                                                                              
                                                                              [_params removeObjectForKey:@"ob"];
                                                                              _selectedSortParam = paramSort;
@@ -788,9 +803,12 @@ ProductCellDelegate
                                   }
                                   
                                   NSMutableDictionary *paramFilters = [NSMutableDictionary new];
+                                  NSMutableArray *filterForAnalytics = [NSMutableArray array];
                                   [_selectedFilters bk_each:^(ListOption *option) {
                                       paramFilters[option.key] = option.value;
+                                      [filterForAnalytics addObject:[NSString stringWithFormat:@"%@=%@", option.key, option.value]];
                                   }];
+                                  [AnalyticsManager trackEventName:@"clickSearchResult" category:@"filter product" action:[NSString stringWithFormat:@"filter - %@", screenName] label:[filterForAnalytics componentsJoinedByString:@"&"]];
                                   
                                   _selectedFilterParam = paramFilters;
                                   [weakSelf showFilterIsActive:(_selectedFilters.count > 0)];
@@ -1133,6 +1151,7 @@ ProductCellDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
+    [AnalyticsManager trackProductClick:promoResult.product];
     if ([self isSearchProductType] || [self isSearchDirectoryType]){
         if(promoResult.applinks){
             if(promoResult.shop.shop_id != nil){
@@ -1141,6 +1160,8 @@ ProductCellDelegate
             [TPRoutes routeURL:[NSURL URLWithString:promoResult.applinks]];
         }
     }
+    
+    [AnalyticsManager trackProductListClick:promoResult category:@"top ads search result" action:@"click - product" label:searchTerm];
 }
 
 #pragma mark - Collection Delegate
@@ -1172,6 +1193,8 @@ ProductCellDelegate
         productViewModel = list.viewModel;
     }
     
+    BOOL isIpad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
+    
     if (self.cellType == CollectionViewCellTypeTypeOneColumn) {
         cellid = @"ProductSingleViewIdentifier";
         cell = (ProductSingleViewCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -1180,11 +1203,18 @@ ProductCellDelegate
             [(ProductSingleViewCell*)cell setCatalogViewModel:catalogViewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 0;
         }else {
+            
+            if ([[[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isKindOfClass:[FuzzySearchProduct class]]) {
+                int numberOfColumn = isIpad ? 2 : 1;
+                [self setupEEForProductAtIndexPath:indexPath numberOfColumn:numberOfColumn];
+                [AnalyticsManager trackProductListImpression:@[[[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]] category:@"search result" action:@"impression - product" label:searchTerm];
+            }
+            
             [(ProductSingleViewCell*)cell setViewModel:productViewModel];
             ((ProductSingleViewCell*)cell).infoContraint.constant = 19;
         }
-        ((ProductCell*) cell).parentViewController = self;
-        ((ProductCell*) cell).delegate = self;
+        ((ProductSingleViewCell*) cell).parentViewController = self;
+        ((ProductSingleViewCell*) cell).delegate = self;
     } else if (self.cellType == CollectionViewCellTypeTypeTwoColumn) {
         cellid = @"ProductCellIdentifier";
         cell = (ProductCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
@@ -1192,17 +1222,60 @@ ProductCellDelegate
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             [(ProductCell*)cell setCatalogViewModel:catalogViewModel];
         } else {
+            if ([[[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isKindOfClass:[FuzzySearchProduct class]]) {
+                
+                int numberOfColumn = isIpad ? 4 : 2;
+                [self setupEEForProductAtIndexPath:indexPath numberOfColumn:numberOfColumn];
+                [AnalyticsManager trackProductListImpression:@[[[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row]] category:@"search result" action:@"impression - product" label:searchTerm];
+            }
+            
             [(ProductCell*)cell setViewModel:productViewModel];
         }
         ((ProductCell*) cell).parentViewController = self;
         ((ProductCell*) cell).delegate = self;
-        
+        ((ProductCell*) cell).searchTerm = searchTerm;
     } else {
         cellid = @"ProductThumbCellIdentifier";
         cell = (ProductThumbCell*)[collectionView dequeueReusableCellWithReuseIdentifier:cellid forIndexPath:indexPath];
         if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
             [(ProductThumbCell*)cell setCatalogViewModel:catalogViewModel];
         } else {
+            
+            if ([[[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row] isKindOfClass:[FuzzySearchProduct class]]) {
+                
+                int numberOfColumn = isIpad ? 2 : 1;
+                
+                FuzzySearchProduct *searchProduct = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+                
+                if (indexPath.row == 0) {
+                    if (indexPath.section == 0) {
+                        if (_promo.count > 0) {
+                            searchProduct.number = ([_promo objectAtIndex:0].count / numberOfColumn) + 1;
+                            searchProduct.position = [_promo objectAtIndex:0].count + 1;
+                        }
+                        else {
+                            searchProduct.number = 1;
+                            searchProduct.position = 1;
+                        }
+                    }
+                    else {
+                        long count = [[_product objectAtIndex:indexPath.section - 1] count];
+                        FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section - 1] objectAtIndex:count - 1];
+                        searchProduct.number = searchProductBefore.number + ([_promo objectAtIndex:indexPath.section].count / numberOfColumn) + 1;
+                        searchProduct.position = searchProductBefore.position + [_promo objectAtIndex:indexPath.section].count + 1;
+                    }
+                }
+                else {
+                    FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+                    searchProduct.number = searchProductBefore.number + (indexPath.row % numberOfColumn == 0 ? 1 : 0);
+                    searchProduct.position = searchProductBefore.position + 1;
+                }
+                
+                searchProduct.list = [NSString stringWithFormat:@"/search result - product %ld", searchProduct.number];
+                
+                [AnalyticsManager trackProductListImpression:@[searchProduct] category:@"search result" action:@"impression - product" label:searchTerm];
+            }
+            
             [(ProductThumbCell*)cell setViewModel:productViewModel];
         }
         ((ProductThumbCell*) cell).parentViewController = self;
@@ -1225,21 +1298,86 @@ ProductCellDelegate
     }
     cell.layer.shouldRasterize = YES;
     cell.layer.rasterizationScale = [UIScreen mainScreen].scale;
-    return cell;
+    return cell; 
+}
+
+- (void)setupEEForProductAtIndexPath: (NSIndexPath *)indexPath numberOfColumn: (int)numberOfColumn {
+    FuzzySearchProduct *searchProduct = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
+    if (indexPath.row == 0) {
+        if (indexPath.section == 0) {
+            if (_promo.count == 0) {
+                searchProduct.number = 1;
+                searchProduct.position = 1;
+            }
+            else {
+                searchProduct.number = 2;
+                searchProduct.position = [_promo objectAtIndex:0].count + 1;
+            }
+        }
+        else {
+            long count = [[_product objectAtIndex:indexPath.section - 1] count];
+            FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section - 1] objectAtIndex:count - 1];
+            searchProduct.number = searchProductBefore.number + (indexPath.section < _promo.count ? 1 : 0) + 1;
+            if (indexPath.section < _promo.count) {
+                searchProduct.position = searchProductBefore.position + [_promo objectAtIndex:indexPath.section].count + 1;
+            }
+            else {
+                searchProduct.position = searchProductBefore.position + 1;
+            }
+        }
+    }
+    else {
+        FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row - 1];
+        searchProduct.number = searchProductBefore.number + (indexPath.row % numberOfColumn == 0 ? 1 : 0);
+        searchProduct.position = searchProductBefore.position + 1;
+    }
+    
+    searchProduct.list = [NSString stringWithFormat:@"/search result - product %ld", searchProduct.number];
 }
 
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
+    BOOL isIpad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
     if (kind == UICollectionElementKindSectionHeader) {
         if (([self isSearchProductType] || [self isSearchDirectoryType]) && _promo.count > indexPath.section) {
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if (currentPromo && currentPromo.count > 0) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
+                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView" forIndexPath:indexPath];
                 ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
                 ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
                 ((PromoCollectionReusableView *)reusableView).delegate = self;
                 ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                
+                for (int i = 0; i < currentPromo.count; i++) {
+                    PromoResult *promoResult = currentPromo[i];
+                    if (i == 0) {
+                        if (indexPath.section == 0) {
+                            promoResult.number = 1;
+                            promoResult.position = 1;
+                        }
+                        else {
+                            long count = [[_product objectAtIndex:indexPath.section - 1] count];
+                            FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section - 1] objectAtIndex:count - 1];
+                            promoResult.number = searchProductBefore.number + 1;
+                            promoResult.position = searchProductBefore.position + 1;
+                        }
+                    }
+                    else {
+                        PromoResult *promoResultBefore = currentPromo[i-1];
+                        if (self.cellType == CollectionViewCellTypeTypeOneColumn || self.cellType == CollectionViewCellTypeTypeTwoColumn) {
+                            promoResult.number = promoResultBefore.number;
+                        }
+                        else {
+                            int numberOfColumn = isIpad ? 2 : 1;
+                            promoResult.number = promoResultBefore.number + (i % numberOfColumn == 0 ? 1 : 0);
+                        }
+                        promoResult.position = promoResultBefore.position + 1;
+                    }
+                    
+                    promoResult.list = [NSString stringWithFormat:@"/search result - topads product %ld", promoResult.number];
+                }
+                
+                [AnalyticsManager trackProductListImpression:currentPromo category:@"top ads search result" action:@"impression - product" label:searchTerm];
             }
         } else {
             reusableView = nil;
@@ -1262,6 +1400,9 @@ ProductCellDelegate
     if ([[_data objectForKey:kTKPDSEARCH_DATATYPE] isEqualToString:kTKPDSEARCH_DATASEARCHCATALOGKEY]) {
         SearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
         [AnalyticsManager trackEventName:@"clickKatalog" category:@"Katalog" action:GA_EVENT_ACTION_CLICK label:product.catalog_name];
+        
+        [AnalyticsManager trackEventName:@"clickSearchResult" category:@"search result" action:@"click - catalog" label:[NSString stringWithFormat:@"%@ - %@", searchTerm, product.catalog_name]];
+        
         CatalogViewController *vc = [CatalogViewController new];
         vc.catalogID = product.catalog_id;
         vc.catalogName = product.catalog_name;
@@ -1282,6 +1423,8 @@ ProductCellDelegate
             productPrice = product.price;
             productImage = product.imageURL;
             shopName = product.shop.name;
+            
+            [AnalyticsManager trackProductListClick:product category:@"search result" action:@"click - product" label:searchTerm];
         }else {
             SearchProduct *product = [[_product objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
             [AnalyticsManager trackProductClick:product];

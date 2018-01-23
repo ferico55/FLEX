@@ -194,9 +194,7 @@ final class SearchProduct:NSObject, Unboxable {
     }
     
     func productFieldObjects() -> [String:String] {
-        let characterSet = CharacterSet(charactersIn: "Rp.")
-        let productPriceArray = self.product_price?.components(separatedBy: characterSet)
-        let productPrice = productPriceArray?.joined(separator: "")
+        let productPrice = self.product_price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
         return [
             "name"  : self.product_name!,
             "id"    : String(self.product_id),
