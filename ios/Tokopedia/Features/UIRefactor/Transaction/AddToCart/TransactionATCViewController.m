@@ -66,7 +66,11 @@
     DelayedActionManager *quantityDelayedActionManager;
 }
 
-enum insurance {noInsurance = 1, optional = 2, mustInsurance = 3};
+typedef NS_ENUM(NSUInteger, InsuranceType) {
+    InsuranceTypeNoInsurance = 1,
+    InsuranceTypeOptional = 2,
+    InsuranceTypeMustInsurance = 3
+};
 
 @property (weak, nonatomic) IBOutlet UIButton *preorderButton;
 @property (weak, nonatomic) IBOutlet UIButton *pinLocationNameButton;
@@ -592,15 +596,15 @@ enum insurance {noInsurance = 1, optional = 2, mustInsurance = 3};
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryDisclosureIndicator isLoading:!_isFinishRequesting];
 
                         NSInteger insurance = [self insuranceStatus];
-                        if (insurance == noInsurance) {
+                        if (insurance == InsuranceTypeNoInsurance) {
                             label.text = @"Tidak didukung";
                             label.textColor = TEXT_COLOUR_DISABLE;
-                        } else if (insurance == mustInsurance) {
+                        } else if (insurance == InsuranceTypeMustInsurance) {
                             label.text = @"Wajib Asuransi";
                             label.textColor = TEXT_COLOUR_DISABLE;
                         } else {
                             NSInteger insuranceID = [product.product_insurance integerValue];
-                            label.text = (insuranceID == optional) ? @"Ya" : @"Tidak";
+                            label.text = (insuranceID == InsuranceTypeOptional) ? @"Ya" : @"Tidak";
                             label.textColor = TEXT_COLOUR_ENABLE;
                         }
                         break;
@@ -814,7 +818,7 @@ enum insurance {noInsurance = 1, optional = 2, mustInsurance = 3};
             case TAG_BUTTON_TRANSACTION_INSURANCE:
             {
                 NSInteger insurance = [self insuranceStatus];
-                if (insurance != noInsurance && insurance != mustInsurance) {
+                if (insurance != InsuranceTypeNoInsurance && insurance != InsuranceTypeMustInsurance) {
                     AlertPickerView *alert = [AlertPickerView newview];
                     alert.tag = indexPath.row;
                     alert.delegate = self;
