@@ -52,7 +52,9 @@ class ProductTalkDetailHeaderViewController: UIViewController {
     // MARK: Setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        if talk == nil {
+            return
+        }
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         self.view.layoutMargins = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
