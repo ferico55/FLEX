@@ -104,7 +104,7 @@
         [btnCancel setImage:[UIImage imageNamed:@"icon_close_white.png"] forState:UIControlStateNormal];
         btnCancel.frame = CGRectMake([[UIScreen mainScreen] bounds].size.width-60, 20, 49, 49);
         
-        lblTitle = [[TopAlignedLabel alloc] initWithFrame:CGRectMake(10, 10, btnCancel.frame.origin.x-10, 4*btnCancel.bounds.size.height)];
+        lblTitle = [[TopAlignedLabel alloc] initWithFrame:CGRectMake(10, [UIApplication sharedApplication].statusBarFrame.size.height, btnCancel.frame.origin.x-10, 4*btnCancel.bounds.size.height)];
         lblTitle.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin|UIViewAutoresizingFlexibleTopMargin;
         lblTitle.font = [UIFont largeTheme];
         lblTitle.backgroundColor = [UIColor clearColor];

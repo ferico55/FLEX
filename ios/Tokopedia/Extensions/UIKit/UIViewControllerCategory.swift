@@ -49,29 +49,22 @@ extension UIViewController {
                                            alpha: 1.0)
         }
         
-        let preferredHeight = UIApplication.shared.statusBarFrame.size.height
-            + UINavigationController().navigationBar.frame.height
-        
         if buttonTitle == nil {
             alertView.hideActionButton()
-            alertView.frame.size.height = preferredHeight
         } else {
             alertView.actionButton.setTitle(buttonTitle, for: .normal)
-            
-            if UIDevice.current.modelName.caseInsensitiveCompare("iPhone X") == ComparisonResult.orderedSame {
-                alertView.frame.size.height = preferredHeight + 50
-            } else {
-                alertView.frame.size.height = preferredHeight + 30
-            }
         }
         
         if !dismissable {
             alertView.hideCloseButton()
         }
-        
-        alertView.frame.size.width = UIScreen.main.bounds.size.width
+    
         alertView.setNeedsLayout()
         alertView.layoutIfNeeded()
+        
+        alertView.frame.size.height = UIApplication.shared.statusBarFrame.size.height + alertView.systemLayoutSizeFitting(UILayoutFittingCompressedSize).height
+        alertView.frame.size.width = UIScreen.main.bounds.size.width
+
         alertView.messageLabel.preferredMaxLayoutWidth = alertView.messageLabel.frame.size.width
         
         alertView.closeButton.bk_(whenTapped:{

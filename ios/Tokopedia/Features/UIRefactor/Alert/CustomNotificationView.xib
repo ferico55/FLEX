@@ -6,7 +6,6 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
-        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -18,7 +17,7 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="top" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Keranjang belanja tidak benar. Coba refresh kembali halaman ini." lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="C1F-AX-jF1">
-                    <rect key="frame" x="15" y="15" width="269" height="31.5"/>
+                    <rect key="frame" x="15" y="10" width="269" height="64"/>
                     <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -26,7 +25,7 @@
                     <size key="shadowOffset" width="0.0" height="0.0"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="CJg-Zt-GQC">
-                    <rect key="frame" x="289" y="8" width="40" height="40"/>
+                    <rect key="frame" x="289" y="10" width="40" height="40"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="40" id="Axn-w0-SyZ"/>
                         <constraint firstAttribute="height" constant="40" id="UBi-u9-ac2"/>
@@ -36,8 +35,9 @@
                     </state>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j0V-pj-mVK">
-                    <rect key="frame" x="108" y="56.5" width="120" height="34"/>
+                    <rect key="frame" x="108" y="79" width="120" height="30"/>
                     <constraints>
+                        <constraint firstAttribute="height" constant="30" id="1Oc-ys-CaI"/>
                         <constraint firstAttribute="width" constant="120" id="goe-gu-WdA"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
@@ -56,15 +56,16 @@
                 <constraint firstAttribute="trailing" secondItem="CJg-Zt-GQC" secondAttribute="trailing" constant="8" id="176-up-8ck"/>
                 <constraint firstItem="CJg-Zt-GQC" firstAttribute="leading" secondItem="C1F-AX-jF1" secondAttribute="trailing" constant="5" id="5ef-q5-0me"/>
                 <constraint firstItem="C1F-AX-jF1" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="15" id="8af-am-O9J"/>
-                <constraint firstItem="CJg-Zt-GQC" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="LnO-KF-7aX"/>
-                <constraint firstItem="j0V-pj-mVK" firstAttribute="top" secondItem="C1F-AX-jF1" secondAttribute="bottom" constant="10" id="Uvk-CR-utG"/>
-                <constraint firstItem="C1F-AX-jF1" firstAttribute="top" secondItem="xC1-ug-ydr" secondAttribute="top" constant="15" id="XsW-QT-2p0"/>
+                <constraint firstItem="j0V-pj-mVK" firstAttribute="top" secondItem="C1F-AX-jF1" secondAttribute="bottom" constant="5" id="AIR-pH-Z2g"/>
+                <constraint firstItem="C1F-AX-jF1" firstAttribute="top" secondItem="xC1-ug-ydr" secondAttribute="top" constant="10" id="HYZ-WR-GcC"/>
+                <constraint firstItem="xC1-ug-ydr" firstAttribute="bottom" secondItem="j0V-pj-mVK" secondAttribute="bottom" constant="5" id="OzU-k5-oTV"/>
                 <constraint firstItem="j0V-pj-mVK" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="plg-89-8vj"/>
-                <constraint firstItem="j0V-pj-mVK" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.3" id="vjG-6Q-rAa"/>
+                <constraint firstItem="CJg-Zt-GQC" firstAttribute="top" secondItem="C1F-AX-jF1" secondAttribute="top" id="tPf-pf-1De"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="xC1-ug-ydr"/>
             <connections>
+                <outlet property="_actionButtonHeight" destination="1Oc-ys-CaI" id="B1m-46-dVA"/>
                 <outlet property="_closeButtonWidth" destination="Axn-w0-SyZ" id="2Su-04-2UK"/>
                 <outlet property="actionButton" destination="j0V-pj-mVK" id="bIT-2B-AZf"/>
                 <outlet property="closeButton" destination="CJg-Zt-GQC" id="KMO-K4-MDU"/>
