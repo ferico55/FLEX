@@ -13,6 +13,7 @@ final class NotificationData: NSObject, NSCoding {
     let totalCart: Int
     var incrNotif: Int
     let resolution: Int
+    var sellerInfoNotif: Int
     var inbox: NotificationInbox?
     let sales: NotificationSales?
     let purchase: NotificationPurchase?
@@ -22,6 +23,7 @@ final class NotificationData: NSObject, NSCoding {
         totalCart: Int,
         incrNotif: Int,
         resolution: Int,
+        sellerInfoNotif: Int,
         inbox: NotificationInbox?,
         sales: NotificationSales?,
         purchase: NotificationPurchase?
@@ -30,6 +32,7 @@ final class NotificationData: NSObject, NSCoding {
         self.totalCart = totalCart
         self.incrNotif = incrNotif
         self.resolution = resolution
+        self.sellerInfoNotif = sellerInfoNotif
         self.inbox = inbox
         self.sales = sales
         self.purchase = purchase
@@ -46,6 +49,7 @@ final class NotificationData: NSObject, NSCoding {
             totalCart: decoder.decodeInteger(forKey: "totalCart"),
             incrNotif: decoder.decodeInteger(forKey: "incrNotif"),
             resolution: decoder.decodeInteger(forKey: "resolution"),
+            sellerInfoNotif: decoder.decodeInteger(forKey: "sellerInfoNotif"),
             inbox: inbox,
             sales: sales,
             purchase: purchase
@@ -57,6 +61,7 @@ final class NotificationData: NSObject, NSCoding {
         aCoder.encode(self.totalCart, forKey: "totalCart")
         aCoder.encode(self.incrNotif, forKey: "incrNotif")
         aCoder.encode(self.resolution, forKey: "resolution")
+        aCoder.encode(self.sellerInfoNotif, forKey: "sellerInfoNotif")
         aCoder.encode(self.inbox, forKey: "inbox")
         aCoder.encode(self.sales, forKey: "sales")
         aCoder.encode(self.purchase, forKey: "purchase")
@@ -76,6 +81,7 @@ extension NotificationData : JSONAbleType {
         let sales = NotificationSales.fromJSON(json["sales"].dictionaryObject ?? [:])
         let purchase = NotificationPurchase.fromJSON(json["purchase"].dictionaryObject ?? [:])
         
-        return NotificationData(totalNotif: totalNotif, totalCart: totalCart, incrNotif: incrNotif, resolution: resolution, inbox: inbox, sales: sales, purchase: purchase)
+        // set seller info notif to 0 here, cause it's grabbed from another endpoint
+        return NotificationData(totalNotif: totalNotif, totalCart: totalCart, incrNotif: incrNotif, resolution: resolution, sellerInfoNotif: 0, inbox: inbox, sales: sales, purchase: purchase)
     }
 }

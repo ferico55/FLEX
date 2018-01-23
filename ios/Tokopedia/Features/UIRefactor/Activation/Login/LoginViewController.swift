@@ -107,7 +107,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     //    MARK: - Private
     func setupUI() {
         if self.isModal() {
-            self.setLeftBarButton(withTitle: "Batal", action: #selector(LoginViewController.cancelButtonTapped(sender:)))
+            self.setBarButton(withTitle: "Batal", side: .left, font: nil, textColor: nil, action: #selector(LoginViewController.cancelButtonTapped(sender:)))
         }
     }
     func cancelButtonTapped(sender: UIBarButtonItem) {

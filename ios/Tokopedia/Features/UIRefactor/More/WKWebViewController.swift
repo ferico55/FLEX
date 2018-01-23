@@ -21,7 +21,8 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
     fileprivate var progressView: UIProgressView!
     fileprivate var noInternetView: NoResultReusableView!
     
-    fileprivate var popover : WebviewPopover!
+    fileprivate var popover     : WebviewPopover!
+    fileprivate var zoomEnabled : Bool = true
     
     //intercept when user click on action here
     var didReceiveNavigationAction:((WKNavigationAction) -> Void)?
@@ -37,6 +38,10 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         
         webView = WKWebView(frame: .zero, configuration: webConfiguration)
         webView.uiDelegate = self
+        
+        if !self.zoomEnabled {
+            webView.scrollView.delegate = self
+        }
         
         view = webView
         initProgressView()
@@ -81,6 +86,15 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         let shouldAuthorizeRequest = authenticationManager.isLogin
         
         self.init(urlString: authenticationManager.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: shouldAuthorizeRequest)
+    }
+    
+    convenience init(urlString: String, zoomEnabled: Bool) {
+        let authenticationManager = UserAuthentificationManager()
+        
+        let shouldAuthorizeRequest = authenticationManager.isLogin
+        
+        self.init(urlString: authenticationManager.webViewUrl(fromUrl: urlString), shouldAuthorizeRequest: shouldAuthorizeRequest)
+        self.zoomEnabled = zoomEnabled
     }
     
     convenience init(urlString: String, title: String) {
@@ -231,5 +245,12 @@ class WKWebViewController: UIViewController, WKUIDelegate, WKNavigationDelegate,
         } else {
             self.popover.tapShow(coordinate: CGPoint(x: self.view.frame.size.width-26, y: 50))
         }
+    }
+}
+
+// disable scrolling by overriding webview's scrollview's delegate zoom callback
+extension WKWebViewController: UIScrollViewDelegate {
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return nil
     }
 }

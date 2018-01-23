@@ -9,6 +9,17 @@ import UIKit
 import Moya
 import RxSwift
 
+extension TargetType {
+    func urlString() -> String? {
+        if let request = try? MoyaProvider.defaultEndpointMapping(for: self).urlRequest, let url = request?.url {
+            let key = url.absoluteString
+            return key
+        }
+        
+        return nil
+    }
+}
+
 extension Notification.Name {
     static let forceLogout = Notification.Name("NOTIFICATION_FORCE_LOGOUT")
 }
@@ -56,6 +67,11 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
             plugins: plugins,
             trackInflights: trackInflights
         )
+    }
+    
+    final class func urlRequest(for target: Target) -> URLRequest? {
+        let endpoint: Endpoint<Target> = NetworkProvider.defaultEndpointCreator(for: target)
+        return endpoint.urlRequest
     }
     
     final class func defaultEndpointCreator(for target: Target) -> Endpoint<Target> {

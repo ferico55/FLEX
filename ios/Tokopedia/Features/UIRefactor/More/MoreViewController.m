@@ -526,7 +526,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
             
         case 4:
-            return 5;
+            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 6 : 5;
             break;
             
         case 5:
@@ -723,6 +723,10 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 controller.hidesBottomBarWhenPushed = YES;
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
+        } else if (indexPath.row == 5) {
+            SellerInfoInboxViewController *controller = [SellerInfoInboxViewController new];
+            controller.hidesBottomBarWhenPushed = YES;
+            [wrapperController.navigationController pushViewController:controller animated:YES];
         }
     }
     else if (indexPath.section == 5) {

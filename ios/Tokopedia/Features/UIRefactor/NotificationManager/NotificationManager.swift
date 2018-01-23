@@ -45,12 +45,10 @@ class NotificationManager: NSObject {
     
     func loadNotificationsFromRemote() {
         
-        Observable.zip(requestNotifications(), requestChatUnreadCount()) { notification, chatUnreadData in
-            return (notification, chatUnreadData)
-        }
-        .subscribe(onNext: {(notification, chatUnreadData) in
-            
-            guard let `notification` = notification else {
+        Observable.zip(requestNotifications(), requestChatUnreadCount(), requestSellerInfoNotifications()) { notification, chatUnreadData, sellerInfoData in
+            return (notification, chatUnreadData, sellerInfoData)
+        }.subscribe(onNext: {[weak self] (notification, chatUnreadData, sellerInfoData) in
+            guard let `self` = self, let notification = notification else {
                 return
             }
             
@@ -61,6 +59,16 @@ class NotificationManager: NSObject {
                 notification.inbox?.message = chatUnreadData.notificationUnread
             }
             
+            if let sellerInfoData = sellerInfoData {
+                let notif = sellerInfoData.notificationUnread
+                
+                // only increment seller info data if user has shop
+                if UserAuthentificationManager().userHasShop() {
+                    notification.totalNotif     += notif
+                }
+                notification.sellerInfoNotif = notif
+            }
+            
             // set to cache
             let cacheManager = NotificationCache.sharedManager
             cacheManager.storeNotification(notification)
@@ -68,6 +76,19 @@ class NotificationManager: NSObject {
             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NotificationLoaded"), object: nil, userInfo: ["notification": notification])
         })
         .disposed(by: rx_disposeBag)
+    }
+    
+    func requestSellerInfoNotifications() -> Observable<SellerInfoNotificationData?> {
+        return NetworkProvider<SellerInfoTarget>()
+            .request(.getNotifications)
+            .mapJSON()
+            .mapTo(object: SellerInfoNotificationData.self)
+            .map({ (sellerInfoNotificationData) -> SellerInfoNotificationData? in
+                return sellerInfoNotificationData
+            })
+            .catchError({ (error) -> Observable<SellerInfoNotificationData?> in
+                return .just(nil)
+            })
     }
     
     func requestChatUnreadCount() -> Observable<TopchatUnreadData?> {

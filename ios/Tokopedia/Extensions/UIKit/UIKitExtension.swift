@@ -251,6 +251,18 @@ extension UIFont {
 }
 
 @IBDesignable
+class DesignableView: UIView {
+}
+
+@IBDesignable
+class DesignableButton: UIButton {
+}
+
+@IBDesignable
+class DesignableLabel: UILabel {
+}
+
+@IBDesignable
 extension UIView {
     
     @IBInspectable var cornerRadius: CGFloat {
@@ -261,11 +273,19 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowColor: UIColor {
+    @IBInspectable var shadowColor: UIColor? {
         get {
-            return UIColor.clear
-        } set {
-            layer.shadowColor = newValue.cgColor
+            if let color = layer.shadowColor {
+                return UIColor(cgColor: color)
+            }
+            return nil
+        }
+        set {
+            if let color = newValue {
+                layer.shadowColor = color.cgColor
+            } else {
+                layer.shadowColor = nil
+            }
         }
     }
     
@@ -346,15 +366,10 @@ extension UIView {
     }
 }
 
-@IBDesignable
-extension UIButton {
-    
-    @IBInspectable override var cornerRadius: CGFloat {
-        get {
-            return layer.cornerRadius
-        } set {
-            layer.cornerRadius = newValue
-        }
+extension UIView {
+    class func loadFirstFromNib<T>(name: String, type: T.Type, owner: Any?, options: [AnyHashable : Any]? = nil) -> T? {
+        guard let views = Bundle.main.loadNibNamed(name, owner: owner, options: options), let view = views[0] as? T else { return nil }
+        return view
     }
 }
 

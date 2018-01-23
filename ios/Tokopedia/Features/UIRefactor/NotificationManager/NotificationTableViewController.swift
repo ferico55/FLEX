@@ -16,7 +16,7 @@ import NativeNavigation
 
 class NotificationTableViewController: UITableViewController, NewOrderDelegate, ShipmentConfirmationDelegate {
     
-    private let cellTitles1 = ["Chat", "Diskusi", "Ulasan", "Layanan Pengguna", "Pusat Resolusi"]
+    private let cellTitles1 = ["Chat", "Diskusi", "Ulasan", "Layanan Pengguna", "Pusat Resolusi", "Info Penjual"]
     private let cellTitles2 = ["Order Baru", "Konfirmasi Pengiriman", "Status Pengiriman", "Daftar Transaksi"]
     private let cellTitles3 = ["Pesanan dibatalkan", "Status Pembayaran", "Status Pemesanan", "Konfirmasi Penerimaan", "Daftar Transaksi"]
     private let headerTitles = ["Kotak Masuk", "Penjualan", "Pembelian"]
@@ -62,7 +62,7 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
         
         switch section {
         case 0:
-            numberOfRows = 5
+            numberOfRows = UserAuthentificationManager().userHasShop() ? 6 : 5
             break
         case 1:
             numberOfRows = 4
@@ -105,6 +105,9 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
             }
             else if (row == 4) {
                 count = notification?.resolution ?? 0
+            }
+            else if (row == 5) {
+                count = notification?.sellerInfoNotif ?? 0
             }
         }
         else if (section == 1) {
@@ -345,6 +348,16 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 }
                 
                 break
+                
+            case 5:
+                AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Seller Info")
+                
+                let controller = SellerInfoInboxViewController()
+                controller.hidesBottomBarWhenPushed = true
+                self.delegate?.pushViewController?(viewController: controller)
+                
+                break
+                
             default:
                 break
             }

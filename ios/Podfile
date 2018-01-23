@@ -57,6 +57,7 @@ def common_pods
     pod 'SwiftLint', '~> 0.22.0'
     
     #Custom View Component
+    pod 'CCBottomRefreshControl'
     pod 'AHKActionSheet', '~>0.5.4'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'DownPicker', '~> 0.1.34'
