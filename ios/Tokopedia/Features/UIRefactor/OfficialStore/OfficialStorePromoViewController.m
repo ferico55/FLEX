@@ -22,12 +22,12 @@
 
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"
-                                              initialProperties:@{@"name" : @"Official Store Promo", @"params" : @{@"slug" : self.promoSlug} }];
+                                              initialProperties:@{@"name" : @"Tokopedia Promo", @"params" : @{@"slug" : self.promoSlug} }];
     
     self.view = rootView;
     self.view.isAccessibilityElement = true;
     self.view.accessibilityIdentifier = @"officialStorePromo";
-    self.title = @"OS Promo";
+    self.title = @"Tokopedia Promo";
 }
 
 - (void)viewWillAppear:(BOOL)animated {
