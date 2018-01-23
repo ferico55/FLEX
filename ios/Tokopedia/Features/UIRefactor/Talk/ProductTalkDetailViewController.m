@@ -30,7 +30,6 @@
 
 @import UITableView_FDTemplateLayoutCell;
 #import "Tokopedia-Swift.h"
-#import "ProductTalkDetailHeaderView.h"
 
 @interface ProductTalkDetailViewController ()
 <
@@ -77,6 +76,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *act;
 @property (weak, nonatomic) IBOutlet UIView *talkInputView;
 @property (weak, nonatomic) IBOutlet UIButton *sendButton;
+@property (strong, nonatomic) ProductTalkDetailHeaderViewController *headerVC;
 
 @property (strong, nonatomic) NSDictionary *data;
 
@@ -209,10 +209,36 @@
     _table.tableFooterView = _footer;
     _table.estimatedRowHeight = 100.0;
     _table.rowHeight = UITableViewAutomaticDimension;
+    [self setupHeader];
     
     if([self shouldFetchDataAtBeginning]){
         [self fetchTalkComments];
     }
+}
+
+- (void)setupHeader {
+    
+    _headerVC = [[ProductTalkDetailHeaderViewController alloc] initWithTalk: _talk];
+    __weak typeof(self) weakSelf = self;
+    if (_enableDeepNavigation) {
+        _headerVC.onTapUser = ^(TalkList *talk){
+            [weakSelf tapUser];
+        };
+        
+        _headerVC.onTapProduct = ^(TalkList *talk) {
+            [weakSelf tapProduct];
+        };
+    }
+    
+    // this flag prevents NSAutoLayouts to mess with our set constraints
+    _headerVC.view.translatesAutoresizingMaskIntoConstraints = FALSE;
+    
+    // set header view and req contraints to the table view
+    _table.tableHeaderView = _headerVC.view;
+    
+    [_headerVC.view.centerXAnchor constraintEqualToAnchor:_table.centerXAnchor].active = TRUE;
+    [_headerVC.view.widthAnchor constraintEqualToAnchor:_table.widthAnchor    ].active = TRUE;
+    [_headerVC.view.topAnchor constraintEqualToAnchor:_table.topAnchor        ].active = TRUE;
 }
 
 - (void)setupInputView {
@@ -246,28 +272,6 @@
 
 - (void)viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-}
-
-- (void)initHeader {
-    __weak typeof(self) weakSelf = self;
-    
-    ProductTalkDetailHeaderView *headerView = [[ProductTalkDetailHeaderView alloc] initWithTalk:_talk];
-    
-    CGRect headerFrame = CGRectMake(0, 0, self.view.bounds.size.width, 0);
-    headerView.frame = headerFrame;
-    [headerView sizeToFit];
-    
-    if (_enableDeepNavigation) {
-        headerView.onTapUser = ^(TalkList *talk){
-            [weakSelf tapUser];
-        };
-        
-        headerView.onTapProduct = ^(TalkList *talk) {
-            [weakSelf tapProduct];
-        };
-    }
-    
-    _table.tableHeaderView = headerView;
 }
 
 - (NSDictionary *)generateData {
@@ -416,7 +420,7 @@
         _talkInputView.hidden = (![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]);
     }
     _table.tableFooterView = _footer;
-    [self initHeader];
+    _headerVC.talk = _talk;
     [self setupInputView];
     
     

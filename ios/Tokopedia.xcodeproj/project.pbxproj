@@ -708,6 +708,7 @@
 		E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A81FFB2D0000A8665E /* ActionButton.swift */; };
 		E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */; };
 		E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */; };
+		E5B4E7FF1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */; };
 		E5CDEB0F2004C42900C41219 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF22004C41700C41219 /* HomePage.swift */; };
 		E5CDEB102004C42900C41219 /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF32004C41700C41219 /* MorePage.swift */; };
 		E5CDEB112004C42900C41219 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF42004C41700C41219 /* LoginPage.swift */; };
@@ -1940,7 +1941,6 @@
 		F977FE1F1FE8AB8100183A85 /* PromoCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4F71FE8AB7300183A85 /* PromoCollectionReusableView.m */; };
 		F977FE201FE8AB8100183A85 /* PromoInfoAlertView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4F91FE8AB7300183A85 /* PromoInfoAlertView.xib */; };
 		F977FE211FE8AB8100183A85 /* PromoCollectionReusableView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4FA1FE8AB7300183A85 /* PromoCollectionReusableView.xib */; };
-		F977FE221FE8AB8100183A85 /* ProductTalkDetailHeaderView.mm in Sources */ = {isa = PBXBuildFile; fileRef = F977F4FD1FE8AB7300183A85 /* ProductTalkDetailHeaderView.mm */; };
 		F977FE231FE8AB8100183A85 /* ProductTalkFormViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F4FF1FE8AB7300183A85 /* ProductTalkFormViewController.xib */; };
 		F977FE241FE8AB8100183A85 /* ProductTalkFormViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F5001FE8AB7300183A85 /* ProductTalkFormViewController.m */; };
 		F977FE251FE8AB8100183A85 /* ProductTalkViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F5021FE8AB7300183A85 /* ProductTalkViewController.m */; };
@@ -3249,6 +3249,7 @@
 		E595C6A81FFB2D0000A8665E /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
+		E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTalkDetailHeaderViewController.swift; sourceTree = "<group>"; };
 		E5CDEAF22004C41700C41219 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
 		E5CDEAF32004C41700C41219 /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
 		E5CDEAF42004C41700C41219 /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginPage.swift; path = Class/LoginPage.swift; sourceTree = "<group>"; };
@@ -4758,14 +4759,12 @@
 		F977F4F91FE8AB7300183A85 /* PromoInfoAlertView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromoInfoAlertView.xib; sourceTree = "<group>"; };
 		F977F4FA1FE8AB7300183A85 /* PromoCollectionReusableView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PromoCollectionReusableView.xib; sourceTree = "<group>"; };
 		F977F4FB1FE8AB7300183A85 /* PromoCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PromoCollectionReusableView.h; sourceTree = "<group>"; };
-		F977F4FD1FE8AB7300183A85 /* ProductTalkDetailHeaderView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ProductTalkDetailHeaderView.mm; sourceTree = "<group>"; };
 		F977F4FE1FE8AB7300183A85 /* ProductTalkViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkViewController.h; sourceTree = "<group>"; };
 		F977F4FF1FE8AB7300183A85 /* ProductTalkFormViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProductTalkFormViewController.xib; sourceTree = "<group>"; };
 		F977F5001FE8AB7300183A85 /* ProductTalkFormViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkFormViewController.m; sourceTree = "<group>"; };
 		F977F5011FE8AB7300183A85 /* ProductTalkDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkDetailViewController.h; sourceTree = "<group>"; };
 		F977F5021FE8AB7300183A85 /* ProductTalkViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkViewController.m; sourceTree = "<group>"; };
 		F977F5031FE8AB7300183A85 /* ProductTalkDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProductTalkDetailViewController.m; sourceTree = "<group>"; };
-		F977F5041FE8AB7300183A85 /* ProductTalkDetailHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkDetailHeaderView.h; sourceTree = "<group>"; };
 		F977F5051FE8AB7300183A85 /* ProductTalkFormViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProductTalkFormViewController.h; sourceTree = "<group>"; };
 		F977F5081FE8AB7300183A85 /* RegisterUnbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterUnbox.swift; sourceTree = "<group>"; };
 		F977F5091FE8AB7300183A85 /* ResendActivationEmail.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ResendActivationEmail.swift; sourceTree = "<group>"; };
@@ -10564,10 +10563,9 @@
 		F977F4FC1FE8AB7300183A85 /* Talk */ = {
 			isa = PBXGroup;
 			children = (
-				F977F5041FE8AB7300183A85 /* ProductTalkDetailHeaderView.h */,
-				F977F4FD1FE8AB7300183A85 /* ProductTalkDetailHeaderView.mm */,
 				F977F5011FE8AB7300183A85 /* ProductTalkDetailViewController.h */,
 				F977F5031FE8AB7300183A85 /* ProductTalkDetailViewController.m */,
+				E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */,
 				F977F5051FE8AB7300183A85 /* ProductTalkFormViewController.h */,
 				F977F5001FE8AB7300183A85 /* ProductTalkFormViewController.m */,
 				F977F4FF1FE8AB7300183A85 /* ProductTalkFormViewController.xib */,
@@ -13130,7 +13128,6 @@
 				F977FA1C1FE8AB7900183A85 /* ScroogeTarget.swift in Sources */,
 				F977FB9C1FE8AB7C00183A85 /* FilterSalesTransactionListViewController.m in Sources */,
 				F977FD671FE8AB7F00183A85 /* ProfileBiodataCell.m in Sources */,
-				F977FE221FE8AB8100183A85 /* ProductTalkDetailHeaderView.mm in Sources */,
 				F977FB2A1FE8AB7B00183A85 /* TopAdsFeedPlusComponentView.swift in Sources */,
 				F977FC241FE8AB7D00183A85 /* ReplacementDetailViewController.swift in Sources */,
 				7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */,
@@ -13477,6 +13474,7 @@
 				F977FB421FE8AB7B00183A85 /* TokopediaCacheManager.m in Sources */,
 				62C770CB1FF33C3300F66527 /* CatalogInfo.m in Sources */,
 				62C7709F1FF33C3300F66527 /* ProductTrouble.swift in Sources */,
+				E5B4E7FF1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift in Sources */,
 				62C7701D1FF33C3200F66527 /* CartShipmentData.swift in Sources */,
 				F977FD5A1FE8AB7F00183A85 /* CollectionScrollAndSwipe.m in Sources */,
 				F977FB261FE8AB7B00183A85 /* InboxTicketViewController.m in Sources */,
