@@ -201,22 +201,10 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
             view.setImageWith(URL(string: state.imageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
             view.isUserInteractionEnabled = true
             
-            if let url = URL(string: state.imageURL) {
-                do {
-                    let imageData = try Data(contentsOf: url)
-                    if let image = UIImage(data: imageData) {
-                        let width = image.size.width
-                        let height = image.size.height
-                        
-                        if height != 0 {
-                            let aspectRatio = width / height
-                            
-                            layout.height = layout.width / aspectRatio
-                        }
-                    }
-                } catch {
-                    print("Unable to load data: \(error)")
-                }
+            if let width = view.image?.size.width, let height = view.image?.size.height, height != 0 {
+                let aspectRatio = width / height
+                
+                layout.height = layout.width / aspectRatio
             }
         }.add(child: (state.tagCaption != "") ? Node<UIView>() { view, layout, _ in
             layout.position = .absolute
