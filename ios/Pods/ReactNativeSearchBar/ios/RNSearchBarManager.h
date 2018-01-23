@@ -1,5 +1,4 @@
-//#import <React/RCTViewManager.h>
-@import React;
+#import <React/RCTViewManager.h>
 
 @interface RNSearchBarManager : RCTViewManager
 

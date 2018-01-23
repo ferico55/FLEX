@@ -1,0 +1,6 @@
+framework module ReactNativeSearchBar {
+  umbrella header "ReactNativeSearchBar-umbrella.h"
+
+  export *
+  module * { export * }
+}

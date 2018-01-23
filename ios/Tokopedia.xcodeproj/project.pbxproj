@@ -871,7 +871,6 @@
 		F977007D1FE8AB8600183A85 /* ReactOnboardingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9951FE8AB7700183A85 /* ReactOnboardingHelper.m */; };
 		F977007E1FE8AB8600183A85 /* ReactPopoverHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9961FE8AB7700183A85 /* ReactPopoverHelper.m */; };
 		F977007F1FE8AB8600183A85 /* ReactPopoverOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9991FE8AB7700183A85 /* ReactPopoverOptionViewController.swift */; };
-		F97700801FE8AB8600183A85 /* RNSearchBar.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99B1FE8AB7700183A85 /* RNSearchBar.m */; };
 		F97700811FE8AB8600183A85 /* ReactPermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99C1FE8AB7700183A85 /* ReactPermissionManager.m */; };
 		F97700821FE8AB8600183A85 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F99D1FE8AB7700183A85 /* OnboardingViewController.xib */; };
 		F97700831FE8AB8600183A85 /* ReactFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99E1FE8AB7700183A85 /* ReactFacebookManager.m */; };
@@ -884,7 +883,6 @@
 		F977008A1FE8AB8600183A85 /* ReactDynamicFilterBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B61FE8AB7700183A85 /* ReactDynamicFilterBridge.swift */; };
 		F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B71FE8AB7700183A85 /* ReactInteractionHelper.m */; };
 		F977008C1FE8AB8600183A85 /* TKPReactURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B81FE8AB7700183A85 /* TKPReactURLManager.m */; };
-		F977008D1FE8AB8600183A85 /* RNSearchBarManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B91FE8AB7700183A85 /* RNSearchBarManager.m */; };
 		F977008E1FE8AB8600183A85 /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BA1FE8AB7700183A85 /* ReactOrderManager.m */; };
 		F977008F1FE8AB8600183A85 /* ReactEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BB1FE8AB7700183A85 /* ReactEventManager.m */; };
 		F97700901FE8AB8600183A85 /* ReactModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BD1FE8AB7700183A85 /* ReactModule.swift */; };
@@ -4907,11 +4905,9 @@
 		F977F9941FE8AB7700183A85 /* ReactTopAdsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopAdsManager.m; sourceTree = "<group>"; };
 		F977F9951FE8AB7700183A85 /* ReactOnboardingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOnboardingHelper.m; sourceTree = "<group>"; };
 		F977F9961FE8AB7700183A85 /* ReactPopoverHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPopoverHelper.m; sourceTree = "<group>"; };
-		F977F9971FE8AB7700183A85 /* RNSearchBarManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSearchBarManager.h; sourceTree = "<group>"; };
 		F977F9981FE8AB7700183A85 /* TKPReactURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactURLManager.h; sourceTree = "<group>"; };
 		F977F9991FE8AB7700183A85 /* ReactPopoverOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactPopoverOptionViewController.swift; sourceTree = "<group>"; };
 		F977F99A1FE8AB7700183A85 /* ReactInteractionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactInteractionHelper.h; sourceTree = "<group>"; };
-		F977F99B1FE8AB7700183A85 /* RNSearchBar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSearchBar.m; sourceTree = "<group>"; };
 		F977F99C1FE8AB7700183A85 /* ReactPermissionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPermissionManager.m; sourceTree = "<group>"; };
 		F977F99D1FE8AB7700183A85 /* OnboardingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingViewController.xib; sourceTree = "<group>"; };
 		F977F99E1FE8AB7700183A85 /* ReactFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactFacebookManager.m; sourceTree = "<group>"; };
@@ -4937,11 +4933,9 @@
 		F977F9B21FE8AB7700183A85 /* ReactNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNetworkManager.h; sourceTree = "<group>"; };
 		F977F9B31FE8AB7700183A85 /* ReactFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFacebookManager.h; sourceTree = "<group>"; };
 		F977F9B41FE8AB7700183A85 /* ReactPermissionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactPermissionManager.h; sourceTree = "<group>"; };
-		F977F9B51FE8AB7700183A85 /* RNSearchBar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RNSearchBar.h; sourceTree = "<group>"; };
 		F977F9B61FE8AB7700183A85 /* ReactDynamicFilterBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactDynamicFilterBridge.swift; sourceTree = "<group>"; };
 		F977F9B71FE8AB7700183A85 /* ReactInteractionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactInteractionHelper.m; sourceTree = "<group>"; };
 		F977F9B81FE8AB7700183A85 /* TKPReactURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactURLManager.m; sourceTree = "<group>"; };
-		F977F9B91FE8AB7700183A85 /* RNSearchBarManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RNSearchBarManager.m; sourceTree = "<group>"; };
 		F977F9BA1FE8AB7700183A85 /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
 		F977F9BB1FE8AB7700183A85 /* ReactEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactEventManager.m; sourceTree = "<group>"; };
 		F977F9BC1FE8AB7700183A85 /* ReactFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFileUploader.h; sourceTree = "<group>"; };
@@ -10878,10 +10872,6 @@
 				F977F98C1FE8AB7700183A85 /* ReactTPRoutes.m */,
 				F977F98D1FE8AB7700183A85 /* ReactUserManager.h */,
 				F977F9A91FE8AB7700183A85 /* ReactUserManager.m */,
-				F977F9B51FE8AB7700183A85 /* RNSearchBar.h */,
-				F977F99B1FE8AB7700183A85 /* RNSearchBar.m */,
-				F977F9971FE8AB7700183A85 /* RNSearchBarManager.h */,
-				F977F9B91FE8AB7700183A85 /* RNSearchBarManager.m */,
 				F977F9AB1FE8AB7700183A85 /* TKPReactAnalytics.h */,
 				F977F98B1FE8AB7700183A85 /* TKPReactAnalytics.m */,
 				F977F9981FE8AB7700183A85 /* TKPReactURLManager.h */,
@@ -12209,7 +12199,6 @@
 				62C771011FF33C3300F66527 /* SecurityQuestionResult.m in Sources */,
 				62C76FE51FF33C3100F66527 /* InboxReviewActionResult.m in Sources */,
 				F977FB871FE8AB7B00183A85 /* CategoryIntermediarySeeAllView.swift in Sources */,
-				F97700801FE8AB8600183A85 /* RNSearchBar.m in Sources */,
 				F977FD0F1FE8AB7E00183A85 /* ProductListMyShopFilterViewController.m in Sources */,
 				F977FBED1FE8AB7C00183A85 /* RejectOrderResponse.m in Sources */,
 				F977FC7D1FE8AB7D00183A85 /* ShopInfoShipmentCell.m in Sources */,
@@ -13538,7 +13527,6 @@
 				62C7701D1FF33C3200F66527 /* CartShipmentData.swift in Sources */,
 				F977FD5A1FE8AB7F00183A85 /* CollectionScrollAndSwipe.m in Sources */,
 				F977FB261FE8AB7B00183A85 /* InboxTicketViewController.m in Sources */,
-				F977008D1FE8AB8600183A85 /* RNSearchBarManager.m in Sources */,
 				92A4CBBA201731CC00C42D37 /* SellerInfoInboxViewController.swift in Sources */,
 				F97700631FE8AB8500183A85 /* DigitalCartUserInputPrice.swift in Sources */,
 				F977FDBA1FE8AB8000183A85 /* FilterLocationViewCell.m in Sources */,
