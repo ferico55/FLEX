@@ -18,14 +18,14 @@ class ReactLocationServiceManager: NSObject {
         if CLLocationManager.locationServicesEnabled() {
             switch CLLocationManager.authorizationStatus() {
             case .notDetermined, .restricted, .denied:
-                let dict = ["locationServiceEnabled": true, "locationServicePermission": false]
+                let dict = ["locationServiceEnabled": true, "isPermissionGranted": false]
                 resolve(dict)
             case .authorizedAlways, .authorizedWhenInUse:
-                let dict = ["locationServiceEnabled": true, "locationServicePermission": true]
+                let dict = ["locationServiceEnabled": true, "isPermissionGranted": true]
                 resolve(dict)
             }
         } else {
-            let dict = ["locationServiceEnabled": false, "locationServicePermission": false]
+            let dict = ["locationServiceEnabled": false, "isPermissionGranted": false]
             resolve(dict)
         }
     }
