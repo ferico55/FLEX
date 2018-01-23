@@ -264,6 +264,7 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 
                 if (UIDevice.current.userInterfaceIdiom == .pad) {
                     let controller = InboxTalkSplitViewController()
+                    controller.hidesBottomBarWhenPushed = true
                     self.delegate?.pushViewController?(viewController: controller)
                 }
                 else {
