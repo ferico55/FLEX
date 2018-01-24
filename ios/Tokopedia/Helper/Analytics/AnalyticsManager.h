@@ -64,6 +64,7 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 + (void)trackCampaign:(NSURL *)url;
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label;
 + (void)trackData:(NSDictionary *)data;
++ (void)trackClickSubCategory:(NSString *) url categoryId: (NSString *) categoryId name: (NSString *) name creative: (NSString*) creative position:(NSString *) position type:(HomeBannerPromotionTrackerType) type;
 
 // MoEngage
 + (void)moEngageTrackEventWithName:(NSString *)eventName attributes:(NSDictionary *)attributes;

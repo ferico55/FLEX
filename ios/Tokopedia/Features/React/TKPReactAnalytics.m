@@ -81,4 +81,13 @@ RCT_EXPORT_METHOD(moeTrack:(NSDictionary *)data) {
                                                    @"total_price": data[@"total_price"]}];
 }
 
+RCT_EXPORT_METHOD(trackSubCategory:(NSDictionary*)event) {
+    [AnalyticsManager trackClickSubCategory:event[@"url"]
+                                 categoryId:event[@"categoryId"]
+                                       name:event[@"name"]
+                                   creative:event[@"creative"]
+                                   position:event[@"position"]
+                                       type: [@"click" isEqualToString: event[@"type"]] ? HomeBannerPromotionTrackerTypeClick : HomeBannerPromotionTrackerTypeView];
+}
+
 @end

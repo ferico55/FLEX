@@ -777,4 +777,37 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     return NO;
 }
 
++ (void)trackClickSubCategory:(NSString *) url categoryId: (NSString *) categoryId name: (NSString *) name creative: (NSString*) creative position:(NSString *) position type:(HomeBannerPromotionTrackerType) type {
+    AnalyticsManager *manager = [[self alloc] init];
+    
+    NSString *promoAction = type == HomeBannerPromotionTrackerTypeView ? @"promoView" : @"promoClick";
+    
+    NSDictionary *ecommercePromoDataLayer = @{
+                                              @"ecommerce": @{
+                                                      promoAction : @{
+                                                              @"promotions": @[@{
+                                                                                   @"id": categoryId,
+                                                                                   @"name": name,
+                                                                                   @"creative": creative,
+                                                                                   @"position": position
+                                                                                   }]
+                                                              }
+                                                      }
+                                              };
+    
+    NSDictionary* eventDataLayer = [self
+                                    getEventName: type == HomeBannerPromotionTrackerTypeView ? @"promoView" : @"promoClick"
+                                    category: @"category page"
+                                    action: type == HomeBannerPromotionTrackerTypeView ? @"subcategory impression" : @"click subcategory"
+                                    label: type == HomeBannerPromotionTrackerTypeView ? @"" : url];
+
+    eventDataLayer = [eventDataLayer mergedWithDictionary: ecommercePromoDataLayer];
+    
+    if (type == HomeBannerPromotionTrackerTypeClick) {
+        eventDataLayer = [eventDataLayer mergedWithDictionary:@{@"destinationURL" : url}];
+    }
+    [manager.dataLayer push:eventDataLayer];
+    
+}
+
 @end

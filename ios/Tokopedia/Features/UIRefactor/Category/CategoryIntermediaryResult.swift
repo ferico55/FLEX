@@ -30,6 +30,8 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
     var curatedProduct: CategoryIntermediaryCuratedProduct?
     var banner: CategoryIntermediaryBanner?
     var video: CategoryIntermediaryVideo?
+    var template: String?
+    var headerImageHexColor: String?
 
     // rootCategoryId used for tracking needs
     var rootCategoryId: String = ""
@@ -47,7 +49,9 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
       isRevamp: Bool,
       isIntermediary :Bool,
     banner: CategoryIntermediaryBanner,
-    video: CategoryIntermediaryVideo) {
+    video: CategoryIntermediaryVideo,
+    template: String,
+    headerImageHexColor: String?) {
         self.children = children
         self.curatedProduct = curatedProduct
         self.id = id
@@ -62,6 +66,8 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
         self.isIntermediary = isIntermediary
         self.banner = banner
         self.video = video
+        self.template = template
+        self.headerImageHexColor = headerImageHexColor ?? ""
     }
     
     convenience init(unboxer: Unboxer) throws {
@@ -79,8 +85,9 @@ final class CategoryIntermediaryResult: NSObject, Unboxable {
             isRevamp : try unboxer.unbox(keyPath: "result.is_revamp"),
             isIntermediary : try unboxer.unbox(keyPath: "result.is_intermediary"),
             banner : try unboxer.unbox(keyPath: "result.banner") as CategoryIntermediaryBanner,
-            video : try unboxer.unbox(keyPath: "result.video") as CategoryIntermediaryVideo
-
+            video : try unboxer.unbox(keyPath: "result.video") as CategoryIntermediaryVideo,
+            template :  try unboxer.unbox(keyPath: "result.template") as String,
+            headerImageHexColor: try? unboxer.unbox(keyPath: "result.header_image_hex_color") as String
         )
         
         rootCategoryId = try unboxer.unbox(keyPath: "result.root_category_id")
