@@ -364,9 +364,11 @@ UINavigationControllerDelegate
                 NSMutableArray *arrayOfTabBar = [[NSMutableArray alloc] initWithObjects:_barButton, nil];
                 if ([wallet.data.abTags containsObject:@"QR"]) {
                     _QRCodeButton = [[UIButton alloc] init];
-                    _QRCodeButton.frame = CGRectMake(0, 0, 20, 20);
-                    [_QRCodeButton setBackgroundImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
+                    _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
+                    [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+                    [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
                     [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
+                    [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
                     [arrayOfTabBar addObject:[[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton]];
                 }
         
