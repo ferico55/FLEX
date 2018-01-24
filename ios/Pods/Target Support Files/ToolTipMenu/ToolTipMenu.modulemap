@@ -1,0 +1,6 @@
+framework module ToolTipMenu {
+  umbrella header "ToolTipMenu-umbrella.h"
+
+  export *
+  module * { export * }
+}

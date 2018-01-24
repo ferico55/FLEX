@@ -37,6 +37,7 @@ def react_pods
     pod 'react-native-maps', :podspec => './react-podspecs/react-native-maps.podspec.json'
     pod 'Interactable', :podspec => './react-podspecs/Interactable.podspec.json'
     pod 'ReactNativeSearchBar', :podspec => './react-podspecs/ReactNativeSearchBar.podspec.json'
+    pod 'ToolTipMenu', :podspec => './react-podspecs/ToolTipMenu.podspec.json'
 end
 
 def common_pods

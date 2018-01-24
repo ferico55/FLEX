@@ -1,0 +1,22 @@
+{
+  "name": "ToolTipMenu",
+  "version": "5.0.0",
+  "summary": "tooltip menu",
+  "homepage": "https://github.com/chirag04/react-native-tooltip",
+  "license": "MIT",
+  "authors": {
+    "chirag04": "chirag04"
+  },
+  "platforms": {
+    "ios": "7.0"
+  },
+  "source": {
+    "git": "https://github.com/chirag04/react-native-tooltip.git"
+  },
+  "source_files": "ToolTipMenu/*.{h,m}",
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}
