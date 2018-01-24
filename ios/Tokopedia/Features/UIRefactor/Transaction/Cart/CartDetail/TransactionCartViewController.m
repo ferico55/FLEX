@@ -319,7 +319,7 @@ InputPromoViewDelegate
 - (void)initNoLoginView {
     __weak typeof(self) weakSelf = self;
     
-    _noLoginView = [NoResultReusableView new];
+    _noLoginView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
     _noLoginView.delegate = self;
     [_noLoginView generateAllElements:@"icon_no_data_grey.png"
                                     title:@"Anda belum login"
