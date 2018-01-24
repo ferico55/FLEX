@@ -1153,7 +1153,6 @@ ProductCellDelegate
 }
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
-    [AnalyticsManager trackProductClick:promoResult.product];
     if ([self isSearchProductType]){
         if(promoResult.applinks){
             if(promoResult.shop.shop_id != nil){
@@ -1463,7 +1462,8 @@ ProductCellDelegate
         if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             if (currentPromo && currentPromo.count > 0) {
-                headerHeight += [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+                
+                headerHeight += [PromoCollectionReusableView collectionViewHeightForType:_promoCellType numberOfPromo: _promo[section].count];
             }
         }
     }

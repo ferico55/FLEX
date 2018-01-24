@@ -12,7 +12,6 @@
 #import "SearchResultViewController.h"
 #import "SearchResultShopViewController.h"
 #import "TKPDTabNavigationController.h"
-#import "ProductFeedViewController.h"
 #import "SearchAutoCompleteViewController.h"
 #import "CatalogViewController.h"
 #import "HotlistResultViewController.h"

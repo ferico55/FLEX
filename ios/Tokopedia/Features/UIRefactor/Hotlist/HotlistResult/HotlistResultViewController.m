@@ -152,7 +152,7 @@ ProductCellDelegate
 @property (weak, nonatomic) IBOutlet UICollectionView *collectionView;
 @property (weak, nonatomic) IBOutlet UICollectionViewFlowLayout *flowLayout;
 
-@property (strong, nonatomic) NSMutableArray *promo;
+@property (strong, nonatomic) NSMutableArray<NSArray<PromoResult*>*> *promo;
 
 @property PromoCollectionViewCellType promoCellType;
 @property (strong, nonatomic) NSMutableArray *promoScrollPosition;
@@ -767,7 +767,7 @@ ProductCellDelegate
     if (_promo.count > section) {
         NSArray *currentPromo = [_promo objectAtIndex:section];
         if (currentPromo && currentPromo.count > 0) {
-            headerHeight += [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
+            headerHeight += [PromoCollectionReusableView collectionViewHeightForType: _promoCellType numberOfPromo: _promo[section].count];
         }
     }
     

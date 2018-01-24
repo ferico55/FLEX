@@ -234,25 +234,21 @@ UICollectionViewDelegate
 }
 
 - (CGFloat)viewHeight {
-    CGFloat height = [PromoCollectionReusableView collectionViewHeightForType:_collectionViewCellType];
+    CGFloat height = [PromoCollectionReusableView collectionViewHeightForType:_collectionViewCellType numberOfPromo:_promo.count];
     return height;
 }
 
-+ (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type {
++ (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type numberOfPromo: (NSInteger) numberOfPromo {
     CGFloat height = 0.0;
     CGSize itemSize = [self itemSize:type];
     
     if (type == PromoCollectionViewCellTypeNormal) {
         height = itemSize.height;
     } else if (type == PromoCollectionViewCellTypeThumbnail) {
-        height = itemSize.height * 2;
+        height = itemSize.height * (IS_IPAD ? ceil(numberOfPromo / 2.0) : numberOfPromo);
     }
     
     return height;
-}
-
-+ (CGFloat)collectionViewNormalHeight {
-    return [self collectionViewHeightForType:PromoCollectionViewCellTypeNormal];
 }
 
 + (CGSize)itemSize:(NSInteger)type {

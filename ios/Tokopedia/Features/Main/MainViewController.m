@@ -13,7 +13,6 @@
 #import <QuartzCore/QuartzCore.h>
 
 #import "HotlistViewController.h"
-#import "ProductFeedViewController.h"
 #import "HistoryProductViewController.h"
 #import "FavoritedShopViewController.h"
 

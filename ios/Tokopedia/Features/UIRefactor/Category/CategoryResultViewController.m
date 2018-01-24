@@ -44,7 +44,6 @@
 #import "NoResultReusableView.h"
 #import "Tokopedia-Swift.h"
 
-#import "HeaderIntermediaryCollectionReusableView.h"
 #import <React/RCTRootView.h>
 #import "ReactEventManager.h"
 
@@ -72,7 +71,6 @@ SortViewControllerDelegate,
 FilterViewControllerDelegate,
 PromoCollectionViewDelegate,
 NoResultDelegate,
-HeaderIntermediaryCollectionViewDelegate,
 ProductCellDelegate
 >
 

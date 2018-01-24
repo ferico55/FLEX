@@ -8,7 +8,6 @@
 
 #import "HomeTabViewController.h"
 
-#import "ProductFeedViewController.h"
 #import "HotlistViewController.h"
 #import "HistoryProductViewController.h"
 #import "FavoritedShopViewController.h"

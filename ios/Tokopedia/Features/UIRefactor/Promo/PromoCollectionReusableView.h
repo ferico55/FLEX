@@ -46,8 +46,7 @@ typedef NS_ENUM(NSInteger, TopadsSource) {
 
 - (void)scrollToCenter;
 - (void)scrollToCenterWithoutAnimation;
-+ (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type;
-+ (CGFloat)collectionViewNormalHeight;
++ (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type numberOfPromo: (NSInteger) numberOfPromo;
 + (CGFloat) topAdsHeadlineHeight;
 - (void) setTopAdsHeadlineData: (PromoResult *) promoResult;
 - (void) hideTopAdsHeadline;
