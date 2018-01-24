@@ -266,6 +266,17 @@ class TPRoutes: NSObject {
             return true
         }
 
+        JLRoutes.global().addRoute("wallet/activation") { _ in
+            let storyboard = UIStoryboard(name: "Main", bundle: nil)
+            let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+            controller.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(controller, animated: false)
+            return true
+        }
+
         // MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { _ in
             let viewController = DigitalCategoryListViewController()
@@ -385,12 +396,17 @@ class TPRoutes: NSObject {
 
         // MARK: Create Shop (Native)
         JLRoutes.global().addRoute("/buka-toko-online-gratis") { (_: [String: Any]!) -> Bool in
-            let userManager = UserAuthentificationManager()
-            if userManager.isLogin && userManager.getShopId() == "0" {
-                let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
-                UIApplication.topViewController()?.navigationController!.pushViewController(controller, animated: true)
+            guard let topViewController = UIApplication.topViewController() else {
+                return true
             }
 
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin && userManager.getShopId() == "0" {
+                    let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
+                    UIApplication.topViewController()?.navigationController!.pushViewController(controller, animated: true)
+                }
+            }
             return true
         }
 
@@ -517,7 +533,8 @@ class TPRoutes: NSObject {
 
         // MARK: Promo (Native)
         JLRoutes.global().addRoute("/promoNative") { (_: [String: Any]!) -> Bool in
-            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
+            let isLogin = UserAuthentificationManager().isLogin
+            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": isLogin ? 3 : 2])
 
             return true
         }
@@ -820,6 +837,45 @@ class TPRoutes: NSObject {
                     .navigationController?
                     .pushViewController(userController, animated: true)
             }
+            return true
+        }
+
+        // digital category list
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/digital/category") { (_: [String: Any]!) -> Bool in
+            let controller = DigitalCategoryListViewController()
+            controller.title = "Pembayaran & Top Up"
+            controller.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(controller, animated: true)
+            return true
+        }
+        
+        // ticker navigation
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/ticker") {(params: [String: Any]!) -> Bool in
+            guard let encodedURL = params["url"] as? String,
+                let decodedURL = encodedURL.removingPercentEncoding else {
+                    return true
+            }
+            var url = URLComponents(string: decodedURL)
+            url?.queryItems = getUTMQueryItems(url: URL(string: decodedURL)!)
+            
+            guard let completeURL = url?.url else { return false }
+
+            let controller = WebViewController()
+            let navigationController = UIApplication.topViewController()?.navigationController
+            controller.hidesBottomBarWhenPushed = true
+            
+            controller.strURL = completeURL.absoluteString
+            controller.strTitle = ""
+            controller.onTapLinkWithUrl = { [weak navigationController] url in
+                if url?.absoluteString == "https://www.tokopedia.com/" {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+            
+            navigationController?.pushViewController(controller, animated: true)
             return true
         }
 

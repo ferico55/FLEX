@@ -5,7 +5,7 @@
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13529"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -15,41 +15,13 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="225"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iIS-Fx-wWy">
+                <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="iIS-Fx-wWy">
                     <rect key="frame" x="0.0" y="0.0" width="375" height="175"/>
-                    <color key="backgroundColor" red="1" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                </view>
-                <view contentMode="scaleToFill" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="pfw-pQ-eV6">
-                    <rect key="frame" x="0.0" y="175" width="375" height="50"/>
-                    <subviews>
-                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_forward" translatesAutoresizingMaskIntoConstraints="NO" id="5SH-G1-o9b">
-                            <rect key="frame" x="349" y="22" width="6" height="9"/>
-                            <color key="tintColor" red="0.1184426844" green="0.75428462029999999" blue="0.014394762930000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        </imageView>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RSK-6G-xMO">
-                            <rect key="frame" x="228" y="12" width="113" height="27"/>
-                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
-                            <state key="normal" title="Lihat Semua Promo">
-                                <color key="titleColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
-                            </state>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    <constraints>
-                        <constraint firstItem="RSK-6G-xMO" firstAttribute="centerY" secondItem="pfw-pQ-eV6" secondAttribute="centerY" id="Esm-aF-VWd"/>
-                        <constraint firstAttribute="trailing" secondItem="5SH-G1-o9b" secondAttribute="trailing" constant="20" id="Vhu-eU-1TR"/>
-                        <constraint firstItem="5SH-G1-o9b" firstAttribute="leading" secondItem="RSK-6G-xMO" secondAttribute="trailing" constant="8" id="rEZ-JS-I71"/>
-                        <constraint firstAttribute="height" constant="50" id="tSL-Gy-pi8"/>
-                        <constraint firstItem="5SH-G1-o9b" firstAttribute="centerY" secondItem="RSK-6G-xMO" secondAttribute="centerY" constant="1" id="v3D-Op-CyY"/>
-                    </constraints>
+                    <color key="backgroundColor" red="0.94509803921568625" green="0.94509803921568625" blue="0.94509803921568625" alpha="1" colorSpace="calibratedRGB"/>
                 </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstAttribute="bottom" secondItem="pfw-pQ-eV6" secondAttribute="bottom" id="MBF-nZ-e3A"/>
-                <constraint firstAttribute="trailing" secondItem="pfw-pQ-eV6" secondAttribute="trailing" id="ROR-ki-MAm"/>
-                <constraint firstItem="pfw-pQ-eV6" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="U9i-eF-Cgq"/>
-                <constraint firstItem="pfw-pQ-eV6" firstAttribute="top" secondItem="iIS-Fx-wWy" secondAttribute="bottom" id="XQE-PZ-SF2"/>
                 <constraint firstItem="iIS-Fx-wWy" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Z9i-xL-5Xv"/>
                 <constraint firstItem="iIS-Fx-wWy" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="hl3-4X-7gW"/>
                 <constraint firstAttribute="trailing" secondItem="iIS-Fx-wWy" secondAttribute="trailing" id="woy-R5-DMV"/>
@@ -57,13 +29,8 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="carouselPlaceholder" destination="iIS-Fx-wWy" id="afs-eB-bVz"/>
-                <outlet property="homeSliderAddOnView" destination="pfw-pQ-eV6" id="qqd-mp-Tky"/>
-                <outlet property="seeAllPromoButton" destination="RSK-6G-xMO" id="CqJ-Bz-34B"/>
             </connections>
             <point key="canvasLocation" x="33.5" y="145.5"/>
         </view>
     </objects>
-    <resources>
-        <image name="icon_forward" width="6" height="9"/>
-    </resources>
 </document>

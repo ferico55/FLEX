@@ -48,6 +48,7 @@
                    EMAIL_PASSWORD(@"chrysanthia.novelia@tokopedia.com", @"Chrysan33"),
                    EMAIL_PASSWORD(@"dylan.anggasta@tokopedia.com", @"admintokopedia"),
                    EMAIL_PASSWORD(@"gunadi.qc@tokopedia.com", @"gun123qwerty"),
+                   EMAIL_PASSWORD(@"andhika.djaffri+1@tokopedia.com", @"tokopedia789"),
                    EMAIL_PASSWORD(@"andhika.djaffri+2@tokopedia.com", @"tokopedia789"),
                    EMAIL_PASSWORD(@"tri.sujarwo+0@tokopedia.com", @"Tokopedia1")
                    })

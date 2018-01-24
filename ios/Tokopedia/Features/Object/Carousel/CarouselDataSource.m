@@ -14,9 +14,6 @@
 
 @import SwiftOverlays;
 
-const CGSize bannerIPadSize = {.width = 450, .height = 225};
-const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
-
 @interface CarouselDataSource ()
 
 @property(nullable, nonatomic, weak) StyledPageControl *pageControl;
@@ -36,6 +33,8 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
         return nil;
     }
     
+    _bannerIPadSize = CGSizeMake(450, 235);
+    _bannerIPhoneSize = CGSizeMake(375, 175);
     _banners = banners;
     _pageControl = pageControl;
     _bannerType = type;
@@ -50,7 +49,7 @@ const CGSize bannerIPhoneSize = {.width = 375, .height = 175};
 
 - (UIView *)carousel:(iCarousel *)carousel viewForItemAtIndex:(NSInteger)index reusingView:(UIView *)view {
     
-    CGSize bannerSize = IS_IPAD && (_bannerType == BannerTypeHome) ? bannerIPadSize : bannerIPhoneSize;
+    CGSize bannerSize = IS_IPAD && (_bannerType == BannerTypeHome) ? self.bannerIPadSize : self.bannerIPhoneSize;
     
     view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
     

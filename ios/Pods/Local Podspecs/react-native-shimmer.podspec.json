@@ -1,0 +1,25 @@
+{
+  "name": "react-native-shimmer",
+  "version": "0.3.2",
+  "homepage": "https://github.com/oblador/react-native-shimmer",
+  "license": "MIT",
+  "authors": {
+    "Joel Arvidsson": "joel@oblador.se"
+  },
+  "summary": "Simple shimmering effect for React Native.",
+  "source": {
+    "git": "https://github.com/oblador/react-native-shimmer.git",
+    "tag": "v0.3.2"
+  },
+  "source_files": "ios/{,Shimmer/FBShimmering/}*.{h,m}",
+  "preserve_paths": "**/*.js",
+  "requires_arc": true,
+  "platforms": {
+    "ios": "7.0"
+  },
+  "dependencies": {
+    "React": [
+
+    ]
+  }
+}

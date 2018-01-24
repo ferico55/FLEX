@@ -36,6 +36,7 @@ def react_pods
     pod 'RNSVG', :podspec => './react-podspecs/RNSVG.podspec.json'
     pod 'react-native-maps', :podspec => './react-podspecs/react-native-maps.podspec.json'
     pod 'Interactable', :podspec => './react-podspecs/Interactable.podspec.json'
+    pod 'BVLinearGradient', :podspec => './react-podspecs/react-native-linear-gradient.podspec.json'
     pod 'ReactNativeSearchBar', :podspec => './react-podspecs/ReactNativeSearchBar.podspec.json'
     pod 'ToolTipMenu', :podspec => './react-podspecs/ToolTipMenu.podspec.json'
 end

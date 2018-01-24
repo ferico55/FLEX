@@ -821,7 +821,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
                     TokoCashUseCase.requestBalance()
                         .subscribe(onNext: { wallet in
                             if wallet.isExpired() {
-                                LogEntriesHelper.logForceLogout(lastURL: "https://accounts.tokopedia.com/api/v1/wallet/balance")
+                                LogEntriesHelper.logForceLogout(lastURL: "\(NSString.tokocashUrl())/api/v1/wallet/balance")
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
                                 if wallet.shouldShowActivation {

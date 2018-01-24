@@ -34,6 +34,8 @@ PODS:
   - Branch (0.20.3):
     - Branch/Core (= 0.20.3)
   - Branch/Core (0.20.3)
+  - BVLinearGradient (2.4.0):
+    - React
   - CCBottomRefreshControl (0.5.2)
   - CFAlertViewController (2.3.1)
   - CodePush (3.0.1):
@@ -290,6 +292,7 @@ DEPENDENCIES:
   - BEMCheckBox (~> 1.2.0)
   - BlocksKit (~> 2.2.5)
   - Branch (= 0.20.3)
+  - BVLinearGradient (from `./react-podspecs/react-native-linear-gradient.podspec.json`)
   - CCBottomRefreshControl
   - CFAlertViewController (from `https://github.com/digitkhrisnaa/CFAlertViewController`, branch `modifications`)
   - CodePush (from `./react-podspecs/CodePush.podspec.json`)
@@ -382,6 +385,8 @@ DEPENDENCIES:
   - youtube-ios-player-helper (~> 0.1.6)
 
 EXTERNAL SOURCES:
+  BVLinearGradient:
+    :podspec: ./react-podspecs/react-native-linear-gradient.podspec.json
   CFAlertViewController:
     :branch: modifications
     :git: https://github.com/digitkhrisnaa/CFAlertViewController
@@ -471,6 +476,7 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   Branch: eec127cb61e0f7f1aa9c351adcad22fa980e001d
+  BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
   CCBottomRefreshControl: 389780b4488321c91d18f66a6da5ef9606df6de5
   CFAlertViewController: 8be0b595d03ed43b922b02bff5077d56b2f456ef
   CodePush: 376d00239fd36aeef445b3ec92a43d091ba070ff
@@ -567,6 +573,6 @@ SPEC CHECKSUMS:
   yoga: c8a06e50634d2d2b08c9500b71f3b734a13aa360
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 62ce63b9976734b86c7d1d5814dc30844a94b390
+PODFILE CHECKSUM: 3b9e17cc941e7d6bfe6d104c1b741376021d71b2
 
 COCOAPODS: 1.3.1

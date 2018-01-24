@@ -145,7 +145,8 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             return
         }
         
-        tabManager.sendLoginEvent()
+        let userManager = UserAuthentificationManager()
+        tabManager.sendLoginEvent(userManager.getUserLoginData())
     }
     
     // MARK: Action Button

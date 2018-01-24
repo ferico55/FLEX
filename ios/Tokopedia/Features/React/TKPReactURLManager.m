@@ -47,7 +47,10 @@ RCT_EXPORT_MODULE();
              @"graphQLURL": NSString.graphQLURL,
              @"accountsUrl": NSString.accountsUrl,
              @"pulsaURL": NSString.pulsaApiUrl,
-             @"paymentURL": NSString.paymentURL
+             @"paymentURL": NSString.paymentURL,
+             @"tokocashUrl": NSString.tokocashUrl,
+             @"tokopointsUrl": NSString.tokopointsUrl,
+             @"jsUrl": NSString.jsUrl
              };
 }
 

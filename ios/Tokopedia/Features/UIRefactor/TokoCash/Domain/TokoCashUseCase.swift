@@ -24,7 +24,6 @@ import Moya
         TokoCashUseCase
             .requestBalance()
             .catchError { error -> Observable<WalletStore> in
-                errorHandler(error)
                 return Observable.error(error)
             }
             .subscribe(onNext: { result in

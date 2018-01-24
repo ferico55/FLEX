@@ -38,6 +38,21 @@ class WalletService: NSObject {
             })
     }
     
+    class func getPendingCashback(phoneNumber: String, completionHandler: @escaping (WalletCashBackResponse?) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
+        let _ = WalletService.getPendingCashBack(phoneNumber: phoneNumber)
+            .map { cashbackResponse -> WalletCashBackResponse? in
+                return cashbackResponse
+            }
+            .catchError({ (error) -> Observable<WalletCashBackResponse?> in
+                return Observable.just(nil)
+            })
+            .subscribe( onNext: { response in
+                completionHandler(response)
+            }, onError: { [] error in
+                errorHandler(error)
+            })
+    }
+    
     class func getTokoCash(userId: String, phoneNumber: String) -> Observable<WalletStore> {
         guard UserAuthentificationManager().getUserLoginData()?["oAuthToken.tokenType"] != nil else {
             return Observable.empty()

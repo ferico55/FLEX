@@ -22,6 +22,8 @@
 - (void)resetBannerCounter;
 
 @property(nullable, nonatomic, weak) UINavigationController *navigationDelegate;
+@property(nonatomic) CGSize bannerIPadSize;
+@property(nonatomic) CGSize bannerIPhoneSize;
 
 @property (nonatomic, copy) void (^_Nullable didSelectBanner)(Slide * _Nonnull slide, NSInteger index);
 

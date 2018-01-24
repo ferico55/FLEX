@@ -27,6 +27,8 @@
 #import "Tokopedia-Swift.h"
 #import "SearchViewController.h"
 #import "PromoViewController.h"
+@import NativeNavigation;
+@import FirebaseRemoteConfig;
 
 @interface HomeTabViewController ()
 <
@@ -48,7 +50,7 @@ UINavigationControllerDelegate
     NotificationBarButton *_barButton;
 }
 
-@property (strong, nonatomic) HomePageViewController *homePageController;
+@property (strong, nonatomic) UIViewController *homePageController;
 @property (strong, nonatomic) HotlistViewController *hotlistController;
 @property (strong, nonatomic) FeedViewController *feedController;
 @property (strong, nonatomic) PromoViewController *promoViewController;
@@ -95,8 +97,24 @@ UINavigationControllerDelegate
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    _homePageController = [HomePageViewController new];
+    _userManager = [UserAuthentificationManager new];
+    NSDictionary* userData = [_userManager getUserLoginData];
     
+    FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
+    [remoteConfig fetchWithCompletionHandler:^(FIRRemoteConfigFetchStatus status, NSError * _Nullable error) {
+        // do nothing
+    }];
+    BOOL remoteValue = [[remoteConfig configValueForKey:@"iosapp_enable_new_home"] boolValue];
+    if (remoteValue) {
+        if (userData) {
+            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData}];
+        } else {
+            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen"];
+        }
+    } else {
+        _homePageController = [HomePageViewController new];
+    }
+
     _feedController = [FeedViewController new];
     
     _promoViewController = [PromoViewController new];
@@ -109,8 +127,6 @@ UINavigationControllerDelegate
     _redirectHandler = [RedirectHandler new];
     
     _navigate = [NavigateViewController new];
-    
-    _userManager = [UserAuthentificationManager new];
     
     [self instantiateViewControllers];
     
@@ -323,6 +339,10 @@ UINavigationControllerDelegate
     [self setIndexPage:index-1];
     [self goToPage:_page];
     [self tapButtonAnimate:_scrollView.frame.size.width*(index-1)];
+    if (_page == 0) {
+        ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+        [tabManager sendRedirectHomeTabEvent];
+    }
 }
 
 - (void)tapButtonAnimate:(CGFloat)totalOffset{
@@ -428,7 +448,7 @@ UINavigationControllerDelegate
     [self instantiateViewControllers];
     [self setSearchByImage];
     [self redirectToProductFeed];
-    [self setIndexPage:1];
+    [self setIndexPage:0];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {
@@ -469,12 +489,9 @@ UINavigationControllerDelegate
     });
 }
 
-- (void)scrollToTop
-{
-    NSArray *vcs = [_viewControllers mutableCopy];
-    if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
-        [vcs[_page] scrollToTop];
-    }
+- (void)scrollToTop {
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+    [tabManager sendScrollToTopEvent];
 }
 
 - (void) didTapQRCodeButton {

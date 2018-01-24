@@ -8,6 +8,7 @@
 
 import UIKit
 import RxSwift
+import NativeNavigation
 
 class TokoCashActivationSuccessViewController: UIViewController {
     
@@ -72,6 +73,9 @@ class TokoCashActivationSuccessViewController: UIViewController {
     }
     
     @IBAction func didTapBackToHomeButton(_ sender: Any) {
+        if let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
+            tabManager.sendRedirectHomeTabEvent()
+        }
         navigationController?.popToRootViewController(animated: true)
     }
 }

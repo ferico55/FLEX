@@ -217,7 +217,7 @@ class AccountActivationViewController: UIViewController, UITextFieldDelegate {
             return
         }
         
-        tabManager.sendLoginEvent()
+        tabManager.sendLoginEvent(userManager.getUserLoginData())
     }
     
     // MARK: UITextField Delegate    

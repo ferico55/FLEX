@@ -155,7 +155,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
         let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self)
         if let manager = tabManager as? ReactEventManager {
-            manager.sendLoginEvent()
+            manager.sendLoginEvent(UserAuthentificationManager().getUserLoginData())
         }
     }
     fileprivate func notifyUserLoginFailure() {

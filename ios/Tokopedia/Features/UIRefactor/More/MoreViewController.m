@@ -355,19 +355,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [weakSelf showActivationButton:wallet];
             
         }else if(error.code == 9991) {
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
-        }
-    }];
-}
-
-- (void)requestWalletWithNewToken {
-    __weak typeof(self) weakSelf = self;
-    
-    [AuthenticationService.shared getNewTokenOnCompletion:^(OAuthToken * _Nullable token, NSError * _Nullable error) {
-        if (token != nil) {
-            [weakSelf requestWallet];
-        } else {
-            [LogEntriesHelper logForceLogoutWithLastURL:@"https://accounts.tokopedia.com/api/v1/wallet/balance"];
+            
+            [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", NSString.tokocashUrl, @"/api/v1/wallet/balance"]];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
         }
     }];

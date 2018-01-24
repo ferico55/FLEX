@@ -9,19 +9,16 @@
 import UIKit
 
 class HomeSliderView: UIView {
-    
+
     @IBOutlet fileprivate var carouselPlaceholder: UIView!
-    @IBOutlet fileprivate var seeAllPromoButton: UIButton!
     fileprivate var pageControlHeight: Int = 12
     fileprivate var customPageControl: StyledPageControl!
     fileprivate let slider = iCarousel(frame: CGRect.zero)
     
-    @IBOutlet fileprivate var homeSliderAddOnView: UIView!
     fileprivate var carouselDataSource: CarouselDataSource?
     
     override func awakeFromNib() {
         setupCustomPageControl()
-        setupSliderAddOnPromoButton()
         isAccessibilityElement = true
         accessibilityIdentifier = "bannerSliderView"
     }
@@ -29,30 +26,21 @@ class HomeSliderView: UIView {
     fileprivate func setupCustomPageControl() {
         customPageControl = StyledPageControl()
         customPageControl.pageControlStyle = PageControlStyleDefault
-        customPageControl.coreNormalColor = .tpLine()
-        customPageControl.coreSelectedColor = .tpGreen()
-        customPageControl.diameter = 11
+        customPageControl.coreNormalColor = .tpSecondaryWhiteText()
+        customPageControl.coreSelectedColor = .tpOrange()
+        customPageControl.strokeNormalColor = UIColor(white: 0, alpha: 0)
+        customPageControl.borderColor = UIColor(white: 0, alpha: 0)
+        customPageControl.diameter = 12
         customPageControl.gapWidth = 5
         addSubview(customPageControl)
     }
     
-    fileprivate func setupSliderAddOnPromoButton() {
-        let userAuthManager = UserAuthentificationManager()
-        self.seeAllPromoButton.bk_(whenTapped: {
-            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_BANNER, action: GA_EVENT_ACTION_CLICK_VIEW_ALL, label: "")
-            var userInfo: [String : Int]!
-            if userAuthManager.isLogin {
-                userInfo = ["page": 3]
-            } else {
-                userInfo = ["page": 2]
-            }
-            
-            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: userInfo)
-        })
-    }
-    
     func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
+        self.carouselPlaceholder.mas_makeConstraints { make in
+            make?.height.mas_equalTo()(UIDevice.current.userInterfaceIdiom == .pad ? 258 : 125)
+        }
         slider.backgroundColor = backgroundColor
+        slider.clipsToBounds = true
         carouselPlaceholder.addSubview(slider)
         slider.mas_makeConstraints { make in
             make?.edges.mas_equalTo()(self.carouselPlaceholder)
@@ -63,6 +51,8 @@ class HomeSliderView: UIView {
                                                      type: .home,
                                                      slider: slider)
         guard let carouselDataSource = self.carouselDataSource else { return }
+        carouselDataSource.bannerIPadSize = CGSize(width: 768, height: 258)
+        carouselDataSource.bannerIPhoneSize = CGSize(width: 375, height: 125)
         carouselDataSource.navigationDelegate = navigationController
         carouselDataSource.didSelectBanner = { banner, index in
             AnalyticsManager.trackHomeBanner(banner, index: index, type: .click)
@@ -74,9 +64,10 @@ class HomeSliderView: UIView {
         slider.decelerationRate = 0.5
         
         customPageControl.numberOfPages = banner.count
+        customPageControl.hidesForSinglePage = true
         customPageControl.mas_makeConstraints { make in
-            make?.centerY.mas_equalTo()(self.homeSliderAddOnView)
-            make?.left.mas_equalTo()(self.homeSliderAddOnView)?.with().offset()(20)
+            make?.bottom.mas_equalTo()(self.carouselPlaceholder)?.with().offset()(-4)
+            make?.left.mas_equalTo()(self.carouselPlaceholder)?.with().offset()(12)
             make?.height.mas_equalTo()(self.pageControlHeight)
             make?.width.mas_equalTo()(self.pageControlHeight * Int(self.customPageControl.numberOfPages))
         }

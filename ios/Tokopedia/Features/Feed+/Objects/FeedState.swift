@@ -423,7 +423,7 @@ class FeedStateManager: NSObject {
         if feedState.hasNextPage {
             let dataSize = feedData.count
             
-            if let data = feedData[dataSize - 1], let cursor = data.cursor {
+            if dataSize > 0, let data = feedData[dataSize - 1], let cursor = data.cursor {
                 feedState.cursor = cursor
             }
         }

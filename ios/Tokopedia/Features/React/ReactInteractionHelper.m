@@ -132,6 +132,23 @@ RCT_EXPORT_METHOD(ensureLogin: (RCTResponseSenderBlock)callback) {
     }];
 }
 
+RCT_EXPORT_METHOD(getNewToken: (RCTResponseSenderBlock)callback) {
+    [AuthenticationService.shared getNewTokenOnCompletion:^(OAuthToken * _Nullable token, NSError * _Nullable error) {
+        if (error) {
+            callback(@[[NSNull null]]);
+            return;
+        }
+        callback(@[token.accessToken]);
+    }];
+}
+
+RCT_EXPORT_METHOD(forceLogout) {
+    [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", NSString.tokopointsUrl, @"/tokopoints/api/v1/points/drawer"]];
+    [NSNotificationCenter.defaultCenter postNotificationName:TkpdNotificationForcedLogout object:nil];
+    ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+    [tabManager sendLogoutEvent];
+}
+
 RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RCTResponseSenderBlock)callback) {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];

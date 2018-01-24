@@ -277,6 +277,10 @@ typedef enum TagRequest {
                                 category:GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV
                                   action:[NSString stringWithFormat:@"click %@ nav", tabBarController.tabBar.selectedItem.title]
                                    label:@""];
+        if (tabBarController.selectedIndex == 0) {
+            ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+            [tabManager sendRedirectHomeTabEvent];
+        }
         if (idx == tabBarController.selectedIndex) {
             if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
                 [viewControllers[tabBarController.selectedIndex] scrollToTop];

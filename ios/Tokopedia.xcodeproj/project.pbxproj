@@ -641,8 +641,6 @@
 		92A4CBBB201731CC00C42D37 /* SellerInfoInboxFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4CBB1201731CC00C42D37 /* SellerInfoInboxFilterViewController.swift */; };
 		92A4CBBC201731CC00C42D37 /* SellerInfoInboxCellView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4CBB2201731CC00C42D37 /* SellerInfoInboxCellView.swift */; };
 		92A4CBBE2017333700C42D37 /* SellerInfoNotificationData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A4CBBD2017333500C42D37 /* SellerInfoNotificationData.swift */; };
-		D86EC25E200F6A6400388574 /* ReactLocationServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */; };
-		D86EC25F200F6A6400388574 /* ReactLocationServiceManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */; };
 		DADB9F3D1F3C46CE002B1FAE /* CMPopTipView.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */; };
 		DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE31F3C46CE002B1FAE /* _FBTweakArrayViewController.m */; };
 		DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */ = {isa = PBXBuildFile; fileRef = DADB9EE51F3C46CE002B1FAE /* _FBTweakBindObserver.m */; };
@@ -689,7 +687,6 @@
 		E50465C520159F3100FD0872 /* NativeNPSView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50465BF20159F3000FD0872 /* NativeNPSView.xib */; };
 		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
-		E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
@@ -872,6 +869,9 @@
 		F7D8CA3B2017556500725BDB /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA372017556400725BDB /* ErrorTracker.swift */; };
 		F7D8CA3C2017556500725BDB /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA382017556400725BDB /* Observable+Ext.swift */; };
 		F7D8CA3D2017556500725BDB /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA392017556400725BDB /* ViewModelType.swift */; };
+		F924FCB420178E41009EDD47 /* RCTPulsaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924FCAF20178E40009EDD47 /* RCTPulsaView.swift */; };
+		F924FCB520178E41009EDD47 /* PulsaViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F924FCB120178E40009EDD47 /* PulsaViewManager.m */; };
+		F924FCB620178E41009EDD47 /* BannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F924FCB320178E40009EDD47 /* BannerViewManager.m */; };
 		F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */ = {isa = PBXBuildFile; fileRef = F954BD251FC55B65008C0B30 /* TokopediaDB.db */; };
 		F954C43F1FC55B6C008C0B30 /* icon_snap@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD271FC55B65008C0B30 /* icon_snap@2x.png */; };
 		F954C4401FC55B6C008C0B30 /* badge_official_small.png in Resources */ = {isa = PBXBuildFile; fileRef = F954BD281FC55B65008C0B30 /* badge_official_small.png */; };
@@ -941,34 +941,6 @@
 		F97700701FE8AB8500183A85 /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9831FE8AB7700183A85 /* MoreWrapperViewController.m */; };
 		F97700711FE8AB8500183A85 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9841FE8AB7700183A85 /* MainViewController.m */; };
 		F97700721FE8AB8500183A85 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9881FE8AB7700183A85 /* RemoteConfig.swift */; };
-		F97700731FE8AB8500183A85 /* ReactSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F98A1FE8AB7700183A85 /* ReactSplitViewController.swift */; };
-		F97700741FE8AB8500183A85 /* TKPReactAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F98B1FE8AB7700183A85 /* TKPReactAnalytics.m */; };
-		F97700751FE8AB8500183A85 /* ReactTPRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F98C1FE8AB7700183A85 /* ReactTPRoutes.m */; };
-		F97700761FE8AB8500183A85 /* HybridNavigationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F98E1FE8AB7700183A85 /* HybridNavigationManager.m */; };
-		F97700771FE8AB8500183A85 /* ReactDynamicFilterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F98F1FE8AB7700183A85 /* ReactDynamicFilterModule.m */; };
-		F97700781FE8AB8500183A85 /* ReactBannerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9901FE8AB7700183A85 /* ReactBannerManager.m */; };
-		F97700791FE8AB8500183A85 /* ReactHybridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9911FE8AB7700183A85 /* ReactHybridViewController.m */; };
-		F977007A1FE8AB8500183A85 /* ReactNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9921FE8AB7700183A85 /* ReactNetworkManager.m */; };
-		F977007B1FE8AB8600183A85 /* ReactNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9931FE8AB7700183A85 /* ReactNotificationCenter.m */; };
-		F977007C1FE8AB8600183A85 /* ReactTopAdsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9941FE8AB7700183A85 /* ReactTopAdsManager.m */; };
-		F977007D1FE8AB8600183A85 /* ReactOnboardingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9951FE8AB7700183A85 /* ReactOnboardingHelper.m */; };
-		F977007E1FE8AB8600183A85 /* ReactPopoverHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9961FE8AB7700183A85 /* ReactPopoverHelper.m */; };
-		F977007F1FE8AB8600183A85 /* ReactPopoverOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9991FE8AB7700183A85 /* ReactPopoverOptionViewController.swift */; };
-		F97700811FE8AB8600183A85 /* ReactPermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99C1FE8AB7700183A85 /* ReactPermissionManager.m */; };
-		F97700821FE8AB8600183A85 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F99D1FE8AB7700183A85 /* OnboardingViewController.xib */; };
-		F97700831FE8AB8600183A85 /* ReactFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99E1FE8AB7700183A85 /* ReactFacebookManager.m */; };
-		F97700841FE8AB8600183A85 /* ReactCategoryResultManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F99F1FE8AB7700183A85 /* ReactCategoryResultManager.m */; };
-		F97700851FE8AB8600183A85 /* ReactFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9A01FE8AB7700183A85 /* ReactFileUploader.m */; };
-		F97700861FE8AB8600183A85 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9A51FE8AB7700183A85 /* OnboardingViewController.swift */; };
-		F97700871FE8AB8600183A85 /* ReactUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9A91FE8AB7700183A85 /* ReactUserManager.m */; };
-		F97700881FE8AB8600183A85 /* ReactPopoverOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F9AC1FE8AB7700183A85 /* ReactPopoverOptionViewController.xib */; };
-		F97700891FE8AB8600183A85 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F9AD1FE8AB7700183A85 /* OptionCell.xib */; };
-		F977008A1FE8AB8600183A85 /* ReactDynamicFilterBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B61FE8AB7700183A85 /* ReactDynamicFilterBridge.swift */; };
-		F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B71FE8AB7700183A85 /* ReactInteractionHelper.m */; };
-		F977008C1FE8AB8600183A85 /* TKPReactURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9B81FE8AB7700183A85 /* TKPReactURLManager.m */; };
-		F977008E1FE8AB8600183A85 /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BA1FE8AB7700183A85 /* ReactOrderManager.m */; };
-		F977008F1FE8AB8600183A85 /* ReactEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BB1FE8AB7700183A85 /* ReactEventManager.m */; };
-		F97700901FE8AB8600183A85 /* ReactModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9BD1FE8AB7700183A85 /* ReactModule.swift */; };
 		F97700911FE8AB8600183A85 /* TPCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C01FE8AB7700183A85 /* TPCryptoManager.swift */; };
 		F97700921FE8AB8600183A85 /* CreditCardTouchIDData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C11FE8AB7700183A85 /* CreditCardTouchIDData.swift */; };
 		F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C21FE8AB7700183A85 /* AsymmetricCryptoManager.swift */; };
@@ -2084,6 +2056,38 @@
 		F977FE5B1FE8AB8100183A85 /* FeedEmptyState.json in Resources */ = {isa = PBXBuildFile; fileRef = F977F5501FE8AB7400183A85 /* FeedEmptyState.json */; };
 		F977FE5C1FE8AB8100183A85 /* FeedDetailViewController.graphql in Resources */ = {isa = PBXBuildFile; fileRef = F977F5511FE8AB7400183A85 /* FeedDetailViewController.graphql */; };
 		F977FE5D1FE8AB8200183A85 /* FeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F5521FE8AB7400183A85 /* FeedViewController.swift */; };
+		F980524A2018AAFD00CE6D67 /* ReactHybridViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052132018AABC00CE6D67 /* ReactHybridViewController.m */; };
+		F980524B2018AAFD00CE6D67 /* ReactPopoverHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052142018AABD00CE6D67 /* ReactPopoverHelper.m */; };
+		F980524C2018AAFD00CE6D67 /* ReactWalletHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052172018AAC100CE6D67 /* ReactWalletHelper.m */; };
+		F980524D2018AAFE00CE6D67 /* ReactFacebookManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052182018AAC200CE6D67 /* ReactFacebookManager.m */; };
+		F980524E2018AAFE00CE6D67 /* ReactFileUploader.m in Sources */ = {isa = PBXBuildFile; fileRef = F980521A2018AAC500CE6D67 /* ReactFileUploader.m */; };
+		F980524F2018AAFE00CE6D67 /* ReactInteractionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F980521C2018AAC700CE6D67 /* ReactInteractionHelper.m */; };
+		F98052502018AAFE00CE6D67 /* ReactTopChatManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F980521E2018AAC900CE6D67 /* ReactTopChatManager.m */; };
+		F98052512018AAFE00CE6D67 /* ReactOnboardingHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = F980521F2018AACA00CE6D67 /* ReactOnboardingHelper.m */; };
+		F98052522018AAFE00CE6D67 /* TKPReactURLManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052202018AACB00CE6D67 /* TKPReactURLManager.m */; };
+		F98052532018AAFE00CE6D67 /* TKPReactAnalytics.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052212018AACC00CE6D67 /* TKPReactAnalytics.m */; };
+		F98052542018AAFE00CE6D67 /* ReactDynamicFilterBridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052232018AACE00CE6D67 /* ReactDynamicFilterBridge.swift */; };
+		F98052552018AAFE00CE6D67 /* ReactUserManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052242018AACF00CE6D67 /* ReactUserManager.m */; };
+		F98052562018AAFE00CE6D67 /* ReactLocationServiceManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052252018AAD000CE6D67 /* ReactLocationServiceManagerBridge.m */; };
+		F98052572018AAFE00CE6D67 /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052262018AAD000CE6D67 /* OnboardingViewController.swift */; };
+		F98052582018AAFE00CE6D67 /* ReactNetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052272018AAD200CE6D67 /* ReactNetworkManager.m */; };
+		F98052592018AAFE00CE6D67 /* OnboardingViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98052292018AAD400CE6D67 /* OnboardingViewController.xib */; };
+		F980525A2018AAFE00CE6D67 /* OptionCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F980522A2018AAD400CE6D67 /* OptionCell.xib */; };
+		F980525B2018AAFE00CE6D67 /* ReactBannerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F980522D2018AAD700CE6D67 /* ReactBannerManager.m */; };
+		F980525C2018AAFE00CE6D67 /* ReactCategoryResultManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052302018AADB00CE6D67 /* ReactCategoryResultManager.m */; };
+		F980525D2018AAFE00CE6D67 /* ReactDynamicFilterModule.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052312018AADC00CE6D67 /* ReactDynamicFilterModule.m */; };
+		F980525E2018AAFE00CE6D67 /* ReactEventManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052392018AAE500CE6D67 /* ReactEventManager.m */; };
+		F980525F2018AAFE00CE6D67 /* ReactModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = F980523A2018AAE600CE6D67 /* ReactModule.swift */; };
+		F98052602018AAFE00CE6D67 /* ReactNotificationCenter.m in Sources */ = {isa = PBXBuildFile; fileRef = F980523B2018AAE800CE6D67 /* ReactNotificationCenter.m */; };
+		F98052612018AAFE00CE6D67 /* HybridNavigationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F980523C2018AAE900CE6D67 /* HybridNavigationManager.m */; };
+		F98052622018AAFE00CE6D67 /* ReactPopoverOptionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F980523E2018AAED00CE6D67 /* ReactPopoverOptionViewController.swift */; };
+		F98052632018AAFE00CE6D67 /* ReactTopAdsManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F980523F2018AAEF00CE6D67 /* ReactTopAdsManager.m */; };
+		F98052642018AAFE00CE6D67 /* ReactLocationServiceManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052432018AAF500CE6D67 /* ReactLocationServiceManager.swift */; };
+		F98052652018AAFE00CE6D67 /* ReactPermissionManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052442018AAF700CE6D67 /* ReactPermissionManager.m */; };
+		F98052662018AAFE00CE6D67 /* ReactTPRoutes.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052462018AAF800CE6D67 /* ReactTPRoutes.m */; };
+		F98052672018AAFE00CE6D67 /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052472018AAFA00CE6D67 /* ReactOrderManager.m */; };
+		F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */; };
+		F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -3229,8 +3233,6 @@
 		AFDEC0C147ABDE57734AFE66 /* Pods_TokopediaTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_TokopediaTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA2761CE1F85E68EB1B7FA22 /* Pods-Tokopedia.debug-optimized.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.debug-optimized.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.debug-optimized.xcconfig"; sourceTree = "<group>"; };
 		CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ServiceExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactLocationServiceManager.swift; sourceTree = "<group>"; };
-		D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactLocationServiceManagerBridge.m; sourceTree = "<group>"; };
 		DADB9ED91F3C46CE002B1FAE /* CMPopTipView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CMPopTipView.h; sourceTree = "<group>"; };
 		DADB9EDA1F3C46CE002B1FAE /* CMPopTipView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CMPopTipView.m; sourceTree = "<group>"; };
 		DADB9EE21F3C46CE002B1FAE /* _FBTweakArrayViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _FBTweakArrayViewController.h; sourceTree = "<group>"; };
@@ -3313,8 +3315,6 @@
 		E50465BF20159F3000FD0872 /* NativeNPSView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeNPSView.xib; sourceTree = "<group>"; };
 		E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
-		E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopChatManager.m; sourceTree = "<group>"; };
-		E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
@@ -3499,6 +3499,11 @@
 		F7D8CA372017556400725BDB /* ErrorTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		F7D8CA382017556400725BDB /* Observable+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
 		F7D8CA392017556400725BDB /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		F924FCAF20178E40009EDD47 /* RCTPulsaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTPulsaView.swift; sourceTree = "<group>"; };
+		F924FCB020178E40009EDD47 /* BannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerViewManager.h; sourceTree = "<group>"; };
+		F924FCB120178E40009EDD47 /* PulsaViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsaViewManager.m; sourceTree = "<group>"; };
+		F924FCB220178E40009EDD47 /* PulsaViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PulsaViewManager.h; sourceTree = "<group>"; };
+		F924FCB320178E40009EDD47 /* BannerViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BannerViewManager.m; sourceTree = "<group>"; };
 		F954BD251FC55B65008C0B30 /* TokopediaDB.db */ = {isa = PBXFileReference; lastKnownFileType = file; path = TokopediaDB.db; sourceTree = "<group>"; };
 		F954BD271FC55B65008C0B30 /* icon_snap@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "icon_snap@2x.png"; sourceTree = "<group>"; };
 		F954BD281FC55B65008C0B30 /* badge_official_small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = badge_official_small.png; sourceTree = "<group>"; };
@@ -5040,55 +5045,6 @@
 		F977F9851FE8AB7700183A85 /* MoreWrapperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreWrapperViewController.h; sourceTree = "<group>"; };
 		F977F9861FE8AB7700183A85 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
 		F977F9881FE8AB7700183A85 /* RemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
-		F977F98A1FE8AB7700183A85 /* ReactSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactSplitViewController.swift; sourceTree = "<group>"; };
-		F977F98B1FE8AB7700183A85 /* TKPReactAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactAnalytics.m; sourceTree = "<group>"; };
-		F977F98C1FE8AB7700183A85 /* ReactTPRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTPRoutes.m; sourceTree = "<group>"; };
-		F977F98D1FE8AB7700183A85 /* ReactUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactUserManager.h; sourceTree = "<group>"; };
-		F977F98E1FE8AB7700183A85 /* HybridNavigationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HybridNavigationManager.m; sourceTree = "<group>"; };
-		F977F98F1FE8AB7700183A85 /* ReactDynamicFilterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactDynamicFilterModule.m; sourceTree = "<group>"; };
-		F977F9901FE8AB7700183A85 /* ReactBannerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBannerManager.m; sourceTree = "<group>"; };
-		F977F9911FE8AB7700183A85 /* ReactHybridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactHybridViewController.m; sourceTree = "<group>"; };
-		F977F9921FE8AB7700183A85 /* ReactNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNetworkManager.m; sourceTree = "<group>"; };
-		F977F9931FE8AB7700183A85 /* ReactNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNotificationCenter.m; sourceTree = "<group>"; };
-		F977F9941FE8AB7700183A85 /* ReactTopAdsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopAdsManager.m; sourceTree = "<group>"; };
-		F977F9951FE8AB7700183A85 /* ReactOnboardingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOnboardingHelper.m; sourceTree = "<group>"; };
-		F977F9961FE8AB7700183A85 /* ReactPopoverHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPopoverHelper.m; sourceTree = "<group>"; };
-		F977F9981FE8AB7700183A85 /* TKPReactURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactURLManager.h; sourceTree = "<group>"; };
-		F977F9991FE8AB7700183A85 /* ReactPopoverOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactPopoverOptionViewController.swift; sourceTree = "<group>"; };
-		F977F99A1FE8AB7700183A85 /* ReactInteractionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactInteractionHelper.h; sourceTree = "<group>"; };
-		F977F99C1FE8AB7700183A85 /* ReactPermissionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPermissionManager.m; sourceTree = "<group>"; };
-		F977F99D1FE8AB7700183A85 /* OnboardingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingViewController.xib; sourceTree = "<group>"; };
-		F977F99E1FE8AB7700183A85 /* ReactFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactFacebookManager.m; sourceTree = "<group>"; };
-		F977F99F1FE8AB7700183A85 /* ReactCategoryResultManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactCategoryResultManager.m; sourceTree = "<group>"; };
-		F977F9A01FE8AB7700183A85 /* ReactFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactFileUploader.m; sourceTree = "<group>"; };
-		F977F9A11FE8AB7700183A85 /* ReactEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactEventManager.h; sourceTree = "<group>"; };
-		F977F9A21FE8AB7700183A85 /* ReactOrderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOrderManager.h; sourceTree = "<group>"; };
-		F977F9A31FE8AB7700183A85 /* ReactHybridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactHybridViewController.h; sourceTree = "<group>"; };
-		F977F9A41FE8AB7700183A85 /* ReactBannerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactBannerManager.h; sourceTree = "<group>"; };
-		F977F9A51FE8AB7700183A85 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
-		F977F9A61FE8AB7700183A85 /* AppNavigationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppNavigationDelegate.h; sourceTree = "<group>"; };
-		F977F9A71FE8AB7700183A85 /* HybridNavigationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HybridNavigationManager.h; sourceTree = "<group>"; };
-		F977F9A81FE8AB7700183A85 /* ReactDynamicFilterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactDynamicFilterModule.h; sourceTree = "<group>"; };
-		F977F9A91FE8AB7700183A85 /* ReactUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactUserManager.m; sourceTree = "<group>"; };
-		F977F9AA1FE8AB7700183A85 /* ReactTPRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTPRoutes.h; sourceTree = "<group>"; };
-		F977F9AB1FE8AB7700183A85 /* TKPReactAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactAnalytics.h; sourceTree = "<group>"; };
-		F977F9AC1FE8AB7700183A85 /* ReactPopoverOptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactPopoverOptionViewController.xib; sourceTree = "<group>"; };
-		F977F9AD1FE8AB7700183A85 /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
-		F977F9AE1FE8AB7700183A85 /* ReactOnboardingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOnboardingHelper.h; sourceTree = "<group>"; };
-		F977F9AF1FE8AB7700183A85 /* ReactPopoverHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactPopoverHelper.h; sourceTree = "<group>"; };
-		F977F9B01FE8AB7700183A85 /* ReactTopAdsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopAdsManager.h; sourceTree = "<group>"; };
-		F977F9B11FE8AB7700183A85 /* ReactNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNotificationCenter.h; sourceTree = "<group>"; };
-		F977F9B21FE8AB7700183A85 /* ReactNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNetworkManager.h; sourceTree = "<group>"; };
-		F977F9B31FE8AB7700183A85 /* ReactFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFacebookManager.h; sourceTree = "<group>"; };
-		F977F9B41FE8AB7700183A85 /* ReactPermissionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactPermissionManager.h; sourceTree = "<group>"; };
-		F977F9B61FE8AB7700183A85 /* ReactDynamicFilterBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactDynamicFilterBridge.swift; sourceTree = "<group>"; };
-		F977F9B71FE8AB7700183A85 /* ReactInteractionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactInteractionHelper.m; sourceTree = "<group>"; };
-		F977F9B81FE8AB7700183A85 /* TKPReactURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactURLManager.m; sourceTree = "<group>"; };
-		F977F9BA1FE8AB7700183A85 /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
-		F977F9BB1FE8AB7700183A85 /* ReactEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactEventManager.m; sourceTree = "<group>"; };
-		F977F9BC1FE8AB7700183A85 /* ReactFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFileUploader.h; sourceTree = "<group>"; };
-		F977F9BD1FE8AB7700183A85 /* ReactModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactModule.swift; sourceTree = "<group>"; };
-		F977F9BE1FE8AB7700183A85 /* ReactCategoryResultManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactCategoryResultManager.h; sourceTree = "<group>"; };
 		F977F9C01FE8AB7700183A85 /* TPCryptoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPCryptoManager.swift; sourceTree = "<group>"; };
 		F977F9C11FE8AB7700183A85 /* CreditCardTouchIDData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardTouchIDData.swift; sourceTree = "<group>"; };
 		F977F9C21FE8AB7700183A85 /* AsymmetricCryptoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsymmetricCryptoManager.swift; sourceTree = "<group>"; };
@@ -5164,6 +5120,61 @@
 		F977FA101FE8AB7800183A85 /* AnalyticsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnalyticsManager.m; sourceTree = "<group>"; };
 		F977FA111FE8AB7800183A85 /* LogEntriesHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogEntriesHelper.swift; sourceTree = "<group>"; };
 		F977FA121FE8AB7800183A85 /* AnalyticsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnalyticsManager.h; sourceTree = "<group>"; };
+		F98052132018AABC00CE6D67 /* ReactHybridViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactHybridViewController.m; sourceTree = "<group>"; };
+		F98052142018AABD00CE6D67 /* ReactPopoverHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPopoverHelper.m; sourceTree = "<group>"; };
+		F98052152018AABE00CE6D67 /* ReactTopAdsManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopAdsManager.h; sourceTree = "<group>"; };
+		F98052162018AABF00CE6D67 /* ReactPermissionManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactPermissionManager.h; sourceTree = "<group>"; };
+		F98052172018AAC100CE6D67 /* ReactWalletHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactWalletHelper.m; sourceTree = "<group>"; };
+		F98052182018AAC200CE6D67 /* ReactFacebookManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactFacebookManager.m; sourceTree = "<group>"; };
+		F98052192018AAC400CE6D67 /* ReactTPRoutes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTPRoutes.h; sourceTree = "<group>"; };
+		F980521A2018AAC500CE6D67 /* ReactFileUploader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactFileUploader.m; sourceTree = "<group>"; };
+		F980521B2018AAC600CE6D67 /* ReactNetworkManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNetworkManager.h; sourceTree = "<group>"; };
+		F980521C2018AAC700CE6D67 /* ReactInteractionHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactInteractionHelper.m; sourceTree = "<group>"; };
+		F980521D2018AAC800CE6D67 /* ReactTopChatManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactTopChatManager.h; sourceTree = "<group>"; };
+		F980521E2018AAC900CE6D67 /* ReactTopChatManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopChatManager.m; sourceTree = "<group>"; };
+		F980521F2018AACA00CE6D67 /* ReactOnboardingHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOnboardingHelper.m; sourceTree = "<group>"; };
+		F98052202018AACB00CE6D67 /* TKPReactURLManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactURLManager.m; sourceTree = "<group>"; };
+		F98052212018AACC00CE6D67 /* TKPReactAnalytics.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPReactAnalytics.m; sourceTree = "<group>"; };
+		F98052222018AACD00CE6D67 /* ReactDynamicFilterModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactDynamicFilterModule.h; sourceTree = "<group>"; };
+		F98052232018AACE00CE6D67 /* ReactDynamicFilterBridge.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactDynamicFilterBridge.swift; sourceTree = "<group>"; };
+		F98052242018AACF00CE6D67 /* ReactUserManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactUserManager.m; sourceTree = "<group>"; };
+		F98052252018AAD000CE6D67 /* ReactLocationServiceManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactLocationServiceManagerBridge.m; sourceTree = "<group>"; };
+		F98052262018AAD000CE6D67 /* OnboardingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		F98052272018AAD200CE6D67 /* ReactNetworkManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNetworkManager.m; sourceTree = "<group>"; };
+		F98052282018AAD200CE6D67 /* ReactCategoryResultManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactCategoryResultManager.h; sourceTree = "<group>"; };
+		F98052292018AAD400CE6D67 /* OnboardingViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OnboardingViewController.xib; sourceTree = "<group>"; };
+		F980522A2018AAD400CE6D67 /* OptionCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OptionCell.xib; sourceTree = "<group>"; };
+		F980522B2018AAD500CE6D67 /* AppNavigationDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppNavigationDelegate.h; sourceTree = "<group>"; };
+		F980522C2018AAD600CE6D67 /* ReactHybridViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactHybridViewController.h; sourceTree = "<group>"; };
+		F980522D2018AAD700CE6D67 /* ReactBannerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactBannerManager.m; sourceTree = "<group>"; };
+		F980522E2018AAD800CE6D67 /* ReactOnboardingHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOnboardingHelper.h; sourceTree = "<group>"; };
+		F980522F2018AADA00CE6D67 /* ReactWalletHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactWalletHelper.h; sourceTree = "<group>"; };
+		F98052302018AADB00CE6D67 /* ReactCategoryResultManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactCategoryResultManager.m; sourceTree = "<group>"; };
+		F98052312018AADC00CE6D67 /* ReactDynamicFilterModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactDynamicFilterModule.m; sourceTree = "<group>"; };
+		F98052322018AADD00CE6D67 /* ReactBannerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactBannerManager.h; sourceTree = "<group>"; };
+		F98052332018AADE00CE6D67 /* HybridNavigationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HybridNavigationManager.h; sourceTree = "<group>"; };
+		F98052342018AADF00CE6D67 /* ReactFileUploader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFileUploader.h; sourceTree = "<group>"; };
+		F98052352018AAE000CE6D67 /* TKPReactAnalytics.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactAnalytics.h; sourceTree = "<group>"; };
+		F98052362018AAE100CE6D67 /* ReactInteractionHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactInteractionHelper.h; sourceTree = "<group>"; };
+		F98052372018AAE200CE6D67 /* ReactFacebookManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactFacebookManager.h; sourceTree = "<group>"; };
+		F98052382018AAE300CE6D67 /* ReactEventManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactEventManager.h; sourceTree = "<group>"; };
+		F98052392018AAE500CE6D67 /* ReactEventManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactEventManager.m; sourceTree = "<group>"; };
+		F980523A2018AAE600CE6D67 /* ReactModule.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactModule.swift; sourceTree = "<group>"; };
+		F980523B2018AAE800CE6D67 /* ReactNotificationCenter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactNotificationCenter.m; sourceTree = "<group>"; };
+		F980523C2018AAE900CE6D67 /* HybridNavigationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HybridNavigationManager.m; sourceTree = "<group>"; };
+		F980523D2018AAEC00CE6D67 /* ReactOrderManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactOrderManager.h; sourceTree = "<group>"; };
+		F980523E2018AAED00CE6D67 /* ReactPopoverOptionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactPopoverOptionViewController.swift; sourceTree = "<group>"; };
+		F980523F2018AAEF00CE6D67 /* ReactTopAdsManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTopAdsManager.m; sourceTree = "<group>"; };
+		F98052402018AAF100CE6D67 /* ReactNotificationCenter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactNotificationCenter.h; sourceTree = "<group>"; };
+		F98052412018AAF300CE6D67 /* TKPReactURLManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TKPReactURLManager.h; sourceTree = "<group>"; };
+		F98052422018AAF500CE6D67 /* ReactPopoverHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactPopoverHelper.h; sourceTree = "<group>"; };
+		F98052432018AAF500CE6D67 /* ReactLocationServiceManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactLocationServiceManager.swift; sourceTree = "<group>"; };
+		F98052442018AAF700CE6D67 /* ReactPermissionManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactPermissionManager.m; sourceTree = "<group>"; };
+		F98052452018AAF700CE6D67 /* ReactUserManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ReactUserManager.h; sourceTree = "<group>"; };
+		F98052462018AAF800CE6D67 /* ReactTPRoutes.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactTPRoutes.m; sourceTree = "<group>"; };
+		F98052472018AAFA00CE6D67 /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
+		F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactSplitViewController.swift; sourceTree = "<group>"; };
+		F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactPopoverOptionViewController.xib; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -8172,6 +8183,18 @@
 			path = Rx;
 			sourceTree = "<group>";
 		};
+		F924FCAE20178E40009EDD47 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				F924FCAF20178E40009EDD47 /* RCTPulsaView.swift */,
+				F924FCB020178E40009EDD47 /* BannerViewManager.h */,
+				F924FCB120178E40009EDD47 /* PulsaViewManager.m */,
+				F924FCB220178E40009EDD47 /* PulsaViewManager.h */,
+				F924FCB320178E40009EDD47 /* BannerViewManager.m */,
+			);
+			path = Home;
+			sourceTree = "<group>";
+		};
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -8407,6 +8430,7 @@
 				F977EF271FE8AB6E00183A85 /* DistrictRecomendation */,
 				F977F5151FE8AB7400183A85 /* EmptyState */,
 				F977F5361FE8AB7400183A85 /* Feed+ */,
+				F924FCAE20178E40009EDD47 /* Home */,
 				E5D8A5622010A311003E66BA /* LoginPhoneNumber */,
 				F977F9811FE8AB7600183A85 /* Main */,
 				E50465B720159F3000FD0872 /* NPS */,
@@ -11204,59 +11228,61 @@
 		F977F9891FE8AB7700183A85 /* React */ = {
 			isa = PBXGroup;
 			children = (
-				D86EC25C200F6A6300388574 /* ReactLocationServiceManager.swift */,
-				D86EC25D200F6A6400388574 /* ReactLocationServiceManagerBridge.m */,
-				F977F9A61FE8AB7700183A85 /* AppNavigationDelegate.h */,
-				F977F9A71FE8AB7700183A85 /* HybridNavigationManager.h */,
-				F977F98E1FE8AB7700183A85 /* HybridNavigationManager.m */,
-				F977F9A51FE8AB7700183A85 /* OnboardingViewController.swift */,
-				F977F99D1FE8AB7700183A85 /* OnboardingViewController.xib */,
-				F977F9AD1FE8AB7700183A85 /* OptionCell.xib */,
-				F977F9A41FE8AB7700183A85 /* ReactBannerManager.h */,
-				F977F9901FE8AB7700183A85 /* ReactBannerManager.m */,
-				F977F9BE1FE8AB7700183A85 /* ReactCategoryResultManager.h */,
-				F977F99F1FE8AB7700183A85 /* ReactCategoryResultManager.m */,
-				F977F9B61FE8AB7700183A85 /* ReactDynamicFilterBridge.swift */,
-				F977F9A81FE8AB7700183A85 /* ReactDynamicFilterModule.h */,
-				F977F98F1FE8AB7700183A85 /* ReactDynamicFilterModule.m */,
-				F977F9A11FE8AB7700183A85 /* ReactEventManager.h */,
-				F977F9BB1FE8AB7700183A85 /* ReactEventManager.m */,
-				F977F9B31FE8AB7700183A85 /* ReactFacebookManager.h */,
-				F977F99E1FE8AB7700183A85 /* ReactFacebookManager.m */,
-				F977F9BC1FE8AB7700183A85 /* ReactFileUploader.h */,
-				F977F9A01FE8AB7700183A85 /* ReactFileUploader.m */,
-				F977F9A31FE8AB7700183A85 /* ReactHybridViewController.h */,
-				F977F9911FE8AB7700183A85 /* ReactHybridViewController.m */,
-				F977F99A1FE8AB7700183A85 /* ReactInteractionHelper.h */,
-				F977F9B71FE8AB7700183A85 /* ReactInteractionHelper.m */,
-				F977F9BD1FE8AB7700183A85 /* ReactModule.swift */,
-				F977F9B21FE8AB7700183A85 /* ReactNetworkManager.h */,
-				F977F9921FE8AB7700183A85 /* ReactNetworkManager.m */,
-				F977F9B11FE8AB7700183A85 /* ReactNotificationCenter.h */,
-				F977F9931FE8AB7700183A85 /* ReactNotificationCenter.m */,
-				F977F9AE1FE8AB7700183A85 /* ReactOnboardingHelper.h */,
-				F977F9951FE8AB7700183A85 /* ReactOnboardingHelper.m */,
-				F977F9A21FE8AB7700183A85 /* ReactOrderManager.h */,
-				F977F9BA1FE8AB7700183A85 /* ReactOrderManager.m */,
-				F977F9B41FE8AB7700183A85 /* ReactPermissionManager.h */,
-				F977F99C1FE8AB7700183A85 /* ReactPermissionManager.m */,
-				F977F9AF1FE8AB7700183A85 /* ReactPopoverHelper.h */,
-				F977F9961FE8AB7700183A85 /* ReactPopoverHelper.m */,
-				F977F9991FE8AB7700183A85 /* ReactPopoverOptionViewController.swift */,
-				F977F9AC1FE8AB7700183A85 /* ReactPopoverOptionViewController.xib */,
-				F977F98A1FE8AB7700183A85 /* ReactSplitViewController.swift */,
-				F977F9B01FE8AB7700183A85 /* ReactTopAdsManager.h */,
-				F977F9941FE8AB7700183A85 /* ReactTopAdsManager.m */,
-				E5070FA81FEA42A200DABBD9 /* ReactTopChatManager.h */,
-				E5070FA71FEA42A200DABBD9 /* ReactTopChatManager.m */,
-				F977F9AA1FE8AB7700183A85 /* ReactTPRoutes.h */,
-				F977F98C1FE8AB7700183A85 /* ReactTPRoutes.m */,
-				F977F98D1FE8AB7700183A85 /* ReactUserManager.h */,
-				F977F9A91FE8AB7700183A85 /* ReactUserManager.m */,
-				F977F9AB1FE8AB7700183A85 /* TKPReactAnalytics.h */,
-				F977F98B1FE8AB7700183A85 /* TKPReactAnalytics.m */,
-				F977F9981FE8AB7700183A85 /* TKPReactURLManager.h */,
-				F977F9B81FE8AB7700183A85 /* TKPReactURLManager.m */,
+				F980522B2018AAD500CE6D67 /* AppNavigationDelegate.h */,
+				F98052332018AADE00CE6D67 /* HybridNavigationManager.h */,
+				F980523C2018AAE900CE6D67 /* HybridNavigationManager.m */,
+				F98052262018AAD000CE6D67 /* OnboardingViewController.swift */,
+				F98052292018AAD400CE6D67 /* OnboardingViewController.xib */,
+				F980522A2018AAD400CE6D67 /* OptionCell.xib */,
+				F98052322018AADD00CE6D67 /* ReactBannerManager.h */,
+				F980522D2018AAD700CE6D67 /* ReactBannerManager.m */,
+				F98052282018AAD200CE6D67 /* ReactCategoryResultManager.h */,
+				F98052302018AADB00CE6D67 /* ReactCategoryResultManager.m */,
+				F98052232018AACE00CE6D67 /* ReactDynamicFilterBridge.swift */,
+				F98052222018AACD00CE6D67 /* ReactDynamicFilterModule.h */,
+				F98052312018AADC00CE6D67 /* ReactDynamicFilterModule.m */,
+				F98052382018AAE300CE6D67 /* ReactEventManager.h */,
+				F98052392018AAE500CE6D67 /* ReactEventManager.m */,
+				F98052372018AAE200CE6D67 /* ReactFacebookManager.h */,
+				F98052182018AAC200CE6D67 /* ReactFacebookManager.m */,
+				F98052342018AADF00CE6D67 /* ReactFileUploader.h */,
+				F980521A2018AAC500CE6D67 /* ReactFileUploader.m */,
+				F980522C2018AAD600CE6D67 /* ReactHybridViewController.h */,
+				F98052132018AABC00CE6D67 /* ReactHybridViewController.m */,
+				F98052362018AAE100CE6D67 /* ReactInteractionHelper.h */,
+				F980521C2018AAC700CE6D67 /* ReactInteractionHelper.m */,
+				F98052432018AAF500CE6D67 /* ReactLocationServiceManager.swift */,
+				F98052252018AAD000CE6D67 /* ReactLocationServiceManagerBridge.m */,
+				F980523A2018AAE600CE6D67 /* ReactModule.swift */,
+				F980521B2018AAC600CE6D67 /* ReactNetworkManager.h */,
+				F98052272018AAD200CE6D67 /* ReactNetworkManager.m */,
+				F98052402018AAF100CE6D67 /* ReactNotificationCenter.h */,
+				F980523B2018AAE800CE6D67 /* ReactNotificationCenter.m */,
+				F980522E2018AAD800CE6D67 /* ReactOnboardingHelper.h */,
+				F980521F2018AACA00CE6D67 /* ReactOnboardingHelper.m */,
+				F980523D2018AAEC00CE6D67 /* ReactOrderManager.h */,
+				F98052472018AAFA00CE6D67 /* ReactOrderManager.m */,
+				F98052162018AABF00CE6D67 /* ReactPermissionManager.h */,
+				F98052442018AAF700CE6D67 /* ReactPermissionManager.m */,
+				F98052422018AAF500CE6D67 /* ReactPopoverHelper.h */,
+				F98052142018AABD00CE6D67 /* ReactPopoverHelper.m */,
+				F980523E2018AAED00CE6D67 /* ReactPopoverOptionViewController.swift */,
+				F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */,
+				F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */,
+				F98052152018AABE00CE6D67 /* ReactTopAdsManager.h */,
+				F980523F2018AAEF00CE6D67 /* ReactTopAdsManager.m */,
+				F980521D2018AAC800CE6D67 /* ReactTopChatManager.h */,
+				F980521E2018AAC900CE6D67 /* ReactTopChatManager.m */,
+				F98052192018AAC400CE6D67 /* ReactTPRoutes.h */,
+				F98052462018AAF800CE6D67 /* ReactTPRoutes.m */,
+				F98052452018AAF700CE6D67 /* ReactUserManager.h */,
+				F98052242018AACF00CE6D67 /* ReactUserManager.m */,
+				F980522F2018AADA00CE6D67 /* ReactWalletHelper.h */,
+				F98052172018AAC100CE6D67 /* ReactWalletHelper.m */,
+				F98052352018AAE000CE6D67 /* TKPReactAnalytics.h */,
+				F98052212018AACC00CE6D67 /* TKPReactAnalytics.m */,
+				F98052412018AAF300CE6D67 /* TKPReactURLManager.h */,
+				F98052202018AACB00CE6D67 /* TKPReactURLManager.m */,
 			);
 			path = React;
 			sourceTree = "<group>";
@@ -11688,6 +11714,7 @@
 			files = (
 				F977FAD91FE8AB7A00183A85 /* OfficialStoreSectionViewController.xib in Resources */,
 				F97700B61FE8AB8600183A85 /* MaterialCommunityIcons.ttf in Resources */,
+				F98052592018AAFE00CE6D67 /* OnboardingViewController.xib in Resources */,
 				F977FDB71FE8AB8000183A85 /* FilterConditionViewController.xib in Resources */,
 				F977FC0B1FE8AB7C00183A85 /* ShipmentLocationPickupViewCell.xib in Resources */,
 				F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */,
@@ -11739,7 +11766,6 @@
 				F977FA9E1FE8AB7A00183A85 /* TransactionCartEditViewController.xib in Resources */,
 				F977FC051FE8AB7C00183A85 /* ShipmentPostalCodeViewCell.xib in Resources */,
 				F977FCD91FE8AB7E00183A85 /* MyShopEtalaseDetailViewController.xib in Resources */,
-				F97700881FE8AB8600183A85 /* ReactPopoverOptionViewController.xib in Resources */,
 				F977FC351FE8AB7D00183A85 /* AlertPickerView.xib in Resources */,
 				F977FC951FE8AB7D00183A85 /* ShopFavoritedCell.xib in Resources */,
 				F977FD1F1FE8AB7F00183A85 /* TKPDTabNavigationController.xib in Resources */,
@@ -11898,6 +11924,7 @@
 				F954C4531FC55B6D008C0B30 /* icon_login@2x.png in Resources */,
 				F977FB7B1FE8AB7B00183A85 /* FilterCategoryViewCell.xib in Resources */,
 				F977FD171FE8AB7E00183A85 /* ActivatePushInstructionViewController7.xib in Resources */,
+				F980525A2018AAFE00CE6D67 /* OptionCell.xib in Resources */,
 				F977FCA01FE8AB7D00183A85 /* OpenShopImageViewCell.xib in Resources */,
 				F977FB031FE8AB7B00183A85 /* GeneralTalkCommentCell.xib in Resources */,
 				F977FC471FE8AB7D00183A85 /* AlertInfoPaymentConfirmationView.xib in Resources */,
@@ -11980,6 +12007,7 @@
 				F977FC071FE8AB7C00183A85 /* CourierInfoViewCell.xib in Resources */,
 				F7D8C9F7201754E700725BDB /* Success-animation.json in Resources */,
 				F977FE001FE8AB8100183A85 /* PulsaOperatorCell.xib in Resources */,
+				F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */,
 				F977FADC1FE8AB7A00183A85 /* HomePageViewController.xib in Resources */,
 				F954C4481FC55B6C008C0B30 /* icon_more@3x.png in Resources */,
 				F977FA4A1FE8AB7900183A85 /* Referral.storyboard in Resources */,
@@ -11992,12 +12020,10 @@
 				92A4CBB5201731CC00C42D37 /* SellerInfoInboxCellView.xib in Resources */,
 				F977FC871FE8AB7D00183A85 /* EditShopNoteViewCell.xib in Resources */,
 				F977FD8C1FE8AB8000183A85 /* WebViewInvoiceViewController.xib in Resources */,
-				F97700821FE8AB8600183A85 /* OnboardingViewController.xib in Resources */,
 				F954C45B1FC55B6D008C0B30 /* badge_official_small@2x.png in Resources */,
 				F977FD6A1FE8AB7F00183A85 /* PenilaianUserCell.xib in Resources */,
 				F977FDBB1FE8AB8000183A85 /* FilterLocationViewController.xib in Resources */,
 				F977FB091FE8AB7B00183A85 /* GeneralCheckmarkCell.xib in Resources */,
-				F97700891FE8AB8600183A85 /* OptionCell.xib in Resources */,
 				F977FBDD1FE8AB7C00183A85 /* RejectReasonEmptyStockCell.xib in Resources */,
 				DADB9F5B1F3C46CF002B1FAE /* LICENSE in Resources */,
 				F977FBD91FE8AB7C00183A85 /* RejectReasonViewController.xib in Resources */,
@@ -12652,7 +12678,9 @@
 				62C771AF1FF33C3500F66527 /* GeneralAction.m in Sources */,
 				62C771CA1FF33C3500F66527 /* InboxTalk.m in Sources */,
 				62C7707C1FF33C3300F66527 /* ProductPreorder.swift in Sources */,
+				F98052672018AAFE00CE6D67 /* ReactOrderManager.m in Sources */,
 				F7D8C9F8201754E700725BDB /* TokoCashQRPaymentSuccessViewModel.swift in Sources */,
+				F980525B2018AAFE00CE6D67 /* ReactBannerManager.m in Sources */,
 				F97700981FE8AB8600183A85 /* TouchIDHelper.swift in Sources */,
 				62C76FFB1FF33C3200F66527 /* OrderExtraFee.m in Sources */,
 				F977FD791FE8AB7F00183A85 /* AddressCell.m in Sources */,
@@ -12663,7 +12691,6 @@
 				62C770D71FF33C3300F66527 /* TrackOrderDetail.m in Sources */,
 				F977FB551FE8AB7B00183A85 /* ReplayConversationPostData.swift in Sources */,
 				F977FAD41FE8AB7A00183A85 /* HomeTabViewController.m in Sources */,
-				E5070FA91FEA42A300DABBD9 /* ReactTopChatManager.m in Sources */,
 				62C770AC1FF33C3300F66527 /* CategoryResult.swift in Sources */,
 				E5D8A5812010A311003E66BA /* TokoCashGetTokenResponse.swift in Sources */,
 				F977FCA81FE8AB7E00183A85 /* ShopStatView.m in Sources */,
@@ -12681,6 +12708,7 @@
 				62C770021FF33C3200F66527 /* TxOrderPaymentEditResult.m in Sources */,
 				848FA6ED1FEBF8BF00A22EDE /* RCStatus.swift in Sources */,
 				F977FC341FE8AB7D00183A85 /* StickyAlertView.m in Sources */,
+				F98052662018AAFE00CE6D67 /* ReactTPRoutes.m in Sources */,
 				62C770C61FF33C3300F66527 /* OrderShipment.m in Sources */,
 				62C770C21FF33C3300F66527 /* ActionOrderResult.m in Sources */,
 				F977FD2E1FE8AB7F00183A85 /* SearchAutoCompleteViewModel.m in Sources */,
@@ -12689,7 +12717,6 @@
 				62C770AF1FF33C3300F66527 /* CategoryList.m in Sources */,
 				F7D8CA1E201754E800725BDB /* TokoCashDateRangeItemViewModel.swift in Sources */,
 				62C7707E1FF33C3300F66527 /* TKPString.m in Sources */,
-				F97700731FE8AB8500183A85 /* ReactSplitViewController.swift in Sources */,
 				62C770631FF33C3200F66527 /* DetailProductResult.m in Sources */,
 				62C771151FF33C3400F66527 /* DepositSummaryDetail.m in Sources */,
 				F97700A91FE8AB8600183A85 /* TKPHomeBannerStore.m in Sources */,
@@ -12709,7 +12736,6 @@
 				F977FD341FE8AB7F00183A85 /* SearchAutoCompleteShopCell.m in Sources */,
 				62C7711C1FF33C3400F66527 /* ManageProductList.m in Sources */,
 				DADB9F581F3C46CF002B1FAE /* MGSwipeTableCell.m in Sources */,
-				F977007E1FE8AB8600183A85 /* ReactPopoverHelper.m in Sources */,
 				F977FA971FE8AB7A00183A85 /* TransactionCartShippingViewController.m in Sources */,
 				F977FB2F1FE8AB7B00183A85 /* NoResultReusableView.m in Sources */,
 				62C7701B1FF33C3200F66527 /* TransactionVoucher.m in Sources */,
@@ -12732,6 +12758,7 @@
 				924B14F6200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m in Sources */,
 				62C770BA1FF33C3300F66527 /* OrderDetail.m in Sources */,
 				F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */,
+				F98052582018AAFE00CE6D67 /* ReactNetworkManager.m in Sources */,
 				F97700A11FE8AB8600183A85 /* AuthenticationServiceExtension.swift in Sources */,
 				F977FDA01FE8AB8000183A85 /* UIColor+TextColor.m in Sources */,
 				62C770871FF33C3300F66527 /* Hotlist.m in Sources */,
@@ -12741,13 +12768,13 @@
 				62C770201FF33C3200F66527 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				62C770501FF33C3200F66527 /* InboxTicketUserInvolve.m in Sources */,
 				F977FB4D1FE8AB7B00183A85 /* HotlistResultViewController.m in Sources */,
-				F977007D1FE8AB8600183A85 /* ReactOnboardingHelper.m in Sources */,
 				F977FB381FE8AB7B00183A85 /* DepositRequest.m in Sources */,
 				62C771C71FF33C3500F66527 /* TopchatUnreadData.swift in Sources */,
 				62C770141FF33C3200F66527 /* TxOrderConfirmedDetailOrder.m in Sources */,
 				6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */,
 				F977FBBB1FE8AB7C00183A85 /* OrderTotalView.swift in Sources */,
 				62C771B01FF33C3500F66527 /* ProductFeedResult.m in Sources */,
+				F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */,
 				848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */,
 				62C771851FF33C3400F66527 /* AddressForm.m in Sources */,
 				F977FB831FE8AB7B00183A85 /* CategoryIntermediaryResponse.swift in Sources */,
@@ -12756,10 +12783,8 @@
 				62C770811FF33C3300F66527 /* ProductTalkForm.m in Sources */,
 				34E7222F2015F53300CFE581 /* HeadlineImage.m in Sources */,
 				62C771081FF33C3300F66527 /* SignInProvider.swift in Sources */,
-				F977007F1FE8AB8600183A85 /* ReactPopoverOptionViewController.swift in Sources */,
 				62C7706E1FF33C3200F66527 /* Talk.m in Sources */,
 				62C771A41FF33C3500F66527 /* UserTier.swift in Sources */,
-				F97700751FE8AB8500183A85 /* ReactTPRoutes.m in Sources */,
 				F977FA861FE8AB7A00183A85 /* PopoverTableView.swift in Sources */,
 				F977009E1FE8AB8600183A85 /* NSString+MD5.m in Sources */,
 				F977FD801FE8AB7F00183A85 /* ListOption.swift in Sources */,
@@ -12772,15 +12797,16 @@
 				62C7717B1FF33C3400F66527 /* PrivacyForm.m in Sources */,
 				F977FC151FE8AB7C00183A85 /* CourierInfoViewController.m in Sources */,
 				F977FB221FE8AB7B00183A85 /* InboxTicketCell.m in Sources */,
+				F98052512018AAFE00CE6D67 /* ReactOnboardingHelper.m in Sources */,
 				F977FACC1FE8AB7A00183A85 /* SettingAddressEditViewController.m in Sources */,
 				F977FC081FE8AB7C00183A85 /* CourierOptionViewCell.m in Sources */,
 				848FA6E41FEBF8BE00A22EDE /* RCCreateStep1Response.swift in Sources */,
-				F97700791FE8AB8500183A85 /* ReactHybridViewController.m in Sources */,
 				F977FD431FE8AB7F00183A85 /* LoginSecurity.m in Sources */,
 				62C76FE31FF33C3100F66527 /* InboxReviewResult.m in Sources */,
 				F977FCA11FE8AB7D00183A85 /* OpenShopNameViewCell.m in Sources */,
 				F977FCE31FE8AB7E00183A85 /* DetailProductVideoCollectionViewCell.swift in Sources */,
 				F977FDD71FE8AB8000183A85 /* ResolutionProductResponse.m in Sources */,
+				F980525E2018AAFE00CE6D67 /* ReactEventManager.m in Sources */,
 				62C7717E1FF33C3400F66527 /* NotificationFormNotif.m in Sources */,
 				F7D8CA08201754E800725BDB /* TokoCashMoveToSaldoViewModel.swift in Sources */,
 				F977FC711FE8AB7D00183A85 /* CatalogShopCell.m in Sources */,
@@ -12799,6 +12825,7 @@
 				F977FC4F1FE8AB7D00183A85 /* AlertLuckyView.m in Sources */,
 				62C770B61FF33C3300F66527 /* WarehouseResult.m in Sources */,
 				F977FC5C1FE8AB7D00183A85 /* AddImageCaptionViewController.swift in Sources */,
+				F924FCB520178E41009EDD47 /* PulsaViewManager.m in Sources */,
 				F977FB561FE8AB7B00183A85 /* EditSolutionSellerViewController.swift in Sources */,
 				F977FDE31FE8AB8000183A85 /* ShopPageRequest.m in Sources */,
 				848FA6F71FEBF8BF00A22EDE /* ProblemProductInfoCell.swift in Sources */,
@@ -12832,18 +12859,17 @@
 				62C7716C1FF33C3400F66527 /* UploadImageValidation.m in Sources */,
 				F97700AA1FE8AB8600183A85 /* TKPGooglePlaceDetailProductStore.m in Sources */,
 				62C770D61FF33C3300F66527 /* Track.m in Sources */,
+				F980524F2018AAFE00CE6D67 /* ReactInteractionHelper.m in Sources */,
 				F977FDDB1FE8AB8000183A85 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
 				F977FD3B1FE8AB7F00183A85 /* SearchResultViewController.m in Sources */,
 				62C771321FF33C3400F66527 /* ShopProductPageCampaignInfo.swift in Sources */,
 				F977FCD41FE8AB7E00183A85 /* SliderData.m in Sources */,
-				F977007A1FE8AB8500183A85 /* ReactNetworkManager.m in Sources */,
 				92A4CBBC201731CC00C42D37 /* SellerInfoInboxCellView.swift in Sources */,
 				62C770E71FF33C3300F66527 /* GeneralMetaData.swift in Sources */,
 				F977FC521FE8AB7D00183A85 /* ForgotPasswordViewController.m in Sources */,
 				62C771731FF33C3400F66527 /* UploadImage.m in Sources */,
 				62C770411FF33C3200F66527 /* GoogleDistanceMatrixDuration.m in Sources */,
 				F7D8C9FD201754E800725BDB /* TokoCashQRCodeNavigator.swift in Sources */,
-				F97700861FE8AB8600183A85 /* OnboardingViewController.swift in Sources */,
 				F7D8CA32201754E800725BDB /* TokoCashHistoryResponse.swift in Sources */,
 				62C770C81FF33C3300F66527 /* SpecChilds.m in Sources */,
 				F977FBB81FE8AB7C00183A85 /* OrderDetailDropshipView.swift in Sources */,
@@ -12884,7 +12910,6 @@
 				F977FB8B1FE8AB7B00183A85 /* CategoryIntermediaryHotListImage.swift in Sources */,
 				F977FA871FE8AB7A00183A85 /* UIView+HVDLayout.m in Sources */,
 				F7D8CA2B201754E800725BDB /* TokoCashProfileResponse.swift in Sources */,
-				F97700811FE8AB8600183A85 /* ReactPermissionManager.m in Sources */,
 				F977FE0D1FE8AB8100183A85 /* PulsaCategoryRoot.swift in Sources */,
 				62C771A91FF33C3500F66527 /* LikeDislikeResult.m in Sources */,
 				62C771B11FF33C3500F66527 /* ProductFeed.m in Sources */,
@@ -12994,6 +13019,7 @@
 				62C7710B1FF33C3300F66527 /* OAuthToken.swift in Sources */,
 				62C771381FF33C3400F66527 /* Etalase.m in Sources */,
 				F977FBDE1FE8AB7C00183A85 /* RejectReasonCloseShopViewController.m in Sources */,
+				F980524D2018AAFE00CE6D67 /* ReactFacebookManager.m in Sources */,
 				F977FC481FE8AB7D00183A85 /* StickyAlertView+NetworkErrorHandler.m in Sources */,
 				848FA6FC1FEBF8BF00A22EDE /* SelectTroubleCell.swift in Sources */,
 				62C770CF1FF33C3300F66527 /* CatalogImages.m in Sources */,
@@ -13019,7 +13045,6 @@
 				62C7705D1FF33C3200F66527 /* ProductReturnInfo.swift in Sources */,
 				924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */,
 				F977FDEE1FE8AB8000183A85 /* EtalaseRequest.m in Sources */,
-				F977007B1FE8AB8600183A85 /* ReactNotificationCenter.m in Sources */,
 				62C771591FF33C3400F66527 /* ShipmentPackage.m in Sources */,
 				F7D8CA13201754E800725BDB /* TokoCashHistoryDetailNavigator.swift in Sources */,
 				F977FCD51FE8AB7E00183A85 /* SliderObject.m in Sources */,
@@ -13033,12 +13058,10 @@
 				F977FBBE1FE8AB7C00183A85 /* OrderDetailViewController.m in Sources */,
 				92A4CBBB201731CC00C42D37 /* SellerInfoInboxFilterViewController.swift in Sources */,
 				62C770571FF33C3200F66527 /* ConversationViewModel.m in Sources */,
-				F977008F1FE8AB8600183A85 /* ReactEventManager.m in Sources */,
 				848FA6E91FEBF8BF00A22EDE /* RCProblemItem.swift in Sources */,
 				F977FB531FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				62C771261FF33C3400F66527 /* List.m in Sources */,
 				924B14F1200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m in Sources */,
-				F977008B1FE8AB8600183A85 /* ReactInteractionHelper.m in Sources */,
 				E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */,
 				62C770B01FF33C3300F66527 /* OrderPayment.m in Sources */,
 				F977FA4E1FE8AB7900183A85 /* ReferralRemoteConfig.swift in Sources */,
@@ -13063,6 +13086,7 @@
 				F977FE251FE8AB8100183A85 /* ProductTalkViewController.m in Sources */,
 				F977FB391FE8AB7B00183A85 /* DepositListBankCell.m in Sources */,
 				F977FBE71FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.m in Sources */,
+				F980524A2018AAFD00CE6D67 /* ReactHybridViewController.m in Sources */,
 				F977FCFE1FE8AB7E00183A85 /* ReportProductViewController.swift in Sources */,
 				F977FD5E1FE8AB7F00183A85 /* ProgressBarView.m in Sources */,
 				F977FB1E1FE8AB7B00183A85 /* InboxTicketRequest.swift in Sources */,
@@ -13166,7 +13190,6 @@
 				62C770FA1FF33C3300F66527 /* DiscoverResult.swift in Sources */,
 				F977FBA61FE8AB7C00183A85 /* ShipmentStatusCell.m in Sources */,
 				62C770551FF33C3200F66527 /* InboxTicketTicket.m in Sources */,
-				D86EC25F200F6A6400388574 /* ReactLocationServiceManagerBridge.m in Sources */,
 				F977FD811FE8AB7F00183A85 /* FiltersController.swift in Sources */,
 				F977FE521FE8AB8100183A85 /* ProductCellComponentView.swift in Sources */,
 				62C76FE61FF33C3100F66527 /* InboxReviewProductOwner.m in Sources */,
@@ -13185,6 +13208,7 @@
 				F977FD951FE8AB8000183A85 /* RequestOrderData.m in Sources */,
 				F977FA3B1FE8AB7900183A85 /* UICollectionViewFlowLayoutExtension.swift in Sources */,
 				F977FB121FE8AB7B00183A85 /* ProductModelView.m in Sources */,
+				F980524B2018AAFD00CE6D67 /* ReactPopoverHelper.m in Sources */,
 				F977FA941FE8AB7A00183A85 /* RequestCartShipment.swift in Sources */,
 				DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */,
 				F977FA761FE8AB7A00183A85 /* PaymentActionResponse.swift in Sources */,
@@ -13241,10 +13265,12 @@
 				F7D8CA15201754E800725BDB /* TokoCashHistoryDetailViewModel.swift in Sources */,
 				F97700B21FE8AB8600183A85 /* HomePageHeaderSectionStyle.swift in Sources */,
 				DADB9F691F3C46CF002B1FAE /* XYPieChart.m in Sources */,
+				F98052502018AAFE00CE6D67 /* ReactTopChatManager.m in Sources */,
 				F977FDAF1FE8AB8000183A85 /* DigitalGoodsDataSource.swift in Sources */,
 				62C7715E1FF33C3400F66527 /* ShopSettingsResult.m in Sources */,
 				F977FC821FE8AB7D00183A85 /* ShopInfoViewController.m in Sources */,
 				DADB9F5D1F3C46CF002B1FAE /* MHVerticalTabBarButton.m in Sources */,
+				F98052622018AAFE00CE6D67 /* ReactPopoverOptionViewController.swift in Sources */,
 				F7D8C9EC201754E700725BDB /* TokoCashViewController.swift in Sources */,
 				F977FA571FE8AB7900183A85 /* FeedDetailShopState+Referable.swift in Sources */,
 				DADB9F451F3C46CE002B1FAE /* _FBTweakBindObserver.m in Sources */,
@@ -13261,7 +13287,6 @@
 				F977FCD11FE8AB7E00183A85 /* LoginPreference.swift in Sources */,
 				F977FA6B1FE8AB7A00183A85 /* ProductSellerNode.swift in Sources */,
 				848FA7081FEBF8BF00A22EDE /* RCCreateSolutionResponse.swift in Sources */,
-				F977008E1FE8AB8600183A85 /* ReactOrderManager.m in Sources */,
 				DADB9F4C1F3C46CE002B1FAE /* FBTweakCollection.m in Sources */,
 				62C771C31FF33C3500F66527 /* SimpleFavoritedShopResult.m in Sources */,
 				F977FB431FE8AB7B00183A85 /* ProductDataSource.swift in Sources */,
@@ -13348,6 +13373,7 @@
 				62C7711A1FF33C3400F66527 /* Quality.m in Sources */,
 				62C770391FF33C3200F66527 /* TransactionCart.m in Sources */,
 				F977FB4E1FE8AB7B00183A85 /* FilterComplainViewController.m in Sources */,
+				F980524E2018AAFE00CE6D67 /* ReactFileUploader.m in Sources */,
 				F977FBF91FE8AB7C00183A85 /* FuzzySearchCatalog.swift in Sources */,
 				F977FCC51FE8AB7E00183A85 /* AuthTokenRequest.swift in Sources */,
 				62C771911FF33C3400F66527 /* ListFavoriteShop.m in Sources */,
@@ -13377,6 +13403,7 @@
 				F977FB041FE8AB7B00183A85 /* GeneralList1GestureCell.m in Sources */,
 				62C76FF21FF33C3200F66527 /* TransactionEditAddressFormResult.m in Sources */,
 				F977FC801FE8AB7D00183A85 /* DetailStatisticViewController.m in Sources */,
+				F98052602018AAFE00CE6D67 /* ReactNotificationCenter.m in Sources */,
 				F977FCB81FE8AB7E00183A85 /* SecurityQuestionTweaks.m in Sources */,
 				62C771791FF33C3400F66527 /* PrivacyFormPrivacy.m in Sources */,
 				62C770071FF33C3200F66527 /* TransactionAction.m in Sources */,
@@ -13393,6 +13420,7 @@
 				F977FC761FE8AB7D00183A85 /* LogoutRequest.swift in Sources */,
 				F977FB691FE8AB7B00183A85 /* ResolutionInputReceiptViewController.m in Sources */,
 				F977FA331FE8AB7900183A85 /* UIViewController+Header.swift in Sources */,
+				F980525F2018AAFE00CE6D67 /* ReactModule.swift in Sources */,
 				F977FA2B1FE8AB7900183A85 /* UIViewController+Swizzling.m in Sources */,
 				DADB9F4A1F3C46CE002B1FAE /* FBTweak.m in Sources */,
 				F977FCB51FE8AB7E00183A85 /* SecureStorageManager.swift in Sources */,
@@ -13414,7 +13442,6 @@
 				F977FD2D1FE8AB7F00183A85 /* SearchSuggestionItem.swift in Sources */,
 				62C7700F1FF33C3200F66527 /* TxOrderStatusResult.m in Sources */,
 				62C770E51FF33C3300F66527 /* AnnouncementTickerObject.swift in Sources */,
-				F97700761FE8AB8500183A85 /* HybridNavigationManager.m in Sources */,
 				62C770F41FF33C3300F66527 /* ProductTalkCommentAction.m in Sources */,
 				F977FB7C1FE8AB7B00183A85 /* FilterCategoryViewController.m in Sources */,
 				62C771C01FF33C3500F66527 /* RequestObject.m in Sources */,
@@ -13459,7 +13486,6 @@
 				F977FCD21FE8AB7E00183A85 /* LoginTableViewController.swift in Sources */,
 				62C770991FF33C3300F66527 /* ResolutionConversation.m in Sources */,
 				F977FA8D1FE8AB7A00183A85 /* TransactionATCViewController.m in Sources */,
-				F97700781FE8AB8500183A85 /* ReactBannerManager.m in Sources */,
 				62C7711F1FF33C3400F66527 /* ReplacementShipment.swift in Sources */,
 				F977FB781FE8AB7B00183A85 /* MerlinProductCategory.swift in Sources */,
 				F977FD271FE8AB7F00183A85 /* GetSearchSuggestionGeneralResponse.swift in Sources */,
@@ -13519,14 +13545,13 @@
 				F977FB661FE8AB7B00183A85 /* InboxResolutionCenterTabViewController.m in Sources */,
 				62C770ED1FF33C3300F66527 /* CatalogShopAWSProductResult.m in Sources */,
 				62C7700A1FF33C3200F66527 /* TransactionActionResult.m in Sources */,
-				F97700851FE8AB8600183A85 /* ReactFileUploader.m in Sources */,
 				62C771A81FF33C3500F66527 /* TotalLikeDislike.m in Sources */,
 				F977FA6C1FE8AB7A00183A85 /* ProductHeaderNode.swift in Sources */,
 				F977FD941FE8AB8000183A85 /* RequestOrderAction.m in Sources */,
 				F977FE491FE8AB8100183A85 /* FeedState.swift in Sources */,
 				F977FBC61FE8AB7C00183A85 /* OrderDetailReceiverView.swift in Sources */,
 				62C770FE1FF33C3300F66527 /* SecurityRequestOTP.m in Sources */,
-				F97700741FE8AB8500183A85 /* TKPReactAnalytics.m in Sources */,
+				F98052552018AAFE00CE6D67 /* ReactUserManager.m in Sources */,
 				F977FCC41FE8AB7E00183A85 /* UserLoginRequest.swift in Sources */,
 				F977FD751FE8AB7F00183A85 /* RequestAddress.m in Sources */,
 				F7D8C9FB201754E800725BDB /* TokoCashQRCodeViewController.swift in Sources */,
@@ -13555,6 +13580,7 @@
 				F97700681FE8AB8500183A85 /* DigitalLastOrder.swift in Sources */,
 				F7D8C9EF201754E700725BDB /* TokoCashActivationViewController.swift in Sources */,
 				62C771421FF33C3400F66527 /* NoteDetailResult.swift in Sources */,
+				F98052532018AAFE00CE6D67 /* TKPReactAnalytics.m in Sources */,
 				62C7701C1FF33C3200F66527 /* TransactionVoucherResult.m in Sources */,
 				62C7715B1FF33C3400F66527 /* ClosedInfo.m in Sources */,
 				62C770AA1FF33C3300F66527 /* ResolutionActionResult.m in Sources */,
@@ -13567,6 +13593,7 @@
 				F977FAB31FE8AB7A00183A85 /* SettingPrivacyCell.m in Sources */,
 				F977FB611FE8AB7B00183A85 /* EditProductTroubleCell.swift in Sources */,
 				F977FD581FE8AB7F00183A85 /* ScrollViewSimultaneousGesture.m in Sources */,
+				F980524C2018AAFD00CE6D67 /* ReactWalletHelper.m in Sources */,
 				62C771291FF33C3400F66527 /* SearchAutoCompleteObject.m in Sources */,
 				F7D8CA21201754E800725BDB /* TokoCashProfileNavigator.swift in Sources */,
 				F977FE481FE8AB8100183A85 /* FeedCardKOLPostState.swift in Sources */,
@@ -13587,6 +13614,7 @@
 				F977FE4C1FE8AB8100183A85 /* FeedKOLActivityComponentView.swift in Sources */,
 				62C76FEB1FF33C3200F66527 /* RateData.m in Sources */,
 				F977FBCA1FE8AB7C00183A85 /* OrderDateView.swift in Sources */,
+				F98052572018AAFE00CE6D67 /* OnboardingViewController.swift in Sources */,
 				F977FD261FE8AB7F00183A85 /* SearchAutoCompleteHelper.swift in Sources */,
 				DADB9F551F3C46CF002B1FAE /* MarqueeLabel.m in Sources */,
 				62C771281FF33C3400F66527 /* SearchAutoCompleteDomains.m in Sources */,
@@ -13596,7 +13624,6 @@
 				F7D8C9F5201754E700725BDB /* TokoCashQRPaymentSuccessNavigator.swift in Sources */,
 				F977FC591FE8AB7D00183A85 /* GenerateHostObservable.swift in Sources */,
 				F7D8CA14201754E800725BDB /* TokoCashHistoryDetailViewController.swift in Sources */,
-				F977008C1FE8AB8600183A85 /* TKPReactURLManager.m in Sources */,
 				F977FDBF1FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.m in Sources */,
 				F977FE011FE8AB8100183A85 /* PulsaRelationships.swift in Sources */,
 				F977FE5A1FE8AB8100183A85 /* FeedPromotionComponentView.swift in Sources */,
@@ -13649,10 +13676,12 @@
 				848FA6F81FEBF8BF00A22EDE /* RCButtonCell.swift in Sources */,
 				F977FCB01FE8AB7E00183A85 /* TKPMapView.swift in Sources */,
 				62C771511FF33C3400F66527 /* ShopTransactionStats.m in Sources */,
+				F98052542018AAFE00CE6D67 /* ReactDynamicFilterBridge.swift in Sources */,
 				F977FB231FE8AB7B00183A85 /* InboxTicketSplitViewController.m in Sources */,
 				F977FBF51FE8AB7C00183A85 /* FuzzySearchWrapper.swift in Sources */,
 				F977FE421FE8AB8100183A85 /* QueueImageDownloader.m in Sources */,
 				DADB9F501F3C46CE002B1FAE /* FBTweakViewController.m in Sources */,
+				F98052522018AAFE00CE6D67 /* TKPReactURLManager.m in Sources */,
 				62C771821FF33C3400F66527 /* BankAccountFormResult.m in Sources */,
 				F977FA3F1FE8AB7900183A85 /* NSNumberFormatter+IDRFormater.m in Sources */,
 				62C770C91FF33C3300F66527 /* CatalogShops.m in Sources */,
@@ -13738,6 +13767,8 @@
 				62C771781FF33C3400F66527 /* ProfileSettings.m in Sources */,
 				F977FD1A1FE8AB7E00183A85 /* PurchaseViewController.m in Sources */,
 				62C7719A1FF33C3400F66527 /* AddressProvince.m in Sources */,
+				F924FCB620178E41009EDD47 /* BannerViewManager.m in Sources */,
+				F98052562018AAFE00CE6D67 /* ReactLocationServiceManagerBridge.m in Sources */,
 				848FA6E21FEBF8BE00A22EDE /* CreateComplainViewController.swift in Sources */,
 				F977FC391FE8AB7D00183A85 /* AlertInfoView.m in Sources */,
 				62C771871FF33C3400F66527 /* UserInfo.m in Sources */,
@@ -13760,7 +13791,6 @@
 				62C771C51FF33C3500F66527 /* FavoritedShop.m in Sources */,
 				848FA6F91FEBF8BF00A22EDE /* RCCountdownTimerView.swift in Sources */,
 				F97700C01FE8AB8600183A85 /* URLCacheController.m in Sources */,
-				F977008A1FE8AB8600183A85 /* ReactDynamicFilterBridge.swift in Sources */,
 				62C770191FF33C3200F66527 /* TxOrderConfirmedResult.m in Sources */,
 				848FA70F1FEBF8BF00A22EDE /* RCService.swift in Sources */,
 				F977FDAB1FE8AB8000183A85 /* SystemBank.swift in Sources */,
@@ -13774,7 +13804,6 @@
 				F977FAFB1FE8AB7A00183A85 /* FavoritedShopCell.m in Sources */,
 				62C771971FF33C3400F66527 /* ContactUsActionResultError.m in Sources */,
 				F977005E1FE8AB8500183A85 /* DigitalFavouriteNumberCell.swift in Sources */,
-				F97700901FE8AB8600183A85 /* ReactModule.swift in Sources */,
 				62C770A01FF33C3300F66527 /* EditSolution.swift in Sources */,
 				F977FB921FE8AB7B00183A85 /* CategoryIntermediaryHotListImagePortrait.swift in Sources */,
 				E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */,
@@ -13785,7 +13814,6 @@
 				F977FDA51FE8AB8000183A85 /* TxOrderTransactionDetailViewController.m in Sources */,
 				62C771701FF33C3400F66527 /* GenerateHost.m in Sources */,
 				62C771D11FF33C3500F66527 /* PromoProductImage.m in Sources */,
-				D86EC25E200F6A6400388574 /* ReactLocationServiceManager.swift in Sources */,
 				62C770171FF33C3200F66527 /* TxOrderConfirmedList.m in Sources */,
 				62C770441FF33C3200F66527 /* GooglePlaceDetailGeometry.m in Sources */,
 				62C770381FF33C3200F66527 /* TransactionCartGateway.m in Sources */,
@@ -13814,8 +13842,8 @@
 				34E7222E2015F53300CFE581 /* Headline.m in Sources */,
 				F977FA3A1FE8AB7900183A85 /* UIViewController+NavigationItem.swift in Sources */,
 				F7D8CA2F201754E800725BDB /* TokoCashHelpCategory.swift in Sources */,
+				F924FCB420178E41009EDD47 /* RCTPulsaView.swift in Sources */,
 				62C771331FF33C3400F66527 /* ShopProductPageList.swift in Sources */,
-				F97700871FE8AB8600183A85 /* ReactUserManager.m in Sources */,
 				924B14FD200DB28A00CB65D2 /* AIRGoogleMap.m in Sources */,
 				62C770BF1FF33C3300F66527 /* OrderCustomer.m in Sources */,
 				F977FC0E1FE8AB7C00183A85 /* ShipmentWebViewController.m in Sources */,
@@ -13835,6 +13863,7 @@
 				F977FE551FE8AB8100183A85 /* FeedNoShopComponentView.swift in Sources */,
 				62C7714A1FF33C3400F66527 /* JNE.m in Sources */,
 				E5D8A57B2010A311003E66BA /* NoAccountViewController.swift in Sources */,
+				F98052612018AAFE00CE6D67 /* HybridNavigationManager.m in Sources */,
 				F977FC3C1FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
 				E57974D11FEA741F00610655 /* InputPromoCodeViewController.swift in Sources */,
 				F977FA251FE8AB7900183A85 /* V4Target.swift in Sources */,
@@ -13858,7 +13887,6 @@
 				62C770351FF33C3200F66527 /* Shipment.swift in Sources */,
 				F977FA501FE8AB7900183A85 /* AppSharing+Referable.swift in Sources */,
 				F7D8CA3D2017556500725BDB /* ViewModelType.swift in Sources */,
-				F97700831FE8AB8600183A85 /* ReactFacebookManager.m in Sources */,
 				F977FC4E1FE8AB7D00183A85 /* AlertListBankView.m in Sources */,
 				F977FD691FE8AB7F00183A85 /* PenilaianUserCell.m in Sources */,
 				F977FD2A1FE8AB7F00183A85 /* SearchViewController.m in Sources */,
@@ -13868,6 +13896,7 @@
 				F977FBF41FE8AB7C00183A85 /* FuzzySearchDataSuggestionInstead.swift in Sources */,
 				F977FA631FE8AB7900183A85 /* ProductUnbox.swift in Sources */,
 				62C771BE1FF33C3500F66527 /* ShipmentProvinceData.m in Sources */,
+				F980525C2018AAFE00CE6D67 /* ReactCategoryResultManager.m in Sources */,
 				F977FDFB1FE8AB8100183A85 /* PulsaProductCell.swift in Sources */,
 				62C771231FF33C3400F66527 /* ReplacementDestination.swift in Sources */,
 				62C771A31FF33C3500F66527 /* DrawerData.swift in Sources */,
@@ -13974,6 +14003,7 @@
 				F977FADD1FE8AB7A00183A85 /* HomePageCategoryLayoutSection.swift in Sources */,
 				F977FB421FE8AB7B00183A85 /* TokopediaCacheManager.m in Sources */,
 				62C770CB1FF33C3300F66527 /* CatalogInfo.m in Sources */,
+				F980525D2018AAFE00CE6D67 /* ReactDynamicFilterModule.m in Sources */,
 				62C7709F1FF33C3300F66527 /* ProductTrouble.swift in Sources */,
 				E5B4E7FF1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift in Sources */,
 				62C7701D1FF33C3200F66527 /* CartShipmentData.swift in Sources */,
@@ -13991,7 +14021,6 @@
 				F977FAF51FE8AB7A00183A85 /* MyWishlistSearchCollectionReusableView.swift in Sources */,
 				62C7706B1FF33C3200F66527 /* TheOtherProductList.m in Sources */,
 				F97700A51FE8AB8600183A85 /* TKPStoreManager.m in Sources */,
-				F977007C1FE8AB8600183A85 /* ReactTopAdsManager.m in Sources */,
 				62C771A11FF33C3500F66527 /* WalletAction.swift in Sources */,
 				62C7711E1FF33C3400F66527 /* Replacement.swift in Sources */,
 				62C770031FF33C3200F66527 /* TxOrderPaymentEditSystemBank.m in Sources */,
@@ -14040,7 +14069,6 @@
 				62C771AD1FF33C3500F66527 /* APIAction.swift in Sources */,
 				62C770931FF33C3300F66527 /* ResolutionCustomer.m in Sources */,
 				F977FBC01FE8AB7C00183A85 /* OrderDetailProductCell.m in Sources */,
-				F97700841FE8AB8600183A85 /* ReactCategoryResultManager.m in Sources */,
 				F977FCF71FE8AB7E00183A85 /* ReportProductGetTypeResponse.swift in Sources */,
 				F977FD5D1FE8AB7F00183A85 /* NoResult.m in Sources */,
 				F977FCE71FE8AB7E00183A85 /* GalleryViewController.m in Sources */,
@@ -14058,6 +14086,7 @@
 				F977FB271FE8AB7B00183A85 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
 				924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */,
 				F977FCB11FE8AB7E00183A85 /* InfoAddressView.swift in Sources */,
+				F98052642018AAFE00CE6D67 /* ReactLocationServiceManager.swift in Sources */,
 				62C7718F1FF33C3400F66527 /* ProfileEditForm.m in Sources */,
 				848FA6FE1FEBF8BF00A22EDE /* ProblemDetailViewController.swift in Sources */,
 				E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */,
@@ -14092,7 +14121,6 @@
 				F977FBAA1FE8AB7C00183A85 /* DetailShipmentStatusCell.m in Sources */,
 				62C771171FF33C3400F66527 /* GetCouponResponse.swift in Sources */,
 				62C770761FF33C3200F66527 /* PriceAlertResult.m in Sources */,
-				F97700771FE8AB8500183A85 /* ReactDynamicFilterModule.m in Sources */,
 				62C7713C1FF33C3400F66527 /* Notes.swift in Sources */,
 				62C771001FF33C3300F66527 /* SecurityQuestion.m in Sources */,
 				F977FA6A1FE8AB7A00183A85 /* ProductDetailViewComponent.swift in Sources */,
@@ -14115,6 +14143,7 @@
 				F977FC1B1FE8AB7C00183A85 /* ReplacementListCell.swift in Sources */,
 				F7D8CA18201754E800725BDB /* TokoCashFilterViewModel.swift in Sources */,
 				848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */,
+				F98052652018AAFE00CE6D67 /* ReactPermissionManager.m in Sources */,
 				62C7710A1FF33C3300F66527 /* Login.m in Sources */,
 				F977FAF61FE8AB7A00183A85 /* MyWishlistShopReputation.swift in Sources */,
 				62C771CD1FF33C3500F66527 /* PromoShop.m in Sources */,
@@ -14128,6 +14157,7 @@
 				F977FBA81FE8AB7C00183A85 /* FilterShipmentStatusViewController.m in Sources */,
 				F977FDD31FE8AB8000183A85 /* ResolutionCenterCreateResult.m in Sources */,
 				F977FC011FE8AB7C00183A85 /* ResizeableImageCell.m in Sources */,
+				F98052632018AAFE00CE6D67 /* ReactTopAdsManager.m in Sources */,
 				F7D8C9F2201754E700725BDB /* TokoCashQRPaymentFailedViewModel.swift in Sources */,
 				F977FD8B1FE8AB8000183A85 /* TableViewCell.m in Sources */,
 				F977006E1FE8AB8500183A85 /* DigitalAnalyticsManager.swift in Sources */,

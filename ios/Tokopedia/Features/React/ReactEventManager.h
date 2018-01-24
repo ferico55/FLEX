@@ -12,7 +12,7 @@
 @interface ReactEventManager : RCTEventEmitter<RCTBridgeModule>
 
 - (void)sendScrollToTopEvent;
-- (void)sendLoginEvent;
+- (void)sendLoginEvent:(NSDictionary*)userId;
 - (void)sendLogoutEvent;
 - (void)didWishlistProduct:(NSString*)productId;
 - (void)didRemoveWishlistProduct:(NSString*)productId;
@@ -20,5 +20,6 @@
 - (void)navBarButtonTapped:(id)index;
 - (void)popNavigation;
 - (void)sendRefreshEvent;
+- (void)sendRedirectHomeTabEvent;
 
 @end

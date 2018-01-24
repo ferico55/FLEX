@@ -8,7 +8,6 @@
 
 import UIKit
 import Foundation
-import OAStackView
 import MMNumberKeyboard
 import HMSegmentedControl
 import BEMCheckBox
@@ -19,7 +18,10 @@ import CFAlertViewController
 class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     weak var navigator: PulsaNavigator!
     
-    fileprivate var stackView: OAStackView = OAStackView()
+    var onConsraintChanged: (() -> Void)?
+    var onLayoutComplete: ((CGSize) -> Void)?
+    
+    fileprivate var stackView: UIStackView = UIStackView()
     fileprivate var pulsaCategoryControl: HMSegmentedControl = {
         let pulsaCategoryControl = HMSegmentedControl(sectionTitles: [])
         pulsaCategoryControl?.segmentWidthStyle = .fixed
@@ -56,13 +58,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         let numberFieldUnderlineView = UIView()
         numberFieldUnderlineView.backgroundColor = self.underlineViewColor
         return numberFieldUnderlineView
-    }()
-    
-    lazy fileprivate var activityIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
-        indicator.frame.origin = CGPoint(x: 20, y: 16)
-        
-        return indicator
     }()
     
     lazy fileprivate var buyButton: UIButton = {
@@ -155,8 +150,17 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         seeAllLabel.backgroundColor = UIColor.white
         seeAllLabel.textColor = UIColor.tpGreen()
         seeAllLabel.font = UIFont.smallThemeMedium()
-        seeAllLabel.text = "Lihat Semua Produk >"
+        seeAllLabel.text = "Lihat Semua"
         return seeAllLabel
+    }()
+    
+    lazy fileprivate var titleLabel:UILabel = {
+        let titleLabel = UILabel(frame: CGRect.zero)
+        titleLabel.backgroundColor = UIColor.white
+        titleLabel.textColor = UIColor.tpPrimaryBlackText()
+        titleLabel.font = UIFont.semiboldSystemFont(ofSize: 16)
+        titleLabel.text = "Bayar ini itu di Tokopedia"
+        return titleLabel
     }()
     
     var selectedOperator = PulsaOperator()
@@ -172,17 +176,17 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate var inputtedNumber: String?
     fileprivate var listOperators: [PulsaOperator]?
     
-    var didTapAddressbook: ((Void) -> Void)?
+    var didTapAddressbook: (() -> Void)?
     var didTapProduct:(([PulsaProduct]) -> Void)?
     var didTapOperator:(([PulsaOperator]) -> Void)?
-    var didTapSeeAll: ((Void) -> Void)?
-    var didAskedForLogin: ((Void) -> Void)?
-    var didShowAlertPermission: ((Void) -> Void)?
+    var didTapSeeAll: (() -> Void)?
+    var didAskedForLogin: (() -> Void)?
+    var didShowAlertPermission: (() -> Void)?
     var didSuccessPressBuy: ((URL) -> Void)?
     
-    fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 15
-    fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 15
-    fileprivate let underlineOffset: CGFloat = 5
+    fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 16
+    fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 16
+    fileprivate let underlineOffset: CGFloat = 4
     
     fileprivate var arrangedPrefix = [Prefix]()
     
@@ -206,10 +210,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         static let Listrik = "3"
     }
     
-    init(categories: [PulsaCategory]) {
+    public init(categories: [PulsaCategory]) {
         super.init(frame: .zero)
-        
-        buyButton.addSubview(activityIndicator)
         
         self.setCornerRadius()
         setupStackViewFormat()
@@ -254,8 +256,64 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.height.mas_equalTo()(1)
         }
         
-        requestOperatorsWithInitialCategory(categories.first!)
+        if let firstCategory = categories.first {
+            requestOperatorsWithInitialCategory(firstCategory)
+        }
+        self.buildSeeAllButton()
+    }
+    
+    public func setCategories(categories: [PulsaCategory]) {
+        pulsaCategoryControl = HMSegmentedControl(sectionTitles: [])
+        pulsaCategoryControl.redDotImage = UIImage(named: "red_dot")
+        pulsaCategoryControl.segmentWidthStyle = .fixed
+        pulsaCategoryControl.selectionIndicatorBoxOpacity = 0
+        pulsaCategoryControl.selectionStyle = .box;
+        pulsaCategoryControl.selectedSegmentIndex = HMSegmentedControlNoSegment;
+        pulsaCategoryControl.type = .text
+        pulsaCategoryControl.selectionIndicatorLocation = .down;
+        pulsaCategoryControl.selectionIndicatorHeight = 2
+
+        categories.enumerated().forEach { index, category in
+            pulsaCategoryControl.sectionTitles.append(category.attributes.name)
+            if category.attributes.is_new {
+                pulsaCategoryControl.showRedDot(at: index)
+            }
+        }
         
+        let categoryControlPlaceHolder = UIView()
+        categoryControlPlaceHolder.mas_makeConstraints { (make) in
+            make?.height.equalTo()(51)
+        }
+        stackView.removeAllSubviews()
+        stackView.addArrangedSubview(categoryControlPlaceHolder)
+        categoryControlPlaceHolder.addSubview(pulsaCategoryControl)
+        pulsaCategoryControl.mas_makeConstraints { make in
+            make?.top.left().right().mas_equalTo()(categoryControlPlaceHolder)
+            make?.bottom.mas_equalTo()(categoryControlPlaceHolder)?.offset()(-1)
+        }
+        pulsaCategoryControl.selectedTitleTextAttributes = [NSForegroundColorAttributeName : self.tokopediaGreenColor, NSFontAttributeName : UIFont.largeThemeMedium()]
+        pulsaCategoryControl.titleTextAttributes = [NSForegroundColorAttributeName : self.titleTextColor
+            , NSFontAttributeName : UIFont.largeTheme()]
+        pulsaCategoryControl.selectionIndicatorColor = self.tokopediaGreenColor
+        pulsaCategoryControl.bk_addEventHandler({[unowned self] (control: Any) in
+            self.productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
+            guard let control = control as? HMSegmentedControl else { return }
+            let selectedCategory = categories[control.selectedSegmentIndex]
+            self.buildViewByCategory(selectedCategory)
+            self.resignFirstResponder()
+//            self.findFirstResponder()?.resignFirstResponder()
+            }, for: .valueChanged)
+        
+        let categoryControlUnderline = UIView()
+        categoryControlUnderline.backgroundColor = underlineViewColor
+        categoryControlPlaceHolder.addSubview(categoryControlUnderline)
+        categoryControlUnderline.mas_makeConstraints { (make) in
+            make?.top.mas_equalTo()(self.pulsaCategoryControl.mas_bottom)
+            make?.left.right().mas_equalTo()(categoryControlPlaceHolder)
+            make?.height.mas_equalTo()(1)
+        }
+        
+        requestOperatorsWithInitialCategory(categories.first!)
     }
     
     required init(coder: NSCoder) {
@@ -462,6 +520,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.height.equalTo()(0)
         }
         self.attachArrowToButton(operatorButton)
+        
+        notifyContentSizeChanged()
     }
     
     fileprivate func buildButtons(_ category: PulsaCategory) {
@@ -471,20 +531,20 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
 
         buttonsPlaceholder.addSubview(nominalLabel)
         nominalLabel.mas_makeConstraints{ make in
-            make?.top.equalTo()(self.buttonsPlaceholder.mas_top)?.with().offset()(10)
-            make?.left.equalTo()(self.buttonsPlaceholder)?.with().offset()(15)
+            make?.top.equalTo()(self.buttonsPlaceholder.mas_top)?.with().offset()(16)
+            make?.left.equalTo()(self.buttonsPlaceholder)?.with().offset()(16)
         }
     
         buttonsPlaceholder.addSubview(productButton)
         
         productButton.mas_makeConstraints { make in
-            make?.top.equalTo()(self.nominalLabel.mas_bottom)?.with().offset()(5)
+            make?.top.equalTo()(self.nominalLabel.mas_bottom)?.with().offset()(6)
             make?.height.equalTo()(25)
             make?.left.equalTo()(self.nominalLabel)
-            make?.right.equalTo()(self.buttonsPlaceholder)?.with().offset()(-15)
+            make?.right.equalTo()(self.buttonsPlaceholder)?.with().offset()(-16)
         }
         
-        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0)
+        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -16, 0, 0)
         
         buttonsPlaceholder.mas_makeConstraints { make in
             make?.height.equalTo()(0)
@@ -512,6 +572,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.centerY.mas_equalTo()(self.buttonErrorPlaceholder)
         }
         attachArrowToButton(productButton)
+        
+        notifyContentSizeChanged()
     }
     
     fileprivate func buildAllView(_ category: PulsaCategory) {
@@ -535,42 +597,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
         
         self.buildButtons(category)
-        self.buildUseSaldoView()
         self.buildBuyButtonPlaceholder()
-        self.buildSeeAllButton()
-    }
-    
-    fileprivate func buildUseSaldoView() {
-        saldoButtonPlaceholder = UIView(frame: CGRect.zero)
-        saldoButtonPlaceholder.backgroundColor = UIColor.white
-        stackView.addArrangedSubview(saldoButtonPlaceholder)
-        saldoButtonPlaceholder.mas_makeConstraints { make in
-            make?.height.equalTo()(41)
-        }
-        saldoButtonPlaceholder.clipsToBounds = true
-        
-        saldoButtonPlaceholder.addSubview(self.saldoCheckBox)
-        
-        self.saldoCheckBox.mas_makeConstraints { make in
-            make?.centerY.equalTo()(self.saldoButtonPlaceholder)
-            make?.width.height().equalTo()(18)
-            make?.left.equalTo()(self.productButton.mas_left)
-        }
-        
-        saldoButtonPlaceholder.addSubview(saldoLabel)
-        
-        saldoLabel.mas_makeConstraints { make in
-            make?.centerY.equalTo()(self.saldoCheckBox)
-            make?.width.equalTo()(120)
-            make?.left.equalTo()(self.saldoCheckBox.mas_right)?.offset()(5)
-        }
-        
-        saldoButtonPlaceholder.addSubview(self.infoButton)
-        
-        self.infoButton.mas_makeConstraints { make in
-            make?.centerY.equalTo()(self.saldoCheckBox)
-            make?.left.equalTo()(self.saldoLabel.mas_right)?.offset()(-35)
-        }
     }
     
     fileprivate func buildBuyButtonPlaceholder() {
@@ -582,12 +609,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
         
         buyButtonPlaceholder.addSubview(buyButton)
-        
         buyButton.mas_makeConstraints { make in
-            make?.height.equalTo()(0)
-            make?.top.equalTo()(self.buyButtonPlaceholder.mas_top)
-            make?.left.equalTo()(self.buyButtonPlaceholder.mas_left)?.offset()(15)
-            make?.right.equalTo()(self.buyButtonPlaceholder.mas_right)?.with().offset()(-15)
+            make?.width.equalTo()(self.buyButtonPlaceholder.mas_width)?.dividedBy()(2)?.offset()(-16)
+            make?.centerY.equalTo()(self.buyButtonPlaceholder)
+            make?.right.equalTo()(self.buyButtonPlaceholder.mas_right)?.with().offset()(-16)
+            make?.top.equalTo()(self.buyButtonPlaceholder.mas_top)?.offset()(16)
+            make?.bottom.equalTo()(self.buyButtonPlaceholder.mas_bottom)?.offset()(-16)
         }
         
         buyButton.bk_removeEventHandlers(for: .touchUpInside)
@@ -595,6 +622,26 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             self.didPressBuyButton()
             }, for: .touchUpInside)
         showBuyButton()
+        
+        buyButtonPlaceholder.addSubview(self.saldoCheckBox)
+        self.saldoCheckBox.mas_makeConstraints { make in
+            make?.centerY.equalTo()(self.buyButtonPlaceholder)
+            make?.width.height().equalTo()(18)
+            make?.left.equalTo()(self.productButton.mas_left)
+        }
+        
+        buyButtonPlaceholder.addSubview(saldoLabel)
+        saldoLabel.mas_makeConstraints { make in
+            make?.centerY.equalTo()(self.saldoCheckBox)
+            make?.width.equalTo()(120)
+            make?.left.equalTo()(self.saldoCheckBox.mas_right)?.offset()(5)
+        }
+        
+        buyButtonPlaceholder.addSubview(self.infoButton)
+        self.infoButton.mas_makeConstraints { make in
+            make?.centerY.equalTo()(self.saldoCheckBox)
+            make?.left.equalTo()(self.saldoLabel.mas_right)?.offset()(-35)
+        }
     }
     
     fileprivate func buildNumberField(_ category: PulsaCategory) {
@@ -614,7 +661,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         fieldPlaceholder.addSubview(noHandphoneLabel)
         
         noHandphoneLabel.mas_makeConstraints { (make) in
-            make?.top.mas_equalTo()(self.fieldPlaceholder.mas_top)?.offset()(10)
+            make?.top.mas_equalTo()(self.fieldPlaceholder.mas_top)?.offset()(16)
             make?.left.equalTo()(self.fieldPlaceholder.mas_left)?.offset()(self.WIDGET_LEFT_MARGIN)
         }
         
@@ -645,7 +692,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
                 make?.height.equalTo()(25)
                 make?.width.equalTo()(25)
                 make?.right.equalTo()(self.fieldPlaceholder.mas_right)?.offset()(-15)
-                make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(5)
+                make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(4)
             }
             
             phoneBook.bk_(whenTapped: { [unowned self] in
@@ -656,12 +703,12 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         fieldPlaceholder.addSubview(numberField)
         numberField.mas_makeConstraints { make in
             make?.height.equalTo()(25)
-            make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(5)
+            make?.top.equalTo()(self.noHandphoneLabel.mas_bottom)?.offset()(4)
             make?.left.equalTo()(self.noHandphoneLabel.mas_left)
             if(category.attributes.use_phonebook) {
-                make?.right.equalTo()(self.phoneBook.mas_left)?.offset()(-15)
+                make?.right.equalTo()(self.phoneBook.mas_left)?.offset()(-16)
             } else {
-                make?.right.equalTo()(self.fieldPlaceholder.mas_right)?.offset()(-15)
+                make?.right.equalTo()(self.fieldPlaceholder.mas_right)?.offset()(-16)
             }
 
         }
@@ -678,7 +725,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.numberField.addSubview(self.prefixView!)
         self.prefixView!.mas_makeConstraints({ (make) in
             make?.right.mas_equalTo()(self.numberField.mas_right)?.with().offset()(-75)
-            make?.centerY.mas_equalTo()(self.numberField.mas_centerY)?.with().offset()(-15)
+            make?.centerY.mas_equalTo()(self.numberField.mas_centerY)?.with().offset()(-16)
         })
         
         numberErrorPlaceholder = UIView()
@@ -702,25 +749,25 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         seeAllButtonPlaceholder.backgroundColor = UIColor.white
         stackView.addArrangedSubview(seeAllButtonPlaceholder)
         seeAllButtonPlaceholder.mas_makeConstraints { (make) in
-            make?.height.equalTo()(40)
-        }
-        let seeAllUnderline = UIView()
-        seeAllUnderline.backgroundColor = underlineViewColor
-        seeAllButtonPlaceholder.addSubview(seeAllUnderline)
-        seeAllUnderline.mas_makeConstraints { (make) in
-            make?.top.mas_equalTo()(self.seeAllButtonPlaceholder.mas_top)
-            make?.left.right().mas_equalTo()(self.seeAllButtonPlaceholder)
-            make?.height.mas_equalTo()(0.5)
+            make?.height.equalTo()(56)
         }
         
         seeAllButtonPlaceholder.addSubview(seeAllLabel)
-        seeAllLabel.mas_makeConstraints { (make) in
-            make?.top.equalTo()(seeAllUnderline.mas_bottom)?.offset()(10)
-            make?.right.equalTo()(self.seeAllButtonPlaceholder.mas_right)?.offset()(-15)
+        seeAllLabel.mas_makeConstraints { [weak self] (make) in
+            guard let `self` = self else { return }
+            make?.centerY.equalTo()(self.seeAllButtonPlaceholder.mas_centerY)
+            make?.right.equalTo()(self.seeAllButtonPlaceholder.mas_right)?.offset()(-16)
         }
         let tap = UITapGestureRecognizer(target: self, action: #selector(goToDigitalCategory(sender:)))
         seeAllLabel.isUserInteractionEnabled = true
         seeAllLabel.addGestureRecognizer(tap)
+        
+        seeAllButtonPlaceholder.addSubview(titleLabel)
+        titleLabel.mas_makeConstraints { [weak self] (make) in
+            guard let `self` = self else { return }
+            make?.centerY.equalTo()(self.seeAllButtonPlaceholder.mas_centerY)
+            make?.left.equalTo()(self.seeAllButtonPlaceholder.mas_left)?.offset()(16)
+        }
     }
     
     func goToDigitalCategory(sender:UITapGestureRecognizer) {
@@ -771,6 +818,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
                 make?.height.equalTo()(self.selectedOperator.attributes.rule.show_product ? 66 : 0)
             }
             self.layoutIfNeeded()
+            self.notifyContentSizeChanged()
         }
         //prevent keep adding button to handler
         productButton.bk_removeEventHandlers(for: .touchUpInside)
@@ -798,16 +846,18 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         _ = saldoButtonPlaceholder?.mas_updateConstraints({ (make) in
             make?.height.equalTo()(0)
         })
+        
+        notifyContentSizeChanged()
     }
     
     fileprivate func showBuyButton() {
         
         buyButton.mas_updateConstraints { make in
-            make?.height.equalTo()(52)
+            make?.height.equalTo()(40)
         }
         
         buyButtonPlaceholder.mas_updateConstraints { (make) in
-            make?.height.equalTo()(60)
+            make?.height.equalTo()(72)
         }
         
         self.saldoCheckBox.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
@@ -815,6 +865,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.infoButton.isHidden = self.selectedCategory.attributes.instant_checkout_available ? false : true
         
         self.buyButton.isHidden = false
+        
+        notifyContentSizeChanged()
     }
     
     fileprivate func hideProductButton() {
@@ -827,6 +879,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             self.didPressBuyButton()
             }, for: .touchUpInside)
         self.prefixView?.isHidden = true
+        
+        notifyContentSizeChanged()
     }
     
     fileprivate func showAddressBook() {
@@ -841,6 +895,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     fileprivate func didPressBuyButton() {
         let isValidNumber = (!self.selectedCategory.attributes.client_number.is_shown || self.isValidNumber(self.numberField.text!))
+        if let callback = self.onConsraintChanged {
+            callback()
+        }
         
         _ = self.numberErrorPlaceholder?.mas_updateConstraints { make in
             make?.height.equalTo()(!isValidNumber ? 22 : 0)
@@ -859,8 +916,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
                 buyButton.setTitle("Beli", for: .normal)
                 buyButton.isEnabled = true
                 buyButton.titleLabel?.textColor = .white
-                
-                activityIndicator.stopAnimating()
             }
             
             self.hideErrors()
@@ -873,8 +928,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             buyButton.titleLabel?.textColor = .white
             buyButton.setTitle("Sedang proses...", for: .normal)
             buyButton.isEnabled = false
-            
-            activityIndicator.startAnimating()
             
             if (self.saldoCheckBox.on) {
                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli with Instant Saldo from Widget")
@@ -1169,6 +1222,17 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         let closeButton = CFAlertAction.action(title: "Tutup", style: .Destructive, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white, handler: nil)
         let actionSheet = TooltipAlert.createAlert(title: "Bayar Instan", subtitle: "Selesaikan transaksi dengan 1 klik saja menggunakan TokoCash", image: #imageLiteral(resourceName:"icon_bayar_instan"), buttons: [closeButton])
         self.navigator.controller.present(actionSheet, animated: true, completion: nil)
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        notifyContentSizeChanged()
+    }
+    
+    private func notifyContentSizeChanged() {
+        let size = self.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
+        self.onLayoutComplete?(size)
     }
 }
 

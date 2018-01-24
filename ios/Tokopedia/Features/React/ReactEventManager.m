@@ -14,15 +14,15 @@ RCT_EXPORT_MODULE(EventManager)
 
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped", @"popNavigation", @"shouldRefresh"];
+    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped", @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab"];
 }
 
 - (void)sendScrollToTopEvent {
     [self sendEventWithName:@"HotlistScrollToTop" body:nil];
 }
 
-- (void)sendLoginEvent {
-    [self sendEventWithName:@"didLogin" body:nil];
+- (void)sendLoginEvent: (NSDictionary*) userId {
+    [self sendEventWithName:@"didLogin" body:userId];
 }
 
 - (void)sendLogoutEvent {
@@ -51,6 +51,10 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)popNavigation {
     [self sendEventWithName:@"popNavigation" body:nil];
+}
+
+- (void)sendRedirectHomeTabEvent {
+    [self sendEventWithName:@"RedirectToHomeTab" body:nil];
 }
 
 @end

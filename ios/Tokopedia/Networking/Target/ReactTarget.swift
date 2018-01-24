@@ -32,20 +32,24 @@ class ReactNetworkProviderObjcBridge: NSObject {
         }
         
         _ = NetworkProvider<ReactTarget>(endpointClosure: endpointClosure).request(target)
-            .mapJSON(failsOnEmptyData: false)
+            .map { response throws -> Any? in
+                // TODO ini harusnya append data ke dalam response
+                let json = try response.mapJSON(failsOnEmptyData: false)
+                if var dictionary = json as? [String: Any] {
+                    dictionary["statusCode"] = response.statusCode
+                    return dictionary
+                }
+                else if let array = json as? [Any] {
+                    return array
+                }
+                else {
+                    print("Error converting json to dictionary")
+                    return nil
+                }
+            }
             .subscribe(
-                onNext: { json in
-                    if let dictionary = json as? [String: Any] {
-                        onSuccess(dictionary)
-                    }
-                    else if let array = json as? [Any] {
-                        onSuccess(array)
-                    }
-                    else {
-                        print("Error converting json to dictionary")
-                        onSuccess(nil)
-                        return
-                    }
+                onNext: { data in
+                    onSuccess(data)
                 },
                 onError: { error in
                     let realError: Swift.Error
