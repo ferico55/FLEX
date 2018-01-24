@@ -808,6 +808,10 @@
       {
          "path":"roaming/telkomsel",
          "applink":"tokopedia://digital/form?category_id=20&operator_id=12"
+      },
+      {
+         "path":"top-up/mtix",
+         "applink":"tokopedia://digital/form?category_id=31"
       }
    ]
 }
