@@ -73,7 +73,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" tag="10" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="New Victory" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hsX-F4-Lsj">
-                                <rect key="frame" x="9" y="245" width="150" height="14"/>
+                                <rect key="frame" x="9" y="245" width="126" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="0kS-kb-I0G"/>
                                 </constraints>
@@ -240,6 +240,13 @@
                                     <constraint firstItem="aMV-Pt-yMK" firstAttribute="centerY" secondItem="k3l-xY-qhr" secondAttribute="centerY" id="Xf7-Go-ccB"/>
                                 </constraints>
                             </view>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_topads" translatesAutoresizingMaskIntoConstraints="NO" id="dyE-l5-4uj">
+                                <rect key="frame" x="143" y="245" width="15" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="15" id="a9e-T8-4gW"/>
+                                    <constraint firstAttribute="height" constant="12" id="rno-aW-dc2"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <color key="tintColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
@@ -247,7 +254,7 @@
                             <bool key="isElement" value="YES"/>
                         </accessibility>
                         <constraints>
-                            <constraint firstAttribute="trailing" secondItem="hsX-F4-Lsj" secondAttribute="trailing" constant="7" id="1EE-5u-FD7"/>
+                            <constraint firstItem="dyE-l5-4uj" firstAttribute="leading" secondItem="hsX-F4-Lsj" secondAttribute="trailing" constant="8" id="4uB-pi-GqE"/>
                             <constraint firstItem="k3l-xY-qhr" firstAttribute="top" secondItem="Fki-cQ-9ac" secondAttribute="top" id="50d-br-Ar0"/>
                             <constraint firstAttribute="trailing" secondItem="9ky-Uy-MKz" secondAttribute="trailing" id="9ke-bw-JTh"/>
                             <constraint firstAttribute="trailing" secondItem="za7-yq-RSZ" secondAttribute="trailing" constant="7" id="ASq-MZ-U8D"/>
@@ -258,10 +265,12 @@
                             <constraint firstItem="9ky-Uy-MKz" firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="HUu-jb-Snq"/>
                             <constraint firstItem="Fki-cQ-9ac" firstAttribute="top" secondItem="riz-i3-Xqh" secondAttribute="bottom" constant="13.5" id="I1q-a6-nu0"/>
                             <constraint firstAttribute="bottom" secondItem="Xcs-wg-GLM" secondAttribute="bottom" constant="8" id="ICN-do-3w0"/>
+                            <constraint firstItem="hsX-F4-Lsj" firstAttribute="centerY" secondItem="dyE-l5-4uj" secondAttribute="centerY" id="JHF-H3-9Re"/>
                             <constraint firstItem="k3l-xY-qhr" firstAttribute="leading" secondItem="Fki-cQ-9ac" secondAttribute="trailing" id="JtS-IO-Znn"/>
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="leading" secondItem="g44-fl-fUl" secondAttribute="leading" id="KCY-Kb-pCM"/>
                             <constraint firstItem="Ug2-8n-rO9" firstAttribute="leading" secondItem="Xcs-wg-GLM" secondAttribute="trailing" constant="3" id="LWg-Ly-ibl"/>
                             <constraint firstItem="Yli-dz-Hip" firstAttribute="top" secondItem="eCk-Jy-Tnn" secondAttribute="bottom" constant="7" id="Mpw-uW-Pec"/>
+                            <constraint firstAttribute="trailing" secondItem="dyE-l5-4uj" secondAttribute="trailing" constant="8" id="NbZ-TP-8lk"/>
                             <constraint firstAttribute="top" secondItem="lNm-w0-TTJ" secondAttribute="top" id="O8b-9a-BuW"/>
                             <constraint firstAttribute="trailing" secondItem="riz-i3-Xqh" secondAttribute="trailing" constant="8" id="Oym-qM-muL"/>
                             <constraint firstItem="eCk-Jy-Tnn" firstAttribute="leading" secondItem="Fki-cQ-9ac" secondAttribute="leading" id="PNm-9w-Qha"/>
@@ -325,6 +334,7 @@
                 <outlet property="ratingContainerView" destination="eCk-Jy-Tnn" id="GU9-nZ-YaA"/>
                 <outlet property="shopLocation" destination="Ug2-8n-rO9" id="JAQ-WG-xHm"/>
                 <outlet property="starsRateView" destination="brh-rw-Ug1" id="YMQ-c4-nlc"/>
+                <outlet property="topAdsBadgeImageView" destination="dyE-l5-4uj" id="BeY-Cw-n8M"/>
                 <outlet property="totalReviewLabel" destination="pgP-Xl-diH" id="98a-bO-FXx"/>
             </connections>
             <point key="canvasLocation" x="254" y="240"/>
@@ -334,6 +344,7 @@
         <image name="icon_location.png" width="14" height="14"/>
         <image name="icon_oval_white" width="28" height="28"/>
         <image name="icon_star.png" width="16" height="16"/>
+        <image name="icon_topads" width="15" height="13"/>
         <image name="icon_wishlist_filled_red" width="18" height="16"/>
         <image name="icon_wishlist_outline" width="20" height="18"/>
     </resources>

@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="17A405" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -176,7 +177,7 @@
                                 <rect key="frame" x="364" y="99" width="1" height="20"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" placeholder="YES" id="Jj6-xW-0lB"/>
-                                    <constraint firstAttribute="height" constant="20" id="MyR-Jb-RHw"/>
+                                    <constraint firstAttribute="height" constant="10" id="MyR-Jb-RHw"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hTX-5g-jde">
@@ -230,6 +231,13 @@
                                     <action selector="buttonWishlistTap:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gMa-iK-wwv"/>
                                 </connections>
                             </button>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="icon_topads" translatesAutoresizingMaskIntoConstraints="NO" id="iuA-IJ-7nb">
+                                <rect key="frame" x="350" y="95" width="15" height="15"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="8" id="grv-4F-Fnp"/>
+                                    <constraint firstAttribute="width" constant="10" id="hpg-7V-xK5"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
@@ -238,8 +246,8 @@
                             <constraint firstItem="hTX-5g-jde" firstAttribute="height" secondItem="jcG-C2-gR2" secondAttribute="height" id="3em-72-Teo"/>
                             <constraint firstAttribute="trailing" secondItem="w1E-fs-V0d" secondAttribute="trailing" id="3hU-je-qp4"/>
                             <constraint firstItem="Jyc-LY-qhp" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="leading" id="5H4-j1-x02"/>
+                            <constraint firstItem="cRl-Ja-Enl" firstAttribute="centerY" secondItem="3pI-6F-eJx" secondAttribute="centerY" id="8Yt-Lv-P1Y"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="top" secondItem="Kw8-LN-It2" secondAttribute="top" id="9kL-jq-4u7"/>
-                            <constraint firstAttribute="bottom" secondItem="cRl-Ja-Enl" secondAttribute="bottom" constant="8" id="CG5-BQ-Nwi"/>
                             <constraint firstItem="hTX-5g-jde" firstAttribute="top" secondItem="jcG-C2-gR2" secondAttribute="top" id="DBR-iw-EwE"/>
                             <constraint firstItem="3pI-6F-eJx" firstAttribute="centerY" secondItem="Jyc-LY-qhp" secondAttribute="centerY" id="Gn7-N8-hh1"/>
                             <constraint firstItem="Jyc-LY-qhp" firstAttribute="top" secondItem="ysz-tw-Sdy" secondAttribute="bottom" constant="2.5" id="Gwb-wm-uCm"/>
@@ -248,6 +256,7 @@
                             <constraint firstAttribute="trailing" secondItem="Kw8-LN-It2" secondAttribute="trailing" constant="10" id="ORR-mp-caQ"/>
                             <constraint firstItem="ysz-tw-Sdy" firstAttribute="top" secondItem="C9d-rJ-e1Q" secondAttribute="bottom" constant="1" id="OgV-is-7Lz"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="top" secondItem="459-Qy-tpA" secondAttribute="bottom" id="OrU-zI-YD7"/>
+                            <constraint firstAttribute="trailing" secondItem="iuA-IJ-7nb" secondAttribute="trailing" constant="8" id="PQN-MP-kv8"/>
                             <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="aeK-n3-p3K" secondAttribute="bottom" constant="10" id="SFg-Gj-AaH"/>
                             <constraint firstAttribute="trailing" secondItem="66s-Rs-b9m" secondAttribute="trailing" constant="-1" id="Uwx-3k-bcx"/>
                             <constraint firstItem="459-Qy-tpA" firstAttribute="top" secondItem="Kw8-LN-It2" secondAttribute="bottom" constant="1" id="VrA-vZ-vFG"/>
@@ -256,11 +265,13 @@
                             <constraint firstItem="ysz-tw-Sdy" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="aIz-dw-5hC"/>
                             <constraint firstItem="C9d-rJ-e1Q" firstAttribute="top" secondItem="RDX-Un-FDQ" secondAttribute="bottom" constant="4" id="adf-FI-TOF"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="clc-qB-p2S"/>
+                            <constraint firstItem="iuA-IJ-7nb" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" constant="130" id="dkU-qs-NJw"/>
                             <constraint firstAttribute="trailing" secondItem="Vr4-uc-llR" secondAttribute="trailing" id="ed3-OI-DQs"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="gqw-t8-pjF"/>
                             <constraint firstItem="RDX-Un-FDQ" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="mqF-jD-BOX"/>
                             <constraint firstItem="aeK-n3-p3K" firstAttribute="leading" secondItem="eFV-8v-Xwg" secondAttribute="leading" constant="5" id="oGU-7a-GMQ"/>
                             <constraint firstItem="RDX-Un-FDQ" firstAttribute="top" secondItem="459-Qy-tpA" secondAttribute="bottom" constant="0.5" id="oi0-9C-80X"/>
+                            <constraint firstItem="ysz-tw-Sdy" firstAttribute="centerY" secondItem="iuA-IJ-7nb" secondAttribute="centerY" id="okQ-Nx-XnD"/>
                             <constraint firstItem="459-Qy-tpA" firstAttribute="leading" secondItem="Kw8-LN-It2" secondAttribute="leading" id="q9m-15-Ovo"/>
                             <constraint firstAttribute="bottom" secondItem="Jyc-LY-qhp" secondAttribute="bottom" constant="6" id="sTu-Z9-UC7"/>
                             <constraint firstAttribute="trailing" secondItem="cRl-Ja-Enl" secondAttribute="trailing" constant="8" id="tPY-xa-zMn"/>
@@ -303,6 +314,7 @@
                 <outlet property="ratingContainerView" destination="RDX-Un-FDQ" id="bq8-Qw-XcL"/>
                 <outlet property="shopLocation" destination="3pI-6F-eJx" id="8Gj-JC-h7w"/>
                 <outlet property="shopName" destination="ysz-tw-Sdy" id="uqr-hW-15P"/>
+                <outlet property="topAdsBadgeImageView" destination="iuA-IJ-7nb" id="llD-rX-WUz"/>
                 <outlet property="totalReviewLabel" destination="nul-6O-R6w" id="w6h-bK-XhV"/>
             </connections>
             <point key="canvasLocation" x="364.5" y="288.5"/>
@@ -312,6 +324,7 @@
         <image name="icon_location" width="14" height="14"/>
         <image name="icon_oval_white" width="28" height="28"/>
         <image name="icon_star.png" width="16" height="16"/>
+        <image name="icon_topads" width="15" height="13"/>
         <image name="icon_wishlist_filled_red" width="18" height="16"/>
         <image name="icon_wishlist_outline" width="20" height="18"/>
     </resources>

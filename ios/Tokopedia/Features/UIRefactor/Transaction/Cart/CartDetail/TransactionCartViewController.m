@@ -200,6 +200,36 @@ InputPromoViewDelegate
     _userManager = [UserAuthentificationManager new];
 }
 
+-(void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    if (_popFromToppay) {
+        _popFromToppay = NO;
+        [self refreshRequestCart];
+    }
+    if (_list.count>0) {
+        _tableView.tableFooterView =_checkoutView;
+    } else _tableView.tableFooterView = nil;
+    
+    [self initNotificationManager];
+}
+
+- (void) viewDidLayoutSubviews {
+    [super viewDidLayoutSubviews];
+    [self setupTopAdsViewContraints];
+}
+
+-(void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    _activeTextField = nil;
+}
+
+- (void)didReceiveMemoryWarning {
+    [super didReceiveMemoryWarning];
+}
+
 - (void)initNotification {
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(insertErrorMessage:)
@@ -235,10 +265,12 @@ InputPromoViewDelegate
     TopAdsFilter *filter = [TopAdsFilter new];
     filter.type = TopAdsFilterTypeRecommendationCategory;
     filter.source = TopAdsSourceEmptyCart;
+    filter.numberOfProductItems = 4;
     
+    __weak typeof(self) weakSelf = self;
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
         [_topAdsView setPromoWithAds:result];
-        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, self.view.frame.size.height + _topAdsView.frame.size.height)];
+        [weakSelf setupTopAdsViewContraints];
     } onFailure:^(NSError * error) {
         
     }];
@@ -260,13 +292,8 @@ InputPromoViewDelegate
     _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultScrollView.userInteractionEnabled = true;
     [_noResultScrollView addSubview:_refreshControlNoResult];
-    
-    _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
+    _topAdsView = [TopAdsView new];
     [_noResultScrollView addSubview:_topAdsView];
-    
-    if(IS_IPAD){
-        _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
-    }
     
     [self initNoResultView];
     [self initNoInternetConnectionView];
@@ -292,7 +319,7 @@ InputPromoViewDelegate
 - (void)initNoLoginView {
     __weak typeof(self) weakSelf = self;
     
-    _noLoginView = [[NoResultReusableView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 350)];
+    _noLoginView = [NoResultReusableView new];
     _noLoginView.delegate = self;
     [_noLoginView generateAllElements:@"icon_no_data_grey.png"
                                     title:@"Anda belum login"
@@ -311,19 +338,19 @@ InputPromoViewDelegate
     };
 }
 
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    if (_popFromToppay) {
-        _popFromToppay = NO;
-        [self refreshRequestCart];
-    }
-    if (_list.count>0) {
-        _tableView.tableFooterView =_checkoutView;
-    } else _tableView.tableFooterView = nil;
-    
-    [self initNotificationManager];
+- (void) setupTopAdsViewContraints {
+    [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(_noResultScrollView.mas_top).offset(375);
+        if (IS_IPAD) {
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width - 288]);
+            make.left.equalTo(_noResultScrollView.mas_left).offset(144);
+            make.right.equalTo(_noResultScrollView.mas_right).offset(-144);
+        } else {
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
+        }
+        make.height.equalTo([NSNumber numberWithFloat:_topAdsView.frame.size.height]);
+        make.bottom.equalTo(_noResultScrollView.mas_bottom);
+    }];
 }
 
 -(void)userLogin{
@@ -336,6 +363,9 @@ InputPromoViewDelegate
     //    _noLoginView.hidden = NO;
     [self.view addSubview:_noResultScrollView];
     [_noResultScrollView addSubview:_noLoginView];
+    [_noResultScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.edges.equalTo(self.view);
+    }];
     [self requestPromo];
 }
 
@@ -347,16 +377,6 @@ InputPromoViewDelegate
     }
     
     return _alertLoading;
-}
-
--(void)viewWillDisappear:(BOOL)animated
-{
-    [super viewWillDisappear:animated];
-    _activeTextField = nil;
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
 }
 
 #pragma mark - Table View Delegate & Datasource
@@ -1470,6 +1490,9 @@ InputPromoViewDelegate
         }else{
             [self requestPromo];
             [_tableView addSubview:_noResultScrollView];
+            [_noResultScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.edges.equalTo(self.view);
+            }];
             [_noResultScrollView addSubview:_noResultView];
         }
         

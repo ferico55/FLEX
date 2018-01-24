@@ -53,4 +53,6 @@
 
 - (void) removeWishlistButton;
 - (void) updateLayout;
+- (void) setAsTopAds;
+
 @end

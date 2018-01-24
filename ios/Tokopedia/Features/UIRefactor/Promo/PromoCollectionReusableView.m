@@ -109,6 +109,7 @@ UICollectionViewDelegate
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
         [cell setViewModel:promoResult.viewModel];
         [cell removeWishlistButton];
+        [cell setAsTopAds];
         return cell;
         
     } else if (_collectionViewCellType == PromoCollectionViewCellTypeThumbnail) {
@@ -116,6 +117,7 @@ UICollectionViewDelegate
         PromoResult *promoResult = [_promo objectAtIndex:indexPath.row];
         [cell setViewModel:promoResult.viewModel];
         [cell removeWishlistButton];
+        [cell setAsTopAds];
         return cell;
         
     } else {
@@ -239,9 +241,9 @@ UICollectionViewDelegate
     CGSize itemSize = [self itemSize:type];
     
     if (type == PromoCollectionViewCellTypeNormal) {
-        height = itemSize.height + 40;
+        height = itemSize.height;
     } else if (type == PromoCollectionViewCellTypeThumbnail) {
-        height = itemSize.height * 2 + 40;
+        height = itemSize.height * 2;
     }
     
     return height;

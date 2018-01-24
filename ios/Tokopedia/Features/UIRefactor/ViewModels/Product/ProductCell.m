@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalReviewLabel;
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
 @property (strong, nonatomic) LOTAnimationView *unsetWishlistAnimationView;
+@property (strong, nonatomic) IBOutlet UIImageView *topAdsBadgeImageView;
 @end
 
 @implementation ProductCell{
@@ -421,6 +422,10 @@
     }
     
     return YES;
+}
+
+- (void) setAsTopAds  {
+    _topAdsBadgeImageView.hidden = NO;
 }
 
 @end

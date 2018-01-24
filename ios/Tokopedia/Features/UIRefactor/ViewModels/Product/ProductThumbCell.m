@@ -28,6 +28,7 @@
 @property (strong, nonatomic) IBOutlet NSLayoutConstraint *productNameTrailingConstraint;
 @property (strong, nonatomic) IBOutlet UIButton *buttonWishlist;
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
+@property (strong, nonatomic) IBOutlet UIImageView *topAdsBadgeImageView;
 @property (strong, nonatomic) LOTAnimationView *unsetWishlistAnimationView;
 @end
 
@@ -444,5 +445,10 @@
     [super prepareForReuse];
     [imageDownloader cancelAllOperations];
 }
+
+- (void) setAsTopAds  {
+    _topAdsBadgeImageView.hidden = NO;
+}
+
 
 @end

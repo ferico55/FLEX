@@ -17,6 +17,7 @@
 
 - (void)setCatalogViewModel:(CatalogModelView*)viewModel;
 - (void) removeWishlistButton;
+- (void) setAsTopAds;
 
 @property(nonatomic, weak) IBOutlet UILabel* productName;
 @property(nonatomic, weak) IBOutlet UILabel* productPrice;
