@@ -30,6 +30,8 @@ UICollectionViewDelegate
 @property (strong, nonatomic) UICollectionViewFlowLayout *flowLayout;
 @property (strong, nonatomic) NSString *cellNibName;
 @property (strong, nonatomic) NSString *cellIdentifier;
+@property (strong, nonatomic) IBOutlet TopAdsHeadlineView *topAdsHeadlineView;
+@property (strong, nonatomic) IBOutlet NSLayoutConstraint *topAdsHeadlineViewHeightConstraint;
 
 @end
 
@@ -270,12 +272,29 @@ UICollectionViewDelegate
         BOOL isPad = ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad);
         CGFloat numberOfCell = isPad ? 2 : 1;
         cellWidth = screenWidth/numberOfCell;
-        cellHeight = 140;
+        cellHeight = 140; 
     }
     
     
     cellSize = CGSizeMake(cellWidth, cellHeight);
     return cellSize;
+}
+
++ (CGFloat) topAdsHeadlineHeight {
+    return 88;
+}
+
+- (void) setTopAdsHeadlineData: (PromoResult *) promoResult {
+    if (promoResult != nil) {
+        [_topAdsHeadlineView setInfo:promoResult];
+        _topAdsHeadlineViewHeightConstraint.constant = [PromoCollectionReusableView topAdsHeadlineHeight];
+    } else {
+        [self hideTopAdsHeadline];
+    }
+}
+
+- (void) hideTopAdsHeadline {
+    _topAdsHeadlineViewHeightConstraint.constant = 0;
 }
 
 

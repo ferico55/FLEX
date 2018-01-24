@@ -35,7 +35,7 @@ extension TopAdsTarget : TargetType {
     var path: String {
         switch self {
         case .getTopAds:
-            return "/promo/v1.1/display/ads"
+            return "/promo/v1.2/display/ads"
         }
     }
     

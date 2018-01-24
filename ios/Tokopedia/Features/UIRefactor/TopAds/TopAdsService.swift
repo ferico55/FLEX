@@ -31,6 +31,7 @@ class TopAdsFilter: NSObject {
     var type: TopAdsFilterType = .standard
     var searchNF: String? // flag parameter used for search not found top Ads
     var userId: String?
+    var bannerTemplateId: String?
     
     override init() {
         super.init()
@@ -86,18 +87,45 @@ class TopAdsFilter: NSObject {
         self.userFilter = userFilter
         
     }
+    
+    static func getTopAdsHeadlineCategoryFilter(departmentId: String) -> TopAdsFilter {
+        let filter = TopAdsFilter.getTopAdsHeadlineFilter()
+        filter.departementId = departmentId
+        return filter
+    }
+    
+    static func getTopAdsHeadlineCategoryFilter(keyword: String) -> TopAdsFilter {
+        let filter = TopAdsFilter.getTopAdsHeadlineFilter()
+        filter.searchKeyword = keyword
+        return filter
+    }
+    
+    private static func getTopAdsHeadlineFilter() -> TopAdsFilter {
+        let filter = TopAdsFilter()
+        filter.ep = .headline
+        filter.numberOfProductItems = 1
+        filter.numberOfShopItems = 0
+        filter.source = .directory
+        filter.bannerTemplateId = "3,4"
+        filter.currentPage = 1
+        
+        return filter
+    }
+    
 }
 
 @objc enum TopAdsEp: Int {
     case product
     case shop
     case random
+    case headline
     
     func name() -> String {
         switch self {
         case .product: return "product"
         case .shop: return "shop"
         case .random: return ""
+        case .headline: return "headline"
         }
     }
 }
@@ -299,7 +327,7 @@ class TopAdsService: NSObject {
     private func requestTopAds(topAdsFilter: TopAdsFilter, onSuccess: @escaping (_ result: [PromoResult]) -> Void, onFailure: @escaping (_ error: Swift.Error) -> Void) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
-        let path = "/promo/v1.1/display/ads"
+        let path = "/promo/v1.2/display/ads"
         let parameters = TopAdsService.generateParameters(adFilter: topAdsFilter)
         
         networkManager.request(withBaseUrl: NSString.topAdsUrl(), path: path, method: .GET, parameter: parameters, mapping: PromoResponse.mapping(), onSuccess: { successResult, _ in
@@ -342,6 +370,28 @@ class TopAdsService: NSObject {
             }).disposed(by: self.rx_disposeBag)
     }
     
+    func requestTopAdsHeadline(keyword: String, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
+        let filter = TopAdsFilter.getTopAdsHeadlineCategoryFilter(keyword: keyword)
+        
+        requestTopAds(topAdsFilter: filter, onSuccess: { promoResults in
+            guard let promoResultFirst = promoResults.first else { return }
+            onSuccess(promoResultFirst)
+        }, onFailure: { error in
+            onFailure(error)
+        })
+    }
+    
+    func requestTopAdsHeadline(departmentId: String, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
+        let filter = TopAdsFilter.getTopAdsHeadlineCategoryFilter(departmentId: departmentId)
+        
+        requestTopAds(topAdsFilter: filter, onSuccess: { promoResults in
+            guard let promoResultFirst = promoResults.first else { return }
+            onSuccess(promoResultFirst)
+        }, onFailure: { error in
+            onFailure(error)
+        })
+    }
+    
     static func sendClickImpression(clickURLString: String) {
         guard let url = URL(string: clickURLString) else {
             return
@@ -354,9 +404,15 @@ class TopAdsService: NSObject {
     }
     
     class func generateParameters(adFilter: TopAdsFilter) -> [String: String] {
-        
+        var item: [String] = []
+        if adFilter.numberOfProductItems > 0 {
+            item.append(String(adFilter.numberOfProductItems))
+        }
+        if adFilter.numberOfShopItems > 0 {
+            item.append(String(adFilter.numberOfShopItems))
+        }
         let parameters: NSMutableDictionary = ["ep": adFilter.ep.name(),
-                                               "item": "\(adFilter.numberOfProductItems),\(adFilter.numberOfShopItems)",
+                                               "item": item.joined(separator: ","),
                                                "src": adFilter.source.name(),
                                                "page": adFilter.currentPage,
                                                "device": "ios"]
@@ -383,6 +439,10 @@ class TopAdsService: NSObject {
         
         if let userId = adFilter.userId {
             parameters["user_id"] = userId
+        }
+        
+        if let bannerTemplateId = adFilter.bannerTemplateId {
+            parameters["template_id"] = bannerTemplateId
         }
         
         var dict = [String: String]()

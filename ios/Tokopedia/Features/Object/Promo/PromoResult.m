@@ -7,11 +7,14 @@
 //
 
 #import "PromoResult.h"
+#import "Headline.h"
 
 @implementation PromoResult
 +(RKObjectMapping *)mapping{
     RKObjectMapping *resultMapping = [RKObjectMapping mappingForClass:[PromoResult class]];
-    [resultMapping addAttributeMappingsFromDictionary:@{@"id":@"result_id"}];
+    [resultMapping addAttributeMappingsFromDictionary:@{@"id":@"result_id",
+                                                        @"ad_click_url":@"adClickURL"
+                                                        }];
     [resultMapping addAttributeMappingsFromArray:@[@"ad_ref_key",
                                                    @"redirect",
                                                    @"sticker_id",
@@ -29,6 +32,10 @@
     [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"shop"
                                                                                   toKeyPath:@"shop"
                                                                                 withMapping:[PromoShop mapping]]];
+    
+    [resultMapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"headline"
+                                                                                  toKeyPath:@"headline"
+                                                                                withMapping:[Headline mapping]]];
      
     return resultMapping;
 }

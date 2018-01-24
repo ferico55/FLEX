@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -388,7 +388,7 @@
                             </constraints>
                         </view>
                         <button opaque="NO" tag="10" contentMode="scaleAspectFit" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QwR-go-OC6">
-                            <rect key="frame" x="51" y="5" width="22" height="22"/>
+                            <rect key="frame" x="50.5" y="5" width="22" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="ZPv-Ae-W7C"/>
                                 <constraint firstAttribute="width" constant="22" id="nRJ-Ut-YhL"/>
@@ -399,7 +399,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Urutkan" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ut2-o4-PQD">
-                            <rect key="frame" x="41" y="24" width="42" height="21"/>
+                            <rect key="frame" x="40.5" y="24" width="42" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="42" id="QfG-jG-xCH"/>
                                 <constraint firstAttribute="height" constant="21" id="gKT-tM-Z8d"/>
@@ -461,7 +461,7 @@
                             </constraints>
                         </imageView>
                         <button opaque="NO" tag="13" contentMode="scaleAspectFit" enabled="NO" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FdB-9X-vYZ">
-                            <rect key="frame" x="301" y="5" width="22" height="22"/>
+                            <rect key="frame" x="300.5" y="5" width="22" height="22"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="22" id="PZZ-sU-wSu"/>
                                 <constraint firstAttribute="width" constant="22" id="XQM-iU-KD2"/>
@@ -472,7 +472,7 @@
                             </connections>
                         </button>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tampilan" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ual-kQ-ZnZ">
-                            <rect key="frame" x="287" y="24" width="50" height="21"/>
+                            <rect key="frame" x="286.5" y="24" width="50" height="21"/>
                             <constraints>
                                 <constraint firstAttribute="width" constant="50" id="2MP-3x-laU"/>
                                 <constraint firstAttribute="height" constant="21" id="FKe-VM-cQh"/>
@@ -494,7 +494,7 @@
                             </connections>
                         </button>
                         <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_oval" translatesAutoresizingMaskIntoConstraints="NO" id="QDL-kO-Mrp">
-                            <rect key="frame" x="36" y="19" width="7" height="7"/>
+                            <rect key="frame" x="35.5" y="19" width="7" height="7"/>
                             <constraints>
                                 <constraint firstAttribute="height" constant="7" id="6k3-cw-TGr"/>
                                 <constraint firstAttribute="width" constant="7" id="AVj-dR-Li2"/>
@@ -602,7 +602,7 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="622"/>
                 </scrollView>
                 <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1lw-in-mCe">
-                    <rect key="frame" x="112.5" y="45" width="150" height="28"/>
+                    <rect key="frame" x="113" y="45" width="150" height="28"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="150" id="eHQ-qG-qXE"/>
                     </constraints>

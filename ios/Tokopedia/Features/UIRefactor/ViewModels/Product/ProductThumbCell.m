@@ -249,7 +249,7 @@
 - (UICollectionViewLayoutAttributes *)preferredLayoutAttributesFittingAttributes:(UICollectionViewLayoutAttributes *)layoutAttributes {
     
     // using dynamic layout attributes for iOS 8 & 9 is making layout bug such as cell overlaping, not proportional cell size, and product being not shown. So, I decide to do this restriction
-    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
+    if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0") && !IS_IPAD) {
         CGSize size = [self.contentView systemLayoutSizeFittingSize:layoutAttributes.size];
         CGRect frame = layoutAttributes.frame;
         frame.size.width = [UIScreen mainScreen].bounds.size.width;

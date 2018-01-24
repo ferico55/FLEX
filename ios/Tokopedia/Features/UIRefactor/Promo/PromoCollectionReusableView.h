@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "PromoProduct.h"
 #import "PromoResult.h"
+#import "Tokopedia-Swift.h"
 
 typedef NS_ENUM(NSInteger, PromoCollectionViewCellType) {
     PromoCollectionViewCellTypeThumbnail,
@@ -47,5 +48,8 @@ typedef NS_ENUM(NSInteger, TopadsSource) {
 - (void)scrollToCenterWithoutAnimation;
 + (CGFloat)collectionViewHeightForType:(PromoCollectionViewCellType)type;
 + (CGFloat)collectionViewNormalHeight;
++ (CGFloat) topAdsHeadlineHeight;
+- (void) setTopAdsHeadlineData: (PromoResult *) promoResult;
+- (void) hideTopAdsHeadline;
 
 @end

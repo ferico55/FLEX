@@ -8,6 +8,10 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		34E722282015EDC700CFE581 /* TopAdsHeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E722262015EDC700CFE581 /* TopAdsHeadlineView.swift */; };
+		34E722292015EDC700CFE581 /* TopAdsHeadlineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E722272015EDC700CFE581 /* TopAdsHeadlineView.xib */; };
+		34E7222E2015F53300CFE581 /* Headline.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E7222A2015F53000CFE581 /* Headline.m */; };
+		34E7222F2015F53300CFE581 /* HeadlineImage.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E7222C2015F53200CFE581 /* HeadlineImage.m */; };
 		452E95841E64107F001191E0 /* DonationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 452E95801E64107E001191E0 /* DonationTests.swift */; };
 		452E95851E64107F001191E0 /* donation.json in Resources */ = {isa = PBXBuildFile; fileRef = 452E95821E64107E001191E0 /* donation.json */; };
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
@@ -2148,6 +2152,12 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		34E722262015EDC700CFE581 /* TopAdsHeadlineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAdsHeadlineView.swift; sourceTree = "<group>"; };
+		34E722272015EDC700CFE581 /* TopAdsHeadlineView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAdsHeadlineView.xib; sourceTree = "<group>"; };
+		34E7222A2015F53000CFE581 /* Headline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Headline.m; sourceTree = "<group>"; };
+		34E7222B2015F53100CFE581 /* HeadlineImage.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HeadlineImage.h; sourceTree = "<group>"; };
+		34E7222C2015F53200CFE581 /* HeadlineImage.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HeadlineImage.m; sourceTree = "<group>"; };
+		34E7222D2015F53200CFE581 /* Headline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Headline.h; sourceTree = "<group>"; };
 		450AC1D51F5D2AE5009D81B6 /* BCAXCOWidget.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BCAXCOWidget.framework; path = Tokopedia/ThirdParty/BCAXCOWidget.framework; sourceTree = "<group>"; };
 		452E957F1E64107D001191E0 /* TokopediaTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TokopediaTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		452E95801E64107E001191E0 /* DonationTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DonationTests.swift; sourceTree = "<group>"; };
@@ -5250,6 +5260,15 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		34E722252015EDC700CFE581 /* TopAdsBanner */ = {
+			isa = PBXGroup;
+			children = (
+				34E722262015EDC700CFE581 /* TopAdsHeadlineView.swift */,
+				34E722272015EDC700CFE581 /* TopAdsHeadlineView.xib */,
+			);
+			path = TopAdsBanner;
+			sourceTree = "<group>";
+		};
 		452E95811E64107E001191E0 /* Fixture */ = {
 			isa = PBXGroup;
 			children = (
@@ -7060,6 +7079,10 @@
 		62C76FCB1FF33C3100F66527 /* Promo */ = {
 			isa = PBXGroup;
 			children = (
+				34E7222D2015F53200CFE581 /* Headline.h */,
+				34E7222A2015F53000CFE581 /* Headline.m */,
+				34E7222B2015F53100CFE581 /* HeadlineImage.h */,
+				34E7222C2015F53200CFE581 /* HeadlineImage.m */,
 				62C76FCC1FF33C3100F66527 /* PromoResult.h */,
 				62C76FCD1FF33C3100F66527 /* PromoCategory.h */,
 				62C76FCE1FF33C3100F66527 /* PromoResponse.m */,
@@ -9188,6 +9211,7 @@
 		F977F06A1FE8AB6F00183A85 /* TopAds */ = {
 			isa = PBXGroup;
 			children = (
+				34E722252015EDC700CFE581 /* TopAdsBanner */,
 				F977F06B1FE8AB6F00183A85 /* TopAdsAddPromoTipsActionSheet.swift */,
 				F977F06F1FE8AB7000183A85 /* TopAdsComponentView.swift */,
 				F977F06E1FE8AB7000183A85 /* TopAdsFeedPlusComponentView.swift */,
@@ -11821,6 +11845,7 @@
 				F977FB191FE8AB7B00183A85 /* TalkProductCell.xib in Resources */,
 				F977FC3D1FE8AB7D00183A85 /* AlertListView.xib in Resources */,
 				F977FAE31FE8AB7A00183A85 /* TokoCashSectionViewController.xib in Resources */,
+				34E722292015EDC700CFE581 /* TopAdsHeadlineView.xib in Resources */,
 				F977FCDA1FE8AB7E00183A85 /* MyShopEtalaseEditViewController.xib in Resources */,
 				F977FD701FE8AB7F00183A85 /* ProfileFavoriteShopViewController.xib in Resources */,
 				F977FD481FE8AB7F00183A85 /* ReportViewController.xib in Resources */,
@@ -12588,6 +12613,7 @@
 				62C771011FF33C3300F66527 /* SecurityQuestionResult.m in Sources */,
 				F7D8C9F1201754E700725BDB /* TokoCashQRPaymentNavigator.swift in Sources */,
 				62C76FE51FF33C3100F66527 /* InboxReviewActionResult.m in Sources */,
+				34E722282015EDC700CFE581 /* TopAdsHeadlineView.swift in Sources */,
 				F977FB871FE8AB7B00183A85 /* CategoryIntermediarySeeAllView.swift in Sources */,
 				F977FD0F1FE8AB7E00183A85 /* ProductListMyShopFilterViewController.m in Sources */,
 				F977FBED1FE8AB7C00183A85 /* RejectOrderResponse.m in Sources */,
@@ -12754,6 +12780,7 @@
 				F977FBB21FE8AB7C00183A85 /* ShipmentRequest.swift in Sources */,
 				62C770F91FF33C3300F66527 /* CreatePasswordResult.m in Sources */,
 				62C770811FF33C3300F66527 /* ProductTalkForm.m in Sources */,
+				34E7222F2015F53300CFE581 /* HeadlineImage.m in Sources */,
 				62C771081FF33C3300F66527 /* SignInProvider.swift in Sources */,
 				F977007F1FE8AB8600183A85 /* ReactPopoverOptionViewController.swift in Sources */,
 				62C7706E1FF33C3200F66527 /* Talk.m in Sources */,
@@ -13812,6 +13839,7 @@
 				62C771441FF33C3400F66527 /* PosMinWeight.m in Sources */,
 				F977FD221FE8AB7F00183A85 /* TKPDTabViewController.m in Sources */,
 				F977FA4D1FE8AB7900183A85 /* ReferralManager.swift in Sources */,
+				34E7222E2015F53300CFE581 /* Headline.m in Sources */,
 				F977FA3A1FE8AB7900183A85 /* UIViewController+NavigationItem.swift in Sources */,
 				F7D8CA2F201754E800725BDB /* TokoCashHelpCategory.swift in Sources */,
 				62C771331FF33C3400F66527 /* ShopProductPageList.swift in Sources */,

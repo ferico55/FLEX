@@ -241,7 +241,7 @@
                                 </constraints>
                             </view>
                             <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_topads" translatesAutoresizingMaskIntoConstraints="NO" id="dyE-l5-4uj">
-                                <rect key="frame" x="143" y="245" width="15" height="15"/>
+                                <rect key="frame" x="143" y="246.5" width="15" height="12"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="15" id="a9e-T8-4gW"/>
                                     <constraint firstAttribute="height" constant="12" id="rno-aW-dc2"/>

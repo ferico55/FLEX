@@ -10,6 +10,7 @@
 #import "PromoProduct.h"
 #import "PromoShop.h"
 #import "ProductModelView.h"
+#import "Headline.h"
 
 @interface PromoResult : NSObject
 
@@ -20,6 +21,7 @@
 @property (nonatomic, strong) NSString* sticker_image;
 @property (nonatomic, strong) NSString* product_click_url;
 @property (nonatomic, strong) NSString* shop_click_url;
+@property (nonatomic, strong) NSString* adClickURL;
 @property (nonatomic, strong) NSString* applinks;
 @property (nonatomic) BOOL isImpressionSent;
 
@@ -30,6 +32,7 @@
 @property (nonatomic, strong) PromoProduct* product;
 @property (nonatomic, strong) PromoShop* shop;
 @property (strong, nonatomic) ProductModelView *viewModel;
+@property (nonatomic, strong) Headline *headline;
 
 + (RKObjectMapping *)mapping;
 - (NSDictionary *)productFieldObjects;

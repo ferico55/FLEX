@@ -12,7 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionReusableView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="PromoCollectionReusableView" id="U6b-Vx-4bR" customClass="PromoCollectionReusableView">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="255"/>
+            <rect key="frame" x="0.0" y="0.0" width="320" height="327"/>
             <autoresizingMask key="autoresizingMask"/>
             <subviews>
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zkV-qx-stq" userLabel="Header">
@@ -22,8 +22,15 @@
                         <constraint firstAttribute="height" constant="100" id="lvN-5p-QH0"/>
                     </constraints>
                 </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6jW-IG-SPe" customClass="TopAdsHeadlineView" customModule="Tokopedia" customModuleProvider="target">
+                    <rect key="frame" x="0.0" y="100" width="320" height="88"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="88" id="3ZO-Y5-hzB"/>
+                    </constraints>
+                </view>
                 <collectionView multipleTouchEnabled="YES" contentMode="scaleToFill" scrollEnabled="NO" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="dPa-5U-yMh">
-                    <rect key="frame" x="0.0" y="100" width="320" height="155"/>
+                    <rect key="frame" x="0.0" y="188" width="320" height="139"/>
                     <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="0.0" minimumInteritemSpacing="0.0" id="iJH-EI-ym4">
                         <size key="itemSize" width="160" height="205"/>
@@ -39,11 +46,14 @@
             </subviews>
             <color key="backgroundColor" red="0.88286077976226807" green="0.88283431529998779" blue="0.88284933567047119" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="zkV-qx-stq" secondAttribute="bottom" id="bPo-bN-qBM"/>
+                <constraint firstItem="6jW-IG-SPe" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="Uht-K3-euv"/>
+                <constraint firstAttribute="trailing" secondItem="6jW-IG-SPe" secondAttribute="trailing" id="fIk-ka-6MY"/>
                 <constraint firstAttribute="bottom" secondItem="dPa-5U-yMh" secondAttribute="bottom" id="lex-AK-Iky"/>
                 <constraint firstItem="zkV-qx-stq" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="n6T-xB-HNX"/>
                 <constraint firstAttribute="trailing" secondItem="dPa-5U-yMh" secondAttribute="trailing" id="r1P-rb-QJQ"/>
                 <constraint firstItem="dPa-5U-yMh" firstAttribute="leading" secondItem="U6b-Vx-4bR" secondAttribute="leading" id="rzW-7X-YgT"/>
+                <constraint firstItem="6jW-IG-SPe" firstAttribute="top" secondItem="zkV-qx-stq" secondAttribute="bottom" id="s3p-md-l3m"/>
+                <constraint firstItem="dPa-5U-yMh" firstAttribute="top" secondItem="6jW-IG-SPe" secondAttribute="bottom" id="w5A-yS-hlR"/>
                 <constraint firstItem="zkV-qx-stq" firstAttribute="top" secondItem="U6b-Vx-4bR" secondAttribute="top" id="wPa-LI-niq"/>
                 <constraint firstAttribute="trailing" secondItem="zkV-qx-stq" secondAttribute="trailing" id="z5T-6a-zw9"/>
             </constraints>
@@ -51,6 +61,8 @@
                 <outlet property="collectionView" destination="dPa-5U-yMh" id="sGO-Zm-GhK"/>
                 <outlet property="headerView" destination="zkV-qx-stq" id="6ql-5J-rRx"/>
                 <outlet property="headerViewHeightConstraint" destination="lvN-5p-QH0" id="uzZ-fK-AKQ"/>
+                <outlet property="topAdsHeadlineView" destination="6jW-IG-SPe" id="cGU-QU-HfX"/>
+                <outlet property="topAdsHeadlineViewHeightConstraint" destination="3ZO-Y5-hzB" id="nJD-XY-yut"/>
             </connections>
             <point key="canvasLocation" x="34" y="103.5"/>
         </collectionReusableView>

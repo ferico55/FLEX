@@ -23,6 +23,7 @@ struct IntermediaryState: StateType {
     var banner: iCarousel?
     var pageControl: StyledPageControl?
     var officialStoreHomeItems: [OfficialStoreHomeItem]?
+    var topAdsHeadline: PromoResult?
 }
 
 class IntermediaryViewComponent: ComponentView<IntermediaryState> {
@@ -130,6 +131,14 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 self.state?.isCategorySubviewExpanded = !(state?.isCategorySubviewExpanded)!
                 self.render(in: CGSize(width: UIScreen.main.bounds.size.width, height: size.height))
             }
+        }
+        
+        let topAdsHeadlineView = Node<TopAdsHeadlineView> { [unowned self] topAdsHeadlineView, layout, size in
+            guard let topAdsHeadline = self.state?.topAdsHeadline else { return }
+            layout.width = size.width
+            layout.height = 88
+            topAdsHeadlineView.setInfo(topAdsHeadline)
+            topAdsHeadlineView.hideSeparatorView()
         }
         
         func generateCuratedListView() -> Node<UIView> {
@@ -466,7 +475,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         
         containerView.add(children: [
             bannerView,
-            subCategoryView
+            subCategoryView,
+            topAdsHeadlineView
         ])
         
         if (state?.categoryIntermediaryHotListItems.count)! > 0 {
@@ -639,7 +649,16 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         self.carouselDataSource.startBannerAutoScroll()
         
         intermediaryView = IntermediaryViewComponent()
-        intermediaryView.state = IntermediaryState(intermediaryViewController: self, categoryIntermediaryResult: categoryIntermediaryResult, categoryIntermediaryNonHiddenChildren: categoryIntermediaryResult.nonHiddenChildren, categoryIntermediaryNotExpandedChildren: categoryIntermediaryResult.nonExpandedChildren, isCategorySubviewExpanded: false, categoryIntermediaryHotListItems: [], ads: [], banner: slider, pageControl: pageControl, officialStoreHomeItems: [])
+        intermediaryView.state = IntermediaryState(intermediaryViewController: self,
+                                                   categoryIntermediaryResult: categoryIntermediaryResult,
+                                                   categoryIntermediaryNonHiddenChildren: categoryIntermediaryResult.nonHiddenChildren,
+                                                   categoryIntermediaryNotExpandedChildren: categoryIntermediaryResult.nonExpandedChildren,
+                                                   isCategorySubviewExpanded: false, categoryIntermediaryHotListItems: [],
+                                                   ads: [],
+                                                   banner: slider,
+                                                   pageControl: pageControl,
+                                                   officialStoreHomeItems: [],
+                                                   topAdsHeadline: nil)
         intermediaryView.state?.categoryIntermediaryResult = categoryIntermediaryResult
         intermediaryView.state?.categoryIntermediaryNonHiddenChildren = categoryIntermediaryResult.nonHiddenChildren
         intermediaryView.state?.categoryIntermediaryNotExpandedChildren = categoryIntermediaryResult.nonExpandedChildren
@@ -664,6 +683,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         self.navigationItem.leftBarButtonItem = backButtonItem
         
         requestHotlist()
+        requestTopAdsHeadline(departmentId: categoryIntermediaryResult.id)
         AnalyticsManager.trackScreenName("Browse Category - \(categoryIntermediaryResult.id)")
     }
     
@@ -731,8 +751,13 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         })
     }
     
-    // MARK: Common Function
-    
+    func requestTopAdsHeadline(departmentId: String) {
+        TopAdsService().requestTopAdsHeadline(departmentId: departmentId, onSuccess: { (topAdsHeadline) in
+            self.intermediaryView.state?.topAdsHeadline = topAdsHeadline
+        }) { (error) in
+            
+        }
+    }
 }
 
 extension CategoryIntermediaryViewController: YTPlayerViewDelegate {

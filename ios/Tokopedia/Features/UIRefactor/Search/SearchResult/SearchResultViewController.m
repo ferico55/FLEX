@@ -102,6 +102,7 @@ ProductCellDelegate
 @property (assign, nonatomic) BOOL hasMore;
 @property (assign, nonatomic) NSInteger hascatalog;
 @property (strong, nonatomic) UIRefreshControl *refreshControlNoResult;
+@property (strong, nonatomic) PromoResult *topAdsHeadlineData;
 
 @end
 
@@ -190,8 +191,6 @@ ProductCellDelegate
     
     [self initNoResultView];
     
-    CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-    [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, headerHeight)];
     [_flowLayout setFooterReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 50)];
     
     [_collectionView setCollectionViewLayout:_flowLayout];
@@ -204,7 +203,7 @@ ProductCellDelegate
     _collectionView.accessibilityLabel = @"productCellCollection";
     
     screenName = @"";
-    if ([self isSearchProductType] || [self isSearchDirectoryType]) {
+    if ([self isSearchProductType]) {
         if(self.isFromAutoComplete) {
             screenName = @"Product Search Results (From Auto Complete Search)";
         } else {
@@ -310,10 +309,6 @@ ProductCellDelegate
     return [[_data objectForKey:@"type"] isEqualToString:@"search_catalog"];
 }
 
-- (BOOL)isSearchDirectoryType {
-    return [[_data objectForKey:@"type"] isEqualToString:@"directory"];
-}
-
 #pragma mark - Set Default Data
 -(void)setDefaultSort {
     if ([_params objectForKey:@"search"] != nil) {
@@ -322,9 +317,6 @@ ProductCellDelegate
         }
         if ([self isSearchCatalogType]) {
             [self setDefaultSortCatalog];
-        }
-        if ([self isSearchDirectoryType ]) {
-            [self setDefaultSortDirectory];
         }
     }
 }
@@ -962,7 +954,7 @@ ProductCellDelegate
         }
         
         
-        if([self isSearchProductType] || [self isSearchDirectoryType]) {
+        if([self isSearchProductType]) {
             if(totalProduct > 0) {
                 
                 [_product addObject: dataSourceProduct];
@@ -981,6 +973,7 @@ ProductCellDelegate
         }
         
         [self requestPromo];
+        [self requestTopAdsHeadline];
         
         if (totalProduct > 0 || totalCatalog > 0) {
             if ([self isSearchProductType]) {
@@ -1139,6 +1132,15 @@ ProductCellDelegate
     }];
 }
 
+- (void)requestTopAdsHeadline {
+    [_topAdsService requestTopAdsHeadlineWithKeyword:[_params objectForKey:@"search"]?:@"" onSuccess:^(PromoResult *topAdsHeadlineData) {
+        _topAdsHeadlineData = topAdsHeadlineData;
+        [_collectionView reloadData];
+    } onFailure:^(NSError * error) {
+        [_collectionView reloadData];
+    }];
+}
+
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {
     [_promoScrollPosition replaceObjectAtIndex:indexPath.section withObject:position];
 }
@@ -1152,7 +1154,7 @@ ProductCellDelegate
 
 - (void)didSelectPromoProduct:(PromoResult *)promoResult {
     [AnalyticsManager trackProductClick:promoResult.product];
-    if ([self isSearchProductType] || [self isSearchDirectoryType]){
+    if ([self isSearchProductType]){
         if(promoResult.applinks){
             if(promoResult.shop.shop_id != nil){
                 [TopAdsService sendClickImpressionWithClickURLString:promoResult.product_click_url];
@@ -1339,14 +1341,16 @@ ProductCellDelegate
     UICollectionReusableView *reusableView = nil;
     BOOL isIpad = UIDevice.currentDevice.userInterfaceIdiom == UIUserInterfaceIdiomPad;
     if (kind == UICollectionElementKindSectionHeader) {
-        if (([self isSearchProductType] || [self isSearchDirectoryType]) && _promo.count > indexPath.section) {
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                 forIndexPath:indexPath];
+        PromoCollectionReusableView *promoCollectionReusableView = (PromoCollectionReusableView *)reusableView;
+        if ([self isSearchProductType] && _promo.count > indexPath.section) {
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if (currentPromo && currentPromo.count > 0) {
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"PromoCollectionReusableView" forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
+                promoCollectionReusableView.collectionViewCellType = _promoCellType;
+                promoCollectionReusableView.promo = [_promo objectAtIndex:indexPath.section];
+                promoCollectionReusableView.delegate = self;
+                promoCollectionReusableView.indexPath = indexPath;
                 
                 for (int i = 0; i < currentPromo.count; i++) {
                     PromoResult *promoResult = currentPromo[i];
@@ -1379,8 +1383,11 @@ ProductCellDelegate
                 
                 [AnalyticsManager trackProductListImpression:currentPromo category:@"top ads search result" action:@"impression - product" label:searchTerm];
             }
+        }
+        if (indexPath.section == 0) {
+            [promoCollectionReusableView setTopAdsHeadlineData:_topAdsHeadlineData];
         } else {
-            reusableView = nil;
+            [promoCollectionReusableView hideTopAdsHeadline];
         }
     }else if(kind == UICollectionElementKindSectionFooter) {
         if(_isFailRequest) {
@@ -1449,15 +1456,22 @@ ProductCellDelegate
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout referenceSizeForHeaderInSection:(NSInteger)section {
     CGSize size = CGSizeZero;
-    if ([self isSearchProductType] || [self isSearchDirectoryType]) {
+    CGFloat headerHeight = 0.0;
+    
+    
+    if ([self isSearchProductType]) {
         if (_promo.count > section) {
             NSArray *currentPromo = [_promo objectAtIndex:section];
             if (currentPromo && currentPromo.count > 0) {
-                CGFloat headerHeight = [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
-                size = CGSizeMake(self.view.frame.size.width, headerHeight);
+                headerHeight += [PromoCollectionReusableView collectionViewHeightForType:_promoCellType];
             }
         }
     }
+    
+    if (_topAdsHeadlineData != nil && section == 0) {
+        headerHeight += [PromoCollectionReusableView topAdsHeadlineHeight];
+    }
+    size = CGSizeMake(self.view.frame.size.width, headerHeight);
     return size;
 }
 

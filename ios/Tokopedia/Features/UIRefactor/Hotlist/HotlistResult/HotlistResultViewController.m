@@ -163,6 +163,7 @@ ProductCellDelegate
 
 @property (strong, nonatomic) IBOutlet UIImageView *activeFilterImageView;
 @property (nonatomic, strong) NSArray *hashtags;
+@property (strong, nonatomic) PromoResult *topAdsHeadlineData;
 
 @end
 
@@ -684,26 +685,26 @@ ProductCellDelegate
             [_header.promoView setPromoInfo:_bannerResult.promoInfo];
         }
         
+        reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
+                                                          withReuseIdentifier:@"PromoCollectionReusableView"
+                                                                 forIndexPath:indexPath];
+        PromoCollectionReusableView *promoCollectionReusableView = (PromoCollectionReusableView *)reusableView;
+        
         if (_promo.count > indexPath.section) {
             NSArray *currentPromo = [_promo objectAtIndex:indexPath.section];
             if (currentPromo && currentPromo.count > 0) {
                 isNoPromo = NO;
                 [_header removeFromSuperview];
                 
-                reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
-                                                                  withReuseIdentifier:@"PromoCollectionReusableView"
-                                                                         forIndexPath:indexPath];
-                ((PromoCollectionReusableView *)reusableView).collectionViewCellType = _promoCellType;
-                ((PromoCollectionReusableView *)reusableView).promo = [_promo objectAtIndex:indexPath.section];
-                ((PromoCollectionReusableView *)reusableView).delegate = self;
-                ((PromoCollectionReusableView *)reusableView).indexPath = indexPath;
-                ((PromoCollectionReusableView *)reusableView).headerViewHeightConstraint.constant = 0;
+                promoCollectionReusableView.promo = [_promo objectAtIndex:indexPath.section];
+                promoCollectionReusableView.collectionViewCellType = _promoCellType;
+                promoCollectionReusableView.delegate = self;
+                promoCollectionReusableView.indexPath = indexPath;
+                promoCollectionReusableView.headerViewHeightConstraint.constant = 0;
                 
                 if (indexPath.section == 0) {
-                    ((PromoCollectionReusableView *)reusableView).headerViewHeightConstraint.constant = _header.bounds.size.height;
-                    
-                        [((PromoCollectionReusableView *)reusableView).headerView addSubview: _header];
-                    
+                    promoCollectionReusableView.headerViewHeightConstraint.constant = _header.bounds.size.height;
+                    [promoCollectionReusableView.headerView addSubview: _header];
                 }
             }
         }
@@ -718,6 +719,12 @@ ProductCellDelegate
 
             [reusableView addSubview:_header];
             
+        }
+        
+        if (indexPath.section == 0 && _topAdsHeadlineData != nil) {
+            [promoCollectionReusableView setTopAdsHeadlineData:_topAdsHeadlineData];
+        } else {
+            [promoCollectionReusableView hideTopAdsHeadline];
         }
     }
     else if(kind == UICollectionElementKindSectionFooter) {
@@ -751,8 +758,12 @@ ProductCellDelegate
         _header.frame = tempRect;
         
         headerHeight = tempRect.size.height;
+
+        if (_topAdsHeadlineData != nil) {
+            headerHeight += [PromoCollectionReusableView topAdsHeadlineHeight];
+        }
     }
-    
+
     if (_promo.count > section) {
         NSArray *currentPromo = [_promo objectAtIndex:section];
         if (currentPromo && currentPromo.count > 0) {
@@ -825,6 +836,17 @@ ProductCellDelegate
             
         }];
         
+    }
+}
+
+- (void)requestTopAdsHeadline {
+    if (_redirectedSearchKeyword) {
+        [_topAdsService requestTopAdsHeadlineWithKeyword:_redirectedSearchKeyword onSuccess:^(PromoResult *topAdsHeadlineData) {
+            _topAdsHeadlineData = topAdsHeadlineData;
+            [_collectionView reloadData];
+        } onFailure:^(NSError * error) {
+            [_collectionView reloadData];
+        }];
     }
 }
 
@@ -978,6 +1000,7 @@ ProductCellDelegate
     
     if (_bannerResult.disableTopAds == 0){
         [self requestPromo];
+        [self requestTopAdsHeadline];
     }
     
     [_collectionView reloadData];
