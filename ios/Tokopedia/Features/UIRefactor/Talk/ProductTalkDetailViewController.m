@@ -196,10 +196,7 @@
             _urlAction = kTKPDDETAIL_APIGETCOMMENTBYTALKID;
         }
     }
-    
-    
-    [self fetchTalkComments];
-    
+        
     UIBarButtonItem *backBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@" "
                                                                           style:UIBarButtonItemStyleBordered
                                                                          target:self
