@@ -24,9 +24,6 @@
 + (RKObjectMapping *)mapping {
     RKObjectMapping *mapping = [RKObjectMapping mappingForClass:self];
     [mapping addAttributeMappingsFromDictionary:[self attributeMappingDictionary]];
-    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"ld"
-                                                                            toKeyPath:@"ld"
-                                                                          withMapping:[LuckyDeal mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"data"
                                                                             toKeyPath:@"emoney_data"
                                                                           withMapping:[TxEMoneyData mapping]]];
