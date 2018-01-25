@@ -69,10 +69,13 @@ class TokopointsSectionViewController: UIViewController {
         AnalyticsManager.trackEventName(GA_EVENT_NAME_CLICK_TOKOPOINTS_HOMEPAGE, category: "homepage-tokopoints", action: "click point & tier status", label: "tokopoints")
         
         // redirect ke mainpage tokopoints
-        let wv = WKWebViewController(urlString: drawerData.mainpageUrl)
-        wv.hidesBottomBarWhenPushed = true
-        self.navigationController?.pushViewController(wv, animated: true)
-        wv.hidesBottomBarWhenPushed = false
+        let auth = UserAuthentificationManager()
+        let vc = WebViewController()
+        vc.strURL = auth.webViewUrl(fromUrl: drawerData.mainpageUrl)
+        vc.shouldAuthorizeRequest = true
+        vc.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(vc, animated: true)
+        vc.hidesBottomBarWhenPushed = false
     }
 
 }

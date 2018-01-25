@@ -930,10 +930,13 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 - (IBAction)btnRedeemPointsDidTapped:(id)sender {
     [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - user profile page" action:@"click tokopoints" label:@"tokopoints"];
     
-    WKWebViewController *wv = [[WKWebViewController alloc] initWithUrlString:tokopointsMainpageUrl];
-    wv.hidesBottomBarWhenPushed = YES;
-    [self.navigationController pushViewController:wv animated:YES];
-    wv.hidesBottomBarWhenPushed = NO;
+    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+    WebViewController *webView = [WebViewController new];
+    webView.strURL = [auth webViewUrlFromUrl:tokopointsMainpageUrl];
+    webView.shouldAuthorizeRequest = true;
+    webView.hidesBottomBarWhenPushed = YES;
+    [self.navigationController pushViewController:webView animated:YES];
+    webView.hidesBottomBarWhenPushed = NO;
 }
 
 - (void)requestTokopoints {
@@ -959,10 +962,14 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 PointsAlertViewButton *button = [PointsAlertViewButton buttonWithType:UIButtonTypeSystem];
                 [button initializeWithTitle:drawerData.popUpNotification.buttonText titleColor:[UIColor tpGreen] image:nil alignment:NSTextAlignmentCenter callback:^{
                     [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - pop up" action:@"click any pop up button" label:@"pop up button"];
-                    WKWebViewController *wv = [[WKWebViewController alloc] initWithUrlString:drawerData.popUpNotification.buttonUrl];
-                    wv.hidesBottomBarWhenPushed = YES;
-                    [self.navigationController pushViewController:wv animated:true];
-                    wv.hidesBottomBarWhenPushed = NO;
+                    
+                    UserAuthentificationManager *auth = [UserAuthentificationManager new];
+                    WebViewController *webView = [WebViewController new];
+                    webView.strURL = [auth webViewUrlFromUrl:drawerData.popUpNotification.buttonUrl];
+                    webView.shouldAuthorizeRequest = true;
+                    webView.hidesBottomBarWhenPushed = YES;
+                    [self.navigationController pushViewController:webView animated:YES];
+                    webView.hidesBottomBarWhenPushed = NO;
                 }];
                 
                 PointsAlertView *alertView = [[PointsAlertView alloc] initWithTitle:drawerData.popUpNotification.title image:nil imageUrl:drawerData.popUpNotification.imageUrl message:drawerData.popUpNotification.text buttons:@[button]];

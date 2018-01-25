@@ -628,10 +628,13 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
                             button.initialize(title: drawerData.popUpNotification.buttonText, titleColor: .tpGreen(), image: nil, alignment: .center) {
                                 AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - pop up", action: "click any pop up button", label: "pop up button")
                                 
-                                let wv = WKWebViewController(urlString: drawerData.popUpNotification.buttonUrl)
-                                wv.hidesBottomBarWhenPushed = true
-                                self.navigationController?.pushViewController(wv, animated: true)
-                                wv.hidesBottomBarWhenPushed = false
+                                let auth = UserAuthentificationManager()
+                                let vc = WebViewController()
+                                vc.strURL = auth.webViewUrl(fromUrl: drawerData.popUpNotification.buttonUrl)
+                                vc.shouldAuthorizeRequest = true
+                                vc.hidesBottomBarWhenPushed = true
+                                self.navigationController?.pushViewController(vc, animated: true)
+                                vc.hidesBottomBarWhenPushed = false
                             }
                             let alert = PointsAlertView(title: drawerData.popUpNotification.title, image: nil, imageUrl: drawerData.popUpNotification.imageUrl, message: drawerData.popUpNotification.text, buttons: [button])
                             alert.delegate = self
