@@ -16,8 +16,8 @@ struct SellerInfoInboxViewModel {
     var filter : SellerInfoItemSectionId = .forAll // filter defaults to for all, ignore for all flag. In current implementation product wants for all to display all messages
     
     // data
-    private(set) var groupedItems : Variable<[String: [SellerInfoItem]]> = Variable([:]) // main data source, contains list of items grouped by create data
-    private(set) var itemDates    : Variable<[String]>                   = Variable([])  // array of unique dates of grouped items
+    private(set) var groupedItems : Variable<[String: [SellerInfoItem]]> = Variable([:]) // main data source, contains list of items grouped by create data (not sorted)
+    private(set) var itemDates    : Variable<[String]>                   = Variable([])  // array of unique dates of grouped items (sorted from latest to earliest)
     
     // pagination
     var nextPage   : Variable<Int>  = Variable(1)       // determines page index of items data grabbed from backend
@@ -38,10 +38,13 @@ struct SellerInfoInboxViewModel {
     }
     
     var Osections: Observable<[SellerInfoItemSectionModel]> {
-        return self.groupedItems.asObservable().map { groupedItems in
+        return Observable.combineLatest(self.itemDates.asObservable(), self.groupedItems.asObservable()).map {
             var sections = [SellerInfoItemSectionModel]()
-            for (_, items) in groupedItems {
-                sections.append(SellerInfoItemSectionModel(items: items))
+            
+            for dateKey in $0 {
+                if let items = $1[dateKey], items.count > 0 {
+                    sections.append(SellerInfoItemSectionModel(items: items))
+                }
             }
             return sections
         }
@@ -113,7 +116,7 @@ struct SellerInfoInboxViewModel {
     
     mutating func add(_ groupedItems: [String: [SellerInfoItem]]) {
         for (dateKey, items) in groupedItems {
-            if let items = self.groupedItems.value[dateKey] {
+            if let _ = self.groupedItems.value[dateKey] {
                 for item in items {
                     self.groupedItems.value[dateKey]!.append(item)
                 }
