@@ -1262,8 +1262,14 @@ ProductCellDelegate
                     else {
                         long count = [[_product objectAtIndex:indexPath.section - 1] count];
                         FuzzySearchProduct *searchProductBefore = [[_product objectAtIndex:indexPath.section - 1] objectAtIndex:count - 1];
-                        searchProduct.number = searchProductBefore.number + ([_promo objectAtIndex:indexPath.section].count / numberOfColumn) + 1;
-                        searchProduct.position = searchProductBefore.position + [_promo objectAtIndex:indexPath.section].count + 1;
+                        if (_promo.count > indexPath.section) {
+                            searchProduct.number = searchProductBefore.number + ([_promo objectAtIndex:indexPath.section].count / numberOfColumn) + 1;
+                            searchProduct.position = searchProductBefore.position + [_promo objectAtIndex:indexPath.section].count + 1;
+                        }
+                        else {
+                            searchProduct.number = searchProductBefore.number + 1;
+                            searchProduct.position = searchProductBefore.position + 1;
+                        }
                     }
                 }
                 else {
