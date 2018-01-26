@@ -15,14 +15,16 @@
 }
 
 - (NSDictionary *)parameters {
-    NSArray *query = [self.query componentsSeparatedByString:@"&"];
+    NSURLComponents *components = [[NSURLComponents alloc] initWithString:[self absoluteString]];
     NSMutableDictionary *queries = [NSMutableDictionary new];
-    for (NSString *keyValuePair in query) {
-        NSArray *pairComponents = [keyValuePair componentsSeparatedByString:@"="];
-        NSString *key = [pairComponents objectAtIndex:0];
-        NSString *value = [pairComponents objectAtIndex:1];
-        [queries setObject:value forKey:key];
+    
+    NSArray<NSURLQueryItem *> *queryItems = components.queryItems;
+    for (NSURLQueryItem *keyValuePair in queryItems) {
+        NSString *name = keyValuePair.name;
+        NSString *value = keyValuePair.value ?: @"";
+        [queries setObject:value forKey:name];
     }
+    
     return queries;
 }
 
