@@ -297,6 +297,47 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
         priceLabel.text = self.cart.priceText
     }
     
+    fileprivate func getVoucher(voucherCode: String) {
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Gunakan Voucher - \(voucherCode)")
+        
+        DigitalProvider()
+            .request(.voucher(categoryId: categoryId, voucherCode: voucherCode))
+            .map(to: DigitalVoucher.self)
+            .subscribe(onNext: { [weak self] (voucher) in
+                guard let `self` = self else {
+                    return
+                }
+                
+                self.voucher = voucher
+                self.isVoucherUsed = true
+                self.promoType = .voucher
+                
+                self.setVoucherCanceled()
+            }, onError: { [unowned self] (error) in
+                
+                // silent error
+                
+                AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(voucherCode)")
+                
+                self.isVoucherUsed = false
+                self.setVoucherCanceled()
+            }, onCompleted: {
+                
+                self.content.isHidden = false
+                self.mainActivityIndicator.stopAnimating()
+                
+                AnalyticsManager.trackRechargeEvent(event: .homepage, cart: self.cart, action: "View Checkout Page")
+                
+                if self.cart.isCouponActive == "1" {
+                    self.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
+                }
+                else {
+                    self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
     func expand(_ sender:UITapGestureRecognizer) {
         self.isOpen = !self.isOpen
         setExpandButton()
@@ -312,26 +353,36 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
                 }
             )
             .subscribe(onNext: { [weak self] cart in
-                        self?.content.isHidden = false
-                        self?.cart = cart
-                        self?.transactionId = cart.cartId
-                        self?.setData()
+                guard let `self` = self else {
+                    return
+                }
                 
-                        self?.mainActivityIndicator.stopAnimating()
-                        AnalyticsManager.trackRechargeEvent(event: .homepage, cart: cart, action: "View Checkout Page")
-                
-                        if cart.isCouponActive == "1" {
-                            self?.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
-                        }
-                        else {
-                            self?.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
-                        }
-                    },
-                       onError: { [unowned self] error in
-                        self.mainActivityIndicator.stopAnimating()
-                        self.view.addSubview(self.noResultView)
-                        self.content.isHidden = true
-                    })
+                self.cart = cart
+                self.transactionId = cart.cartId
+                self.setData()
+        
+                if !self.cart.voucherCode.isEmpty {
+                    self.getVoucher(voucherCode: self.cart.voucherCode)
+                }
+                else {
+                    self.content.isHidden = false
+                    self.mainActivityIndicator.stopAnimating()
+                    
+                    AnalyticsManager.trackRechargeEvent(event: .homepage, cart: cart, action: "View Checkout Page")
+                    
+                    if cart.isCouponActive == "1" {
+                        self.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
+                    }
+                    else {
+                        self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
+                    }
+                }
+            },
+               onError: { [unowned self] error in
+                self.mainActivityIndicator.stopAnimating()
+                self.view.addSubview(self.noResultView)
+                self.content.isHidden = true
+            })
             .disposed(by: self.rx_disposeBag)
 
     }
