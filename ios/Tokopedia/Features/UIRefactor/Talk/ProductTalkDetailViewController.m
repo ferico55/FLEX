@@ -206,7 +206,6 @@
     _table.tableFooterView = _footer;
     _table.estimatedRowHeight = 100.0;
     _table.rowHeight = UITableViewAutomaticDimension;
-    [self setupHeader];
     
     if([self shouldFetchDataAtBeginning]){
         [self fetchTalkComments];
@@ -226,9 +225,6 @@
             [weakSelf tapProduct];
         };
     }
-    
-    // this flag prevents NSAutoLayouts to mess with our set constraints
-    _headerVC.view.translatesAutoresizingMaskIntoConstraints = FALSE;
     
     // set header view and req contraints to the table view
     _table.tableHeaderView = _headerVC.view;
@@ -410,18 +406,19 @@
     _talk = comment.result.talk;
     [_list addObjectsFromArray:list];
     
-    
     _data = [self generateData];
     //islogin
     if([_userManager isLogin]) {
         _talkInputView.hidden = (![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_DELETED] && ![[_data objectForKey:@"talk_product_status"] isEqualToString:STATE_TALK_PRODUCT_BANNED]);
     }
     _table.tableFooterView = _footer;
-    _headerVC.talk = _talk;
+    [self setupHeader];
     [self setupInputView];
     
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [_table reloadData];
+    });
     
-    [_table reloadData];
 }
 
 - (NSDictionary *)queryFromUri:(NSString *)uri {

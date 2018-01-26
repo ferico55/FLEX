@@ -52,9 +52,6 @@ class ProductTalkDetailHeaderViewController: UIViewController {
     // MARK: Setup
     override func viewDidLoad() {
         super.viewDidLoad()
-        if talk == nil {
-            return
-        }
         // Do any additional setup after loading the view.
         self.view.backgroundColor = .white
         self.view.layoutMargins = UIEdgeInsets(top: 15.0, left: 15.0, bottom: 15.0, right: 15.0)
@@ -233,6 +230,11 @@ class ProductTalkDetailHeaderViewController: UIViewController {
         mainStack.addArrangedSubview(separatorBottomSpacing)
         mainStack.addArrangedSubview(secondRowStack)
         
+        // set main stack view constraints
+        firstRowStack.snp.makeConstraints({ (make) in
+            make.top.equalTo(10)
+        })
+        
         // add main stack view to vc view
         self.view.addSubview(mainStack)
         
@@ -246,7 +248,7 @@ class ProductTalkDetailHeaderViewController: UIViewController {
         // pin the view's bottom to the bottom of the stack view (this sizes by itself based on content)
         // this enables the view to dynamicly determine it's height
         self.view.snp.makeConstraints({ (make) in
-            make.bottomMargin.equalTo(mainStack.snp.bottom)
+            make.bottomMargin.equalTo(mainStack.snp.bottom).offset(10.0)
         })
         
         // pin separator to mainStack sides to dynamicly set it's width
