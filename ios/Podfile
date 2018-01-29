@@ -24,11 +24,16 @@ def react_pods
         'RCTActionSheet',
         'RCTSettings',
         'RCTLinkingIOS',
-        'BatchedBridge',
+        'CxxBridge',
         'RCTCameraRoll',
+        'tvOS',
     ]
     
+    pod 'Folly', :podspec => './react-podspecs/Folly.podspec.json'
+    pod 'GLog', :podspec => './react-podspecs/GLog.podspec.json'
+    pod 'DoubleConversion', :podspec => './react-podspecs/DoubleConversion.podspec.json'
     pod 'yoga', :podspec => './react-podspecs/yoga.podspec.json'
+
     pod 'native-navigation', :podspec => './react-podspecs/native-navigation.podspec.json'
     pod 'RNDeviceInfo', :podspec => './react-podspecs/RNDeviceInfo.podspec.json'
     pod 'CodePush', :podspec => './react-podspecs/CodePush.podspec.json'
@@ -179,9 +184,31 @@ post_install do |installer|
     
     # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
     clear_component_kit_umbrella_header
+
+    remove_unused_yoga_header
 end
 
 def clear_component_kit_umbrella_header
     file = File.open('./Pods/Target Support Files/ComponentKit/ComponentKit-umbrella.h', 'w')
     file.close
+end
+
+def remove_unused_yoga_header
+    # some imported headers break the compilation because they contain C++ code
+    filepath = './Pods/Target Support Files/yoga/yoga-umbrella.h'
+
+    contents = []
+    
+    file = File.open(filepath, 'r')
+    file.each_line do | line |
+        contents << line
+    end
+    file.close
+
+    contents.delete_at(14) # #import "YGNodePrint.h"
+    contents.delete_at(14) # #import "Yoga-internal.h"
+
+    file = File.open(filepath, 'w') do |f| 
+        f.puts(contents)
+    end
 end
