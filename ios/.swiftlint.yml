@@ -5,9 +5,11 @@ excluded:
   - Tokopedia/API.swift
 force_cast: warning
 force_try: warning
+force_unwrapping: warning
 included: 
   - Tokopedia
 whitelist_rules: 
+  - force_unwrapping
   - force_try
   - force_cast
   - private_outlet
