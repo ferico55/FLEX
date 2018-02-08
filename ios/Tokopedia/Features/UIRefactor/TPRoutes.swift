@@ -266,17 +266,6 @@ class TPRoutes: NSObject {
             return true
         }
 
-        JLRoutes.global().addRoute("wallet/activation") { _ in
-            let storyboard = UIStoryboard(name: "Main", bundle: nil)
-            let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
-            controller.hidesBottomBarWhenPushed = true
-
-            UIApplication.topViewController()?
-                .navigationController?
-                .pushViewController(controller, animated: false)
-            return true
-        }
-
         // MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { _ in
             let viewController = DigitalCategoryListViewController()
