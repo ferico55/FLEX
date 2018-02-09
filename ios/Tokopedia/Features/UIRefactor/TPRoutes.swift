@@ -391,7 +391,7 @@ class TPRoutes: NSObject {
 
             AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
                 let userManager = UserAuthentificationManager()
-                if userManager.isLogin && userManager.getShopId() == "0" {
+                if userManager.isLogin && !userManager.userHasShop() {
                     let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
                     UIApplication.topViewController()?.navigationController!.pushViewController(controller, animated: true)
                 }
