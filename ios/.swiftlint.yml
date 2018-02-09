@@ -162,7 +162,6 @@ whitelist_rules:
   - void_return
   - vertical_whitespace
   - multiple_closures_with_trailing_closure
-  - conditional_returns_on_newline
   - control_statement
   - overridden_super_call
   - override_in_extension
