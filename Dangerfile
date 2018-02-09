@@ -22,5 +22,5 @@ git.modified_files.each do | modified_file |
   warn(':exclamation: Changes were made to' + modified_file +', code reviewers check thoroughly') if path_is_important
 end
 
+swiftlint.binary_path = 'ios/Pods/SwiftLint/swiftlint'
 swiftlint.lint_files inline_mode: true
-swiftlint.lint_files fail_on_error: true

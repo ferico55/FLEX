@@ -108,9 +108,23 @@ weak_delegate:
   severity: error
 yoda_condition:
   severity: error
+custom_rules:
+  migrate_masonry_to_snapkit:
+    name: "Migrate Masonry to Snapkit"
+    regex: "(mas_)"
+    message: "Please use Snapkit instead of Masonry"
+    severity: error
+  literal_from_hex_string:
+    name: "UIColor.fromHexString"
+    regex: 'UIColor\s*\.fromHexString\s*\(\s*\".*\"\s*\)'
+    severity: error
+    message: 'Use #colorLiteral instead of UIColor.fromHexString()'
+    
 included: 
   - Tokopedia
+  
 whitelist_rules: 
+  - custom_rules
   - array_init
   - block_based_kvo
   - class_delegate_protocol
