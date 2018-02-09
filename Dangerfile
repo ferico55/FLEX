@@ -23,4 +23,5 @@ git.modified_files.each do | modified_file |
 end
 
 swiftlint.binary_path = 'ios/Pods/SwiftLint/swiftlint'
+swiftlint.config_file = 'ios/.swiftlint.yml'
 swiftlint.lint_files inline_mode: true
