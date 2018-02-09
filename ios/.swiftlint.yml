@@ -52,8 +52,6 @@ legacy_constructor:
   severity: error
 legacy_nsgeometry_functions:
   severity: error
-mark:
-  severity: error
 nesting:
   type_level: 
     error: 2
@@ -151,7 +149,6 @@ whitelist_rules:
   - legacy_constant
   - legacy_constructor
   - legacy_nsgeometry_functions
-  - mark
   - nesting
   - notification_center_detachment
   - object_literal
