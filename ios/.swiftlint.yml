@@ -86,8 +86,6 @@ sorted_first_last:
   severity: error
 sorted_imports:
   severity: error
-strict_fileprivate:
-  severity: warning
 syntactic_sugar:
   severity: error
 todo:
@@ -162,7 +160,6 @@ whitelist_rules:
   - redundant_void_return
   - sorted_first_last
   - sorted_imports
-  - strict_fileprivate
   - todo
   - trailing_semicolon
   - type_name
