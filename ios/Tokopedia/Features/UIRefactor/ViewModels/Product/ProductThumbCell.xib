@@ -149,7 +149,7 @@
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Toko Semua Senang" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ysz-tw-Sdy">
-                                <rect key="frame" x="113" y="95" width="107" height="14"/>
+                                <rect key="frame" x="113" y="95" width="234" height="14"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="14" id="QdD-me-gVD"/>
                                 </constraints>
@@ -174,7 +174,7 @@
                                 </constraints>
                             </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cRl-Ja-Enl" customClass="OAStackView">
-                                <rect key="frame" x="364" y="99" width="1" height="20"/>
+                                <rect key="frame" x="364" y="111" width="1" height="10"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="1" placeholder="YES" id="Jj6-xW-0lB"/>
                                     <constraint firstAttribute="height" constant="10" id="MyR-Jb-RHw"/>
@@ -231,8 +231,8 @@
                                     <action selector="buttonWishlistTap:" destination="gTV-IL-0wX" eventType="touchUpInside" id="gMa-iK-wwv"/>
                                 </connections>
                             </button>
-                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" image="icon_topads" translatesAutoresizingMaskIntoConstraints="NO" id="iuA-IJ-7nb">
-                                <rect key="frame" x="350" y="95" width="15" height="15"/>
+                            <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_topads" translatesAutoresizingMaskIntoConstraints="NO" id="iuA-IJ-7nb">
+                                <rect key="frame" x="355" y="98.5" width="10" height="8"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="8" id="grv-4F-Fnp"/>
                                     <constraint firstAttribute="width" constant="10" id="hpg-7V-xK5"/>
@@ -265,7 +265,7 @@
                             <constraint firstItem="ysz-tw-Sdy" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="aIz-dw-5hC"/>
                             <constraint firstItem="C9d-rJ-e1Q" firstAttribute="top" secondItem="RDX-Un-FDQ" secondAttribute="bottom" constant="4" id="adf-FI-TOF"/>
                             <constraint firstItem="jcG-C2-gR2" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="clc-qB-p2S"/>
-                            <constraint firstItem="iuA-IJ-7nb" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" constant="130" id="dkU-qs-NJw"/>
+                            <constraint firstItem="iuA-IJ-7nb" firstAttribute="leading" secondItem="ysz-tw-Sdy" secondAttribute="trailing" constant="8" id="dkU-qs-NJw"/>
                             <constraint firstAttribute="trailing" secondItem="Vr4-uc-llR" secondAttribute="trailing" id="ed3-OI-DQs"/>
                             <constraint firstItem="Kw8-LN-It2" firstAttribute="leading" secondItem="aeK-n3-p3K" secondAttribute="trailing" constant="8" id="gqw-t8-pjF"/>
                             <constraint firstItem="RDX-Un-FDQ" firstAttribute="leading" secondItem="459-Qy-tpA" secondAttribute="leading" id="mqF-jD-BOX"/>

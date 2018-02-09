@@ -122,6 +122,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         feedCardSource.asObservable()
             .bindTo(self.tableView.rx.items) { _, index, item in
                 let cell = ComponentTableViewCell<FeedComponentView>()
+                cell.backgroundColor = .clear
                 cell.mountComponentIfNecessary(
                     FeedComponentView(
                         viewController: self,

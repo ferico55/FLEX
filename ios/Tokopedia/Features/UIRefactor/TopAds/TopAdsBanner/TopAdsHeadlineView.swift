@@ -52,7 +52,7 @@ class TopAdsHeadlineView: UIView {
             let tapGesture = UITapGestureRecognizer()
             self.addGestureRecognizer(tapGesture)
             
-            tapGesture.rx.event.bindNext { [weak self] recognizer in
+            tapGesture.rx.event.bind { [weak self] recognizer in
                 guard let `self` = self,
                     let applinks = self.promoResult?.applinks,
                     let url = URL(string: applinks),

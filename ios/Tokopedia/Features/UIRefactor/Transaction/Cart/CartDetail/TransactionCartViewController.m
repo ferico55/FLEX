@@ -342,9 +342,9 @@ InputPromoViewDelegate
     [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_noResultScrollView.mas_top).offset(375);
         if (IS_IPAD) {
-            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width - 288]);
-            make.left.equalTo(_noResultScrollView.mas_left).offset(144);
-            make.right.equalTo(_noResultScrollView.mas_right).offset(-144);
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width - 208]);
+            make.left.equalTo(_noResultScrollView.mas_left).offset(104);
+            make.right.equalTo(_noResultScrollView.mas_right).offset(-104);
         } else {
             make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
         }
@@ -1489,7 +1489,7 @@ InputPromoViewDelegate
             [_noResultScrollView removeFromSuperview];
         }else{
             [self requestPromo];
-            [_tableView addSubview:_noResultScrollView];
+            [self.view addSubview:_noResultScrollView];
             [_noResultScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
                 make.edges.equalTo(self.view);
             }];

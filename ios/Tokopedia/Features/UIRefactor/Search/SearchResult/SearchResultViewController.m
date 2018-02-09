@@ -637,9 +637,9 @@ ProductCellDelegate
     [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_searchNoResultScrollView.mas_top).offset(300);
         if (IS_IPAD) {
-            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width- 288]);
-            make.left.equalTo(_searchNoResultScrollView.mas_left).offset(144);
-            make.right.equalTo(_searchNoResultScrollView.mas_right).offset(-144);
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width- 208]);
+            make.left.equalTo(_searchNoResultScrollView.mas_left).offset(104);
+            make.right.equalTo(_searchNoResultScrollView.mas_right).offset(-104);
         } else {
             make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
         }

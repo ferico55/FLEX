@@ -113,14 +113,13 @@ typedef enum TagRequest {
 - (void)initAllNoResult{
     _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultScrollView.userInteractionEnabled = true;
-    [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 775)];
     [_noResultScrollView addSubview:_refreshControlNoResult];
     
     _topAdsView = [[TopAdsView alloc] initWithFrame:CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400)];
     [_noResultScrollView addSubview:_topAdsView];
     
     if(IS_IPAD){
-        _topAdsView.frame = CGRectMake(0, 450, [UIScreen mainScreen].bounds.size.width, 400);
+        _topAdsView.frame = CGRectMake(104, 375, [UIScreen mainScreen].bounds.size.width - 208, 1200);
     }
     
     [self initNoResultView];
@@ -239,9 +238,7 @@ typedef enum TagRequest {
     [self registerNib];
     
     if(![_userManager isLogin]) {
-        [_noResultScrollView addSubview:_notLoggedInView];
-        [_collectionView addSubview:_noResultScrollView];
-        [_flowLayout setFooterReferenceSize:CGSizeZero];
+        [self setAsGuestView];
     } else {
         [self loadAllWishlist];
     }
@@ -282,10 +279,10 @@ typedef enum TagRequest {
     TopAdsFilter *filter = [TopAdsFilter new];
     filter.type = TopAdsFilterTypeRecommendationCategory;
     filter.source = TopAdsSourceWishlist;
+    filter.numberOfProductItems = 4;
     
     [_topAdsService getTopAdsWithTopAdsFilter:filter onSuccess:^(NSArray<PromoResult *> * result) {
         [_topAdsView setPromoWithAds:result];
-        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height)];
     } onFailure:^(NSError * error) {
         
     }];
@@ -554,7 +551,6 @@ typedef enum TagRequest {
 
 - (void)didReceiveProduct:(MyWishlistResponse*)productStore {
     _noResultScrollView.frame = [[UIScreen mainScreen]bounds];
-    _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
     
     _isRequestingData = NO;
     if(_page == 1) {
@@ -653,27 +649,18 @@ typedef enum TagRequest {
 - (void) showNoResultView {
     if ([self isSearchModeActive]) {
 //        [_collectionView insertSubview:_searchNoResultView atIndex:0];
-        
+        [_noResultScrollView setContentSize:CGSizeMake(0,0)];
         [_noResultScrollView addSubview:_searchNoResultView];
         [_collectionView addSubview:_noResultScrollView];
-        [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 716)];
+        [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, IS_IPAD ? 1350 : 1100)];
         _noResultScrollView.frame = CGRectMake(0, 100, [UIScreen mainScreen].bounds.size.width, 350 + 115 + _topAdsView.frame.size.height);
-        _topAdsView.frame = CGRectMake(0, 250, [UIScreen mainScreen].bounds.size.width, 400);
-
-        if(IS_IPHONE_5 || IS_IPHONE_4_OR_LESS){
-            [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 688)];
-        }
-        else if(IS_IPHONE_6P){
-            [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 735)];
-        }
-        else if(IS_IPAD){
-            _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
-        }
         
     } else {
         // no data at all
         _isNoData = YES;
         [_flowLayout setHeaderReferenceSize:CGSizeMake([[UIScreen mainScreen]bounds].size.width, 0)];
+        [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, 475 + 115 + _topAdsView.frame.size.height)];
+
         [_flowLayout setFooterReferenceSize:CGSizeZero];
         //[self setView:_noResultView];
 //        [_collectionView addSubview:_noResultView];
@@ -715,12 +702,11 @@ typedef enum TagRequest {
     [_flowLayout setHeaderReferenceSize:CGSizeZero];
     [_flowLayout setFooterReferenceSize:CGSizeZero];
     _noResultScrollView.frame = [[UIScreen mainScreen]bounds];
-    _topAdsView.frame = CGRectMake(0, 350, [UIScreen mainScreen].bounds.size.width, 400);
     [_noResultView removeFromSuperview];
     [_searchNoResultView removeFromSuperview];
     [_noResultScrollView addSubview:_notLoggedInView];
     [_collectionView addSubview:_noResultScrollView];
-    
+    [_noResultScrollView setContentSize:CGSizeMake([UIScreen mainScreen].bounds.size.width, IS_IPAD ? 1350 : 1100)];
     [self initNotificationManager];
 }
 

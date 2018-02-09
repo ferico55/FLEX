@@ -54,12 +54,12 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
         
         let container = Node<UIView> {
             view, layout, _ in
-            view.backgroundColor = .tpBackground()
+            view.backgroundColor = .clear
         }
         
         let space = Node<UIView> {
             view, layout, _ in
-            view.backgroundColor = .tpBackground()
+            view.backgroundColor = .clear
             layout.height = 15
         }
         

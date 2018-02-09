@@ -87,9 +87,10 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func phoneItemLayout(toppicks: [FeedCardToppicksState], size: CGSize) -> NodeType {
-        return Node<UIView>(identifier: "phone-item-layout") { _, layout, size in
+        return Node<UIView>(identifier: "phone-item-layout") { view, layout, size in
             layout.flexDirection = .column
             layout.width = size.width
+            view.backgroundColor = .white
         }.add(children: [
             self.horizontalLine(size: size),
             Node<UIView>(identifier: "main-content") { _, layout, _ in
@@ -113,11 +114,12 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func padItemLayout(toppicks: [FeedCardToppicksState], size: CGSize) -> NodeType {
-        return Node<UIView>(identifier: "pad-item-layout") { _, layout, size in
+        return Node<UIView>(identifier: "pad-item-layout") { view, layout, size in
             layout.padding = 6
             layout.height = 272
             layout.flexDirection = .row
             layout.width = size.width
+            view.backgroundColor = .white
         }.add(children: [
             self.padItem(state: toppicks[0]),
             Node<UIView>(identifier: "grid-layout") { _, layout, _ in
