@@ -150,14 +150,16 @@ class ShopViewController: UIViewController {
     
     // update header content with model and sets the header height accordingly
     fileprivate func updateHeaderContent(_ viewModel: ShopHeaderViewModel) {
-        self.header.viewModel = viewModel
-        
-        self.header.setNeedsLayout()
-        self.header.layoutIfNeeded()
-        // manually set header height here
-        self.headerHeight = self.header.mainStackView.frame.size.height // grab height from the stack view not the main view (stack view determines content height)
-        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
-        self.segmentedPagerController.segmentedPager.scrollToTop(animated: false) // reset scroll to top
+        DispatchQueue.main.async {
+            self.header.viewModel = viewModel
+            
+            self.header.setNeedsLayout()
+            self.header.layoutIfNeeded()
+            // manually set header height here
+            self.headerHeight = self.header.containerView.bounds.size.height // grab height from the stack view not the main view (stack view determines content height)
+            self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
+            self.segmentedPagerController.segmentedPager.scrollToTop(animated: false) // reset scroll to top
+        }
     }
     
     fileprivate func displayShop(_ shop: Shop) {

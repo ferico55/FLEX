@@ -17,200 +17,214 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="698"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="023-8s-CP5" userLabel="mainStackView">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="DZC-jY-rcB" userLabel="containerView">
                     <rect key="frame" x="0.0" y="20" width="375" height="320.5"/>
                     <subviews>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n7a-WC-zK2" userLabel="activityContainer">
-                            <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
+                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="top" translatesAutoresizingMaskIntoConstraints="NO" id="023-8s-CP5" userLabel="mainStackView">
+                            <rect key="frame" x="0.0" y="0.0" width="375" height="320.5"/>
                             <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dV2-TS-qb5" userLabel="activityStackView">
-                                    <rect key="frame" x="10" y="10" width="355" height="46"/>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="n7a-WC-zK2" userLabel="activityContainer">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="66"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgr-W1-s1c" userLabel="activityTitle">
-                                            <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reason" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa9-Gf-gKO" userLabel="activityReason">
-                                            <rect key="frame" x="0.0" y="25.5" width="355" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                </stackView>
-                            </subviews>
-                            <color key="backgroundColor" red="1" green="0.96078431369999995" blue="0.69803921570000005" alpha="1" colorSpace="calibratedRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="bottom" secondItem="xa9-Gf-gKO" secondAttribute="bottom" constant="10" id="9lR-1u-Fzo"/>
-                                <constraint firstItem="dV2-TS-qb5" firstAttribute="top" secondItem="n7a-WC-zK2" secondAttribute="top" constant="10" id="Hx1-CT-ccf"/>
-                                <constraint firstItem="dV2-TS-qb5" firstAttribute="leading" secondItem="n7a-WC-zK2" secondAttribute="leadingMargin" id="IOM-GT-FDR"/>
-                                <constraint firstAttribute="trailingMargin" secondItem="dV2-TS-qb5" secondAttribute="trailing" id="n9k-ZF-f3a"/>
-                                <constraint firstAttribute="bottom" secondItem="dV2-TS-qb5" secondAttribute="bottom" constant="10" id="ycp-yN-0Hd"/>
-                            </constraints>
-                            <edgeInsets key="layoutMargins" top="10" left="10" bottom="10" right="10"/>
-                        </view>
-                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="jt6-XX-5SL" userLabel="shopBanner">
-                            <rect key="frame" x="0.0" y="66" width="375" height="95"/>
-                            <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="95" id="FCg-kP-Xly"/>
-                            </constraints>
-                        </imageView>
-                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxs-B3-MLW" userLabel="bannerSpacing">
-                            <rect key="frame" x="0.0" y="161" width="375" height="45"/>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="45" id="wZc-il-vNn"/>
-                            </constraints>
-                        </view>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2sh-ak-roa" userLabel="shopDetailsStackView">
-                            <rect key="frame" x="0.0" y="206" width="375" height="74.5"/>
-                            <subviews>
-                                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="E0i-UU-IfH" userLabel="shopDetailsInnerColumnStackView">
-                                    <rect key="frame" x="15" y="15" width="327" height="44.5"/>
-                                    <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Toko" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAx-bp-79V" userLabel="shopNameLabel">
-                                            <rect key="frame" x="0.0" y="0.0" width="85.5" height="20.5"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <nil key="textColor"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GsX-Hh-XcX" userLabel="medalContainer">
-                                            <rect key="frame" x="0.0" y="30.5" width="80" height="14"/>
-                                            <gestureRecognizers/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="14" id="LDX-sC-DNW"/>
-                                            </constraints>
-                                            <connections>
-                                                <outletCollection property="gestureRecognizers" destination="Kgo-9i-uYs" appends="YES" id="TlH-jJ-l9M"/>
-                                            </connections>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="dV2-TS-qb5" userLabel="activityStackView">
+                                            <rect key="frame" x="10" y="10" width="355" height="46"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Title Activity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wgr-W1-s1c" userLabel="activityTitle">
+                                                    <rect key="frame" x="0.0" y="0.0" width="355" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Reason" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa9-Gf-gKO" userLabel="activityReason">
+                                                    <rect key="frame" x="0.0" y="25.5" width="355" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
                                         </stackView>
                                     </subviews>
-                                </stackView>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="badge" translatesAutoresizingMaskIntoConstraints="NO" id="DME-7G-Pqn" userLabel="shopBadge">
-                                    <rect key="frame" x="342" y="25" width="25" height="25"/>
+                                    <color key="backgroundColor" red="1" green="0.96078431369999995" blue="0.69803921570000005" alpha="1" colorSpace="calibratedRGB"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="25" id="hsz-Vl-ahO"/>
-                                        <constraint firstAttribute="width" constant="25" id="raX-uh-9vc"/>
+                                        <constraint firstAttribute="bottom" secondItem="xa9-Gf-gKO" secondAttribute="bottom" constant="10" id="9lR-1u-Fzo"/>
+                                        <constraint firstItem="dV2-TS-qb5" firstAttribute="top" secondItem="n7a-WC-zK2" secondAttribute="top" constant="10" id="Hx1-CT-ccf"/>
+                                        <constraint firstItem="dV2-TS-qb5" firstAttribute="leading" secondItem="n7a-WC-zK2" secondAttribute="leadingMargin" id="IOM-GT-FDR"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="dV2-TS-qb5" secondAttribute="trailing" id="n9k-ZF-f3a"/>
+                                        <constraint firstAttribute="bottom" secondItem="dV2-TS-qb5" secondAttribute="bottom" constant="10" id="ycp-yN-0Hd"/>
+                                    </constraints>
+                                    <edgeInsets key="layoutMargins" top="10" left="10" bottom="10" right="10"/>
+                                </view>
+                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="banner" translatesAutoresizingMaskIntoConstraints="NO" id="jt6-XX-5SL" userLabel="shopBanner">
+                                    <rect key="frame" x="0.0" y="66" width="375" height="95"/>
+                                    <color key="backgroundColor" red="0.25882352941176467" green="0.74117647058823533" blue="0.22352941176470587" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    <constraints>
+                                        <constraint firstAttribute="height" constant="95" id="FCg-kP-Xly"/>
                                     </constraints>
                                 </imageView>
-                            </subviews>
-                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <edgeInsets key="layoutMargins" top="15" left="15" bottom="15" right="8"/>
-                        </stackView>
-                        <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Z19-mB-T5n" userLabel="actionButtonsStackView">
-                            <rect key="frame" x="0.0" y="280.5" width="375" height="40"/>
-                            <subviews>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SZr-jU-Uyq" userLabel="aturTokoButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
-                                    <rect key="frame" x="15" y="0.0" width="79" height="30"/>
-                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                    <gestureRecognizers/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="v2Y-ht-zWu"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Atur Toko">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="didTapAturTokoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="qFS-cE-6Cv"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cgv-xH-ThO" userLabel="tambahProdukButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
-                                    <rect key="frame" x="104" y="0.0" width="78.5" height="30"/>
-                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                    <gestureRecognizers/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="A9h-q6-KyR"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Tambah Produk">
-                                        <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="didTapTambahProdukButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="8iC-aT-Lly"/>
-                                    </connections>
-                                </button>
-                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="un9-4e-vvb" userLabel="chatButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
-                                    <rect key="frame" x="192.5" y="0.0" width="79" height="30"/>
-                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                    <gestureRecognizers/>
-                                    <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="lCj-sD-8FD"/>
-                                    </constraints>
-                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                    <state key="normal" title="Chat Penjual">
-                                        <color key="titleColor" red="0.090196078431372548" green="0.084035141721534243" blue="0.080408096622373554" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </state>
-                                    <connections>
-                                        <action selector="didTapChatButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="cZb-yj-XDG"/>
-                                    </connections>
-                                </button>
-                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="381-u0-Tr8" userLabel="favoriteContainer">
-                                    <rect key="frame" x="281.5" y="0.0" width="78.5" height="30"/>
-                                    <subviews>
-                                        <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9i7-1L-xSZ">
-                                            <rect key="frame" x="-0.5" y="0.0" width="79" height="30"/>
-                                        </activityIndicatorView>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8W7-Jq-v9H" userLabel="favoriteButton" customClass="FavoriteButton" customModule="Tokopedia" customModuleProvider="target">
-                                            <rect key="frame" x="-0.5" y="0.0" width="79" height="30"/>
-                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-                                            <gestureRecognizers/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
-                                            <state key="normal" title="Favorite">
-                                                <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
-                                            </state>
-                                            <connections>
-                                                <action selector="didTapFavoriteButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="dPw-15-94A"/>
-                                            </connections>
-                                        </button>
-                                    </subviews>
+                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rxs-B3-MLW" userLabel="bannerSpacing">
+                                    <rect key="frame" x="0.0" y="161" width="359" height="45"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="height" constant="30" id="0E6-vT-9ik"/>
-                                        <constraint firstAttribute="bottom" secondItem="8W7-Jq-v9H" secondAttribute="bottom" id="0WX-w3-Cno"/>
-                                        <constraint firstItem="9i7-1L-xSZ" firstAttribute="top" secondItem="381-u0-Tr8" secondAttribute="top" id="3Yb-Ag-kLY"/>
-                                        <constraint firstAttribute="trailing" secondItem="8W7-Jq-v9H" secondAttribute="trailing" id="G3y-jO-lUZ"/>
-                                        <constraint firstAttribute="bottom" secondItem="9i7-1L-xSZ" secondAttribute="bottom" id="GNZ-HY-oSZ"/>
-                                        <constraint firstAttribute="trailing" secondItem="9i7-1L-xSZ" secondAttribute="trailing" id="d5i-4T-VH4"/>
-                                        <constraint firstItem="9i7-1L-xSZ" firstAttribute="leading" secondItem="381-u0-Tr8" secondAttribute="leading" id="ibn-w8-ura"/>
-                                        <constraint firstItem="8W7-Jq-v9H" firstAttribute="top" secondItem="381-u0-Tr8" secondAttribute="top" id="j8t-L9-YD5"/>
-                                        <constraint firstItem="8W7-Jq-v9H" firstAttribute="leading" secondItem="381-u0-Tr8" secondAttribute="leading" id="xOg-dc-Z8I"/>
+                                        <constraint firstAttribute="height" constant="45" id="wZc-il-vNn"/>
                                     </constraints>
                                 </view>
+                                <stackView opaque="NO" contentMode="scaleToFill" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="2sh-ak-roa" userLabel="shopDetailsStackView">
+                                    <rect key="frame" x="0.0" y="206" width="375" height="74.5"/>
+                                    <subviews>
+                                        <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="E0i-UU-IfH" userLabel="shopDetailsInnerColumnStackView">
+                                            <rect key="frame" x="15" y="15" width="327" height="44.5"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Nama Toko" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zAx-bp-79V" userLabel="shopNameLabel">
+                                                    <rect key="frame" x="0.0" y="0.0" width="85.5" height="20.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                    <nil key="textColor"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                                <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GsX-Hh-XcX" userLabel="medalContainer">
+                                                    <rect key="frame" x="0.0" y="30.5" width="80" height="14"/>
+                                                    <gestureRecognizers/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="14" id="LDX-sC-DNW"/>
+                                                    </constraints>
+                                                    <connections>
+                                                        <outletCollection property="gestureRecognizers" destination="Kgo-9i-uYs" appends="YES" id="TlH-jJ-l9M"/>
+                                                    </connections>
+                                                </stackView>
+                                            </subviews>
+                                        </stackView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="badge" translatesAutoresizingMaskIntoConstraints="NO" id="DME-7G-Pqn" userLabel="shopBadge">
+                                            <rect key="frame" x="342" y="25" width="25" height="25"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="25" id="hsz-Vl-ahO"/>
+                                                <constraint firstAttribute="width" constant="25" id="raX-uh-9vc"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <edgeInsets key="layoutMargins" top="15" left="15" bottom="15" right="8"/>
+                                </stackView>
+                                <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Z19-mB-T5n" userLabel="actionButtonsStackView">
+                                    <rect key="frame" x="0.0" y="280.5" width="375" height="40"/>
+                                    <subviews>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="SZr-jU-Uyq" userLabel="aturTokoButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
+                                            <rect key="frame" x="15" y="0.0" width="79" height="30"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="v2Y-ht-zWu"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <state key="normal" title="Atur Toko">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapAturTokoButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="qFS-cE-6Cv"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Cgv-xH-ThO" userLabel="tambahProdukButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
+                                            <rect key="frame" x="104" y="0.0" width="78.5" height="30"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="A9h-q6-KyR"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <state key="normal" title="Tambah Produk">
+                                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapTambahProdukButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="8iC-aT-Lly"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="un9-4e-vvb" userLabel="chatButton" customClass="ActionButton" customModule="Tokopedia" customModuleProvider="target">
+                                            <rect key="frame" x="192.5" y="0.0" width="79" height="30"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                            <gestureRecognizers/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="lCj-sD-8FD"/>
+                                            </constraints>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <state key="normal" title="Chat Penjual">
+                                                <color key="titleColor" red="0.090196078431372548" green="0.084035141721534243" blue="0.080408096622373554" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            </state>
+                                            <connections>
+                                                <action selector="didTapChatButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="cZb-yj-XDG"/>
+                                            </connections>
+                                        </button>
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="381-u0-Tr8" userLabel="favoriteContainer">
+                                            <rect key="frame" x="281.5" y="0.0" width="78.5" height="30"/>
+                                            <subviews>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="9i7-1L-xSZ">
+                                                    <rect key="frame" x="-0.5" y="0.0" width="79" height="30"/>
+                                                </activityIndicatorView>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8W7-Jq-v9H" userLabel="favoriteButton" customClass="FavoriteButton" customModule="Tokopedia" customModuleProvider="target">
+                                                    <rect key="frame" x="-0.5" y="0.0" width="79" height="30"/>
+                                                    <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                                    <gestureRecognizers/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <state key="normal" title="Favorite">
+                                                        <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                                    </state>
+                                                    <connections>
+                                                        <action selector="didTapFavoriteButton:" destination="iN0-l3-epB" eventType="touchUpInside" id="dPw-15-94A"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="30" id="0E6-vT-9ik"/>
+                                                <constraint firstAttribute="bottom" secondItem="8W7-Jq-v9H" secondAttribute="bottom" id="0WX-w3-Cno"/>
+                                                <constraint firstItem="9i7-1L-xSZ" firstAttribute="top" secondItem="381-u0-Tr8" secondAttribute="top" id="3Yb-Ag-kLY"/>
+                                                <constraint firstAttribute="trailing" secondItem="8W7-Jq-v9H" secondAttribute="trailing" id="G3y-jO-lUZ"/>
+                                                <constraint firstAttribute="bottom" secondItem="9i7-1L-xSZ" secondAttribute="bottom" id="GNZ-HY-oSZ"/>
+                                                <constraint firstAttribute="trailing" secondItem="9i7-1L-xSZ" secondAttribute="trailing" id="d5i-4T-VH4"/>
+                                                <constraint firstItem="9i7-1L-xSZ" firstAttribute="leading" secondItem="381-u0-Tr8" secondAttribute="leading" id="ibn-w8-ura"/>
+                                                <constraint firstItem="8W7-Jq-v9H" firstAttribute="top" secondItem="381-u0-Tr8" secondAttribute="top" id="j8t-L9-YD5"/>
+                                                <constraint firstItem="8W7-Jq-v9H" firstAttribute="leading" secondItem="381-u0-Tr8" secondAttribute="leading" id="xOg-dc-Z8I"/>
+                                            </constraints>
+                                        </view>
+                                    </subviews>
+                                    <edgeInsets key="layoutMargins" top="0.0" left="15" bottom="10" right="15"/>
+                                </stackView>
                             </subviews>
-                            <edgeInsets key="layoutMargins" top="0.0" left="15" bottom="10" right="15"/>
+                            <constraints>
+                                <constraint firstItem="Z19-mB-T5n" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="1WP-Q8-wLF"/>
+                                <constraint firstItem="jt6-XX-5SL" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="4jE-wu-8Gr"/>
+                                <constraint firstItem="2sh-ak-roa" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="MbG-y4-pGE"/>
+                                <constraint firstItem="n7a-WC-zK2" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="zLs-Iw-FYs"/>
+                            </constraints>
                         </stackView>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop" translatesAutoresizingMaskIntoConstraints="NO" id="c54-2f-blm" userLabel="shopAvatar">
+                            <rect key="frame" x="15" y="111" width="90" height="90"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="90" id="9yP-nv-vJ6"/>
+                                <constraint firstAttribute="height" constant="90" id="vKH-ae-Jko"/>
+                            </constraints>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="45"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </imageView>
                     </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
-                        <constraint firstItem="Z19-mB-T5n" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="1WP-Q8-wLF"/>
-                        <constraint firstItem="jt6-XX-5SL" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="4jE-wu-8Gr"/>
-                        <constraint firstItem="2sh-ak-roa" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="MbG-y4-pGE"/>
-                        <constraint firstItem="n7a-WC-zK2" firstAttribute="width" secondItem="023-8s-CP5" secondAttribute="width" id="zLs-Iw-FYs"/>
+                        <constraint firstAttribute="trailingMargin" secondItem="023-8s-CP5" secondAttribute="trailing" id="54l-ag-s6m"/>
+                        <constraint firstItem="023-8s-CP5" firstAttribute="leading" secondItem="DZC-jY-rcB" secondAttribute="leadingMargin" id="EtU-vh-sxb"/>
+                        <constraint firstItem="c54-2f-blm" firstAttribute="leading" secondItem="DZC-jY-rcB" secondAttribute="leadingMargin" constant="15" id="MDI-qe-jHh"/>
+                        <constraint firstItem="c54-2f-blm" firstAttribute="top" secondItem="jt6-XX-5SL" secondAttribute="top" constant="45" id="QFX-Ob-JMK"/>
+                        <constraint firstItem="023-8s-CP5" firstAttribute="top" secondItem="DZC-jY-rcB" secondAttribute="topMargin" id="fEn-VC-e7S"/>
+                        <constraint firstAttribute="bottom" secondItem="023-8s-CP5" secondAttribute="bottom" id="qXl-06-lNd"/>
                     </constraints>
-                </stackView>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_default_shop" translatesAutoresizingMaskIntoConstraints="NO" id="c54-2f-blm" userLabel="shopAvatar">
-                    <rect key="frame" x="15" y="131" width="90" height="90"/>
-                    <constraints>
-                        <constraint firstAttribute="width" constant="90" id="9yP-nv-vJ6"/>
-                        <constraint firstAttribute="height" constant="90" id="vKH-ae-Jko"/>
-                    </constraints>
-                    <userDefinedRuntimeAttributes>
-                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
-                            <real key="value" value="45"/>
-                        </userDefinedRuntimeAttribute>
-                    </userDefinedRuntimeAttributes>
-                </imageView>
+                    <edgeInsets key="layoutMargins" top="0.0" left="0.0" bottom="0.0" right="0.0"/>
+                </view>
             </subviews>
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
-                <constraint firstItem="023-8s-CP5" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="4pS-bf-rze"/>
-                <constraint firstItem="023-8s-CP5" firstAttribute="width" secondItem="iN0-l3-epB" secondAttribute="width" id="7pa-KY-2cK"/>
-                <constraint firstItem="023-8s-CP5" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="LWC-Si-XOW"/>
-                <constraint firstItem="c54-2f-blm" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" constant="15" id="pu8-8b-l8X"/>
-                <constraint firstItem="c54-2f-blm" firstAttribute="top" secondItem="jt6-XX-5SL" secondAttribute="top" constant="45" id="tjg-04-rVU"/>
+                <constraint firstItem="DZC-jY-rcB" firstAttribute="top" secondItem="vUN-kp-3ea" secondAttribute="top" id="ROi-RT-qnG"/>
+                <constraint firstItem="vUN-kp-3ea" firstAttribute="trailing" secondItem="DZC-jY-rcB" secondAttribute="trailing" id="dWN-yH-4pd"/>
+                <constraint firstItem="DZC-jY-rcB" firstAttribute="leading" secondItem="vUN-kp-3ea" secondAttribute="leading" id="i2S-74-l6K"/>
+                <constraint firstItem="DZC-jY-rcB" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="xdp-pF-nb1"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <viewLayoutGuide key="safeArea" id="vUN-kp-3ea"/>
@@ -220,6 +234,7 @@
                 <outlet property="activityTitle" destination="wgr-W1-s1c" id="vfB-Jv-QEl"/>
                 <outlet property="aturTokoButton" destination="SZr-jU-Uyq" id="eIL-KU-fEq"/>
                 <outlet property="chatButton" destination="un9-4e-vvb" id="A9O-xD-IAj"/>
+                <outlet property="containerView" destination="DZC-jY-rcB" id="Keo-Rm-Kbm"/>
                 <outlet property="favoriteButton" destination="8W7-Jq-v9H" id="DhH-X4-Twp"/>
                 <outlet property="favoriteContainer" destination="381-u0-Tr8" id="f3S-z5-ANS"/>
                 <outlet property="mainStackView" destination="023-8s-CP5" id="YoD-xT-eIq"/>

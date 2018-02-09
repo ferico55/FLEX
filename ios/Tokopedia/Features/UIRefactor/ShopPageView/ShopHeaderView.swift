@@ -24,7 +24,8 @@ class ShopHeaderView: UIView, CMPopTipViewDelegate {
     @IBOutlet private weak var activityContainer  : UIView!
     @IBOutlet private weak var activityTitle      : UILabel!
     @IBOutlet private weak var activityReason     : UILabel!
-    @IBOutlet private(set) weak var mainStackView : UIStackView!
+    @IBOutlet private weak var mainStackView      : UIStackView!
+    @IBOutlet private(set) weak var containerView : UIView!
     @IBOutlet private weak var shopBanner         : UIImageView!
     @IBOutlet private weak var shopAvatar         : UIImageView!
     @IBOutlet private weak var shopNameLabel      : UILabel!
