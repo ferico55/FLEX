@@ -688,6 +688,7 @@
 		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
+		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
 		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
@@ -3318,6 +3319,7 @@
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
+		E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfoAnalyticsManager.swift; sourceTree = "<group>"; };
 		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
 		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
@@ -7427,6 +7429,7 @@
 				92A4CBAE201731CC00C42D37 /* SellerInfoInboxFilterCellView.swift */,
 				92A4CBAF201731CC00C42D37 /* SellerInfoNoResultsView.xib */,
 				92A4CBB0201731CC00C42D37 /* SellerInfoInboxViewController.swift */,
+				E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */,
 				92A4CBB1201731CC00C42D37 /* SellerInfoInboxFilterViewController.swift */,
 				92A4CBB2201731CC00C42D37 /* SellerInfoInboxCellView.swift */,
 			);
@@ -14077,6 +14080,7 @@
 				E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */,
 				62C770EA1FF33C3300F66527 /* ShopReputation.m in Sources */,
 				F977FD4C1FE8AB7F00183A85 /* MyShopAddressViewController.m in Sources */,
+				E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */,
 				F977FD021FE8AB7E00183A85 /* ProductAddEditDetailViewController.m in Sources */,
 				F977FBA91FE8AB7C00183A85 /* ChangeReceiptNumberViewController.m in Sources */,
 				62C771041FF33C3300F66527 /* LogoutResult.m in Sources */,

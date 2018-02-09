@@ -707,6 +707,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 [wrapperController.navigationController pushViewController:controller animated:YES];
             }
         } else if (indexPath.row == 5) {
+            [AnalyticsManager trackSellerInfoMenuClick];
             SellerInfoInboxViewController *controller = [SellerInfoInboxViewController new];
             controller.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:controller animated:YES];
