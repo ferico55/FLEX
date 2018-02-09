@@ -23,3 +23,4 @@ git.modified_files.each do | modified_file |
 end
 
 swiftlint.lint_files inline_mode: true
+swiftlint.lint_files fail_on_error: true
