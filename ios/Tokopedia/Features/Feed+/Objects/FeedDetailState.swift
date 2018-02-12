@@ -22,20 +22,65 @@ struct FeedDetailState: Render.StateType {
     var isEmpty = false
     var page = 0
     var row = 0
+    
+    init() { }
+    
+    init(queryResult: FeedDetailQuery.Data) {
+        if let feed = queryResult.feed, let feedData = feed.data {
+            if feedData.count == 0 {
+                self.isEmpty = true
+            } else {
+                if let data = feedData[0], let meta = data.meta, let source = data.source, let content = data.content {
+                    self.createTime = data.createTime ?? ""
+                    self.hasNextPage = meta.hasNextPage ?? false
+                    self.source = FeedDetailSourceState(source: source)
+                    self.content = FeedDetailContentState(content: content)
+                }
+            }
+        }
+    }
 }
 
 struct FeedDetailSourceState: Render.StateType {
     let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var type = 0
     var shopState = FeedDetailShopState()
+    
+    init() {}
+    
+    init(source: FeedDetailQuery.Data.Feed.Datum.Source) {
+        if let shop = source.shop {
+            self.shopState = FeedDetailShopState(shop: shop)
+        }
+    }
 }
 
 struct FeedDetailContentState: Render.StateType {
     let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
     var type: FeedContentType = .newProduct
-    var totalProduct: Int! = 0
+    var totalProduct = 0
     var product: [FeedDetailProductState] = []
     var activity = FeedDetailActivityState()
+    
+    init() {}
+    
+    init(content: FeedDetailQuery.Data.Feed.Datum.Content) {
+        if let products = content.products {
+            self.product = products.map { product in
+                if let product = product {
+                    return FeedDetailProductState(product: product)
+                }
+                
+                return FeedDetailProductState()
+            }
+        }
+        
+        self.totalProduct = content.totalProduct ?? 0
+        
+        if let activity = content.newStatusActivity {
+            self.activity = FeedDetailActivityState(statusActivity: activity)
+        }
+        
+    }
 }
 
 struct FeedDetailActivityState: Render.StateType {
@@ -46,9 +91,9 @@ struct FeedDetailActivityState: Render.StateType {
     init() {}
     
     init(statusActivity: FeedDetailQuery.Data.Feed.Datum.Content.NewStatusActivity) {
-        self.source = NSString.convertHTML(statusActivity.source!)
-        self.activity = statusActivity.activity!
-        self.amount = statusActivity.amount!
+        self.source = NSString.convertHTML(statusActivity.source ?? "")
+        self.activity = statusActivity.activity ?? ""
+        self.amount = statusActivity.amount ?? 0
     }
 }
 
@@ -63,6 +108,19 @@ struct FeedDetailShopState: Render.StateType {
     var shopURL = ""
     var shareURL = ""
     var shareDescription = ""
+    
+    init() {}
+    
+    init(shop: FeedDetailQuery.Data.Feed.Datum.Source.Shop) {
+        self.shopID = shop.id ?? 0
+        self.shopName = NSString.convertHTML(shop.name ?? "")
+        self.shopImage = shop.avatar ?? ""
+        self.shopIsGold = shop.isGold ?? false
+        self.shopIsOfficial = shop.isOfficial ?? false
+        self.shopURL = shop.shopLink ?? ""
+        self.shareURL = shop.shareLinkUrl ?? ""
+        self.shareDescription = NSString.convertHTML(shop.shareLinkDescription ?? "")
+    }
 }
 
 struct FeedDetailProductState: Render.StateType {
@@ -81,82 +139,24 @@ struct FeedDetailProductState: Render.StateType {
     var productWishlisted = false
     var page = 0
     var row = 0
-}
-
-class FeedDetailStateManager: NSObject {
-    class func initFeedDetailState(with queryResult: FeedDetailQuery.Data) -> FeedDetailState {
-        var feedDetailState = FeedDetailState()
+    
+    init() {}
+    
+    init(product: FeedDetailQuery.Data.Feed.Datum.Content.Product) {
+        self.productID = "\(product.id ?? 0)"
+        self.productName = product.name ?? ""
+        self.productRating = Int(product.rating ?? 0)
+        self.productCashback = product.cashback ?? ""
         
-        if queryResult.feed?.data?.count == 0 {
-            feedDetailState.isEmpty = true
-            
-            return feedDetailState
+        if let wholesale = product.wholesale, wholesale.count > 0 {
+            self.productWholesale = true
         }
         
-        feedDetailState.source = self.initFeedDetailSource(with: (queryResult.feed?.data?[0]?.source)!)
-        feedDetailState.content = self.initFeedDetailContent(with: (queryResult.feed?.data?[0]?.content)!)
-        feedDetailState.createTime = (queryResult.feed?.data?[0]?.createTime)!
-        feedDetailState.hasNextPage = (queryResult.feed?.data?[0]?.meta?.hasNextPage)!
-        
-        return feedDetailState
+        self.productPrice = product.price ?? ""
+        self.productImage = product.image ?? ""
+        self.productFreeReturns = product.freereturns ?? false
+        self.productWishlisted = product.wishlist ?? false
+        self.productPreorder = product.preorder ?? false
+        self.productURL = product.productLink ?? ""
     }
-    
-    private class func initFeedDetailSource(with feedSource: FeedDetailQuery.Data.Feed.Datum.Source) -> FeedDetailSourceState {
-        var source = FeedDetailSourceState()
-        source.shopState = self.initFeedShop(with: feedSource.shop!)
-        
-        return source
-    }
-    
-    private class func initFeedDetailContent(with feedContent: FeedDetailQuery.Data.Feed.Datum.Content) -> FeedDetailContentState {
-        var content = FeedDetailContentState()
-        
-        var productArray: [FeedDetailProductState] = []
-        
-        for (_, product) in (feedContent.products?.enumerated())! {
-            let productState = self.initFeedProduct(with: product!)
-            
-            productArray += [productState]
-        }
-        
-        content.product = productArray
-        content.totalProduct = feedContent.totalProduct
-        content.activity = FeedDetailActivityState(statusActivity: feedContent.newStatusActivity!)
-        
-        return content
-    }
-    
-    private class func initFeedShop(with feedShop: FeedDetailQuery.Data.Feed.Datum.Source.Shop) -> FeedDetailShopState {
-        var shop = FeedDetailShopState()
-        
-        shop.shopID = feedShop.id!
-        shop.shopName = NSString.convertHTML(feedShop.name!)
-        shop.shopImage = feedShop.avatar!
-        shop.shopIsGold = feedShop.isGold!
-        shop.shopIsOfficial = feedShop.isOfficial!
-        shop.shopURL = feedShop.shopLink!
-        shop.shareURL = feedShop.shareLinkUrl!
-        shop.shareDescription = NSString.convertHTML(feedShop.shareLinkDescription!)
-        
-        return shop
-    }
-    
-    private class func initFeedProduct(with feedProduct: FeedDetailQuery.Data.Feed.Datum.Content.Product) -> FeedDetailProductState {
-        var product = FeedDetailProductState()
-        
-        product.productID = "\(feedProduct.id!)"
-        product.productName = feedProduct.name!
-        product.productRating = Int(feedProduct.rating!)
-        product.productCashback = feedProduct.cashback!
-        product.productWholesale = ((feedProduct.wholesale?.count)! > 0)
-        product.productPrice = feedProduct.price!
-        product.productImage = feedProduct.image!
-        product.productFreeReturns = feedProduct.freereturns!
-        product.productWishlisted = feedProduct.wishlist!
-        product.productPreorder = feedProduct.preorder!
-        product.productURL = feedProduct.productLink!
-        
-        return product
-    }
-    
 }

@@ -30,6 +30,10 @@ class FeedDetailViewController: UIViewController {
     fileprivate let activityID: String!
     
     lazy var feedDetailClient: ApolloClient = {
+        guard let url = URL(string: NSString.graphQLURL()) else {
+            fatalError("GraphQL URL is not valid")
+        }
+        
         let configuration = URLSessionConfiguration.default
         let userManager = UserAuthentificationManager()
         
@@ -47,8 +51,6 @@ class FeedDetailViewController: UIViewController {
                        "Accounts-Authorization": accountsAuth]
         
         configuration.httpAdditionalHeaders = headers
-        
-        let url = URL(string: NSString.graphQLURL())!
         
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
@@ -85,7 +87,7 @@ class FeedDetailViewController: UIViewController {
             self.safeAreaView.bottomAnchor.constraint(equalTo: self.view.safeAreaBottomAnchor, constant: 0),
             self.safeAreaView.rightAnchor.constraint(equalTo: self.view.safeAreaRightAnchor, constant: 0),
             self.safeAreaView.leftAnchor.constraint(equalTo: self.view.safeAreaLeftAnchor, constant: 0)
-            ])
+        ])
         
         self.footerView.frame = CGRect(x: 0, y: 0, width: self.tableView.frame.size.width, height: 40)
         self.footerView.backgroundColor = .clear
@@ -114,7 +116,7 @@ class FeedDetailViewController: UIViewController {
         
         feedDetailProductSource
             .asObservable()
-            .bindTo(tableView.rx.items) { tableView, _, item in
+            .bind(to: tableView.rx.items) { tableView, _, item in
                 let cell = ComponentTableViewCell<FeedDetailProductCellComponentView>()
                 cell.mountComponentIfNecessary(FeedDetailProductCellComponentView())
                 cell.state = item
@@ -146,11 +148,11 @@ class FeedDetailViewController: UIViewController {
         
         self.tableView.rx_reachedBottom
             .subscribe(onNext: { [weak self] _ in
-                if (self?.feedDetailState.hasNextPage)! && !(self?.isRequesting)! {
-                    self?.loadFeedDetail(withPage: (self?.page)!)
+                if let `self` = self, self.feedDetailState.hasNextPage && !self.isRequesting {
+                    self.loadFeedDetail(withPage: self.page)
                 }
             })
-            .disposed(by: rx_disposeBag)
+            .disposed(by: self.rx_disposeBag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -183,44 +185,51 @@ class FeedDetailViewController: UIViewController {
                     return
                 }
                 
-                if result?.errors != nil {
+                guard let result = result else {
                     self.tableView.tableFooterView = nil
                     self.isRequesting = false
                     return
                 }
                 
-                self.feedDetailState = FeedDetailStateManager.initFeedDetailState(with: (result?.data)!)
-                
-                if self.feedDetailState.isEmpty {
-                    self.navigationController?.popViewController(animated: true)
-                    StickyAlertView.showErrorMessage(["Feed ini telah dihapus"])
-                    
+                if result.errors != nil {
+                    self.tableView.tableFooterView = nil
+                    self.isRequesting = false
                     return
                 }
                 
-                self.feedDetailProducts += self.feedDetailState.content.product
-                self.page = self.page + 1
-                self.feedHeader.state = self.feedDetailState
-                self.feedAction.state = self.feedDetailState
-                self.feedDetailSource.onNext(self.feedDetailState)
-                self.feedDetailProductSource.onNext(self.feedDetailProducts)
-                
-                self.tableView.tableFooterView = nil
-                self.isRequesting = false
-                
-                self.feedHeader.render(in: self.safeAreaView.frame.size)
-                if UI_USER_INTERFACE_IDIOM() == .phone {
-                    self.feedAction.render(in: self.safeAreaView.frame.size)
-                    self.feedAction.frame.origin.y = self.safeAreaView.frame.size.height - 51
+                if let data = result.data {
+                    self.feedDetailState = FeedDetailState(queryResult: data)
                     
-                    self.feedHeader.frame.origin.x = 0
-                    self.feedHeader.frame.origin.y = 0
-                } else {
-                    self.feedHeader.frame.origin.y = 20
-                    self.feedHeader.frame.origin.x = (UIScreen.main.bounds.size.width - 560) / 2
+                    if self.feedDetailState.isEmpty {
+                        self.navigationController?.popViewController(animated: true)
+                        StickyAlertView.showErrorMessage(["Feed ini telah dihapus"])
+                        
+                        return
+                    }
+                    
+                    self.feedDetailProducts += self.feedDetailState.content.product
+                    self.page = self.page + 1
+                    self.feedHeader.state = self.feedDetailState
+                    self.feedAction.state = self.feedDetailState
+                    self.feedDetailSource.onNext(self.feedDetailState)
+                    self.feedDetailProductSource.onNext(self.feedDetailProducts)
+                    
+                    self.tableView.tableFooterView = nil
+                    self.isRequesting = false
+                    
+                    self.feedHeader.render(in: self.safeAreaView.frame.size)
+                    if UI_USER_INTERFACE_IDIOM() == .phone {
+                        self.feedAction.render(in: self.safeAreaView.frame.size)
+                        self.feedAction.frame.origin.y = self.safeAreaView.frame.size.height - 51
+                        
+                        self.feedHeader.frame.origin.x = 0
+                        self.feedHeader.frame.origin.y = 0
+                    } else {
+                        self.feedHeader.frame.origin.y = 20
+                        self.feedHeader.frame.origin.x = (UIScreen.main.bounds.size.width - 560) / 2
+                    }
                 }
             }
         }
-        
     }
 }

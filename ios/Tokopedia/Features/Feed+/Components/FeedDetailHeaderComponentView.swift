@@ -21,7 +21,9 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
             layout.alignItems = .center
             
             view.bk_(whenTapped: {
-                TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
+                if let url = URL(string: state.source.shopState.shopURL) {
+                    TPRoutes.routeURL(url)
+                }
             })
         }.add(children: [
             Node<UIImageView>(identifier: "author-image") { imageView, layout, _ in
@@ -95,9 +97,11 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 button.setTitleColor(.white, for: .normal)
                 
                 button.rx.tap
-                    .subscribe(onNext: { [weak self] in
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - Shop")
-                        TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
+                    .subscribe(onNext: { _ in
+                        if let url = URL(string: state.source.shopState.shopURL) {
+                            AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - Shop")
+                            TPRoutes.routeURL(url)
+                        }
                     })
                     .disposed(by: self.rx_disposeBag)
                 
@@ -146,7 +150,7 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
             NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()
         ]
         
-        var attachmentString: NSAttributedString?
+        var attachmentString: NSAttributedString = NSAttributedString(string: "")
         
         if state.shopIsGold || state.shopIsOfficial {
             let attachment = NSTextAttachment()
@@ -159,16 +163,17 @@ class FeedDetailHeaderComponentView: ComponentView<FeedDetailState> {
                 attachment.image = UIImage(named: "icon_official_store")
             }
             
-            attachment.bounds = CGRect(x: 0, y: -3, width: (attachment.image?.size.width)!, height: (attachment.image?.size.height)!)
+            if let image = attachment.image {
+                attachment.bounds = CGRect(x: 0, y: -3, width: image.size.width, height: image.size.height)
+            } else {
+                attachment.bounds = .zero
+            }
             
             attachmentString = NSAttributedString(attachment: attachment)
         }
         
-        if attachmentString != nil {
-            attString.append(attachmentString!)
-            attString.append(NSAttributedString(string: " ", attributes: bold))
-        }
-        
+        attString.append(attachmentString)
+        attString.append(NSAttributedString(string: " ", attributes: bold))
         attString.append(NSAttributedString(string: "\(activity.source) ", attributes: bold))
         attString.append(NSAttributedString(string: "\(activity.activity) ", attributes: normal))
         attString.append(NSAttributedString(string: "\(activity.amount) produk", attributes: normal))
