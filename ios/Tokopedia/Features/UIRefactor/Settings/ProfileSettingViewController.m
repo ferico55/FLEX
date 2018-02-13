@@ -53,7 +53,7 @@
                     @"Akun Bank",
                     @"Pembayaran",
                     @"Notifikasi"],
-                  @[@"Touch ID"]];
+                  @[[NSString authenticationType]]];
 }
 
 - (void)viewWillAppear:(BOOL)animated

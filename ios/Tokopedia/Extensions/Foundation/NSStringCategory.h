@@ -34,4 +34,6 @@
 
 - (BOOL)empty;
 
++ (nonnull NSString *)authenticationType;
+
 @end

@@ -13,17 +13,20 @@ class SignInProviderListView: UIView {
     var onFacebookSelected: ((SignInProvider) -> Void)?
     var onGoogleSelected: ((SignInProvider) -> Void)?
     var onTouchIdSelected: ((SignInProvider) -> Void)?
-    var onPhoneNumberSelected : ((SignInProvider) -> Void)?
+    var onPhoneNumberSelected: ((SignInProvider) -> Void)?
     var buttons: [UIButton] = []
+    
     //    MARK: - Lifecycle
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
+    
     init(providers: [SignInProvider], isRegister: Bool) {
         super.init(frame: CGRect.zero)
         self.buttons = self.setProviders(providers: providers, isRegister: isRegister)
         self.updateViewWithButtons()
     }
+    
     //    MARK: - Public
     func setSignInProviders(isRegister: Bool) {
         var providers = SignInProvider.defaultProviders(useFor: .login)
@@ -37,6 +40,7 @@ class SignInProviderListView: UIView {
         self.buttons = self.setProviders(providers: providers, isRegister: isRegister)
         self.updateViewWithButtons()
     }
+    
     func attachToView(_ container: UIView) {
         container.addSubview(self)
         self.mas_makeConstraints { make in
@@ -46,6 +50,7 @@ class SignInProviderListView: UIView {
             make?.bottom.equalTo()(container.mas_bottom)
         }
     }
+    
     //    MARK: - Private
     private func setProviders(providers: [SignInProvider], isRegister: Bool) -> [UIButton] {
         let buttons: [UIButton] = providers.map { provider in
@@ -58,11 +63,18 @@ class SignInProviderListView: UIView {
             button.adjustsImageWhenHighlighted = false
             button.setTitle(isRegister ? "Daftar dengan \(provider.name)" : "Masuk dengan \(provider.name)", for: .normal)
             button.backgroundColor = UIColor.fromHexString(provider.color)
-            button.setTitleColor(textColorForBackground(button.backgroundColor!), for: .normal)
+            
+            if let color = button.backgroundColor {
+                button.setTitleColor(textColorForBackground(color), for: .normal)
+            } else {
+                button.setTitleColor(.white, for: .normal)
+            }
+            
             if provider.id == "gplus" || provider.id == "touchid" || provider.id == "phoneNumber" {
                 button.borderWidth = 1
                 button.borderColor = UIColor(red: 231.0 / 255.0, green: 231.0 / 255.0, blue: 231.0 / 255.0, alpha: 1)
             }
+            
             if let url = URL(string: provider.imageUrl) {
                 let request = URLRequest(url: url)
                 button.imageView?.setImageWith(request,
@@ -74,7 +86,12 @@ class SignInProviderListView: UIView {
                                                    debugPrint(error ?? "error not determined")
                 })
             } else if provider.id == "touchid" {
-                button.setImage(UIImage(named: "touchId")?.resizedImage(to: CGSize(width: 20, height: 20)), for: .normal)
+                if provider.name == "Touch ID" {
+                    button.setImage(UIImage(named: "touchId")?.resizedImage(to: CGSize(width: 20, height: 20)), for: .normal)
+                } else {
+                    button.setImage(UIImage(named: "faceID")?.resizedImage(to: CGSize(width: 20, height: 20)), for: .normal)
+                }
+                
             } else if provider.id == "phoneNumber" {
                 button.setImage(UIImage(named: "tokoCashPhone")?.resizedImage(to: CGSize(width: 11.5, height: 18)), for: .normal)
             }
@@ -99,16 +116,24 @@ class SignInProviderListView: UIView {
             self.addSubview(button)
             let height = 44
             button.mas_makeConstraints { make in
-                make?.left.equalTo()(button.superview!.mas_left)
-                make?.right.equalTo()(button.superview!.mas_right)
-                make?.height.mas_equalTo()(height)
-                make?.top.equalTo()(button.superview!)?.with().offset()(CGFloat((height + 10) * index))
+                if let superview = button.superview {
+                    make?.left.equalTo()(superview.mas_left)
+                    make?.right.equalTo()(superview.mas_right)
+                    make?.height.mas_equalTo()(height)
+                    make?.top.equalTo()(superview)?.with().offset()(CGFloat((height + 10) * index))
+                }
+                
             }
         })
-
-        guard let button = buttons.last else { return }
+        
+        guard let button = buttons.last else {
+            return
+        }
+        
         button.mas_makeConstraints { make in
-            make?.bottom.equalTo()(button.superview!.mas_bottom)
+            if let superview = button.superview {
+                make?.bottom.equalTo()(superview.mas_bottom)
+            }
         }
     }
     fileprivate func textColorForBackground(_ color: UIColor) -> UIColor {

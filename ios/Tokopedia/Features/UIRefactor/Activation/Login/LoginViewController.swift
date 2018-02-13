@@ -17,6 +17,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     var emailId: String?
     var password: String?
     var loginResult: Login?
+    
     @IBOutlet private weak var registerButton: UIBarButtonItem!
     //    MARK: - Lifecycle
     override func viewDidLoad() {
@@ -66,8 +67,8 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
                                        onSuccess: { (_: ProfileInfo) in
                                            DispatchQueue.main.async {
                                                self.makeActivityIndicator(toShow: false)
-                                               if self.onLoginFinished != nil {
-                                                   self.onLoginFinished!(login.result)
+                                               if let onLoginFinished = self.onLoginFinished {
+                                                   onLoginFinished(login.result)
                                                }
                                                QuickActionHelper.sharedInstance.registerShortcutItems()
                                                self.notifyUserDidLogin()
@@ -77,8 +78,8 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
                                            DispatchQueue.main.async {
                                                self.makeActivityIndicator(toShow: false)
                                                self.notifyUserLoginFailure()
-                                               if self.onLoginFinished != nil {
-                                                   self.onLoginFinished!(nil)
+                                               if let onLoginFinished = self.onLoginFinished {
+                                                   onLoginFinished(nil)
                                                }
                                            }
         })
@@ -90,8 +91,8 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     }
     func makeActivityIndicator(toShow: Bool) {
         DispatchQueue.main.async {
-            if self.loadingUIHandler != nil {
-                self.loadingUIHandler!(toShow)
+            if let loadingUIHandler = self.loadingUIHandler {
+                loadingUIHandler(toShow)
             }
             self.view.isUserInteractionEnabled = !toShow
         }
@@ -120,7 +121,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
         let touchIdHelper = TouchIDHelper.sharedInstance
         if self.isUsingTouchID {
-            LoginAnalytics().trackLoginSuccessEvent(label: "Touch ID")
+            LoginAnalytics().trackLoginSuccessEvent(label: NSString.authenticationType())
             self.loginSuccess(login: loginResult)
             self.isUsingTouchID = false
         } else if touchIdHelper.isTouchIDExist(withEmail: email) {
@@ -133,16 +134,20 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
     }
     fileprivate func requestToActivateTouchIDForLogin() {
-        let alertController = UIAlertController(title: "Integrasi dengan Touch ID", message: "Integrasikan akun \(self.emailId!) dengan Touch ID?", preferredStyle: .alert)
+        guard let email = self.emailId, let password = self.password, let loginResult = self.loginResult else {
+            return
+        }
+        
+        let alertController = UIAlertController(title: "Integrasi dengan \(NSString.authenticationType())", message: "Integrasikan akun \(email) dengan \(NSString.authenticationType())?", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Lewatkan", style: .cancel) { _ in
-            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - No")
-            self.loginSuccess(login: self.loginResult!)
+            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "\(NSString.authenticationType()) - No")
+            self.loginSuccess(login: loginResult)
         })
         
         alertController.addAction(UIAlertAction(title: "Ya", style: .default) { _ in
-            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - Yes")
-            TouchIDHelper.sharedInstance.saveTouchID(forEmail: self.emailId!, password: self.password!)
+            LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "\(NSString.authenticationType()) - Yes")
+            TouchIDHelper.sharedInstance.saveTouchID(forEmail: email, password: password)
         })
         
         self.present(alertController, animated: true, completion: nil)
@@ -224,12 +229,16 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         self.loginSuccess(login: loginResult)
     }
     func touchIDHelperActivationFailed(_ helper: TouchIDHelper) {
-        LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "Touch ID - Cancel")
+        guard let loginResult = self.loginResult else {
+            return
+        }
         
-        let alertController = UIAlertController(title: "Integrasikan dengan Touch ID", message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali", preferredStyle: .alert)
+        LoginAnalytics().trackTouchIdClickEvent(name: "setTouchID", label: "\(NSString.authenticationType()) - Cancel")
+        
+        let alertController = UIAlertController(title: "Integrasikan dengan \(NSString.authenticationType())", message: "Terjadi kendala dengan \(NSString.authenticationType()) Anda.\nSilakan coba kembali", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel) { _ in
-            self.loginSuccess(login: self.loginResult!)
+            self.loginSuccess(login: loginResult)
         })
         
         self.present(alertController, animated: true, completion: nil)
@@ -248,7 +257,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         self.doLoginWithEmail(email: email, password: password)
     }
     func touchIDHelperLoadFailed(_ helper: TouchIDHelper) {
-        let alertController = UIAlertController(title: "Integrasikan dengan Touch ID", message: "Terjadi kendala dengan Touch ID Anda.\nSilahkan coba kembali", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "Integrasikan dengan \(NSString.authenticationType())", message: "Terjadi kendala dengan \(NSString.authenticationType()) Anda.\nSilakan coba kembali", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))
         

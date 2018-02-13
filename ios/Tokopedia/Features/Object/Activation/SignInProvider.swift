@@ -22,15 +22,18 @@ class SignInProvider: NSObject {
     var color: String = ""
 
     class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(for: self)
-        mapping!.addAttributeMappings(from: [
-            "id": "id",
-            "name": "name",
-            "url": "signInUrl",
-            "image": "imageUrl",
-            "color": "color"
-        ])
-        return mapping!
+        if let mapping = RKObjectMapping(for: self) {
+            mapping.addAttributeMappings(from: [
+                "id": "id",
+                "name": "name",
+                "url": "signInUrl",
+                "image": "imageUrl",
+                "color": "color"
+                ])
+            return mapping
+        }
+        
+        return RKObjectMapping()
     }
 
     class func defaultProviders(useFor: ProviderType) -> [SignInProvider] {
@@ -79,7 +82,7 @@ class SignInProvider: NSObject {
     
     class func touchIdProvider() -> SignInProvider {
         let provider = SignInProvider()
-        provider.name = "Touch ID"
+        provider.name = NSString.authenticationType()
         provider.id = "touchid"
         provider.imageUrl = ""
         provider.color = "#ffffff"

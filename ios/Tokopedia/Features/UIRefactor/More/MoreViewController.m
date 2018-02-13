@@ -320,7 +320,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             if(self.popTipView != nil) {
                 [self.popTipView dismissAnimated:NO];
             }
-            self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Pilih halaman setting dan pengaturan Touch ID untuk mengatur Touch ID anda"];
+            self.popTipView = [[CMPopTipView alloc] initWithMessage:[NSString stringWithFormat:@"Pilih halaman setting dan pengaturan %@ untuk mengatur %@ Anda", [NSString authenticationType], [NSString authenticationType]]];
             self.popTipView.delegate = self;
             self.popTipView.backgroundColor = [UIColor darkGrayColor];
             self.popTipView.animation = CMPopTipAnimationPop;

@@ -67,12 +67,12 @@ class TouchIDHelper: NSObject {
                 
                 if #available(iOS 9.0, *) {
                     try keychainTouch.accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .touchIDAny)
-                        .authenticationPrompt("Otentikasikan dengan touch ID sebagai password")
+                        .authenticationPrompt("Otentikasikan dengan \(NSString.authenticationType()) sebagai password")
                         .set(password, key: email)
                 } else {
                     // Fallback on earlier versions
                     try keychainTouch.accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt("Otentikasikan dengan touch ID sebagai password")
+                        .authenticationPrompt("Otentikasikan dengan \(NSString.authenticationType()) sebagai password")
                         .set(password, key: email)
                 }
                 
@@ -102,13 +102,13 @@ class TouchIDHelper: NSObject {
                 if #available(iOS 9.0, *) {
                     try keychainTouch
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .touchIDAny)
-                        .authenticationPrompt("Otentikasikan dengan Touch ID untuk memperbarui password anda.")
+                        .authenticationPrompt("Otentikasikan dengan \(NSString.authenticationType()) untuk memperbarui password Anda.")
                         .set(password, key: email)
                 } else {
                     // Fallback on earlier versions
                     try keychainTouch
                         .accessibility(.whenPasscodeSetThisDeviceOnly, authenticationPolicy: .userPresence)
-                        .authenticationPrompt("Otentikasikan dengan Touch ID untuk memperbarui password anda.")
+                        .authenticationPrompt("Otentikasikan dengan \(NSString.authenticationType()) untuk memperbarui password Anda.")
                         .set(password, key: email)
                 }
                 
@@ -136,7 +136,7 @@ class TouchIDHelper: NSObject {
                 let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
                 
                 let password = try keychainTouch
-                    .authenticationPrompt("Otentikasikan dengan Touch ID sebagai password")
+                    .authenticationPrompt("Otentikasikan dengan \(NSString.authenticationType()) sebagai password")
                     .get(email)
                 
                 DispatchQueue.main.async(execute: { () -> Void in
