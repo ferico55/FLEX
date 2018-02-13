@@ -62,7 +62,7 @@ def common_pods
     pod 'RestKit',  '~> 0.27.0'
     pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
-    pod 'SwiftLint', '~> 0.24.2'
+    pod 'SwiftLint', '~> 0.25.0'
     
     #Custom View Component
     pod 'CCBottomRefreshControl'
