@@ -21,8 +21,6 @@ discarded_notification_center_observer:
   severity: error
 discouraged_direct_init:
   severity: error
-empty_count:
-  severity: error
 explicit_acl:
   severity: error
 explicit_init:
@@ -128,7 +126,6 @@ whitelist_rules:
   - contains_over_first_not_nil
   - discarded_notification_center_observer
   - discouraged_direct_init
-  - empty_count
   - explicit_acl
   - explicit_init
   - fatal_error_message
