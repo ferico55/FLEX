@@ -38,7 +38,7 @@
         status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
         
         if(status) {
-            [((NSMutableDictionary*)savedKeychain)setObject:(__bridge id)(values) forKey:(__bridge id)kSecValueData];
+            [((NSMutableDictionary*)savedKeychain) setObject:(__bridge id)(values) forKey:(__bridge id)kSecValueData];
             [((NSMutableDictionary*)savedKeychain) setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
             
             status = SecItemDelete((__bridge CFDictionaryRef)savedKeychain);

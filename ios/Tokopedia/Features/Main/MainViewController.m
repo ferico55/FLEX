@@ -509,10 +509,10 @@ typedef enum TagRequest {
     [storage resetKeychain];
     [_auth removeAllObjects];
     
-    NSMutableDictionary *dictionary = @{
+    NSMutableDictionary *dictionary = [@{
                                         @"device_token": _persistToken?:@"",
                                         @"AppBaseUrl": _persistBaseUrl
-                                        };
+                                        } mutableCopy];
     if(securityQuestionUUID) {
         [dictionary setObject: securityQuestionUUID forKey:@"securityQuestionUUID"];
     }
