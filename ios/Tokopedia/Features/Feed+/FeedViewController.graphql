@@ -26,7 +26,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 					id
 					name
 					price
-                    price_int
+					price_int
 					image
 					image_single
 					wholesale {
@@ -126,7 +126,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 						app_url
 						image_url
 						price
-                        price_int
+						price_int
 						recommendation_type
 					}
 				}
@@ -187,7 +187,8 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 				kolrecommendation {
 					index
 					headerTitle
-	    			exploreLink
+					exploreLink
+					exploreText
 					kols {
 						userName
 						userId
@@ -224,11 +225,11 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 
 mutation DoLikeKOLPost($idPost: Int!, $action: Int!) {
 	do_like_kol_post(idPost: $idPost, action: $action) {
-        error
-        data {
-            success
-        }
-    }
+		error
+		data {
+			success
+		}
+	}
 }
 
 mutation DoFollowKOL($userID: Int!, $action: Int!) {

@@ -980,6 +980,7 @@ public final class FeedsQuery: GraphQLQuery {
     "          index" +
     "          headerTitle" +
     "          exploreLink" +
+    "          exploreText" +
     "          kols {" +
     "            __typename" +
     "            userName" +
@@ -3410,6 +3411,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("index", type: .scalar(Int.self)),
               GraphQLField("headerTitle", type: .scalar(String.self)),
               GraphQLField("exploreLink", type: .scalar(String.self)),
+              GraphQLField("exploreText", type: .scalar(String.self)),
               GraphQLField("kols", type: .list(.object(Kol.self))),
             ]
 
@@ -3419,8 +3421,8 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(index: Int? = nil, headerTitle: String? = nil, exploreLink: String? = nil, kols: [Kol?]? = nil) {
-              self.init(snapshot: ["__typename": "KolRecommendedDataType", "index": index, "headerTitle": headerTitle, "exploreLink": exploreLink, "kols": kols])
+            public init(index: Int? = nil, headerTitle: String? = nil, exploreLink: String? = nil, exploreText: String? = nil, kols: [Kol?]? = nil) {
+              self.init(snapshot: ["__typename": "KolRecommendedDataType", "index": index, "headerTitle": headerTitle, "exploreLink": exploreLink, "exploreText": exploreText, "kols": kols])
             }
 
             public var __typename: String {
@@ -3456,6 +3458,15 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "exploreLink")
+              }
+            }
+
+            public var exploreText: String? {
+              get {
+                return snapshot["exploreText"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "exploreText")
               }
             }
 

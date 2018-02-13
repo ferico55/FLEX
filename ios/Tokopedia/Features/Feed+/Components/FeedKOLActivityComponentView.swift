@@ -6,29 +6,29 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
+import NativeNavigation
 import Render
 import RxSwift
-import NativeNavigation
+import UIKit
 
-class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
+internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
     private var onTapLongDescription: ((FeedCardKOLPostState) -> Void)!
     private var onTapLikeButton: ((FeedCardKOLPostState) -> Void)!
     private var onTapFollowButton: ((FeedCardKOLPostState) -> Void)!
     private var contentState = FeedCardContentState()
     
-    init(onTapLongDescription: @escaping ((FeedCardKOLPostState) -> Void), onTapLikeButton: @escaping ((FeedCardKOLPostState) -> Void), onTapFollowButton: @escaping ((FeedCardKOLPostState) -> Void)) {
+    internal init(onTapLongDescription: @escaping ((FeedCardKOLPostState) -> Void), onTapLikeButton: @escaping ((FeedCardKOLPostState) -> Void), onTapFollowButton: @escaping ((FeedCardKOLPostState) -> Void)) {
         self.onTapLongDescription = onTapLongDescription
         self.onTapLikeButton = onTapLikeButton
         self.onTapFollowButton = onTapFollowButton
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+    override internal func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
         if let contentState = state, let state = contentState.kolPost {
             self.contentState = contentState
             return self.componentContainer(state: state, size: size)
@@ -194,30 +194,11 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func contentImage(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
-        return Node<UIImageView> { view, layout, _ in
+        return Node<UIImageView>() { view, layout, _ in
             layout.width = (UI_USER_INTERFACE_IDIOM() == .pad) ? 560 : UIScreen.main.bounds.width
             
             view.contentMode = .scaleAspectFit
             view.setImageWith(URL(string: state.imageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
-            view.isUserInteractionEnabled = true
-            
-            if let width = view.image?.size.width, let height = view.image?.size.height, height != 0 {
-                let aspectRatio = width / height
-                
-                layout.height = layout.width / aspectRatio
-            }
-        }.add(child: (state.tagCaption != "") ? Node<UIView>() { view, layout, _ in
-            layout.position = .absolute
-            layout.bottom = 0
-            layout.right = 0
-            layout.padding = 5
-            layout.height = 24
-            layout.justifyContent = .center
-            layout.alignItems = .center
-            layout.flexGrow = 1
-            layout.flexShrink = 1
-            
-            view.backgroundColor = UIColor.black.withAlphaComponent(0.40)
             view.isUserInteractionEnabled = true
             
             let gestureRecognizer = UITapGestureRecognizer()
@@ -230,11 +211,37 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
             
             view.addGestureRecognizer(gestureRecognizer)
             
-        }.add(child: Node<UILabel>() { label, layout, _ in
-            label.text = state.tagCaption
-            label.font = .microThemeSemibold()
-            label.textColor = .white
-        }) : NilNode())
+            if let width = view.image?.size.width, let height = view.image?.size.height, height != 0 {
+                let aspectRatio = width / height
+                
+                layout.height = layout.width / aspectRatio
+            }
+        }
+        .add(
+            child: (state.tagCaption != "") ? Node<UIView>() { view, layout, _ in
+                layout.position = .absolute
+                layout.bottom = 0
+                layout.right = 0
+                layout.padding = 5
+                layout.height = 24
+                layout.justifyContent = .center
+                layout.alignItems = .center
+                layout.flexGrow = 1
+                layout.flexShrink = 1
+                
+                view.backgroundColor = UIColor.black.withAlphaComponent(0.40)
+                
+                if #available(iOS 11, *) {
+                    view.layer.cornerRadius = 13
+                    view.layer.maskedCorners = [.layerMinXMinYCorner]
+                }
+            }
+            .add(child: Node<UILabel>() { label, _, _ in
+                label.text = state.tagCaption
+                label.font = .microThemeSemibold()
+                label.textColor = .white
+            }) : NilNode()
+        )
     }
     
     private func description(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
@@ -359,7 +366,7 @@ class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {
         return Node<UIView>() { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
+            view.backgroundColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
         }
     }
     

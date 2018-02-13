@@ -490,6 +490,11 @@ UINavigationControllerDelegate
 }
 
 - (void)scrollToTop {
+    NSArray *vcs = [_viewControllers mutableCopy];
+    if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
+        [vcs[_page] scrollToTop];
+    }
+    
     ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
     [tabManager sendScrollToTopEvent];
 }
