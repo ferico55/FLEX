@@ -677,7 +677,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                       
                                       AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
 
-                                    if let url = URL(string: "tokopedia://product/review/\(productDetail.id)/") {
+                                    if let url = URL(string: "tokopedia://product/\(productDetail.id)/review") {
                                         TPRoutes.routeURL(url)
                                         return
                                     }
@@ -870,7 +870,7 @@ class ProductDetailViewComponent: ComponentView<ProductDetailState>, StoreSubscr
                                             
                                             AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
                                             
-                                            if let url = URL(string: "tokopedia://product/review/\(productDetail.id)/") {
+                                            if let url = URL(string: "tokopedia://product/\(productDetail.id)/review") {
                                                 TPRoutes.routeURL(url)
                                                 return
                                             }

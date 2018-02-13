@@ -162,11 +162,6 @@
     [viewController.navigationController pushViewController:cart animated:YES];
 }
 
--(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID {
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"tokopedia://product/review/%@", productID]];
-    [TPRoutes routeURL:url];
-}
-
 //seller
 -(void)navigateToSellerNewOrderFromViewController:(UIViewController*)viewController {
     SalesNewOrderViewController *order = [SalesNewOrderViewController new];

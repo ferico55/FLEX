@@ -153,7 +153,15 @@ class TPRoutes: NSObject {
         // MARK: Product Review (Native)
         JLRoutes.global().addRoute("product/:productId/review") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
-            navigator.navigateToProductReview(from: UIApplication.topViewController(), withProductID: productId)
+            let userManager = UserAuthentificationManager()
+            let auth = userManager.getUserLoginData()
+            
+            let viewController = ReactViewController(moduleName: "ProductReviewScreen", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            
             return true
         }
 
@@ -1021,20 +1029,6 @@ class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/product/:productId") { (params: [String: Any]!) -> Bool in
             let productId = params["productId"] as! String
             NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: productId, andName: "", andPrice: "", andImageURL: "", andShopName: "")
-            return true
-        }
-
-        JLRoutes.global().addRoute("/product/review/:productId") { (params: [String: Any]!) -> Bool in
-            let productId = params["productId"] as! String
-            let userManager = UserAuthentificationManager()
-            let auth = userManager.getUserLoginData()
-
-            let viewController = ReactViewController(moduleName: "ProductReviewScreen", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
-            viewController.hidesBottomBarWhenPushed = true
-            UIApplication.topViewController()?
-                .navigationController?
-                .pushViewController(viewController, animated: true)
-
             return true
         }
 
