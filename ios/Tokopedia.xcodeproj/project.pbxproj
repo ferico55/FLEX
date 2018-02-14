@@ -875,6 +875,11 @@
 		F7D8CA3B2017556500725BDB /* ErrorTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA372017556400725BDB /* ErrorTracker.swift */; };
 		F7D8CA3C2017556500725BDB /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA382017556400725BDB /* Observable+Ext.swift */; };
 		F7D8CA3D2017556500725BDB /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8CA392017556400725BDB /* ViewModelType.swift */; };
+		F90DF79E202AD20500FF9043 /* onboarding5.json in Resources */ = {isa = PBXBuildFile; fileRef = F90DF799202AD20500FF9043 /* onboarding5.json */; };
+		F90DF79F202AD20500FF9043 /* onboarding4.json in Resources */ = {isa = PBXBuildFile; fileRef = F90DF79A202AD20500FF9043 /* onboarding4.json */; };
+		F90DF7A0202AD20500FF9043 /* onboarding3.json in Resources */ = {isa = PBXBuildFile; fileRef = F90DF79B202AD20500FF9043 /* onboarding3.json */; };
+		F90DF7A1202AD20500FF9043 /* onboarding2.json in Resources */ = {isa = PBXBuildFile; fileRef = F90DF79C202AD20500FF9043 /* onboarding2.json */; };
+		F90DF7A2202AD20500FF9043 /* onboarding1.json in Resources */ = {isa = PBXBuildFile; fileRef = F90DF79D202AD20500FF9043 /* onboarding1.json */; };
 		F924FCB420178E41009EDD47 /* RCTPulsaView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F924FCAF20178E40009EDD47 /* RCTPulsaView.swift */; };
 		F924FCB520178E41009EDD47 /* PulsaViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F924FCB120178E40009EDD47 /* PulsaViewManager.m */; };
 		F924FCB620178E41009EDD47 /* BannerViewManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F924FCB320178E40009EDD47 /* BannerViewManager.m */; };
@@ -3512,6 +3517,11 @@
 		F7D8CA372017556400725BDB /* ErrorTracker.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErrorTracker.swift; sourceTree = "<group>"; };
 		F7D8CA382017556400725BDB /* Observable+Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
 		F7D8CA392017556400725BDB /* ViewModelType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
+		F90DF799202AD20500FF9043 /* onboarding5.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding5.json; sourceTree = "<group>"; };
+		F90DF79A202AD20500FF9043 /* onboarding4.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding4.json; sourceTree = "<group>"; };
+		F90DF79B202AD20500FF9043 /* onboarding3.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding3.json; sourceTree = "<group>"; };
+		F90DF79C202AD20500FF9043 /* onboarding2.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding2.json; sourceTree = "<group>"; };
+		F90DF79D202AD20500FF9043 /* onboarding1.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = onboarding1.json; sourceTree = "<group>"; };
 		F924FCAF20178E40009EDD47 /* RCTPulsaView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCTPulsaView.swift; sourceTree = "<group>"; };
 		F924FCB020178E40009EDD47 /* BannerViewManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BannerViewManager.h; sourceTree = "<group>"; };
 		F924FCB120178E40009EDD47 /* PulsaViewManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PulsaViewManager.m; sourceTree = "<group>"; };
@@ -8207,6 +8217,18 @@
 			path = Rx;
 			sourceTree = "<group>";
 		};
+		F90DF798202AD20500FF9043 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				F90DF799202AD20500FF9043 /* onboarding5.json */,
+				F90DF79A202AD20500FF9043 /* onboarding4.json */,
+				F90DF79B202AD20500FF9043 /* onboarding3.json */,
+				F90DF79C202AD20500FF9043 /* onboarding2.json */,
+				F90DF79D202AD20500FF9043 /* onboarding1.json */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		F924FCAE20178E40009EDD47 /* Home */ = {
 			isa = PBXGroup;
 			children = (
@@ -8243,6 +8265,7 @@
 		F954BD261FC55B65008C0B30 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				F90DF798202AD20500FF9043 /* Onboarding */,
 				F954BD271FC55B65008C0B30 /* icon_snap@2x.png */,
 				F954BD281FC55B65008C0B30 /* badge_official_small.png */,
 				F954BD291FC55B66008C0B30 /* icon_snap@3x.png */,
@@ -11880,9 +11903,11 @@
 				F977FD481FE8AB7F00183A85 /* ReportViewController.xib in Resources */,
 				F977FA601FE8AB7900183A85 /* DistrictViewController.xib in Resources */,
 				F97700B51FE8AB8600183A85 /* Entypo.ttf in Resources */,
+				F90DF79F202AD20500FF9043 /* onboarding4.json in Resources */,
 				F977FC9E1FE8AB7D00183A85 /* ShopTagDescriptionViewCell.xib in Resources */,
 				F977FC3A1FE8AB7D00183A85 /* AlertDonation.xib in Resources */,
 				F954C4511FC55B6D008C0B30 /* icon_wishlist_active@3x.png in Resources */,
+				F90DF7A1202AD20500FF9043 /* onboarding2.json in Resources */,
 				F977FE211FE8AB8100183A85 /* PromoCollectionReusableView.xib in Resources */,
 				F977FDB51FE8AB8000183A85 /* FilterConditionCell.xib in Resources */,
 				F954C4571FC55B6D008C0B30 /* icon_more_active@2x.png in Resources */,
@@ -12000,6 +12025,7 @@
 				F97700B71FE8AB8600183A85 /* Foundation.ttf in Resources */,
 				F977FAA31FE8AB7A00183A85 /* TransactionCartShippingViewController.xib in Resources */,
 				E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */,
+				F90DF7A0202AD20500FF9043 /* onboarding3.json in Resources */,
 				F977FCF21FE8AB7E00183A85 /* ProductEditImageViewController.xib in Resources */,
 				F977FB9F1FE8AB7C00183A85 /* FilterShipmentStatusViewController.xib in Resources */,
 				92A4CBB7201731CC00C42D37 /* SellerInfoFilterButton.xib in Resources */,
@@ -12038,6 +12064,7 @@
 				F977FE001FE8AB8100183A85 /* PulsaOperatorCell.xib in Resources */,
 				F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */,
 				F977FADC1FE8AB7A00183A85 /* HomePageViewController.xib in Resources */,
+				F90DF7A2202AD20500FF9043 /* onboarding1.json in Resources */,
 				F954C4481FC55B6C008C0B30 /* icon_more@3x.png in Resources */,
 				F977FA4A1FE8AB7900183A85 /* Referral.storyboard in Resources */,
 				F977FD3F1FE8AB7F00183A85 /* SearchResultShopCell.xib in Resources */,
@@ -12057,6 +12084,7 @@
 				DADB9F5B1F3C46CF002B1FAE /* LICENSE in Resources */,
 				F977FBD91FE8AB7C00183A85 /* RejectReasonViewController.xib in Resources */,
 				F977FB331FE8AB7B00183A85 /* DepositFormAccountBankViewController.xib in Resources */,
+				F90DF79E202AD20500FF9043 /* onboarding5.json in Resources */,
 				F977FBA41FE8AB7C00183A85 /* DetailShipmentStatusViewController.xib in Resources */,
 				F977FB5F1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.xib in Resources */,
 				F977FB411FE8AB7B00183A85 /* MaintenanceViewController.xib in Resources */,

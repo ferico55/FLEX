@@ -69,7 +69,7 @@ def common_pods
     pod 'AHKActionSheet', '~>0.5.4'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'DownPicker', '~> 0.1.34'
-    pod 'EAIntroView', '~> 2.8.0'
+    pod 'EAIntroView', '~> 2.12.0'
     pod 'EZYGradientView-ObjC', '~> 1.3'
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
     pod 'JDStatusBarNotification', '~> 1.5.6'
