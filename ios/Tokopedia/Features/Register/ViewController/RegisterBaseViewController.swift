@@ -128,7 +128,9 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         GIDSignIn.sharedInstance().disconnect()
         
         let storageManager = SecureStorageManager()
-        storageManager.storeLoginInformation(login.result)
+        if !storageManager.storeLoginInformation(login.result) {
+            return
+        }
         
         AnalyticsManager.trackLogin(login)
         

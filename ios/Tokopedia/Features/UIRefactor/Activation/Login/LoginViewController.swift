@@ -61,7 +61,9 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
     }
     func loginSuccess(login: Login) {
         LoginAnalytics().trackMoEngageEvent(with: login)
-        SecureStorageManager().storeLoginInformation(login.result)
+        if !SecureStorageManager().storeLoginInformation(login.result) {
+            return
+        }
         AnalyticsManager.trackLogin(login)
         UserRequest.getUserInformation(withUserID: UserAuthentificationManager().getUserId(),
                                        onSuccess: { (_: ProfileInfo) in

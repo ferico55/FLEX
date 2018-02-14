@@ -265,7 +265,9 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
         GIDSignIn.sharedInstance().disconnect()
         
         let storageManager = SecureStorageManager()
-        storageManager.storeLoginInformation(login.result)
+        if !storageManager.storeLoginInformation(login.result) {
+            return
+        }
                 
         if self.isLoginPresented {
             self.navigationController?.dismiss(animated: true, completion: nil)

@@ -171,6 +171,9 @@
 }
 
 - (void)setKeychainWithValue:(id)value withKey:(NSString *)key {
+    if (!value) {
+        value = [NSNull null];
+    }
     [self setKeychainWithDictionary:@{key: value}];
 }
 

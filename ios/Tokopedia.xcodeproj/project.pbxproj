@@ -2092,6 +2092,7 @@
 		F98052672018AAFE00CE6D67 /* ReactOrderManager.m in Sources */ = {isa = PBXBuildFile; fileRef = F98052472018AAFA00CE6D67 /* ReactOrderManager.m */; };
 		F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */; };
 		F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */; };
+		F9BFCD9C202029CC007F7ED4 /* DictionaryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -5183,6 +5184,7 @@
 		F98052472018AAFA00CE6D67 /* ReactOrderManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ReactOrderManager.m; sourceTree = "<group>"; };
 		F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactSplitViewController.swift; sourceTree = "<group>"; };
 		F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactPopoverOptionViewController.xib; sourceTree = "<group>"; };
+		F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryHelper.swift; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -11351,6 +11353,7 @@
 				F7D8CA352017556400725BDB /* Rx */,
 				F977F9D61FE8AB7800183A85 /* Spotlight */,
 				F977F9E41FE8AB7800183A85 /* TKPStoreManager */,
+				F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -13385,6 +13388,7 @@
 				F977FBF91FE8AB7C00183A85 /* FuzzySearchCatalog.swift in Sources */,
 				F977FCC51FE8AB7E00183A85 /* AuthTokenRequest.swift in Sources */,
 				62C771911FF33C3400F66527 /* ListFavoriteShop.m in Sources */,
+				F9BFCD9C202029CC007F7ED4 /* DictionaryHelper.swift in Sources */,
 				F977FA651FE8AB7A00183A85 /* ProductDetailDiscussionNode.swift in Sources */,
 				F97700711FE8AB8500183A85 /* MainViewController.m in Sources */,
 				F977FA521FE8AB7900183A85 /* CatalogInfo+Referable.swift in Sources */,

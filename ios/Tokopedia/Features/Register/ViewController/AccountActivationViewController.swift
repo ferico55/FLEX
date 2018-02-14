@@ -195,7 +195,9 @@ class AccountActivationViewController: UIViewController, UITextFieldDelegate {
     
     private func onLoginSuccess(login: Login) {
         let storageManager = SecureStorageManager()
-        storageManager.storeLoginInformation(login.result)
+        if !storageManager.storeLoginInformation(login.result) {
+            return
+        }
         
         let userManager = UserAuthentificationManager()
         UserRequest.getUserInformation(

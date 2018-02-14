@@ -22,7 +22,7 @@ class SecureStorageManager: NSObject {
     }
     
     func storeToken(_ token: OAuthToken) {
-        var tokenDictionary: [AnyHashable: Any] = [
+        var tokenDictionary: [AnyHashable: Any?] = [
             "oAuthToken.accessToken": token.accessToken,
             "oAuthToken.tokenType": token.tokenType,
         ]
@@ -30,11 +30,15 @@ class SecureStorageManager: NSObject {
         if token.refreshToken != "" {
             tokenDictionary["oAuthToken.refreshToken"] = token.refreshToken
         }
+        tokenDictionary = tokenDictionary.avoidImplicitNil()
         self.storage.setKeychainWith(tokenDictionary)
     }
-    
-    func storeLoginInformation(_ loginResult: LoginResult) {
-        var userDictionary: [AnyHashable: Any] = [
+
+    func storeLoginInformation(_ loginResult: LoginResult) -> Bool {
+        if (loginResult.user_id == nil) {
+            return false
+        }
+        var userDictionary: [AnyHashable: Any?] = [
             "is_login": NSNumber(value: loginResult.is_login),
             "user_id": loginResult.user_id,
             "full_name": loginResult.full_name,
@@ -66,7 +70,9 @@ class SecureStorageManager: NSObject {
                 "reputation_neutral": userReputation.neutral
                 ])
         }
+        userDictionary = userDictionary.avoidImplicitNil()
         self.storage.setKeychainWith(userDictionary)
+        return true
     }
     
     func storeUserInformation(_ user: ProfileInfoResult) {
@@ -74,7 +80,7 @@ class SecureStorageManager: NSObject {
         
         let convertedNumber = userInfo.user_phone.replacingPrefix(of: "0", with: "62")
         
-        var userDictionary: [AnyHashable: Any] = [
+        var userDictionary: [AnyHashable: Any?] = [
             "full_name": userInfo.user_name,
             "short_name": self.getShortNameFromFullName((userInfo.user_name)!),
             "user_id": userInfo.user_id,
@@ -98,6 +104,7 @@ class SecureStorageManager: NSObject {
                 "reputation_neutral": userReputation.neutral
                 ])
         }
+        userDictionary = userDictionary.avoidImplicitNil()
         self.storage.setKeychainWith(userDictionary)
     }
     
@@ -105,12 +112,13 @@ class SecureStorageManager: NSObject {
         guard let shopInfo = user.shop_info else { return }
         guard let shopStats = user.shop_stats else { return }
         
-        let shopDictionary: [AnyHashable: Any] = [
+        let shopDictionary: [AnyHashable: Any?] = [
             "total_sold_item": shopStats.shop_item_sold,
             "shop_location": shopInfo.shop_location,
             "date_shop_created": shopInfo.shop_open_since,
         ]
-        self.storage.setKeychainWith(shopDictionary)
+        let safeDictionary = shopDictionary.avoidImplicitNil()
+        self.storage.setKeychainWith(safeDictionary)
     }
     
     func storeAnalyticsInformation(data: MoEngageQuery.Data) {
@@ -143,7 +151,7 @@ class SecureStorageManager: NSObject {
         let totalActiveProduct = data.shopInfoMoengage?.info?.totalActiveProduct ?? 0
         let shopScore = data.shopInfoMoengage?.info?.shopScore ?? 0
         
-        let analyticsDictionary: [AnyHashable: Any] = [
+        let analyticsDictionary: [AnyHashable: Any?] = [
             "is_seller": NSNumber(value: isSeller),
             "gender": gender,
             "city": city,
@@ -161,7 +169,8 @@ class SecureStorageManager: NSObject {
             "total_active_product": totalActiveProduct,
             "shop_score": shopScore,
         ]
-        self.storage.setKeychainWith(analyticsDictionary)
+        let safeDictionary = analyticsDictionary.avoidImplicitNil()
+        self.storage.setKeychainWith(safeDictionary)
     }
     
     func storeTokoCashToken(_ token: String) {

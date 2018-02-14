@@ -188,16 +188,20 @@ import RestKit
             }
         } else {
             let storage = TKPDSecureStorage.standardKeyChains()
-            let tokenDictionary: [String: Any] = [
+            let tokenDictionary: [String: Any?] = [
                 "oAuthToken.accessToken": self.authToken?.accessToken,
                 "oAuthToken.refreshToken": self.authToken?.refreshToken,
                 "oAuthToken.tokenType": self.authToken?.tokenType
             ]
-            
-            storage?.setKeychainWith(tokenDictionary)
+            let safeDictionary = tokenDictionary.avoidImplicitNil()
+            storage?.setKeychainWith(safeDictionary)
             
             let storageManager = SecureStorageManager()
-            storageManager.storeLoginInformation(login.result)
+            if !storageManager.storeLoginInformation(login.result) {
+                let error = NSError(domain: "Login", code: -112233, userInfo: nil)
+                self.onLoginComplete(nil, error)
+                return
+            }
             let userManager = UserAuthentificationManager()
             UserRequest.getUserInformation(
                 withUserID: userManager.getUserId(),
@@ -205,7 +209,6 @@ import RestKit
                     AnalyticsManager.moEngageTrackUserAttributes()
                 },
                 onFailure: {
-                    
                 }
             )
             if self.didEnterCreatePassword, let delegate = self.loginDelegate {
