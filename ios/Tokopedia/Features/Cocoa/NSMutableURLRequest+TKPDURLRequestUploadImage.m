@@ -76,7 +76,8 @@
     
     [request setValue:@"Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5" forHTTPHeaderField:@"User-Agent"];
     
-    NSDictionary* authorizedHeaders = [hmac authorizedHeaders];
+    NSMutableDictionary* authorizedHeaders = [hmac authorizedHeaders];
+    [authorizedHeaders setValue:[NSString stringWithFormat:@"ios-%@", [UIApplication getAppVersionString]] forKey:@"X-Device"];
     [authorizedHeaders bk_each:^(NSString* key, NSString* value) {
         [request setValue:value forHTTPHeaderField:key];
     }];
