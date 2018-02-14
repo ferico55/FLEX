@@ -80,7 +80,7 @@
                                       @"client_id"      :clientID?:@"",
                                       @"fingerprint_support": @(hasTouchID),
                                       @"fingerprint_publickey": [service getPublicKey],
-                                      @"is_thankyou_native" : @"1"
+                                      @"is_thankyou_native_new": @"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {

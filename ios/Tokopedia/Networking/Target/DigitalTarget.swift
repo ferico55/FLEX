@@ -6,16 +6,16 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Moya
-import MoyaUnbox
 import AdSupport
 import AppsFlyer
+import Moya
+import MoyaUnbox
 
 private let userAgent = "Mozilla/5.0 (iPod; U; CPU iPhone OS 4_3_3 like Mac OS X; ja-jp) AppleWebKit/533.17.9 (KHTML, like Gecko) Version/5.0.2 Mobile/8J2 Safari/6533.18.5"
 
-class DigitalProvider: NetworkProvider<DigitalTarget> {
+internal class DigitalProvider: NetworkProvider<DigitalTarget> {
     
-    init() {
+    internal init() {
         super.init(endpointClosure: DigitalProvider.endpointClosure)
     }
     
@@ -35,7 +35,7 @@ class DigitalProvider: NetworkProvider<DigitalTarget> {
     }
 }
 
-enum DigitalTarget {
+internal enum DigitalTarget {
     case addToCart(withProductId: String, inputFields: [String: String], instantCheckout: Bool)
     case payment(voucherCode: String, transactionAmount: Double, transactionId: String)
     case category(String)
@@ -50,10 +50,10 @@ enum DigitalTarget {
 extension DigitalTarget: TargetType {
     
     /// The target's base `URL`.
-    var baseURL: URL { return URL(string: NSString.pulsaApiUrl())! }
+    internal var baseURL: URL { return URL(string: NSString.pulsaApiUrl())! }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
-    var path: String {
+    internal var path: String {
         switch self {
         case .addToCart: return "/v1.4/cart"
         case .payment: return "/v1.4/checkout"
@@ -68,7 +68,7 @@ extension DigitalTarget: TargetType {
     }
     
     /// The HTTP method used in the request.
-    var method: Moya.Method {
+    internal var method: Moya.Method {
         switch self {
         case .addToCart, .payment: return .post
         case .category, .voucher, .getCart, .lastOrder, .favourite: return .get
@@ -78,7 +78,7 @@ extension DigitalTarget: TargetType {
     }
     
     /// The parameters to be incoded in the request.
-    var parameters: [String: Any]? {
+    internal var parameters: [String: Any]? {
         let userManager = UserAuthentificationManager()
         
         switch self {
@@ -100,7 +100,7 @@ extension DigitalTarget: TargetType {
                         "user_agent": userAgent,
                         "show_subscribe_flag": true,
                         "fields": fields,
-                        "is_thankyou_native": true,
+                        "is_thankyou_native_new": true,
                         "identifier": [
                             "user_id": userManager.getUserId(),
                             "device_token": userManager.getMyDeviceToken(),
@@ -192,7 +192,7 @@ extension DigitalTarget: TargetType {
     }
     
     /// The method used for parameter encoding.
-    var parameterEncoding: ParameterEncoding {
+    internal var parameterEncoding: ParameterEncoding {
         switch self {
         case .addToCart, .otpSuccess, .payment: return JSONEncoding.default
         default: return URLEncoding.default
@@ -200,14 +200,14 @@ extension DigitalTarget: TargetType {
     }
     
     /// Provides stub data for use in testing.
-    var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
+    internal var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
     
     /// The type of HTTP task to be performed.
-    var task: Task { return .request }
+    internal var task: Task { return .request }
     
 }
 
-func getIFAddresses() -> String {
+private func getIFAddresses() -> String {
     var addresses = [String]()
     
     // Get list of all interfaces on the local machine:
