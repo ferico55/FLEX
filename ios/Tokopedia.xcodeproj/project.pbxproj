@@ -24,6 +24,8 @@
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
 		622A6AB92015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */; };
+		626C4EB52034157000955D23 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626C4EB42034157000955D23 /* RequestErrorHandler.swift */; };
+		626C4EB72034172100955D23 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626C4EB62034172000955D23 /* URLExtension.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
 		627065981D7EAFC900BDE9F8 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065971D7EAFC900BDE9F8 /* libz.tbd */; };
 		62C6DDF11E81179A006EDAD8 /* UserNotifications.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -2177,6 +2179,8 @@
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
 		622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardContentProductCommunicationState.swift; sourceTree = "<group>"; };
+		626C4EB42034157000955D23 /* RequestErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorHandler.swift; sourceTree = "<group>"; };
+		626C4EB62034172000955D23 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
 		627065971D7EAFC900BDE9F8 /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		62C6DDEF1E8114FF006EDAD8 /* UserNotifications.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UserNotifications.framework; path = System/Library/Frameworks/UserNotifications.framework; sourceTree = SDKROOT; };
@@ -8410,6 +8414,7 @@
 		F977EEF41FE8AB6E00183A85 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
+				626C4EB62034172000955D23 /* URLExtension.swift */,
 				E525C6DA20173930003CC99B /* NSDate+Formatter.swift */,
 				92A4CBA4201731A500C42D37 /* DateExtension.swift */,
 				E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */,
@@ -11326,34 +11331,35 @@
 		F977F9C71FE8AB7800183A85 /* Helper */ = {
 			isa = PBXGroup;
 			children = (
-				F977F9F61FE8AB7800183A85 /* NavigationHelper.h */,
-				F977F9DA1FE8AB7800183A85 /* VersionCheckerConfig.h */,
-				F977F9DC1FE8AB7800183A85 /* NavigationHelper.m */,
-				F977F9F81FE8AB7800183A85 /* VersionCheckerConfig.m */,
+				F977FA0F1FE8AB7800183A85 /* Analytics */,
 				F977F9D91FE8AB7800183A85 /* AuthenticationServiceExtension.swift */,
+				F977FA081FE8AB7800183A85 /* CacheController */,
 				F977F9DB1FE8AB7800183A85 /* CollectionViewCellType.swift */,
+				F977F9DD1FE8AB7800183A85 /* Constants */,
 				F977F9E31FE8AB7800183A85 /* DelayedActionManager.swift */,
 				E501C0DF2004DC02005A01E8 /* DeviceIdentifier.swift */,
+				F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */,
+				F977F9CA1FE8AB7800183A85 /* Encryption */,
+				F977F9FD1FE8AB7800183A85 /* Fonts */,
 				F977F9C91FE8AB7800183A85 /* FoundationHelper.swift */,
 				F977F9F31FE8AB7800183A85 /* GlobalRenderComponent.swift */,
 				F977F9FB1FE8AB7800183A85 /* HomePageHeaderSectionStyle.swift */,
 				F977F9FC1FE8AB7800183A85 /* LabelCopyable.swift */,
 				F977F9F51FE8AB7800183A85 /* MigrationHelper.swift */,
+				F977F9F61FE8AB7800183A85 /* NavigationHelper.h */,
+				F977F9DC1FE8AB7800183A85 /* NavigationHelper.m */,
 				F977F9F71FE8AB7800183A85 /* QuickActionHelper.swift */,
-				F977F9F91FE8AB7800183A85 /* ScreenshotHelper.swift */,
-				F977F9C81FE8AB7800183A85 /* TouchIDHelper.swift */,
-				F977F9FA1FE8AB7800183A85 /* VersionChecker.swift */,
-				F977F9F41FE8AB7800183A85 /* ViewControllerSwipeGestureProtocol.swift */,
-				F7D8CA392017556400725BDB /* ViewModelType.swift */,
-				F977FA0F1FE8AB7800183A85 /* Analytics */,
-				F977FA081FE8AB7800183A85 /* CacheController */,
-				F977F9DD1FE8AB7800183A85 /* Constants */,
-				F977F9CA1FE8AB7800183A85 /* Encryption */,
-				F977F9FD1FE8AB7800183A85 /* Fonts */,
+				626C4EB42034157000955D23 /* RequestErrorHandler.swift */,
 				F7D8CA352017556400725BDB /* Rx */,
+				F977F9F91FE8AB7800183A85 /* ScreenshotHelper.swift */,
 				F977F9D61FE8AB7800183A85 /* Spotlight */,
 				F977F9E41FE8AB7800183A85 /* TKPStoreManager */,
-				F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */,
+				F977F9C81FE8AB7800183A85 /* TouchIDHelper.swift */,
+				F977F9FA1FE8AB7800183A85 /* VersionChecker.swift */,
+				F977F9DA1FE8AB7800183A85 /* VersionCheckerConfig.h */,
+				F977F9F81FE8AB7800183A85 /* VersionCheckerConfig.m */,
+				F977F9F41FE8AB7800183A85 /* ViewControllerSwipeGestureProtocol.swift */,
+				F7D8CA392017556400725BDB /* ViewModelType.swift */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -13786,6 +13792,7 @@
 				62C771871FF33C3400F66527 /* UserInfo.m in Sources */,
 				F7D8CA30201754E800725BDB /* TokoCashToken.swift in Sources */,
 				F977FA591FE8AB7900183A85 /* ProductUnbox+Referable.swift in Sources */,
+				626C4EB72034172100955D23 /* URLExtension.swift in Sources */,
 				F977FCD71FE8AB7E00183A85 /* IntermediarySlide.swift in Sources */,
 				F977FAD01FE8AB7A00183A85 /* SettingUserProfileRequest.swift in Sources */,
 				62C7717D1FF33C3400F66527 /* NotificationForm.m in Sources */,
@@ -13816,6 +13823,7 @@
 				F977FAFB1FE8AB7A00183A85 /* FavoritedShopCell.m in Sources */,
 				62C771971FF33C3400F66527 /* ContactUsActionResultError.m in Sources */,
 				F977005E1FE8AB8500183A85 /* DigitalFavouriteNumberCell.swift in Sources */,
+				626C4EB52034157000955D23 /* RequestErrorHandler.swift in Sources */,
 				62C770A01FF33C3300F66527 /* EditSolution.swift in Sources */,
 				F977FB921FE8AB7B00183A85 /* CategoryIntermediaryHotListImagePortrait.swift in Sources */,
 				E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */,
