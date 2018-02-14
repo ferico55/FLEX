@@ -8,7 +8,7 @@ force_try:
   severity: error
 force_unwrapping: warning
 array_init:
-  severity: error
+  severity: warning # changed to warning due to false positive
 block_based_kvo:
   severity: error
 class_delegate_protocol:
@@ -28,7 +28,7 @@ explicit_init:
 fatal_error_message:
   severity: error
 first_where:
-  severity: error
+  severity: warning # changed to warning due to false positive
 for_where:
   severity: error
 generic_type_name:
