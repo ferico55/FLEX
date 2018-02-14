@@ -28,7 +28,7 @@ public class TPRoutes: NSObject {
         let navigator = NavigateViewController()
 
         registerDigitalRouting()
-
+        
         // MARK: Root
         JLRoutes.global().addRoute("/pop-to-root") { (_: [String: Any]) -> Bool in
             UIApplication.topViewController()?.navigationController?.popViewController(animated: true)
@@ -246,7 +246,19 @@ guard let productId = params["productId"] as? String else { return true }
         }
 
         JLRoutes.global().unmatchedURLHandler = { _, url, _ in
-            self.openWebView(url!)
+            if url?.scheme == "tokopedia" {
+                let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
+                    UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
+                
+                UIApplication.topViewController()?.present(alert, animated: true)
+            } else {
+                self.openWebView(url!)
+            }
         }
 
         // MARK: Digital Category - Tokocash (Native)
@@ -608,7 +620,7 @@ guard let productId = params["productId"] as? String else { return true }
         }
 
         // MARK: Official Store Promo (Native)
-        JLRoutes.global().addRoute("/official-store/promo/:slug") { (params: [String: Any]) -> Bool in
+        JLRoutes.global().add(["/official-store/promo/:slug", "/sale/:slug"]) { (params: [String: Any]) -> Bool in
             guard let slug = params["slug"] as? String else { return false }
             navigator.navigateToOfficialPromo(from: UIApplication.topViewController(), withSlug: slug)
 
@@ -1025,7 +1037,8 @@ guard let productId = params["productId"] as? String else { return true }
         // MARK: Shop Page (Native)
         JLRoutes.global().addRoute("/:shopName") { (params: [String: Any]) -> Bool in
             guard let url = params[kJLRouteURLKey] as? URL,
-                let shopName = params["shopName"] as? String else {
+                let shopName = params["shopName"] as? String,
+                url.scheme != "tokopedia" else {
                     return false
             }
             
@@ -1047,8 +1060,7 @@ guard let productId = params["productId"] as? String else { return true }
             return true
         }
 
-        JLRoutes.global().addRoute("/thankyou/:platform/:template") { (params: [String: Any]!) -> Bool in
-
+        JLRoutes.global().addRoute("/thankyou/:platform/:template") { (params: [String: Any]) -> Bool in
             guard let platform = params["platform"] as? String else { return false }
             let parameters = decodePlus(params: queryParams(params: params))
             let auth = UserAuthentificationManager()
@@ -1077,7 +1089,8 @@ guard let productId = params["productId"] as? String else { return true }
         JLRoutes.global().addRoute("/:shopName/:productName") { (params: [String: Any]) -> Bool in
             guard let url = params[kJLRouteURLKey] as? NSURL,
                 let productName = params["productName"] as? String,
-                let shopName = params["shopName"] as? String else {
+                let shopName = params["shopName"] as? String,
+                url.scheme != "tokopedia" else {
                     return false
             }
 
@@ -1089,6 +1102,12 @@ guard let productId = params["productId"] as? String else { return true }
                 }
             })
 
+            return true
+        }
+        
+        // MARK: Login and Registration (Redirect to web view)
+        JLRoutes.global().add(["/login", "/registration"]) { _ in
+            openWebView(URL(string: "https://m.tokopedia.com")!)
             return true
         }
     }
