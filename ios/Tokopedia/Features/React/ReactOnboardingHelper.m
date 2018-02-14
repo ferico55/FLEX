@@ -54,9 +54,8 @@ RCT_EXPORT_METHOD(showShopOnboarding:(NSDictionary*) options callback: (RCTRespo
             shopVC.delegate = self;
             return;
         }
+        [vc showOnboarding];
     }
-    
-    [vc showOnboarding];
 }
 
 

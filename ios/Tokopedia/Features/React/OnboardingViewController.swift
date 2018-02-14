@@ -67,10 +67,21 @@ class OnboardingViewController: UIViewController {
             nextButton.setTitle("Mengerti", for: .normal)
         } else {
             backButton.isHidden = currentStep == 0
+            
+            if (currentStep > 0) {
+                let swipeRightGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
+                swipeRightGestureRecognizer.direction = .right
+                self.view.addGestureRecognizer(swipeRightGestureRecognizer)
+            }
+            
             if currentStep == totalStep - 1 {
                 nextButton.setTitle("Mengerti", for: .normal)
             } else {
                 nextButton.setTitle("Selanjutnya", for: .normal)
+                
+                let swipeLeftGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
+                swipeLeftGestureRecognizer.direction = .left
+                self.view.addGestureRecognizer(swipeLeftGestureRecognizer)
             }
             pageControl.currentPage = currentStep
             pageControl.numberOfPages = totalStep
@@ -117,7 +128,7 @@ class OnboardingViewController: UIViewController {
         self.superViewController?.present(self, animated: true, completion: nil)
     }
     
-    func makeOverlayView() -> UIView {
+    private func makeOverlayView() -> UIView {
         guard let superVC = self.superViewController else {
             return UIView()
         }
@@ -137,8 +148,21 @@ class OnboardingViewController: UIViewController {
         return overlayView
     }
     
-    func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+    private func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
         callback(.cancel)
+    }
+    
+    func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
+        switch gesture.direction {
+        case .left:
+            self.btnNextTap(gesture)
+            break
+        case .right:
+            self.btnBackTap(gesture)
+            break
+        default:
+            print("default")
+        }
     }
     
     // MARK: IBActions
