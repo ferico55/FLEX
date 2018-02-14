@@ -607,6 +607,9 @@
 		85C494BF1AD790DD008A314A /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494BE1AD790DD008A314A /* libz.dylib */; };
 		85C494C11AD790E4008A314A /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 85C494C01AD790E4008A314A /* CoreData.framework */; };
 		923D971F20048A7800EADE79 /* main.jsbundle in Resources */ = {isa = PBXBuildFile; fileRef = 923D971E20048A7700EADE79 /* main.jsbundle */; };
+		9244D37120298537005CFB89 /* ForbiddenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9244D36F20298537005CFB89 /* ForbiddenViewController.swift */; };
+		9244D37220298537005CFB89 /* ForbiddenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9244D37020298537005CFB89 /* ForbiddenViewController.xib */; };
+		924AAD31203144900019CAFE /* NetworkingRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */; };
 		924B14ED200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */; };
 		924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */; };
 		924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CE200DB28A00CB65D2 /* AIRGoogleMapMarker.m */; };
@@ -3174,6 +3177,9 @@
 		85C494C01AD790E4008A314A /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		85C5952A1E7FE95B0048CB6A /* ServiceExtension-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ServiceExtension-Bridging-Header.h"; sourceTree = "<group>"; };
 		923D971E20048A7700EADE79 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = main.jsbundle; path = React/main.jsbundle; sourceTree = "<group>"; };
+		9244D36F20298537005CFB89 /* ForbiddenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForbiddenViewController.swift; sourceTree = "<group>"; };
+		9244D37020298537005CFB89 /* ForbiddenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForbiddenViewController.xib; sourceTree = "<group>"; };
+		924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingRemoteConfig.swift; sourceTree = "<group>"; };
 		924B14C7200DB28A00CB65D2 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
 		924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
 		924B14C9200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapMarkerManager.h; sourceTree = "<group>"; };
@@ -7362,6 +7368,15 @@
 			path = WebService;
 			sourceTree = "<group>";
 		};
+		9244D36E2029850D005CFB89 /* Forbidden */ = {
+			isa = PBXGroup;
+			children = (
+				9244D36F20298537005CFB89 /* ForbiddenViewController.swift */,
+				9244D37020298537005CFB89 /* ForbiddenViewController.xib */,
+			);
+			path = Forbidden;
+			sourceTree = "<group>";
+		};
 		924B14C6200DB28A00CB65D2 /* AirGoogleMaps */ = {
 			isa = PBXGroup;
 			children = (
@@ -8303,6 +8318,7 @@
 				E57974EF1FEA749200610655 /* Service */,
 				F977EEBE1FE8AB6D00183A85 /* Target */,
 				F977EEBC1FE8AB6D00183A85 /* Util */,
+				924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -8427,6 +8443,7 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				9244D36E2029850D005CFB89 /* Forbidden */,
 				F977EF2D1FE8AB6E00183A85 /* Cache */,
 				F977F5181FE8AB7400183A85 /* Cocoa */,
 				F977F9611FE8AB7600183A85 /* Digital */,
@@ -11838,6 +11855,7 @@
 				F977FB4F1FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.xib in Resources */,
 				F977FBB11FE8AB7C00183A85 /* CancelShipmentViewController.xib in Resources */,
 				F977FDFF1FE8AB8100183A85 /* PulsaProductCell.xib in Resources */,
+				9244D37220298537005CFB89 /* ForbiddenViewController.xib in Resources */,
 				F977FB371FE8AB7B00183A85 /* DepositListBankCell.xib in Resources */,
 				F977FB021FE8AB7B00183A85 /* GeneralList1GestureCell.xib in Resources */,
 				E5D8A5762010A311003E66BA /* LoginPhoneNumberOTPViewController.xib in Resources */,
@@ -12980,6 +12998,7 @@
 				92A4CBB4201731CC00C42D37 /* SellerInfoList.swift in Sources */,
 				F977FA291FE8AB7900183A85 /* JSONAbleType.swift in Sources */,
 				62C770BC1FF33C3300F66527 /* DriverInfo.m in Sources */,
+				924AAD31203144900019CAFE /* NetworkingRemoteConfig.swift in Sources */,
 				62C771861FF33C3400F66527 /* ProfileCompletionInfo.swift in Sources */,
 				62C770C11FF33C3300F66527 /* OrderSellerShop.m in Sources */,
 				F977FAA41FE8AB7A00183A85 /* CartValidation.m in Sources */,
@@ -13282,6 +13301,7 @@
 				F977FC6B1FE8AB7D00183A85 /* FilterCatalogViewController.m in Sources */,
 				62C7702B1FF33C3200F66527 /* TransactionSystemBank.m in Sources */,
 				F977FDE41FE8AB8000183A85 /* EtalaseCell.m in Sources */,
+				9244D37120298537005CFB89 /* ForbiddenViewController.swift in Sources */,
 				F977FA721FE8AB7A00183A85 /* PaymentViewModel.swift in Sources */,
 				F977FB751FE8AB7B00183A85 /* CategoryResultViewController.m in Sources */,
 				F977FB671FE8AB7B00183A85 /* RequestResolutionAction.m in Sources */,

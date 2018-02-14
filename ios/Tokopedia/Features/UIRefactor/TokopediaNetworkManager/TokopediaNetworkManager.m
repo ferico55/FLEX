@@ -15,6 +15,8 @@
 #import "Tokopedia-Swift.h"
 #import "NSOperationQueue+SharedQueue.h"
 
+@import FirebaseRemoteConfig;
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @implementation TokopediaNetworkManager {
@@ -157,6 +159,16 @@
 
 - (void)showErrorAlert:(NSError*)error {
     NSArray *errors;
+    
+    NSHTTPURLResponse *response = error.userInfo[AFRKNetworkingOperationFailingURLResponseErrorKey];
+    
+    if (response.statusCode == 403) {
+        if (FIRRemoteConfig.remoteConfig.shouldShowForbiddenScreen) {
+            [UIApplication.topViewController presentViewController:[ForbiddenViewController new] animated:YES completion:nil];
+        }
+        return;
+    }
+    
     if(error.code == -1011 || error.code == -999) {
         errors = @[@"Terjadi kendala pada server. Mohon coba beberapa saat lagi."];
     } else if (error.code == -1009) {

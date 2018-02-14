@@ -8,6 +8,7 @@
 import UIKit
 import Moya
 import RxSwift
+import FirebaseRemoteConfig
 
 extension TargetType {
     func urlString() -> String? {
@@ -29,8 +30,14 @@ private enum ResponseType: String {
     case maintenance = "UNDER_MAINTENANCE"
     case tooManyRequests = "TOO_MANY_REQUEST"
     case requestDenied = "REQUEST_DENIED"
+    case forbidden
     
     init(response: Response) {
+        if response.statusCode == 403 {
+            self = .forbidden
+            return
+        }
+        
         guard let json = try? response.mapJSON() as? [String: Any],
             let status = json?["status"] as? String,
             let responseType = ResponseType(rawValue: status)
@@ -130,6 +137,12 @@ class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: TargetType {
                             NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                         }
                     })
+                    
+                case .forbidden:
+                    if RemoteConfig.remoteConfig().shouldShowForbiddenScreen {
+                        UIApplication.topViewController()?.present(ForbiddenViewController(), animated: true)
+                    }
+                    
                 default: return
                     
                 }
