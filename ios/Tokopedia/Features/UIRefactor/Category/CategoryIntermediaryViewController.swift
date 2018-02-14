@@ -43,6 +43,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             layout.height = 0
             refreshControl.bk_addEventHandler({ _ in
                 state?.intermediaryViewController?.requestHotlist()
+                guard let categoryId = state?.categoryIntermediaryResult?.id else { return }
+                state?.intermediaryViewController?.requestTopAdsHeadline(departmentId: categoryId)
             }, for: .valueChanged)
         })
         
@@ -752,7 +754,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     func requestTopAdsHeadline(departmentId: String) {
-        TopAdsService().requestTopAdsHeadline(departmentId: departmentId, onSuccess: { (topAdsHeadline) in
+        TopAdsService().requestTopAdsHeadline(departmentId: departmentId, source: .intermediary, onSuccess: { (topAdsHeadline) in
             self.intermediaryView.state?.topAdsHeadline = topAdsHeadline
         }) { (error) in
             
