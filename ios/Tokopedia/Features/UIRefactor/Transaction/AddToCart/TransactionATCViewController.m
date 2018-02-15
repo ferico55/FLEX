@@ -378,7 +378,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     NSArray *shipmentAvailable = _ATCForm.form.shipment;
     NSString *insurance = @"1";
     NSNumber *catID = _ATCForm.form.product_detail.product_cat_id;
-    NSString *orderValue = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] stringValue];
+    NSString *orderValue = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] stringValue] ?: @"0";
     NSString *productInsurance = _ATCForm.form.product_detail.product_must_insurance;
     
     [RequestRates fetchRateWithName:name
