@@ -154,7 +154,7 @@ extension TokoCashTarget: TargetType {
         case let .sendOTP(phoneNumber, accept):
             return [
                 "msisdn": phoneNumber,
-                "accept": accept
+                "accept": accept.rawValue
             ]
         case let .verifyOTP(phoneNumber, otpCode):
             return [

@@ -877,7 +877,7 @@
 		F7D8CA27201754E800725BDB /* TokoCashHelpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9DB201754E700725BDB /* TokoCashHelpViewModel.swift */; };
 		F7D8CA28201754E800725BDB /* TokoCash.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F7D8C9DC201754E700725BDB /* TokoCash.storyboard */; };
 		F7D8CA29201754E800725BDB /* TokoCashUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9DE201754E700725BDB /* TokoCashUseCase.swift */; };
-		F7D8CA2A201754E800725BDB /* TokocashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9DF201754E700725BDB /* TokocashNetworkProvider.swift */; };
+		F7D8CA2A201754E800725BDB /* TokoCashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9DF201754E700725BDB /* TokoCashNetworkProvider.swift */; };
 		F7D8CA2B201754E800725BDB /* TokoCashProfileResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9E1201754E700725BDB /* TokoCashProfileResponse.swift */; };
 		F7D8CA2C201754E800725BDB /* TokoCashPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9E2201754E700725BDB /* TokoCashPayment.swift */; };
 		F7D8CA2D201754E800725BDB /* TokoCashMoveToSaldo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F7D8C9E3201754E700725BDB /* TokoCashMoveToSaldo.swift */; };
@@ -3536,7 +3536,7 @@
 		F7D8C9DB201754E700725BDB /* TokoCashHelpViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashHelpViewModel.swift; sourceTree = "<group>"; };
 		F7D8C9DC201754E700725BDB /* TokoCash.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = TokoCash.storyboard; sourceTree = "<group>"; };
 		F7D8C9DE201754E700725BDB /* TokoCashUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashUseCase.swift; sourceTree = "<group>"; };
-		F7D8C9DF201754E700725BDB /* TokocashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokocashNetworkProvider.swift; sourceTree = "<group>"; };
+		F7D8C9DF201754E700725BDB /* TokoCashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashNetworkProvider.swift; sourceTree = "<group>"; };
 		F7D8C9E1201754E700725BDB /* TokoCashProfileResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashProfileResponse.swift; sourceTree = "<group>"; };
 		F7D8C9E2201754E700725BDB /* TokoCashPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashPayment.swift; sourceTree = "<group>"; };
 		F7D8C9E3201754E700725BDB /* TokoCashMoveToSaldo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashMoveToSaldo.swift; sourceTree = "<group>"; };
@@ -8270,7 +8270,7 @@
 			isa = PBXGroup;
 			children = (
 				F7D8C9DE201754E700725BDB /* TokoCashUseCase.swift */,
-				F7D8C9DF201754E700725BDB /* TokocashNetworkProvider.swift */,
+				F7D8C9DF201754E700725BDB /* TokoCashNetworkProvider.swift */,
 				F7D8C9E0201754E700725BDB /* Model */,
 			);
 			path = Domain;
@@ -12992,7 +12992,7 @@
 				62C771D31FF33C3500F66527 /* ProductWishlistStatus.swift in Sources */,
 				62C770D91FF33C3300F66527 /* TrackOrder.m in Sources */,
 				F977FBF31FE8AB7C00183A85 /* FuzzySearchDataSuggestion.swift in Sources */,
-				F7D8CA2A201754E800725BDB /* TokocashNetworkProvider.swift in Sources */,
+				F7D8CA2A201754E800725BDB /* TokoCashNetworkProvider.swift in Sources */,
 				F977FD391FE8AB7F00183A85 /* SpellCheckResponse.m in Sources */,
 				F977FB641FE8AB7B00183A85 /* InboxResolutionCenterOpenViewController.m in Sources */,
 				F977FD931FE8AB8000183A85 /* WebViewInvoiceViewController.m in Sources */,
