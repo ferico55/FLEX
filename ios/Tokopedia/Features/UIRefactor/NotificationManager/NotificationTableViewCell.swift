@@ -8,17 +8,20 @@
 
 import UIKit
 
-class NotificationTableViewCell: UITableViewCell {
-    @IBOutlet weak var lblTitle: UILabel!
-    @IBOutlet weak var lblCount: UILabel!
-    @IBOutlet weak var unreadIndicator: UIView!
+internal class NotificationTableViewCell: UITableViewCell {
+    @IBOutlet internal weak var lblTitle: UILabel!
+    @IBOutlet internal weak var lblCount: UILabel!
+    @IBOutlet internal weak var unreadIndicator: UIView!
 
-    override func awakeFromNib() {
+    internal override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
+        
+        self.backgroundColor = .clear
+        self.contentView.backgroundColor = .clear
     }
 
-    override func setSelected(_ selected: Bool, animated: Bool) {
+    internal override func setSelected(_ selected: Bool, animated: Bool) {
         super.setSelected(selected, animated: animated)
 
         // Configure the view for the selected state

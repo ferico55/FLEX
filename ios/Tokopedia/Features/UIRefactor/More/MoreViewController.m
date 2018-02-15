@@ -517,18 +517,22 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
             
         case 4:
-            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 6 : 5;
+            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 5 : 4;
             break;
             
         case 5:
-            return 4;
+            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 2 : 1;
             break;
             
         case 6:
+            return 4;
+            break;
+            
+        case 7:
             return _shouldDisplayPushNotificationCell?1:0;
             break;
             
-        case 7 :
+        case 8 :
             return 1;
             break;
             
@@ -573,6 +577,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                     return 52;
             }
         case 5:
+            switch (indexPath.row) {
+                case 0: return 90;
+                default:
+                    return 52;
+            }
+        case 6:
             switch (indexPath.row) {
                 case 0:
                     if (_shouldShowAppShare) {
@@ -695,18 +705,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             
             [wrapperController.navigationController pushViewController:wkWebViewController animated:YES];
         } else if (indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_4];
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-                
-            } else {
-                InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-            }
-        } else if (indexPath.row == 5) {
             [AnalyticsManager trackSellerInfoMenuClick];
             SellerInfoInboxViewController *controller = [SellerInfoInboxViewController new];
             controller.hidesBottomBarWhenPushed = YES;
@@ -714,6 +712,15 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
     }
     else if (indexPath.section == 5) {
+        ComplaintUserType userType = ComplaintUserTypeCustomer;
+        if (indexPath.row == 1) {
+            userType = ComplaintUserTypeSeller;
+        }
+        ComplaintsViewController *vc = [[ComplaintsViewController alloc] initWithUserType: userType];
+        vc.hidesBottomBarWhenPushed = true;
+        [wrapperController.navigationController pushViewController:vc animated:YES];
+    }
+    else if (indexPath.section == 6) {
         if (indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Share ke Teman" parent:MORE_SECTION_OTHERS];
             [self shareToFriend];
@@ -738,11 +745,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }];
         }
     }
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 7) {
         [AnalyticsManager trackClickNavigateFromMore:@"Push Notifikasi" parent:MORE_SECTION_OTHERS];
         [self activatePushNotification];
     }
-    else if (indexPath.section == 7) {
+    else if (indexPath.section == 8) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Keluar" parent:MORE_SECTION_OTHERS];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];

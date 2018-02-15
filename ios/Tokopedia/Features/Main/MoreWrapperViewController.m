@@ -57,7 +57,6 @@
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
-        [self initNotificationManager];
         if (_moreViewController) {
             [_moreViewController updateSaldoTokopedia];
         }

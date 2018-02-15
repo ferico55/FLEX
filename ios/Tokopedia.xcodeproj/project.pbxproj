@@ -745,6 +745,27 @@
 		E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A81FFB2D0000A8665E /* ActionButton.swift */; };
 		E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */; };
 		E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */; };
+		E5ADEDAC20353931006488AF /* ComplaintSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9C20353930006488AF /* ComplaintSortView.swift */; };
+		E5ADEDAD20353931006488AF /* ComplaintFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9D20353930006488AF /* ComplaintFilterCollectionViewCell.swift */; };
+		E5ADEDAE20353931006488AF /* ComplaintsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9E20353930006488AF /* ComplaintsViewController.swift */; };
+		E5ADEDAF20353931006488AF /* ComplaintFilterDateTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADED9F20353930006488AF /* ComplaintFilterDateTableViewCell.xib */; };
+		E5ADEDB020353931006488AF /* ComplaintFilterCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDA020353930006488AF /* ComplaintFilterCollectionViewCell.xib */; };
+		E5ADEDB120353931006488AF /* FloatingSortFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDA120353930006488AF /* FloatingSortFilterViewController.swift */; };
+		E5ADEDB220353931006488AF /* ComplaintFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDA220353930006488AF /* ComplaintFilterViewController.swift */; };
+		E5ADEDB320353931006488AF /* ComplaintFilterTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDA320353930006488AF /* ComplaintFilterTableViewCell.swift */; };
+		E5ADEDB420353931006488AF /* ComplaintFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDA420353930006488AF /* ComplaintFilterViewController.xib */; };
+		E5ADEDB520353931006488AF /* FloatingSortFilterViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDA520353930006488AF /* FloatingSortFilterViewController.xib */; };
+		E5ADEDB620353931006488AF /* ComplaintFilterDateTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDA620353930006488AF /* ComplaintFilterDateTableViewCell.swift */; };
+		E5ADEDB720353931006488AF /* SimpleOnOffListObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDA720353930006488AF /* SimpleOnOffListObject.swift */; };
+		E5ADEDB820353931006488AF /* ComplaintsViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDA820353930006488AF /* ComplaintsViewController.xib */; };
+		E5ADEDB920353931006488AF /* ComplaintTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDA920353930006488AF /* ComplaintTableViewCell.xib */; };
+		E5ADEDBA20353931006488AF /* ComplaintTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDAA20353930006488AF /* ComplaintTableViewCell.swift */; };
+		E5ADEDBB20353931006488AF /* ComplaintFilterTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEDAB20353930006488AF /* ComplaintFilterTableViewCell.xib */; };
+		E5ADEDC02035393E006488AF /* ComplaintInbox.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDBD2035393D006488AF /* ComplaintInbox.swift */; };
+		E5ADEDC12035393E006488AF /* ComplaintQuickFilterData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDBE2035393D006488AF /* ComplaintQuickFilterData.swift */; };
+		E5ADEDC22035393E006488AF /* ComplaintData.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDBF2035393D006488AF /* ComplaintData.swift */; };
+		E5ADEDC720353953006488AF /* UICollectionView+Dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */; };
+		E5ADEDC820353953006488AF /* UITableView+Dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */; };
 		E5B4E7FF1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */; };
 		E5CDEB0F2004C42900C41219 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF22004C41700C41219 /* HomePage.swift */; };
 		E5CDEB102004C42900C41219 /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF32004C41700C41219 /* MorePage.swift */; };
@@ -3404,6 +3425,27 @@
 		E595C6A81FFB2D0000A8665E /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
+		E5ADED9C20353930006488AF /* ComplaintSortView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintSortView.swift; sourceTree = "<group>"; };
+		E5ADED9D20353930006488AF /* ComplaintFilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintFilterCollectionViewCell.swift; sourceTree = "<group>"; };
+		E5ADED9E20353930006488AF /* ComplaintsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintsViewController.swift; sourceTree = "<group>"; };
+		E5ADED9F20353930006488AF /* ComplaintFilterDateTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintFilterDateTableViewCell.xib; sourceTree = "<group>"; };
+		E5ADEDA020353930006488AF /* ComplaintFilterCollectionViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintFilterCollectionViewCell.xib; sourceTree = "<group>"; };
+		E5ADEDA120353930006488AF /* FloatingSortFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FloatingSortFilterViewController.swift; sourceTree = "<group>"; };
+		E5ADEDA220353930006488AF /* ComplaintFilterViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintFilterViewController.swift; sourceTree = "<group>"; };
+		E5ADEDA320353930006488AF /* ComplaintFilterTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintFilterTableViewCell.swift; sourceTree = "<group>"; };
+		E5ADEDA420353930006488AF /* ComplaintFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintFilterViewController.xib; sourceTree = "<group>"; };
+		E5ADEDA520353930006488AF /* FloatingSortFilterViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = FloatingSortFilterViewController.xib; sourceTree = "<group>"; };
+		E5ADEDA620353930006488AF /* ComplaintFilterDateTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintFilterDateTableViewCell.swift; sourceTree = "<group>"; };
+		E5ADEDA720353930006488AF /* SimpleOnOffListObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SimpleOnOffListObject.swift; sourceTree = "<group>"; };
+		E5ADEDA820353930006488AF /* ComplaintsViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintsViewController.xib; sourceTree = "<group>"; };
+		E5ADEDA920353930006488AF /* ComplaintTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintTableViewCell.xib; sourceTree = "<group>"; };
+		E5ADEDAA20353930006488AF /* ComplaintTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintTableViewCell.swift; sourceTree = "<group>"; };
+		E5ADEDAB20353930006488AF /* ComplaintFilterTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ComplaintFilterTableViewCell.xib; sourceTree = "<group>"; };
+		E5ADEDBD2035393D006488AF /* ComplaintInbox.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintInbox.swift; sourceTree = "<group>"; };
+		E5ADEDBE2035393D006488AF /* ComplaintQuickFilterData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintQuickFilterData.swift; sourceTree = "<group>"; };
+		E5ADEDBF2035393D006488AF /* ComplaintData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintData.swift; sourceTree = "<group>"; };
+		E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Dequeue.swift"; sourceTree = "<group>"; };
+		E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Dequeue.swift"; sourceTree = "<group>"; };
 		E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTalkDetailHeaderViewController.swift; sourceTree = "<group>"; };
 		E5CDEAF22004C41700C41219 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
 		E5CDEAF32004C41700C41219 /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
@@ -5339,6 +5381,7 @@
 		62C76BDC1FF33C3000F66527 /* Object */ = {
 			isa = PBXGroup;
 			children = (
+				E5ADEDBC2035393D006488AF /* Complaint */,
 				62C76E121FF33C3100F66527 /* Activation */,
 				62C76F641FF33C3100F66527 /* Address */,
 				62C76DF11FF33C3100F66527 /* AnnouncementTicker */,
@@ -7202,6 +7245,7 @@
 		848FA6941FEBF8BD00A22EDE /* Revamp */ = {
 			isa = PBXGroup;
 			children = (
+				E5ADED9B20353930006488AF /* Complaints */,
 				848FA6951FEBF8BD00A22EDE /* CreateComplain */,
 				848FA69F1FEBF8BD00A22EDE /* Models */,
 				848FA6AD1FEBF8BD00A22EDE /* Others */,
@@ -7917,6 +7961,39 @@
 			path = Points;
 			sourceTree = "<group>";
 		};
+		E5ADED9B20353930006488AF /* Complaints */ = {
+			isa = PBXGroup;
+			children = (
+				E5ADED9C20353930006488AF /* ComplaintSortView.swift */,
+				E5ADED9D20353930006488AF /* ComplaintFilterCollectionViewCell.swift */,
+				E5ADED9E20353930006488AF /* ComplaintsViewController.swift */,
+				E5ADED9F20353930006488AF /* ComplaintFilterDateTableViewCell.xib */,
+				E5ADEDA020353930006488AF /* ComplaintFilterCollectionViewCell.xib */,
+				E5ADEDA120353930006488AF /* FloatingSortFilterViewController.swift */,
+				E5ADEDA220353930006488AF /* ComplaintFilterViewController.swift */,
+				E5ADEDA320353930006488AF /* ComplaintFilterTableViewCell.swift */,
+				E5ADEDA420353930006488AF /* ComplaintFilterViewController.xib */,
+				E5ADEDA520353930006488AF /* FloatingSortFilterViewController.xib */,
+				E5ADEDA620353930006488AF /* ComplaintFilterDateTableViewCell.swift */,
+				E5ADEDA720353930006488AF /* SimpleOnOffListObject.swift */,
+				E5ADEDA820353930006488AF /* ComplaintsViewController.xib */,
+				E5ADEDA920353930006488AF /* ComplaintTableViewCell.xib */,
+				E5ADEDAA20353930006488AF /* ComplaintTableViewCell.swift */,
+				E5ADEDAB20353930006488AF /* ComplaintFilterTableViewCell.xib */,
+			);
+			path = Complaints;
+			sourceTree = "<group>";
+		};
+		E5ADEDBC2035393D006488AF /* Complaint */ = {
+			isa = PBXGroup;
+			children = (
+				E5ADEDBD2035393D006488AF /* ComplaintInbox.swift */,
+				E5ADEDBE2035393D006488AF /* ComplaintQuickFilterData.swift */,
+				E5ADEDBF2035393D006488AF /* ComplaintData.swift */,
+			);
+			path = Complaint;
+			sourceTree = "<group>";
+		};
 		E5CDEAFB2004C41C00C41219 /* Myshop */ = {
 			isa = PBXGroup;
 			children = (
@@ -8486,6 +8563,8 @@
 		F977EED71FE8AB6E00183A85 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */,
+				E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */,
 				E57974C01FEA73D600610655 /* Modal.swift */,
 				F977EEF21FE8AB6E00183A85 /* UIActivityViewController+Extensions.h */,
 				F977EEE31FE8AB6E00183A85 /* UIActivityViewController+Extensions.m */,
@@ -12042,6 +12121,7 @@
 				F977FDD11FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.xib in Resources */,
 				F977FCA31FE8AB7D00183A85 /* OpenShopDomainViewCell.xib in Resources */,
 				F7D8CA06201754E800725BDB /* Success-animation.json in Resources */,
+				E5ADEDBB20353931006488AF /* ComplaintFilterTableViewCell.xib in Resources */,
 				F977FE2B1FE8AB8100183A85 /* RegisterBaseViewController.xib in Resources */,
 				F977FB351FE8AB7B00183A85 /* DepositFormViewController.xib in Resources */,
 				F977FA891FE8AB7A00183A85 /* TransactionShipmentATCViewController.xib in Resources */,
@@ -12076,12 +12156,14 @@
 				F977FB031FE8AB7B00183A85 /* GeneralTalkCommentCell.xib in Resources */,
 				F977FC471FE8AB7D00183A85 /* AlertInfoPaymentConfirmationView.xib in Resources */,
 				F977FC9C1FE8AB7D00183A85 /* OpenShopNameViewCell.xib in Resources */,
+				E5ADEDB820353931006488AF /* ComplaintsViewController.xib in Resources */,
 				F977FDDE1FE8AB8000183A85 /* ResolutionCenterSellerEditProductCell.xib in Resources */,
 				F977FC3F1FE8AB7D00183A85 /* AlertInfoView.xib in Resources */,
 				F977FE311FE8AB8100183A85 /* AccountActivationViewController.xib in Resources */,
 				F977FAE21FE8AB7A00183A85 /* HomeSliderView.xib in Resources */,
 				F977FCB21FE8AB7E00183A85 /* TKPPlacePickerViewController.xib in Resources */,
 				F977FAC21FE8AB7A00183A85 /* SettingBankAccountViewController.xib in Resources */,
+				E5ADEDB420353931006488AF /* ComplaintFilterViewController.xib in Resources */,
 				F954C4461FC55B6C008C0B30 /* icon_home_active@3x.png in Resources */,
 				E57974D41FEA741F00610655 /* InputPromoViewController.xib in Resources */,
 				F977FC2A1FE8AB7D00183A85 /* AlertVerifyOTP.xib in Resources */,
@@ -12124,6 +12206,7 @@
 				92A4CBB7201731CC00C42D37 /* SellerInfoFilterButton.xib in Resources */,
 				F977FA801FE8AB7A00183A85 /* CCAuthenticationViewController.xib in Resources */,
 				E57974D21FEA741F00610655 /* InputPromoCodeViewController.xib in Resources */,
+				E5ADEDB920353931006488AF /* ComplaintTableViewCell.xib in Resources */,
 				F954C4621FC55B6D008C0B30 /* LaunchScreen.xib in Resources */,
 				F977FBC21FE8AB7C00183A85 /* PickupAddressView.xib in Resources */,
 				F977FC311FE8AB7D00183A85 /* AlertListBankView.xib in Resources */,
@@ -12132,6 +12215,7 @@
 				F977FCAF1FE8AB7E00183A85 /* TKPInfoWindowMapView.xib in Resources */,
 				E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
+				E5ADEDB520353931006488AF /* FloatingSortFilterViewController.xib in Resources */,
 				F977FBDA1FE8AB7C00183A85 /* RejectReasonEmptyStockViewController.xib in Resources */,
 				923D971F20048A7800EADE79 /* main.jsbundle in Resources */,
 				F977FAD61FE8AB7A00183A85 /* HomeTabViewController.xib in Resources */,
@@ -12165,6 +12249,7 @@
 				F977FBBC1FE8AB7C00183A85 /* OrderProductView.xib in Resources */,
 				F977FDF41FE8AB8100183A85 /* PulsaOperatorViewController.xib in Resources */,
 				F977FB4A1FE8AB7B00183A85 /* HotlistResultViewController.xib in Resources */,
+				E5ADEDAF20353931006488AF /* ComplaintFilterDateTableViewCell.xib in Resources */,
 				F977FBEC1FE8AB7C00183A85 /* RejectReasonWrongPriceViewController.xib in Resources */,
 				92A4CBB5201731CC00C42D37 /* SellerInfoInboxCellView.xib in Resources */,
 				F977FC871FE8AB7D00183A85 /* EditShopNoteViewCell.xib in Resources */,
@@ -12184,6 +12269,7 @@
 				F977FC8B1FE8AB7D00183A85 /* EditShopDescriptionViewCell.xib in Resources */,
 				F977FAB41FE8AB7A00183A85 /* SettingNotificationViewController.xib in Resources */,
 				F954C4451FC55B6C008C0B30 /* icon_wishlist.png in Resources */,
+				E5ADEDB020353931006488AF /* ComplaintFilterCollectionViewCell.xib in Resources */,
 				F977FB311FE8AB7B00183A85 /* NoResultReusableView.xib in Resources */,
 				F977FABF1FE8AB7A00183A85 /* SettingBankNameViewController.xib in Resources */,
 				F977FC041FE8AB7C00183A85 /* CourierOptionViewCell.xib in Resources */,
@@ -12858,6 +12944,7 @@
 				62C770631FF33C3200F66527 /* DetailProductResult.m in Sources */,
 				62C771151FF33C3400F66527 /* DepositSummaryDetail.m in Sources */,
 				F97700A91FE8AB8600183A85 /* TKPHomeBannerStore.m in Sources */,
+				E5ADEDB320353931006488AF /* ComplaintFilterTableViewCell.swift in Sources */,
 				62C771501FF33C3400F66527 /* Shipment.m in Sources */,
 				F977FE4F1FE8AB8100183A85 /* FeedInspirationComponentView.swift in Sources */,
 				F977FC631FE8AB7D00183A85 /* MiniSlide.m in Sources */,
@@ -12894,6 +12981,7 @@
 				F977FA9C1FE8AB7A00183A85 /* TransactionCartCell.m in Sources */,
 				62C7703E1FF33C3200F66527 /* GoogleDistanceMatrix.m in Sources */,
 				924B14F6200DB28A00CB65D2 /* AIRGoogleMapMarkerManager.m in Sources */,
+				E5ADEDAD20353931006488AF /* ComplaintFilterCollectionViewCell.swift in Sources */,
 				62C770BA1FF33C3300F66527 /* OrderDetail.m in Sources */,
 				F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */,
 				F98052582018AAFE00CE6D67 /* ReactNetworkManager.m in Sources */,
@@ -12911,6 +12999,7 @@
 				62C770141FF33C3200F66527 /* TxOrderConfirmedDetailOrder.m in Sources */,
 				6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */,
 				F977FBBB1FE8AB7C00183A85 /* OrderTotalView.swift in Sources */,
+				E5ADEDC12035393E006488AF /* ComplaintQuickFilterData.swift in Sources */,
 				62C771B01FF33C3500F66527 /* ProductFeedResult.m in Sources */,
 				F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */,
 				848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */,
@@ -12920,6 +13009,7 @@
 				F977FBB21FE8AB7C00183A85 /* ShipmentRequest.swift in Sources */,
 				62C770F91FF33C3300F66527 /* CreatePasswordResult.m in Sources */,
 				62C770811FF33C3300F66527 /* ProductTalkForm.m in Sources */,
+				E5ADEDC02035393E006488AF /* ComplaintInbox.swift in Sources */,
 				34E7222F2015F53300CFE581 /* HeadlineImage.m in Sources */,
 				62C771081FF33C3300F66527 /* SignInProvider.swift in Sources */,
 				62C7706E1FF33C3200F66527 /* Talk.m in Sources */,
@@ -13355,6 +13445,7 @@
 				F977FB121FE8AB7B00183A85 /* ProductModelView.m in Sources */,
 				F980524B2018AAFD00CE6D67 /* ReactPopoverHelper.m in Sources */,
 				F977FA941FE8AB7A00183A85 /* RequestCartShipment.swift in Sources */,
+				E5ADEDAE20353931006488AF /* ComplaintsViewController.swift in Sources */,
 				DADB9F441F3C46CE002B1FAE /* _FBTweakArrayViewController.m in Sources */,
 				F977FA761FE8AB7A00183A85 /* PaymentActionResponse.swift in Sources */,
 				F97700941FE8AB8600183A85 /* PaymentTouchIDService.swift in Sources */,
@@ -13370,6 +13461,7 @@
 				DADB9F4D1F3C46CE002B1FAE /* FBTweakInline.m in Sources */,
 				E5D8A5822010A311003E66BA /* ListAccountViewController.swift in Sources */,
 				F977FA391FE8AB7900183A85 /* UITextView+UITextView_Placeholder.m in Sources */,
+				E5ADEDB220353931006488AF /* ComplaintFilterViewController.swift in Sources */,
 				F977FE401FE8AB8100183A85 /* TextMenu.m in Sources */,
 				F977FCA71FE8AB7E00183A85 /* ShopDescriptionView.m in Sources */,
 				F977FBDB1FE8AB7C00183A85 /* RejectReasonProductDescriptionViewController.m in Sources */,
@@ -13577,6 +13669,7 @@
 				62C770EC1FF33C3300F66527 /* ReputationList.m in Sources */,
 				848FA6FA1FEBF8BF00A22EDE /* RCOrderStatusCell.swift in Sources */,
 				F977FA9D1FE8AB7A00183A85 /* CartCell.m in Sources */,
+				E5ADEDAC20353931006488AF /* ComplaintSortView.swift in Sources */,
 				F7D8CA09201754E800725BDB /* TokoCashNominalItemViewModel.swift in Sources */,
 				62C770B71FF33C3300F66527 /* OrderProduct.m in Sources */,
 				62C771551FF33C3400F66527 /* Shop.m in Sources */,
@@ -13625,6 +13718,7 @@
 				924B14F9200DB28A00CB65D2 /* AIRGoogleMapPolylineManager.m in Sources */,
 				62C771B61FF33C3500F66527 /* ShipmentDistrictData.m in Sources */,
 				F977FB3C1FE8AB7B00183A85 /* DepositSummaryCell.m in Sources */,
+				E5ADEDBA20353931006488AF /* ComplaintTableViewCell.swift in Sources */,
 				848FA70C1FEBF8BF00A22EDE /* SolutionTextCell.swift in Sources */,
 				62C770D41FF33C3300F66527 /* HistoryProductList.m in Sources */,
 				62C7715A1FF33C3400F66527 /* Address.m in Sources */,
@@ -13642,6 +13736,7 @@
 				F977FCED1FE8AB7E00183A85 /* DetailProductVideoResponse.swift in Sources */,
 				F977FAA51FE8AB7A00183A85 /* TransactionCartViewController.m in Sources */,
 				848FA6EC1FEBF8BF00A22EDE /* RCShippingDetail.swift in Sources */,
+				E5ADEDC820353953006488AF /* UITableView+Dequeue.swift in Sources */,
 				F977FDC71FE8AB8000183A85 /* ResolutionCenterCreateList.m in Sources */,
 				F7D8CA3B2017556500725BDB /* ErrorTracker.swift in Sources */,
 				F977FA901FE8AB7A00183A85 /* RequestAddAddress.m in Sources */,
@@ -13756,6 +13851,7 @@
 				F977FDFA1FE8AB8100183A85 /* PulsaOperatorAttributeRule.swift in Sources */,
 				F977FA5A1FE8AB7900183A85 /* SearchProductWrapperReferable.swift in Sources */,
 				62C771161FF33C3400F66527 /* Coupon.swift in Sources */,
+				E5ADEDC720353953006488AF /* UICollectionView+Dequeue.swift in Sources */,
 				F977FD531FE8AB7F00183A85 /* NoResultView.m in Sources */,
 				F977FA411FE8AB7900183A85 /* UserDefaultsCategory.swift in Sources */,
 				F977FC9D1FE8AB7D00183A85 /* OpenShopSuccessViewController.swift in Sources */,
@@ -13863,6 +13959,7 @@
 				F977FDA41FE8AB8000183A85 /* TxOrderStatusViewController.m in Sources */,
 				F977FA531FE8AB7900183A85 /* ShopInfo+Referable.swift in Sources */,
 				62C770E31FF33C3300F66527 /* EnvelopeData.swift in Sources */,
+				E5ADEDB120353931006488AF /* FloatingSortFilterViewController.swift in Sources */,
 				F977FCC61FE8AB7E00183A85 /* UserInfoRequest.swift in Sources */,
 				F977FC751FE8AB7D00183A85 /* CatalogShopViewController.m in Sources */,
 				848FA70B1FEBF8BF00A22EDE /* SolutionFreeReturnCell.swift in Sources */,
@@ -13877,6 +13974,7 @@
 				62C771901FF33C3400F66527 /* ProfileEditFormResult.m in Sources */,
 				F977FC5F1FE8AB7D00183A85 /* AddCaptionTextFieldCell.swift in Sources */,
 				62C770281FF33C3200F66527 /* TransactionATCForm.m in Sources */,
+				E5ADEDC22035393E006488AF /* ComplaintData.swift in Sources */,
 				848FA7001FEBF8BF00A22EDE /* SelectTroubleViewController.swift in Sources */,
 				F7D8CA33201754E800725BDB /* TokoCashProfile.swift in Sources */,
 				62C771881FF33C3400F66527 /* ProfileInfo.m in Sources */,
@@ -13922,6 +14020,7 @@
 				848FA6E21FEBF8BE00A22EDE /* CreateComplainViewController.swift in Sources */,
 				F977FC391FE8AB7D00183A85 /* AlertInfoView.m in Sources */,
 				62C771871FF33C3400F66527 /* UserInfo.m in Sources */,
+				E5ADEDB620353931006488AF /* ComplaintFilterDateTableViewCell.swift in Sources */,
 				F7D8CA30201754E800725BDB /* TokoCashToken.swift in Sources */,
 				F977FA591FE8AB7900183A85 /* ProductUnbox+Referable.swift in Sources */,
 				626C4EB72034172100955D23 /* URLExtension.swift in Sources */,
@@ -14118,6 +14217,7 @@
 				F977FBDC1FE8AB7C00183A85 /* RejectReasonEmptyStockCell.m in Sources */,
 				F977FA551FE8AB7900183A85 /* HotlistBannerResult+Referable.swift in Sources */,
 				F977FCFF1FE8AB7E00183A85 /* ProductEditWholesaleViewController.m in Sources */,
+				E5ADEDB720353931006488AF /* SimpleOnOffListObject.swift in Sources */,
 				62C770721FF33C3200F66527 /* TalkResult.m in Sources */,
 				848FA6E01FEBF8BE00A22EDE /* ConfirmAlertViewController.swift in Sources */,
 				F977FA711FE8AB7A00183A85 /* ProductDescriptionViewController.swift in Sources */,

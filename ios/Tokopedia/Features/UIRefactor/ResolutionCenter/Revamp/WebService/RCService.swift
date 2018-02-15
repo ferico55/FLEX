@@ -6,21 +6,28 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Moya
+import UIKit
 
-enum RCService {
+internal enum RCService {
     case getStep1(orderId: String)
     case getSolutions(orderId: String, rcStep1Data: RCCreateStep1ResponseData)
     case cacheKeyToCreateComplaint(orderId: String, rcStep1Data: RCCreateStep1ResponseData)
     case createComplaint(orderId: String, cacheKey: String, imageObjects: [ImageResult])
+    case getInboxBuyer(limit: String, startId: String, sortBy: String, asc: String, filter: String, startTime: String, endTime: String)
+    case getInboxSeller(limit: String, startId: String, sortBy: String, asc: String, filter: String, startTime: String, endTime: String)
 }
 
 extension RCService: TargetType {
-    var parameterEncoding: ParameterEncoding {
-        return JSONEncoding.default
+    internal var parameterEncoding: ParameterEncoding {
+        switch self {
+        case .getInboxBuyer, .getInboxSeller:
+            return URLEncoding.queryString
+        default:
+            return JSONEncoding.default
+        }
     }    
-    var parameters: [String : Any]? {
+    internal var parameters: [String : Any]? {
         switch self {
         case .getStep1:
             return [:]
@@ -28,14 +35,34 @@ extension RCService: TargetType {
             return self.bodyJsonForSolutions(rcStep1Data: rcStep1Data)
         case .cacheKeyToCreateComplaint(_,let rcStep1Data):
             return self.bodyJsonForCacheKeyToCreateComplaint(rcStep1Data: rcStep1Data)
-        case .createComplaint(_,let cache, let imageObjects):
+        case let .createComplaint(_, cache, imageObjects):
             return self.bodyJsonToCreateComplaint(cacheKey: cache, images: imageObjects)
+        case let .getInboxBuyer(limit, startId, sortBy, asc, filter, startTime, endTime):
+            return [
+                "limit": limit,
+                "startID": startId,
+                "sortBy": sortBy,
+                "asc": asc,
+                "filter": filter,
+                "startTime": startTime,
+                "endTime": endTime
+            ]
+        case let .getInboxSeller(limit, startId, sortBy, asc, filter, startTime, endTime):
+            return [
+                "limit": limit,
+                "startID": startId,
+                "sortBy": sortBy,
+                "asc": asc,
+                "filter": filter,
+                "startTime": startTime,
+                "endTime": endTime
+            ]
         }
     }
-    var baseURL: URL {
+    internal var baseURL: URL {
         return URL(string: NSString.tokopediaUrl())!
     }
-    var path: String {
+    internal var path: String {
         switch self {
         case let .getStep1(orderId):
             return "/resolution/v2/create/" + orderId + "/step1"
@@ -45,28 +72,32 @@ extension RCService: TargetType {
             return "/resolution/v2/create/" + orderId
         case let .createComplaint(orderId,_,_):
             return "/resolution/v2/create/" + orderId
+        case .getInboxBuyer:
+            return "resolution/v2/inbox/buyer"
+        case .getInboxSeller:
+            return "resolution/v2/inbox/seller"
         }
     }
-    var method: Moya.Method {
+    internal var method: Moya.Method {
         switch self {
-        case .getStep1:
+        case .getStep1, .getInboxBuyer, .getInboxSeller:
             return .get
         case .getSolutions, .cacheKeyToCreateComplaint, .createComplaint:
             return .post
         }
     }
-    var task: Task {
+    internal var task: Task {
         switch self {
-        case .getStep1, .getSolutions, .cacheKeyToCreateComplaint, .createComplaint:
+        case .getStep1, .getSolutions, .cacheKeyToCreateComplaint, .createComplaint, .getInboxBuyer, .getInboxSeller:
             return .request
         }
     }
-    var headers: [String : String] {
+    internal var headers: [String : String] {
         return [:]
     }
-    var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
+    internal var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
 //    MARK:- Helpers
-    func bodyJsonToCreateComplaint(cacheKey: String, images: [ImageResult])->[String:Any] {
+    internal func bodyJsonToCreateComplaint(cacheKey: String, images: [ImageResult])->[String:Any] {
         let imageList = images.filter(){!$0.isVideo}
         let videoList = images.filter(){$0.isVideo}
         let list1: [String] = imageList.map {$0.pic_obj}
@@ -76,7 +107,7 @@ extension RCService: TargetType {
         body["cacheKey"] = cacheKey
         return body
     }
-    func bodyJsonForCacheKeyToCreateComplaint(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
+    internal func bodyJsonForCacheKeyToCreateComplaint(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
         let selectedProblems = rcStep1Data.selectedProblemItem
         var list: [[String:Any]] = []
         for item in selectedProblems {
@@ -104,7 +135,7 @@ extension RCService: TargetType {
         }
         return body
     }
-    func bodyJsonForSolutions(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
+    internal func bodyJsonForSolutions(rcStep1Data: RCCreateStep1ResponseData)->[String:Any] {
         let selectedProblems = rcStep1Data.selectedProblemItem
         var list: [[String:Any]] = []
         for item in selectedProblems {

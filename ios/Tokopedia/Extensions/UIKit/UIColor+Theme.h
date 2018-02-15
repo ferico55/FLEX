@@ -31,4 +31,5 @@
 +(nonnull UIColor *)tpGray2;
 +(nonnull UIColor *)fromHexString:(nonnull NSString *)hexString;
 
+
 @end
