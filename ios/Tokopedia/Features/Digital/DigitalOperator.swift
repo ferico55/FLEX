@@ -8,25 +8,26 @@
 
 import Unbox
 
-enum DigitalOperatorSelectionStyle {
+internal enum DigitalOperatorSelectionStyle {
     case prefixChecking(DigitalTextInput)
     case choice
     case implicit
 }
 
 final class DigitalOperator: Unboxable {
-    let id: String
-    let name: String
-    let prefixes: [String]
-    let imageUrl: String
-    let products: [DigitalProduct]
-    let textInputs: [DigitalTextInput]
-    let defaultProductId: String
-    let productSelectionTitle: String
-    let shouldShowProductSelection: Bool
+    internal let operatorID: String
+    internal let name: String
+    internal let prefixes: [String]
+    internal let imageUrl: String
+    internal let products: [DigitalProduct]
+    internal let textInputs: [DigitalTextInput]
+    internal let defaultProductId: String
+    internal let productSelectionTitle: String
+    internal let shouldShowProductSelection: Bool
+    internal let buttonText: String
     
     init(
-        id: String,
+        operatorID: String,
         name: String,
         prefixes: [String],
         imageUrl: String,
@@ -34,9 +35,10 @@ final class DigitalOperator: Unboxable {
         textInputs: [DigitalTextInput] = [],
         defaultProductId: String = "",
         productSelectionTitle: String = "",
-        shouldShowProductSelection: Bool = true) {
+        shouldShowProductSelection: Bool = true,
+        buttonText: String = "") {
         
-        self.id = id
+        self.operatorID = operatorID
         self.name = name
         self.prefixes = prefixes
         self.imageUrl = imageUrl
@@ -45,6 +47,7 @@ final class DigitalOperator: Unboxable {
         self.defaultProductId = defaultProductId
         self.productSelectionTitle = productSelectionTitle
         self.shouldShowProductSelection = shouldShowProductSelection
+        self.buttonText = buttonText
     }
     
     func hasPrefix(for text: String) -> Bool {
@@ -52,7 +55,7 @@ final class DigitalOperator: Unboxable {
     }
     
     convenience init(unboxer: Unboxer) throws {
-        let id = try unboxer.unbox(keyPath: "id") as String
+        let operatorID = try unboxer.unbox(keyPath: "id") as String
         let name = try unboxer.unbox(keyPath: "attributes.name") as String
         let prefixes = try unboxer.unbox(keyPath: "attributes.prefix") as [String]
         let imageUrl = try unboxer.unbox(keyPath: "attributes.image") as String
@@ -60,11 +63,11 @@ final class DigitalOperator: Unboxable {
         let textInputs = try unboxer.unbox(keyPath: "attributes.fields") as [DigitalTextInput]
         let defaultProductId = try unboxer.unbox(keyPath: "attributes.default_product_id") as String
         let productSelectionTitle = try unboxer.unbox(keyPath: "attributes.rule.product_text") as String
-        
         let productSelectionStyle = try unboxer.unbox(keyPath: "attributes.rule.product_view_style") as String
+        let buttonText = try unboxer.unbox(keyPath: "attributes.rule.button_text") as String
         
         self.init(
-            id: id,
+            operatorID: operatorID,
             name: name,
             prefixes: prefixes,
             imageUrl: imageUrl,
@@ -72,11 +75,12 @@ final class DigitalOperator: Unboxable {
             textInputs: textInputs,
             defaultProductId: defaultProductId,
             productSelectionTitle: productSelectionTitle,
-            shouldShowProductSelection: productSelectionStyle != "99"
+            shouldShowProductSelection: productSelectionStyle != "99",
+            buttonText: buttonText
         )
     }
     
-    var defaultProduct: DigitalProduct? {
+    internal var defaultProduct: DigitalProduct? {
         return products.first { $0.id == defaultProductId }
     }
 }

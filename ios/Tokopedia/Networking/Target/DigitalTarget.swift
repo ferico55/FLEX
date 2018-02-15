@@ -57,7 +57,7 @@ extension DigitalTarget: TargetType {
         switch self {
         case .addToCart: return "/v1.4/cart"
         case .payment: return "/v1.4/checkout"
-        case let .category(categoryId): return "/v1.3/category/\(categoryId)"
+        case let .category(categoryId): return "/v1.4/category/\(categoryId)"
         case .voucher: return "/v1.4/voucher/check"
         case .otpSuccess: return "/v1.4/cart/otp-success"
         case .getCart: return "/v1.4/cart"
@@ -207,7 +207,7 @@ extension DigitalTarget: TargetType {
     
 }
 
-private func getIFAddresses() -> String {
+internal func getIFAddresses() -> String {
     var addresses = [String]()
     
     // Get list of all interfaces on the local machine:

@@ -1,22 +1,26 @@
-import UIKit
-import RxSwift
-import RxCocoa
-import NSObject_Rx
+import AddressBookUI
 import BEMCheckBox
+import BlocksKit
+import CFAlertViewController
+import ContactsUI
+import HMSegmentedControl
 import Masonry
+import MMNumberKeyboard
+import Moya
+import MoyaUnbox
+import NSAttributedString_DDHTML
+import NSObject_Rx
 import Render
 import ReSwift
-import BlocksKit
-import MMNumberKeyboard
+import RxSwift
+import RxCocoa
 import SwiftOverlays
 import TPKeyboardAvoiding
-import HMSegmentedControl
-import CFAlertViewController
-import Moya
-import NSAttributedString_DDHTML
+import UIKit
+import Unbox
 
 extension Array where Element: DigitalOperator {
-    func appropriateOperator(for text: String) -> DigitalOperator? {
+    internal func appropriateOperator(for text: String) -> DigitalOperator? {
         return self.first { (digitalOperator) -> Bool in
             digitalOperator.hasPrefix(for: text)
         }
@@ -40,12 +44,9 @@ extension ObservableType where E: ReSwift.Action {
     }
 }
 
-import Unbox
-import MoyaUnbox
-
 // MARK: UI
 
-class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumberProtocol {
+internal class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumberProtocol {
     
     fileprivate var store: Store<DigitalState>!
     
@@ -57,7 +58,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     fileprivate let clientNumber: String
     fileprivate let productID: String
     
-    required init(categoryId: String, operatorID: String = "", clientNumber: String = "", productID: String = "") {
+    internal required init(categoryId: String, operatorID: String = "", clientNumber: String = "", productID: String = "") {
         self.categoryId = categoryId
         self.operatorID = operatorID
         self.clientNumber = clientNumber
@@ -66,11 +67,11 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         self.hidesBottomBarWhenPushed = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("not used")
     }
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         
         let barButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon-option"), style: .plain, target: nil, action: nil)
@@ -121,13 +122,13 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         widgetView.state = state
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         AnalyticsManager.trackScreenName("Recharge Category Page")
     }
     
-    override func viewDidLayoutSubviews() {
+    internal override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.widgetView.render(in: self.view.bounds.size)
         self.store.subscribe(self.widgetView) // subscribe after rendering for the first time
@@ -138,12 +139,12 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         store.unsubscribe(widgetView)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    internal override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         view.endEditing(true)
     }
     
-    func selectedFavouriteNumber(favourite: DigitalFavourite) {
+    internal func selectedFavouriteNumber(favourite: DigitalFavourite) {
         guard let categoryID = favourite.categoryID, let form = store.state.form else { return }
         let selectedData = DigitalLastOrder(categoryId: categoryID, operatorId: favourite.operatorID, productId: favourite.productID, clientNumber: favourite.clientNumber)
         AnalyticsManager.trackRechargeEvent(event: .homepage, category: form.name, action: "Select Number on User Profile", label: form.name)
@@ -151,7 +152,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     }
 }
 
-class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckBoxDelegate {
+internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckBoxDelegate {
     fileprivate var disposeBag = DisposeBag()
     fileprivate let store: Store<DigitalState>
     
@@ -163,7 +164,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     fileprivate let clientNumber: String
     fileprivate let productID: String
     
-    init(store: Store<DigitalState>, categoryId: String, operatorID: String, clientNumber: String, productID: String, viewController: UIViewController) {
+    internal init(store: Store<DigitalState>, categoryId: String, operatorID: String, clientNumber: String, productID: String, viewController: UIViewController) {
         self.store = store
         self.categoryId = categoryId
         self.operatorID = operatorID
@@ -173,7 +174,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -226,7 +227,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         if self.store.state.favourites.count > 0 {
                             view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
                                 guard let favourites = self?.store.state.favourites, let `self` = self else { return }
-                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.id ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
+                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.operatorID ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
                                 viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
                                 viewController.title = "Nomor Favorit"
                                 self.viewController?.navigationController?.pushViewController(viewController, animated: true)
@@ -308,7 +309,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         ])
     }
     
-    func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
+    private func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
         unowned let `self` = self
         guard let state = state, let form = state.form else { return NilNode() }
         let operatorSelector = { () -> NodeType in
@@ -627,21 +628,18 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     }
                 ])
             }(),
-            Node<UIButton>(
-                identifier: "buy",
-                create: {
-                    let button = UIButton(type: .system)
-                    button.setTitleColor(.white, for: .normal)
-                    button.backgroundColor = .tpOrange()
-                    button.titleLabel?.font = .largeTheme()
-                    button.layer.cornerRadius = 3
-                    
-                    return button
-                }
-            ) { button, layout, _ in
+            Node<UIButton>(identifier: "buy", create: { _ -> UIButton in
+                let button = UIButton(type: .system)
+                button.setTitleColor(.white, for: .normal)
+                button.backgroundColor = .tpOrange()
+                button.titleLabel?.font = .largeTheme()
+                button.layer.cornerRadius = 3
+                
+                return button
+            }, configure: { button, layout, _ -> (Void) in
                 let addToCartProgress = state.addToCartProgress
                 
-                let title = addToCartProgress == .idle ? "Beli" : "Sedang proses..."
+                let title = addToCartProgress == .idle ? self.store.state.selectedOperator?.buttonText : "Sedang proses..."
                 
                 button.setTitle(title, for: .normal)
                 
@@ -664,11 +662,11 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         let productId = state.selectedProduct?.id
                         let textInputs = state.textInputStates.map { key, value in
                             return [key, value.text]
-                        }
-                        .reduce([String: String]()) { result, item in
-                            var newResult = result
-                            newResult[item[0]] = item[1]
-                            return newResult
+                            }
+                            .reduce([String: String]()) { result, item in
+                                var newResult = result
+                                newResult[item[0]] = item[1]
+                                return newResult
                         }
                         
                         guard productId != nil else { return }
@@ -680,7 +678,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         let cache = PulsaCache()
                         let lastOrder = DigitalLastOrder(
                             categoryId: self.categoryId,
-                            operatorId: state.selectedOperator?.id,
+                            operatorId: state.selectedOperator?.operatorID,
                             productId: productId,
                             clientNumber: textInputs["client_number"]
                         )
@@ -709,7 +707,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             .disposed(by: self.rx_disposeBag)
                     })
                     .disposed(by: self.disposeBag)
-            }.add(child: state.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
+            }).add(child: state.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
                 indicator.activityIndicatorViewStyle = .white
                 indicator.startAnimating()
                 
@@ -718,7 +716,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         ])
     }
     
-    override func construct(state: DigitalState?, size: CGSize) -> NodeType {
+    internal override func construct(state: DigitalState?, size: CGSize) -> NodeType {
         self.disposeBag = DisposeBag()
         
         unowned let `self` = self
@@ -1024,7 +1022,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }
     }
     
-    override func didRender() {
+    internal override func didRender() {
         guard let state = self.state else { return }
         
         self.viewController?.navigationItem.title = state.form?.title
@@ -1070,12 +1068,12 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         })
     }
     
-    func newState(state: DigitalState) {
+    internal func newState(state: DigitalState) {
         self.state = state
         self.render(in: self.bounds.size)
     }
     
-    func didTap(_ checkBox: BEMCheckBox) {
+    internal func didTap(_ checkBox: BEMCheckBox) {
         self.store.dispatch(DigitalWidgetAction.toggleInstantPayment)
         if checkBox.on {
             AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action: "Check Instant Saldo")
@@ -1093,21 +1091,18 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }
     }
     
-    func loadInstantPaymentCheck() -> Bool {
+    internal func loadInstantPaymentCheck() -> Bool {
         return UserDefaults.standard.isInstantPaymentEnabled
     }
 }
 
 // MARK: address book
 
-import ContactsUI
-import AddressBookUI
-
-class PhoneBookService: NSObject {
+internal class PhoneBookService: NSObject {
     
-    var phoneNumberSelected = PublishSubject<String>()
+    internal var phoneNumberSelected = PublishSubject<String>()
     
-    func findContact(from viewController: UIViewController) {
+    internal func findContact(from viewController: UIViewController) {
         if #available(iOS 9.0, *) {
             let contactPicker = CNContactPickerViewController()
             
@@ -1126,7 +1121,7 @@ class PhoneBookService: NSObject {
 
 extension PhoneBookService: CNContactPickerDelegate {
     @available(iOS 9.0, *)
-    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+    internal func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if contactProperty.key == CNContactPhoneNumbersKey {
             guard let phoneNumber = contactProperty.value else { return }
             
@@ -1137,7 +1132,7 @@ extension PhoneBookService: CNContactPickerDelegate {
 }
 
 extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
-    func peoplePickerNavigationController(
+    internal func peoplePickerNavigationController(
         _ peoplePicker: ABPeoplePickerNavigationController,
         didSelectPerson person: ABRecord,
         property: ABPropertyID,
@@ -1157,7 +1152,7 @@ extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
 }
 
 extension String: Swift.Error {
-    var localizedDescription: String {
+    internal var localizedDescription: String {
         return self
     }
 }
