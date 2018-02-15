@@ -17,7 +17,6 @@
 		455DA6841E8118BF00BF181A /* ListBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6821E8118BF00BF181A /* ListBankTests.swift */; };
 		455DA6851E8118BF00BF181A /* ListDetailBankTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */; };
 		5256A84320170BBC000262F7 /* FeedAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5256A84220170BBC000262F7 /* FeedAnalyticsManager.swift */; };
-		5256A84520170BC7000262F7 /* ProductDetailAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5256A84420170BC7000262F7 /* ProductDetailAnalyticsManager.swift */; };
 		5259D23C200C8E320042385C /* whitelist.json in Resources */ = {isa = PBXBuildFile; fileRef = 5259D23B200C8E310042385C /* whitelist.json */; };
 		525DFA692011EB8000268548 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 525DFA682011EB8000268548 /* assets */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
@@ -692,6 +691,13 @@
 		E50465C520159F3100FD0872 /* NativeNPSView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50465BF20159F3000FD0872 /* NativeNPSView.xib */; };
 		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
 		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
+		E517178320315DB400F46831 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178220315DB400F46831 /* LoadingButton.swift */; };
+		E517178820315DDF00F46831 /* ProductDetailAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178520315DDF00F46831 /* ProductDetailAnalyticsManager.swift */; };
+		E517178920315DDF00F46831 /* VariantManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E517178620315DDF00F46831 /* VariantManagerBridge.m */; };
+		E517178A20315DDF00F46831 /* VariantManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178720315DDF00F46831 /* VariantManager.swift */; };
+		E517178C20315DF800F46831 /* ProductVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178B20315DF800F46831 /* ProductVariant.swift */; };
+		E517178F20315E0A00F46831 /* ProductOptionInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178D20315E0900F46831 /* ProductOptionInfoNode.swift */; };
+		E517179020315E0A00F46831 /* ProductVariantNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178E20315E0900F46831 /* ProductVariantNode.swift */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
@@ -2177,7 +2183,6 @@
 		455DA6821E8118BF00BF181A /* ListBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListBankTests.swift; sourceTree = "<group>"; };
 		455DA6831E8118BF00BF181A /* ListDetailBankTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListDetailBankTests.swift; sourceTree = "<group>"; };
 		5256A84220170BBC000262F7 /* FeedAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAnalyticsManager.swift; sourceTree = "<group>"; };
-		5256A84420170BC7000262F7 /* ProductDetailAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailAnalyticsManager.swift; sourceTree = "<group>"; };
 		5259D23B200C8E310042385C /* whitelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = whitelist.json; sourceTree = "<group>"; };
 		525DFA682011EB8000268548 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
@@ -3332,6 +3337,13 @@
 		E50465BF20159F3000FD0872 /* NativeNPSView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeNPSView.xib; sourceTree = "<group>"; };
 		E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
 		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
+		E517178220315DB400F46831 /* LoadingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
+		E517178520315DDF00F46831 /* ProductDetailAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailAnalyticsManager.swift; sourceTree = "<group>"; };
+		E517178620315DDF00F46831 /* VariantManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariantManagerBridge.m; sourceTree = "<group>"; };
+		E517178720315DDF00F46831 /* VariantManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariantManager.swift; sourceTree = "<group>"; };
+		E517178B20315DF800F46831 /* ProductVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVariant.swift; sourceTree = "<group>"; };
+		E517178D20315E0900F46831 /* ProductOptionInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductOptionInfoNode.swift; sourceTree = "<group>"; };
+		E517178E20315E0900F46831 /* ProductVariantNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVariantNode.swift; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
@@ -7728,6 +7740,16 @@
 			path = Extensions;
 			sourceTree = "<group>";
 		};
+		E517178420315DDF00F46831 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				E517178520315DDF00F46831 /* ProductDetailAnalyticsManager.swift */,
+				E517178620315DDF00F46831 /* VariantManagerBridge.m */,
+				E517178720315DDF00F46831 /* VariantManager.swift */,
+			);
+			path = Utility;
+			sourceTree = "<group>";
+		};
 		E52517BC1F838410008FDBCF /* TokopediaUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -8430,6 +8452,7 @@
 				F977EEEB1FE8AB6E00183A85 /* UIViewController+Swizzling.h */,
 				F977EED91FE8AB6E00183A85 /* UIViewController+Swizzling.m */,
 				F977EEE81FE8AB6E00183A85 /* UIViewControllerCategory.swift */,
+				E517178220315DB400F46831 /* LoadingButton.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -8596,10 +8619,10 @@
 		F977EF301FE8AB6F00183A85 /* ProductDetail */ = {
 			isa = PBXGroup;
 			children = (
-				5256A84420170BC7000262F7 /* ProductDetailAnalyticsManager.swift */,
 				F977EF311FE8AB6F00183A85 /* Model */,
 				F977EF341FE8AB6F00183A85 /* View */,
 				F977EF3F1FE8AB6F00183A85 /* ViewController */,
+				E517178420315DDF00F46831 /* Utility */,
 			);
 			path = ProductDetail;
 			sourceTree = "<group>";
@@ -8609,6 +8632,7 @@
 			children = (
 				F977EF331FE8AB6F00183A85 /* ProductUnbox.swift */,
 				F977EF321FE8AB6F00183A85 /* PromoUnbox.swift */,
+				E517178B20315DF800F46831 /* ProductVariant.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -8626,6 +8650,8 @@
 				F977EF3E1FE8AB6F00183A85 /* ProductPromoNode.swift */,
 				F977EF381FE8AB6F00183A85 /* ProductRecommendationNode.swift */,
 				F977EF3C1FE8AB6F00183A85 /* ProductSellerNode.swift */,
+				E517178D20315E0900F46831 /* ProductOptionInfoNode.swift */,
+				E517178E20315E0900F46831 /* ProductVariantNode.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -12747,6 +12773,7 @@
 				F977FB471FE8AB7B00183A85 /* HotlistViewController.m in Sources */,
 				F977FADB1FE8AB7A00183A85 /* AnnouncementTickerRequest.swift in Sources */,
 				62C770C31FF33C3300F66527 /* OrderBookingResponse.m in Sources */,
+				E517178820315DDF00F46831 /* ProductDetailAnalyticsManager.swift in Sources */,
 				F977FA431FE8AB7900183A85 /* NSOperationQueue+SharedQueue.m in Sources */,
 				62C770021FF33C3200F66527 /* TxOrderPaymentEditResult.m in Sources */,
 				848FA6ED1FEBF8BF00A22EDE /* RCStatus.swift in Sources */,
@@ -12821,6 +12848,7 @@
 				848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */,
 				62C771851FF33C3400F66527 /* AddressForm.m in Sources */,
 				F977FB831FE8AB7B00183A85 /* CategoryIntermediaryResponse.swift in Sources */,
+				E517178320315DB400F46831 /* LoadingButton.swift in Sources */,
 				F977FBB21FE8AB7C00183A85 /* ShipmentRequest.swift in Sources */,
 				62C770F91FF33C3300F66527 /* CreatePasswordResult.m in Sources */,
 				62C770811FF33C3300F66527 /* ProductTalkForm.m in Sources */,
@@ -12853,6 +12881,7 @@
 				62C7717E1FF33C3400F66527 /* NotificationFormNotif.m in Sources */,
 				F7D8CA08201754E800725BDB /* TokoCashMoveToSaldoViewModel.swift in Sources */,
 				F977FC711FE8AB7D00183A85 /* CatalogShopCell.m in Sources */,
+				E517178920315DDF00F46831 /* VariantManagerBridge.m in Sources */,
 				F977FD8F1FE8AB8000183A85 /* ListDetailBankViewController.swift in Sources */,
 				62C770881FF33C3300F66527 /* Hashtag.swift in Sources */,
 				F977FCB41FE8AB7E00183A85 /* SignInProviderListView.swift in Sources */,
@@ -13307,6 +13336,7 @@
 				F977FDF71FE8AB8100183A85 /* PulsaRelationOperator.swift in Sources */,
 				62C771751FF33C3400F66527 /* UploadImageSubmitResult.m in Sources */,
 				F7D8CA15201754E800725BDB /* TokoCashHistoryDetailViewModel.swift in Sources */,
+				E517178A20315DDF00F46831 /* VariantManager.swift in Sources */,
 				F97700B21FE8AB8600183A85 /* HomePageHeaderSectionStyle.swift in Sources */,
 				DADB9F691F3C46CF002B1FAE /* XYPieChart.m in Sources */,
 				F98052502018AAFE00CE6D67 /* ReactTopChatManager.m in Sources */,
@@ -13585,7 +13615,6 @@
 				F977FA261FE8AB7900183A85 /* AceTarget.swift in Sources */,
 				F977FB2B1FE8AB7B00183A85 /* TopAdsComponentView.swift in Sources */,
 				F977FAAC1FE8AB7A00183A85 /* RequestRates.m in Sources */,
-				5256A84520170BC7000262F7 /* ProductDetailAnalyticsManager.swift in Sources */,
 				F977FE571FE8AB8100183A85 /* FeedDetailActionComponentView.swift in Sources */,
 				F977FCE21FE8AB7E00183A85 /* DetailProductVideoData.swift in Sources */,
 				F977FB661FE8AB7B00183A85 /* InboxResolutionCenterTabViewController.m in Sources */,
@@ -13806,6 +13835,7 @@
 				62C771BC1FF33C3500F66527 /* ShipmentServiceData.m in Sources */,
 				F977FE341FE8AB8100183A85 /* EmptyStateView.swift in Sources */,
 				62C771091FF33C3300F66527 /* LoginResult.m in Sources */,
+				E517178C20315DF800F46831 /* ProductVariant.swift in Sources */,
 				62C770791FF33C3300F66527 /* FavoriteShopAction.m in Sources */,
 				62C770361FF33C3200F66527 /* TransactionCartList.m in Sources */,
 				F977FCAB1FE8AB7E00183A85 /* TKPInfoWindowMapView.swift in Sources */,
@@ -13831,6 +13861,7 @@
 				62C770DD1FF33C3300F66527 /* DepositForm.m in Sources */,
 				F977FCDD1FE8AB7E00183A85 /* TopPicksGroup.swift in Sources */,
 				F977FB721FE8AB7B00183A85 /* CategoryIntermediaryCuratedProduct.swift in Sources */,
+				E517178F20315E0A00F46831 /* ProductOptionInfoNode.swift in Sources */,
 				F977FC6C1FE8AB7D00183A85 /* CatalogProductCell.m in Sources */,
 				F977FB1C1FE8AB7B00183A85 /* TalkModelView.m in Sources */,
 				62C771351FF33C3400F66527 /* CashbackDetail.swift in Sources */,
@@ -13962,6 +13993,7 @@
 				F977FBE31FE8AB7C00183A85 /* RejectReasonViewController.m in Sources */,
 				62C7713D1FF33C3400F66527 /* NotesList.swift in Sources */,
 				62C7701A1FF33C3200F66527 /* TransactionVoucherData.m in Sources */,
+				E517179020315E0A00F46831 /* ProductVariantNode.swift in Sources */,
 				F977FB4C1FE8AB7B00183A85 /* HotlistResultPromoHeaderView.swift in Sources */,
 				62C7704C1FF33C3200F66527 /* SearchAWS.m in Sources */,
 				F7D8CA19201754E800725BDB /* TokoCashHistoryListItemViewModel.swift in Sources */,

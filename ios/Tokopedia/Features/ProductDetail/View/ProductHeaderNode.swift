@@ -6,12 +6,12 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import Render
 import Lottie
 import NSAttributedString_DDHTML
+import Render
+import UIKit
 
-class ProductHeaderNode: ContainerNode {
+internal class ProductHeaderNode: ContainerNode {
     fileprivate var state: ProductDetailState
     fileprivate let didTapReview: (ProductUnbox) -> Void
     fileprivate let didTapDiscussion: (ProductUnbox) -> Void
@@ -21,17 +21,17 @@ class ProductHeaderNode: ContainerNode {
     fileprivate let didTapProductEdit: (ProductUnbox) -> Void
     fileprivate let didTapProductImage: (Int) -> Void
     
-    final let productImageHeightRatio: CGFloat = 1
+    final fileprivate let productImageHeightRatio: CGFloat = 1
     
-    var pageControl: UIPageControl?
-    var scrollView: UIScrollView?
-    var headerViewWidth: CGFloat = 0.0
+    fileprivate var pageControl: UIPageControl?
+    fileprivate var scrollView: UIScrollView?
+    fileprivate var headerViewWidth: CGFloat = 0.0
     
-    var starRating: EDStarRating = {
+    fileprivate var starRating: EDStarRating = {
         let star = EDStarRating(frame: CGRect(x: 0, y: 0, width: 80, height: 16))
         star.backgroundImage = nil
-        star.starImage = UIImage(named: "icon_star_med.png")
-        star.starHighlightedImage = UIImage(named: "icon_star_active_med.png")
+        star.starImage = #imageLiteral(resourceName: "icon_star_med")
+        star.starHighlightedImage = #imageLiteral(resourceName: "icon_star_active_med")
         star.maxRating = 5
         star.horizontalMargin = 1
         star.rating = 0
@@ -40,7 +40,7 @@ class ProductHeaderNode: ContainerNode {
         return star
     }()
     
-    init(identifier: String, state: ProductDetailState, didTapReview: @escaping (ProductUnbox) -> Void, didTapDiscussion: @escaping (ProductUnbox) -> Void, didTapCourier: @escaping (ProductUnbox) -> Void, didTapWishlist: @escaping (Bool) -> Void, updateWishlistState: @escaping (Bool) -> Void, didTapProductEdit: @escaping (ProductUnbox) -> Void, didTapProductImage: @escaping (Int) -> Void) {
+    internal init(identifier: String, state: ProductDetailState, didTapReview: @escaping (ProductUnbox) -> Void, didTapDiscussion: @escaping (ProductUnbox) -> Void, didTapCourier: @escaping (ProductUnbox) -> Void, didTapWishlist: @escaping (Bool) -> Void, updateWishlistState: @escaping (Bool) -> Void, didTapProductEdit: @escaping (ProductUnbox) -> Void, didTapProductImage: @escaping (Int) -> Void) {
         self.state = state
         self.didTapReview = didTapReview
         self.didTapDiscussion = didTapDiscussion
@@ -172,31 +172,48 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func productScrollView() -> NodeType {
-        var imageNodes: [NodeType]
-        if let images = state.productDetail?.images,
-            images.count > 0 {
-            imageNodes = images.map({ (image) -> NodeType in
-                productImageView(imageUrl: image.normalURL, tappable: true)
-            })
-        } else if let initialData = self.state.initialData,
-            let imageURL = initialData["imageURL"],
-            imageURL != "" {
-            imageNodes = [productImageView(imageUrl: imageURL, tappable: false)]
-        } else {
+        func productImageEmpty() -> NodeType {
             return Node<UIView>() { view, layout, size in
                 layout.width = size.width
                 layout.height = self.productImageHeightRatio * size.width
                 layout.justifyContent = .center
                 view.backgroundColor = .lightGray
                 view.isUserInteractionEnabled = true
-            }.add(child: Node<UIActivityIndicatorView>() { view, layout, _ in
-                layout.width = 48
-                layout.height = 48
-                layout.alignSelf = .center
-                view.activityIndicatorViewStyle = .gray
-                view.startAnimating()
-            })
-            
+                }.add(child: Node<UIActivityIndicatorView>() { view, layout, _ in
+                    layout.width = 48
+                    layout.height = 48
+                    layout.alignSelf = .center
+                    view.activityIndicatorViewStyle = .gray
+                    view.startAnimating()
+                })
+        }
+        
+        var imageNodes: [NodeType]
+        if let productDetail = state.productDetail, !productDetail.images.isEmpty {
+            let images = productDetail.images
+            if productDetail.info.hasVariant {
+                if let _ = productDetail.variantProduct {
+                    imageNodes = images.map({ (image) -> NodeType in
+                        productImageView(imageUrl: image.normalURL, tappable: true)
+                    })
+                } else if let initialData = self.state.initialData,
+                    let imageURL = initialData["imageURL"],
+                    imageURL != "" {
+                    imageNodes = [productImageView(imageUrl: imageURL, tappable: false)]
+                } else {
+                    return productImageEmpty()
+                }
+            } else {
+                imageNodes = images.map({ (image) -> NodeType in
+                    productImageView(imageUrl: image.normalURL, tappable: true)
+                })
+            }
+        } else if let initialData = self.state.initialData,
+            let imageURL = initialData["imageURL"],
+            imageURL != "" {
+            imageNodes = [productImageView(imageUrl: imageURL, tappable: false)]
+        } else {
+            return productImageEmpty()
         }
         
         return Node<UIScrollView>(identifier: "Product-Scroll-View") { view, layout, size in
@@ -249,7 +266,7 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func headerActionButton() -> NodeType {
-        if state.productDetailActivity == .normal || state.productDetailActivity == .inactive || state.productDetailActivity == .replacement {
+        if state.productDetailActivity == .normal || state.productDetailActivity == .inactive || state.productDetailActivity == .replacement || state.productDetailActivity == .outOfStock {
             return wishlistButton()
         } else if state.productDetailActivity == .seller || state.productDetailActivity == .sellerInactive {
             return editProductButton()
@@ -360,7 +377,7 @@ class ProductHeaderNode: ContainerNode {
             view.layer.shadowOpacity = 0.5
             view.layer.shadowOffset = CGSize(width: -15, height: 20)
             view.layer.shadowRadius = 10
-            view.setImage(UIImage(named: "icon_edit_plain"), for: .normal)
+            view.setImage(#imageLiteral(resourceName: "icon_edit_plain"), for: .normal)
             _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                 self.didTapProductEdit(productDetail)
             })
@@ -403,7 +420,7 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func productOriginalPriceView() -> NodeType {
-        guard let originalPrice = state.productDetail?.campaign?.original_price else {
+        guard let originalPrice = state.productDetail?.campaign?.originalPriceFormat else {
             return NilNode()
         }
         
@@ -420,7 +437,7 @@ class ProductHeaderNode: ContainerNode {
     private func productPriceView() -> NodeType {
         var marginTop: CGFloat = 11
         var marginBottom: CGFloat = 10
-        if let _ = state.productDetail?.campaign?.percentage_amount {
+        if let _ = state.productDetail?.campaign?.discountedPercentage {
             marginTop = 2
             marginBottom = 10
         }
@@ -477,7 +494,7 @@ class ProductHeaderNode: ContainerNode {
                     layout.marginRight = 5
                 },
                 Node<UIImageView> { view, layout, _ in
-                    view.image = UIImage(named: "icon-wallet")
+                    view.image = #imageLiteral(resourceName: "icon-wallet")
                     layout.width = 20
                     layout.height = 20
                 }
@@ -486,7 +503,7 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func productDiscountView() -> NodeType {
-        guard let percentage = state.productDetail?.campaign?.percentage_amount else {
+        guard let percentage = state.productDetail?.campaign?.discountedPercentage else {
             return NilNode()
         }
         
@@ -524,7 +541,7 @@ class ProductHeaderNode: ContainerNode {
                         layout.width = 16
                         layout.height = 16
                         layout.alignSelf = .center
-                        view.image = UIImage(named: "badge_official")
+                        view.image = #imageLiteral(resourceName: "badge_official")
                     }])
         }
         
@@ -532,12 +549,12 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func productPricePromoView() -> NodeType {
-        guard let endDate = state.productDetail?.campaign?.end_date else {
+        guard let endDate = state.productDetail?.campaign?.endDate else {
             return NilNode()
         }
         
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
         guard let endPromoDate = formatter.date(from:endDate),
             endPromoDate > Date(),
             endPromoDate.timeIntervalSinceNow < 24 * 60 * 60 else {
@@ -564,7 +581,7 @@ class ProductHeaderNode: ContainerNode {
     }
     
     private func productPriceTimerView() -> NodeType {
-        guard let expiredDate = state.productDetail?.campaign?.end_date else {
+        guard let expiredDate = state.productDetail?.campaign?.endDate else {
             return NilNode()
         }
         
@@ -652,7 +669,7 @@ class ProductHeaderNode: ContainerNode {
                 layout.width = 32
                 layout.height = 32
                 layout.alignSelf = .center
-                view.image = UIImage(named: "icon_discussion_green")
+                view.image = #imageLiteral(resourceName: "icon_discussion_green")
                 view.isUserInteractionEnabled = true
             },
             Node<UILabel>() { view, layout, _ in
@@ -691,7 +708,7 @@ class ProductHeaderNode: ContainerNode {
                 layout.width = 32
                 layout.height = 32
                 layout.alignSelf = .center
-                view.image = UIImage(named: "icon_courier_green")
+                view.image = #imageLiteral(resourceName: "icon_courier_green")
                 view.isUserInteractionEnabled = true
             },
             Node<UILabel>() { view, layout, _ in
@@ -708,7 +725,7 @@ class ProductHeaderNode: ContainerNode {
     
     private func timeRemainingString(withEndPromo endPromo: String) -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        formatter.dateFormat = "dd-MM-yyyy HH:mm:ss"
         guard let endPromoDate = formatter.date(from: endPromo) else {
             return "00h : 00m : 00s"
         }

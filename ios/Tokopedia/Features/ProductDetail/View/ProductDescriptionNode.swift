@@ -6,10 +6,10 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
+import UIKit
 
-class ProductDescriptionNode: ContainerNode {
+internal class ProductDescriptionNode: ContainerNode {
     fileprivate let didTapDescription: ((ProductInfo) -> Void)
     fileprivate let didLongPressDescription: (UILabel) -> Void
     fileprivate let didTapVideo: (ProductVideo) -> Void
@@ -17,7 +17,7 @@ class ProductDescriptionNode: ContainerNode {
     fileprivate var scrollView: UIScrollView?
     fileprivate var viewController: ProductDetailViewController
     
-    init(identifier: String, viewController: ProductDetailViewController, state: ProductDetailState, didTapDescription: @escaping ((ProductInfo) -> Void), didTapVideo: @escaping (ProductVideo) -> Void, didLongPressDescription: @escaping (UILabel) -> Void) {
+    internal init(identifier: String, viewController: ProductDetailViewController, state: ProductDetailState, didTapDescription: @escaping ((ProductInfo) -> Void), didTapVideo: @escaping (ProductVideo) -> Void, didLongPressDescription: @escaping (UILabel) -> Void) {
         self.didTapDescription = didTapDescription
         self.didTapVideo = didTapVideo
         self.didLongPressDescription = didLongPressDescription
@@ -125,7 +125,7 @@ class ProductDescriptionNode: ContainerNode {
             return NilNode()
         }
         
-        if state.productDetail?.videos.count == 0 {
+        if let videos = state.productDetail?.videos, videos.isEmpty {
             return NilNode()
         }
         
@@ -177,19 +177,24 @@ class ProductDescriptionNode: ContainerNode {
                 ])
             }
             
-            view.attributedText = fullAttributedString
+            if description.isEmpty {
+                view.text = "Tidak Ada Deskripsi"
+            } else {
+                view.attributedText = fullAttributedString
+            }
             
             let descriptionSize = view.font.sizeOfString(string: fullString, constrainedToWidth: Double(size.width - 30))
             layout.height = descriptionSize.height + 12
             
             view.enabledTextCheckingTypes = NSTextCheckingResult.CheckingType.link.rawValue
-            let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
-            let matches = detector.matches(in: fullString, options: [], range: NSRange(location: 0, length: fullString.utf16.count))
-            
-            for match in matches {
-                view.addLink(to: match.url, with: match.range)
+            if let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) {
+                let matches = detector.matches(in: fullString, options: [], range: NSRange(location: 0, length: fullString.utf16.count))
+                
+                for match in matches {
+                    view.addLink(to: match.url, with: match.range)
+                }
             }
-            
+        
             let longPressGestureRecognizer = UILongPressGestureRecognizer()
             longPressGestureRecognizer.minimumPressDuration = 1.0
             _ = longPressGestureRecognizer.rx.event
@@ -243,7 +248,7 @@ class ProductDescriptionNode: ContainerNode {
                 view.numberOfLines = 4
             },
             Node<UIImageView>(identifier: "more-icon", create: {
-                let view = UIImageView(image: UIImage(named: "icon_carret_green"))
+                let view = UIImageView(image: #imageLiteral(resourceName: "icon_carret_green"))
                 view.transform = view.transform.rotated(by: CGFloat(Double.pi))
                 return view
                 

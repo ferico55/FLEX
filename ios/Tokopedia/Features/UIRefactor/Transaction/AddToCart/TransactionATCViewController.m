@@ -128,7 +128,12 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     _headerTableView = [NSArray sortViewsWithTagInArray:_headerTableView];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+    if (_notesToSeller) {
+        _remarkTextView.text = _notesToSeller;
+    } else {
+        [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+    }
+
     _remarkTextView.delegate = self;
     
     requestPriceDelayedActionManager = [DelayedActionManager new];
@@ -999,17 +1004,33 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
         case TAG_BUTTON_TRANSACTION_BUY:
         {
             if (buttonIndex==0) {
-                [self.navigationController popViewControllerAnimated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
+                if (self.isModal) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
             }
             else
             {
                 [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Add to Cart"];
                 UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
-                UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
-                [self.tabBarController setSelectedIndex:3];
-                [selfNav popToRootViewControllerAnimated:YES];
+                
+                if (self.isModal) {
+                    [self.navigationController dismissViewControllerAnimated:true completion:^{
+                        UIViewController* topViewController = [UIApplication topViewController];
+                        UINavigationController *selfNav=(UINavigationController*)[topViewController.tabBarController.viewControllers objectAtIndex:topViewController.tabBarController.selectedIndex];
+                        [topViewController.tabBarController setSelectedIndex:3];
+                        [selfNav popToRootViewControllerAnimated:YES];
+                    }];
+                } else {
+                    UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
+                    [self.tabBarController setSelectedIndex:3];
+                    [selfNav popToRootViewControllerAnimated:YES];
+                }
+                
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
             }
             
@@ -1020,6 +1041,16 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     }
 }
 
+- (BOOL)isModal {
+    if([self presentingViewController])
+        return YES;
+    if([[[self navigationController] presentingViewController] presentedViewController] == [self navigationController])
+        return YES;
+    if([[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]])
+        return YES;
+    
+    return NO;
+}
 
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo

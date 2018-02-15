@@ -7,30 +7,31 @@
 //
 
 import Foundation
+import SwiftyJSON
 import Unbox
 
-final class ShopProductPageCampaignInfo: Unboxable {
-    let product_id: String
-    let discounted_price: String
-    let end_date: String
-    let original_price: String
-    let percentage_amount: Int
+internal final class ShopProductPageCampaignInfo: Unboxable {
+    internal let productID: String
+    internal let discountedPrice: String
+    internal let endDate: String
+    internal let originalPrice: String
+    internal let percentageAmount: Int
 
-    init(product_id: String, discounted_price: String, end_date: String, original_price: String, percentage_amount: Int) {
-        self.product_id = product_id
-        self.discounted_price = discounted_price
-        self.end_date = end_date
-        self.original_price = original_price
-        self.percentage_amount = percentage_amount
+    internal init(productID: String, discountedPrice: String, endDate: String, originalPrice: String, percentageAmount: Int) {
+        self.productID = productID
+        self.discountedPrice = discountedPrice
+        self.endDate = endDate
+        self.originalPrice = originalPrice
+        self.percentageAmount = percentageAmount
     }
 
-    convenience init(unboxer: Unboxer) throws {
+    convenience internal init(unboxer: Unboxer) throws {
         self.init(
-            product_id: try unboxer.unbox(keyPath: "product_id"),
-            discounted_price: try unboxer.unbox(keyPath: "discounted_price"),
-            end_date: try unboxer.unbox(keyPath: "end_date"),
-            original_price: try unboxer.unbox(keyPath: "original_price_idr"),
-            percentage_amount: try unboxer.unbox(keyPath: "percentage_amount")
+            productID: try unboxer.unbox(keyPath: "product_id"),
+            discountedPrice: try unboxer.unbox(keyPath: "discounted_price"),
+            endDate: try unboxer.unbox(keyPath: "end_date"),
+            originalPrice: try unboxer.unbox(keyPath: "original_price_idr"),
+            percentageAmount: try unboxer.unbox(keyPath: "percentage_amount")
         )
     }
 }
