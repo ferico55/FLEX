@@ -6,30 +6,29 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import KeychainAccess
 import LocalAuthentication
+import UIKit
 
-struct KeychainAccessService {
-    static let account = "Account"
-    static let touchAccount = "TouchAccount"
-    static let creditCard = "CreditCard"
+public struct KeychainAccessService {
+    public static let account = "Account"
+    public static let touchAccount = "TouchAccount"
+    public static let creditCard = "CreditCard"
 }
 
-struct KeychainAccessKey {
-    static let numberAccounts = "NumberAccounts"
-    static let email = "Email"
-    static let password = "Password"
-    static let creditCard = "CreditCardDatas"
+public struct KeychainAccessKey {
+    public static let numberAccounts = "NumberAccounts"
+    public static let email = "Email"
+    public static let password = "Password"
+    public static let creditCard = "CreditCardDatas"
 }
 
-var GlobalPriorityDefaultQueue: DispatchQueue {
+private var globalPriorityDefaultQueue: DispatchQueue {
     return DispatchQueue.global(qos: DispatchQoS.QoSClass.default)
 }
 
 @objc
-protocol TouchIDHelperDelegate: class {
-    
+public protocol TouchIDHelperDelegate: class {
     @objc optional func touchIDHelperActivationSucceed(_ helper: TouchIDHelper)
     @objc optional func touchIDHelperActivationFailed(_ helper: TouchIDHelper)
     @objc optional func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String)
@@ -37,28 +36,28 @@ protocol TouchIDHelperDelegate: class {
 }
 
 @objc(TouchIDHelper)
-class TouchIDHelper: NSObject {
+public class TouchIDHelper: NSObject {
     
-    static let sharedInstance = TouchIDHelper()
-    weak var delegate: TouchIDHelperDelegate?
+    public static let sharedInstance = TouchIDHelper()
+    public weak var delegate: TouchIDHelperDelegate?
     
-    let maximumConnectedAccounts: Int = 5
+    private let maximumConnectedAccounts: Int = 5
     
-    func numberOfConnectedAccounts() -> Int {
+    public func numberOfConnectedAccounts() -> Int {
         let keychainAccount = Keychain(service: KeychainAccessService.account)
         let items = keychainAccount.allItems()
         
         return items.count
     }
     
-    func saveTouchID(forEmail email: String, password: String) {
+    public func saveTouchID(forEmail email: String, password: String) {
         
         // check if saved touch id is already on limit
         if self.numberOfConnectedAccounts() > self.maximumConnectedAccounts {
             return
         }
         
-        GlobalPriorityDefaultQueue.async(execute: { () -> Void in
+        globalPriorityDefaultQueue.async(execute: { () -> Void in
             do {
                 let keychainAccount = Keychain(service: KeychainAccessService.account)
                 keychainAccount[email] = email
@@ -94,8 +93,8 @@ class TouchIDHelper: NSObject {
         })
     }
     
-    func updateTouchID(forEmail email: String, password: String) {
-        GlobalPriorityDefaultQueue.async(execute: { () -> Void in
+    public func updateTouchID(forEmail email: String, password: String) {
+        globalPriorityDefaultQueue.async(execute: { () -> Void in
             do {
                 let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
                 
@@ -122,7 +121,7 @@ class TouchIDHelper: NSObject {
         })
     }
     
-    func loadTouchIDAccount() -> [String] {
+    public func loadTouchIDAccount() -> [String] {
         let keychainAccount = Keychain(service: KeychainAccessService.account)
         let items = keychainAccount.allKeys()
         let emails = items.flatMap { $0 }
@@ -130,8 +129,8 @@ class TouchIDHelper: NSObject {
         return emails
     }
     
-    func loadTouchID(withEmail email: String) {
-        GlobalPriorityDefaultQueue.async(execute: { () -> Void in
+    public func loadTouchID(withEmail email: String) {
+        globalPriorityDefaultQueue.async(execute: { () -> Void in
             do {
                 let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
                 
@@ -158,7 +157,7 @@ class TouchIDHelper: NSObject {
         })
     }
     
-    func isTouchIDAvailable() -> Bool {
+    public func isTouchIDAvailable() -> Bool {
         let context = LAContext()
         var error: NSError?
         
@@ -175,7 +174,7 @@ class TouchIDHelper: NSObject {
         return false
     }
     
-    func isTouchIDExist(withEmail email: String) -> Bool {
+    public func isTouchIDExist(withEmail email: String) -> Bool {
         let emails: [String] = self.loadTouchIDAccount()
         
         if emails.contains(email) {
@@ -185,7 +184,7 @@ class TouchIDHelper: NSObject {
         return false
     }
     
-    func remove(forEmail email: String) {
+    public func remove(forEmail email: String) {
         let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
         let keychainAccount = Keychain(service: KeychainAccessService.account)
         
@@ -197,7 +196,7 @@ class TouchIDHelper: NSObject {
         }
     }
     
-    func removeAll() {
+    public func removeAll() {
         let keychainTouch = Keychain(service: KeychainAccessService.touchAccount)
         let keychainAccount = Keychain(service: KeychainAccessService.account)
         

@@ -8,20 +8,20 @@
 
 import UIKit
 
-class SecureStorageManager: NSObject {
+internal class SecureStorageManager: NSObject {
     
     private let storage: TKPDSecureStorage!
     
-    override init() {
+    override internal init() {
         self.storage = TKPDSecureStorage.standardKeyChains()
         super.init()
     }
     
-    func resetKeychain() {
+    internal func resetKeychain() {
         self.storage.resetKeychain()
     }
     
-    func storeToken(_ token: OAuthToken) {
+    internal func storeToken(_ token: OAuthToken) {
         var tokenDictionary: [AnyHashable: Any?] = [
             "oAuthToken.accessToken": token.accessToken,
             "oAuthToken.tokenType": token.tokenType,
@@ -33,8 +33,18 @@ class SecureStorageManager: NSObject {
         tokenDictionary = tokenDictionary.avoidImplicitNil()
         self.storage.setKeychainWith(tokenDictionary)
     }
-
-    func storeLoginInformation(_ loginResult: LoginResult) -> Bool {
+    
+    internal func removeToken(){
+        let tokenDictionary: [AnyHashable: Any] = [
+            "oAuthToken.accessToken": NSNull(),
+            "oAuthToken.tokenType": NSNull(),
+            "oAuthToken.refreshToken": NSNull()
+        ]
+        
+        self.storage.setKeychainWith(tokenDictionary)
+    }
+    
+    internal func storeLoginInformation(_ loginResult: LoginResult) -> Bool {
         if (loginResult.user_id == nil) {
             return false
         }
@@ -50,7 +60,7 @@ class SecureStorageManager: NSObject {
             "shop_has_term": loginResult.shop_has_terms,
             "msisdn_is_verified": loginResult.msisdn_is_verified,
             "msisdn_show_dialog": loginResult.msisdn_show_dialog,
-        ]
+            ]
         
         if let userImage = loginResult.user_image {
             userDictionary.merge(with: ["user_image" : userImage])
@@ -75,7 +85,7 @@ class SecureStorageManager: NSObject {
         return true
     }
     
-    func storeUserInformation(_ user: ProfileInfoResult) {
+    internal func storeUserInformation(_ user: ProfileInfoResult) {
         guard let userInfo = user.user_info else { return }
         
         let convertedNumber = userInfo.user_phone.replacingPrefix(of: "0", with: "62")
@@ -108,7 +118,7 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWith(userDictionary)
     }
     
-    func storeShopInformation(_ user: ProfileInfoResult) {
+    internal func storeShopInformation(_ user: ProfileInfoResult) {
         guard let shopInfo = user.shop_info else { return }
         guard let shopStats = user.shop_stats else { return }
         
@@ -121,14 +131,14 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWith(safeDictionary)
     }
     
-    func storeAnalyticsInformation(data: MoEngageQuery.Data) {
+    internal func storeAnalyticsInformation(data: MoEngageQuery.Data) {
         let isSeller = data.shopInfoMoengage?.owner?.isSeller ?? false
         let gender = data.profile?.gender ?? ""
         var city = ""
         var province = ""
         if let address = data.address {
             if let addresses = address.addresses {
-                if addresses.count > 0 {
+                if !addresses.isEmpty {
                     if let cityName = addresses[0]?.cityName {
                         city = cityName
                     }
@@ -173,7 +183,7 @@ class SecureStorageManager: NSObject {
         self.storage.setKeychainWith(safeDictionary)
     }
     
-    func storeTokoCashToken(_ token: String) {
+    internal func storeTokoCashToken(_ token: String) {
         self.storage.setKeychainWithValue(token, withKey: "tokocash_token")
     }
     

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-enum AuthTokenSource {
+public enum AuthTokenSource {
     case socialProfile, activationCode, existingToken, loginCredentials, webviewToken
 
 }

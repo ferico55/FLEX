@@ -6,32 +6,32 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import MMNumberKeyboard
+import RxSwift
 import SwiftyJSON
+import UIKit
 
-class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate, MMNumberKeyboardDelegate {
+public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate, MMNumberKeyboardDelegate {
     
-    @IBOutlet weak var informationText: UILabel!
-    @IBOutlet weak var actionButton: UIButton!
-    @IBOutlet weak var phoneNumberHorizontalLine: UIView!
-    @IBOutlet weak var phoneNumberTextField: UITextField!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var warningLabel: UILabel!
+    @IBOutlet weak private var informationText: UILabel!
+    @IBOutlet weak private var actionButton: UIButton!
+    @IBOutlet weak private var phoneNumberHorizontalLine: UIView!
+    @IBOutlet weak private var phoneNumberTextField: UITextField!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var warningLabel: UILabel!
     
-    @IBOutlet weak var viewTrailing: NSLayoutConstraint!
-    @IBOutlet weak var viewLeading: NSLayoutConstraint!
+    @IBOutlet weak private var viewTrailing: NSLayoutConstraint!
+    @IBOutlet weak private var viewLeading: NSLayoutConstraint!
     
     private let nextButtonEnabled = Variable(false)
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
         self.setupNextButton()
     }
     
-    @IBAction func onTapNext(_ sender: UIButton) {
+    @IBAction private func onTapNext(_ sender: UIButton) {
         let phoneNumber = self.phoneNumberTextField.text!
         self.setButtonLoading(true)
         
@@ -141,15 +141,15 @@ class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate, MMN
     
     // MARK: Text Field Delegate
     
-    @IBAction func validateWhileTyping(_ textField: UITextField) {
-        if let text = textField.text, text.count >= 10 && text.count < 15 {
+    @IBAction private func validateWhileTyping(_ textField: UITextField) {
+        if let text = textField.text, text.count >= 9 && text.count < 15 {
             self.nextButtonEnabled.value = true
         } else {
             self.nextButtonEnabled.value = false
         }
     }
     
-    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+    public func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
         if textField == self.phoneNumberTextField {
             self.phoneNumberHorizontalLine.backgroundColor = .tpGreen()
         }
@@ -157,7 +157,7 @@ class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate, MMN
         return true
     }
     
-    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
+    public func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField == self.phoneNumberTextField {
             self.phoneNumberHorizontalLine.backgroundColor = .tpBorder()
         }

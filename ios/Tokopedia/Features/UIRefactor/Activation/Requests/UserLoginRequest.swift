@@ -8,13 +8,13 @@
 
 import Foundation
 import RestKit
-typealias LoginCompletion = (_ login: Login?, _ error: Error?) -> Void
-class UserLoginRequest {
-    var completionHandler: LoginCompletion?
-    var authToken: OAuthToken!
-    var accountInfo: AccountInfo!
-    let networkManager = TokopediaNetworkManager()
-    func authenticate() {
+public typealias LoginCompletion = (_ login: Login?, _ error: Error?) -> Void
+public class UserLoginRequest {
+    public var completionHandler: LoginCompletion?
+    public var authToken: OAuthToken!
+    public var accountInfo: AccountInfo!
+    private let networkManager = TokopediaNetworkManager()
+    public func authenticate() {
         guard let token = self.authToken, let accountInfo = self.accountInfo, let _ = self.completionHandler else { return }
         let storage = TKPDSecureStorage.standardKeyChains()
         let securityQuestionUUID = (storage?.keychainDictionary())?["securityQuestionUUID"]
@@ -24,7 +24,7 @@ class UserLoginRequest {
         parameter["user_id"] = accountInfo.userId
         self.authenticateWith(header: header, parameter: parameter)
     }
-    func authenticateWith(header: [String: String], parameter: [String: String]) {
+    public func authenticateWith(header: [String: String], parameter: [String: String]) {
         guard let completionHandler = self.completionHandler else { return }
         self.networkManager.isUsingHmac = true
         self.networkManager.request(withBaseUrl: NSString.v4Url(),

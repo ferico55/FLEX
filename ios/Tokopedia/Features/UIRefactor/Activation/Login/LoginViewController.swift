@@ -6,31 +6,31 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import SwiftOverlays
 import Branch
+import SwiftOverlays
+import UIKit
 
-class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, AuthenticationServiceProtocol {
-    var onLoginFinished: ((_ loginResult: LoginResult?) -> Void)?
-    var loadingUIHandler: ((_ isLoading: Bool) -> Void)?
-    var isUsingTouchID = false
-    var emailId: String?
-    var password: String?
-    var loginResult: Login?
-    
+public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, AuthenticationServiceProtocol {
+    public var onLoginFinished: ((_ loginResult: LoginResult?) -> Void)?
+    public var loadingUIHandler: ((_ isLoading: Bool) -> Void)?
+    private var isUsingTouchID = false
+    private var emailId: String?
+    private var password: String?
+    private var loginResult: Login?
     @IBOutlet private weak var registerButton: UIBarButtonItem!
     //    MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         TouchIDHelper.sharedInstance.delegate = self
 
     }
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setupUI()
+        self.makeActivityIndicator(toShow: false)
     }
     // MARK: - Public
-    func doLoginWithEmail(email: String, password: String) {
+    public func doLoginWithEmail(email: String, password: String) {
         self.makeActivityIndicator(toShow: true)
         let service = AuthenticationService.shared
         service.loginDelegate = self
@@ -59,7 +59,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
         service.login(withEmail: email, password: password)
     }
-    func loginSuccess(login: Login) {
+    public func loginSuccess(login: Login) {
         LoginAnalytics().trackMoEngageEvent(with: login)
         if !SecureStorageManager().storeLoginInformation(login.result) {
             return
@@ -79,19 +79,20 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
                                        onFailure: {
                                            DispatchQueue.main.async {
                                                self.makeActivityIndicator(toShow: false)
-                                               self.notifyUserLoginFailure()
                                                if let onLoginFinished = self.onLoginFinished {
                                                    onLoginFinished(nil)
                                                }
+                                               QuickActionHelper.sharedInstance.registerShortcutItems()
+                                               self.notifyUserDidLogin()
                                            }
         })
     }
-    func navigateToRegister() {
+    public func navigateToRegister() {
         let viewController = RegisterBaseViewController()
         viewController.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(viewController, animated: true)
     }
-    func makeActivityIndicator(toShow: Bool) {
+    public func makeActivityIndicator(toShow: Bool) {
         DispatchQueue.main.async {
             if let loadingUIHandler = self.loadingUIHandler {
                 loadingUIHandler(toShow)
@@ -100,20 +101,20 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
     }
     //    MARK: - Actions
-    @IBAction func dismissKeyboard(sender: UITapGestureRecognizer) {
+    @IBAction private func dismissKeyboard(sender: UITapGestureRecognizer) {
         self.view.endEditing(true)
     }
-    @IBAction func registerButtonTapped(sender: UIBarButtonItem) {
+    @IBAction private func registerButtonTapped(sender: UIBarButtonItem) {
         LoginAnalytics().trackLoginEvent(name: "registerLogin", action: "Register", label: "Register")
         self.navigateToRegister()
     }
     //    MARK: - Private
-    func setupUI() {
+    private func setupUI() {
         if self.isModal() {
             self.setBarButton(withTitle: "Batal", side: .left, font: nil, textColor: nil, action: #selector(LoginViewController.cancelButtonTapped(sender:)))
         }
     }
-    func cancelButtonTapped(sender: UIBarButtonItem) {
+    public func cancelButtonTapped(sender: UIBarButtonItem) {
         self.navigationController?.dismiss(animated: true, completion: nil)
     }
     fileprivate func handleLoginWithTouchId() {
@@ -170,7 +171,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserLoginFailureNotification), object: nil)
     }
     //    MARK: - AuthenticationService Protocol
-    func showVerifyLoginScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
+    public func showVerifyLoginScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
         guard let login = sender.login, let phoneNumber = sender.accountInfo?.phoneNumber, let authToken = sender.authToken, let phoneMasked = sender.accountInfo?.phoneMasked else { return }
         let questions = SecurityQuestionObjects()
         questions.userID = login.result.user_id
@@ -196,7 +197,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         self.present(navigation, animated: true, completion: nil)
         self.makeActivityIndicator(toShow: false)
     }
-    func showCreatePasswordScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
+    public func showCreatePasswordScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
         guard let socialProfile = sender.socialProfile,
             let token = sender.authToken,
             let accountInfo = sender.accountInfo else {
@@ -217,20 +218,20 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         self.makeActivityIndicator(toShow: false)
     }
 
-    func successLoginAfterCreatePassword(sender: AuthenticationService, login: Login) {
+    public func successLoginAfterCreatePassword(sender: AuthenticationService, login: Login) {
         login.justRegistered = true
         self.loginSuccess(login: login)
     }
 
     //    MARK: - TouchIDHelperDelegate
-    func touchIDHelperActivationSucceed(_ helper: TouchIDHelper) {
+    public func touchIDHelperActivationSucceed(_ helper: TouchIDHelper) {
         guard let loginResult = self.loginResult else {
             return
         }
 
         self.loginSuccess(login: loginResult)
     }
-    func touchIDHelperActivationFailed(_ helper: TouchIDHelper) {
+    public func touchIDHelperActivationFailed(_ helper: TouchIDHelper) {
         guard let loginResult = self.loginResult else {
             return
         }
@@ -245,7 +246,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         
         self.present(alertController, animated: true, completion: nil)
     }
-    func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String) {
+    public func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String) {
         self.isUsingTouchID = true
         self.emailId = email
         self.password = password        
@@ -258,7 +259,7 @@ class LoginViewController: GAITrackedViewController, TouchIDHelperDelegate, Auth
         }
         self.doLoginWithEmail(email: email, password: password)
     }
-    func touchIDHelperLoadFailed(_ helper: TouchIDHelper) {
+    public func touchIDHelperLoadFailed(_ helper: TouchIDHelper) {
         let alertController = UIAlertController(title: "Integrasikan dengan \(NSString.authenticationType())", message: "Terjadi kendala dengan \(NSString.authenticationType()) Anda.\nSilakan coba kembali", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "OK", style: .cancel, handler: nil))

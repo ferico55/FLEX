@@ -700,6 +700,17 @@
 		E517179020315E0A00F46831 /* ProductVariantNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178E20315E0900F46831 /* ProductVariantNode.swift */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
+		E576C2652034180E008524AA /* CentralizedOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2572034180D008524AA /* CentralizedOTPViewController.swift */; };
+		E576C2662034180E008524AA /* ModeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2592034180D008524AA /* ModeCell.swift */; };
+		E576C2672034180E008524AA /* VerificationModeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576C25A2034180D008524AA /* VerificationModeListViewController.xib */; };
+		E576C2682034180E008524AA /* ModeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576C25B2034180D008524AA /* ModeCell.xib */; };
+		E576C2692034180E008524AA /* VerificationModeListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C25C2034180D008524AA /* VerificationModeListViewController.swift */; };
+		E576C26A2034180E008524AA /* COTPService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C25D2034180D008524AA /* COTPService.swift */; };
+		E576C26B2034180E008524AA /* CentralizedOTPViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576C25E2034180D008524AA /* CentralizedOTPViewController.xib */; };
+		E576C26C2034180E008524AA /* COTPResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2602034180D008524AA /* COTPResponse.swift */; };
+		E576C26D2034180E008524AA /* ModeListResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2612034180D008524AA /* ModeListResponse.swift */; };
+		E576C26E2034180E008524AA /* OTPTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2632034180D008524AA /* OTPTextField.swift */; };
+		E576C26F2034180E008524AA /* OTPInputView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2642034180D008524AA /* OTPInputView.swift */; };
 		E57974BF1FEA733100610655 /* MoreView.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E57974BE1FEA733100610655 /* MoreView.storyboard */; };
 		E57974C11FEA73D700610655 /* Modal.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C01FEA73D600610655 /* Modal.swift */; };
 		E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */; };
@@ -3348,6 +3359,17 @@
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
 		E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfoAnalyticsManager.swift; sourceTree = "<group>"; };
+		E576C2572034180D008524AA /* CentralizedOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CentralizedOTPViewController.swift; sourceTree = "<group>"; };
+		E576C2592034180D008524AA /* ModeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeCell.swift; sourceTree = "<group>"; };
+		E576C25A2034180D008524AA /* VerificationModeListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerificationModeListViewController.xib; sourceTree = "<group>"; };
+		E576C25B2034180D008524AA /* ModeCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ModeCell.xib; sourceTree = "<group>"; };
+		E576C25C2034180D008524AA /* VerificationModeListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerificationModeListViewController.swift; sourceTree = "<group>"; };
+		E576C25D2034180D008524AA /* COTPService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = COTPService.swift; sourceTree = "<group>"; };
+		E576C25E2034180D008524AA /* CentralizedOTPViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CentralizedOTPViewController.xib; sourceTree = "<group>"; };
+		E576C2602034180D008524AA /* COTPResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = COTPResponse.swift; sourceTree = "<group>"; };
+		E576C2612034180D008524AA /* ModeListResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeListResponse.swift; sourceTree = "<group>"; };
+		E576C2632034180D008524AA /* OTPTextField.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPTextField.swift; sourceTree = "<group>"; };
+		E576C2642034180D008524AA /* OTPInputView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OTPInputView.swift; sourceTree = "<group>"; };
 		E57974BE1FEA733100610655 /* MoreView.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MoreView.storyboard; sourceTree = "<group>"; };
 		E57974C01FEA73D600610655 /* Modal.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Modal.swift; sourceTree = "<group>"; };
 		E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "MoyaError+UserFriendlyErrorMessage.swift"; sourceTree = "<group>"; };
@@ -7811,6 +7833,48 @@
 			path = Test;
 			sourceTree = "<group>";
 		};
+		E576C2562034180D008524AA /* CentralizedOTP */ = {
+			isa = PBXGroup;
+			children = (
+				E576C2572034180D008524AA /* CentralizedOTPViewController.swift */,
+				E576C2582034180D008524AA /* VerificationModeList */,
+				E576C25D2034180D008524AA /* COTPService.swift */,
+				E576C25E2034180D008524AA /* CentralizedOTPViewController.xib */,
+				E576C25F2034180D008524AA /* Model */,
+				E576C2622034180D008524AA /* OTPField */,
+			);
+			path = CentralizedOTP;
+			sourceTree = "<group>";
+		};
+		E576C2582034180D008524AA /* VerificationModeList */ = {
+			isa = PBXGroup;
+			children = (
+				E576C2592034180D008524AA /* ModeCell.swift */,
+				E576C25A2034180D008524AA /* VerificationModeListViewController.xib */,
+				E576C25B2034180D008524AA /* ModeCell.xib */,
+				E576C25C2034180D008524AA /* VerificationModeListViewController.swift */,
+			);
+			path = VerificationModeList;
+			sourceTree = "<group>";
+		};
+		E576C25F2034180D008524AA /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E576C2602034180D008524AA /* COTPResponse.swift */,
+				E576C2612034180D008524AA /* ModeListResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E576C2622034180D008524AA /* OTPField */ = {
+			isa = PBXGroup;
+			children = (
+				E576C2632034180D008524AA /* OTPTextField.swift */,
+				E576C2642034180D008524AA /* OTPInputView.swift */,
+			);
+			path = OTPField;
+			sourceTree = "<group>";
+		};
 		E57974C41FEA741F00610655 /* InputPromo */ = {
 			isa = PBXGroup;
 			children = (
@@ -8496,6 +8560,7 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				E576C2562034180D008524AA /* CentralizedOTP */,
 				9244D36E2029850D005CFB89 /* Forbidden */,
 				F977EF2D1FE8AB6E00183A85 /* Cache */,
 				F977F5181FE8AB7400183A85 /* Cocoa */,
@@ -11888,6 +11953,7 @@
 				E595C6A31FF6596800A8665E /* ShopHeaderView.xib in Resources */,
 				F97700BA1FE8AB8600183A85 /* Zocial.ttf in Resources */,
 				F977FC2C1FE8AB7D00183A85 /* AlertListBankCell.xib in Resources */,
+				E576C2672034180E008524AA /* VerificationModeListViewController.xib in Resources */,
 				F977FD331FE8AB7F00183A85 /* SearchAutoCompleteShopCell.xib in Resources */,
 				F977FE2C1FE8AB8100183A85 /* RegisterEmailViewController.xib in Resources */,
 				F977FB0A1FE8AB7B00183A85 /* GeneralNoResult.xib in Resources */,
@@ -11900,6 +11966,7 @@
 				F977FC421FE8AB7D00183A85 /* AlertLuckyView.xib in Resources */,
 				F977006F1FE8AB8500183A85 /* MainViewController.xib in Resources */,
 				F977FAE11FE8AB7A00183A85 /* AnnouncementTickerView.xib in Resources */,
+				E576C26B2034180E008524AA /* CentralizedOTPViewController.xib in Resources */,
 				F977009D1FE8AB8600183A85 /* public_key.der in Resources */,
 				F977FB1F1FE8AB7B00183A85 /* InboxTicketReplyViewController.xib in Resources */,
 				F954C44A1FC55B6C008C0B30 /* icon_login_active@2x.png in Resources */,
@@ -12181,6 +12248,7 @@
 				F977FE231FE8AB8100183A85 /* ProductTalkFormViewController.xib in Resources */,
 				F954C4471FC55B6C008C0B30 /* icon_more_active.png in Resources */,
 				F977FAC41FE8AB7A00183A85 /* SettingTouchIDViewController.xib in Resources */,
+				E576C2682034180E008524AA /* ModeCell.xib in Resources */,
 				F977FC921FE8AB7D00183A85 /* CloseShopViewController.xib in Resources */,
 				F977FC191FE8AB7C00183A85 /* ReplacementListViewController.xib in Resources */,
 				F977FB8E1FE8AB7B00183A85 /* CategoryIntermediarySeeAllView.xib in Resources */,
@@ -12916,6 +12984,7 @@
 				F977FA221FE8AB7900183A85 /* DigitalTarget.swift in Sources */,
 				F977FB681FE8AB7B00183A85 /* RequestResolutionData.m in Sources */,
 				F977FB341FE8AB7B00183A85 /* DepositFormViewController.m in Sources */,
+				E576C26D2034180E008524AA /* ModeListResponse.swift in Sources */,
 				F977009B1FE8AB8600183A85 /* RSA.m in Sources */,
 				F977FABE1FE8AB7A00183A85 /* SettingBankNameViewController.m in Sources */,
 				62C770F11FF33C3300F66527 /* CatalogList.m in Sources */,
@@ -13140,8 +13209,10 @@
 				F977FA4E1FE8AB7900183A85 /* ReferralRemoteConfig.swift in Sources */,
 				F977FCD81FE8AB7E00183A85 /* MyShopEtalaseEditViewController.m in Sources */,
 				E581B5421FE8FDAE00E6D1DA /* NotificationBarButton.swift in Sources */,
+				E576C26C2034180E008524AA /* COTPResponse.swift in Sources */,
 				F7D8C9F4201754E700725BDB /* TokoCashQRPaymentFailedNavigator.swift in Sources */,
 				DADB9F571F3C46CF002B1FAE /* MGSwipeButton.m in Sources */,
+				E576C2652034180E008524AA /* CentralizedOTPViewController.swift in Sources */,
 				F977FD851FE8AB7F00183A85 /* RequestShippingCity.swift in Sources */,
 				F977FCFB1FE8AB7E00183A85 /* ProductWishlistCell.swift in Sources */,
 				F977FAFC1FE8AB7A00183A85 /* PromoViewController.m in Sources */,
@@ -13222,6 +13293,7 @@
 				DADB9F621F3C46CF002B1FAE /* EDStarRating.m in Sources */,
 				F977FD841FE8AB7F00183A85 /* RequestFilterCategory.swift in Sources */,
 				848FA6E51FEBF8BE00A22EDE /* RCCreateStep1ResponseData.swift in Sources */,
+				E576C26E2034180E008524AA /* OTPTextField.swift in Sources */,
 				F977FB761FE8AB7B00183A85 /* MerlinRecommendationResponse.swift in Sources */,
 				F977FC901FE8AB7D00183A85 /* CloseShopResponse.m in Sources */,
 				62C771A71FF33C3500F66527 /* LikeDislikePostResult.m in Sources */,
@@ -13320,8 +13392,10 @@
 				62C771271FF33C3400F66527 /* SearchModel.xcdatamodeld in Sources */,
 				F977FAF21FE8AB7A00183A85 /* MyWishlistViewController.m in Sources */,
 				62C7701F1FF33C3200F66527 /* CartEditShipmentResponse.swift in Sources */,
+				E576C26F2034180E008524AA /* OTPInputView.swift in Sources */,
 				848FA6F01FEBF8BF00A22EDE /* RCManager.swift in Sources */,
 				DADB9F531F3C46CE002B1FAE /* iCarousel.m in Sources */,
+				E576C26A2034180E008524AA /* COTPService.swift in Sources */,
 				F97700A31FE8AB8600183A85 /* NavigationHelper.m in Sources */,
 				F7D8CA1C201754E800725BDB /* TokoCashDateRangeItemTableViewCell.swift in Sources */,
 				F977FBA21FE8AB7C00183A85 /* ShipmentStatusViewController.m in Sources */,
@@ -14114,6 +14188,7 @@
 				F977FA681FE8AB7A00183A85 /* ProductDetailReviewNode.swift in Sources */,
 				F977FA4B1FE8AB7900183A85 /* CodeShareTableViewController.swift in Sources */,
 				62C770BB1FF33C3300F66527 /* OrderRequestCancel.m in Sources */,
+				E576C2692034180E008524AA /* VerificationModeListViewController.swift in Sources */,
 				62C771BF1FF33C3500F66527 /* ShipmentData.m in Sources */,
 				F977FC021FE8AB7C00183A85 /* GeneralTableViewController.m in Sources */,
 				F977FCA21FE8AB7D00183A85 /* ShopTagDescriptionViewCell.swift in Sources */,
@@ -14151,6 +14226,7 @@
 				F977FBC01FE8AB7C00183A85 /* OrderDetailProductCell.m in Sources */,
 				F977FCF71FE8AB7E00183A85 /* ReportProductGetTypeResponse.swift in Sources */,
 				F977FD5D1FE8AB7F00183A85 /* NoResult.m in Sources */,
+				E576C2662034180E008524AA /* ModeCell.swift in Sources */,
 				F977FCE71FE8AB7E00183A85 /* GalleryViewController.m in Sources */,
 				62C770321FF33C3200F66527 /* InstallmentBank.m in Sources */,
 				62C7718C1FF33C3400F66527 /* DataUser.m in Sources */,

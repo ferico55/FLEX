@@ -8,13 +8,13 @@
 
 import Foundation
 import RestKit
-typealias AuthTokenCompletion = (_ token: OAuthToken?, _ error: Error?) -> Void
-class AuthTokenRequest {
-    var parameter: [String: String] = [:]
-    var tokenFrom: AuthTokenSource!
-    var completionHandler: AuthTokenCompletion?
-    let networkManager = TokopediaNetworkManager()
-    func getAuthToken() {
+public typealias AuthTokenCompletion = (_ token: OAuthToken?, _ error: Error?) -> Void
+public class AuthTokenRequest {
+    public var parameter: [String: String] = [:]
+    public var tokenFrom: AuthTokenSource!
+    public var completionHandler: AuthTokenCompletion?
+    private let networkManager = TokopediaNetworkManager()
+    public func getAuthToken() {
         guard let _ = self.tokenFrom, let completionHandler = self.completionHandler else {
             return
         }
@@ -40,7 +40,7 @@ class AuthTokenRequest {
                                         completionHandler(nil, error)
         })
     }
-    func configureForTokenFrom() {
+    public func configureForTokenFrom() {
         switch self.tokenFrom! {
         case .socialProfile:
             self.networkManager.isParameterNotEncrypted = true
