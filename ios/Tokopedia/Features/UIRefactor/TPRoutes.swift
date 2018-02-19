@@ -989,7 +989,6 @@ guard let productId = params["productId"] as? String else { return true }
             guard let message_id = params["message_id"] as? String else { return false }
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
-            let remoteConfig = RemoteConfig.remoteConfig()
             var viewController: UIViewController
 
             if UI_USER_INTERFACE_IDIOM() == .pad {
@@ -1012,7 +1011,7 @@ guard let productId = params["productId"] as? String else { return true }
 
                 viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
             } else {
-                viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
+                viewController = ReactViewController(moduleName: "TopChatDetail", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
             }
 
             viewController.hidesBottomBarWhenPushed = true
