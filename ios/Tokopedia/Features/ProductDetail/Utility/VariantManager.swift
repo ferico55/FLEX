@@ -68,7 +68,7 @@ internal class VariantManager: NSObject {
                     if let selectedProduct = product.variantProduct?.productVariantSelected {
                         let variantValue = selectedProduct.map { $0.variantValue }.joined(separator: ", ")
                         vc.notesToSeller = variantValue
-                        AnalyticsManager.trackEventName("addToCart", category: "product detail page", action: "click - buy on variants page", label: "{\(variantValue)}")
+                        AnalyticsManager.trackEventName("clickBuy", category: "product detail page", action: "click - buy on variants page", label: "{\(variantValue)}")
                     }
                     
                     presentedViewController.navigationController?.pushViewController(vc, animated: true)

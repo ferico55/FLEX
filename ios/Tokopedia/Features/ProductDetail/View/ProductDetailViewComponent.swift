@@ -1128,14 +1128,14 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
 
         if let productVariant = productDetail.variantProduct, !productVariant.variants.isEmpty {
             guard let selectedProduct = productVariant.productVariantSelected else {
-                AnalyticsManager.trackEventName("addToCart", category: "product detail page", action: "click - buy", label: "null")
+                AnalyticsManager.trackEventName("clickBuy", category: "product detail page", action: "click - buy", label: "")
                 self.redirectToVariant(productDetail, productVariant: productVariant)
                 return
             }
             
-            AnalyticsManager.trackEventName("addToCart", category: "product detail page", action: "click - buy", label: "{\(selectedProduct.map { $0.variantValue }.joined(separator: ", "))}")
+            AnalyticsManager.trackEventName("clickBuy", category: "product detail page", action: "click - buy", label: "{\(selectedProduct.map { $0.variantValue }.joined(separator: ", "))}")
         } else {
-            AnalyticsManager.trackEventName("addToCart", category: "product detail page", action: "click - buy", label: "non variant")
+            AnalyticsManager.trackEventName("clickBuy", category: "product detail page", action: "click - buy", label: "non variant")
         }
 
         AnalyticsManager.trackEventName("clickBuy", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Buy")
