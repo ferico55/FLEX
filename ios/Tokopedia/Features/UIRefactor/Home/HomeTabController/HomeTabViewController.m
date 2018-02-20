@@ -107,9 +107,9 @@ UINavigationControllerDelegate
     BOOL remoteValue = [[remoteConfig configValueForKey:@"iosapp_enable_new_home"] boolValue];
     if (remoteValue) {
         if (userData) {
-            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData}];
+            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData, @"cacheEnabled" : @(NO)}];
         } else {
-            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen"];
+            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props: @{@"cacheEnabled": @(NO)}];
         }
     } else {
         _homePageController = [HomePageViewController new];
