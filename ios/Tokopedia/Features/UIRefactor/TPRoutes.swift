@@ -917,17 +917,24 @@ guard let productId = params["productId"] as? String else { return true }
         }
 
         //topAds dashboard
-        JLRoutes.global().addRoute("/topads/dashboard") { (_: [String: Any]) -> Bool in
-            let userManager = UserAuthentificationManager()
-            let auth = userManager.getUserLoginData()
-
-            let viewController = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
-
-            viewController.hidesBottomBarWhenPushed = true
-            UIApplication.topViewController()?
-                .navigationController?
-                .pushViewController(viewController, animated: true)
-
+        JLRoutes.global().add(["/topads/dashboard", "topads/manage"]) { (_: [String: Any]) -> Bool in
+            guard let topVc = UIApplication.topViewController() else { return false }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
+                let userManager = UserAuthentificationManager()
+                var controller = UIViewController()
+                
+                if(!userManager.userHasShop()) {
+                    controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
+                } else {
+                    let auth = userManager.getUserLoginData()
+                    controller = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
+                }
+                
+                topVc.navigationController?.pushViewController(controller, animated: true)
+            
+            }
+            
             return true
         }
 
@@ -935,12 +942,18 @@ guard let productId = params["productId"] as? String else { return true }
             guard let url = params["url"] as? String else {
                 return false
             }
-
-            let userManager = UserAuthentificationManager()
-            let seamlessURL = userManager.webViewUrl(fromUrl: url)
-            let topViewController = UIApplication.topViewController()
-
-            TransactionCartWebViewViewController.pushToppay(fromURL: seamlessURL, viewController: topViewController, shouldAuthorizedRequest: true)
+            
+            guard let topVc = UIApplication.topViewController() else { return false }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
+                let userManager = UserAuthentificationManager()
+                let seamlessURL = userManager.webViewUrl(fromUrl: url)
+           
+                
+                if(userManager.userHasShop()) {
+                    TransactionCartWebViewViewController.pushToppay(fromURL: seamlessURL, viewController: topVc, shouldAuthorizedRequest: true)
+                }
+            }
 
             return true
         }
