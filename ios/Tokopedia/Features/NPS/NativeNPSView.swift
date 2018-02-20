@@ -39,7 +39,7 @@ import RxSwift
             starRatingView.horizontalMargin = 1
             starRatingView.editable = true
             starRatingView.displayMode = UInt(EDStarRatingDisplayAccurate)
-            starRatingView.rating = 0
+            starRatingView.rating = 5
             starRatingView.delegate = self
         }
     }
@@ -54,7 +54,7 @@ import RxSwift
     
     fileprivate static let dialogDefaultFrame: CGRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
 
-    fileprivate var currentRating: Variable<Float> = Variable(0)
+    fileprivate var currentRating: Variable<Float> = Variable(5)
     
     override init(frame: CGRect) {
         super.init(frame: frame)
