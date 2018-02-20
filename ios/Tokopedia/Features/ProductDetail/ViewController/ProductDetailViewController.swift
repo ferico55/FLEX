@@ -530,19 +530,11 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
     // MARK: - TTTAttributedLabel Delegate
     internal func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
         var trueURL = "https://tkp.me/r?url=" + url.absoluteString.replacingOccurrences(of: "*", with: ".")
-        if url.host == "www.tokopedia.com" {
+        if let host = url.host, host.contains("tokopedia.com") {
             trueURL = url.absoluteString
         }
-
-        let vc = WebViewController()
-        vc.strURL = trueURL
-        vc.strTitle = "Mengarahkan..."
-        vc.onTapLinkWithUrl = { [weak self] url in
-            if url?.absoluteString == "https://www.tokopedia.com/" {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-        self.navigationController?.pushViewController(vc, animated: true)
+        
+        TPRoutes.routeURL(URL(string: trueURL))
     }
 
     // MARK: - NotificationHandler
