@@ -7,30 +7,30 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashPendingTransactionViewModel: ViewModelType {
+final public class TokoCashPendingTransactionViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let selection: Driver<IndexPath>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let selection: Driver<IndexPath>
     }
     
-    struct Output {
-        let items: Driver<[TokoCashHistoryListItemViewModel]>
-        let selectedItem: Driver<TokoCashHistoryItems>
+    public struct Output {
+        public let items: Driver<[TokoCashHistoryListItemViewModel]>
+        public let selectedItem: Driver<TokoCashHistoryItems>
     }
     
     private let pendingItems: [TokoCashHistoryItems]
     private let navigator: TokoCashPendingTransactionNavigator
     
-    init(pendingItems: [TokoCashHistoryItems], navigator: TokoCashPendingTransactionNavigator) {
+    public init(pendingItems: [TokoCashHistoryItems], navigator: TokoCashPendingTransactionNavigator) {
         self.pendingItems = pendingItems
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let items = Driver.of(self.pendingItems)
         

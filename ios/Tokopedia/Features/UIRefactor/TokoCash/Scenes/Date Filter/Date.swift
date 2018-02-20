@@ -7,51 +7,52 @@
 //
 
 import Foundation
+
 extension Date {
-    static func aWeekAgo() -> Date {
+    public static func aWeekAgo() -> Date {
         let calendar = Calendar.current
         let aWeekAgo = calendar.date(byAdding: .day, value: -7, to: Date())
         return aWeekAgo ?? Date()
     }
     
-    static func aMonthAgo() -> Date {
+    public static func aMonthAgo() -> Date {
         let calendar = Calendar.current
         let aWeekAgo = calendar.date(byAdding: .day, value: -30, to: Date())
         return aWeekAgo ?? Date()
     }
     
-    static func firstDayOfThisMonth() -> Date {
+    public static func firstDayOfThisMonth() -> Date {
         let calendar = Calendar.current
         let firstDayOfThisMonth = calendar.date(from: Calendar.current.dateComponents([.year, .month], from: Date()))
         return firstDayOfThisMonth ?? Date()
     }
     
-    static func lastDayOfThisMonth() -> Date {
+    public static func lastDayOfThisMonth() -> Date {
         let calendar = Calendar.current
         let lastDayOfThisMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: self.firstDayOfThisMonth())
         return lastDayOfThisMonth ?? Date()
     }
     
-    static func firstDayOfLastMonth() -> Date {
+    public static func firstDayOfLastMonth() -> Date {
         let calendar = Calendar.current
         let firstDayOfLastMonth = calendar.date(from: Calendar.current.dateComponents([.year, .month], from: Calendar.current.date(byAdding: .month, value: -1, to: Date()) ?? Date()))
         return firstDayOfLastMonth ?? Date()
     }
     
-    static func lastDayOfLastMonth() -> Date {
+    public static func lastDayOfLastMonth() -> Date {
         let calendar = Calendar.current
         let lastDayOfThisMonth = calendar.date(byAdding: DateComponents(month: 1, day: -1), to: self.firstDayOfLastMonth())
         return lastDayOfThisMonth ?? Date()
     }
     
-    func tpDateFormat1() -> String {
+    public func tpDateFormat1() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd+MMM+yyyy"
         let string = formatter.string(from: self)
         return string
     }
     
-    func tpDateFormat2() -> String {
+    public func tpDateFormat2() -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMM yyyy"
         let string = formatter.string(from: self)

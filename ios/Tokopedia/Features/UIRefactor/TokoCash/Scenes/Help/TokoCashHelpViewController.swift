@@ -7,43 +7,31 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-class TokoCashHelpViewController: UIViewController {
+public class TokoCashHelpViewController: UIViewController {
     
-    @IBOutlet weak var categoryTextField: UITextField!
-    @IBOutlet weak var detailsTextField: UITextField!
-    @IBOutlet weak var helpButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var categoryTextField: UITextField!
+    @IBOutlet weak private var detailsTextField: UITextField!
+    @IBOutlet weak private var helpButton: UIButton!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
+    
     private let doneButton = UIBarButtonItem(title: "Selesai", style: .plain, target: self, action: #selector(TokoCashHelpViewController.dismissKeyboard))
     private let categoryPicker = UIPickerView()
     
-    var selectedIndex = Variable<(row: Int, component: Int)>(row: 0, component:0)
+    private var selectedIndex = Variable<(row: Int, component: Int)>(row: 0, component:0)
     
     // view model
-    var viewModel: TokoCashHelpViewModel!
+    public var viewModel: TokoCashHelpViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Bantuan"
         
         configureCategoryPicker()
         bindViewModel()
-    }
-    
-    private func configureCategoryPicker() {
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let toolBar = UIToolbar()
-        toolBar.sizeToFit()
-        toolBar.setItems([flexibleSpace, doneButton], animated: false)
-        toolBar.isUserInteractionEnabled = true
-        categoryTextField.inputAccessoryView = toolBar
-        categoryTextField.inputView = categoryPicker
-    }
-    
-    func dismissKeyboard() {
-        view.endEditing(true)
-        selectedIndex.value = (row:categoryPicker.selectedRow(inComponent: 0), component: 0)
     }
     
     private func bindViewModel() {
@@ -93,5 +81,20 @@ class TokoCashHelpViewController: UIViewController {
         output.errorMessage.drive(onNext: { message in
             StickyAlertView.showErrorMessage([message])
         }).addDisposableTo(rx_disposeBag)
+    }
+    
+    private func configureCategoryPicker() {
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let toolBar = UIToolbar()
+        toolBar.sizeToFit()
+        toolBar.setItems([flexibleSpace, doneButton], animated: false)
+        toolBar.isUserInteractionEnabled = true
+        categoryTextField.inputAccessoryView = toolBar
+        categoryTextField.inputView = categoryPicker
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
+        selectedIndex.value = (row:categoryPicker.selectedRow(inComponent: 0), component: 0)
     }
 }

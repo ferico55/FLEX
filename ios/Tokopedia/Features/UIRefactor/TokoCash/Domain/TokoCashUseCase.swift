@@ -7,20 +7,20 @@
 //
 
 import Foundation
-import RxSwift
 import Moya
+import RxSwift
 
-@objc class TokoCashUseCase: NSObject {
+@objc public class TokoCashUseCase: NSObject {
     
-    class func requestBalance() -> Observable<WalletStore> {
-        return TokocashNetworkProvider()
+    public class func requestBalance() -> Observable<WalletStore> {
+        return TokoCashNetworkProvider()
             .request(.balance())
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: WalletStore.self)
     }
     
-    class func requestBalance(completionHandler: @escaping (WalletStore) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
+    public class func requestBalance(completionHandler: @escaping (WalletStore) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
         TokoCashUseCase
             .requestBalance()
             .catchError { error -> Observable<WalletStore> in
@@ -33,7 +33,7 @@ import Moya
             })
     }
     
-    class func getWalletHistory(historyType: String, perPage: Int? = 6, page: Int? = 1, startDate: Date? = Date.aWeekAgo(), endDate: Date? = Date(), afterId: String? = "") -> Observable<TokoCashHistoryResponse> {
+    public class func getWalletHistory(historyType: String, perPage: Int? = 6, page: Int? = 1, startDate: Date? = Date.aWeekAgo(), endDate: Date? = Date()) -> Observable<TokoCashHistoryResponse> {
         
         var parameter: [String: Any] = [
             "type": historyType,
@@ -42,64 +42,62 @@ import Moya
         
         if historyType != "pending" {
             let additionalParameter: [String: Any] = [
-                "per_page": perPage,
-                "page": page,
-                "start_date": startDate?.tpDateFormat1(),
-                "end_date": endDate?.tpDateFormat1(),
-                "after_id": afterId
+                "per_page": perPage as Any,
+                "page": page as Any,
+                "start_date": startDate?.tpDateFormat1() as Any,
+                "end_date": endDate?.tpDateFormat1() as Any,
             ]
-            
             parameter.merge(with: additionalParameter)
         }
         
-        return TokocashNetworkProvider()
+        return TokoCashNetworkProvider()
             .request(.walletHistory(parameter: parameter))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: TokoCashHistoryResponse.self)
     }
     
-    class func requestProfile() -> Observable<TokoCashProfileResponse> {
-        return TokocashNetworkProvider()
+    public class func requestProfile() -> Observable<TokoCashProfileResponse> {
+        return TokoCashNetworkProvider()
             .request(.profile())
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: TokoCashProfileResponse.self)
     }
     
-    class func requestAction(URL: String, method: String, parameter: [String: String]) -> Observable<Response> {
-        return TokocashNetworkProvider()
+    public class func requestAction(URL: String, method: String, parameter: [String: String]) -> Observable<Response> {
+        return TokoCashNetworkProvider()
             .request(.action(URL: URL, method: method, parameter: parameter))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
     }
     
-    class func requestRevokeAccount(revokeToken: String, identifier: String, identifierType: String) -> Observable<TokoCashResponse> {
-        return TokocashNetworkProvider()
+    public class func requestRevokeAccount(revokeToken: String, identifier: String, identifierType: String) -> Observable<TokoCashResponse> {
+        return TokoCashNetworkProvider()
             .request(.revokeAccount(revokeToken: revokeToken, identifier: identifier, identifierType: identifierType))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: TokoCashResponse.self)
     }
     
-    class func requestQRInfo(_ identifier: String) -> Observable<TokoCashQRInfoResponse> {
-        return TokocashNetworkProvider()
+    public class func requestQRInfo(_ identifier: String) -> Observable<TokoCashQRInfoResponse> {
+        return TokoCashNetworkProvider()
             .request(.QRInfo(identifier: identifier))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: TokoCashQRInfoResponse.self)
     }
     
-    class func requestPayment(_ amount: Int, notes: String, merchantIdentifier: String) -> Observable<TokoCashPaymentResponse> {
-        return TokocashNetworkProvider()
+    public class func requestPayment(_ amount: Int, notes: String, merchantIdentifier: String) -> Observable<TokoCashPaymentResponse> {
+        return TokoCashNetworkProvider()
             .request(.payment(amount: amount, notes: notes, merchantIdentifier: merchantIdentifier))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: TokoCashPaymentResponse.self)
     }
     
-    class func requestHelp(message: String, category: String, transactionId: String) -> Observable<TokoCashResponse> {
-        return TokocashNetworkProvider()
+    public class func requestHelp(message: String, category: String, transactionId: String) -> Observable<TokoCashResponse> {
+        return TokoCashNetworkProvider()
             .request(.help(message: message, category: category, transactionId: transactionId))
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()

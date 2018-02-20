@@ -6,42 +6,41 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
-class TokoCashNavigator {
-    let storyboard: UIStoryboard
-    let navigationController: UINavigationController
+public class TokoCashNavigator {
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    private let navigationController: UINavigationController
+    
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toNominal(_ delegate: TokoCashNominalDelegate, nominal: [DigitalProduct]) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashNominalViewController.self)
+    public func toNominal(nominal: [DigitalProduct]) -> TokoCashNominalViewController {
+        let vc = TokoCashNominalViewController()
         let nc = UINavigationController(rootViewController: vc)
         let viewModel = TokoCashNominalViewModel(items: nominal)
-        vc.delegate = delegate
         vc.viewModel = viewModel
         navigationController.present(nc, animated: true)
+        return vc
     }
     
-    func toWalletHistory() {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashHistoryListViewController.self)
+    public func toWalletHistory() {
+        let vc = TokoCashHistoryListViewController()
         let navigator = TokoCashHistoryListNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashHistoryListViewModel(navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toAccountSetting() {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashProfileViewController.self)
+    public func toAccountSetting() {
+        let vc = TokoCashProfileViewController()
         let navigator = TokoCashProfileNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashProfileViewModel(navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toHelpWebView() {
+    public func toHelpWebView() {
         let URL = "https://www.tokopedia.com/bantuan/pembeli/fitur-belanja/tokocash/"
         let controller = WKWebViewController(urlString: URL)
         controller.title = "Bantuan"
@@ -49,7 +48,7 @@ class TokoCashNavigator {
         navigationController.pushViewController(controller, animated: false)
     }
     
-    func toDigitalCart(_ categoryID: String) {
+    public func toDigitalCart(_ categoryID: String) {
         let vc = DigitalCartViewController(cart: Observable.of(categoryID))
         vc.hidesBottomBarWhenPushed = true
         navigationController.pushViewController(vc, animated: true)

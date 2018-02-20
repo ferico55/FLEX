@@ -9,17 +9,17 @@
 import Foundation
 import Unbox
 
-struct TokoCashMoveToSaldoResponse {
-    let code: String?
-    let message: String?
-    let config: String?
-    let errors: [String]?
-    let data: TokoCashMoveToSaldo?
+public struct TokoCashMoveToSaldoResponse {
+    public let code: String?
+    public let message: String?
+    public let config: String?
+    public let errors: [String]?
+    public let data: TokoCashMoveToSaldo?
     
 }
 
 extension TokoCashMoveToSaldoResponse: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.code = try? unboxer.unbox(keyPath: "code")
         self.message = try? unboxer.unbox(keyPath: "message")
         self.config = try? unboxer.unbox(keyPath: "config")
@@ -28,14 +28,14 @@ extension TokoCashMoveToSaldoResponse: Unboxable {
     }
 }
 
-struct TokoCashMoveToSaldo {
-    let amount: Int?
-    let email: String?
-    let withdrawalId: String?
+public struct TokoCashMoveToSaldo {
+    public let amount: Int?
+    public let email: String?
+    public let withdrawalId: String?
 }
 
 extension TokoCashMoveToSaldo: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.amount = try? unboxer.unbox(keyPath: "amount")
         self.email = try? unboxer.unbox(keyPath: "dest_email")
         self.withdrawalId = try? unboxer.unbox(keyPath: "withdrawal_id")

@@ -9,14 +9,14 @@
 import Foundation
 import SwiftyJSON
 
-struct TokoCashLoginVerifyOTPResponse {
-    let code: String
-    let key: String
-    let tokoCashAccountExist: Bool
-    let userDetails: [TokoCashVerifyUserDetail]
-    let verified: Bool
+public struct TokoCashLoginVerifyOTPResponse {
+    public let code: String
+    public let key: String
+    public let tokoCashAccountExist: Bool
+    public let userDetails: [TokoCashVerifyUserDetail]
+    public let verified: Bool
     
-    init(code: String, key: String, tokoCashAccountExist: Bool, userDetails: [TokoCashVerifyUserDetail], verified: Bool) {
+    public init(code: String, key: String, tokoCashAccountExist: Bool, userDetails: [TokoCashVerifyUserDetail], verified: Bool) {
         self.code = code
         self.key = key
         self.tokoCashAccountExist = tokoCashAccountExist
@@ -24,7 +24,7 @@ struct TokoCashLoginVerifyOTPResponse {
         self.verified = verified
     }
     
-    init(json: JSON) {
+    public init(json: JSON) {
         let code = json["code"].stringValue
         let key = json["data"]["key"].stringValue
         let tokoCashAccountExist = json["data"]["tokocash_account_exist"].boolValue
@@ -40,20 +40,20 @@ struct TokoCashLoginVerifyOTPResponse {
     }
 }
 
-struct TokoCashVerifyUserDetail {
-    let name: String
-    let email: String
-    let image: String?
-    let tkpdUserId: Int
+public struct TokoCashVerifyUserDetail {
+    public let name: String
+    public let email: String
+    public let image: String?
+    public let tkpdUserId: Int
     
-    init(name: String, email: String, image: String?, tkpdUserId: Int) {
+    public init(name: String, email: String, image: String?, tkpdUserId: Int) {
         self.name = name
         self.email = email
         self.image = image
         self.tkpdUserId = tkpdUserId
     }
     
-    init(json: JSON) {
+    public init(json: JSON) {
         let name = json["name"].stringValue
         let email = json["email"].stringValue
         let image = json["image"].string

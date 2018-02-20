@@ -8,14 +8,15 @@
 
 import Foundation
 
-class TokoCashHelpNavigator {
+public class TokoCashHelpNavigator {
+    
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toPreviousPage() {
+    public func toPreviousPage() {
         navigationController.popViewController(animated: true)
     }
 }

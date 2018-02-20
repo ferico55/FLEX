@@ -7,44 +7,44 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashQRPaymentViewModel: ViewModelType {
+final public class TokoCashQRPaymentViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let amount: Driver<String>
-        let notes: Driver<String>
-        let paymentTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let amount: Driver<String>
+        public let notes: Driver<String>
+        public let paymentTrigger: Driver<Void>
     }
     
-    struct Output {
-        let fetching: Driver<Bool>
-        let balance: Driver<String>
-        let name: Driver<String>
-        let phoneNumber: Driver<String>
-        let isHiddenPhoneNumber: Driver<Bool>
-        let amount: Driver<String>
-        let enableAmount: Driver<Bool>
-        let validationAmountColor: Driver<UIColor>
-        let validationLineColor: Driver<UIColor>
-        let disableButton: Driver<Bool>
-        let backgroundButtonColor: Driver<UIColor>
-        let paymentActivityIndicator: Driver<Bool>
-        let paymentSuccess: Driver<TokoCashPayment>
-        let paymentFailed: Driver<Void>
+    public struct Output {
+        public let fetching: Driver<Bool>
+        public let balance: Driver<String>
+        public let name: Driver<String>
+        public let phoneNumber: Driver<String>
+        public let isHiddenPhoneNumber: Driver<Bool>
+        public let amount: Driver<String>
+        public let enableAmount: Driver<Bool>
+        public let validationAmountColor: Driver<UIColor>
+        public let validationLineColor: Driver<UIColor>
+        public let disableButton: Driver<Bool>
+        public let backgroundButtonColor: Driver<UIColor>
+        public let paymentActivityIndicator: Driver<Bool>
+        public let paymentSuccess: Driver<TokoCashPayment>
+        public let paymentFailed: Driver<Void>
     }
     
     private let QRInfo: TokoCashQRInfo
     private let navigator: TokoCashQRPaymentNavigator
     
-    init(QRInfo: TokoCashQRInfo, navigator: TokoCashQRPaymentNavigator) {
+    public init(QRInfo: TokoCashQRInfo, navigator: TokoCashQRPaymentNavigator) {
         self.QRInfo = QRInfo
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
@@ -103,14 +103,14 @@ final class TokoCashQRPaymentViewModel: ViewModelType {
         }
         
         let validationAmountColor = isValidAmount.withLatestFrom(amount) { (isValid, amount) -> UIColor in
-            guard !amount.isEmpty else { return UIColor.tpPrimaryBlackText() }
-            return isValid ? UIColor.tpPrimaryBlackText() : UIColor.tpRed()
+            guard !amount.isEmpty else { return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6999999881) }
+            return isValid ? #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6999999881) : #colorLiteral(red: 0.8349999785, green: 0, blue: 0, alpha: 1)
         }
         
         let validationLineColor = Driver.combineLatest(amount, isValidAmount) { (amount, isValid) -> UIColor in
             if amount.isEmpty {
-                return UIColor.tpLine()
-            }else { return isValid ? UIColor.tpGreen() : UIColor.tpRed() }
+                return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1199999973)
+            }else { return isValid ? #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1) :#colorLiteral(red: 0.8349999785, green: 0, blue: 0, alpha: 1) }
         }
         
         let notesParameter = input.notes.map { notes -> String in
@@ -151,8 +151,8 @@ final class TokoCashQRPaymentViewModel: ViewModelType {
         }
         
         let backgroundButtonColor = disableButton.map { disableButton -> UIColor in
-            guard disableButton else { return UIColor(red: 224.0 / 255.0, green: 224.0 / 255.0, blue: 224.0 / 255.0, alpha: 1.0) }
-            return UIColor.tpOrange()
+            guard disableButton else { return #colorLiteral(red: 0.878000021, green: 0.878000021, blue: 0.878000021, alpha: 1) }
+            return #colorLiteral(red: 1, green: 0.4790000021, blue: 0.003000000026, alpha: 1)
         }
         
         return Output(fetching: activityIndicator.asDriver(),

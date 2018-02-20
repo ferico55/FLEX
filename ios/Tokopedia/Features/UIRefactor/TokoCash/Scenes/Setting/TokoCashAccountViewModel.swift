@@ -8,12 +8,12 @@
 
 import Foundation
 
-final class TokoCashAccountViewModel {
-    let account: TokoCashAccount
-    let identifier: String
-    let authDate: String
+final public class TokoCashAccountViewModel {
+    public let account: TokoCashAccount
+    public let identifier: String
+    public let authDate: String
     
-    init(with account: TokoCashAccount) {
+    public init(with account: TokoCashAccount) {
         self.account = account
         self.identifier = account.identifier ?? ""
         self.authDate = account.authDateFmt ?? ""

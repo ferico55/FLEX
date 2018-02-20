@@ -9,12 +9,30 @@
 import Foundation
 import Unbox
 
-final class TokoCashHistory: NSObject, Unboxable {
-    var header: [TokoCashHistoryHeader]?
-    var items: [TokoCashHistoryItems]?
-    var nextUri: Bool?
+public struct TokoCashHistoryResponse {
+    public let code: String?
+    public let message: String?
+    public let errors: String?
+    public let config: String?
+    public let data: TokoCashHistory?
+}
+
+extension TokoCashHistoryResponse: Unboxable {
+    public init(unboxer: Unboxer) throws {
+        self.code = try? unboxer.unbox(keyPath: "code")
+        self.message = try? unboxer.unbox(keyPath: "message")
+        self.errors = try? unboxer.unbox(keyPath: "errors")
+        self.config = try? unboxer.unbox(keyPath: "config")
+        self.data = try? unboxer.unbox(keyPath: "data")
+    }
+}
+
+final public class TokoCashHistory: NSObject, Unboxable {
+    public var header: [TokoCashHistoryHeader]?
+    public var items: [TokoCashHistoryItems]?
+    public var nextUri: Bool?
     
-    convenience required init(unboxer:Unboxer) throws {
+    convenience required public init(unboxer:Unboxer) throws {
         self.init()
         self.header = try? unboxer.unbox(keyPath: "header")
         self.items = try? unboxer.unbox(keyPath: "items")
@@ -22,12 +40,12 @@ final class TokoCashHistory: NSObject, Unboxable {
     }
 }
 
-final class TokoCashHistoryHeader: NSObject, Unboxable {
-    var name: String?
-    var type: String?
-    var selected: Bool?
+final public class TokoCashHistoryHeader: NSObject, Unboxable {
+    public var name: String?
+    public var type: String?
+    public var selected: Bool?
     
-    convenience required init(unboxer:Unboxer) throws {
+    convenience required public init(unboxer:Unboxer) throws {
         self.init()
         self.name = try? unboxer.unbox(keyPath: "name")
         self.type = try? unboxer.unbox(keyPath: "type")
@@ -35,27 +53,27 @@ final class TokoCashHistoryHeader: NSObject, Unboxable {
     }
 }
 
-final class TokoCashHistoryItems: NSObject, Unboxable {
-    var transactionId: String?
-    var transactionDetailId: String?
-    var transactionType: String?
-    var title: String?
-    var desc: String?
-    var userDesc: String?
-    var createdAt: String?
-    var transactionInfoId: String?
-    var transactionInfoDate: String?
-    var amountChanges: String?
-    var amountChangesSymbol: String?
-    var amount: String?
-    var amountPending: String?
-    var notes: String?
-    var message: String?
-    var actions: [TokoCashAction]?
-    var processedAt: String?
-    var iconURI: String?
+final public class TokoCashHistoryItems: NSObject, Unboxable {
+    public var transactionId: String?
+    public var transactionDetailId: String?
+    public var transactionType: String?
+    public var title: String?
+    public var desc: String?
+    public var userDesc: String?
+    public var createdAt: String?
+    public var transactionInfoId: String?
+    public var transactionInfoDate: String?
+    public var amountChanges: String?
+    public var amountChangesSymbol: String?
+    public var amount: String?
+    public var amountPending: String?
+    public var notes: String?
+    public var message: String?
+    public var actions: [TokoCashAction]?
+    public var processedAt: String?
+    public var iconURI: String?
     
-    convenience required init(unboxer:Unboxer) throws {
+    convenience required public init(unboxer:Unboxer) throws {
         self.init()
         self.transactionId = try? unboxer.unbox(keyPath: "transaction_id")
         self.transactionDetailId = try? unboxer.unbox(keyPath: "transaction_detail_id")
@@ -78,16 +96,16 @@ final class TokoCashHistoryItems: NSObject, Unboxable {
     }
 }
 
-struct TokoCashAction {
-    let title: String?
-    let method: String?
-    let URL: String?
-    let params: [String: String]?
-    let name: String?
+public struct TokoCashAction {
+    public let title: String?
+    public let method: String?
+    public let URL: String?
+    public let params: [String: String]?
+    public let name: String?
 }
 
 extension TokoCashAction: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.title = try? unboxer.unbox(keyPath: "title")
         self.method = try? unboxer.unbox(keyPath: "method")
         self.URL = try? unboxer.unbox(keyPath: "url")

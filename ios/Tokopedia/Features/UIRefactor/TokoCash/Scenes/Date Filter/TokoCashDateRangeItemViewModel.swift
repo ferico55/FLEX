@@ -8,22 +8,20 @@
 
 import Foundation
 
-final class TokoCashDateRangeItemViewModel {
-    let item: TokoCashDateRangeItem
-    let title: String
-    let desc: String
-    var selected: Bool
-    
-    init(with item: TokoCashDateRangeItem) {
+final public class TokoCashDateRangeItemViewModel {
+    public let item: TokoCashDateRangeItem
+    public let title: String
+    public let desc: String
+    public var selected: Bool
+
+    public init(with item: TokoCashDateRangeItem) {
         self.item = item
         self.title = item.title
         self.selected = item.selected
-        
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd MMM yyyy"
-        var dateDesc = "\(dateFormatter.string(from: item.fromDate))"
-        if (item.fromDate != item.toDate) {
-            dateDesc.append(" - \(dateFormatter.string(from: item.toDate))")
+
+        var dateDesc = "\(item.fromDate.tpDateFormat2())"
+        if Calendar.current.compare(item.fromDate, to: item.toDate, toGranularity: .day) != .orderedSame {
+            dateDesc.append(" - \(item.toDate.tpDateFormat2())")
         }
         self.desc = dateDesc
     }

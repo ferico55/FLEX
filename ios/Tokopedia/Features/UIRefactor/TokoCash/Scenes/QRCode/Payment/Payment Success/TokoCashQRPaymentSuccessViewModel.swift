@@ -7,36 +7,36 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashQRPaymentSuccessViewModel: ViewModelType {
+final public class TokoCashQRPaymentSuccessViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let backToHomeTrigger: Driver<Void>
-        let helpTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let backToHomeTrigger: Driver<Void>
+        public let helpTrigger: Driver<Void>
     }
     
-    struct Output {
-        let merchantName: Driver<String>
-        let amount: Driver<String>
-        let datetime: Driver<String>
-        let transactionId: Driver<String>
-        let balance: Driver<String>
-        let backToHome: Driver<Void>
-        let help: Driver<String>
+    public struct Output {
+        public let merchantName: Driver<String>
+        public let amount: Driver<String>
+        public let datetime: Driver<String>
+        public let transactionId: Driver<String>
+        public let balance: Driver<String>
+        public let backToHome: Driver<Void>
+        public let help: Driver<String>
     }
     
     private let paymentInfo: TokoCashPayment
     private let navigator: TokoCashQRPaymentSuccessNavigator
     
-    init(paymentInfo: TokoCashPayment, navigator: TokoCashQRPaymentSuccessNavigator) {
+    public init(paymentInfo: TokoCashPayment, navigator: TokoCashQRPaymentSuccessNavigator) {
         self.paymentInfo = paymentInfo
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let payment = input.trigger.flatMapLatest {
             return Driver.of(self.paymentInfo)
@@ -55,7 +55,7 @@ final class TokoCashQRPaymentSuccessViewModel: ViewModelType {
         }
         
         let transactionId = payment.map { payment -> String in
-            return payment.transaction_id ?? "-"
+            return payment.transactionId ?? "-"
         }
         
         let balance = payment.map { payment -> String in

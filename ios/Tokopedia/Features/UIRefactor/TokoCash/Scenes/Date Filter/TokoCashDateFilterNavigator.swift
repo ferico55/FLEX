@@ -8,14 +8,14 @@
 
 import Foundation
 
-class TokoCashDateFilterNavigator {
+public class TokoCashDateFilterNavigator {
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func backToPreviousController() {
+    public func backToPreviousController() {
         navigationController.popViewController(animated: true)
     }
 }

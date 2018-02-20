@@ -6,32 +6,34 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
-protocol TokoCashNominalDelegate {
-    func getNominal(_ nominal: DigitalProduct)
-}
-
-class TokoCashNominalViewController: UIViewController {
+public class TokoCashNominalViewController: UIViewController {
     
-    @IBOutlet weak var closeBarButtonItem: UIBarButtonItem!
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak private var tableView: UITableView!
     
-    var delegate: TokoCashNominalDelegate?
+    private let closeBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_close"), style: .plain, target: self, action: nil)
+    public let nominal = PublishSubject<DigitalProduct>()
     
     // view model
-    var viewModel: TokoCashNominalViewModel!
+    public var viewModel: TokoCashNominalViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Nominal"
+        self.navigationItem.leftBarButtonItem = closeBarButtonItem
+        
         configureTableView()
         configureCloseBarButton()
         bindViewModel()
     }
     
     private func configureTableView() {
+        let nib = UINib(nibName: "TokoCashNominalTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "TokoCashNominalTableViewCell")
         tableView.tableFooterView = UIView()
     }
     
@@ -56,7 +58,7 @@ class TokoCashNominalViewController: UIViewController {
             }.addDisposableTo(rx_disposeBag)
         
         output.selectedItem.drive(onNext: { digitalProduct in
-            self.delegate?.getNominal(digitalProduct)
+            self.nominal.onNext(digitalProduct)
             self.dismiss(animated: true, completion: nil)
         }).addDisposableTo(rx_disposeBag)
     }

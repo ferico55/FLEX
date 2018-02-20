@@ -7,29 +7,29 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashMoveToSaldoSuccessViewModel: ViewModelType {
-    struct Input {
-        let trigger: Driver<Void>
-        let homeTrigger: Driver<Void>
+final public class TokoCashMoveToSaldoSuccessViewModel: ViewModelType {
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let homeTrigger: Driver<Void>
     }
     
-    struct Output {
-        let desc: Driver<NSAttributedString>
-        let home: Driver<Void>
+    public struct Output {
+        public let desc: Driver<NSAttributedString>
+        public let home: Driver<Void>
     }
     
     private let status: TokoCashMoveToSaldoResponse
     private let navigator: TokoCashMoveToSaldoSuccessNavigator
     
-    init(status: TokoCashMoveToSaldoResponse, navigator: TokoCashMoveToSaldoSuccessNavigator) {
+    public init(status: TokoCashMoveToSaldoResponse, navigator: TokoCashMoveToSaldoSuccessNavigator) {
         self.status = status
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         let status = input.trigger.flatMapLatest {
             return Driver.of(self.status)
         }

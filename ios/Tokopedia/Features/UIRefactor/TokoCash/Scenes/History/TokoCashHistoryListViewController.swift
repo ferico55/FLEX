@@ -6,58 +6,49 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
-class TokoCashHistoryListViewController: UIViewController, TokoCashDateFilterDelegate {
+public class TokoCashHistoryListViewController: UIViewController {
     
-    @IBOutlet weak var dateFilterView: UIView!
-    @IBOutlet weak var dateFilterLabel: UILabel!
-    @IBOutlet weak var pendingTransactionButton: UIButton!
-    @IBOutlet weak var pendingTransactionView: UIView!
-    @IBOutlet weak var dateFilterButton: UIButton!
-    @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var tableView: UITableView!
-    
-    @IBOutlet var emptyState: UIView!
-    @IBOutlet var emptyStateTopup: UIView!
+    @IBOutlet weak private var dateFilterView: UIView!
+    @IBOutlet weak private var dateFilterLabel: UILabel!
+    @IBOutlet weak private var pendingTransactionButton: UIButton!
+    @IBOutlet weak private var pendingTransactionView: UIView!
+    @IBOutlet weak private var dateFilterButton: UIButton!
+    @IBOutlet weak private var collectionView: UICollectionView!
+    @IBOutlet weak private var tableView: UITableView!
+    @IBOutlet private var emptyState: UIView!
+    @IBOutlet private var emptyStateTopup: UIView!
     
     private let refreshControl = UIRefreshControl()
-    private let isDateRange = Variable(true)
-    private var dateRange: Variable<TokoCashDateRangeItem> = Variable(TokoCashDateRangeItem("7 Hari Terakhir", fromDate: Date.aWeekAgo(), toDate: Date(), selected: true))
-    private let fromDate = Variable<Date>(Date.aWeekAgo())
-    private let toDate = Variable<Date>(Date())
     
     // view model
-    var viewModel: TokoCashHistoryListViewModel!
+    public var viewModel: TokoCashHistoryListViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
-        configureRefreshControl()
+        title = "Riwayat Transaksi"
+        
         configureCollectionView()
         configureTableView()
         bindViewModel()
     }
     
-    private func configureRefreshControl() {
-        if #available(iOS 10.0, *) {
-            tableView.refreshControl = refreshControl
-        } else {
-            tableView.addSubview(refreshControl)
-        }
-    }
-    
     private func configureCollectionView() {
+        let nib = UINib(nibName: "TokoCashFilterCollectionViewCell", bundle: nil)
+        collectionView.register(nib, forCellWithReuseIdentifier: "TokoCashFilterCollectionViewCell")
         if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
             flowLayout.estimatedItemSize = CGSize(width: 94, height: 60)
         }
     }
     
     private func configureTableView() {
+        let nib = UINib(nibName: "TokoCashHistoryListItemTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "TokoCashHistoryListItemTableViewCell")
         tableView.tableFooterView = UIView()
-        tableView.backgroundView = emptyState
         tableView.estimatedRowHeight = 100
         tableView.rowHeight = UITableViewAutomaticDimension
         if #available(iOS 10.0, *) {
@@ -77,10 +68,6 @@ class TokoCashHistoryListViewController: UIViewController, TokoCashDateFilterDel
         let input = TokoCashHistoryListViewModel.Input(trigger: Driver.just(),
                                                        pullTrigger: pull,
                                                        pendingTransactionTrigger: pendingTransactionButton.rx.tap.asDriver(),
-                                                       isDateRange: isDateRange.asDriver(),
-                                                       dateRange: dateRange.asDriver(),
-                                                       fromDate: fromDate.asDriver(),
-                                                       toDate: toDate.asDriver(),
                                                        dateFilterTrigger: dateFilterButton.rx.tap.asDriver(),
                                                        filter: collectionView.rx.itemSelected.asDriver(),
                                                        selection: tableView.rx.itemSelected.asDriver(),
@@ -93,7 +80,7 @@ class TokoCashHistoryListViewController: UIViewController, TokoCashDateFilterDel
         
         output.showPendingTransaction
             .drive(onNext: { isHidden in
-                UIView.animate(withDuration: 0.3){
+                UIView.animate(withDuration: 0.3) {
                     self.pendingTransactionView.isHidden = isHidden
                 }
             })
@@ -111,17 +98,17 @@ class TokoCashHistoryListViewController: UIViewController, TokoCashDateFilterDel
             .drive()
             .disposed(by: rx_disposeBag)
         
-        output.headers.drive(collectionView.rx.items(cellIdentifier: "filterCell", cellType: TokoCashFilterCollectionViewCell.self)) { tv, viewModel, cell in
+        output.headers.drive(collectionView.rx.items(cellIdentifier: "TokoCashFilterCollectionViewCell", cellType: TokoCashFilterCollectionViewCell.self)) { _, viewModel, cell in
             cell.bind(viewModel)
-            }.addDisposableTo(rx_disposeBag)
+        }.addDisposableTo(rx_disposeBag)
         
         output.showHeader
             .drive(collectionView.rx.isHidden)
             .addDisposableTo(rx_disposeBag)
         
-        output.items.drive(tableView.rx.items(cellIdentifier: TokoCashHistoryListItemTableViewCell.reuseID, cellType: TokoCashHistoryListItemTableViewCell.self)) { tv, viewModel, cell in
+        output.items.drive(tableView.rx.items(cellIdentifier: TokoCashHistoryListItemTableViewCell.reuseID, cellType: TokoCashHistoryListItemTableViewCell.self)) { _, viewModel, cell in
             cell.bind(viewModel)
-            }.addDisposableTo(rx_disposeBag)
+        }.addDisposableTo(rx_disposeBag)
         
         output.isEmptyState
             .drive(onNext: { isEmptyState in
@@ -141,19 +128,5 @@ class TokoCashHistoryListViewController: UIViewController, TokoCashDateFilterDel
         output.page
             .drive()
             .disposed(by: rx_disposeBag)
-        
-        output.filterItems
-            .drive()
-            .disposed(by: rx_disposeBag)
-        
-        output.nextPage
-            .drive()
-            .disposed(by: rx_disposeBag)
-    }
-    
-    func getDateRange(_ selectedDateRange: TokoCashDateRangeItem, fromDate: Date, toDate: Date) {
-        self.dateRange.value = selectedDateRange
-        self.fromDate.value = fromDate
-        self.toDate.value = toDate
     }
 }

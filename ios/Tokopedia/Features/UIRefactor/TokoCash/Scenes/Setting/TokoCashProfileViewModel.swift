@@ -7,34 +7,34 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashProfileViewModel: ViewModelType {
+final public class TokoCashProfileViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let selectedIndex: Driver<Int>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let selectedIndex: Driver<Int>
     }
     
-    struct Output {
-        let fetching: Driver<Bool>
-        let name: Driver<String>
-        let email: Driver<String>
-        let phoneNumber: Driver<String>
-        let isHiddenAccount: Driver<Bool>
-        let accounts: Driver<[TokoCashAccountViewModel]>
-        let deleteActivityIndicator: Driver<Bool>
-        let successMessage: Driver<String>
+    public struct Output {
+        public let fetching: Driver<Bool>
+        public let name: Driver<String>
+        public let email: Driver<String>
+        public let phoneNumber: Driver<String>
+        public let isHiddenAccount: Driver<Bool>
+        public let accounts: Driver<[TokoCashAccountViewModel]>
+        public let deleteActivityIndicator: Driver<Bool>
+        public let successMessage: Driver<String>
     }
     
     private let navigator: TokoCashProfileNavigator
     
-    init(navigator: TokoCashProfileNavigator) {
+    public init(navigator: TokoCashProfileNavigator) {
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()

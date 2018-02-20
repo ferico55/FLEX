@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokoCashAccountTableViewCell" rowHeight="155" id="HqU-xr-krh" customClass="TokoCashAccountTableViewCell" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="155"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="HqU-xr-krh" id="nwE-EJ-Mhx">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="154.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="24" translatesAutoresizingMaskIntoConstraints="NO" id="J0z-iV-Nn0">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="154.5"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" alignment="top" spacing="16" translatesAutoresizingMaskIntoConstraints="NO" id="yV4-Yr-3rV">
+                                <rect key="frame" x="0.0" y="28" width="375" height="42.5"/>
+                                <subviews>
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="toped_happy" translatesAutoresizingMaskIntoConstraints="NO" id="lfs-ZR-y9n">
+                                        <rect key="frame" x="0.0" y="0.0" width="44" height="38"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="38" id="7VT-W8-qus"/>
+                                            <constraint firstAttribute="width" constant="44" id="DeU-ra-pVA"/>
+                                        </constraints>
+                                    </imageView>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="6" translatesAutoresizingMaskIntoConstraints="NO" id="sJc-Q7-wZn">
+                                        <rect key="frame" x="60" y="0.0" width="315" height="40"/>
+                                        <subviews>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Shi-3u-EGN">
+                                                <rect key="frame" x="0.0" y="0.0" width="315" height="20"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="20" id="TW1-p4-ZoN"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.70028895550000003" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cfk-iG-YcX">
+                                                <rect key="frame" x="0.0" y="26" width="315" height="14"/>
+                                                <constraints>
+                                                    <constraint firstAttribute="height" constant="13.5" id="G60-r9-y3A"/>
+                                                </constraints>
+                                                <fontDescription key="fontDescription" type="system" pointSize="11"/>
+                                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVW-uM-a3A">
+                                <rect key="frame" x="0.0" y="94.5" width="375" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="32" id="AiZ-dF-T7n"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <state key="normal" title="Hapus Akses">
+                                    <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="4"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.12" colorSpace="calibratedRGB"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </button>
+                        </subviews>
+                        <edgeInsets key="layoutMargins" top="28" left="0.0" bottom="28" right="0.0"/>
+                    </stackView>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="trailing" secondItem="J0z-iV-Nn0" secondAttribute="trailing" id="FxT-5w-pYI"/>
+                    <constraint firstItem="J0z-iV-Nn0" firstAttribute="leading" secondItem="nwE-EJ-Mhx" secondAttribute="leading" id="Uhu-fV-wfY"/>
+                    <constraint firstItem="J0z-iV-Nn0" firstAttribute="top" secondItem="nwE-EJ-Mhx" secondAttribute="top" id="oxF-WX-C8W"/>
+                    <constraint firstAttribute="bottom" secondItem="J0z-iV-Nn0" secondAttribute="bottom" id="wBN-gc-vK0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="authDateLabel" destination="cfk-iG-YcX" id="kUr-mp-9UM"/>
+                <outlet property="deleteButton" destination="tVW-uM-a3A" id="Sf6-Il-FFe"/>
+                <outlet property="identifierLabel" destination="Shi-3u-EGN" id="d2x-Cv-v9o"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="toped_happy" width="43" height="38"/>
+    </resources>
+</document>

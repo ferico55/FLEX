@@ -8,13 +8,13 @@
 
 import UIKit
 
-class TokoCashFilterCollectionViewCell: UICollectionViewCell {
+public class TokoCashFilterCollectionViewCell: UICollectionViewCell {
     
-    @IBOutlet weak var filterView: UIView!
-    @IBOutlet weak var filterTitle: UILabel!
-    @IBOutlet weak var closeImageView: UIImageView!
+    @IBOutlet weak private var filterView: UIView!
+    @IBOutlet weak private var filterTitle: UILabel!
+    @IBOutlet weak private var closeImageView: UIImageView!
     
-    func bind(_ viewModel: TokoCashFilterViewModel) {
+    public func bind(_ viewModel: TokoCashFilterViewModel) {
         filterTitle.text = viewModel.title
         filterView.layer.borderColor = viewModel.color.cgColor
         
@@ -24,14 +24,9 @@ class TokoCashFilterCollectionViewCell: UICollectionViewCell {
             closeImageView.tintColor = viewModel.color
             closeImageView.isHidden = false
         }else {
-            filterTitle.textColor = UIColor(red: 0.0/255.0, green: 0.0/255.0, blue: 0.0/255.0, alpha: 0.7)
+            filterTitle.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6999999881)
             filterView.backgroundColor = .white
             closeImageView.isHidden = true
         }
-    }
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-//        self.contentView.translatesAutoresizingMaskIntoConstraints = false
     }
 }

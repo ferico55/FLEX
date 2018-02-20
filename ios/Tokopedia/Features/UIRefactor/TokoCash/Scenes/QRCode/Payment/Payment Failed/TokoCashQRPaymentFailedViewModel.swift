@@ -7,27 +7,27 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashQRPaymentFailedViewModel: ViewModelType {
+final public class TokoCashQRPaymentFailedViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let retryTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let retryTrigger: Driver<Void>
     }
     
-    struct Output {
-        let retry: Driver<Void>
+    public struct Output {
+        public let retry: Driver<Void>
     }
     
     private let navigator: TokoCashQRPaymentFailedNavigator
     
-    init(navigator: TokoCashQRPaymentFailedNavigator) {
+    public init(navigator: TokoCashQRPaymentFailedNavigator) {
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let retry = input.retryTrigger.do(onNext: navigator.toQRPage)
         

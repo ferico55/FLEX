@@ -8,10 +8,10 @@
 
 import Foundation
 
-final class TokoCashNominalItemViewModel {
-    let title: String
+final public class TokoCashNominalItemViewModel {
+    public let title: String
     
-    init(with digitalProduct: DigitalProduct) {
+    public init(with digitalProduct: DigitalProduct) {
         title = digitalProduct.name
     }
 }

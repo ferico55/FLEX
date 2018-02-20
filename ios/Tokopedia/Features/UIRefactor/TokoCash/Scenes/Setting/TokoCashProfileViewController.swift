@@ -6,33 +6,37 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
 import SwiftOverlays
+import UIKit
 
-class TokoCashProfileViewController: UIViewController {
+public class TokoCashProfileViewController: UIViewController {
     
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var nameActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var emailLabel: UILabel!
-    @IBOutlet weak var emailActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var phoneNumberLabel: UILabel!
-    @IBOutlet weak var phoneNumberActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var tableViewheightConstraint: NSLayoutConstraint!
+    @IBOutlet weak private var nameLabel: UILabel!
+    @IBOutlet weak private var nameActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var emailLabel: UILabel!
+    @IBOutlet weak private var emailActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var phoneNumberLabel: UILabel!
+    @IBOutlet weak private var phoneNumberActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var tableView: UITableView!
+    @IBOutlet weak private var tableViewheightConstraint: NSLayoutConstraint!
     
     // view model
-    var viewModel: TokoCashProfileViewModel!
+    public var viewModel: TokoCashProfileViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Pengaturan Akun"
+        
+        let nib = UINib(nibName: "TokoCashAccountTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "TokoCashAccountTableViewCell")
         bindViewModel()
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         tableView.layoutIfNeeded()
         tableViewheightConstraint.constant = tableView.contentSize.height
@@ -79,7 +83,7 @@ class TokoCashProfileViewController: UIViewController {
         
         output.accounts
             .drive(tableView.rx.items(cellIdentifier: TokoCashAccountTableViewCell.reuseID, cellType: TokoCashAccountTableViewCell.self)) { row, viewModel, cell in
-                UIView.animate(withDuration: 0.3){
+                UIView.animate(withDuration: 0.3) {
                     cell.bind(viewModel)
                     cell.deleteButton.rx.tap
                         .subscribe(onNext: { [weak self] _ in
@@ -100,7 +104,7 @@ class TokoCashProfileViewController: UIViewController {
             .drive(onNext: { isRequest in
                 if isRequest {
                     SwiftOverlays.showCenteredWaitOverlay(self.view)
-                }else {
+                } else {
                     SwiftOverlays.removeAllOverlaysFromView(self.view)
                 }
             })

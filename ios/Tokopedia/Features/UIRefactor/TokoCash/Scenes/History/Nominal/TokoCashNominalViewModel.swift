@@ -7,36 +7,38 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashNominalViewModel: ViewModelType {
+final public class TokoCashNominalViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let selectedItem: Driver<IndexPath>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let selectedItem: Driver<IndexPath>
     }
     
-    struct Output {
-        let items: Driver<[TokoCashNominalItemViewModel]>
-        let selectedItem: Driver<DigitalProduct>
+    public struct Output {
+        public let items: Driver<[TokoCashNominalItemViewModel]>
+        public let selectedItem: Driver<DigitalProduct>
     }
     
     private let items: [DigitalProduct]
     
-    init(items: [DigitalProduct]) {
+    public init(items: [DigitalProduct]) {
         self.items = items
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         let items = input.trigger.flatMapLatest {
             return Driver.of(self.items)
                 .map { $0.map { TokoCashNominalItemViewModel(with: $0) } }
         }
+        
         let selectedItem = input.selectedItem
             .withLatestFrom(items) { (indexPath, items) -> DigitalProduct in
                 return self.items[indexPath.row]
             }
+        
         return Output(items: items,
                       selectedItem: selectedItem)
     }

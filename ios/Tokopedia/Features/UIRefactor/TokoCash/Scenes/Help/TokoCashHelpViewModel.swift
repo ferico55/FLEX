@@ -7,28 +7,28 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashHelpViewModel: ViewModelType {
+final public class TokoCashHelpViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let selectedCategory: Driver<(row: Int, component: Int)>
-        let details: Driver<String>
-        let helpTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let selectedCategory: Driver<(row: Int, component: Int)>
+        public let details: Driver<String>
+        public let helpTrigger: Driver<Void>
     }
     
-    struct Output {
-        let helpCategories: Driver<[String]>
-        let selectedCategory: Driver<TokoCashHelpCategory>
-        let selectedTranslation: Driver<String>
-        let disableButton: Driver<Bool>
-        let backgroundButtonColor: Driver<UIColor>
-        let requestActivity: Driver<Bool>
-        let help: Driver<TokoCashResponse>
-        let successMessage: Driver<String>
-        let errorMessage: Driver<String>
+    public struct Output {
+        public let helpCategories: Driver<[String]>
+        public let selectedCategory: Driver<TokoCashHelpCategory>
+        public let selectedTranslation: Driver<String>
+        public let disableButton: Driver<Bool>
+        public let backgroundButtonColor: Driver<UIColor>
+        public let requestActivity: Driver<Bool>
+        public let help: Driver<TokoCashResponse>
+        public let successMessage: Driver<String>
+        public let errorMessage: Driver<String>
     }
     
     private let categoryItems: [TokoCashHelpCategory] = {
@@ -44,12 +44,12 @@ final class TokoCashHelpViewModel: ViewModelType {
     private let transactionId: String
     private let navigator: TokoCashHelpNavigator
     
-    init(_ transactionId: String, navigator: TokoCashHelpNavigator) {
+    public init(_ transactionId: String, navigator: TokoCashHelpNavigator) {
         self.transactionId = transactionId
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let transactionId = Driver.of(self.transactionId)
         let categoryItems = Driver.of(self.categoryItems)
@@ -103,8 +103,8 @@ final class TokoCashHelpViewModel: ViewModelType {
         }
         
         let backgroundButtonColor = disableButton.map { disableButton -> UIColor in
-            guard disableButton else { return UIColor(red: 224.0 / 255.0, green: 224.0 / 255.0, blue: 224.0 / 255.0, alpha: 1.0) }
-            return UIColor.tpGreen()
+            guard disableButton else { return #colorLiteral(red: 0.878000021, green: 0.878000021, blue: 0.878000021, alpha: 1) }
+            return #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
         }
         
         return Output(helpCategories: helpCategories,

@@ -8,15 +8,15 @@
 
 import UIKit
 
-class TokoCashHistoryListItemTableViewCell: UITableViewCell {
+public class TokoCashHistoryListItemTableViewCell: UITableViewCell {
 
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descLabel: UILabel!
-    @IBOutlet weak var dateLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
+    @IBOutlet weak private var iconImageView: UIImageView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var descLabel: UILabel!
+    @IBOutlet weak private var dateLabel: UILabel!
+    @IBOutlet weak private var amountLabel: UILabel!
     
-    func bind(_ viewModel: TokoCashHistoryListItemViewModel) {
+    public func bind(_ viewModel: TokoCashHistoryListItemViewModel) {
         iconImageView.setImageWith(URL(string: viewModel.iconURI))
         titleLabel.text = viewModel.title
         descLabel.text = viewModel.desc

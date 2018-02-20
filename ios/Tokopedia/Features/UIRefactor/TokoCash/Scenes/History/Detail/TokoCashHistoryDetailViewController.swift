@@ -2,31 +2,33 @@
 //  TokoCashHistoryDetailViewController.swift
 //  Tokopedia
 //
-//  Created by Tiara Freddy Andika on 10/11/17.
-//  Copyright © 2017 TOKOPEDIA. All rights reserved.
+//  Created by Tiara Freddy Andika on 09/02/18.
+//  Copyright © 2018 TOKOPEDIA. All rights reserved.
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-class TokoCashHistoryDetailViewController: UIViewController {
+public class TokoCashHistoryDetailViewController: UIViewController {
     
-    @IBOutlet weak var iconImageView: UIImageView!
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descLabel: UILabel!
-    @IBOutlet weak var nominalLabel: UILabel!
-    @IBOutlet weak var notesLabel: UILabel!
-    @IBOutlet weak var transactionLabel: UILabel!
-    @IBOutlet weak var messageLabel: UILabel!
-    @IBOutlet weak var helpButton: UIButton!
-    @IBOutlet weak var moveToSaldoButton: UIButton!
+    @IBOutlet weak private var iconImageView: UIImageView!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var descLabel: UILabel!
+    @IBOutlet weak private var nominalLabel: UILabel!
+    @IBOutlet weak private var notesLabel: UILabel!
+    @IBOutlet weak private var transactionLabel: UILabel!
+    @IBOutlet weak private var messageLabel: UILabel!
+    @IBOutlet weak private var helpButton: UIButton!
+    @IBOutlet weak private var moveToSaldoButton: UIButton!
     
     // view model
-    var viewModel: TokoCashHistoryDetailViewModel!
+    public var viewModel: TokoCashHistoryDetailViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Detail Transaksi"
         bindViewModel()
     }
     
@@ -97,3 +99,4 @@ class TokoCashHistoryDetailViewController: UIViewController {
             .disposed(by: rx_disposeBag)
     }
 }
+

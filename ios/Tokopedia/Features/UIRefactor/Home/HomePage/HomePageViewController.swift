@@ -828,8 +828,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
                                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
                             } else {
                                 if wallet.shouldShowActivation {
-                                    let storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
-                                    let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+                                    let controller = TokoCashActivationViewController()
                                     controller.hidesBottomBarWhenPushed = true
                                     self.navigationController?.pushViewController(controller, animated: true)
                                 } else {

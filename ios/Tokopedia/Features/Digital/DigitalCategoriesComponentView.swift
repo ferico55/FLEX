@@ -73,8 +73,7 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                                         .subscribe(onNext: { wallet in
                                             
                                             if wallet.shouldShowActivation {
-                                                let storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
-                                                let controller = storyboard.instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+                                                let controller = TokoCashActivationViewController()
                                                 controller.hidesBottomBarWhenPushed = true
                                                 topViewController.navigationController?.pushViewController(controller, animated: true)
                                             } else {

@@ -9,22 +9,22 @@
 import Foundation
 import Unbox
 
-struct TokoCashToken {
-    let status: String?
-    let serverProcessTime: String?
-    let config: String?
-    let error: String?
-    let error_description: String?
-    let token: String?
+public struct TokoCashToken {
+    public let status: String?
+    public let serverProcessTime: String?
+    public let config: String?
+    public let error: String?
+    public let errorDescription: String?
+    public let token: String?
 }
 
 extension TokoCashToken: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.status = try? unboxer.unbox(keyPath: "status")
         self.serverProcessTime = try? unboxer.unbox(keyPath: "serverProcessTime")
         self.config = try? unboxer.unbox(keyPath: "config")
         self.error = try? unboxer.unbox(keyPath: "error")
-        self.error_description = try? unboxer.unbox(keyPath: "error_description")
+        self.errorDescription = try? unboxer.unbox(keyPath: "error_description")
         self.token = try? unboxer.unbox(keyPath: "data.token")
     }
 }

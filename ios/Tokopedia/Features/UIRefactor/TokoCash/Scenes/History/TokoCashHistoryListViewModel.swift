@@ -7,64 +7,53 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashHistoryListViewModel: ViewModelType {
+final public class TokoCashHistoryListViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let pullTrigger: Driver<Void>
-        let pendingTransactionTrigger: Driver<Void>
-        let isDateRange: Driver<Bool>
-        let dateRange: Driver<TokoCashDateRangeItem>
-        let fromDate: Driver<Date>
-        let toDate: Driver<Date>
-        let dateFilterTrigger: Driver<Void>
-        let filter: Driver<IndexPath>
-        let selection: Driver<IndexPath>
-        let nextPageTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let pullTrigger: Driver<Void>
+        public let pendingTransactionTrigger: Driver<Void>
+        public let dateFilterTrigger: Driver<Void>
+        public let filter: Driver<IndexPath>
+        public let selection: Driver<IndexPath>
+        public let nextPageTrigger: Driver<Void>
     }
     
-    struct Output {
-        let fetching: Driver<Bool>
-        let tokoCashHistory: Driver<TokoCashHistoryResponse>
-        let showPendingTransaction: Driver<Bool>
-        let pendingTransaction: Driver<[TokoCashHistoryItems]>
-        let dateString: Driver<String>
-        let dateFilter: Driver<Void>
-        let headers: Driver<[TokoCashFilterViewModel]>
-        let showHeader: Driver<Bool>
-        let items: Driver<[TokoCashHistoryListItemViewModel]>
-        let isEmptyState: Driver<Bool>
-        let emptyState: Driver<String>
-        let selectedItem: Driver<TokoCashHistoryItems>
-        let page: Driver<Int>
-        let filterItems: Driver<TokoCashHistoryResponse>
-        let nextPage: Driver<TokoCashHistoryResponse>
+    public struct Output {
+        public let fetching: Driver<Bool>
+        public let tokoCashHistory: Driver<TokoCashHistoryResponse>
+        public let showPendingTransaction: Driver<Bool>
+        public let pendingTransaction: Driver<[TokoCashHistoryItems]>
+        public let dateString: Driver<String>
+        public let dateFilter: Driver<DateFilter>
+        public let headers: Driver<[TokoCashFilterViewModel]>
+        public let showHeader: Driver<Bool>
+        public let items: Driver<[TokoCashHistoryListItemViewModel]>
+        public let isEmptyState: Driver<Bool>
+        public let emptyState: Driver<String>
+        public let selectedItem: Driver<TokoCashHistoryItems>
+        public let page: Driver<Int>
     }
+    
+    private let dateRange = Variable(TokoCashDateRangeItem("7 Hari Terakhir", fromDate: Date.aWeekAgo(), toDate: Date(), selected: true))
+    private let startDate = Variable(Date.aWeekAgo())
+    private let endDate = Variable(Date())
     
     private var navigator: TokoCashHistoryListNavigator
-    private var dateRange: TokoCashDateRangeItem
-    private var startDate: Date
-    private var endDate: Date
     
-    init(navigator: TokoCashHistoryListNavigator) {
+    public init(navigator: TokoCashHistoryListNavigator) {
         self.navigator = navigator
-        self.dateRange = TokoCashDateRangeItem("7 Hari Terakhir", fromDate: Date.aWeekAgo(), toDate: Date(), selected: true)
-        self.startDate = Date.aWeekAgo()
-        self.endDate = Date()
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let items = Variable([TokoCashHistoryItems]())
         let page = Variable(1)
         let nextUri = Variable(false)
-        
-        let selectedRange = Driver.merge(Driver.of(self.dateRange), input.dateRange)
-        let startDate = Driver.merge(Driver.of(self.startDate), input.fromDate)
-        let endDate = Driver.merge(Driver.of(self.endDate), input.toDate)
+        let typea = Variable("all")
         
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
@@ -76,7 +65,7 @@ final class TokoCashHistoryListViewModel: ViewModelType {
         }
         
         let pendingTransaction = tokoCashPendingTrasactionResponse.map { tokoCashPendingTrasactionResponse -> [TokoCashHistoryItems] in
-            return tokoCashPendingTrasactionResponse.data?.items ?? []
+            return tokoCashPendingTrasactionResponse.data?.items ?? [TokoCashHistoryItems]()
         }
         
         let showPendingTransaction = pendingTransaction.map { pendingTransaction -> Bool in
@@ -86,41 +75,56 @@ final class TokoCashHistoryListViewModel: ViewModelType {
         let pendingTransactionTap = input.pendingTransactionTrigger.withLatestFrom(pendingTransaction)
             .do(onNext: navigator.toPendingTransaction)
         
-        let dateData = Driver.combineLatest(selectedRange, startDate, endDate)
-        let dateFilter = input.dateFilterTrigger.withLatestFrom(dateData).do(onNext: { dateRange, startDate, endDate in
-            guard let vc = UIApplication.topViewController() else { return }
-            self.navigator.toDateFilter(vc as! TokoCashDateFilterDelegate, dateRange: dateRange, fromDate: startDate, toDate: endDate)
-        }).mapToVoid()
+        // date filter
+        let dateData = Driver.combineLatest(dateRange.asDriver(), startDate.asDriver(), endDate.asDriver())
+        let dateFilter = input.dateFilterTrigger.withLatestFrom(dateData)
+            .flatMapLatest { data -> SharedSequence<DriverSharingStrategy, DateFilter> in
+                let (dateRange, startDate, endDate) = data
+                let vc = self.navigator.toDateFilter(dateRange: dateRange, fromDate: startDate, toDate: endDate)
+                return vc.dateFilter.asDriverOnErrorJustComplete()
+            }.do(onNext: { dataFilter in
+                self.dateRange.value = dataFilter.selectedDateRange
+                self.startDate.value = dataFilter.fromDate
+                self.endDate.value = dataFilter.toDate
+            })
         
-        let dateString = Driver.combineLatest(startDate, endDate, resultSelector: { (startDate, endDate) -> String in
-            guard startDate == endDate else { return "\(startDate.tpDateFormat2()) - \(endDate.tpDateFormat2())" }
+        let dateString = Driver.combineLatest(startDate.asDriver(), endDate.asDriver(), resultSelector: { (startDate, endDate) -> String in
+            guard Calendar.current.compare(startDate, to: endDate,toGranularity: .day) == .orderedSame else {
+                return "\(startDate.tpDateFormat2()) - \(endDate.tpDateFormat2())"
+            }
             return startDate.tpDateFormat2()
         })
         
-        let firstPage = Driver.merge(input.trigger.mapToVoid(), input.pullTrigger, input.filter.mapToVoid(), endDate.mapToVoid()).flatMapLatest { _ -> SharedSequence<DriverSharingStrategy, Int> in
-            page.value = 1
-            return page.asDriver()
-        }
+        // history data
+        let loadData = Driver.merge(input.pullTrigger, typea.asDriver().distinctUntilChanged().mapToVoid(), dateFilter.mapToVoid())
+            .do(onNext: { _ in
+                page.value = 1
+                items.value = [TokoCashHistoryItems]()
+            })
         
-        // history
-        let tokoCashHistory = Driver.merge(input.trigger, input.pullTrigger.withLatestFrom(items.asDriver()).flatMapLatest{ (items) -> SharedSequence<DriverSharingStrategy, Void> in
-            guard items.count == 0 else { return Driver.empty() }
-            return Driver.just()
-        }).withLatestFrom(Driver.combineLatest(firstPage, startDate, endDate))
-            .flatMapLatest { (page, startDate, endDate) -> SharedSequence<DriverSharingStrategy, TokoCashHistoryResponse> in
-                return TokoCashUseCase.getWalletHistory(historyType: "all", perPage: 6, page: page, startDate: startDate, endDate: endDate, afterId: "")
+        let nextPageConstraint = Driver.combineLatest(activityIndicator.asDriver(), nextUri.asDriver())
+        let nextPage = input.nextPageTrigger.withLatestFrom(nextPageConstraint)
+            .flatMapLatest { (activityIndicator, nextUri) -> SharedSequence<DriverSharingStrategy, Void> in
+                guard !activityIndicator else { return Driver.empty() }
+                return nextUri ? Driver.just() : Driver.empty()
+            }
+        
+        let tokoCashHistory = Driver.merge(loadData, nextPage)
+            .withLatestFrom(Driver.combineLatest(nextUri.asDriver(), typea.asDriver(), page.asDriver(), startDate.asDriver(), endDate.asDriver()))
+            .flatMapLatest { (_, type, page, startDate, endDate) -> SharedSequence<DriverSharingStrategy, TokoCashHistoryResponse> in
+                TokoCashUseCase.getWalletHistory(historyType: type, perPage: 6, page: page, startDate: startDate, endDate: endDate)
                     .trackActivity(activityIndicator)
                     .trackError(errorTracker)
                     .asDriverOnErrorJustComplete()
             }.do(onNext: { response in
-                items.value = response.data?.items ?? []
+                items.value = items.value + (response.data?.items ?? [TokoCashHistoryItems]())
                 guard response.data?.nextUri ?? false else { nextUri.value = false; return }
                 nextUri.value = response.data?.nextUri ?? false
                 page.value = page.value + 1
             })
         
         let headers = tokoCashHistory.map { tokoCashResponse -> [TokoCashHistoryHeader] in
-            return tokoCashResponse.data?.header ?? []
+            return tokoCashResponse.data?.header ?? [TokoCashHistoryHeader]()
         }
         
         let showHeader = headers.map { headers -> Bool in
@@ -149,45 +153,20 @@ final class TokoCashHistoryListViewModel: ViewModelType {
         
         let selectedType = Driver.merge(headers, visibleHeaders).map { $0.filter({ (header) -> Bool in
             header.selected ?? false
-        }).first?.type }
-        
-        let filterItems = Driver.merge(input.pullTrigger, input.filter.mapToVoid(), endDate.mapToVoid())
-            .withLatestFrom(Driver.combineLatest(selectedType, firstPage, startDate, endDate))
-                .flatMapLatest { (type, page, startDate, endDate) -> SharedSequence<DriverSharingStrategy, TokoCashHistoryResponse> in
-                    TokoCashUseCase.getWalletHistory(historyType: type ?? "", perPage: 6, page: page, startDate: startDate, endDate: endDate, afterId: "")
-                        .trackActivity(activityIndicator)
-                        .trackError(errorTracker)
-                        .asDriverOnErrorJustComplete()
-                }.do(onNext: { response in
-                    items.value = response.data?.items ?? []
-                    guard response.data?.nextUri ?? false else { nextUri.value = false; return }
-                    nextUri.value = response.data?.nextUri ?? false
-                    page.value = page.value + 1
-                })
-        
-        let nextPage = input.nextPageTrigger
-            .withLatestFrom(Driver.combineLatest(nextUri.asDriver(), selectedType, page.asDriver(), startDate, endDate))
-            .filter { (nextUri, _, _, _, _) -> Bool in
-                return nextUri
-            }
-            .flatMapLatest { (_, type, page, startDate, endDate) -> SharedSequence<DriverSharingStrategy, TokoCashHistoryResponse> in
-                TokoCashUseCase.getWalletHistory(historyType: type ?? "", perPage: 6, page: page, startDate: startDate, endDate: endDate, afterId: "")
-                    .asDriverOnErrorJustComplete()
-            }.do(onNext: { response in
-                items.value = items.value + (response.data?.items ?? [])
-                guard response.data?.nextUri ?? false else { nextUri.value = false; return }
-                nextUri.value = response.data?.nextUri ?? false
-                page.value = page.value + 1
-            })
+        }).first?.type }.do(onNext: { type in
+            typea.value = type ?? "all"
+        })
         
         let headersViewModel = Driver.merge(headers, visibleHeaders)
             .map { $0.filter({ (header) -> Bool in
                 header.type == "all" ? false : true
             }).map { TokoCashFilterViewModel(with: $0) } }
         
-        let isEmptyState = items.asDriver().map { (items) -> Bool in
-            return items.count == 0
-        }.startWith(false)
+        let isEmptyState = Driver.merge(activityIndicator.asDriver().flatMapLatest { isActive -> SharedSequence<DriverSharingStrategy, Bool> in
+            isActive ? Driver.of(false) : Driver.empty()
+        }, items.asDriver().map { (items) -> Bool in
+            return items.isEmpty
+        }).startWith(false)
         
         let emptyState = selectedType.map { type -> String in
             return type ?? "all"
@@ -212,8 +191,6 @@ final class TokoCashHistoryListViewModel: ViewModelType {
                       isEmptyState: isEmptyState,
                       emptyState: emptyState,
                       selectedItem: selectedItem,
-                      page: page.asDriver(),
-                      filterItems: filterItems,
-                      nextPage: nextPage)
+                      page: page.asDriver())
     }
 }

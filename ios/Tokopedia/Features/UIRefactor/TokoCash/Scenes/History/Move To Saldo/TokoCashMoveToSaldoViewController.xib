@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashMoveToSaldoViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="activityIndicator" destination="Oor-MU-TVm" id="0hc-aP-Xmn"/>
+                <outlet property="cancelButton" destination="Jia-Jy-46C" id="SU2-Cz-OZk"/>
+                <outlet property="moveToSaldoButton" destination="0HK-lQ-0dP" id="OtF-Hx-b1H"/>
+                <outlet property="nominalLabel" destination="DTP-YP-u8x" id="Mu6-qH-JP9"/>
+                <outlet property="view" destination="84b-5j-jdw" id="med-95-v1P"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="84b-5j-jdw">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Rp. 0" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="DTP-YP-u8x">
+                    <rect key="frame" x="16" y="108.5" width="343" height="24"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="20"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="deviceRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Jia-Jy-46C">
+                    <rect key="frame" x="16" y="527" width="343" height="52"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="52" id="sQn-un-rW1"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                    <state key="normal" title="Batal">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="deviceRGB"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="4"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.12" colorSpace="deviceRGB"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="WFO-QJ-FQb">
+                    <rect key="frame" x="16" y="591" width="343" height="52"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" adjustsImageWhenHighlighted="NO" adjustsImageWhenDisabled="NO" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0HK-lQ-0dP">
+                            <rect key="frame" x="0.0" y="0.0" width="343" height="52"/>
+                            <color key="backgroundColor" red="1" green="0.3411764706" blue="0.1333333333" alpha="1" colorSpace="deviceRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52" id="8gQ-d2-OqK"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="14"/>
+                            <state key="normal" title="Pindahkan ke Saldo">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <state key="disabled">
+                                <color key="titleColor" red="0.61960784310000006" green="0.61960784310000006" blue="0.61960784310000006" alpha="1" colorSpace="calibratedRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="4"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="white" translatesAutoresizingMaskIntoConstraints="NO" id="Oor-MU-TVm">
+                            <rect key="frame" x="16" y="16" width="20" height="20"/>
+                        </activityIndicatorView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="0HK-lQ-0dP" firstAttribute="top" secondItem="WFO-QJ-FQb" secondAttribute="top" id="5Tw-De-1SX"/>
+                        <constraint firstItem="0HK-lQ-0dP" firstAttribute="leading" secondItem="WFO-QJ-FQb" secondAttribute="leading" id="BJy-Mo-6Nw"/>
+                        <constraint firstItem="Oor-MU-TVm" firstAttribute="centerY" secondItem="WFO-QJ-FQb" secondAttribute="centerY" id="HOP-Uz-qJo"/>
+                        <constraint firstItem="Oor-MU-TVm" firstAttribute="leading" secondItem="WFO-QJ-FQb" secondAttribute="leading" constant="16" id="rAg-d2-18L"/>
+                        <constraint firstAttribute="bottom" secondItem="0HK-lQ-0dP" secondAttribute="bottom" id="rZX-db-wmm"/>
+                        <constraint firstAttribute="trailing" secondItem="0HK-lQ-0dP" secondAttribute="trailing" id="v1O-7E-SOg"/>
+                    </constraints>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="999" verticalCompressionResistancePriority="1000" text="Anda akan memindahkan dana dari TokoCash ke Saldo Tokopedia sebesar" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fm2-pR-d99">
+                    <rect key="frame" x="16" y="50" width="343" height="33.5"/>
+                    <constraints>
+                        <constraint firstAttribute="height" priority="250" constant="30" id="uv4-6V-yaq"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="deviceRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="DTP-YP-u8x" firstAttribute="top" secondItem="fm2-pR-d99" secondAttribute="bottom" constant="25" id="2Cq-wc-4s8"/>
+                <constraint firstItem="fm2-pR-d99" firstAttribute="top" secondItem="sLu-eu-6YE" secondAttribute="top" constant="30" id="Dp9-OF-eHS"/>
+                <constraint firstItem="WFO-QJ-FQb" firstAttribute="leading" secondItem="fm2-pR-d99" secondAttribute="leading" id="F97-mD-QG1"/>
+                <constraint firstItem="Jia-Jy-46C" firstAttribute="trailing" secondItem="fm2-pR-d99" secondAttribute="trailing" id="FlJ-QF-Nm8"/>
+                <constraint firstAttribute="trailing" secondItem="fm2-pR-d99" secondAttribute="trailing" constant="16" id="Mhc-Vm-Ivq"/>
+                <constraint firstItem="WFO-QJ-FQb" firstAttribute="top" secondItem="Jia-Jy-46C" secondAttribute="bottom" constant="12" id="VfJ-uK-FMU"/>
+                <constraint firstItem="Jia-Jy-46C" firstAttribute="leading" secondItem="fm2-pR-d99" secondAttribute="leading" id="Vip-3J-d1V"/>
+                <constraint firstItem="DTP-YP-u8x" firstAttribute="trailing" secondItem="fm2-pR-d99" secondAttribute="trailing" id="av7-VR-5y6"/>
+                <constraint firstItem="fm2-pR-d99" firstAttribute="leading" secondItem="84b-5j-jdw" secondAttribute="leading" constant="16" id="ilq-mg-yXL"/>
+                <constraint firstItem="WFO-QJ-FQb" firstAttribute="trailing" secondItem="fm2-pR-d99" secondAttribute="trailing" id="mUg-xk-EIl"/>
+                <constraint firstItem="sLu-eu-6YE" firstAttribute="bottom" secondItem="WFO-QJ-FQb" secondAttribute="bottom" constant="24" id="pUr-We-qzU"/>
+                <constraint firstItem="DTP-YP-u8x" firstAttribute="leading" secondItem="fm2-pR-d99" secondAttribute="leading" id="yfN-uM-yA9"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="sLu-eu-6YE"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+</document>

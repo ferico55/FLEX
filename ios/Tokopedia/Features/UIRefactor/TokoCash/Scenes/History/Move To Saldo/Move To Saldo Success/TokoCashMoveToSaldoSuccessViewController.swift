@@ -8,20 +8,22 @@
 
 import Foundation
 
-class TokoCashMoveToSaldoSuccessViewConstroller: UIViewController {
+public class TokoCashMoveToSaldoSuccessViewController: UIViewController {
     
-    @IBOutlet weak var descLabel: UILabel!
-    @IBOutlet weak var homeButton: UIButton!
+    @IBOutlet weak private var descLabel: UILabel!
+    @IBOutlet weak private var homeButton: UIButton!
     
     // view model
-    var viewModel: TokoCashMoveToSaldoSuccessViewModel!
+    public var viewModel: TokoCashMoveToSaldoSuccessViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Dana Telah Dipindahkan"
         bindViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.setHidesBackButton(true, animated: true)
     }

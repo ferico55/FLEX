@@ -7,36 +7,36 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashMoveToSaldoViewModel: ViewModelType {
+final public class TokoCashMoveToSaldoViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let cancelTrigger: Driver<Void>
-        let moveToSaldoTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let cancelTrigger: Driver<Void>
+        public let moveToSaldoTrigger: Driver<Void>
     }
     
-    struct Output {
-        let nominal: Driver<String>
-        let disableButton: Driver<Bool>
-        let backgroundButtonColor: Driver<UIColor>
-        let cancel: Driver<Void>
-        let requestActivity: Driver<Bool>
-        let moveToSaldoSuccess: Driver<TokoCashMoveToSaldoResponse>
-        let moveToSaldoFailed: Driver<Void>
+    public struct Output {
+        public let nominal: Driver<String>
+        public let disableButton: Driver<Bool>
+        public let backgroundButtonColor: Driver<UIColor>
+        public let cancel: Driver<Void>
+        public let requestActivity: Driver<Bool>
+        public let moveToSaldoSuccess: Driver<TokoCashMoveToSaldoResponse>
+        public let moveToSaldoFailed: Driver<Void>
     }
     
     private let historyItem: TokoCashHistoryItems
     private let navigator: TokoCashMoveToSaldoNavigator
     
-    init(historyItem: TokoCashHistoryItems, navigator: TokoCashMoveToSaldoNavigator) {
+    public init(historyItem: TokoCashHistoryItems, navigator: TokoCashMoveToSaldoNavigator) {
         self.historyItem = historyItem
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         let historyItem = input.trigger.flatMapLatest {
             return Driver.of(self.historyItem)
         }
@@ -71,8 +71,8 @@ final class TokoCashMoveToSaldoViewModel: ViewModelType {
         }
         
         let backgroundButtonColor = disableButton.map { disableButton -> UIColor in
-            guard disableButton else { return UIColor(red: 224.0 / 255.0, green: 224.0 / 255.0, blue: 224.0 / 255.0, alpha: 1.0) }
-            return UIColor.tpOrange()
+            guard disableButton else { return #colorLiteral(red: 0.878000021, green: 0.878000021, blue: 0.878000021, alpha: 1) }
+            return #colorLiteral(red: 1, green: 0.4790000021, blue: 0.003000000026, alpha: 1)
         }
         
         return Output(nominal: nominal,

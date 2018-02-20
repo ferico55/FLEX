@@ -8,13 +8,13 @@
 
 import UIKit
 
-class TokoCashAccountTableViewCell: UITableViewCell {
+public class TokoCashAccountTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var identifierLabel: UILabel!
-    @IBOutlet weak var authDateLabel: UILabel!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak private var identifierLabel: UILabel!
+    @IBOutlet weak private var authDateLabel: UILabel!
+    @IBOutlet weak public var deleteButton: UIButton!
     
-    func bind(_ viewModel: TokoCashAccountViewModel) {
+    public func bind(_ viewModel: TokoCashAccountViewModel) {
         identifierLabel.text = viewModel.identifier
         authDateLabel.text = viewModel.authDate
     }

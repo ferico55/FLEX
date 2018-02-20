@@ -7,27 +7,27 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashMoveToSaldoFailedViewModel: ViewModelType {
-    struct Input {
-        let retryTrigger: Driver<Void>
-        let homeTrigger: Driver<Void>
+final public class TokoCashMoveToSaldoFailedViewModel: ViewModelType {
+    public struct Input {
+        public let retryTrigger: Driver<Void>
+        public let homeTrigger: Driver<Void>
     }
     
-    struct Output {
-        let retry: Driver<Void>
-        let home: Driver<Void>
+    public struct Output {
+        public let retry: Driver<Void>
+        public let home: Driver<Void>
     }
     
     private let navigator: TokoCashMoveToSaldoFailedNavigator
     
-    init(navigator: TokoCashMoveToSaldoFailedNavigator) {
+    public init(navigator: TokoCashMoveToSaldoFailedNavigator) {
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let retry = input.retryTrigger.do(onNext: navigator.backToMoveToSaldo)
         

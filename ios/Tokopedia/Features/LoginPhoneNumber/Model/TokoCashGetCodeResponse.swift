@@ -9,16 +9,16 @@
 import Foundation
 import SwiftyJSON
 
-struct TokoCashGetCodeResponse {
-    let responseCode: String
-    let code: String
+public struct TokoCashGetCodeResponse {
+    public let responseCode: String
+    public let code: String
     
-    init(responseCode: String, code:String){
+    public init(responseCode: String, code:String){
         self.responseCode = responseCode
         self.code = code
     }
     
-    init(json: JSON){
+    public init(json: JSON){
         let responseCode = json["code"].stringValue
         let code = json["data"]["code"].stringValue
         self.init(responseCode: responseCode, code: code)

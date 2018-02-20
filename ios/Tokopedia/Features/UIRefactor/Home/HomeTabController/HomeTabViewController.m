@@ -377,30 +377,17 @@ UINavigationControllerDelegate
 
 - (void)initNotificationManager {
     if ([_userManager isLogin]) {
-        __weak typeof(self) weakSelf = self;
-        [TokoCashUseCase requestBalanceWithCompletionHandler:^(WalletStore * wallet) {
-            typeof(self) strongSelf = weakSelf;
-            if (strongSelf) {
-                NSMutableArray *arrayOfTabBar = [[NSMutableArray alloc] initWithObjects:_barButton, nil];
-                if ([wallet.data.abTags containsObject:@"QR"]) {
-                    _QRCodeButton = [[UIButton alloc] init];
-                    _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
-                    [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
-                    [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
-                    [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
-                    [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
-                    [arrayOfTabBar addObject:[[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton]];
-                }
         
-                self.navigationItem.rightBarButtonItems = [arrayOfTabBar copy];
-                [_barButton reloadNotifications];
-            }
-        } andErrorHandler:^(NSError * error) {
-            self.navigationItem.rightBarButtonItems = @[_barButton];
-            [_barButton reloadNotifications];
-        }];
-    }
-    else {
+        _QRCodeButton = [[UIButton alloc] init];
+        _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
+        [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+        [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
+        [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
+        [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
+        
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:_barButton, [[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton], nil];
+        [_barButton reloadNotifications];
+    } else {
         self.navigationItem.rightBarButtonItems = nil;
     }
 }
@@ -500,11 +487,11 @@ UINavigationControllerDelegate
 }
 
 - (void) didTapQRCodeButton {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TokoCash" bundle:nil];
-    TokoCashQRCodeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashQRCodeViewController"];
+    TokoCashQRCodeViewController *vc = [TokoCashQRCodeViewController new];
     TokoCashQRCodeNavigator *navigator = [[TokoCashQRCodeNavigator alloc] initWithNavigationController:self.navigationController];
     TokoCashQRCodeViewModel *viewModel = [[TokoCashQRCodeViewModel alloc] initWithNavigator:navigator];
     vc.viewModel = viewModel;
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

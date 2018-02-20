@@ -1,5 +1,5 @@
 //
-//  TokoCashMoveToSaldoFailedViewConstroller.swift
+//  TokoCashMoveToSaldoFailedViewController.swift
 //  Tokopedia
 //
 //  Created by Tiara Freddy Andika on 09/01/18.
@@ -8,19 +8,21 @@
 
 import Foundation
 
-class TokoCashMoveToSaldoFailedViewConstroller: UIViewController {
+public class TokoCashMoveToSaldoFailedViewController: UIViewController {
    
-    @IBOutlet weak var homeButton: UIButton!
-    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak private var homeButton: UIButton!
+    @IBOutlet weak private var retryButton: UIButton!
     // view model
-    var viewModel: TokoCashMoveToSaldoFailedViewModel!
+    public var viewModel: TokoCashMoveToSaldoFailedViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Dana Gagal Dipindahkan"
         bindViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.setHidesBackButton(true, animated: true)
     }

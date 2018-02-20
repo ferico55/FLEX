@@ -7,21 +7,23 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-class TokoCashMoveToSaldoViewController: UIViewController {
+public class TokoCashMoveToSaldoViewController: UIViewController {
     
-    @IBOutlet weak var nominalLabel: UILabel!
-    @IBOutlet weak var cancelButton: UIButton!
-    @IBOutlet weak var moveToSaldoButton: UIButton!
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var nominalLabel: UILabel!
+    @IBOutlet weak private var cancelButton: UIButton!
+    @IBOutlet weak private var moveToSaldoButton: UIButton!
+    @IBOutlet weak private var activityIndicator: UIActivityIndicatorView!
     
     // view model
-    var viewModel: TokoCashMoveToSaldoViewModel!
+    public var viewModel: TokoCashMoveToSaldoViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Pindahkan ke Saldo"
         bindViewModel()
     }
     

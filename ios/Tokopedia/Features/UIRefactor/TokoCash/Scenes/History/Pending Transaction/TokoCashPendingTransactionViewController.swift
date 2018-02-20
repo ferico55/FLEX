@@ -7,27 +7,23 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-class TokoCashPendingTransactionViewController: UIViewController {
+public class TokoCashPendingTransactionViewController: UIViewController {
     
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak private var tableView: UITableView!
     
     // view model
-    var viewModel: TokoCashPendingTransactionViewModel!
+    public var viewModel: TokoCashPendingTransactionViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Transaksi Menunggu"
         
         configureTableView()
         bindViewModel()
-    }
-    
-    private func configureTableView() {
-        tableView.tableFooterView = UIView()
-        tableView.estimatedRowHeight = 88
-        tableView.rowHeight = UITableViewAutomaticDimension
     }
     
     private func bindViewModel() {
@@ -43,8 +39,14 @@ class TokoCashPendingTransactionViewController: UIViewController {
             cell.bind(viewModel)
         }.addDisposableTo(rx_disposeBag)
         
-        output.selectedItem
-            .drive()
-            .disposed(by: rx_disposeBag)
+        output.selectedItem.drive().disposed(by: rx_disposeBag)
+    }
+    
+    private func configureTableView() {
+        let nib = UINib(nibName: "TokoCashHistoryListItemTableViewCell", bundle: nil)
+        tableView.register(nib, forCellReuseIdentifier: "TokoCashHistoryListItemTableViewCell")
+        tableView.tableFooterView = UIView()
+        tableView.estimatedRowHeight = 88
+        tableView.rowHeight = UITableViewAutomaticDimension
     }
 }

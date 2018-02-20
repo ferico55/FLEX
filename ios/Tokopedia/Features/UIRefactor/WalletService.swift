@@ -7,29 +7,29 @@
 //
 
 import Foundation
-import RxSwift
 import Moya
-import Unbox
-import UIKit
 import MoyaUnbox
+import RxSwift
 import SwiftyJSON
+import UIKit
+import Unbox
 
-enum WalletError: Swift.Error {
+public enum WalletError: Swift.Error {
     case noOAuthToken
 }
 
-enum OTPAcceptType: String {
-    case sms = "sms"
-    case call = "call"
+public enum OTPAcceptType: String {
+    case sms
+    case call
 }
 
-class WalletService: NSObject {
+public class WalletService: NSObject {
     
-    class func getPendingCashBack(phoneNumber: String) -> Observable<WalletCashBackResponse> {
+    class public func getPendingCashBack(phoneNumber: String) -> Observable<WalletCashBackResponse> {
         if phoneNumber == "" {
             return Observable.empty()
         }
-        return TokocashNetworkProvider().request(.getPendingCashBack(phoneNumber: phoneNumber)).mapJSON()
+        return TokoCashNetworkProvider().request(.getPendingCashBack(phoneNumber: phoneNumber)).mapJSON()
             .mapTo(object: WalletCashBackResponse.self)
             .do(onNext: { response in
                 if let error = response.error, error.count > 0 {
@@ -38,7 +38,7 @@ class WalletService: NSObject {
             })
     }
     
-    class func getPendingCashback(phoneNumber: String, completionHandler: @escaping (WalletCashBackResponse?) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
+    class public func getPendingCashback(phoneNumber: String, completionHandler: @escaping (WalletCashBackResponse?) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
         let _ = WalletService.getPendingCashBack(phoneNumber: phoneNumber)
             .map { cashbackResponse -> WalletCashBackResponse? in
                 return cashbackResponse
@@ -53,7 +53,7 @@ class WalletService: NSObject {
             })
     }
     
-    class func getTokoCash(userId: String, phoneNumber: String) -> Observable<WalletStore> {
+    class public func getTokoCash(userId: String, phoneNumber: String) -> Observable<WalletStore> {
         guard UserAuthentificationManager().getUserLoginData()?["oAuthToken.tokenType"] != nil else {
             return Observable.empty()
         }
@@ -89,7 +89,7 @@ class WalletService: NSObject {
             }
     }
     
-    class func activationTokoCash(verificationCode: String) -> Observable<Bool> {
+    class public func activationTokoCash(verificationCode: String) -> Observable<Bool> {
         return WalletProvider().request(.activationTokoCash(verificationCode: verificationCode))
             .mapJSON()
             .map { response -> Bool in
@@ -104,7 +104,7 @@ class WalletService: NSObject {
             }
     }
     
-    class func requestOTPTokoCash() -> Observable<Bool> {
+    class public func requestOTPTokoCash() -> Observable<Bool> {
         return WalletProvider().request(.OTPTokoCash)
             .mapJSON()
             .map { response -> Bool in
@@ -119,8 +119,8 @@ class WalletService: NSObject {
             }
     }
     
-    class func checkPhoneNumberTokoCash(phoneNumber: String) -> Observable<TokoCashLoginSendOTPResponse> {
-        return TokocashNetworkProvider().request(.checkPhoneNumber(phoneNumber: phoneNumber))
+    class public func checkPhoneNumberTokoCash(phoneNumber: String) -> Observable<TokoCashLoginSendOTPResponse> {
+        return TokoCashNetworkProvider().request(.checkPhoneNumber(phoneNumber: phoneNumber))
             .mapJSON()
             .flatMap({ (response) -> Observable<TokoCashLoginSendOTPResponse> in
                 let response = JSON(response)
@@ -135,8 +135,8 @@ class WalletService: NSObject {
             })
     }
     
-    class func requestOTPLoginTokoCash(phoneNumber: String, accept: OTPAcceptType) -> Observable<TokoCashLoginSendOTPResponse> {
-        return TokocashNetworkProvider().request(.sendOTP(phoneNumber: phoneNumber, accept: accept))
+    class public func requestOTPLoginTokoCash(phoneNumber: String, accept: OTPAcceptType) -> Observable<TokoCashLoginSendOTPResponse> {
+        return TokoCashNetworkProvider().request(.sendOTP(phoneNumber: phoneNumber, accept: accept))
             .mapJSON()
             .map { response -> TokoCashLoginSendOTPResponse in
                 let response = JSON(response)
@@ -144,8 +144,8 @@ class WalletService: NSObject {
             }
     }
     
-    class func verifyOTPLoginTokoCash(phoneNumber: String, otpCode: String) -> Observable<TokoCashLoginVerifyOTPResponse> {
-        return TokocashNetworkProvider().request(.verifyOTP(phoneNumber: phoneNumber, otpCode: otpCode))
+    class public func verifyOTPLoginTokoCash(phoneNumber: String, otpCode: String) -> Observable<TokoCashLoginVerifyOTPResponse> {
+        return TokoCashNetworkProvider().request(.verifyOTP(phoneNumber: phoneNumber, otpCode: otpCode))
             .mapJSON()
             .map { response -> TokoCashLoginVerifyOTPResponse in
                 let response = JSON(response)
@@ -153,8 +153,8 @@ class WalletService: NSObject {
             }
     }
     
-    class func getCodeToHandshakeWithAccount(key: String, email: String) -> Observable<TokoCashGetCodeResponse> {
-        return TokocashNetworkProvider().request(.getCodeFromTokocash(key: key, email: email))
+    class public func getCodeToHandshakeWithAccount(key: String, email: String) -> Observable<TokoCashGetCodeResponse> {
+        return TokoCashNetworkProvider().request(.getCodeFromTokocash(key: key, email: email))
             .mapJSON()
             .map { response -> TokoCashGetCodeResponse in
                 let response = JSON(response)

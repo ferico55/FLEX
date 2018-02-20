@@ -9,23 +9,23 @@
 import Foundation
 import Unbox
 
-final class WalletData: NSObject, Unboxable {
-    let action: WalletAction?
-    var balance: String
-    let rawBalance: Int
-    let totalBalance: String
-    let rawTotalBalance: Int
-    let holdBalance: String
-    let rawHoldBalance: Int
-    let rawThreshold: Int
-    let text: String
-    let redirectUrl: String
-    let link: Int
-    var hasPendingCashback: Bool
-    let applinks: String
-    let abTags: [String]
+final public class WalletData: NSObject, Unboxable {
+    public let action: WalletAction?
+    public var balance: String
+    public let rawBalance: Int
+    public let totalBalance: String
+    public let rawTotalBalance: Int
+    public let holdBalance: String
+    public let rawHoldBalance: Int
+    public let rawThreshold: Int
+    public let text: String
+    public let redirectUrl: String
+    public let link: Int
+    public var hasPendingCashback: Bool
+    public let applinks: String
+    public let abTags: [String]
     
-    init(action: WalletAction?,
+    public init(action: WalletAction?,
          balance: String = "",
          rawBalance: Int = 0,
          totalBalance: String = "",
@@ -56,7 +56,7 @@ final class WalletData: NSObject, Unboxable {
         self.abTags = abTags
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    convenience public init(unboxer: Unboxer) throws {
         let action = unboxer.unbox(keyPath: "action") as WalletAction?
         let balance = try unboxer.unbox(keyPath: "balance") as String
         let rawBalance = try unboxer.unbox(keyPath: "raw_balance") as Int
@@ -87,7 +87,7 @@ final class WalletData: NSObject, Unboxable {
                   abTags: abTags)
     }
     
-    func walletActionFullUrl() -> String {
+    public func walletActionFullUrl() -> String {
         if let action = self.action {
             return "\(action.redirectUrl)?flag_app=1"
         }

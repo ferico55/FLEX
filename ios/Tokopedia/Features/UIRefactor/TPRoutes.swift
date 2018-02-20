@@ -273,7 +273,7 @@ guard let productId = params["productId"] as? String else { return true }
         
         JLRoutes.global().addRoute("/wallet/activation") { (params: [String: Any]) -> Bool in
             guard let nc = UIApplication.topViewController()?.navigationController else { return false }
-            let vc = UIStoryboard(name: "TokoCash", bundle: nil).instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+            let vc = TokoCashActivationViewController()
             nc.pushViewController(vc, animated: true)
             return true
         }
@@ -281,9 +281,10 @@ guard let productId = params["productId"] as? String else { return true }
         JLRoutes.global().addRoute("/wallet") { (params: [String: Any]) -> Bool in
             guard let nc = UIApplication.topViewController()?.navigationController else { return false }
             let topUpVisible = params["top_up_visible"] as? String == "true"
-            let vc = UIStoryboard(name: "TokoCash", bundle: nil).instantiateViewController(ofType: TokoCashViewController.self)
+            let vc = TokoCashViewController()
             let navigator = TokoCashNavigator(navigationController: nc)
             vc.viewModel = TokoCashViewModel(topUpVisible, navigator: navigator)
+            vc.hidesBottomBarWhenPushed = true
             nc.pushViewController(vc, animated: true)
             return true
         }

@@ -8,15 +8,15 @@
 
 import Foundation
 
-class TokoCashProfileNavigator {
+public class TokoCashProfileNavigator {
+    
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toHome() {
+    public func toHome() {
         navigationController.popToRootViewController(animated: true)
     }
-    
 }

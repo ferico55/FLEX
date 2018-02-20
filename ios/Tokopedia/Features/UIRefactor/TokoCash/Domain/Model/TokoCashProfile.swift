@@ -9,20 +9,38 @@
 import Foundation
 import Unbox
 
-struct TokoCashProfile {
-    let code: String?
-    let mobile: String?
-    let userId: String?
-    let email: String?
-    let name: String?
-    let accountStatus: String?
-    let accountStatusCode: String?
-    let accountActivatedAt: String?
-    var accountList: [TokoCashAccount]?
+public struct TokoCashProfileResponse {
+    public let code: String?
+    public let message: String?
+    public let errors: String?
+    public let config: String?
+    public let data: TokoCashProfile?
+}
+
+extension TokoCashProfileResponse: Unboxable {
+    public init(unboxer: Unboxer) throws {
+        self.code = try? unboxer.unbox(keyPath: "code")
+        self.message = try? unboxer.unbox(keyPath: "message")
+        self.errors = try? unboxer.unbox(keyPath: "errors")
+        self.config = try? unboxer.unbox(keyPath: "config")
+        self.data = try? unboxer.unbox(keyPath: "data")
+    }
+}
+
+public struct TokoCashProfile {
+    public let code: String?
+    public let mobile: String?
+    public let userId: String?
+    public let email: String?
+    public let name: String?
+    public let accountStatus: String?
+    public let accountStatusCode: String?
+    public let accountActivatedAt: String?
+    public var accountList: [TokoCashAccount]?
 }
 
 extension TokoCashProfile: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.code = try? unboxer.unbox(keyPath: "code")
         self.mobile = try? unboxer.unbox(keyPath: "mobile")
         self.userId = try? unboxer.unbox(keyPath: "tokopedia_user_id")
@@ -35,19 +53,19 @@ extension TokoCashProfile: Unboxable {
     }
 }
 
-struct TokoCashAccount {
-    let clientId: String?
-    let clientName: String?
-    let identifier: String?
-    let identifierType: String?
-    let imgURL: String?
-    let authDate: String?
-    let authDateFmt: String?
-    let refreshToken: String?
+public struct TokoCashAccount {
+    public let clientId: String?
+    public let clientName: String?
+    public let identifier: String?
+    public let identifierType: String?
+    public let imgURL: String?
+    public let authDate: String?
+    public let authDateFmt: String?
+    public let refreshToken: String?
 }
 
 extension TokoCashAccount: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.clientId = try? unboxer.unbox(keyPath: "client_id")
         self.clientName = try? unboxer.unbox(keyPath: "client_name")
         self.identifier = try? unboxer.unbox(keyPath: "identifier")

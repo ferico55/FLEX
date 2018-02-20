@@ -8,20 +8,35 @@
 
 import Foundation
 
-@objc class TokoCashQRCodeNavigator: NSObject {
+@objc public class TokoCashQRCodeNavigator: NSObject {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
-    
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
-    
-    func toQRPayment(_ QRInfo: TokoCashQRInfo) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashQRPaymentViewController.self)
+
+    public func toQRPayment(_ QRInfo: TokoCashQRInfo) {
+        let vc = TokoCashQRPaymentViewController()
         let navigator = TokoCashQRPaymentNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashQRPaymentViewModel(QRInfo: QRInfo, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
+    }
+
+    public func toAppSetting() {
+        guard let settingsUrl = URL(string: UIApplicationOpenSettingsURLString) else {
+            return
+        }
+
+        if UIApplication.shared.canOpenURL(settingsUrl) {
+            if #available(iOS 10.0, *) {
+                UIApplication.shared.open(settingsUrl, completionHandler: { success in
+                    debugPrint("Settings opened: \(success)") // Prints true
+                })
+            } else {
+                // Fallback on earlier versions
+                UIApplication.shared.openURL(settingsUrl)
+            }
+        }
     }
 }

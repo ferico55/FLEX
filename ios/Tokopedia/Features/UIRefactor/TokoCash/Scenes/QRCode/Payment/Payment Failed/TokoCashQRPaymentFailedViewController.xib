@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashQRPaymentFailedViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="descLabel" destination="yVj-bz-0M7" id="0WF-21-K7Q"/>
+                <outlet property="retryButton" destination="u65-rF-2ox" id="SCi-Zn-8xH"/>
+                <outlet property="titleLabel" destination="e7K-ig-Z1A" id="LT5-8d-rPB"/>
+                <outlet property="view" destination="0LQ-6c-0o2" id="ofC-k4-82C"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="0LQ-6c-0o2">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5Sz-Xd-dnS">
+                    <rect key="frame" x="0.0" y="197" width="375" height="273"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_tokocash_sad" translatesAutoresizingMaskIntoConstraints="NO" id="go2-ty-lc5">
+                            <rect key="frame" x="102.5" y="0.0" width="170" height="92"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="170" id="Tgj-va-O6k"/>
+                                <constraint firstAttribute="height" constant="92" id="jZ9-yK-Ler"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Maaf, Transaksi Gagal" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="e7K-ig-Z1A">
+                            <rect key="frame" x="20" y="122" width="335" height="19.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="20" id="5ek-IT-6jo"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5383197623" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Cek Koneksi dan Ulangi Proses Transfer." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yVj-bz-0M7">
+                            <rect key="frame" x="20" y="156" width="335" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="67" id="E8O-mA-ljI"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54098886989999995" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u65-rF-2ox">
+                            <rect key="frame" x="94.5" y="201" width="186" height="52"/>
+                            <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="deviceRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="52" id="ZSp-og-gqP"/>
+                                <constraint firstAttribute="width" constant="186" id="wyo-nC-8cW"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Ulangi Transaksi">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="go2-ty-lc5" firstAttribute="top" secondItem="5Sz-Xd-dnS" secondAttribute="top" id="4HN-Tn-z3Z"/>
+                        <constraint firstAttribute="trailing" secondItem="e7K-ig-Z1A" secondAttribute="trailing" constant="20" id="4Vy-AN-9WM"/>
+                        <constraint firstItem="u65-rF-2ox" firstAttribute="top" secondItem="yVj-bz-0M7" secondAttribute="bottom" constant="28" id="LWg-vl-JEV"/>
+                        <constraint firstItem="yVj-bz-0M7" firstAttribute="trailing" secondItem="e7K-ig-Z1A" secondAttribute="trailing" id="NUA-K8-NjE"/>
+                        <constraint firstItem="e7K-ig-Z1A" firstAttribute="leading" secondItem="5Sz-Xd-dnS" secondAttribute="leading" constant="20" id="PKc-Ei-6kd"/>
+                        <constraint firstItem="yVj-bz-0M7" firstAttribute="top" secondItem="e7K-ig-Z1A" secondAttribute="bottom" constant="14" id="Web-NX-Uwz"/>
+                        <constraint firstItem="e7K-ig-Z1A" firstAttribute="top" secondItem="go2-ty-lc5" secondAttribute="bottom" constant="30" id="asQ-Gy-DSf"/>
+                        <constraint firstItem="u65-rF-2ox" firstAttribute="centerX" secondItem="5Sz-Xd-dnS" secondAttribute="centerX" id="hiS-8N-SEE"/>
+                        <constraint firstItem="yVj-bz-0M7" firstAttribute="leading" secondItem="e7K-ig-Z1A" secondAttribute="leading" id="vfb-Ct-7v1"/>
+                        <constraint firstAttribute="bottom" secondItem="u65-rF-2ox" secondAttribute="bottom" constant="20" id="xaA-i6-RMG"/>
+                        <constraint firstItem="go2-ty-lc5" firstAttribute="centerX" secondItem="5Sz-Xd-dnS" secondAttribute="centerX" id="xw1-Mb-gLS"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstItem="5Sz-Xd-dnS" firstAttribute="centerY" secondItem="0LQ-6c-0o2" secondAttribute="centerY" id="78G-Cu-4Vz"/>
+                <constraint firstItem="5Sz-Xd-dnS" firstAttribute="centerX" secondItem="0LQ-6c-0o2" secondAttribute="centerX" id="KFZ-2G-cCh"/>
+                <constraint firstAttribute="trailing" secondItem="5Sz-Xd-dnS" secondAttribute="trailing" id="Ug5-bi-iEa"/>
+                <constraint firstItem="5Sz-Xd-dnS" firstAttribute="leading" secondItem="0LQ-6c-0o2" secondAttribute="leading" id="l37-Pt-95b"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Fs3-Ch-Zrb"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="icon_tokocash_sad" width="170" height="92"/>
+    </resources>
+</document>

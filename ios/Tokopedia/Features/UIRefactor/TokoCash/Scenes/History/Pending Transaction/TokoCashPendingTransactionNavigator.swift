@@ -8,18 +8,16 @@
 
 import Foundation
 
-class TokoCashPendingTransactionNavigator {
+public class TokoCashPendingTransactionNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toDetailPage(_ historyItem: TokoCashHistoryItems) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashHistoryDetailViewController.self)
+    public func toDetailPage(_ historyItem: TokoCashHistoryItems) {
+        let vc = TokoCashHistoryDetailViewController()
         let navigator = TokoCashHistoryDetailNavigator(navigationController: navigationController)
         let viewModel = TokoCashHistoryDetailViewModel(historyItem: historyItem, navigator: navigator)
         vc.viewModel = viewModel

@@ -8,12 +8,12 @@
 
 import Foundation
 
-class TokoCashDateRangeItemTableViewCell: UITableViewCell {
+public class TokoCashDateRangeItemTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descLabel: UILabel!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var descLabel: UILabel!
     
-    func bind(_ viewModel: TokoCashDateRangeItemViewModel) {
+    public func bind(_ viewModel: TokoCashDateRangeItemViewModel) {
         titleLabel.text = viewModel.title
         descLabel.text = viewModel.desc
         
