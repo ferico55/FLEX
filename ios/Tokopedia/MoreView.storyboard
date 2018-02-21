@@ -761,14 +761,36 @@
                                             <rect key="frame" x="0.0" y="0.0" width="341" height="51.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" fixedFrame="YES" text="Share ke Teman" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enr-9u-axo">
-                                                    <rect key="frame" x="20" y="15" width="122.5" height="20.5"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Dapatkan TokoCash" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="enr-9u-axo">
+                                                    <rect key="frame" x="20" y="15" width="153" height="20.5"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="BARU" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eDB-qD-DBR">
+                                                    <rect key="frame" x="298" y="18" width="36" height="15"/>
+                                                    <color key="backgroundColor" red="0.94117647059999998" green="0.1333333333" blue="0.1333333333" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="15" id="AAJ-OT-6w3"/>
+                                                        <constraint firstAttribute="width" constant="36" id="iXa-tE-9tQ"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                                                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                                    <nil key="highlightedColor"/>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                            <integer key="value" value="2"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                        <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                                    </userDefinedRuntimeAttributes>
+                                                </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="enr-9u-axo" firstAttribute="leading" secondItem="5Xd-x3-61J" secondAttribute="leading" constant="20" id="GzT-o0-e7k"/>
+                                                <constraint firstItem="eDB-qD-DBR" firstAttribute="centerY" secondItem="enr-9u-axo" secondAttribute="centerY" id="IvH-OO-MAD"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="eDB-qD-DBR" secondAttribute="trailing" id="bVg-2B-HCs"/>
+                                                <constraint firstItem="enr-9u-axo" firstAttribute="top" secondItem="5Xd-x3-61J" secondAttribute="top" constant="15" id="zCA-U8-ucH"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="none" accessoryType="disclosureIndicator" indentationWidth="10" rowHeight="52" id="zTG-qY-uvf">
@@ -931,6 +953,7 @@
                         <outlet property="profilePictureImageView" destination="w0R-2W-Gie" id="V0f-KT-Kvu"/>
                         <outlet property="progressBar" destination="GaU-3r-NDj" id="od8-yh-6G5"/>
                         <outlet property="progressLabel" destination="8O3-nz-I1V" id="f82-eG-7Hi"/>
+                        <outlet property="referralLabel" destination="enr-9u-axo" id="JNR-bl-kBb"/>
                         <outlet property="shopCell" destination="7e8-Da-TPz" id="Pej-Dg-csV"/>
                         <outlet property="shopImageView" destination="gTD-bg-1ei" id="Afg-Eb-8xX"/>
                         <outlet property="shopIsGoldLabel" destination="svP-bC-Y7h" id="zy0-G9-cZY"/>

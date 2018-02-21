@@ -1,18 +1,24 @@
 //
-//  AppSharing+Referable.swift
+//  ReferralSharing.swift
 //  Tokopedia
 //
-//  Created by Vishun Dayal on 23/10/17.
+//  Created by Vishun Dayal on 26/12/17.
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
 import Foundation
-internal class AppSharing:NSObject, Referable {
+internal class ReferralSharing:NSObject, Referable {
+    internal var coupanCode: String?
     internal var desktopUrl: String {
         return "https://itunes.apple.com/id/app/tokopedia/id1001394201"
     }
     internal var deeplinkPath: String {
-        return "home"
+        var path = "referral"
+        if let code = self.coupanCode, let name = UserAuthentificationManager().getUserShortName() {
+            path += "/" + code
+            path += "/" + name
+        }
+        return path
     }
     internal var feature = "App"
     internal var title = "Tokopedia, Satu Aplikasi untuk Semua Kebutuhan "

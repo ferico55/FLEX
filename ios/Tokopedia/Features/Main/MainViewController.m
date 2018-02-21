@@ -555,6 +555,7 @@ typedef enum TagRequest {
     [tabManager sendLogoutEvent];
     
     [[QuickActionHelper sharedInstance] registerShortcutItems];
+    [ReferralManager new].referralCode = nil;
 }
 
 - (void)removeCacheUser {

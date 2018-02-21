@@ -8,22 +8,22 @@
 
 import Foundation
 extension CatalogInfo: Referable {    
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         return self.catalog_url
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         return "catalog/" + self.catalog_id + "/" + self.catalog_key
     }
-    var feature: String {
+    internal var feature: String {
         return "Catalog"
     }
-    var title: String {
+    internal var title: String {
         return self.catalog_name
     }
-    var buoDescription: String {
+    internal var buoDescription: String {
         return self.catalog_description
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "catalog"
     }
 }

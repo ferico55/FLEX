@@ -34,7 +34,7 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink capti
     object.deeplinkPath = deeplink;
     object.title = caption;
     object.feature = @"Promo";
-    object.utm_campaign = @"promo";
+    object.utmCampaign = @"promo";
     RCTView* view = anchorTag == 0 ? nil : (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
     UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     ReferralManager *referralManager = [[ReferralManager alloc] init];

@@ -7,13 +7,13 @@
 //
 
 import Foundation
-class HotlistBannerData: NSObject, Referable {
-    var desktopUrl = ""
-    var deeplinkPath = ""
-    var feature = "Hotlist"
-    var title = ""
-    var buoDescription: String {
+internal class HotlistBannerData: NSObject, Referable {
+    internal var desktopUrl = ""
+    internal var deeplinkPath = ""
+    internal var feature = "Hotlist"
+    internal var title = ""
+    internal var buoDescription: String {
         return ""
     }
-    var utm_campaign = "hotlist"
+    internal var utmCampaign = "hotlist"
 }

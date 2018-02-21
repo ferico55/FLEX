@@ -520,7 +520,31 @@
     
     [viewController presentViewController:nav animated:YES completion:nil];
 }
-
++ (void)navigateToReferralWelcomeWithData:(NSDictionary*)data {
+    NSString *code = data[@"code"];
+    NSString *owner = data[@"owner"];
+    NSString *ownCode = [ReferralManager new].referralCode;
+    if (code == nil || owner == nil || [code compare:ownCode] == NSOrderedSame) {
+        [self navigateToReferralScreen];
+        return;
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
+    ReferralWelcomeController* welcomeController = [storyboard instantiateViewControllerWithIdentifier:@"ReferralWelcomeController"];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welcomeController];
+    welcomeController.promoCode = code;
+    welcomeController.ownerName = owner;
+    welcomeController.dismisHandler = ^{
+        [(AppDelegate *)[UIApplication sharedApplication].delegate setupInitialViewController];
+    };
+    [UIApplication sharedApplication].keyWindow.rootViewController = navController;
+    ((AppDelegate *)[UIApplication sharedApplication].delegate).nav = navController;
+}
++ (void)navigateToReferralScreen {
+    UIViewController *viewController = [UIApplication topViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
+    CodeShareTableViewController* referralController = [storyboard instantiateInitialViewController];
+    [viewController.navigationController pushViewController: referralController animated:YES];
+}
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {
     splitViewController = nil;

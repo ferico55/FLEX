@@ -537,6 +537,13 @@
 		7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 7A466B1A1EB2FEAD00A72105 /* AppDelegate.m */; };
 		7A84DEA11B1EA0AE00741F0D /* AdSupport.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		7A84DEA31B1EA0C100741F0D /* iAd.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 7A84DEA21B1EA0C100741F0D /* iAd.framework */; };
+		84184674203C3E7D0053074A /* ReferralSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184673203C3E7C0053074A /* ReferralSharing.swift */; };
+		84184677203C3EAE0053074A /* ReferralWelcomeController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184675203C3EAC0053074A /* ReferralWelcomeController.swift */; };
+		84184678203C3EAE0053074A /* VerifyPhoneTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184676203C3EAD0053074A /* VerifyPhoneTableViewController.swift */; };
+		84184683203C41070053074A /* ReferralResponseHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418467E203C41060053074A /* ReferralResponseHeader.swift */; };
+		84184684203C41070053074A /* ReferralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418467F203C41060053074A /* ReferralResponse.swift */; };
+		84184685203C41070053074A /* ReferralPromoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184680203C41060053074A /* ReferralPromoContent.swift */; };
+		84184686203C41070053074A /* ReferralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184682203C41060053074A /* ReferralService.swift */; };
 		848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */; };
 		848FA6DE1FEBF8BE00A22EDE /* RCCreateComplaintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */; };
 		848FA6DF1FEBF8BE00A22EDE /* RCCreateComplaintResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */; };
@@ -1120,7 +1127,6 @@
 		F977FA491FE8AB7900183A85 /* NSStringCategory.m in Sources */ = {isa = PBXBuildFile; fileRef = F977EF0A1FE8AB6E00183A85 /* NSStringCategory.m */; };
 		F977FA4A1FE8AB7900183A85 /* Referral.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F977EF101FE8AB6E00183A85 /* Referral.storyboard */; };
 		F977FA4B1FE8AB7900183A85 /* CodeShareTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EF111FE8AB6E00183A85 /* CodeShareTableViewController.swift */; };
-		F977FA4C1FE8AB7900183A85 /* BranchInactiveSharing.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EF131FE8AB6E00183A85 /* BranchInactiveSharing.swift */; };
 		F977FA4D1FE8AB7900183A85 /* ReferralManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EF141FE8AB6E00183A85 /* ReferralManager.swift */; };
 		F977FA4E1FE8AB7900183A85 /* ReferralRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EF161FE8AB6E00183A85 /* ReferralRemoteConfig.swift */; };
 		F977FA4F1FE8AB7900183A85 /* Referable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EF181FE8AB6E00183A85 /* Referable.swift */; };
@@ -3177,6 +3183,13 @@
 		7A84DEA01B1EA0AE00741F0D /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		7A84DEA21B1EA0C100741F0D /* iAd.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = iAd.framework; path = System/Library/Frameworks/iAd.framework; sourceTree = SDKROOT; };
 		7F9B6E71F79FE95868A4BBAE /* Pods-Tokopedia.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tokopedia.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tokopedia/Pods-Tokopedia.release.xcconfig"; sourceTree = "<group>"; };
+		84184673203C3E7C0053074A /* ReferralSharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralSharing.swift; sourceTree = "<group>"; };
+		84184675203C3EAC0053074A /* ReferralWelcomeController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralWelcomeController.swift; sourceTree = "<group>"; };
+		84184676203C3EAD0053074A /* VerifyPhoneTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VerifyPhoneTableViewController.swift; sourceTree = "<group>"; };
+		8418467E203C41060053074A /* ReferralResponseHeader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralResponseHeader.swift; sourceTree = "<group>"; };
+		8418467F203C41060053074A /* ReferralResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralResponse.swift; sourceTree = "<group>"; };
+		84184680203C41060053074A /* ReferralPromoContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralPromoContent.swift; sourceTree = "<group>"; };
+		84184682203C41060053074A /* ReferralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralService.swift; sourceTree = "<group>"; };
 		848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainCell.swift; sourceTree = "<group>"; };
 		848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponse.swift; sourceTree = "<group>"; };
 		848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponseData.swift; sourceTree = "<group>"; };
@@ -3768,7 +3781,6 @@
 		F977EF0C1FE8AB6E00183A85 /* NSData+Encryption.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Encryption.h"; sourceTree = "<group>"; };
 		F977EF101FE8AB6E00183A85 /* Referral.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Referral.storyboard; sourceTree = "<group>"; };
 		F977EF111FE8AB6E00183A85 /* CodeShareTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CodeShareTableViewController.swift; sourceTree = "<group>"; };
-		F977EF131FE8AB6E00183A85 /* BranchInactiveSharing.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BranchInactiveSharing.swift; sourceTree = "<group>"; };
 		F977EF141FE8AB6E00183A85 /* ReferralManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralManager.swift; sourceTree = "<group>"; };
 		F977EF161FE8AB6E00183A85 /* ReferralRemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralRemoteConfig.swift; sourceTree = "<group>"; };
 		F977EF181FE8AB6E00183A85 /* Referable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Referable.swift; sourceTree = "<group>"; };
@@ -7292,6 +7304,24 @@
 			path = Tokopedia;
 			sourceTree = "<group>";
 		};
+		8418467D203C41060053074A /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				8418467E203C41060053074A /* ReferralResponseHeader.swift */,
+				8418467F203C41060053074A /* ReferralResponse.swift */,
+				84184680203C41060053074A /* ReferralPromoContent.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		84184681203C41060053074A /* WebService */ = {
+			isa = PBXGroup;
+			children = (
+				84184682203C41060053074A /* ReferralService.swift */,
+			);
+			path = WebService;
+			sourceTree = "<group>";
+		};
 		848FA6941FEBF8BD00A22EDE /* Revamp */ = {
 			isa = PBXGroup;
 			children = (
@@ -8767,6 +8797,8 @@
 		F977EF0E1FE8AB6E00183A85 /* Referral */ = {
 			isa = PBXGroup;
 			children = (
+				8418467D203C41060053074A /* Model */,
+				84184681203C41060053074A /* WebService */,
 				F977EF251FE8AB6E00183A85 /* Analytics */,
 				F977EF191FE8AB6E00183A85 /* Extensions */,
 				F977EF171FE8AB6E00183A85 /* Protocol */,
@@ -8780,6 +8812,8 @@
 		F977EF0F1FE8AB6E00183A85 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				84184675203C3EAC0053074A /* ReferralWelcomeController.swift */,
+				84184676203C3EAD0053074A /* VerifyPhoneTableViewController.swift */,
 				F977EF111FE8AB6E00183A85 /* CodeShareTableViewController.swift */,
 				F977EF101FE8AB6E00183A85 /* Referral.storyboard */,
 			);
@@ -8789,7 +8823,6 @@
 		F977EF121FE8AB6E00183A85 /* Sharing */ = {
 			isa = PBXGroup;
 			children = (
-				F977EF131FE8AB6E00183A85 /* BranchInactiveSharing.swift */,
 				F977EF141FE8AB6E00183A85 /* ReferralManager.swift */,
 			);
 			path = Sharing;
@@ -8814,6 +8847,7 @@
 		F977EF191FE8AB6E00183A85 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				84184673203C3E7C0053074A /* ReferralSharing.swift */,
 				F977EF1A1FE8AB6E00183A85 /* AppSharing+Referable.swift */,
 				F977EF1C1FE8AB6E00183A85 /* CatalogInfo+Referable.swift */,
 				F977EF201FE8AB6E00183A85 /* FeedCardShopState+Referable.swift */,
@@ -12978,6 +13012,7 @@
 				E57974F21FEA749300610655 /* TokopointsService.swift in Sources */,
 				62C770821FF33C3300F66527 /* ProductTalkFormResult.m in Sources */,
 				F977FA151FE8AB7900183A85 /* HadesTarget.swift in Sources */,
+				84184684203C41070053074A /* ReferralResponse.swift in Sources */,
 				F977FA7D1FE8AB7A00183A85 /* OneClickCell.swift in Sources */,
 				F97700951FE8AB8600183A85 /* PaymentTouchIDServiceBridging.swift in Sources */,
 				62C771211FF33C3400F66527 /* TakeReplacementResult.swift in Sources */,
@@ -13219,6 +13254,7 @@
 				F977FC521FE8AB7D00183A85 /* ForgotPasswordViewController.m in Sources */,
 				62C771731FF33C3400F66527 /* UploadImage.m in Sources */,
 				62C770411FF33C3200F66527 /* GoogleDistanceMatrixDuration.m in Sources */,
+				84184683203C41070053074A /* ReferralResponseHeader.swift in Sources */,
 				62C770C81FF33C3300F66527 /* SpecChilds.m in Sources */,
 				F977FBB81FE8AB7C00183A85 /* OrderDetailDropshipView.swift in Sources */,
 				F977FD961FE8AB8000183A85 /* OrderCellContext.mm in Sources */,
@@ -13525,7 +13561,6 @@
 				F772717B20355FDC00D959AF /* TokoCashPendingTransactionViewController.swift in Sources */,
 				F977FA171FE8AB7900183A85 /* TalkTarget.swift in Sources */,
 				F977FDC91FE8AB8000183A85 /* ResolutionCenterCreatePOSTProduct.m in Sources */,
-				F977FA4C1FE8AB7900183A85 /* BranchInactiveSharing.swift in Sources */,
 				F977FC501FE8AB7D00183A85 /* AlertShipmentCodeView.m in Sources */,
 				F977FC131FE8AB7C00183A85 /* CourierNoteViewCell.m in Sources */,
 				62C771101FF33C3300F66527 /* VerifyOTPResult.m in Sources */,
@@ -13650,6 +13685,7 @@
 				848FA7081FEBF8BF00A22EDE /* RCCreateSolutionResponse.swift in Sources */,
 				F77271A520355FDC00D959AF /* TokoCashDateRangeItem.swift in Sources */,
 				DADB9F4C1F3C46CE002B1FAE /* FBTweakCollection.m in Sources */,
+				84184685203C41070053074A /* ReferralPromoContent.swift in Sources */,
 				62C771C31FF33C3500F66527 /* SimpleFavoritedShopResult.m in Sources */,
 				F977FB431FE8AB7B00183A85 /* ProductDataSource.swift in Sources */,
 				F977005D1FE8AB8500183A85 /* DigitalFavouriteNumberViewController.swift in Sources */,
@@ -13804,6 +13840,7 @@
 				62C770901FF33C3300F66527 /* HotlistBannerQuery.m in Sources */,
 				DADB9F481F3C46CE002B1FAE /* _FBTweakDictionaryViewController.m in Sources */,
 				F977FA321FE8AB7900183A85 /* UIActivityViewController+Extensions.m in Sources */,
+				84184678203C3EAE0053074A /* VerifyPhoneTableViewController.swift in Sources */,
 				F977FD2D1FE8AB7F00183A85 /* SearchSuggestionItem.swift in Sources */,
 				62C7700F1FF33C3200F66527 /* TxOrderStatusResult.m in Sources */,
 				62C770E51FF33C3300F66527 /* AnnouncementTickerObject.swift in Sources */,
@@ -14106,6 +14143,7 @@
 				F977FDB01FE8AB8000183A85 /* TopPicksResponse.swift in Sources */,
 				F977FDC61FE8AB8000183A85 /* ResolutionCenterCreatePOSTResponse.m in Sources */,
 				F977FA141FE8AB7900183A85 /* ReplacementTarget.swift in Sources */,
+				84184674203C3E7D0053074A /* ReferralSharing.swift in Sources */,
 				F977FD081FE8AB7E00183A85 /* RequestAddEditProduct.swift in Sources */,
 				F977FA301FE8AB7900183A85 /* UITableView+RefreshControl.m in Sources */,
 				F977FC861FE8AB7D00183A85 /* ClosedScheduleDetail.m in Sources */,
@@ -14169,6 +14207,7 @@
 				F97700C01FE8AB8600183A85 /* URLCacheController.m in Sources */,
 				62C770191FF33C3200F66527 /* TxOrderConfirmedResult.m in Sources */,
 				848FA70F1FEBF8BF00A22EDE /* RCService.swift in Sources */,
+				84184686203C41070053074A /* ReferralService.swift in Sources */,
 				F977FDAB1FE8AB8000183A85 /* SystemBank.swift in Sources */,
 				F977FDBC1FE8AB8000183A85 /* FilterLocationViewController.m in Sources */,
 				F977FD5F1FE8AB7F00183A85 /* TableViewScrollAndSwipe.m in Sources */,
@@ -14208,6 +14247,7 @@
 				F97700A01FE8AB8600183A85 /* TPSpotlight.m in Sources */,
 				62C771D51FF33C3500F66527 /* WishListObjectResult.m in Sources */,
 				848FA7091FEBF8BF00A22EDE /* RCFreeReturn.swift in Sources */,
+				84184677203C3EAE0053074A /* ReferralWelcomeController.swift in Sources */,
 				F977FD181FE8AB7E00183A85 /* MoreViewController.m in Sources */,
 				F977FA1A1FE8AB7900183A85 /* WalletTarget.swift in Sources */,
 				F977FBBA1FE8AB7C00183A85 /* OrderInfoView.swift in Sources */,

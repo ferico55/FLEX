@@ -96,6 +96,7 @@
 #define GA_EVENT_CATEGORY_ACTIVATION @"Activation"
 #define GA_EVENT_CATEGORY_REPLACEMENT @"Peluang Filter"
 #define GA_EVENT_CATEGORY_TOP_NAV @"top nav"
+#define GA_EVENT_CATEGORY_Referral @"Referral"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"

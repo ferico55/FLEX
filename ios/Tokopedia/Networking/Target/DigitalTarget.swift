@@ -22,16 +22,17 @@ internal class DigitalProvider: NetworkProvider<DigitalTarget> {
     fileprivate class func endpointClosure(for target: DigitalTarget) -> Endpoint<DigitalTarget> {
         let userId = UserAuthentificationManager().getUserId()!
         
-        let headers = target.method == .get || target.method == .delete ? [:] : [
+        var headers = target.method == .get || target.method == .delete ? [:] : [
             "X-Tkpd-UserId": userId,
             "Content-Type": "application/json",
-            "Idempotency-Key": UUID().uuidString
+            "Idempotency-Key": UUID().uuidString,
         ]
-        
+        let deviceIdentifier = DeviceIdentifier.deviceId
+        headers["X-GA-ID"] = deviceIdentifier
         return NetworkProvider.defaultEndpointCreator(for: target)
             .adding(
                 httpHeaderFields: headers
-            )
+        )
     }
 }
 

@@ -287,6 +287,10 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 }
 
 - (NSString*)getContentTypeWithBaseUrl: (NSString *) baseUrl {
+    NSArray *path = [NSArray arrayWithObjects:@"/galadriel/promos/referral/code", nil];
+    if ([path containsObject:self.getTkpdPath]){
+        return @"application/json";
+    }
     NSArray *pathList = [NSArray arrayWithObjects:@"/tc/v1/mark_read",@"/tc/v1/delete",@"/tc/v1/update_chat_templates", nil];
     if ([baseUrl isEqual:[NSString topChatURL]] && [pathList containsObject:self.getTkpdPath]){
         return @"application/json";

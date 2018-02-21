@@ -321,6 +321,7 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
                 
                 self.isVoucherUsed = false
                 self.setVoucherCanceled()
+                self.clearPromoCodeOnError()
             }, onCompleted: {
                 
                 self.content.isHidden = false
@@ -337,7 +338,12 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
             })
             .disposed(by: self.rx_disposeBag)
     }
-    
+    private func clearPromoCodeOnError() {
+        if UserDefaults.standard.string(forKey: API_VOUCHER_CODE_KEY) != nil {
+            UserDefaults.standard.removeObject(forKey: API_VOUCHER_CODE_KEY)
+            UserDefaults.standard.synchronize()
+        }
+    }
     func expand(_ sender:UITapGestureRecognizer) {
         self.isOpen = !self.isOpen
         setExpandButton()
@@ -348,8 +354,8 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
             .request(.getCart(categoryId))
             .map(to: DigitalCart.self)
             .do(onError: { [unowned self] error in
-                    self.view.addSubview(self.noResultView)
-                    self.content.isHidden = true
+                self.view.addSubview(self.noResultView)
+                self.content.isHidden = true
                 }
             )
             .subscribe(onNext: { [weak self] cart in
@@ -360,11 +366,12 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
                 self.cart = cart
                 self.transactionId = cart.cartId
                 self.setData()
-        
+                
                 if !self.cart.voucherCode.isEmpty {
                     self.getVoucher(voucherCode: self.cart.voucherCode)
-                }
-                else {
+                } else if let voucherCode = UserDefaults.standard.string(forKey: API_VOUCHER_CODE_KEY) {
+                    self.getVoucher(voucherCode: voucherCode)
+                } else {
                     self.content.isHidden = false
                     self.mainActivityIndicator.stopAnimating()
                     
@@ -377,14 +384,14 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
                         self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
                     }
                 }
-            },
-               onError: { [unowned self] error in
-                self.mainActivityIndicator.stopAnimating()
-                self.view.addSubview(self.noResultView)
-                self.content.isHidden = true
+                },
+                       onError: { [unowned self] error in
+                        self.mainActivityIndicator.stopAnimating()
+                        self.view.addSubview(self.noResultView)
+                        self.content.isHidden = true
             })
             .disposed(by: self.rx_disposeBag)
-
+        
     }
     
     fileprivate func payment() {
@@ -497,10 +504,11 @@ class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultD
         setVoucherCanceled()
         AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
     }
-    
     // InputPromoViewDelegate
     func didUseVoucher(_ inputPromoViewController: InputPromoViewController, voucherData: Any, serviceType: PromoServiceType, promoType: PromoType) {
-        self.voucher = voucherData as! DigitalVoucher
+        if let voucher = voucherData as? DigitalVoucher {
+            self.voucher = voucher
+        }
         self.isVoucherUsed = true
         self.promoType = promoType
         

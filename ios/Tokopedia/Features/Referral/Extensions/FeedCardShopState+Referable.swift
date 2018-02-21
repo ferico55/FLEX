@@ -8,26 +8,26 @@
 
 import Foundation
 extension FeedCardShopState: Referable {
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         return self.shareURL
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         var subpath = "feedcommunicationdetail/"
         if let url = URL(string: self.shareURL) {
             subpath += url.lastPathComponent
         }
         return subpath
     }
-    var feature: String {
+    internal var feature: String {
         return "Feed"
     }
-    var title: String {
+    internal var title: String {
         return self.shareDescription
     }
-    var buoDescription: String {
+    internal var buoDescription: String {
         return ""
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "feed"
     }
 }

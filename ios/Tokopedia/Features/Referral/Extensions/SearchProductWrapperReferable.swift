@@ -7,13 +7,13 @@
 //
 
 import Foundation
-class SearchProductWrapperReferable:NSObject, Referable {
-    var shareUrl: String?
-    var desktopUrl: String {
+internal class SearchProductWrapperReferable:NSObject, Referable {
+    internal var shareUrl: String?
+    internal var desktopUrl: String {
         let desktopUrl = (self.shareUrl?.addingPercentEncoding(withAllowedCharacters: CharacterSet.urlQueryAllowed) ?? NSString.tokopediaUrl())
         return desktopUrl
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         var subpath = "search"
         if var query = URL(string:self.desktopUrl)?.query {
             if query.hasPrefix("&") {
@@ -23,10 +23,10 @@ class SearchProductWrapperReferable:NSObject, Referable {
         }
         return subpath
     }
-    var feature = "Discovery"
-    var title = ""
-    var buoDescription: String {
+    internal var feature = "Discovery"
+    internal var title = ""
+    internal var buoDescription: String {
         return ""
     }
-    var utm_campaign = "searchResult"
+    internal var utmCampaign = "searchResult"
 }

@@ -79,6 +79,8 @@
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
++ (void)navigateToReferralWelcomeWithData:(NSDictionary*)data;
++ (void)navigateToReferralScreen;
 
 #pragma mark - Inbox
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;

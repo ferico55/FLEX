@@ -1046,7 +1046,15 @@ guard let productId = params["productId"] as? String else { return true }
 
             return true
         }
-
+        // MARK: Referral code
+        JLRoutes.global().addRoute("/referral") { (params: [String: Any]) -> Bool in
+            NavigateViewController.navigateToReferralScreen()
+            return true
+        }
+        JLRoutes.global().addRoute("/referral/:code/:owner") { (params: [String: Any]) -> Bool in
+            NavigateViewController.navigateToReferralWelcome(withData: params)
+            return true
+        }
         // MARK: Shop Page (Native)
         JLRoutes.global().addRoute("/:shopName") { (params: [String: Any]) -> Bool in
             guard let url = params[kJLRouteURLKey] as? URL,

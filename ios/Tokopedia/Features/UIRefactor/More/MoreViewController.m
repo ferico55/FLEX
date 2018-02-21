@@ -128,6 +128,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 @property (weak, nonatomic) IBOutlet UIImageView *imgPointsTierView;
 @property (weak, nonatomic) IBOutlet UILabel *lblPoints;
 @property (weak, nonatomic) IBOutlet UIButton *btnRedeemPoints;
+@property (weak, nonatomic) IBOutlet UILabel *referralLabel;
 
 @end
 
@@ -242,6 +243,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     [self showHideAppShareCell];
     
     [_btnRedeemPoints setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0.01, 0)];
+    
+    [self updateReferralLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -788,9 +791,39 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 #pragma mark - Referral
 - (void)shareToFriend {
+    [ReferralRemoteConfig.shared showReferralCodeOnCompletion:^(BOOL show) {
+        [self showReferralScreen:show];
+    }];
+}
+
+- (void)showReferralScreen:(BOOL) show {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
-    CodeShareTableViewController *viewController = [storyboard instantiateInitialViewController];
+    UIViewController *viewController = nil;
+    if ([_walletActivationButton isHidden] || !show) {
+        viewController = [storyboard instantiateInitialViewController];
+        viewController.hidesBottomBarWhenPushed = YES;
+    } else {
+        if ([UserAuthentificationManager new].isUserPhoneVerified) {
+            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+            TokoCashActivationViewController *tokoCashActivationVC = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashActivationViewController"];
+            tokoCashActivationVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
+        } else {
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"VerifyPhoneTableViewController"];
+            viewController.hidesBottomBarWhenPushed = YES;
+        }
+    }
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)updateReferralLabel {
+    [ReferralRemoteConfig.shared showReferralCodeOnCompletion:^(BOOL show) {
+        if (show) {
+            self.referralLabel.text = @"Dapatkan TokoCash";
+        } else {
+            self.referralLabel.text = @"Share ke Teman";
+        }
+    }];
 }
 
 - (void)navigateToContactUs:(NSNotification*)notification{

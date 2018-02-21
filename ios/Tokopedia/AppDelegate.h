@@ -29,4 +29,5 @@
 @property (strong, nonatomic) id<GAITracker> tracker;
 @property (strong, nonatomic) UINavigationController *nav;
 
+- (void)setupInitialViewController;
 @end

@@ -18,6 +18,9 @@
 		<string>applinks:alternate.test-tokopedia.link</string>
 		<string>applinks:tokopedia.link</string>
 		<string>applinks:alternate.tokopedia.link</string>
+		<string>applinks:trk.tokopedia.email</string>
+		<string>trk.tokopedia.email</string>
+		<string>explorer.tokopedia.com</string>
 	</array>
 </dict>
 </plist>

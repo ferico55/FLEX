@@ -185,7 +185,7 @@ InputPromoViewDelegate
     [_refreshControl addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
     [_refreshControlNoResult addTarget:self action:@selector(refreshRequestCart)forControlEvents:UIControlEventValueChanged];
     [_tableView addSubview:_refreshControl];
-    
+
     [self initAllNoResult];
     
     [self refreshRequestCart];
@@ -213,6 +213,7 @@ InputPromoViewDelegate
     } else _tableView.tableFooterView = nil;
     
     [self initNotificationManager];
+    [self autofillVoucherCode];
 }
 
 - (void) viewDidLayoutSubviews {
@@ -275,7 +276,13 @@ InputPromoViewDelegate
         
     }];
 }
-
+- (void)autofillVoucherCode {
+    NSString* voucherCode = [[NSUserDefaults standardUserDefaults] valueForKey:API_VOUCHER_CODE_KEY];
+    if (voucherCode && _voucherData == nil && _list.count > 0) {
+        [_dataInput setObject:voucherCode forKey:API_VOUCHER_CODE_KEY];
+        [self doRequestVoucher];
+    }
+}
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {
@@ -1450,8 +1457,6 @@ InputPromoViewDelegate
                                        NSNumber *revenue = [[NSNumberFormatter IDRFormatter] numberFromString:[parameter objectForKey:@"order_open_amt"]];
                                        
                                        [AnalyticsManager trackScreenName:[NSString stringWithFormat:@"Thank you page - %@", paymentMethod]];
-                                       BranchAnalytics *branch = [BranchAnalytics new];
-                                       [branch sendCommerceEventWithParams:param];
                                        [[AppsFlyerTracker sharedTracker] trackEvent:AFEventPurchase withValues:@{AFEventParamRevenue : [revenue stringValue]?:@"",
                                                                                                                  AFEventParamContentType : @"Product",
                                                                                                                  AFEventParamContentId : [NSString jsonStringArrayFromArray:productIDs]?:@"",
@@ -1487,6 +1492,7 @@ InputPromoViewDelegate
         if(list.count >0){
             [_noResultView removeFromSuperview];
             [_noResultScrollView removeFromSuperview];
+            [self autofillVoucherCode];
         }else{
             [self requestPromo];
             [self.view addSubview:_noResultScrollView];
@@ -1603,7 +1609,7 @@ InputPromoViewDelegate
     BOOL isPromoSuggestion = [[_dataInput objectForKey:@"isUsingPromoSuggestion"]  isEqual: @(YES)];
     [RequestCart fetchVoucherCode: voucherCode isPromoSuggestion: isPromoSuggestion success: ^(TransactionVoucher *voucher) {
         _voucherData = voucher.data.data_voucher;
-        _voucherData.voucher_code = [_dataInput objectForKey:@"voucher_code"];
+        _voucherData.voucher_code = [_dataInput objectForKey:API_VOUCHER_CODE_KEY];
         _promoType = PromoTypeVoucher;
         
         [self isLoading:NO];
@@ -1611,6 +1617,10 @@ InputPromoViewDelegate
     } error:^(NSError *error) {
         [_dataInput removeObjectForKey:API_VOUCHER_CODE_KEY];
         [self isLoading:NO];
+        if ([[NSUserDefaults standardUserDefaults] valueForKey:API_VOUCHER_CODE_KEY] && error == nil) {
+            [[NSUserDefaults standardUserDefaults] removeObjectForKey:API_VOUCHER_CODE_KEY];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+        }
     }];
 }
 
