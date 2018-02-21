@@ -105,6 +105,7 @@ UINavigationControllerDelegate
         // do nothing
     }];
     BOOL remoteValue = [[remoteConfig configValueForKey:@"iosapp_enable_new_home"] boolValue];
+    BOOL cacheEnabled = FBTweakValue(@"Others", @"Home", @"Cache Enabled", YES);
     if (remoteValue) {
         if (userData) {
             _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData, @"cacheEnabled" : @(NO)}];

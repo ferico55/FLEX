@@ -33,8 +33,8 @@
         return nil;
     }
     
-    _bannerIPadSize = CGSizeMake(450, 235);
-    _bannerIPhoneSize = CGSizeMake(375, 175);
+    _bannerIPadSize = CGSizeMake(450, 225);
+    _bannerIPhoneSize = CGSizeMake(375, 125);
     _banners = banners;
     _pageControl = pageControl;
     _bannerType = type;

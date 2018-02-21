@@ -54,7 +54,7 @@ class HomePageViewController: UIViewController, PointsAlertViewDelegate {
     private var outerStackView: OAStackView!
     private lazy var categoryVerticalView: OAStackView = OAStackView()
     
-    private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .pad) ? 275.0 : 225.0
+    private let sliderHeight: CGFloat = (UI_USER_INTERFACE_IDIOM() == .pad) ? 225 : 125
     private let screenWidth = UIScreen.main.bounds.size.width
     private let backgroundColor = UIColor(red: 242 / 255.0, green: 242 / 255.0, blue: 242 / 255.0, alpha: 1.0)
     private let imageCategoryWidth: CGFloat = 25.0

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FirebaseRemoteConfig
 
 class HomeSliderView: UIView {
 
@@ -37,7 +38,7 @@ class HomeSliderView: UIView {
     
     func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
         self.carouselPlaceholder.mas_makeConstraints { make in
-            make?.height.mas_equalTo()(UIDevice.current.userInterfaceIdiom == .pad ? 258 : 125)
+            make?.height.mas_equalTo()(UIDevice.current.userInterfaceIdiom == .pad ? 225 : 125)
         }
         slider.backgroundColor = backgroundColor
         slider.clipsToBounds = true
@@ -51,7 +52,7 @@ class HomeSliderView: UIView {
                                                      type: .home,
                                                      slider: slider)
         guard let carouselDataSource = self.carouselDataSource else { return }
-        carouselDataSource.bannerIPadSize = CGSize(width: 768, height: 258)
+        carouselDataSource.bannerIPadSize = CGSize(width: 768, height: 225)
         carouselDataSource.bannerIPhoneSize = CGSize(width: 375, height: 125)
         carouselDataSource.navigationDelegate = navigationController
         carouselDataSource.didSelectBanner = { banner, index in

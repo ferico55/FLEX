@@ -47,7 +47,7 @@ RCT_CUSTOM_VIEW_PROPERTY(autoScroll, BOOL, HomeSliderView) {
 - (UIView *)view {
     UIView *sliderContainer = [[UIView alloc] init];
     [sliderContainer mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @(175): @(125));
+        make.height.equalTo(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @(225) : @(125));
     }];
     
     _homeSliderView = [[NSBundle mainBundle] loadNibNamed:@"HomeSliderView" owner:nil options:nil][0];

@@ -63,4 +63,23 @@ RCT_EXPORT_METHOD(showPendingCashbackPopup: (NSString*) applink balance: (NSStri
     [topMostViewController presentViewController:alertViewController animated: YES completion:nil];
 }
 
+RCT_EXPORT_METHOD(showTokopointNotification: (NSDictionary *) options) {
+    PointsAlertViewButton *button = [PointsAlertViewButton new];
+    [button initializeWithTitle:[options objectForKey:@"buttonText"] titleColor:UIColor.tpGreen image:nil alignment:NSTextAlignmentCenter callback:^{
+        UserAuthentificationManager *auth = [UserAuthentificationManager new];
+        WebViewController* vc = [WebViewController new];
+        vc.strURL = [auth webViewUrlFromUrl: [options objectForKey:@"url"]];
+        vc.shouldAuthorizeRequest = YES;
+        vc.hidesBottomBarWhenPushed = YES;
+        UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+        UIViewController *topMostViewController = [rootViewController topMostViewController];
+        [topMostViewController.navigationController pushViewController:vc animated:YES];
+    }];
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+        PointsAlertView *alert = [[PointsAlertView alloc] initWithTitle:[options objectForKey:@"title"] image:nil imageUrl:[options objectForKey:@"imageUrl"] message:[options objectForKey:@"message"] buttons:@[button]];
+        [alert showSelfWithAnimated: YES];
+    });
+}
+
 @end
