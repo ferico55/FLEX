@@ -12,8 +12,8 @@ import NSAttributedString_DDHTML
 import NSObject_Rx
 import Render
 import ReSwift
-import RxSwift
 import RxCocoa
+import RxSwift
 import SwiftOverlays
 import TPKeyboardAvoiding
 import UIKit
@@ -348,6 +348,7 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                                 return viewController.onOperatorSelected
                             }
                             .do(onNext: { selectedOperator in
+                                AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(self.state?.form?.name ?? "")", action: "select operator", label: "\(self.state?.form?.name ?? "") - \(selectedOperator.name)")
                                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: selectedOperator, product: self.state?.selectedProduct, action: "Select Operator")
                             })
                             .map { DigitalWidgetAction.selectOperator($0) }
@@ -409,7 +410,7 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                         return productSelectionViewController.onProductSelected
                     }
                     .do(onNext: { selectedProduct in
-                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: selectedProduct, action: "Select Product")
+                        AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(self.state?.form?.name ?? "")", action: "select product", label: "\(self.state?.form?.name ?? "") - \(selectedProduct.name)")
                     })
                     .map { DigitalWidgetAction.selectProduct($0) }
                     .dispatch(to: self.store)
@@ -568,7 +569,7 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                     if state.selectedProduct?.promoPriceText != state.selectedProduct?.priceText {
                         label.font = .microTheme()
                         let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state.selectedProduct?.priceText)!)
-                        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+                        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSRange(location: 0, length: attributeString.length))
                         label.attributedText = attributeString
                     } else {
                         label.attributedText = nil
@@ -671,9 +672,9 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                         
                         guard productId != nil else { return }
                         if state.isInstantPaymentEnabled {
-                            AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action: "Click Beli with Instant Saldo")
+                            AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(form.name)", action: "click beli - \(form.name)", label: "instant")
                         } else {
-                            AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action: "Click Beli")
+                            AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(form.name)", action: "click beli - \(form.name)", label: "no instant")
                         }
                         let cache = PulsaCache()
                         let lastOrder = DigitalLastOrder(

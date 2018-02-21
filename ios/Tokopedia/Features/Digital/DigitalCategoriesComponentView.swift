@@ -7,32 +7,32 @@
 //
 
 import Foundation
-import UIKit
 import Render
 import RxSwift
+import UIKit
 
-struct DigitalCategoryState: StateType {
-    var categories: [HomePageCategoryLayoutRow]
+internal struct DigitalCategoryState: StateType {
+    internal var categories: [HomePageCategoryLayoutRow]
 }
 
-class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
-    let numberOfColumns = 4.0
+internal class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
+    internal let numberOfColumns = 4.0
     
-    override init() {
+    internal override init() {
         super.init()
     }
     
-    convenience init(categories: [HomePageCategoryLayoutRow]) {
+    internal convenience init(categories: [HomePageCategoryLayoutRow]) {
         self.init()
         let theState = DigitalCategoryState(categories: categories)
         self.state = theState
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
+    internal override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
         guard let state = state, state.categories.count > 0 else {
             return Node<UIView> {
                 _, _, _ in
@@ -59,7 +59,7 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
                     tapGesture.rx.event
                         .subscribe(onNext: { _ in
                             if let stringUrl = category?.url, let url = URL(string: stringUrl) {
-                                AnalyticsManager.trackRechargeEvent(event: .homepage, category: (category?.name)!, action: "Click Icon on All Categories")
+                                AnalyticsManager.trackEventName("clickDigitalNative", category: "homepage digital", action: "select category", label: category?.name ?? "")
                                 
                                 guard let categoryId = category?.category_id, categoryId == "103" else {
                                     TPRoutes.routeURL(url)
@@ -186,23 +186,23 @@ class DigitalCategoriesComponentView: ComponentView<DigitalCategoryState> {
     }
 }
 
-class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> {
-    let numberOfColumns = 3
-    override init() {
+internal class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> {
+    internal let numberOfColumns = 3
+    internal override init() {
         super.init()
     }
     
-    convenience init(categories: [HomePageCategoryLayoutRow]) {
+    internal convenience init(categories: [HomePageCategoryLayoutRow]) {
         self.init()
         let theState = DigitalCategoryState(categories: categories)
         self.state = theState
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
+    internal override func construct(state: DigitalCategoryState?, size: CGSize) -> NodeType {
         guard let state = state, state.categories.count > 0 else {
             return Node<UIView> {
                 _, _, _ in
@@ -247,7 +247,7 @@ class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> 
                 view, layout, _ in
                 layout.marginTop = 10
                 layout.marginBottom = 10
-                view.image = UIImage(named: "icon_transaksi_saya")
+                view.image = #imageLiteral(resourceName: "icon_transaksi_saya")
             }
             
             let label = Node<UILabel> {
@@ -291,7 +291,7 @@ class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> 
                 view, layout, _ in
                 layout.marginTop = 10
                 layout.marginBottom = 10
-                view.image = UIImage(named: "icon_langganan")
+                view.image = #imageLiteral(resourceName: "icon_langganan")
             }
             
             let label = Node<UILabel> {
@@ -335,7 +335,7 @@ class DigitalCategoriesHeaderComponentView: ComponentView<DigitalCategoryState> 
                 view, layout, _ in
                 layout.marginTop = 10
                 layout.marginBottom = 10
-                view.image = UIImage(named: "icon_nomor_favorit")
+                view.image = #imageLiteral(resourceName: "icon_nomor_favorit")
             }
             
             let label = Node<UILabel> {
