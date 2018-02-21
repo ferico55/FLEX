@@ -33,6 +33,7 @@
 @property (nonatomic, strong) NSString *product_uri;
 @property (nonatomic, strong) NSString *product_already_wishlist;
 @property (nonatomic, strong) NSString *product_price_fmt;
+@property (nonatomic, strong) NSString *product_price_unfmt;
 
 @property (nonatomic, strong) NSString *product_currency_id; //product_price_currency_value(cart)
 @property (nonatomic, strong) NSString *product_currency;    //product_price_currency_value(cart)

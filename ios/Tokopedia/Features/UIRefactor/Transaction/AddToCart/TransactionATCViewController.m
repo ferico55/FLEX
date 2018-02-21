@@ -378,7 +378,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     NSArray *shipmentAvailable = _ATCForm.form.shipment;
     NSString *insurance = @"1";
     NSNumber *catID = _ATCForm.form.product_detail.product_cat_id;
-    NSString *orderValue = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] stringValue] ?: @"0";
+    NSString *orderValue = _selectedProduct.product_price_unfmt;
     NSString *productInsurance = _ATCForm.form.product_detail.product_must_insurance;
     
     [RequestRates fetchRateWithName:name
@@ -633,7 +633,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
                         
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [product.product_price_unfmt integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
                         NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
@@ -661,7 +661,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
 
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [product.product_price_unfmt integerValue];
 
                         NSInteger shipmentPackagePrice = [_selectedShipmentPackage.price integerValue];
                         
@@ -893,7 +893,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     
     [AnalyticsManager trackProductAddToCart:_selectedProduct];
     
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
+    NSString *price = _selectedProduct.product_price_unfmt;
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
                                                                                AFEventParamContentId : _selectedProduct.product_id?:@"",
@@ -931,6 +931,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 
 -(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
     _selectedProduct.product_price = data.product.price;
+    _selectedProduct.product_price_unfmt = data.product.product_price_unfmt;
     [self setProduct:_selectedProduct];
     [self adjustViewIsLoading:NO];
     [_tableView reloadData];
@@ -1212,12 +1213,12 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 
 -(NSInteger)insuranceStatus
 {
-    NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] integerValue];
+    NSInteger productPrice = [_selectedProduct.product_price_unfmt integerValue];
     
     /* Untuk auto insurance*/
     NSInteger insurance = _selectedShipmentPackage ? [_selectedShipmentPackage.insuranceType integerValue] : 2;
     NSInteger shipmentID = [_selectedShipment.shipper_id integerValue];
-    NSInteger ongkir = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedShipmentPackage.price] integerValue];
+    NSInteger ongkir = [_selectedShipmentPackage.price integerValue];
     
     if (shipmentID == 6) { //wahana
         if (productPrice >= 300000) {

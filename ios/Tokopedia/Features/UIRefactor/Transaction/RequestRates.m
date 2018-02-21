@@ -31,13 +31,13 @@
                             @"names" : name?:@"",
                            @"origin" : origin?:@"",
                       @"destination" : destination?:@"",
-                           @"weight" : weight,
-                               @"ut" : ut,
-                            @"token" : token,
-                        @"insurance" : insurance,
-                           @"cat_id" : catID,
-                      @"order_value" : orderValue,
-                @"product_insurance" : productInsurance
+                           @"weight" : weight?:@"",
+                               @"ut" : ut?:@"",
+                            @"token" : token?:@"",
+                        @"insurance" : insurance?:@"",
+                           @"cat_id" : catID?:@"",
+                      @"order_value" : orderValue?:@"",
+                @"product_insurance" : productInsurance?:@""
                            };
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingDefaultError = NO;
