@@ -29,7 +29,7 @@ class OnboardingViewController: UIViewController {
     private let totalStep: Int
     private weak var superViewController: UIViewController?
     private var overlayView: UIView?
-    private let callback: (OnboardingAction) -> Void
+    fileprivate let callback: (OnboardingAction) -> Void
     private let anchorView: UIView
     
     init(title: String, message: String, currentStep: Int, totalStep: Int, anchorView: UIView, presentingViewController: UIViewController, callback: @escaping (OnboardingAction) -> Void) {
@@ -148,10 +148,6 @@ class OnboardingViewController: UIViewController {
         return overlayView
     }
     
-    private func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
-        callback(.cancel)
-    }
-    
     func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
         case .left:
@@ -180,7 +176,11 @@ class OnboardingViewController: UIViewController {
 }
 
 extension OnboardingViewController: UIPopoverPresentationControllerDelegate {
-    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+    public func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
         return .none
+    }
+    
+    public func popoverPresentationControllerDidDismissPopover(_ popoverPresentationController: UIPopoverPresentationController) {
+        callback(.cancel)
     }
 }
