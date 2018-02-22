@@ -885,19 +885,7 @@ guard let productId = params["productId"] as? String else { return true }
             
             guard let completeURL = url?.url else { return false }
 
-            let controller = WebViewController()
-            let navigationController = UIApplication.topViewController()?.navigationController
-            controller.hidesBottomBarWhenPushed = true
-            
-            controller.strURL = completeURL.absoluteString
-            controller.strTitle = ""
-            controller.onTapLinkWithUrl = { [weak navigationController] url in
-                if url?.absoluteString == "https://www.tokopedia.com/" {
-                    navigationController?.popViewController(animated: true)
-                }
-            }
-            
-            navigationController?.pushViewController(controller, animated: true)
+            TPRoutes.routeURL(completeURL)
             return true
         }
 
