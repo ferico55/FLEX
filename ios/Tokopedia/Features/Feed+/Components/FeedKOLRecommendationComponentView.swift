@@ -184,12 +184,14 @@ internal class FeedKOLRecommendationComponentView: ComponentView<FeedCardContent
     }
     
     private func seeMore(state: FeedCardKOLRecommendationState, size: CGSize) -> NodeType {
-        return Node<UIView>() { _, layout, size in
+        return Node<UIView>() { view, layout, size in
             layout.flexDirection = .row
             layout.justifyContent = .flexEnd
             layout.alignItems = .center
             layout.width = size.width
             layout.padding = 10
+            
+            view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }.add(children: [
             Node<UIButton>() { button, layout, _ in
                 button.setTitle(state.exploreText == "" ? "Explore Lebih Lanjut" : state.exploreText, for: .normal)
