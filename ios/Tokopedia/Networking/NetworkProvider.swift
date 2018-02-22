@@ -10,6 +10,7 @@ import FirebaseRemoteConfig
 import Moya
 import RxSwift
 import UIKit
+import Crashlytics
 
 extension TargetType {
     internal func urlString() -> String? {
@@ -58,7 +59,7 @@ internal class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: Tar
         requestClosure: @escaping RequestClosure = MoyaProvider.defaultRequestMapping,
         stubClosure: @escaping StubClosure = MoyaProvider.neverStub,
         manager: Manager = RxMoyaProvider<Target>.defaultAlamofireManager(),
-        plugins: [PluginType] = [],
+        plugins: [PluginType] = [CrashlyticsPlugin()],
         trackInflights: Bool = false
     ) {
         
@@ -166,4 +167,5 @@ internal class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: Tar
             return Disposables.create()
         })
     }
+    
 }

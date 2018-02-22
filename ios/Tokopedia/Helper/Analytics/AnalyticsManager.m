@@ -21,6 +21,8 @@
 #import "Tokopedia-Swift.h"
 #import "GAIEcommerceFields.h"
 
+@import Crashlytics;
+
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
     EventCategoryTypeRegister,
@@ -580,6 +582,8 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
     AnalyticsManager *manager = [[self alloc] init];
     
     NSDictionary *data = [self getEventName:event category:category action:action label:label];
+    [Crashlytics.sharedInstance setObjectValue:data forKey:@"Last user action"];
+    
     [manager.dataLayer push:data];
 }
 

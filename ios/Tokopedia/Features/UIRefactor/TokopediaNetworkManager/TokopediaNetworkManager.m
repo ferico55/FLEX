@@ -16,6 +16,7 @@
 #import "NSOperationQueue+SharedQueue.h"
 
 @import FirebaseRemoteConfig;
+@import Crashlytics;
 
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
@@ -262,6 +263,10 @@
         NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
 #endif
         
+        [Crashlytics.sharedInstance setObjectValue:operation.HTTPRequestOperation.responseString forKey:@"Response API"];
+        [Crashlytics.sharedInstance setObjectValue:parameter forKey:@"Request parameter"];
+        [Crashlytics.sharedInstance setObjectValue:operation.HTTPRequestOperation.request.URL forKey:@"Request URL"];
+        [Crashlytics.sharedInstance setObjectValue:header forKey:@"Request header"];
         NSDictionary* resultDict = mappingResult.dictionary;
         NSObject* mappedResult = [resultDict objectForKey:@""];
         
@@ -337,6 +342,7 @@
     } else {
         [_operationQueue addOperation:_objectRequest];
     }
+    
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
     
     __weak typeof(self) weakSelf = self;
@@ -344,7 +350,6 @@
         [weakSelf requestCancel];
     } repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
-    
 }
 
 @end
