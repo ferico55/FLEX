@@ -170,11 +170,13 @@
         [self configureBranchIOWith:launchOptions];
     });
 
-    
     //opening URL in background state
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         //universal search link, only available in iOS 9
-        if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
+        NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
+        if (url != nil && ![url.host containsString:@".link"]) {
+            [TPRoutes routeURL:url];
+        } else {
             NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
             if (userActivityDictionary) {
                 [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
