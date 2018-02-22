@@ -11,6 +11,7 @@
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
 #import "TTTAttributedLabel.h"
+#import "NSURL+TKPURL.h"
 
 @implementation GeneralTalkCommentCell
 
@@ -46,9 +47,7 @@
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
-    
-    self.onTapTalkWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
+    self.onTapTalkWithUrl([url TKPMeUrl]);
 }
 
 - (void)setComment:(TalkCommentList *)list {

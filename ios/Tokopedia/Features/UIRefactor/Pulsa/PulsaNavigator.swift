@@ -111,18 +111,7 @@ internal class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePicker
     }
     
     func navigateToWebTicker(_ url: URL) {
-        let controller = WebViewController()
-        controller.hidesBottomBarWhenPushed = true
-        
-        controller.strURL = url.absoluteString
-        controller.strTitle = ""
-        controller.onTapLinkWithUrl = { [weak self] url in
-            if url?.absoluteString == "https://www.tokopedia.com/" {
-                self!.controller.navigationController?.popViewController(animated: true)
-            }
-        }
-        
-        self.controller.navigationController?.pushViewController(controller, animated: true)
+        TPRoutes.routeURL(url)
     }
     
     internal func navigateToDigitalCategories() {

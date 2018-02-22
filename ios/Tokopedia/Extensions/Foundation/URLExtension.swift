@@ -18,5 +18,14 @@ extension URL {
         
         return nil
     }
+    
+    internal func TKPMeUrl() -> URL? {
+        var trueURL = "https://tkp.me/r?url=" + self.absoluteString.replacingOccurrences(of: "*", with: ".")
+        if let host = self.host, host.contains("tokopedia.com") {
+            trueURL = self.absoluteString
+        }
+        
+        return URL(string: trueURL)
+    }
 
 }

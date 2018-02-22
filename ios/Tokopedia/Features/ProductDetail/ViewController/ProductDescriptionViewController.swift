@@ -69,12 +69,7 @@ internal class ProductDescriptionViewController: UIViewController, UIGestureReco
     
     // MARK: - TTTAttributedLabel Delegate
     internal func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
-        var trueURL = "https://tkp.me/r?url=" + url.absoluteString.replacingOccurrences(of: "*", with: ".")
-        if let host = url.host, host.contains("tokopedia.com") {
-            trueURL = url.absoluteString
-        }
-        
-        TPRoutes.routeURL(URL(string: trueURL))
+        TPRoutes.routeURL(url.TKPMeUrl())
     }
 }
 
