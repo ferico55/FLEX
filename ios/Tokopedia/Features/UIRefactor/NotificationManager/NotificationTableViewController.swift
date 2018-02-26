@@ -327,7 +327,8 @@ internal class NotificationTableViewController: UITableViewController, NewOrderD
                 
                 let userManager = UserAuthentificationManager()
                 let webViewController = WKWebViewController(urlString: userManager.webViewUrl(fromUrl: "https://m.tokopedia.com/help/ticket-list/mobile"), title: "Help")
-                
+                webViewController.hidesBottomBarWhenPushed = true
+
                 self.delegate?.pushViewController?(viewController: webViewController)
             case 4:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Seller Info")
