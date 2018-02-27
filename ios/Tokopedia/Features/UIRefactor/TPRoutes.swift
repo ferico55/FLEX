@@ -753,6 +753,8 @@ guard let productId = params["productId"] as? String else { return true }
             guard let id = params["id"] as? String else { return false }
 
             let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+                                                             
             UIApplication.topViewController()?
                 .navigationController?
                 .pushReactViewController(viewController, animated: true)
