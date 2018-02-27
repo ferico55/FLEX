@@ -34,6 +34,24 @@ public class TPRoutes: NSObject {
             UIApplication.topViewController()?.navigationController?.popViewController(animated: true)
             return true
         }
+        
+        JLRoutes.global().addRoute("/") { (_: [String: Any]) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 0
+                viewController.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 1])
+            }
+            return true
+        }
+        
+        JLRoutes.global().addRoute("") { (_: [String: Any]) -> Bool in
+            if let viewController = UIApplication.topViewController() {
+                viewController.tabBarController?.selectedIndex = 0
+                viewController.navigationController?.popToRootViewController(animated: true)
+                NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 1])
+            }
+            return true
+        }
 
         // MARK: Shop Pages (Native)
         JLRoutes.global().addRoute("/shop/:shopId") { (params: [String: Any]) -> Bool in
@@ -1245,8 +1263,16 @@ guard let productId = params["productId"] as? String else { return true }
                 return true
             }
         }
-
-        return JLRoutes.routeURL(url)
+        
+        if url.host?.lowercased() == "tokopedia.com"
+            || url.host?.lowercased() == "www.tokopedia.com"
+            || url.host?.lowercased() == "m.tokopedia.com" {
+            return JLRoutes.routeURL(url)
+        }
+        else {
+            self.openWebView(url)
+            return false
+        }
     }
 
     private static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {

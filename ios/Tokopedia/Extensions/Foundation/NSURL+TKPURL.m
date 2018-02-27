@@ -14,8 +14,8 @@
 - (NSURL *)TKPMeUrl{
     
     NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [self.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
-    if ([self.host containsString:@"tokopedia.com"]) {
-        theRealUrl = self.absoluteString;
+    if ([[self.host stringByReplacingOccurrencesOfString:@"*" withString:@"."] containsString:@"tokopedia.com"]) {
+        theRealUrl = [self.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."];
     }
     
     return [NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
