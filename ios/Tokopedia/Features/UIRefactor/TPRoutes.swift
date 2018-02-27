@@ -1264,7 +1264,9 @@ guard let productId = params["productId"] as? String else { return true }
             }
         }
         
-        if url.host?.lowercased() == "tokopedia.com"
+        if url.scheme?.lowercased() == "tkpd-internal"
+            || url.scheme?.lowercased() == "tokopedia"
+            || url.host?.lowercased() == "tokopedia.com"
             || url.host?.lowercased() == "www.tokopedia.com"
             || url.host?.lowercased() == "m.tokopedia.com" {
             return JLRoutes.routeURL(url)
