@@ -804,8 +804,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         viewController.hidesBottomBarWhenPushed = YES;
     } else {
         if ([UserAuthentificationManager new].isUserPhoneVerified) {
-            UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
-            TokoCashActivationViewController *tokoCashActivationVC = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashActivationViewController"];
+            TokoCashActivationViewController *tokoCashActivationVC = [TokoCashActivationViewController new];
             tokoCashActivationVC.hidesBottomBarWhenPushed = YES;
             [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
         } else {
