@@ -905,7 +905,18 @@ guard let productId = params["productId"] as? String else { return true }
             
             guard let completeURL = url?.url else { return false }
 
-            TPRoutes.routeURL(completeURL)
+            let controller = WebViewController()
+            let navigationController = UIApplication.topViewController()?.navigationController
+            controller.hidesBottomBarWhenPushed = true
+            controller.strURL = completeURL.absoluteString
+            controller.strTitle = ""
+            controller.onTapLinkWithUrl = { [weak navigationController] url in
+                if url?.absoluteString == "https://www.tokopedia.com/" {
+                    navigationController?.popViewController(animated: true)
+                }
+            }
+            
+            navigationController?.pushViewController(controller, animated: true)
             return true
         }
 
@@ -1264,17 +1275,7 @@ guard let productId = params["productId"] as? String else { return true }
             }
         }
         
-        if url.scheme?.lowercased() == "tkpd-internal"
-            || url.scheme?.lowercased() == "tokopedia"
-            || url.host?.lowercased() == "tokopedia.com"
-            || url.host?.lowercased() == "www.tokopedia.com"
-            || url.host?.lowercased() == "m.tokopedia.com" {
-            return JLRoutes.routeURL(url)
-        }
-        else {
-            self.openWebView(url)
-            return false
-        }
+        return JLRoutes.routeURL(url)
     }
 
     private static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
