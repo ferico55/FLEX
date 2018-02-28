@@ -264,19 +264,19 @@ guard let productId = params["productId"] as? String else { return true }
         }
 
         JLRoutes.global().unmatchedURLHandler = { _, url, _ in
-            if url?.scheme == "tokopedia" {
-                let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
+//             if url?.scheme == "tokopedia" {
+//                 let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
                 
-                alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
-                    UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
-                }))
+//                 alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
+//                     UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
+//                 }))
                 
-                alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
+//                 alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
                 
-                UIApplication.topViewController()?.present(alert, animated: true)
-            } else {
+//                 UIApplication.topViewController()?.present(alert, animated: true)
+//             } else {
                 self.openWebView(url!)
-            }
+//             }
         }
 
         // MARK: Digital Category - Tokocash (Native)
@@ -951,6 +951,7 @@ guard let productId = params["productId"] as? String else { return true }
                     controller = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
                 }
                 
+                controller.hidesBottomBarWhenPushed = true
                 topVc.navigationController?.pushViewController(controller, animated: true)
             
             }
