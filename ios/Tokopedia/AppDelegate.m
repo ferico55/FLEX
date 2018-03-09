@@ -106,8 +106,8 @@
                                       bridge:[UIApplication sharedApplication].reactBridge
                                       viewName:name
                                       viewParams:params];
-    
-    [_nav pushViewController:reactView animated:true];
+    MainViewController *mainViewController = (MainViewController*)_window.rootViewController;
+    [mainViewController.selectedViewController.navigationController pushViewController:reactView animated:true];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -217,7 +217,6 @@
 }
 - (void)setupInitialViewController {
     UIViewController* viewController = [self frontViewController];
-    _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
     _window.rootViewController = viewController;
 }
 
@@ -379,9 +378,8 @@
                 NSString *ios_deeplink_path = params[@"$ios_deeplink_path"];
                 urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
                 BOOL containsReferralCode = [ios_deeplink_path containsString:@"referral"];
-                if ([_nav.topViewController isKindOfClass:[IntroViewController class]] && containsReferralCode == NO) {
+                if ([_window.rootViewController isKindOfClass:[IntroViewController class]] && containsReferralCode == NO) {
                     MainViewController *viewController = [MainViewController new];
-                    _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
                     _window.rootViewController = viewController;
                 }
             }

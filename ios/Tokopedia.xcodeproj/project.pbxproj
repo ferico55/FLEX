@@ -1019,7 +1019,6 @@
 		F977006C1FE8AB8500183A85 /* DigitalState.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F97E1FE8AB7600183A85 /* DigitalState.swift */; };
 		F977006D1FE8AB8500183A85 /* DigitalProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F97F1FE8AB7600183A85 /* DigitalProduct.swift */; };
 		F977006E1FE8AB8500183A85 /* DigitalAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9801FE8AB7600183A85 /* DigitalAnalyticsManager.swift */; };
-		F977006F1FE8AB8500183A85 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F9821FE8AB7700183A85 /* MainViewController.xib */; };
 		F97700701FE8AB8500183A85 /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9831FE8AB7700183A85 /* MoreWrapperViewController.m */; };
 		F97700711FE8AB8500183A85 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9841FE8AB7700183A85 /* MainViewController.m */; };
 		F97700721FE8AB8500183A85 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9881FE8AB7700183A85 /* RemoteConfig.swift */; };
@@ -5202,7 +5201,6 @@
 		F977F97E1FE8AB7600183A85 /* DigitalState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalState.swift; sourceTree = "<group>"; };
 		F977F97F1FE8AB7600183A85 /* DigitalProduct.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalProduct.swift; sourceTree = "<group>"; };
 		F977F9801FE8AB7600183A85 /* DigitalAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalAnalyticsManager.swift; sourceTree = "<group>"; };
-		F977F9821FE8AB7700183A85 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
 		F977F9831FE8AB7700183A85 /* MoreWrapperViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MoreWrapperViewController.m; sourceTree = "<group>"; };
 		F977F9841FE8AB7700183A85 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		F977F9851FE8AB7700183A85 /* MoreWrapperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreWrapperViewController.h; sourceTree = "<group>"; };
@@ -11565,7 +11563,6 @@
 			children = (
 				F977F9861FE8AB7700183A85 /* MainViewController.h */,
 				F977F9841FE8AB7700183A85 /* MainViewController.m */,
-				F977F9821FE8AB7700183A85 /* MainViewController.xib */,
 				F977F9851FE8AB7700183A85 /* MoreWrapperViewController.h */,
 				F977F9831FE8AB7700183A85 /* MoreWrapperViewController.m */,
 			);
@@ -12183,7 +12180,6 @@
 				F977FE5C1FE8AB8100183A85 /* FeedDetailViewController.graphql in Resources */,
 				F977FC671FE8AB7D00183A85 /* CatalogShopCell.xib in Resources */,
 				F977FC421FE8AB7D00183A85 /* AlertLuckyView.xib in Resources */,
-				F977006F1FE8AB8500183A85 /* MainViewController.xib in Resources */,
 				F772717D20355FDC00D959AF /* TokoCashPendingTransactionViewController.xib in Resources */,
 				F977FAE11FE8AB7A00183A85 /* AnnouncementTickerView.xib in Resources */,
 				E576C26B2034180E008524AA /* CentralizedOTPViewController.xib in Resources */,

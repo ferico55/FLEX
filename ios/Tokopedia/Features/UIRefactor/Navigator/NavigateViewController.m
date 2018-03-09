@@ -537,8 +537,8 @@
         [(AppDelegate *)[UIApplication sharedApplication].delegate setupInitialViewController];
     };
     [UIApplication sharedApplication].keyWindow.rootViewController = navController;
-    ((AppDelegate *)[UIApplication sharedApplication].delegate).nav = navController;
 }
+
 + (void)navigateToReferralScreen {
     UIViewController *viewController = [UIApplication topViewController];
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];

@@ -50,7 +50,6 @@
     MFMailComposeViewControllerDelegate
 >
 {
-    UITabBarController *_tabBarController;
     HomeTabViewController *_swipevc;
     URLCacheController *_cacheController;
     
@@ -104,6 +103,10 @@ typedef enum TagRequest {
 {
     [super viewDidLoad];
     
+    _userManager = [UserAuthentificationManager new];
+    
+    self.delegate = self;
+    
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
         
     _auth = [NSMutableDictionary new];
@@ -111,7 +114,7 @@ typedef enum TagRequest {
 
     [[UISegmentedControl appearance] setTintColor:[UIColor tpGreen]];
     
-    [self performSelector:@selector(viewDidLoadQueued) withObject:nil afterDelay:kTKPDMAIN_PRESENTATIONDELAY];	//app launch delay presentation
+    [self viewDidLoadQueued];
 
     NSNotificationCenter* center = [NSNotificationCenter defaultCenter];
     
@@ -167,14 +170,6 @@ typedef enum TagRequest {
     [UserAuthentificationManager ensureDeviceIdExistence];
 }
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    _userManager = [UserAuthentificationManager new];
-}
-
-
 #pragma mark - Memory Management
 -(void)dealloc{
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
@@ -206,17 +201,13 @@ typedef enum TagRequest {
 {
     [self createtabbarController];
     
-    _tabBarController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    
-    [[UIApplication sharedApplication] keyWindow].rootViewController = _tabBarController;
-    
     UIViewController *topViewController = [UIApplication topViewController:[UIApplication sharedApplication].keyWindow.rootViewController];
     
     VersionChecker *versionChecker = [[VersionChecker alloc]init];
     
     [versionChecker checkForceUpdate];
     
-    self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController:_tabBarController topViewController:topViewController];
+    self.screenshotHelper = [[ScreenshotHelper alloc] initWithTabBarController:self topViewController:topViewController];
 
 }
 
@@ -226,8 +217,6 @@ typedef enum TagRequest {
     NSDictionary* auth = [secureStorage keychainDictionary];
     _auth = [auth mutableCopy];
     BOOL isauth = [[_auth objectForKey:kTKPD_ISLOGINKEY] boolValue];
-    _tabBarController = [UITabBarController new];
-    _tabBarController.delegate = self;
     
     [[UITabBarItem appearance] setTitleTextAttributes:@{ NSForegroundColorAttributeName : kTKPDNAVIGATION_TABBARTITLECOLOR }
                                              forState:UIControlStateNormal];
@@ -270,7 +259,7 @@ typedef enum TagRequest {
     
     NSArray* viewControllers = [NSArray arrayWithObjects:_swipevc, categoryvc, wishlistController, cart, moreVC, nil];
     
-    A2DynamicDelegate *delegate = _tabBarController.bk_dynamicDelegate;
+    A2DynamicDelegate *delegate = self.bk_dynamicDelegate;
     __block NSUInteger idx = 0;
     [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
         [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
@@ -290,15 +279,14 @@ typedef enum TagRequest {
         }
     }];
     
-    _tabBarController.viewControllers = [viewControllers bk_map:^UIViewController *(UIViewController *vc) {
+    self.viewControllers = [viewControllers bk_map:^UIViewController *(UIViewController *vc) {
         return [[UINavigationController alloc] initWithRootViewController:vc];
     }];
-    _tabBarController.delegate = delegate;
     //tabBarController.tabBarItem.title = nil;
     
     NSInteger pageIndex = [self pageIndex];
     
-    _tabBarController.selectedIndex = pageIndex;
+    self.selectedIndex = pageIndex;
     
     [self initTabBar];
 }
@@ -309,7 +297,7 @@ typedef enum TagRequest {
                        @{@"name" : @"Wishlist", @"image" : @"icon_wishlist.png", @"selectedImage" : @"icon_wishlist_active.png"},
                        @{@"name" : @"Keranjang", @"image" : @"icon_cart.png", @"selectedImage" : @"icon_cart_active.png"},
                        @{@"name" : @"Lainnya", @"image" : @"icon_more.png", @"selectedImage" : @"icon_more_active.png"}];
-    UITabBar *tabBar = _tabBarController.tabBar;
+    UITabBar *tabBar = self.tabBar;
     tabBar.tintColor = [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1];
     tabBar.backgroundColor = [UIColor whiteColor];
     
@@ -377,7 +365,7 @@ typedef enum TagRequest {
 
 	// Assume tabController is the tab controller
     // and newVC is the controller you want to be the new view controller at index 0
-    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
+    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:self.viewControllers];
     UINavigationController *swipevcNav = [[UINavigationController alloc]initWithRootViewController:_swipevc];
     swipevcNav.navigationBar.translucent = NO;
     
@@ -387,13 +375,13 @@ typedef enum TagRequest {
         LoginViewController *more = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
         
         more.onLoginFinished = ^(LoginResult* result){
-            [_tabBarController setSelectedIndex:0];
-            UINavigationController *homeNavController = (UINavigationController *)[_tabBarController.viewControllers firstObject];
+            [self setSelectedIndex:0];
+            UINavigationController *homeNavController = (UINavigationController *)[self.viewControllers firstObject];
             [homeNavController popToRootViewControllerAnimated:NO];
         };
         
         moreNavBar = [[UINavigationController alloc]initWithRootViewController:more];
-        [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+        [[self.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     }
     else{
         MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
@@ -405,7 +393,7 @@ typedef enum TagRequest {
     [newControllers replaceObjectAtIndex:0 withObject:swipevcNav];
     [newControllers replaceObjectAtIndex:4 withObject:moreNavBar];
 
-    [_tabBarController setViewControllers:newControllers animated:YES];
+    [self setViewControllers:newControllers animated:YES];
 
     [self initTabBar];
 }
@@ -417,14 +405,14 @@ typedef enum TagRequest {
 
     [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
     
-    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:_tabBarController.viewControllers];
+    NSMutableArray *newControllers = [NSMutableArray arrayWithArray:self.viewControllers];
     
     MoreWrapperViewController *controller = [[MoreWrapperViewController alloc] init];
     UINavigationController *moreNavController = [[UINavigationController alloc] initWithRootViewController:controller];
     
     [moreNavController.navigationBar setTranslucent:NO];
     [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
-    [_tabBarController setViewControllers:newControllers animated:YES];
+    [self setViewControllers:newControllers animated:YES];
     
     [self initTabBar];
 }
@@ -492,8 +480,6 @@ typedef enum TagRequest {
     [loginManager logOut];
     [FBSDKAccessToken setCurrentAccessToken:nil];
     
-//    [[GPPSignIn sharedInstance] signOut];
-//    [[GPPSignIn sharedInstance] disconnect];
     [[GIDSignIn sharedInstance] signOut];
     [[GIDSignIn sharedInstance] disconnect];
     [[Branch getInstance] logout];
@@ -521,14 +507,14 @@ typedef enum TagRequest {
     
     [self removeCacheUser];
     
-    [[_tabBarController.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
+    [[self.viewControllers objectAtIndex:3] tabBarItem].badgeValue = nil;
     NSUserDefaults *prefs = [NSUserDefaults standardUserDefaults];
     [prefs removeObjectForKey:@"total_cart"];
     [prefs removeObjectForKey:@"hachiko_enabled"];
     [prefs removeObjectForKey:@"coupon_onboarding_shown"];
     [prefs synchronize];
     
-    [((UINavigationController*)[_tabBarController.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
+    [((UINavigationController*)[self.viewControllers objectAtIndex:3]) popToRootViewControllerAnimated:NO];
     
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPDACTIVATION_DIDAPPLICATIONLOGGEDOUTNOTIFICATION
                                                         object:nil
@@ -590,11 +576,11 @@ typedef enum TagRequest {
 }
 
 - (void)redirectToSearch {
-    _tabBarController.selectedIndex = 2;
+    self.selectedIndex = 2;
 }
 
 - (void)redirectToHotlist {
-    _tabBarController.selectedIndex = 1;
+    self.selectedIndex = 1;
 }
 
 - (void)showSuccessActivation {
@@ -616,13 +602,13 @@ typedef enum TagRequest {
 }
 
 - (void)redirectNotification:(NSNotification*)notification {
-    _tabBarController.selectedIndex = 0;
+    self.selectedIndex = 0;
 
     [self popToRootAllViewControllers];
 }
 
 - (void)popToRootAllViewControllers{
-    for(UIViewController *viewController in _tabBarController.viewControllers) {
+    for(UIViewController *viewController in self.viewControllers) {
         if([viewController isKindOfClass:[UINavigationController class]]) {
             [(UINavigationController *)viewController popToRootViewControllerAnimated:NO];
         }
@@ -738,17 +724,17 @@ typedef enum TagRequest {
 }
 
 - (void)redirectToHomeViewController {
-    _tabBarController.selectedIndex = 0;
+    self.selectedIndex = 0;
 }
 
 - (void) navigateToPageInTabBar:(NSNotification*) notification{
     NSString *pageId = [notification object];
     int pagenum = [pageId intValue];
-    _tabBarController.selectedIndex = pagenum;
+    self.selectedIndex = pagenum;
 }
 
 - (void)redirectToMore {
-    _tabBarController.selectedIndex = 5;
+    self.selectedIndex = 5;
 }
 
 // MARK: TKPAppFlow methods
@@ -763,7 +749,7 @@ typedef enum TagRequest {
 // MARK: Reinit Cart TabBar
 
 - (void) reinitCartTabBar {
-    UINavigationController *transactionCartRootNavController = [_tabBarController.viewControllers objectAtIndex: 3];
+    UINavigationController *transactionCartRootNavController = [self.viewControllers objectAtIndex: 3];
     if ([[transactionCartRootNavController.viewControllers objectAtIndex:0] isKindOfClass:[TransactionCartViewController class]]) {
         TransactionCartViewController *transactionCartRootVC = (TransactionCartViewController *)[transactionCartRootNavController.viewControllers objectAtIndex:0];
         

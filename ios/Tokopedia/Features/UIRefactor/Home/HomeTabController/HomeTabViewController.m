@@ -435,7 +435,6 @@ UINavigationControllerDelegate
     [self view];
     [self instantiateViewControllers];
     [self setSearchByImage];
-    [self redirectToProductFeed];
     [self setIndexPage:0];
 }
 

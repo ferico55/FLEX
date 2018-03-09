@@ -22,12 +22,9 @@
 @interface AppDelegate : UIResponder <UIApplicationDelegate, UNUserNotificationCenterDelegate,  AppNavigationDelegate>
 
 @property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) UIViewController *viewController;
-@property (strong, nonatomic) UIViewController *navigationController;
 @property (nonatomic, strong) TAGManager *tagManager;
 @property (nonatomic, strong) TAGContainer *container;
 @property (strong, nonatomic) id<GAITracker> tracker;
-@property (strong, nonatomic) UINavigationController *nav;
 
 - (void)setupInitialViewController;
 @end
