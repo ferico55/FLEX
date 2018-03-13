@@ -11,6 +11,7 @@
 #import <React/RCTUIManager.h>
 #import "UIApplication+React.h"
 @import NativeNavigation;
+@import FirebaseRemoteConfig;
 
 @implementation ReactOnboardingHelper {
     UIViewController *_delayedOnboarding;
@@ -92,6 +93,13 @@ RCT_EXPORT_METHOD(disableOnboarding: (NSString*) key userId: (NSString*) userId)
 }
 
 RCT_EXPORT_METHOD(getOnboardingStatus: (NSString*) key userId: (NSString*) userId callback: (RCTResponseSenderBlock)callback) {
+    FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
+    NSString* remoteValue = [[remoteConfig configValueForKey:@"iosapp_disabled_onboarding"] stringValue];
+    if ([remoteValue containsString:key]) {
+        callback(@[@YES]);
+        return;
+    }
+
     NSDictionary* onboardingStatus = [[NSUserDefaults standardUserDefaults] dictionaryForKey:key];
     if (!onboardingStatus) {
         callback(@[@NO]);

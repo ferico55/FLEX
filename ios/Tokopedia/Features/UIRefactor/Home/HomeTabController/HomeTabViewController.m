@@ -102,7 +102,8 @@ UINavigationControllerDelegate
     
     FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
     [remoteConfig fetchWithCompletionHandler:^(FIRRemoteConfigFetchStatus status, NSError * _Nullable error) {
-        // do nothing
+        // activate fetched config immediately
+        [remoteConfig activateFetched];
     }];
     BOOL remoteValue = [[remoteConfig configValueForKey:@"iosapp_enable_new_home"] boolValue];
     BOOL cacheEnabled = FBTweakValue(@"Others", @"Home", @"Cache Enabled", YES);
