@@ -23,6 +23,9 @@
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
 		622A6AB92015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */; };
+		62691B19203D8A8E008DC687 /* FeedTopAdsShopComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B17203D8A8D008DC687 /* FeedTopAdsShopComponentView.swift */; };
+		62691B1A203D8A8E008DC687 /* FeedTopAdsProductComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B18203D8A8D008DC687 /* FeedTopAdsProductComponentView.swift */; };
+		62691B1C203D8A99008DC687 /* FeedCardTopAdsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B1B203D8A98008DC687 /* FeedCardTopAdsState.swift */; };
 		626C4EB52034157000955D23 /* RequestErrorHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626C4EB42034157000955D23 /* RequestErrorHandler.swift */; };
 		626C4EB72034172100955D23 /* URLExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 626C4EB62034172000955D23 /* URLExtension.swift */; };
 		627065961D7EAFC200BDE9F8 /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */; };
@@ -2252,6 +2255,9 @@
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
 		622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardContentProductCommunicationState.swift; sourceTree = "<group>"; };
+		62691B17203D8A8D008DC687 /* FeedTopAdsShopComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTopAdsShopComponentView.swift; sourceTree = "<group>"; };
+		62691B18203D8A8D008DC687 /* FeedTopAdsProductComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTopAdsProductComponentView.swift; sourceTree = "<group>"; };
+		62691B1B203D8A98008DC687 /* FeedCardTopAdsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardTopAdsState.swift; sourceTree = "<group>"; };
 		626C4EB42034157000955D23 /* RequestErrorHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RequestErrorHandler.swift; sourceTree = "<group>"; };
 		626C4EB62034172000955D23 /* URLExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLExtension.swift; sourceTree = "<group>"; };
 		627065951D7EAFC200BDE9F8 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
@@ -11476,6 +11482,7 @@
 				622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */,
 				F977F53C1FE8AB7400183A85 /* FeedCardKOLPostState.swift */,
 				F977F53B1FE8AB7400183A85 /* FeedCardKOLRecommendationState.swift */,
+				62691B1B203D8A98008DC687 /* FeedCardTopAdsState.swift */,
 				F977F53E1FE8AB7400183A85 /* FeedDetailState.swift */,
 				F977F53D1FE8AB7400183A85 /* FeedState.swift */,
 			);
@@ -11500,6 +11507,8 @@
 				F977F54A1FE8AB7400183A85 /* FeedNoShopComponentView.swift */,
 				F977F5401FE8AB7400183A85 /* FeedOfficialStoreComponentView.swift */,
 				F977F54F1FE8AB7400183A85 /* FeedPromotionComponentView.swift */,
+				62691B18203D8A8D008DC687 /* FeedTopAdsProductComponentView.swift */,
+				62691B17203D8A8D008DC687 /* FeedTopAdsShopComponentView.swift */,
 				F977F5421FE8AB7400183A85 /* FeedToppicksComponentView.swift */,
 				F977F5471FE8AB7400183A85 /* ProductCellComponentView.swift */,
 			);
@@ -13490,6 +13499,7 @@
 				F977FD6E1FE8AB7F00183A85 /* UserContainerViewController.m in Sources */,
 				E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */,
 				5256A84320170BBC000262F7 /* FeedAnalyticsManager.swift in Sources */,
+				62691B1C203D8A99008DC687 /* FeedCardTopAdsState.swift in Sources */,
 				E57974D31FEA741F00610655 /* InputPromoViewController.swift in Sources */,
 				62C771AB1FF33C3500F66527 /* ListFavorited.m in Sources */,
 				F977FCE61FE8AB7E00183A85 /* GalleryPhotoView.m in Sources */,
@@ -13583,6 +13593,7 @@
 				F977FBA61FE8AB7C00183A85 /* ShipmentStatusCell.m in Sources */,
 				62C770551FF33C3200F66527 /* InboxTicketTicket.m in Sources */,
 				F977FD811FE8AB7F00183A85 /* FiltersController.swift in Sources */,
+				62691B1A203D8A8E008DC687 /* FeedTopAdsProductComponentView.swift in Sources */,
 				F977FE521FE8AB8100183A85 /* ProductCellComponentView.swift in Sources */,
 				62C76FE61FF33C3100F66527 /* InboxReviewProductOwner.m in Sources */,
 				F977FD0A1FE8AB7E00183A85 /* ProductEditWholesaleCell.m in Sources */,
@@ -13821,6 +13832,7 @@
 				F977FB691FE8AB7B00183A85 /* ResolutionInputReceiptViewController.m in Sources */,
 				F977FA331FE8AB7900183A85 /* UIViewController+Header.swift in Sources */,
 				F980525F2018AAFE00CE6D67 /* ReactModule.swift in Sources */,
+				62691B19203D8A8E008DC687 /* FeedTopAdsShopComponentView.swift in Sources */,
 				F977FA2B1FE8AB7900183A85 /* UIViewController+Swizzling.m in Sources */,
 				DADB9F4A1F3C46CE002B1FAE /* FBTweak.m in Sources */,
 				F977FCB51FE8AB7E00183A85 /* SecureStorageManager.swift in Sources */,

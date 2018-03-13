@@ -6,33 +6,36 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import Render
-import RxSwift
-import RxCocoa
-import ReSwift
-import SnapKit
 import Apollo
+import Render
+import ReSwift
+import RxCocoa
+import RxSwift
+import SnapKit
+import UIKit
 
-class FeedViewController: UIViewController, UITableViewDelegate {
+internal class FeedViewController: UIViewController, UITableViewDelegate {
     
-    let refreshControl = UIRefreshControl()
-    var feedState = FeedState()
-    var feedWatcher: GraphQLQueryWatcher<FeedsQuery>?
-    var feedCards: [FeedCardState] = []
-    let footerView = UIView(frame: CGRect.zero)
-    var page = 1
-    var isRequesting = false
-    let topAdsService = TopAdsService()
-    var shouldRefreshData = false
-    var currentCursor = ""
-    var emptyStateButtonTapped = false
-    var isRefreshing = false
-    var row = 0
+    private let refreshControl = UIRefreshControl()
+    private var feedState = FeedState()
+    private var feedWatcher: GraphQLQueryWatcher<FeedsQuery>?
+    private var feedCards: [FeedCardState] = []
+    private let footerView = UIView(frame: CGRect.zero)
+    private var page = 1
+    private var isRequesting = false
+    private var shouldRefreshData = false
+    private var currentCursor = ""
+    private var emptyStateButtonTapped = false
+    private var isRefreshing = false
+    private var row = 0
+
+    private let feedCardSource = PublishSubject<[FeedCardState]>()
     
-    let feedCardSource = PublishSubject<[FeedCardState]>()
-    
-    var feedClient: ApolloClient = {
+    private var feedClient: ApolloClient = {
+        guard let url = URL(string: NSString.graphQLURL()) else {
+            fatalError("GraphQL URL is not valid")
+        }
+        
         let configuration = URLSessionConfiguration.default
         let userManager = UserAuthentificationManager()
         
@@ -51,14 +54,12 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         
         configuration.httpAdditionalHeaders = headers
         
-        let url = URL(string: NSString.graphQLURL())!
-        
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }()
     
-    let tableView = UITableView()
+    private let tableView = UITableView()
     
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.userDidLogin), name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
@@ -70,7 +71,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         self.setupView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Feed Page")
         if self.shouldRefreshData {
@@ -95,7 +96,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
             .filter { !$0.isEmpty }.subscribe(
                 onNext: { [weak self] _ in
                     guard let `self` = self else { return }
-                    guard (self.tableView.indexPathsForVisibleRows?.count)! > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
+                    guard let count = self.tableView.indexPathsForVisibleRows?.count, count > 0, let row = self.tableView.indexPathsForVisibleRows?[0].row, row < self.feedCards.count else { return }
                     if self.feedCards[row].page > 0 && self.feedCards[row].row > 0 && !self.feedCards[row].isImpression {
                         AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_IMPRESSION, label: "\(self.feedCards[row].page).\(self.feedCards[row].row) - Product Feed")
                         AnalyticsManager.trackFeedImpression(card: self.feedCards[row])
@@ -105,6 +106,9 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                             AnalyticsManager.trackKOLImpression(cardContent: self.feedCards[row].content)
                         }
                         
+                        if self.feedCards[row].content.isTopAds {
+                            AnalyticsManager.trackTopAdsImpression(content: self.feedCards[row].content)
+                        }
                     }
                 }
             ).disposed(by: rx_disposeBag)
@@ -126,40 +130,54 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 cell.mountComponentIfNecessary(
                     FeedComponentView(
                         viewController: self,
-                        onTopAdsStateChanged: { [weak self] state in
-                            guard let `self` = self else { return }
-                            
-                            self.onTopAdsStateChanged(state: state, row: index)
-                        },
                         onEmptyStateButtonPressed: { [weak self] errorType in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onEmptyStateButtonPressed(errorType: errorType)
                         },
                         onReloadNextPagePressed: { [weak self] in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onReloadNextPageButtonPressed()
                         },
                         onTapKOLLongDescription: { [weak self] state in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onTapExpandKOLActivityDescription(state: state, row: index)
                         },
                         onTapKOLLike: { [weak self] state in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onTapLikeButton(state: state, row: index)
                         },
                         onTapFollowKOLPost: { [weak self] state in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onTapFollowKOLPost(state: state, row: index)
                         },
                         onTapFollowKOLRecommendation: { [weak self] state in
-                            guard let `self` = self else { return }
+                            guard let `self` = self else {
+                                return
+                            }
                             
                             self.onTapFollowKOLRecommendation(state: state, row: index)
+                        },
+                        onTapFavoriteTopAdsShop: { [weak self] state in
+                            guard let `self` = self else {
+                                return
+                            }
+                            
+                            self.onTapFavoriteTopAdsShop(state: state, row: index)
                         }
                     )
                 )
@@ -170,14 +188,14 @@ class FeedViewController: UIViewController, UITableViewDelegate {
             .disposed(by: self.rx_disposeBag)
         
         self.view.addSubview(tableView)
-        tableView.mas_makeConstraints { make in
+        tableView.snp.makeConstraints { (make) in
             if self.feedState.oniPad {
-                _ = make?.left.mas_equalTo()(self.view.mas_left)?.offset()(104)
-                _ = make?.right.mas_equalTo()(self.view.mas_right)?.offset()(-104)
-                _ = make?.top.mas_equalTo()(self.view)?.offset()(15)
-                _ = make?.bottom.mas_equalTo()(self.view.mas_bottom)
+                make.left.equalTo(self.view.snp.left).offset(104)
+                make.right.equalTo(self.view.snp.right).offset(-104)
+                make.top.equalTo(self.view).offset(16)
+                make.bottom.equalTo(self.view.snp.bottom)
             } else {
-                _ = make?.edges.mas_equalTo()(self.view)
+                make.edges.equalTo(self.view)
             }
         }
         
@@ -194,11 +212,11 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         self.loadData()
     }
     
-    override func didReceiveMemoryWarning() {
+    override internal func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewDidLayoutSubviews() {
+    override internal func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
     }
     
@@ -235,7 +253,7 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 return
             }
             
-            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userID: intUserID, limit: 3, cursor: cursor)) { result, error in
+            self.feedWatcher = self.feedClient.watch(query: FeedsQuery(userID: intUserID, limit: 3, cursor: cursor, source: "feeds")) { result, error in
                 if let error = error {
                     if shouldTrackMoengage {
                         AnalyticsManager.moEngageTrackEvent(withName: "Feed_Screen_Launched", attributes: ["logged_in_status": true,
@@ -279,13 +297,15 @@ class FeedViewController: UIViewController, UITableViewDelegate {
     
     private func loadContent(onPage page: Int, total: Int) {
         if self.feedCards.count > 0, let isNextPageError = self.feedCards.last?.isNextPageError {
-            if isNextPageError && self.feedCards.last?.topads?.topAds == nil {
+            if isNextPageError {
                 self.feedCards.removeLast()
             }
         }
         
         if total > 2 {
-            self.loadTopAdsContent(onPage: page, totalData: total)
+            self.feedCards.append(contentsOf: self.feedState.feedCards)
+            self.feedCardSource.onNext(self.feedCards)
+            self.isRequesting = false
             
             if self.feedState.hasNextPage {
                 self.page += 1
@@ -308,7 +328,9 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                 emptyStateCard.errorType = (total < 0) ? .serverError : .emptyFeed
                 
                 self.feedState.feedCards = [emptyStateCard]
-                self.loadTopAdsContent(onPage: page, totalData: total)
+                self.feedCards.append(contentsOf: self.feedState.feedCards)
+                self.feedCardSource.onNext(self.feedCards)
+                self.isRequesting = false
             }
         }
         
@@ -316,64 +338,11 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         self.tableView.tableFooterView = nil
     }
     
-    private func loadTopAdsContent(onPage page: Int, totalData: Int) {
-        let filter = totalData > 2 ? TopAdsFilter(source: .favoriteProduct, ep: .random, numberOfProductItems: 4, numberOfShopItems: 1, page: page, searchKeyword: "", type: .recommendationCategory) : TopAdsFilter(source: .favoriteProduct, ep: .shop, numberOfProductItems: 0, numberOfShopItems: 2, page: 1, searchKeyword: "", type: .recommendationCategory)
-        
-        self.topAdsService.getTopAds(
-            topAdsFilter: filter,
-            onSuccess: { [weak self] ads in
-                guard let `self` = self else {
-                    return
-                }
-                
-                guard ads.count > 0 else {
-                    self.feedCards.append(contentsOf: self.feedState.feedCards)
-                    self.feedCardSource.onNext(self.feedCards)
-                    self.isRequesting = false
-                    return
-                }
-                
-                if totalData > 2 {
-                    var card = FeedCardState()
-                    card.content.type = .topAds
-                    card.topads = TopAdsFeedPlusState(topAds: ads, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
-                    
-                    self.feedState.feedCards.insert(card, at: 1)
-                    self.feedCards.append(contentsOf: self.feedState.feedCards)
-                    self.feedCardSource.onNext(self.feedCards)
-                    self.isRequesting = false
-                } else {
-                    for ad in ads {
-                        var topAdsCard = FeedCardState()
-                        topAdsCard.content.type = .topAds
-                        topAdsCard.topads = TopAdsFeedPlusState(topAds: [ad], isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
-                        self.feedState.feedCards.append(topAdsCard)
-                    }
-                    
-                    let productFilter = TopAdsFilter(source: .favoriteProduct, ep: .product, numberOfProductItems: 4, numberOfShopItems: 0, page: 1, searchKeyword: "", type: .recommendationCategory)
-                    self.topAdsService.getTopAds(topAdsFilter: productFilter, onSuccess: { productAds in
-                        var topAdsCard = FeedCardState()
-                        topAdsCard.content.type = .topAds
-                        topAdsCard.topads = TopAdsFeedPlusState(topAds: productAds, isDoneFavoriteShop: false, isLoadingFavoriteShop: false, currentViewController: self)
-                        self.feedState.feedCards.append(topAdsCard)
-                        
-                        self.feedCards.append(contentsOf: self.feedState.feedCards)
-                        self.feedCardSource.onNext(self.feedCards)
-                    }, onFailure: { _ in
-                        self.feedCardSource.onNext(self.feedCards)
-                    })
-                    self.isRequesting = false
-                }
-            },
-            onFailure: { _ in
-                self.feedCards = self.feedState.feedCards
-                self.feedCardSource.onNext(self.feedCards)
-                self.isRequesting = false
-            }
-        )
-    }
-    
     private func reinitApolloClient() -> ApolloClient {
+        guard let url = URL(string: NSString.graphQLURL()) else {
+            fatalError("GraphQL URL is not valid")
+        }
+        
         let configuration = URLSessionConfiguration.default
         let userManager = UserAuthentificationManager()
         
@@ -391,8 +360,6 @@ class FeedViewController: UIViewController, UITableViewDelegate {
                                            "Accounts-Authorization": accountsAuth]
         
         configuration.httpAdditionalHeaders = headers
-        
-        let url = URL(string: NSString.graphQLURL())!
         
         return ApolloClient(networkTransport: HTTPNetworkTransport(url: url, configuration: configuration))
     }
@@ -422,17 +389,6 @@ class FeedViewController: UIViewController, UITableViewDelegate {
         if self.feedCards.count > 0 {
             self.tableView.scrollToRow(at: IndexPath(row: 0, section: 0), at: .top, animated: true)
         }
-    }
-    
-    // MARK: - Feed Component Actions
-    private func onTopAdsStateChanged(state: TopAdsFeedPlusState, row: Int) {
-        var newCard = FeedCardState()
-        newCard.topads = state
-        newCard.content.type = .topAds
-        
-        self.feedCards[row] = newCard
-        
-        self.feedCardSource.onNext(self.feedCards)
     }
     
     private func onEmptyStateButtonPressed(errorType: FeedErrorType) {
@@ -539,10 +495,8 @@ class FeedViewController: UIViewController, UITableViewDelegate {
             newCard.content.kolPost = newState
             newCard.content.type = .KOLPost
             
-            for (index, element) in self.feedCards.enumerated() {
-                if element.content.kolPost?.cardID == newState.cardID {
-                    self.feedCards[index] = newCard
-                }
+            for (index, element) in self.feedCards.enumerated() where element.content.kolPost?.cardID == newState.cardID {
+                self.feedCards[index] = newCard
             }
             
             self.feedCardSource.onNext(self.feedCards)
@@ -559,13 +513,48 @@ class FeedViewController: UIViewController, UITableViewDelegate {
             newCard.content.kolPost = newState
             newCard.content.type = .KOLPost
             
-            for (index, element) in self.feedCards.enumerated() {
-                if element.content.kolPost?.cardID == newState.cardID {
-                    self.feedCards[index] = newCard
-                }
+            for (index, element) in self.feedCards.enumerated() where element.content.kolPost?.cardID == newState.cardID {
+                 self.feedCards[index] = newCard
             }
             
             self.feedCardSource.onNext(self.feedCards)
         }
+    }
+    
+    private func onTapFavoriteTopAdsShop(state: FeedTopAdsShopState, row: Int) {
+        let loadingState = self.newFeedTopAdsShopState(oldState: state, isLoading: true)
+        self.feedCards[row] = loadingState
+        self.feedCardSource.onNext(feedCards)
+        
+        FavoriteShopRequest
+            .requestActionButtonFavoriteShop(
+                state.shopID,
+                withAdKey: "",
+                onSuccess: {  _ in
+                    var finishedCard = self.newFeedTopAdsShopState(oldState: state, isLoading: false)
+                    finishedCard.content.topads?.shop.isFavoritedShop = !(state.isFavoritedShop)
+                    
+                    self.feedCards[row] = finishedCard
+                    self.feedCardSource.onNext(self.feedCards)
+                    
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "updateFavoriteShop"), object: nil)
+                },
+                onFailure: {
+                    var finishedCard = self.newFeedTopAdsShopState(oldState: state, isLoading: false)
+                    
+                    self.feedCards[row] = finishedCard
+                    self.feedCardSource.onNext(self.feedCards)
+                }
+            )
+    }
+    
+    private func newFeedTopAdsShopState(oldState: FeedTopAdsShopState, isLoading: Bool) -> FeedCardState {
+        var newCard = FeedCardState()
+        newCard.content.type = .topAdsShop
+        newCard.content.topads = FeedCardTopAdsState()
+        newCard.content.topads?.shop = oldState
+        newCard.content.topads?.shop.buttonIsLoading = isLoading
+        
+        return newCard
     }
 }

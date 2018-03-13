@@ -6,57 +6,53 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
+import Lottie
 import Render
 import RxSwift
-import Lottie
+import UIKit
 
-class FeedComponentView: ComponentView<FeedCardState> {
+internal class FeedComponentView: ComponentView<FeedCardState> {
     
     private weak var viewController: UIViewController?
-    private var onTopAdsStateChanged: ((TopAdsFeedPlusState) -> Void)
     private var onEmptyStateButtonPressed: ((FeedErrorType) -> Void)
     private var onReloadNextPagePressed: (() -> Void)
-    private var onTapKOLLongDescription: ((FeedCardKOLPostState) -> Void)!
-    private var onTapKOLLike: ((FeedCardKOLPostState) -> Void)!
-    private var onTapFollowKOLPost: ((FeedCardKOLPostState) -> Void)!
-    private var onTapFollowKOLRecommendation: ((FeedCardKOLRecommendationState) -> Void)!
+    private var onTapKOLLongDescription: ((FeedCardKOLPostState) -> Void)
+    private var onTapKOLLike: ((FeedCardKOLPostState) -> Void)
+    private var onTapFollowKOLPost: ((FeedCardKOLPostState) -> Void)
+    private var onTapFollowKOLRecommendation: ((FeedCardKOLRecommendationState) -> Void)
+    private var onTapFavoriteTopAdsShop: ((FeedTopAdsShopState) -> Void)
     private var pageIndex = Variable(Int())
     private var scrollViewPageIndex = 0
     
-    init(viewController: UIViewController,
-         onTopAdsStateChanged: @escaping ((TopAdsFeedPlusState) -> Void),
+    internal init(viewController: UIViewController,
          onEmptyStateButtonPressed: @escaping ((FeedErrorType) -> Void),
          onReloadNextPagePressed: @escaping (() -> Void),
          onTapKOLLongDescription: @escaping ((FeedCardKOLPostState) -> Void),
          onTapKOLLike: @escaping ((FeedCardKOLPostState) -> Void),
          onTapFollowKOLPost: @escaping ((FeedCardKOLPostState) -> Void),
-         onTapFollowKOLRecommendation: @escaping ((FeedCardKOLRecommendationState) -> Void)) {
+         onTapFollowKOLRecommendation: @escaping ((FeedCardKOLRecommendationState) -> Void),
+         onTapFavoriteTopAdsShop: @escaping ((FeedTopAdsShopState) -> Void)) {
         self.viewController = viewController
-        self.onTopAdsStateChanged = onTopAdsStateChanged
         self.onEmptyStateButtonPressed = onEmptyStateButtonPressed
         self.onReloadNextPagePressed = onReloadNextPagePressed
         self.onTapKOLLongDescription = onTapKOLLongDescription
         self.onTapKOLLike = onTapKOLLike
         self.onTapFollowKOLPost = onTapFollowKOLPost
         self.onTapFollowKOLRecommendation = onTapFollowKOLRecommendation
+        self.onTapFavoriteTopAdsShop = onTapFavoriteTopAdsShop
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardState?, size: CGSize) -> NodeType {
+    override internal func construct(state: FeedCardState?, size: CGSize) -> NodeType {
         guard let state = state, let vc = self.viewController else {
             return Node<UIView> { _, _, _ in
                 
             }
         }
-        
-        let topAdsComponent = TopAdsFeedPlusComponentView(favoriteCallback: { state in
-            self.onTopAdsStateChanged(state)
-        })
         
         let kolPostComponent = FeedKOLActivityComponentView(
             onTapLongDescription: { state in
@@ -75,6 +71,12 @@ class FeedComponentView: ComponentView<FeedCardState> {
             }
         )
         
+        let topAdsShopComponent = FeedTopAdsShopComponentView(
+            onTapFavoriteButton: { state in
+                self.onTapFavoriteTopAdsShop(state)
+            }
+        )
+        
         switch state.content.type {
         case .emptyState:
             return FeedEmptyStateComponentView(onButtonPressed: self.onEmptyStateButtonPressed).construct(state: state, size: size)
@@ -88,8 +90,10 @@ class FeedComponentView: ComponentView<FeedCardState> {
             return FeedPromotionComponentView(viewController: vc).construct(state: state, size: size)
         case .toppicks:
             return FeedToppicksComponentView().construct(state: state.content, size: size)
-        case .topAds:
-            return topAdsComponent.construct(state: state.topads, size: size)
+        case .topAdsProduct:
+            return FeedTopAdsProductComponentView().construct(state: state.content.topads, size: size)
+        case .topAdsShop:
+            return topAdsShopComponent.construct(state: state.content.topads?.shop, size: size)
         case .KOLPost, .followedKOLPost:
             return kolPostComponent.construct(state: state.content, size: size)
         case .KOLRecommendation:
@@ -100,7 +104,6 @@ class FeedComponentView: ComponentView<FeedCardState> {
             return ContentProductCommunicationComponentView().construct(state: state.content.kolCTA, size: size)
         case .newProduct, .editProduct:
             return FeedActivityComponentView(viewController: vc).construct(state: state, size: size)
-            
         default:
             return Node<UIView>() { _, _, _ in
                 

@@ -8,14 +8,14 @@
 
 import Render
 
-enum ProductCellType {
+internal enum ProductCellType {
     case small
     case medium
     case large
 }
 
-class ProductCellComponentView: ComponentView<FeedCardProductState> {
-    override func construct(state: FeedCardProductState?, size: CGSize) -> NodeType {
+internal class ProductCellComponentView: ComponentView<FeedCardProductState> {
+    override internal func construct(state: FeedCardProductState?, size: CGSize) -> NodeType {
         guard let state = state else { return NilNode() }
         
         if state.isCampaign {
@@ -54,7 +54,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
     private func productPrice(state: FeedCardProductState) -> NodeType {
         let originalPriceNode: NodeType = (state.originalPrice == "Rp 0") ? NilNode() : Node<UILabel>() { label, layout, _ in
             let price = NSMutableAttributedString(string: state.originalPrice)
-            price.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, state.originalPrice.characters.count))
+            price.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSRange(location: 0, length: state.originalPrice.count))
             label.attributedText = price
             label.font = UIFont.microThemeSemibold()
             label.textColor = .tpDisabledBlackText()
@@ -138,7 +138,7 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
     private func officialStoreInfo(state: FeedCardProductState) -> NodeType {
         let shopImage = Node<UIImageView>() { imageView, layout, _ in
             imageView.setImageWith(URL(string: state.shopImageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
-            imageView.borderColor = UIColor.fromHexString("#e0e0e0")
+            imageView.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
             imageView.borderWidth = 1
             imageView.cornerRadius = 2
             imageView.contentMode = .scaleAspectFit
@@ -176,8 +176,10 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             layout.alignItems = .center
             
             view.bk_(whenTapped: {
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - Shop")
-                TPRoutes.routeURL(URL(string: state.shopURL)!)
+                if let url = URL(string: state.shopURL) {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - Shop")
+                    TPRoutes.routeURL(url)
+                }
             })
         }.add(children: [
             shopImage,
@@ -235,13 +237,18 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
                 })
             } else {
                 view.bk_(whenTapped: {
-                    if state.isRecommendationProduct {
-                        AnalyticsManager.trackEventName("r3", category: "r3User", action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) feed - \(state.recommendationProductSource)")
-                    } else {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
+                    if let url = URL(string: state.productURL) {
+                        if state.isRecommendationProduct {
+                            AnalyticsManager.trackEventName("r3", category: "r3User", action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) feed - \(state.recommendationProductSource)")
+                        } else {
+                            AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Feed - PDP")
+                        }
+                        if state.isTopAdsProduct {
+                            TopAdsService.sendClickImpression(clickURLString: state.topAdsProductClickURL)
+                        }
+                        AnalyticsManager.trackFeedProductClick(card: state, position: state.position)
+                        TPRoutes.routeURL(url)
                     }
-                    AnalyticsManager.trackFeedProductClick(card: state, position: state.position)
-                    TPRoutes.routeURL(URL(string: state.productURL)!)
                 })
             }
             
@@ -261,7 +268,13 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             }.add(child: Node<UILabel>(identifier: "more-label") { label, layout, _ in
                 layout.position = .absolute
                 
-                label.text = "+\(state.remaining!)"
+                var remaining = 0
+                
+                if let remain = state.remaining {
+                    remaining = remain
+                }
+                
+                label.text = "+\(remaining)"
                 label.font = UIFont.systemFont(ofSize: 36.0)
                 label.textColor = .white
             }) : NilNode()
@@ -278,8 +291,10 @@ class ProductCellComponentView: ComponentView<FeedCardProductState> {
             layout.padding = 5
             
             view.bk_(whenTapped: {
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - PDP")
-                TPRoutes.routeURL(URL(string: state.productURL)!)
+                if let url = URL(string: state.productURL) {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Official Store Campaign - PDP")
+                    TPRoutes.routeURL(url)
+                }
             })
         }.add(children: [
             self.productImage(state: state),
