@@ -44,6 +44,7 @@ def react_pods
     pod 'BVLinearGradient', :podspec => './react-podspecs/react-native-linear-gradient.podspec.json'
     pod 'ReactNativeSearchBar', :podspec => './react-podspecs/ReactNativeSearchBar.podspec.json'
     pod 'ToolTipMenu', :podspec => './react-podspecs/ToolTipMenu.podspec.json'
+    pod 'SentryReactNative', :podspec => './react-podspecs/SentryReactNative.podspec.json'
 end
 
 def common_pods

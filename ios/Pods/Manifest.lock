@@ -59,7 +59,7 @@ PODS:
   - DoubleConversion (1.1.5)
   - DownPicker (0.1.34)
   - DTTJailbreakDetection (0.4.0)
-  - EAIntroView (2.8.3):
+  - EAIntroView (2.12.0):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
   - EZYGradientView-ObjC (1.3)
@@ -139,6 +139,16 @@ PODS:
   - JLRoutes (1.6.4)
   - KeychainAccess (3.0.1)
   - KMNavigationBarTransition (1.1.5)
+  - KSCrash/Core (1.15.16):
+    - KSCrash/Reporting/Filters/Basic
+  - KSCrash/Recording (1.15.16):
+    - KSCrash/Recording/Tools (= 1.15.16)
+  - KSCrash/Recording/Tools (1.15.16)
+  - KSCrash/Reporting/Filters/Base (1.15.16):
+    - KSCrash/Recording
+  - KSCrash/Reporting/Filters/Basic (1.15.16):
+    - KSCrash/Recording
+    - KSCrash/Reporting/Filters/Base
   - LogEntries (0.0.1)
   - lottie-ios (2.1.5)
   - Masonry (1.0.1)
@@ -282,6 +292,16 @@ PODS:
     - RxCocoa (~> 3.0)
     - RxSwift (~> 3.0)
   - RxSwift (3.6.1)
+  - Sentry (3.10.0):
+    - Sentry/Core (= 3.10.0)
+    - Sentry/KSCrash (= 3.10.0)
+  - Sentry/Core (3.10.0)
+  - Sentry/KSCrash (3.10.0):
+    - KSCrash/Core (~> 1.15.12)
+  - SentryReactNative (0.34.0):
+    - React
+    - Sentry (~> 3.10.0)
+    - Sentry/KSCrash (~> 3.10.0)
   - SnapKit (3.2.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.1.0)
@@ -319,7 +339,7 @@ DEPENDENCIES:
   - DoubleConversion (from `./react-podspecs/DoubleConversion.podspec.json`)
   - DownPicker (~> 0.1.34)
   - DTTJailbreakDetection (~> 0.4.0)
-  - EAIntroView (~> 2.8.0)
+  - EAIntroView (~> 2.12.0)
   - EZYGradientView-ObjC (~> 1.3)
   - Fabric (~> 1.7.0)
   - FBSDKCoreKit (~> 4.19.0)
@@ -390,6 +410,7 @@ DEPENDENCIES:
   - RxCocoa (~> 3.6.1)
   - RxDataSources (~> 1.0)
   - RxSwift (~> 3.6.1)
+  - SentryReactNative (from `./react-podspecs/SentryReactNative.podspec.json`)
   - SnapKit (~> 3.2.0)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
   - SwiftLint (~> 0.25.0)
@@ -449,6 +470,8 @@ EXTERNAL SOURCES:
     :podspec: ./react-podspecs/RNSVG.podspec.json
   RNVectorIcons:
     :podspec: ./react-podspecs/RNVectorIcons.podspec.json
+  SentryReactNative:
+    :podspec: ./react-podspecs/SentryReactNative.podspec.json
   SPTPersistentCache:
     :branch: master
     :git: https://github.com/spotify/SPTPersistentCache.git
@@ -509,7 +532,7 @@ SPEC CHECKSUMS:
   DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
-  EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
+  EAIntroView: 249559079ddfdbe80e5bcb755c04c3b964b2ac27
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   EZYGradientView-ObjC: 42e23b6e36bd75b7f7288198a328cbf7bc1b5aee
   Fabric: e6be012366472553807dada21243c5ab8d904151
@@ -543,6 +566,7 @@ SPEC CHECKSUMS:
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   LogEntries: a1f16e3c9edc0d6a52209fe6cd7281ab07fb7657
   lottie-ios: 836cdbba92f62f3c6a00e37a4ce485321fe317cf
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
@@ -581,6 +605,8 @@ SPEC CHECKSUMS:
   RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
+  Sentry: 546079394a729c35ba8c10332942c25f96cac921
+  SentryReactNative: f569ae75563f006638fbb3a45f1e29fd84ada584
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
@@ -598,6 +624,6 @@ SPEC CHECKSUMS:
   yoga: 7b0269feb6b97ed7f9410a6490bd70014cea3a2b
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 6672b2ff088c31be96611548dbc02d557a063805
+PODFILE CHECKSUM: 265c45d19c5aad2f64dc5121f095caf93782b6b0
 
 COCOAPODS: 1.3.1
