@@ -9,9 +9,11 @@
 #import "TKPDSecureStorage.h"
 #import "NSDictionaryCategory.h"
 
-@implementation TKPDSecureStorage {
-    NSDictionary *_cachedKeychain;
-}
+@interface TKPDSecureStorage()
+    @property (weak, nonatomic) NSDictionary *cachedKeychain;
+@end
+
+@implementation TKPDSecureStorage
 
 #pragma mark - Factory Methods
 + (TKPDSecureStorage*)standardKeyChains
