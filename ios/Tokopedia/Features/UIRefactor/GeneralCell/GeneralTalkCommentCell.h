@@ -47,5 +47,6 @@
 + (id)newcell;
 - (IBAction)actionSmile:(id)sender;
 @property(copy) void(^onTapTalkWithUrl)(NSURL*);
+@property(copy) void(^onTapUser)(NSString*);
 
 @end

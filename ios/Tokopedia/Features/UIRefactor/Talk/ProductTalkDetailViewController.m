@@ -324,6 +324,15 @@
         [TPRoutes routeURL:url];
     };
     
+    cell.onTapUser = ^(NSString* userId) {
+        if (!weakSelf.enableDeepNavigation) {
+            return;
+        }
+        
+        NavigateViewController* controller = [NavigateViewController new];
+        [controller navigateToProfileFromViewController:self withUserID:userId];
+    };
+    
     TalkCommentList *list = _list[indexPath.row];
     
     cell.comment = list;
@@ -440,14 +449,13 @@
         return;
     }
     
-    if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
-        [NavigateViewController navigateToProductFromViewController:self
-                                                      withProductID:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"]
-                                                            andName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME]
-                                                           andPrice:nil
-                                                        andImageURL:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE]
-                                                        andShopName:nil];
-    }
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"]
+                                                        andName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME]
+                                                       andPrice:nil
+                                                    andImageURL:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE]
+                                                    andShopName:nil];
+
 }
 
 - (void)tapErrorComment {
