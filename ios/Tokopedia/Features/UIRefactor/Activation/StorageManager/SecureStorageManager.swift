@@ -126,6 +126,7 @@ internal class SecureStorageManager: NSObject {
             "total_sold_item": shopStats.shop_item_sold,
             "shop_location": shopInfo.shop_location,
             "date_shop_created": shopInfo.shop_open_since,
+            "shop_domain": shopInfo.shop_domain
         ]
         let safeDictionary = shopDictionary.avoidImplicitNil()
         self.storage.setKeychainWith(safeDictionary)
