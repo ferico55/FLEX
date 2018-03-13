@@ -10,7 +10,7 @@ import UIKit
 import CFAlertViewController
 import RxSwift
 
-@objc class NativeNPSView: UIView, Modal {
+@objc public class NativeNPSView: UIView, Modal {
     internal typealias T = UIView
     
     @IBOutlet private weak var parentView: UIView!
@@ -61,7 +61,7 @@ import RxSwift
         commonInit()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         commonInit()
     }
@@ -70,7 +70,7 @@ import RxSwift
         self.init(frame: NativeNPSView.dialogDefaultFrame)
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
 
         self.layoutIfNeeded()
@@ -91,6 +91,7 @@ import RxSwift
     }
     
     public func showNPS() {
+        AnalyticsManager.trackEventName("viewNPS", category: "NPS", action: "impression app rating", label: "")
         self.show(animated: true, isWindow: true)
     }
     
@@ -108,12 +109,15 @@ import RxSwift
     
     @objc
     internal func didTappedOnBackgroundView() {
+        AnalyticsManager.trackEventName("clickNPS", category: "NPS", action: "dismiss nps", label: "")
         dismiss(animated: true)
     }
     
     @IBAction func sendReview(_ sender: Any) {
         UserDefaults.standard.lastVersionNPSRated = Bundle.main.releaseVersionNumber
         dismiss(animated: true)
+        
+        AnalyticsManager.trackEventName("clickNPS", category: "NPS", action: "click submit button", label: "")
         
         if currentRating.value > 3 {
             let closeButton = CFAlertAction.action(title: "Rating", style: .Destructive, alignment: .justified, backgroundColor: UIColor.tpGreen(), textColor: .white) {
@@ -191,7 +195,7 @@ extension NativeNPSView {
 }
 
 extension NativeNPSView: EDStarRatingProtocol {
-    func starsSelectionChanged(_ control: EDStarRating!, rating: Float) {
+    public func starsSelectionChanged(_ control: EDStarRating!, rating: Float) {
         currentRating.value = rating
     }
 }
