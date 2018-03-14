@@ -94,6 +94,7 @@ public enum AccountTarget {
     case requestCentralizedOtp(otpType: CentralizedOTPType, modeDetail: ModeListDetail, phoneNumber: String, userId: String)
     case requestCentralizedOtpToEmail(userId: String, userEmail: String, otpType: CentralizedOTPType)
     case validateCentralizedOtp(userId: String, code: String, otpType: CentralizedOTPType)
+    case updateGCM
 }
 
 extension AccountTarget: TargetType {
@@ -115,6 +116,7 @@ extension AccountTarget: TargetType {
         case .requestCentralizedOtp: return "/otp/request"
         case .requestCentralizedOtpToEmail: return "/otp/email/request"
         case .validateCentralizedOtp: return "/otp/validate"
+        case .updateGCM: return "/api/gcm/update"
         }
     }
     
@@ -126,6 +128,7 @@ extension AccountTarget: TargetType {
         case .register: return .post
         case .resendActivationEmail, .verifyOTP, .registerPublicKey : return .post
         case .centralizedOTPModeList, .requestCentralizedOtp, .requestCentralizedOtpToEmail, .validateCentralizedOtp : return .get
+        case .updateGCM: return .post
         }
     }
     
@@ -170,6 +173,9 @@ extension AccountTarget: TargetType {
             return ["type": otpType.rawValue, "user_email": userEmail, "user": userId, "mode": "email"]
         case let .validateCentralizedOtp(userId, code, otpType):
             return ["user": userId, "code": code, "otp_type": otpType.rawValue]
+        case .updateGCM():
+            let deviceID = UserAuthentificationManager().getMyDeviceToken()
+            return ["os_type": 1, "device_id_new": deviceID]
         }
         
     }

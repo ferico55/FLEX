@@ -8,6 +8,8 @@
 
 import Foundation
 import RestKit
+import RxSwift
+
 @objc public class AuthenticationService: NSObject, VerificationModeListDelegate, CentralizedOTPDelegate {
     public static let shared = AuthenticationService() // Singleton Object
     public var login: Login?
@@ -15,7 +17,7 @@ import RestKit
     public var accountInfo: AccountInfo?
     public var socialProfile: CreatePasswordUserProfile?
     public var onLoginComplete: LoginCompletion = { _, _ in }
-    weak public var loginDelegate: AuthenticationServiceProtocol?
+    public weak var loginDelegate: AuthenticationServiceProtocol?
     
     private var didEnterCreatePassword = false
     //    Lifecycle
@@ -61,36 +63,20 @@ import RestKit
         parameter["password_type"] = "activation_code"
         self.doLogin(parameter: parameter)
     }
-    public func login(withTokocashCode code: String){
+    public func login(withTokocashCode code: String) {
         var parameter: [String: String] = [:]
         parameter["grant_type"] = "extension"
         parameter["social_type"] = "5"
         parameter["access_token"] = code
         self.doLogin(parameter: parameter)
     }
-    public func reloginAccount() {
-        let userInfo = UserAuthentificationManager().getUserLoginData()
-        let tokenType: String = userInfo?["oAuthToken.tokenType"] as? String ?? ""
-        let accessToken: String = userInfo?["oAuthToken.accessToken"] as? String ?? ""
-        let header = ["Authorization": tokenType + " " + accessToken]
-        let uuid: String = userInfo?["securityQuestionUUID"] as? String ?? ""
-        let parameter = ["uuid": uuid]
-        let request = UserLoginRequest()
-        request.accountInfo = self.accountInfo
-        request.authToken = self.authToken
-        request.completionHandler = { (login: Login?, error: Error?) in
-            if let error = error {
-                self.onLoginComplete(nil, error)
-            } else if let login = login {
-                self.login = login
-                self.analyzeLogin()
-            } else {
-                let error = NSError(domain: "Login", code: -112233, userInfo: [:])
-                self.onLoginComplete(nil, error)
-            }
-        }
-        request.authenticateWith(header: header, parameter: parameter)
+    
+    public func reloginAccount() -> Observable<Void> {
+        return AccountProvider()
+            .request(.updateGCM)
+            .mapToVoid()
     }
+    
     public func getThirdPartySignInOptions(onCompletion: @escaping SignOptionsRequestCompletion) {
         let request = SignOptionsRequest()
         request.completionHandler = onCompletion
@@ -116,7 +102,7 @@ import RestKit
             }
         }
     }
-    private func authenticateToMarketplace(_ isLoginPhoneNumber : Bool = false) {
+    private func authenticateToMarketplace(_ isLoginPhoneNumber: Bool = false) {
         self.authenticateToMarketplace(onCompletion: { (login: Login?, error: Error?) in
             if let error = error {
                 self.onLoginComplete(nil, error)
@@ -143,9 +129,9 @@ import RestKit
                 
                 self.accountInfo = info
                 self.authToken = token
-                // MARK : Login With Phone number
-                if let socialType = parameter["social_type"] , socialType == "5" {
-                    // MARK : Set to true, because login phone number doesn't need interrupt page / security question
+                // MARK: Login With Phone number
+                if let socialType = parameter["social_type"], socialType == "5" {
+                    // MARK: Set to true, because login phone number doesn't need interrupt page / security question
                     self.authenticateToMarketplace(true)
                 } else {
                     self.analyzeAccountInfo()
@@ -172,7 +158,7 @@ import RestKit
             }
         }
     }
-    private func analyzeLogin(_ isLoginPhoneNumber : Bool = false) {
+    private func analyzeLogin(_ isLoginPhoneNumber: Bool = false) {
         guard let login = self.login, let authToken = self.authToken, let accountInfo = self.accountInfo else {
             let error = NSError(domain: "Login", code: -112233, userInfo: nil)
             self.onLoginComplete(nil, error)
@@ -246,7 +232,7 @@ import RestKit
         request.getAuthToken()
     }
     
-    // MARK : VerificationList Delegate
+    // MARK: VerificationList Delegate
     public func didTapOtpMode(modeDetail: ModeListDetail, accountInfo: AccountInfo?) {
         let viewController = CentralizedOTPViewController(otpType: .securityChallenge)
         viewController.modeDetail = modeDetail
@@ -258,10 +244,9 @@ import RestKit
         UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     
-    // MARK : CentralizedOTP Delegate
-    public func didSuccessVerificationOTP(otpType: CentralizedOTPType, otpResult: COTPResponse)
-    {
-        if let uuid = otpResult.uuid , otpType == .securityChallenge {
+    // MARK: CentralizedOTP Delegate
+    public func didSuccessVerificationOTP(otpType: CentralizedOTPType, otpResult: COTPResponse) {
+        if let uuid = otpResult.uuid, otpType == .securityChallenge {
             let storage = TKPDSecureStorage.standardKeyChains()
             storage?.setKeychainWithValue(uuid, withKey: "securityQuestionUUID")
             self.authenticateToMarketplace()

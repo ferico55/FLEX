@@ -9,7 +9,7 @@
 import RxSwift
 
 internal class RequestErrorHandler: NSObject {
-    
+
     internal class func redirectToMaintenance() {
         NavigateViewController.navigateToMaintenanceViewController()
     }
@@ -21,10 +21,12 @@ internal class RequestErrorHandler: NSObject {
                 case "INVALID_REQUEST":
                     onSuccess()
                 case "REQUEST_DENIED":
-                    AuthenticationService.shared.reloginAccount()
-                    AuthenticationService.shared.onLoginComplete = { _, _ in
-                        onSuccess()
-                    }
+                    _ = AuthenticationService
+                        .shared
+                        .reloginAccount()
+                        .subscribe(onNext: {
+                            onSuccess()
+                        })
                 default:
                     break
                 }
@@ -33,6 +35,6 @@ internal class RequestErrorHandler: NSObject {
                 NotificationCenter.default.post(name: NSNotification.Name(rawValue: "NOTIFICATION_FORCE_LOGOUT"), object: nil)
             }
         }
-        
+
     }
 }
