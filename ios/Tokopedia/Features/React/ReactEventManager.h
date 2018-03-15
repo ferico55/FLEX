@@ -21,5 +21,7 @@
 - (void)popNavigation;
 - (void)sendRefreshEvent;
 - (void)sendRedirectHomeTabEvent;
+- (void)sendFavoriteShopEvent;
+- (void)sendProfileEditedEvent;
 
 @end

@@ -1866,8 +1866,6 @@
 		F977FD4C1FE8AB7F00183A85 /* MyShopAddressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3AC1FE8AB7200183A85 /* MyShopAddressViewController.m */; };
 		F977FD4D1FE8AB7F00183A85 /* MyShopAddressEditViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3AE1FE8AB7200183A85 /* MyShopAddressEditViewController.xib */; };
 		F977FD4E1FE8AB7F00183A85 /* MyShopAddressEditViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3AF1FE8AB7200183A85 /* MyShopAddressEditViewController.m */; };
-		F977FD4F1FE8AB7F00183A85 /* ProfileContactViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3B21FE8AB7200183A85 /* ProfileContactViewController.m */; };
-		F977FD501FE8AB7F00183A85 /* ProfileContactViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3B31FE8AB7200183A85 /* ProfileContactViewController.xib */; };
 		F977FD511FE8AB7F00183A85 /* TopPick.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3B61FE8AB7200183A85 /* TopPick.swift */; };
 		F977FD521FE8AB7F00183A85 /* NoResult.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3B91FE8AB7200183A85 /* NoResult.xib */; };
 		F977FD531FE8AB7F00183A85 /* NoResultView.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3BA1FE8AB7200183A85 /* NoResultView.m */; };
@@ -1886,23 +1884,6 @@
 		F977FD601FE8AB7F00183A85 /* TKPDTextView.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3D01FE8AB7200183A85 /* TKPDTextView.m */; };
 		F977FD611FE8AB7F00183A85 /* ProfileCompletionProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3D21FE8AB7300183A85 /* ProfileCompletionProgressViewController.swift */; };
 		F977FD621FE8AB7F00183A85 /* ProfileCompletionProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3D31FE8AB7300183A85 /* ProfileCompletionProgressViewController.xib */; };
-		F977FD631FE8AB7F00183A85 /* UserPageHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3D41FE8AB7300183A85 /* UserPageHeader.xib */; };
-		F977FD641FE8AB7F00183A85 /* UserPageHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3D61FE8AB7300183A85 /* UserPageHeader.m */; };
-		F977FD651FE8AB7F00183A85 /* ProfileBiodataCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3D81FE8AB7300183A85 /* ProfileBiodataCell.xib */; };
-		F977FD661FE8AB7F00183A85 /* ProfileBiodataShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3D91FE8AB7300183A85 /* ProfileBiodataShopCell.m */; };
-		F977FD671FE8AB7F00183A85 /* ProfileBiodataCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3DA1FE8AB7300183A85 /* ProfileBiodataCell.m */; };
-		F977FD681FE8AB7F00183A85 /* ProfileBiodataShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3DB1FE8AB7300183A85 /* ProfileBiodataShopCell.xib */; };
-		F977FD691FE8AB7F00183A85 /* PenilaianUserCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3E11FE8AB7300183A85 /* PenilaianUserCell.m */; };
-		F977FD6A1FE8AB7F00183A85 /* PenilaianUserCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3E21FE8AB7300183A85 /* PenilaianUserCell.xib */; };
-		F977FD6B1FE8AB7F00183A85 /* UserContainerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3E41FE8AB7300183A85 /* UserContainerViewController.xib */; };
-		F977FD6C1FE8AB7F00183A85 /* UserProfileBiodataViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3E51FE8AB7300183A85 /* UserProfileBiodataViewController.xib */; };
-		F977FD6D1FE8AB7F00183A85 /* UserProfileBiodataViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3E71FE8AB7300183A85 /* UserProfileBiodataViewController.m */; };
-		F977FD6E1FE8AB7F00183A85 /* UserContainerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3E81FE8AB7300183A85 /* UserContainerViewController.m */; };
-		F977FD6F1FE8AB7F00183A85 /* ProfileFavoriteShopViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3EA1FE8AB7300183A85 /* ProfileFavoriteShopViewController.m */; };
-		F977FD701FE8AB7F00183A85 /* ProfileFavoriteShopViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3EB1FE8AB7300183A85 /* ProfileFavoriteShopViewController.xib */; };
-		F977FD711FE8AB7F00183A85 /* ProfileFavoriteShopCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3EC1FE8AB7300183A85 /* ProfileFavoriteShopCell.m */; };
-		F977FD721FE8AB7F00183A85 /* ProfileFavoriteShopCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F3ED1FE8AB7300183A85 /* ProfileFavoriteShopCell.xib */; };
-		F977FD731FE8AB7F00183A85 /* ProfileFavoriteRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3F01FE8AB7300183A85 /* ProfileFavoriteRequest.swift */; };
 		F977FD741FE8AB7F00183A85 /* TopPicksResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3F11FE8AB7300183A85 /* TopPicksResponseData.swift */; };
 		F977FD751FE8AB7F00183A85 /* RequestAddress.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F3F31FE8AB7300183A85 /* RequestAddress.m */; };
 		F977FD761FE8AB7F00183A85 /* AddressRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F3F51FE8AB7300183A85 /* AddressRequest.swift */; };
@@ -4786,9 +4767,6 @@
 		F977F3AD1FE8AB7200183A85 /* MyShopAddressDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyShopAddressDetailViewController.h; sourceTree = "<group>"; };
 		F977F3AE1FE8AB7200183A85 /* MyShopAddressEditViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyShopAddressEditViewController.xib; sourceTree = "<group>"; };
 		F977F3AF1FE8AB7200183A85 /* MyShopAddressEditViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyShopAddressEditViewController.m; sourceTree = "<group>"; };
-		F977F3B21FE8AB7200183A85 /* ProfileContactViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileContactViewController.m; sourceTree = "<group>"; };
-		F977F3B31FE8AB7200183A85 /* ProfileContactViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileContactViewController.xib; sourceTree = "<group>"; };
-		F977F3B41FE8AB7200183A85 /* ProfileContactViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileContactViewController.h; sourceTree = "<group>"; };
 		F977F3B51FE8AB7200183A85 /* MiniSlideData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MiniSlideData.h; sourceTree = "<group>"; };
 		F977F3B61FE8AB7200183A85 /* TopPick.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPick.swift; sourceTree = "<group>"; };
 		F977F3B81FE8AB7200183A85 /* ScrollViewSimultaneousGesture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewSimultaneousGesture.h; sourceTree = "<group>"; };
@@ -4818,32 +4796,7 @@
 		F977F3D01FE8AB7200183A85 /* TKPDTextView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TKPDTextView.m; sourceTree = "<group>"; };
 		F977F3D21FE8AB7300183A85 /* ProfileCompletionProgressViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileCompletionProgressViewController.swift; sourceTree = "<group>"; };
 		F977F3D31FE8AB7300183A85 /* ProfileCompletionProgressViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileCompletionProgressViewController.xib; sourceTree = "<group>"; };
-		F977F3D41FE8AB7300183A85 /* UserPageHeader.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserPageHeader.xib; sourceTree = "<group>"; };
 		F977F3D51FE8AB7300183A85 /* profile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = profile.h; sourceTree = "<group>"; };
-		F977F3D61FE8AB7300183A85 /* UserPageHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserPageHeader.m; sourceTree = "<group>"; };
-		F977F3D81FE8AB7300183A85 /* ProfileBiodataCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileBiodataCell.xib; sourceTree = "<group>"; };
-		F977F3D91FE8AB7300183A85 /* ProfileBiodataShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileBiodataShopCell.m; sourceTree = "<group>"; };
-		F977F3DA1FE8AB7300183A85 /* ProfileBiodataCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileBiodataCell.m; sourceTree = "<group>"; };
-		F977F3DB1FE8AB7300183A85 /* ProfileBiodataShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileBiodataShopCell.xib; sourceTree = "<group>"; };
-		F977F3DC1FE8AB7300183A85 /* ProfileBiodataCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileBiodataCell.h; sourceTree = "<group>"; };
-		F977F3DD1FE8AB7300183A85 /* ProfileBiodataShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileBiodataShopCell.h; sourceTree = "<group>"; };
-		F977F3DE1FE8AB7300183A85 /* UserContainerViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserContainerViewController.h; sourceTree = "<group>"; };
-		F977F3DF1FE8AB7300183A85 /* UserProfileBiodataViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserProfileBiodataViewController.h; sourceTree = "<group>"; };
-		F977F3E11FE8AB7300183A85 /* PenilaianUserCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PenilaianUserCell.m; sourceTree = "<group>"; };
-		F977F3E21FE8AB7300183A85 /* PenilaianUserCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PenilaianUserCell.xib; sourceTree = "<group>"; };
-		F977F3E31FE8AB7300183A85 /* PenilaianUserCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PenilaianUserCell.h; sourceTree = "<group>"; };
-		F977F3E41FE8AB7300183A85 /* UserContainerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserContainerViewController.xib; sourceTree = "<group>"; };
-		F977F3E51FE8AB7300183A85 /* UserProfileBiodataViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserProfileBiodataViewController.xib; sourceTree = "<group>"; };
-		F977F3E61FE8AB7300183A85 /* UserPageHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserPageHeader.h; sourceTree = "<group>"; };
-		F977F3E71FE8AB7300183A85 /* UserProfileBiodataViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserProfileBiodataViewController.m; sourceTree = "<group>"; };
-		F977F3E81FE8AB7300183A85 /* UserContainerViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserContainerViewController.m; sourceTree = "<group>"; };
-		F977F3EA1FE8AB7300183A85 /* ProfileFavoriteShopViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileFavoriteShopViewController.m; sourceTree = "<group>"; };
-		F977F3EB1FE8AB7300183A85 /* ProfileFavoriteShopViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopViewController.xib; sourceTree = "<group>"; };
-		F977F3EC1FE8AB7300183A85 /* ProfileFavoriteShopCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProfileFavoriteShopCell.m; sourceTree = "<group>"; };
-		F977F3ED1FE8AB7300183A85 /* ProfileFavoriteShopCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ProfileFavoriteShopCell.xib; sourceTree = "<group>"; };
-		F977F3EE1FE8AB7300183A85 /* ProfileFavoriteShopCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileFavoriteShopCell.h; sourceTree = "<group>"; };
-		F977F3EF1FE8AB7300183A85 /* ProfileFavoriteShopViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProfileFavoriteShopViewController.h; sourceTree = "<group>"; };
-		F977F3F01FE8AB7300183A85 /* ProfileFavoriteRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileFavoriteRequest.swift; sourceTree = "<group>"; };
 		F977F3F11FE8AB7300183A85 /* TopPicksResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPicksResponseData.swift; sourceTree = "<group>"; };
 		F977F3F31FE8AB7300183A85 /* RequestAddress.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestAddress.m; sourceTree = "<group>"; };
 		F977F3F41FE8AB7300183A85 /* AddressCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddressCell.h; sourceTree = "<group>"; };
@@ -9045,7 +8998,6 @@
 				F977F44A1FE8AB7300183A85 /* OfficialStore */,
 				F977F4F11FE8AB7300183A85 /* Onboarding */,
 				F977F3041FE8AB7200183A85 /* Product */,
-				F977F3B01FE8AB7200183A85 /* Profile */,
 				F977F4F41FE8AB7300183A85 /* Promo */,
 				F977F4BD1FE8AB7300183A85 /* Pulsa */,
 				F977F46B1FE8AB7300183A85 /* ResolutionCenter */,
@@ -10839,24 +10791,6 @@
 			path = MyShopAddress;
 			sourceTree = "<group>";
 		};
-		F977F3B01FE8AB7200183A85 /* Profile */ = {
-			isa = PBXGroup;
-			children = (
-				F977F3B11FE8AB7200183A85 /* Contact */,
-			);
-			path = Profile;
-			sourceTree = "<group>";
-		};
-		F977F3B11FE8AB7200183A85 /* Contact */ = {
-			isa = PBXGroup;
-			children = (
-				F977F3B41FE8AB7200183A85 /* ProfileContactViewController.h */,
-				F977F3B21FE8AB7200183A85 /* ProfileContactViewController.m */,
-				F977F3B31FE8AB7200183A85 /* ProfileContactViewController.xib */,
-			);
-			path = Contact;
-			sourceTree = "<group>";
-		};
 		F977F3B71FE8AB7200183A85 /* CustomViews */ = {
 			isa = PBXGroup;
 			children = (
@@ -10892,60 +10826,11 @@
 		F977F3D11FE8AB7200183A85 /* UserPageView */ = {
 			isa = PBXGroup;
 			children = (
-				F977F3D71FE8AB7300183A85 /* Biodata */,
-				F977F3E91FE8AB7300183A85 /* FavoriteShop */,
-				F977F3E01FE8AB7300183A85 /* PenilaianUser */,
 				F977F3D51FE8AB7300183A85 /* profile.h */,
 				F977F3D21FE8AB7300183A85 /* ProfileCompletionProgressViewController.swift */,
 				F977F3D31FE8AB7300183A85 /* ProfileCompletionProgressViewController.xib */,
-				F977F3DE1FE8AB7300183A85 /* UserContainerViewController.h */,
-				F977F3E81FE8AB7300183A85 /* UserContainerViewController.m */,
-				F977F3E41FE8AB7300183A85 /* UserContainerViewController.xib */,
-				F977F3E61FE8AB7300183A85 /* UserPageHeader.h */,
-				F977F3D61FE8AB7300183A85 /* UserPageHeader.m */,
-				F977F3D41FE8AB7300183A85 /* UserPageHeader.xib */,
-				F977F3DF1FE8AB7300183A85 /* UserProfileBiodataViewController.h */,
-				F977F3E71FE8AB7300183A85 /* UserProfileBiodataViewController.m */,
-				F977F3E51FE8AB7300183A85 /* UserProfileBiodataViewController.xib */,
 			);
 			path = UserPageView;
-			sourceTree = "<group>";
-		};
-		F977F3D71FE8AB7300183A85 /* Biodata */ = {
-			isa = PBXGroup;
-			children = (
-				F977F3DC1FE8AB7300183A85 /* ProfileBiodataCell.h */,
-				F977F3DA1FE8AB7300183A85 /* ProfileBiodataCell.m */,
-				F977F3D81FE8AB7300183A85 /* ProfileBiodataCell.xib */,
-				F977F3DD1FE8AB7300183A85 /* ProfileBiodataShopCell.h */,
-				F977F3D91FE8AB7300183A85 /* ProfileBiodataShopCell.m */,
-				F977F3DB1FE8AB7300183A85 /* ProfileBiodataShopCell.xib */,
-			);
-			path = Biodata;
-			sourceTree = "<group>";
-		};
-		F977F3E01FE8AB7300183A85 /* PenilaianUser */ = {
-			isa = PBXGroup;
-			children = (
-				F977F3E31FE8AB7300183A85 /* PenilaianUserCell.h */,
-				F977F3E11FE8AB7300183A85 /* PenilaianUserCell.m */,
-				F977F3E21FE8AB7300183A85 /* PenilaianUserCell.xib */,
-			);
-			path = PenilaianUser;
-			sourceTree = "<group>";
-		};
-		F977F3E91FE8AB7300183A85 /* FavoriteShop */ = {
-			isa = PBXGroup;
-			children = (
-				F977F3F01FE8AB7300183A85 /* ProfileFavoriteRequest.swift */,
-				F977F3EE1FE8AB7300183A85 /* ProfileFavoriteShopCell.h */,
-				F977F3EC1FE8AB7300183A85 /* ProfileFavoriteShopCell.m */,
-				F977F3ED1FE8AB7300183A85 /* ProfileFavoriteShopCell.xib */,
-				F977F3EF1FE8AB7300183A85 /* ProfileFavoriteShopViewController.h */,
-				F977F3EA1FE8AB7300183A85 /* ProfileFavoriteShopViewController.m */,
-				F977F3EB1FE8AB7300183A85 /* ProfileFavoriteShopViewController.xib */,
-			);
-			path = FavoriteShop;
 			sourceTree = "<group>";
 		};
 		F977F3F21FE8AB7300183A85 /* Address */ = {
@@ -12059,7 +11944,6 @@
 				F977FD091FE8AB7E00183A85 /* ProductListMyShopFilterViewController.xib in Resources */,
 				F977FD2C1FE8AB7F00183A85 /* SearchViewController.xib in Resources */,
 				F977FAA71FE8AB7A00183A85 /* TransactionCartCostView.xib in Resources */,
-				F977FD6C1FE8AB7F00183A85 /* UserProfileBiodataViewController.xib in Resources */,
 				F977FD301FE8AB7F00183A85 /* SearchAutoCompleteCell.xib in Resources */,
 				F977FABB1FE8AB7A00183A85 /* SettingBankDetailViewController.xib in Resources */,
 				92A4CBB6201731CC00C42D37 /* SellerInfoInboxFilterCellView.xib in Resources */,
@@ -12073,7 +11957,6 @@
 				F977FC811FE8AB7D00183A85 /* DetailStatisticViewController.xib in Resources */,
 				F977FB5A1FE8AB7B00183A85 /* EditSolutionSellerViewController.xib in Resources */,
 				F977FCCE1FE8AB7E00183A85 /* Login.storyboard in Resources */,
-				F977FD501FE8AB7F00183A85 /* ProfileContactViewController.xib in Resources */,
 				F977FD561FE8AB7F00183A85 /* StarsRateView.xib in Resources */,
 				F977FB601FE8AB7B00183A85 /* EditProductTroubleCell.xib in Resources */,
 				F97700BC1FE8AB8600183A85 /* SimpleLineIcons.ttf in Resources */,
@@ -12134,7 +12017,6 @@
 				F977FE2C1FE8AB8100183A85 /* RegisterEmailViewController.xib in Resources */,
 				F977FB0A1FE8AB7B00183A85 /* GeneralNoResult.xib in Resources */,
 				F977FAC01FE8AB7A00183A85 /* SettingBankNameCell.xib in Resources */,
-				F977FD681FE8AB7F00183A85 /* ProfileBiodataShopCell.xib in Resources */,
 				F977FCB61FE8AB7E00183A85 /* UserRequest.graphql in Resources */,
 				F977FCA91FE8AB7E00183A85 /* ShopDescriptionView.xib in Resources */,
 				F977FE5C1FE8AB8100183A85 /* FeedDetailViewController.graphql in Resources */,
@@ -12148,7 +12030,6 @@
 				F977FAC61FE8AB7A00183A85 /* SettingAddressViewController.xib in Resources */,
 				F977FDFC1FE8AB8100183A85 /* PulsaProductViewController.xib in Resources */,
 				F954C45A1FC55B6D008C0B30 /* activateWishlist.json in Resources */,
-				F977FD631FE8AB7F00183A85 /* UserPageHeader.xib in Resources */,
 				F977FB301FE8AB7B00183A85 /* HeaderCollectionReusableView.xib in Resources */,
 				F954C45E1FC55B6D008C0B30 /* deactivateWishlist.json in Resources */,
 				F977FC661FE8AB7D00183A85 /* CatalogSellerViewController.xib in Resources */,
@@ -12168,7 +12049,6 @@
 				F977FC3D1FE8AB7D00183A85 /* AlertListView.xib in Resources */,
 				34E722292015EDC700CFE581 /* TopAdsHeadlineView.xib in Resources */,
 				F977FCDA1FE8AB7E00183A85 /* MyShopEtalaseEditViewController.xib in Resources */,
-				F977FD701FE8AB7F00183A85 /* ProfileFavoriteShopViewController.xib in Resources */,
 				F977FD481FE8AB7F00183A85 /* ReportViewController.xib in Resources */,
 				F977FA601FE8AB7900183A85 /* DistrictViewController.xib in Resources */,
 				F97700B51FE8AB8600183A85 /* Entypo.ttf in Resources */,
@@ -12192,7 +12072,6 @@
 				F977FACA1FE8AB7A00183A85 /* SettingAddressDetailViewController.xib in Resources */,
 				F954C4501FC55B6D008C0B30 /* icon_home@2x.png in Resources */,
 				F977FAC81FE8AB7A00183A85 /* SettingAddressExpandedCell.xib in Resources */,
-				F977FD651FE8AB7F00183A85 /* ProfileBiodataCell.xib in Resources */,
 				F977FBC31FE8AB7C00183A85 /* OrderDetailProductInformationCell.xib in Resources */,
 				F977FDCC1FE8AB8000183A85 /* ResolutionCenterChooseProblemViewController.xib in Resources */,
 				E5D8A57C2010A311003E66BA /* NoAccountViewController.xib in Resources */,
@@ -12362,7 +12241,6 @@
 				F977FC871FE8AB7D00183A85 /* EditShopNoteViewCell.xib in Resources */,
 				F977FD8C1FE8AB8000183A85 /* WebViewInvoiceViewController.xib in Resources */,
 				F954C45B1FC55B6D008C0B30 /* badge_official_small@2x.png in Resources */,
-				F977FD6A1FE8AB7F00183A85 /* PenilaianUserCell.xib in Resources */,
 				F977FDBB1FE8AB8000183A85 /* FilterLocationViewController.xib in Resources */,
 				F977FB091FE8AB7B00183A85 /* GeneralCheckmarkCell.xib in Resources */,
 				F977FBDD1FE8AB7C00183A85 /* RejectReasonEmptyStockCell.xib in Resources */,
@@ -12451,7 +12329,6 @@
 				F977FB201FE8AB7B00183A85 /* InboxTicketSplitViewController.xib in Resources */,
 				F977FB2C1FE8AB7B00183A85 /* RetryCollectionReusableView.xib in Resources */,
 				F977FE0A1FE8AB8100183A85 /* PulsaViewController.xib in Resources */,
-				F977FD6B1FE8AB7F00183A85 /* UserContainerViewController.xib in Resources */,
 				F977FAA01FE8AB7A00183A85 /* TransactionCartHeaderView.xib in Resources */,
 				F977FCAA1FE8AB7E00183A85 /* ShopStatView.xib in Resources */,
 				F977FD2F1FE8AB7F00183A85 /* SearchAutoCompleteViewController.xib in Resources */,
@@ -12460,7 +12337,6 @@
 				F977FBBD1FE8AB7C00183A85 /* OrderDetailViewController.xib in Resources */,
 				F772714D20355FDB00D959AF /* TokoCashActivationOTPViewController.xib in Resources */,
 				F977FC0A1FE8AB7C00183A85 /* ShipmentLocationViewCell.xib in Resources */,
-				F977FD721FE8AB7F00183A85 /* ProfileFavoriteShopCell.xib in Resources */,
 				F977FAAD1FE8AB7A00183A85 /* ProfileSettingViewController.xib in Resources */,
 				F977FC321FE8AB7D00183A85 /* CustomNotificationView.xib in Resources */,
 				F977FBCC1FE8AB7C00183A85 /* OrderDateView.xib in Resources */,
@@ -12954,7 +12830,6 @@
 				F97700B31FE8AB8600183A85 /* LabelCopyable.swift in Sources */,
 				848FA7051FEBF8BF00A22EDE /* RCProofViewController.swift in Sources */,
 				F977FA8F1FE8AB7A00183A85 /* TransactionShipmentATCTableViewCell.m in Sources */,
-				F977FD6F1FE8AB7F00183A85 /* ProfileFavoriteShopViewController.m in Sources */,
 				F977FE1B1FE8AB8100183A85 /* MyShopNoteDetailViewController.m in Sources */,
 				E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */,
 				62C771D61FF33C3500F66527 /* WishListObject.m in Sources */,
@@ -13305,7 +13180,6 @@
 				F977FBFC1FE8AB7C00183A85 /* TrackOrderViewController.m in Sources */,
 				62C770B41FF33C3300F66527 /* OrderOrder.m in Sources */,
 				F977FD101FE8AB7E00183A85 /* RequestMoveTo.m in Sources */,
-				F977FD661FE8AB7F00183A85 /* ProfileBiodataShopCell.m in Sources */,
 				62C7712E1FF33C3400F66527 /* HotlistDetail.m in Sources */,
 				F977FC1C1FE8AB7C00183A85 /* ReplacementListHeaderView.swift in Sources */,
 				62C770451FF33C3200F66527 /* GooglePlaceDetailResults.m in Sources */,
@@ -13347,7 +13221,6 @@
 				62C770161FF33C3200F66527 /* TxOrderConfirmedDetail.m in Sources */,
 				62C770621FF33C3200F66527 /* ProductImages.m in Sources */,
 				F772716C20355FDB00D959AF /* TokoCashMoveToSaldoSuccessNavigator.swift in Sources */,
-				F977FD6D1FE8AB7F00183A85 /* UserProfileBiodataViewController.m in Sources */,
 				F977FC611FE8AB7D00183A85 /* TKPImagePickerUIDelegate.swift in Sources */,
 				F977FCC01FE8AB7E00183A85 /* ChangePhoneNumberViewController.swift in Sources */,
 				62C7704F1FF33C3200F66527 /* InboxTicketResult.m in Sources */,
@@ -13442,7 +13315,6 @@
 				62C771491FF33C3400F66527 /* ShippingContact.m in Sources */,
 				62C7706C1FF33C3200F66527 /* ShopInfo.m in Sources */,
 				DADB9F5C1F3C46CF002B1FAE /* MHVerticalTabBar.m in Sources */,
-				F977FD6E1FE8AB7F00183A85 /* UserContainerViewController.m in Sources */,
 				E501C0E02004DC03005A01E8 /* DeviceIdentifier.swift in Sources */,
 				5256A84320170BBC000262F7 /* FeedAnalyticsManager.swift in Sources */,
 				62691B1C203D8A99008DC687 /* FeedCardTopAdsState.swift in Sources */,
@@ -13631,7 +13503,6 @@
 				F772719920355FDC00D959AF /* TokoCashHelpNavigator.swift in Sources */,
 				62C7701E1FF33C3200F66527 /* CartShipmentForm.swift in Sources */,
 				F977FA831FE8AB7A00183A85 /* OneClickEditViewController.swift in Sources */,
-				F977FD4F1FE8AB7F00183A85 /* ProfileContactViewController.m in Sources */,
 				924B14FA200DB28A00CB65D2 /* AIRGoogleMapManager.m in Sources */,
 				F977FCCC1FE8AB7E00183A85 /* TouchIdPromptViewController.swift in Sources */,
 				F977FCD11FE8AB7E00183A85 /* LoginPreference.swift in Sources */,
@@ -13736,7 +13607,6 @@
 				F977FA521FE8AB7900183A85 /* CatalogInfo+Referable.swift in Sources */,
 				F977FB7A1FE8AB7B00183A85 /* FilterCategoryViewCell.m in Sources */,
 				F977FB171FE8AB7B00183A85 /* AddressViewModel.m in Sources */,
-				F977FD711FE8AB7F00183A85 /* ProfileFavoriteShopCell.m in Sources */,
 				62C76FF01FF33C3200F66527 /* TransactionAddressShippingForm.m in Sources */,
 				F977FC881FE8AB7D00183A85 /* EditShopNoteViewCell.m in Sources */,
 				DADB9F5F1F3C46CF002B1FAE /* README.md in Sources */,
@@ -13996,7 +13866,6 @@
 				62C771C11FF33C3500F66527 /* SimpleFavoritedShop.m in Sources */,
 				F977FA1C1FE8AB7900183A85 /* ScroogeTarget.swift in Sources */,
 				F977FB9C1FE8AB7C00183A85 /* FilterSalesTransactionListViewController.m in Sources */,
-				F977FD671FE8AB7F00183A85 /* ProfileBiodataCell.m in Sources */,
 				F977FB2A1FE8AB7B00183A85 /* TopAdsFeedPlusComponentView.swift in Sources */,
 				F977FC241FE8AB7D00183A85 /* ReplacementDetailViewController.swift in Sources */,
 				7A4672051EB2FEB400A72105 /* AppDelegate.m in Sources */,
@@ -14254,7 +14123,6 @@
 				F977FA501FE8AB7900183A85 /* AppSharing+Referable.swift in Sources */,
 				F7D8CA3D2017556500725BDB /* ViewModelType.swift in Sources */,
 				F977FC4E1FE8AB7D00183A85 /* AlertListBankView.m in Sources */,
-				F977FD691FE8AB7F00183A85 /* PenilaianUserCell.m in Sources */,
 				F977FD2A1FE8AB7F00183A85 /* SearchViewController.m in Sources */,
 				F977FE4A1FE8AB8100183A85 /* FeedDetailState.swift in Sources */,
 				F977FBD41FE8AB7C00183A85 /* RejectOrderRequest.m in Sources */,
@@ -14296,7 +14164,6 @@
 				E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */,
 				62C7712B1FF33C3400F66527 /* SearchAutoCompleteHotlist.m in Sources */,
 				F977FA7A1FE8AB7A00183A85 /* OneClickRegisterCell.swift in Sources */,
-				F977FD641FE8AB7F00183A85 /* UserPageHeader.m in Sources */,
 				62C7709B1FF33C3300F66527 /* InboxResolutionCenter.m in Sources */,
 				62C771891FF33C3400F66527 /* ProfileInfoResult.m in Sources */,
 				F977FCDB1FE8AB7E00183A85 /* TopPicksWidgetViewController.swift in Sources */,
@@ -14433,7 +14300,6 @@
 				62C770AB1FF33C3300F66527 /* CategoryData.swift in Sources */,
 				F977FBE51FE8AB7C00183A85 /* RejectReasonWrongPriceCell.m in Sources */,
 				F977FBF61FE8AB7C00183A85 /* FuzzySearchData.swift in Sources */,
-				F977FD731FE8AB7F00183A85 /* ProfileFavoriteRequest.swift in Sources */,
 				F977FCE41FE8AB7E00183A85 /* DetailProductVideoTableViewCell.swift in Sources */,
 				62C771A01FF33C3500F66527 /* WalletData.swift in Sources */,
 				62C771AD1FF33C3500F66527 /* APIAction.swift in Sources */,

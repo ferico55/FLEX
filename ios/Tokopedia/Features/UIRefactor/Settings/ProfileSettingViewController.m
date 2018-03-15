@@ -15,7 +15,6 @@
 #import "SettingPrivacyViewController.h"
 #import "SettingNotificationViewController.h"
 #import "SettingUserProfileViewController.h"
-#import "UserContainerViewController.h"
 #import "Tokopedia-Swift.h"
 
 #pragma mark - Profile Setting View Controller
@@ -144,14 +143,6 @@
             case 0: {
                 //button edit profile action
                 SettingUserProfileViewController *vc = [SettingUserProfileViewController new];
-                
-                if ([[self.navigationController.viewControllers objectAtIndex:1] isKindOfClass:[UserContainerViewController class]]) {
-                    UserContainerViewController *userContainer = [self.navigationController.viewControllers objectAtIndex:1];
-                    if ([userContainer conformsToProtocol:@protocol(SettingUserProfileDelegate) ]) {
-                        vc.delegate = (id <SettingUserProfileDelegate>)userContainer;
-                    }
-                }
-                
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

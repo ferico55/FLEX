@@ -28,6 +28,7 @@
 #import "UIView+HVDLayout.h"
 
 #import "Tokopedia-Swift.h"
+#import "ReactEventManager.h"
 
 #pragma mark - Profile Edit View Controller
 
@@ -79,6 +80,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
 // Photo picker
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
 
+@property (strong, nonatomic) ReactEventManager *reactEventManager;
+
 @end
 
 @implementation SettingUserProfileViewController
@@ -89,6 +92,7 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [super viewDidLoad];
     self.title = @"Biodata Diri";
     [self requestGetData];
+    _reactEventManager = [[[UIApplication sharedApplication] reactBridge] moduleForClass:[ReactEventManager class]];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -213,6 +217,9 @@ typedef NS_ENUM(NSInteger, PickerView) {
     if ([_delegate respondsToSelector:@selector(successEditUserProfile)]) {
         [_delegate successEditUserProfile];
     }
+    
+    
+    [_reactEventManager sendProfileEditedEvent];
 }
 
 - (void)showUserData:(DataUser *)userData {
@@ -486,6 +493,8 @@ typedef NS_ENUM(NSInteger, PickerView) {
     [[NSNotificationCenter defaultCenter] postNotificationName:kTKPD_EDITPROFILEPICTUREPOSTNOTIFICATIONNAMEKEY
                                                         object:nil
                                                       userInfo:userInfo];
+    
+    [_reactEventManager sendProfileEditedEvent];
 }
 
 @end

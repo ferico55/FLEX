@@ -50,7 +50,10 @@
                    EMAIL_PASSWORD(@"gunadi.qc@tokopedia.com", @"gun123qwerty"),
                    EMAIL_PASSWORD(@"andhika.djaffri+1@tokopedia.com", @"tokopedia789"),
                    EMAIL_PASSWORD(@"andhika.djaffri+2@tokopedia.com", @"tokopedia789"),
-                   EMAIL_PASSWORD(@"tri.sujarwo+0@tokopedia.com", @"Tokopedia1")
+                   EMAIL_PASSWORD(@"tri.sujarwo+0@tokopedia.com", @"Tokopedia1"),
+                   EMAIL_PASSWORD(@"akunmrmr@gmail.com", @"akunstarwars123"),
+                   EMAIL_PASSWORD(@"katherine.oliviani+prod2@tokopedia.com", @"1234567890"),
+                   EMAIL_PASSWORD(@"thessa.silviana+17@tokopedia.com", @"tokped1"),
                    })
                 );
 #endif

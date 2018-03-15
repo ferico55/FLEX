@@ -28,13 +28,13 @@ public class TPRoutes: NSObject {
         let navigator = NavigateViewController()
 
         registerDigitalRouting()
-        
+
         // MARK: Root
         JLRoutes.global().addRoute("/pop-to-root") { (_: [String: Any]) -> Bool in
             UIApplication.topViewController()?.navigationController?.popViewController(animated: true)
             return true
         }
-        
+
         JLRoutes.global().addRoute("/") { (_: [String: Any]) -> Bool in
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
@@ -43,7 +43,7 @@ public class TPRoutes: NSObject {
             }
             return true
         }
-        
+
         JLRoutes.global().addRoute("") { (_: [String: Any]) -> Bool in
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
@@ -96,7 +96,7 @@ public class TPRoutes: NSObject {
                 let by = params["sort"] as? String else {
                 return false
             }
-            
+
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId, withEtalaseId: etalaseId, search: keyword, sort: by)
             return true
         }
@@ -105,7 +105,7 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String: Any]) -> Bool in
             guard let shopId = params["shopId"] as? String,
                 let etalaseId = params["etalaseId"] as? String else {
-                    return false
+                return false
             }
             navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId, withEtalaseId: etalaseId)
             return true
@@ -172,16 +172,16 @@ public class TPRoutes: NSObject {
 
         // MARK: Product Review (Native)
         JLRoutes.global().addRoute("product/:productId/review") { (params: [String: Any]) -> Bool in
-guard let productId = params["productId"] as? String else { return true }
+            guard let productId = params["productId"] as? String else { return true }
             let userManager = UserAuthentificationManager()
             let auth = userManager.getUserLoginData()
-            
+
             let viewController = ReactViewController(moduleName: "ProductReviewScreen", props: ["productID": productId as AnyObject, "authInfo": auth as AnyObject])
             viewController.hidesBottomBarWhenPushed = true
             UIApplication.topViewController()?
                 .navigationController?
                 .pushViewController(viewController, animated: true)
-            
+
             return true
         }
 
@@ -264,19 +264,9 @@ guard let productId = params["productId"] as? String else { return true }
         }
 
         JLRoutes.global().unmatchedURLHandler = { _, url, _ in
-//             if url?.scheme == "tokopedia" {
-//                 let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
-                
-//                 alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
-//                     UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
-//                 }))
-                
-//                 alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
-                
-//                 UIApplication.topViewController()?.present(alert, animated: true)
-//             } else {
-                self.openWebView(url!)
-//             }
+            if let url = url {
+                self.openWebView(url)
+            }
         }
 
         // MARK: Digital Category - Tokocash (Native)
@@ -288,14 +278,14 @@ guard let productId = params["productId"] as? String else { return true }
                 .pushViewController(viewController, animated: false)
             return true
         }
-        
-        JLRoutes.global().addRoute("/wallet/activation") { (params: [String: Any]) -> Bool in
+
+        JLRoutes.global().addRoute("/wallet/activation") { (_: [String: Any]) -> Bool in
             guard let nc = UIApplication.topViewController()?.navigationController else { return false }
             let vc = TokoCashActivationViewController()
             nc.pushViewController(vc, animated: true)
             return true
         }
-        
+
         JLRoutes.global().addRoute("/wallet") { (params: [String: Any]) -> Bool in
             guard let nc = UIApplication.topViewController()?.navigationController else { return false }
             let topUpVisible = params["top_up_visible"] as? String == "true"
@@ -406,7 +396,7 @@ guard let productId = params["productId"] as? String else { return true }
         JLRoutes.global().addRoute("/activation/:activationCode") { (params: [String: Any]) -> Bool in
             guard let activationCode = params["activationCode"] as? String,
                 let attempt = params["a"] as? String else {
-                    return false
+                return false
             }
 
             let userManager = UserAuthentificationManager()
@@ -630,7 +620,7 @@ guard let productId = params["productId"] as? String else { return true }
         JLRoutes.global().addRoute("/toppicks/:toppicksName") { (params: [String: Any]) -> Bool in
             let url = params[kJLRouteURLKey] as? NSURL
             guard let urlString = url?.absoluteString else { return true }
-            
+
             var parameters = params
             parameters[kJLRouteURLKey] = addFlagApp(urlString: urlString)
 
@@ -758,7 +748,7 @@ guard let productId = params["productId"] as? String else { return true }
 
         JLRoutes.global().addRoute("/category/:categoryId") { (params: [String: Any]) -> Bool in
             guard let categoryId = params["categoryId"] as? String else { return false }
-            
+
             var categoryName: String = (params["categoryName"] as? String) ?? ""
             categoryName = categoryName.replacingOccurrences(of: "+", with: " ")
 
@@ -772,7 +762,7 @@ guard let productId = params["productId"] as? String else { return true }
 
             let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject])
             viewController.hidesBottomBarWhenPushed = true
-                                                             
+
             UIApplication.topViewController()?
                 .navigationController?
                 .pushReactViewController(viewController, animated: true)
@@ -870,15 +860,17 @@ guard let productId = params["productId"] as? String else { return true }
 
         // user detail
         JLRoutes(forScheme: "tkpd-internal").addRoute("/user/:userId") { (params: [String: Any]) -> Bool in
-            if let userId = params["userId"] as? String {
-                let userController = UserContainerViewController()
-                userController.profileUserID = userId
-
-                userController.hidesBottomBarWhenPushed = true
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(userController, animated: true)
+            guard let userID = params["userId"] else {
+                return true
             }
+
+            let viewController = ReactViewController(moduleName: "Profile", props: ["userID": userID as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+
             return true
         }
 
@@ -893,16 +885,17 @@ guard let productId = params["productId"] as? String else { return true }
                 .pushViewController(controller, animated: true)
             return true
         }
-        
+
         // ticker navigation
-        JLRoutes(forScheme: "tkpd-internal").addRoute("/ticker") {(params: [String: Any]) -> Bool in
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/ticker") { (params: [String: Any]) -> Bool in
             guard let encodedURL = params["url"] as? String,
-                let decodedURL = encodedURL.removingPercentEncoding else {
-                    return true
+                let decodedURL = encodedURL.removingPercentEncoding,
+                let urlString = URL(string: decodedURL) else {
+                return true
             }
             var url = URLComponents(string: decodedURL)
-            url?.queryItems = getUTMQueryItems(url: URL(string: decodedURL)!)
-            
+            url?.queryItems = getUTMQueryItems(url: urlString)
+
             guard let completeURL = url?.url else { return false }
 
             let controller = WebViewController()
@@ -915,7 +908,7 @@ guard let productId = params["productId"] as? String else { return true }
                     navigationController?.popViewController(animated: true)
                 }
             }
-            
+
             navigationController?.pushViewController(controller, animated: true)
             return true
         }
@@ -939,23 +932,23 @@ guard let productId = params["productId"] as? String else { return true }
         //topAds dashboard
         JLRoutes.global().add(["/topads/dashboard", "topads/manage"]) { (_: [String: Any]) -> Bool in
             guard let topVc = UIApplication.topViewController() else { return false }
-            
+
             AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
                 let userManager = UserAuthentificationManager()
                 var controller = UIViewController()
-                
-                if(!userManager.userHasShop()) {
+
+                if !userManager.userHasShop() {
                     controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
                 } else {
                     let auth = userManager.getUserLoginData()
                     controller = ReactViewController(moduleName: "TopAdsDashboard", props: ["authInfo": auth as AnyObject])
                 }
-                
+
                 controller.hidesBottomBarWhenPushed = true
                 topVc.navigationController?.pushViewController(controller, animated: true)
-            
+
             }
-            
+
             return true
         }
 
@@ -963,15 +956,14 @@ guard let productId = params["productId"] as? String else { return true }
             guard let url = params["url"] as? String else {
                 return false
             }
-            
+
             guard let topVc = UIApplication.topViewController() else { return false }
-            
+
             AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
                 let userManager = UserAuthentificationManager()
                 let seamlessURL = userManager.webViewUrl(fromUrl: url)
-           
-                
-                if(userManager.userHasShop()) {
+
+                if userManager.userHasShop() {
                     TransactionCartWebViewViewController.pushToppay(fromURL: seamlessURL, viewController: topVc, shouldAuthorizedRequest: true)
                 }
             }
@@ -981,6 +973,75 @@ guard let productId = params["productId"] as? String else { return true }
 
         JLRoutes.global().add(["/message", "/message/:messageId"]) { _ in
             return TPRoutes.routeURL(URL(string: "tokopedia://topchat")!)
+        }
+
+        // MARK: TopProfile (Native)
+        JLRoutes.global().addRoute("/people/:userID") { (params: [String: Any]) -> Bool in
+            guard let userID = params["userID"], let myUserID = UserAuthentificationManager().getUserId() else {
+                return true
+            }
+
+            let viewController = ReactViewController(moduleName: "Profile", props: ["userID": userID as AnyObject, "myUserID": myUserID as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+
+            return true
+        }
+
+        // MARK: Profile Completion (Native)
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/profileCompletion") { (_: [String: Any]) -> Bool in
+            let viewController = ProfileCompletionProgressViewController()
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+
+            return true
+        }
+
+        // MARK: List Favorite Shop (Native)
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/people/favoriteShop/:userID") { (params: [String: Any]) -> Bool in
+            guard let userID = params["userID"] else {
+                return true
+            }
+
+            let viewController = ReactViewController(moduleName: "FavoriteShopPage", props: ["userID": userID as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+
+            return true
+        }
+
+        // MARK: List Following KOL (Native)
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/people/followedKOL/:userID") { (params: [String: Any]) -> Bool in
+            guard let userID = params["userID"] else {
+                return true
+            }
+
+            let viewController = ReactViewController(moduleName: "FollowedKOLScreen", props: ["userID": userID as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+
+            return true
+        }
+
+        // MARK: Profile Settings (Native)
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/people/settings") { (_: [String: Any]) -> Bool in
+            let controller = ProfileSettingViewController()
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(controller, animated: true)
+
+            return true
         }
 
         // MARK: TopChat (Native)
@@ -1067,7 +1128,7 @@ guard let productId = params["productId"] as? String else { return true }
             return true
         }
         // MARK: Referral code
-        JLRoutes.global().addRoute("/referral") { (params: [String: Any]) -> Bool in
+        JLRoutes.global().addRoute("/referral") { (_: [String: Any]) -> Bool in
             NavigateViewController.navigateToReferralScreen()
             return true
         }
@@ -1080,9 +1141,9 @@ guard let productId = params["productId"] as? String else { return true }
             guard let url = params[kJLRouteURLKey] as? URL,
                 let shopName = params["shopName"] as? String,
                 url.scheme != "tokopedia" else {
-                    return false
+                return false
             }
-            
+
             isShopExists(shopName, shopExists: { isExists in
                 if isExists {
                     navigator.navigateToShop(from: UIApplication.topViewController(), withShopName: shopName)
@@ -1132,7 +1193,7 @@ guard let productId = params["productId"] as? String else { return true }
                 let productName = params["productName"] as? String,
                 let shopName = params["shopName"] as? String,
                 url.scheme != "tokopedia" else {
-                    return false
+                return false
             }
 
             isShopExists(shopName, shopExists: { isExists in
@@ -1145,7 +1206,7 @@ guard let productId = params["productId"] as? String else { return true }
 
             return true
         }
-        
+
         // MARK: Login and Registration (Redirect to web view)
         JLRoutes.global().add(["/login", "/registration"]) { _ in
             openWebView(URL(string: "https://m.tokopedia.com")!)
@@ -1275,7 +1336,7 @@ guard let productId = params["productId"] as? String else { return true }
                 return true
             }
         }
-        
+
         return JLRoutes.routeURL(url)
     }
 
@@ -1295,7 +1356,7 @@ guard let productId = params["productId"] as? String else { return true }
                                    topViewController?.removeAllOverlays()
                                    guard mappingResult.dictionary() != nil else { return shopExists(false) }
                                    let result: Dictionary = mappingResult.dictionary() as Dictionary
-                                
+
                                    guard let response = result[""] as? Shop else { return }
 
                                    if response.result.info == nil {

@@ -28,13 +28,7 @@
 #import "Rating.h"
 #import "ShopTransactionStats.h"
 
-//profile
-//#import "ProfileBiodataViewController.h"
-#import "ProfileContactViewController.h"
-#import "ProfileFavoriteShopViewController.h"
-
 #import "NavigateViewController.h"
-#import "UserContainerViewController.h"
 
 #import <QuartzCore/QuartzCore.h>
 

@@ -11,9 +11,6 @@
 
 #import "WebViewInvoiceViewController.h"
 #import "string_more.h"
-#import "UserContainerViewController.h"
-#import "ProfileContactViewController.h"
-#import "ProfileFavoriteShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "CatalogViewController.h"
 #import "SearchResultViewController.h"
@@ -224,11 +221,8 @@
 
 
 
--(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID
-{
-    UserContainerViewController *container = [UserContainerViewController new];
-    container.profileUserID = userID;
-    [viewController.navigationController pushViewController:container animated:YES];
+-(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID {
+    [TPRoutes routeURL:[NSURL URLWithString:[NSString stringWithFormat:@"tokopedia://people/%@", userID]]];
 }
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray *)images imageDescriptions:(NSArray *)imageDesc indexImage:(NSInteger)index

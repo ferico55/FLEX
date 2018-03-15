@@ -17,7 +17,6 @@
 #import "InboxTicketReplyViewController.h"
 #import "InboxTicketDetailAttachment.h"
 #import "GalleryViewController.h"
-#import "UserContainerViewController.h"
 #import "Tokopedia-Swift.h"
 
 NSString *const cellIdentifier = @"ResolutionCenterDetailCellIdentifier";

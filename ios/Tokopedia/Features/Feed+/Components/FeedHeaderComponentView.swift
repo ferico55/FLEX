@@ -98,7 +98,7 @@ internal class FeedHeaderComponentView: ComponentView<FeedCardState> {
             Node<UILabel>(identifier: "timestamp") { label, _, _ in
                 var formattedText = ""
                 
-                if let createTime = state.createTime {
+                if let createTime = state.createTime, !state.source.fromTokopedia {
                     formattedText = FeedService.feedCreateTimeFormatted(withCreatedTime: createTime)
                 }
                 

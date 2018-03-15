@@ -141,7 +141,7 @@
 - (NSDictionary *)autoAddParameter:(id)params
 {
     NSDictionary *parameters = [params mutableCopy];
-    if (![[self getUserId] isEqualToString:@"0"]) {
+    if (![[self getUserId] isEqualToString:@"0"] && ![parameters objectForKey:@"user_id"]) {
         [parameters setValue:[self getUserId] forKey:@"user_id"];
     }
 

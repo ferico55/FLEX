@@ -10,11 +10,7 @@
 #import "ShopFavoritedViewController.h"
 #import "ShopFavoritedCell.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-
 #import "URLCacheController.h"
-#import "UserContainerViewController.h"
 #import "NavigateViewController.h"
 #import "Tokopedia-Swift.h"
 

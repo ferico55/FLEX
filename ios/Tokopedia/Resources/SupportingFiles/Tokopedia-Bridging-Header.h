@@ -221,7 +221,6 @@
 #import "MyWishlistViewController.h"
 #import "TransactionCartViewController.h"
 #import "MoreWrapperViewController.h"
-#import "UserContainerViewController.h"
 
 #import "string_alert.h"
 
@@ -246,3 +245,5 @@
 
 #import "RequestCart.h"
 #import "AlertPickerView.h"
+
+#import "ProfileSettingViewController.h"

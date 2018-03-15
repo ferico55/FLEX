@@ -21,9 +21,6 @@
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-
 #import "ShopFavoritedViewController.h"
 #import "EtalaseViewController.h"
 
@@ -35,7 +32,6 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
-#import "UserContainerViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
@@ -626,11 +622,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0: {
-                NavigateViewController *navigateController = [NavigateViewController new];
                 [AnalyticsManager trackClickNavigateFromMore:@"Profile" parent:MORE_SECTION_1];
-
+                
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
-                [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
+                NSString *userID = [auth getUserId];
+                
+                [TPRoutes routeURL:[NSURL URLWithString:[NSString stringWithFormat:@"tokopedia://people/%@", userID]]];
             }
                 break;
             case 1: {

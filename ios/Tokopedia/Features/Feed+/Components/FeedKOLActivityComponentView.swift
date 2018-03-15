@@ -257,7 +257,7 @@ internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState>
             label.numberOfLines = 0
             label.font = .smallTheme()
             label.textColor = .tpSecondaryBlackText()
-            label.isUserInteractionEnabled = true
+            label.isUserInteractionEnabled = !state.descriptionShownAll
             
             if descriptionString.characters.count > 150 {
                 let substring = descriptionString.substring(to: descriptionString.index(descriptionString.startIndex, offsetBy: 150))

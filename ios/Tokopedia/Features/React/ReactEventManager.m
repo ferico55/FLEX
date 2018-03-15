@@ -14,7 +14,12 @@ RCT_EXPORT_MODULE(EventManager)
 
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped", @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab"];
+  return @[
+    @"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct",
+    @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped",
+    @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab",
+    @"DidTapFavoriteShopButton", @"DidEditProfile"
+  ];
 }
 
 - (void)sendScrollToTopEvent {
@@ -55,6 +60,14 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)sendRedirectHomeTabEvent {
     [self sendEventWithName:@"RedirectToHomeTab" body:nil];
+}
+
+- (void)sendFavoriteShopEvent {
+    [self sendEventWithName:@"DidTapFavoriteShopButton" body:nil];
+}
+
+- (void)sendProfileEditedEvent {
+    [self sendEventWithName:@"DidEditProfile" body:nil];
 }
 
 @end
