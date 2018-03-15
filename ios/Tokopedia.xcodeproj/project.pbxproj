@@ -735,10 +735,6 @@
 		E57974D61FEA741F00610655 /* MyCouponListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */; };
 		E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CD1FEA741F00610655 /* NoCouponView.xib */; };
 		E57974D81FEA741F00610655 /* SelectCouponLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */; };
-		E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */; };
-		E57974DE1FEA743600610655 /* TokopointsSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */; };
-		E57974DF1FEA743600610655 /* TokopointsSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */; };
-		E57974E01FEA743600610655 /* TokopointsSmallSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */; };
 		E57974EE1FEA748200610655 /* TokopointsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974ED1FEA748100610655 /* TokopointsTarget.swift */; };
 		E57974F21FEA749300610655 /* TokopointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F11FEA749200610655 /* TokopointsService.swift */; };
 		E57974F61FEA754C00610655 /* PointsAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F41FEA754A00610655 /* PointsAlertView.swift */; };
@@ -1268,23 +1264,9 @@
 		F977FAD41FE8AB7A00183A85 /* HomeTabViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977EFE61FE8AB6F00183A85 /* HomeTabViewController.m */; };
 		F977FAD51FE8AB7A00183A85 /* HomeTabHeaderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977EFE71FE8AB6F00183A85 /* HomeTabHeaderViewController.m */; };
 		F977FAD61FE8AB7A00183A85 /* HomeTabViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFE91FE8AB6F00183A85 /* HomeTabViewController.xib */; };
-		F977FAD91FE8AB7A00183A85 /* OfficialStoreSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFF01FE8AB6F00183A85 /* OfficialStoreSectionViewController.xib */; };
-		F977FADA1FE8AB7A00183A85 /* HomePageCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF11FE8AB6F00183A85 /* HomePageCategoryData.swift */; };
-		F977FADB1FE8AB7A00183A85 /* AnnouncementTickerRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF21FE8AB6F00183A85 /* AnnouncementTickerRequest.swift */; };
-		F977FADC1FE8AB7A00183A85 /* HomePageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFF31FE8AB6F00183A85 /* HomePageViewController.xib */; };
-		F977FADD1FE8AB7A00183A85 /* HomePageCategoryLayoutSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF41FE8AB6F00183A85 /* HomePageCategoryLayoutSection.swift */; };
-		F977FADE1FE8AB7A00183A85 /* TokoCashSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF51FE8AB6F00183A85 /* TokoCashSectionViewController.swift */; };
-		F977FADF1FE8AB7A00183A85 /* HomePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF71FE8AB6F00183A85 /* HomePageViewController.swift */; };
-		F977FAE01FE8AB7A00183A85 /* LayoutRowType.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFF81FE8AB6F00183A85 /* LayoutRowType.swift */; };
-		F977FAE11FE8AB7A00183A85 /* AnnouncementTickerView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFF91FE8AB6F00183A85 /* AnnouncementTickerView.xib */; };
 		F977FAE21FE8AB7A00183A85 /* HomeSliderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFFA1FE8AB6F00183A85 /* HomeSliderView.xib */; };
-		F977FAE31FE8AB7A00183A85 /* TokoCashSectionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977EFFB1FE8AB6F00183A85 /* TokoCashSectionViewController.xib */; };
 		F977FAE41FE8AB7A00183A85 /* HomeSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFFC1FE8AB6F00183A85 /* HomeSliderView.swift */; };
 		F977FAE51FE8AB7A00183A85 /* OfficialStoreHomeItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFFD1FE8AB6F00183A85 /* OfficialStoreHomeItem.swift */; };
-		F977FAE61FE8AB7A00183A85 /* HomePageCategoryLayoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977EFFE1FE8AB6F00183A85 /* HomePageCategoryLayoutRow.swift */; };
-		F977FAE71FE8AB7A00183A85 /* AnnouncementTickerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F977EFFF1FE8AB6F00183A85 /* AnnouncementTickerView.m */; };
-		F977FAE81FE8AB7A00183A85 /* HomePageCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F0001FE8AB6F00183A85 /* HomePageCategoryResponse.swift */; };
-		F977FAE91FE8AB7A00183A85 /* OfficialStoreSectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F0011FE8AB6F00183A85 /* OfficialStoreSectionViewController.swift */; };
 		F977FAEA1FE8AB7A00183A85 /* HistoryProductViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F0031FE8AB6F00183A85 /* HistoryProductViewController.m */; };
 		F977FAEB1FE8AB7A00183A85 /* HistoryProductViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F977F0041FE8AB6F00183A85 /* HistoryProductViewController.xib */; };
 		F977FAEC1FE8AB7A00183A85 /* MyWishlistShop.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F0071FE8AB6F00183A85 /* MyWishlistShop.swift */; };
@@ -1980,7 +1962,6 @@
 		F977FDAC1FE8AB8000183A85 /* EditConfirmationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F4471FE8AB7300183A85 /* EditConfirmationViewController.swift */; };
 		F977FDAD1FE8AB8000183A85 /* OfficialStoreBrandsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F44D1FE8AB7300183A85 /* OfficialStoreBrandsViewController.m */; };
 		F977FDAE1FE8AB8000183A85 /* OfficialStorePromoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F44E1FE8AB7300183A85 /* OfficialStorePromoViewController.m */; };
-		F977FDAF1FE8AB8000183A85 /* DigitalGoodsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F44F1FE8AB7300183A85 /* DigitalGoodsDataSource.swift */; };
 		F977FDB01FE8AB8000183A85 /* TopPicksResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F4501FE8AB7300183A85 /* TopPicksResponse.swift */; };
 		F977FDB11FE8AB8000183A85 /* SortViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4531FE8AB7300183A85 /* SortViewController.m */; };
 		F977FDB21FE8AB8000183A85 /* FilterConditionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F4591FE8AB7300183A85 /* FilterConditionViewController.m */; };
@@ -2172,6 +2153,10 @@
 		F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */; };
 		F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */; };
 		F9BFCD9C202029CC007F7ED4 /* DictionaryHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */; };
+		F9C41A2C20566574008FE23C /* HomePageCategoryResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C41A2A20566573008FE23C /* HomePageCategoryResponse.swift */; };
+		F9C41A2D20566574008FE23C /* HomePageCategoryLayoutRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C41A2B20566573008FE23C /* HomePageCategoryLayoutRow.swift */; };
+		F9C41A2F20566632008FE23C /* HomePageCategoryData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C41A2E20566630008FE23C /* HomePageCategoryData.swift */; };
+		F9C41A31205666A8008FE23C /* HomePageCategoryLayoutSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = F9C41A30205666A7008FE23C /* HomePageCategoryLayoutSection.swift */; };
 		FC36DF8719B0656400AF74C1 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8619B0656400AF74C1 /* Foundation.framework */; };
 		FC36DF8919B0656400AF74C1 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8819B0656400AF74C1 /* CoreGraphics.framework */; };
 		FC36DF8B19B0656400AF74C1 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FC36DF8A19B0656400AF74C1 /* UIKit.framework */; };
@@ -3449,10 +3434,6 @@
 		E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCouponListTableViewController.xib; sourceTree = "<group>"; };
 		E57974CD1FEA741F00610655 /* NoCouponView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoCouponView.xib; sourceTree = "<group>"; };
 		E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectCouponLoadingView.xib; sourceTree = "<group>"; };
-		E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokoCashSmallSectionViewController.xib; sourceTree = "<group>"; };
-		E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsSectionViewController.swift; sourceTree = "<group>"; };
-		E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokopointsSectionViewController.xib; sourceTree = "<group>"; };
-		E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokopointsSmallSectionViewController.xib; sourceTree = "<group>"; };
 		E57974ED1FEA748100610655 /* TokopointsTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsTarget.swift; sourceTree = "<group>"; };
 		E57974F11FEA749200610655 /* TokopointsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsService.swift; sourceTree = "<group>"; };
 		E57974F41FEA754A00610655 /* PointsAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsAlertView.swift; sourceTree = "<group>"; };
@@ -3969,24 +3950,9 @@
 		F977EFE81FE8AB6F00183A85 /* HomeTabViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeTabViewController.h; sourceTree = "<group>"; };
 		F977EFE91FE8AB6F00183A85 /* HomeTabViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeTabViewController.xib; sourceTree = "<group>"; };
 		F977EFEA1FE8AB6F00183A85 /* string_home.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = string_home.h; sourceTree = "<group>"; };
-		F977EFF01FE8AB6F00183A85 /* OfficialStoreSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = OfficialStoreSectionViewController.xib; sourceTree = "<group>"; };
-		F977EFF11FE8AB6F00183A85 /* HomePageCategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryData.swift; sourceTree = "<group>"; };
-		F977EFF21FE8AB6F00183A85 /* AnnouncementTickerRequest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AnnouncementTickerRequest.swift; sourceTree = "<group>"; };
-		F977EFF31FE8AB6F00183A85 /* HomePageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomePageViewController.xib; sourceTree = "<group>"; };
-		F977EFF41FE8AB6F00183A85 /* HomePageCategoryLayoutSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutSection.swift; sourceTree = "<group>"; };
-		F977EFF51FE8AB6F00183A85 /* TokoCashSectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashSectionViewController.swift; sourceTree = "<group>"; };
-		F977EFF61FE8AB6F00183A85 /* AnnouncementTickerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AnnouncementTickerView.h; sourceTree = "<group>"; };
-		F977EFF71FE8AB6F00183A85 /* HomePageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageViewController.swift; sourceTree = "<group>"; };
-		F977EFF81FE8AB6F00183A85 /* LayoutRowType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LayoutRowType.swift; sourceTree = "<group>"; };
-		F977EFF91FE8AB6F00183A85 /* AnnouncementTickerView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AnnouncementTickerView.xib; sourceTree = "<group>"; };
 		F977EFFA1FE8AB6F00183A85 /* HomeSliderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HomeSliderView.xib; sourceTree = "<group>"; };
-		F977EFFB1FE8AB6F00183A85 /* TokoCashSectionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokoCashSectionViewController.xib; sourceTree = "<group>"; };
 		F977EFFC1FE8AB6F00183A85 /* HomeSliderView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomeSliderView.swift; sourceTree = "<group>"; };
 		F977EFFD1FE8AB6F00183A85 /* OfficialStoreHomeItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfficialStoreHomeItem.swift; sourceTree = "<group>"; };
-		F977EFFE1FE8AB6F00183A85 /* HomePageCategoryLayoutRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutRow.swift; sourceTree = "<group>"; };
-		F977EFFF1FE8AB6F00183A85 /* AnnouncementTickerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AnnouncementTickerView.m; sourceTree = "<group>"; };
-		F977F0001FE8AB6F00183A85 /* HomePageCategoryResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryResponse.swift; sourceTree = "<group>"; };
-		F977F0011FE8AB6F00183A85 /* OfficialStoreSectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OfficialStoreSectionViewController.swift; sourceTree = "<group>"; };
 		F977F0031FE8AB6F00183A85 /* HistoryProductViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HistoryProductViewController.m; sourceTree = "<group>"; };
 		F977F0041FE8AB6F00183A85 /* HistoryProductViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = HistoryProductViewController.xib; sourceTree = "<group>"; };
 		F977F0051FE8AB6F00183A85 /* HistoryProductViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HistoryProductViewController.h; sourceTree = "<group>"; };
@@ -4964,7 +4930,6 @@
 		F977F44C1FE8AB7300183A85 /* OfficialStorePromoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OfficialStorePromoViewController.h; sourceTree = "<group>"; };
 		F977F44D1FE8AB7300183A85 /* OfficialStoreBrandsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfficialStoreBrandsViewController.m; sourceTree = "<group>"; };
 		F977F44E1FE8AB7300183A85 /* OfficialStorePromoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OfficialStorePromoViewController.m; sourceTree = "<group>"; };
-		F977F44F1FE8AB7300183A85 /* DigitalGoodsDataSource.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DigitalGoodsDataSource.swift; sourceTree = "<group>"; };
 		F977F4501FE8AB7300183A85 /* TopPicksResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopPicksResponse.swift; sourceTree = "<group>"; };
 		F977F4531FE8AB7300183A85 /* SortViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SortViewController.m; sourceTree = "<group>"; };
 		F977F4541FE8AB7300183A85 /* SortViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SortViewController.h; sourceTree = "<group>"; };
@@ -5343,6 +5308,10 @@
 		F98052482018AAFB00CE6D67 /* ReactSplitViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReactSplitViewController.swift; sourceTree = "<group>"; };
 		F98052492018AAFD00CE6D67 /* ReactPopoverOptionViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ReactPopoverOptionViewController.xib; sourceTree = "<group>"; };
 		F9BFCD9B202029CC007F7ED4 /* DictionaryHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryHelper.swift; sourceTree = "<group>"; };
+		F9C41A2A20566573008FE23C /* HomePageCategoryResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryResponse.swift; sourceTree = "<group>"; };
+		F9C41A2B20566573008FE23C /* HomePageCategoryLayoutRow.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutRow.swift; sourceTree = "<group>"; };
+		F9C41A2E20566630008FE23C /* HomePageCategoryData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryData.swift; sourceTree = "<group>"; };
+		F9C41A30205666A7008FE23C /* HomePageCategoryLayoutSection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HomePageCategoryLayoutSection.swift; sourceTree = "<group>"; };
 		FB09B2F48CD99207C04E8FD9 /* Pods-ServiceExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ServiceExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ServiceExtension/Pods-ServiceExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		FC36DF8319B0656400AF74C1 /* Tokopedia.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tokopedia.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FC36DF8619B0656400AF74C1 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -9028,7 +8997,6 @@
 				F977F2401FE8AB7100183A85 /* MiniSlide.m */,
 				F977F1A91FE8AB7000183A85 /* MiniSlideData.m */,
 				F977F3FD1FE8AB7300183A85 /* MiniSlideObject.m */,
-				F977F44F1FE8AB7300183A85 /* DigitalGoodsDataSource.swift */,
 				F977F25E1FE8AB7100183A85 /* LogoutRequest.swift */,
 				F977F0971FE8AB7000183A85 /* ProductDataSource.swift */,
 				F977F3B61FE8AB7200183A85 /* TopPick.swift */,
@@ -9365,28 +9333,13 @@
 		F977EFEF1FE8AB6F00183A85 /* HomePage */ = {
 			isa = PBXGroup;
 			children = (
-				F977EFF21FE8AB6F00183A85 /* AnnouncementTickerRequest.swift */,
-				F977EFF61FE8AB6F00183A85 /* AnnouncementTickerView.h */,
-				F977EFFF1FE8AB6F00183A85 /* AnnouncementTickerView.m */,
-				F977EFF91FE8AB6F00183A85 /* AnnouncementTickerView.xib */,
-				F977EFF11FE8AB6F00183A85 /* HomePageCategoryData.swift */,
-				F977EFFE1FE8AB6F00183A85 /* HomePageCategoryLayoutRow.swift */,
-				F977EFF41FE8AB6F00183A85 /* HomePageCategoryLayoutSection.swift */,
-				F977F0001FE8AB6F00183A85 /* HomePageCategoryResponse.swift */,
-				F977EFF71FE8AB6F00183A85 /* HomePageViewController.swift */,
-				F977EFF31FE8AB6F00183A85 /* HomePageViewController.xib */,
+				F9C41A2E20566630008FE23C /* HomePageCategoryData.swift */,
+				F9C41A2B20566573008FE23C /* HomePageCategoryLayoutRow.swift */,
+				F9C41A30205666A7008FE23C /* HomePageCategoryLayoutSection.swift */,
+				F9C41A2A20566573008FE23C /* HomePageCategoryResponse.swift */,
 				F977EFFC1FE8AB6F00183A85 /* HomeSliderView.swift */,
 				F977EFFA1FE8AB6F00183A85 /* HomeSliderView.xib */,
-				F977EFF81FE8AB6F00183A85 /* LayoutRowType.swift */,
 				F977EFFD1FE8AB6F00183A85 /* OfficialStoreHomeItem.swift */,
-				F977F0011FE8AB6F00183A85 /* OfficialStoreSectionViewController.swift */,
-				F977EFF01FE8AB6F00183A85 /* OfficialStoreSectionViewController.xib */,
-				F977EFF51FE8AB6F00183A85 /* TokoCashSectionViewController.swift */,
-				F977EFFB1FE8AB6F00183A85 /* TokoCashSectionViewController.xib */,
-				E57974D91FEA743400610655 /* TokoCashSmallSectionViewController.xib */,
-				E57974DA1FEA743500610655 /* TokopointsSectionViewController.swift */,
-				E57974DB1FEA743500610655 /* TokopointsSectionViewController.xib */,
-				E57974DC1FEA743600610655 /* TokopointsSmallSectionViewController.xib */,
 			);
 			path = HomePage;
 			sourceTree = "<group>";
@@ -12075,7 +12028,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F977FAD91FE8AB7A00183A85 /* OfficialStoreSectionViewController.xib in Resources */,
 				F97700B61FE8AB8600183A85 /* MaterialCommunityIcons.ttf in Resources */,
 				F98052592018AAFE00CE6D67 /* OnboardingViewController.xib in Resources */,
 				F977FDB71FE8AB8000183A85 /* FilterConditionViewController.xib in Resources */,
@@ -12113,7 +12065,6 @@
 				92A4CBB6201731CC00C42D37 /* SellerInfoInboxFilterCellView.xib in Resources */,
 				7A4672021EB2FEB400A72105 /* Images.xcassets in Resources */,
 				F977FB701FE8AB7B00183A85 /* CategoryPageViewController.xib in Resources */,
-				E57974DF1FEA743600610655 /* TokopointsSectionViewController.xib in Resources */,
 				F772715C20355FDB00D959AF /* TokoCashQRPaymentViewController.xib in Resources */,
 				F977FC301FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				F977FCAC1FE8AB7E00183A85 /* TKPMapView.xib in Resources */,
@@ -12190,7 +12141,6 @@
 				F977FC671FE8AB7D00183A85 /* CatalogShopCell.xib in Resources */,
 				F977FC421FE8AB7D00183A85 /* AlertLuckyView.xib in Resources */,
 				F772717D20355FDC00D959AF /* TokoCashPendingTransactionViewController.xib in Resources */,
-				F977FAE11FE8AB7A00183A85 /* AnnouncementTickerView.xib in Resources */,
 				E576C26B2034180E008524AA /* CentralizedOTPViewController.xib in Resources */,
 				F977009D1FE8AB8600183A85 /* public_key.der in Resources */,
 				F977FB1F1FE8AB7B00183A85 /* InboxTicketReplyViewController.xib in Resources */,
@@ -12216,7 +12166,6 @@
 				F97700B41FE8AB8600183A85 /* Octicons.ttf in Resources */,
 				F977FB191FE8AB7B00183A85 /* TalkProductCell.xib in Resources */,
 				F977FC3D1FE8AB7D00183A85 /* AlertListView.xib in Resources */,
-				F977FAE31FE8AB7A00183A85 /* TokoCashSectionViewController.xib in Resources */,
 				34E722292015EDC700CFE581 /* TopAdsHeadlineView.xib in Resources */,
 				F977FCDA1FE8AB7E00183A85 /* MyShopEtalaseEditViewController.xib in Resources */,
 				F977FD701FE8AB7F00183A85 /* ProfileFavoriteShopViewController.xib in Resources */,
@@ -12371,7 +12320,6 @@
 				E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */,
 				F977FBD01FE8AB7C00183A85 /* ProductQuantityViewController.xib in Resources */,
 				F977FCAF1FE8AB7E00183A85 /* TKPInfoWindowMapView.xib in Resources */,
-				E57974DD1FEA743600610655 /* TokoCashSmallSectionViewController.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
 				F772716F20355FDB00D959AF /* Success-animation.json in Resources */,
 				E5ADEDB520353931006488AF /* FloatingSortFilterViewController.xib in Resources */,
@@ -12399,7 +12347,6 @@
 				F977FC071FE8AB7C00183A85 /* CourierInfoViewCell.xib in Resources */,
 				F977FE001FE8AB8100183A85 /* PulsaOperatorCell.xib in Resources */,
 				F98052692018AAFE00CE6D67 /* ReactPopoverOptionViewController.xib in Resources */,
-				F977FADC1FE8AB7A00183A85 /* HomePageViewController.xib in Resources */,
 				F90DF7A2202AD20500FF9043 /* onboarding1.json in Resources */,
 				F954C4481FC55B6C008C0B30 /* icon_more@3x.png in Resources */,
 				F977FA4A1FE8AB7900183A85 /* Referral.storyboard in Resources */,
@@ -12484,7 +12431,6 @@
 				F977FD3A1FE8AB7F00183A85 /* SearchResultShopViewController.xib in Resources */,
 				F977FBE91FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 				F977FC831FE8AB7D00183A85 /* EditShopTypeViewCell.xib in Resources */,
-				E57974E01FEA743600610655 /* TokopointsSmallSectionViewController.xib in Resources */,
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
 				F977FBD51FE8AB7C00183A85 /* OrderRejectExplanationViewController.xib in Resources */,
 				F954C4521FC55B6D008C0B30 /* icon_login_active@3x.png in Resources */,
@@ -12977,6 +12923,7 @@
 				F977FCE91FE8AB7E00183A85 /* DetailProductVideoCollectionDataSource.swift in Sources */,
 				F977FC171FE8AB7C00183A85 /* CourierViewCell.m in Sources */,
 				62C770891FF33C3300F66527 /* DepartmentChild2.m in Sources */,
+				F9C41A2D20566574008FE23C /* HomePageCategoryLayoutRow.swift in Sources */,
 				62C770251FF33C3200F66527 /* TxOrderConfirmPaymentFormResult.m in Sources */,
 				62C770A61FF33C3300F66527 /* ResolutionDetailConversation.m in Sources */,
 				F97700BE1FE8AB8600183A85 /* URLCacheAlert.m in Sources */,
@@ -13039,7 +12986,6 @@
 				DADB9F651F3C46CF002B1FAE /* UIImage+Resize.m in Sources */,
 				62C7705C1FF33C3200F66527 /* InboxTicketReply.m in Sources */,
 				F97700AE1FE8AB8600183A85 /* QuickActionHelper.swift in Sources */,
-				F977FADE1FE8AB7A00183A85 /* TokoCashSectionViewController.swift in Sources */,
 				F977FD9B1FE8AB8000183A85 /* ListOrderShopComponent.mm in Sources */,
 				F977FB991FE8AB7C00183A85 /* RequestSales.swift in Sources */,
 				F977FAAF1FE8AB7A00183A85 /* SettingPasswordViewController.m in Sources */,
@@ -13070,7 +13016,6 @@
 				F977FD791FE8AB7F00183A85 /* AddressCell.m in Sources */,
 				E50465C320159F3100FD0872 /* UserDefaults.swift in Sources */,
 				F977FDD81FE8AB8000183A85 /* ResolutionCenterCreateResponse.m in Sources */,
-				F977FAE61FE8AB7A00183A85 /* HomePageCategoryLayoutRow.swift in Sources */,
 				F977FA1D1FE8AB7900183A85 /* ReactTarget.swift in Sources */,
 				62C770D71FF33C3300F66527 /* TrackOrderDetail.m in Sources */,
 				F977FB551FE8AB7B00183A85 /* ReplayConversationPostData.swift in Sources */,
@@ -13086,7 +13031,6 @@
 				62C770101FF33C3200F66527 /* OrderButton.m in Sources */,
 				F977FA611FE8AB7900183A85 /* CacheTweaks.m in Sources */,
 				F977FB471FE8AB7B00183A85 /* HotlistViewController.m in Sources */,
-				F977FADB1FE8AB7A00183A85 /* AnnouncementTickerRequest.swift in Sources */,
 				62C770C31FF33C3300F66527 /* OrderBookingResponse.m in Sources */,
 				E517178820315DDF00F46831 /* ProductDetailAnalyticsManager.swift in Sources */,
 				F977FA431FE8AB7900183A85 /* NSOperationQueue+SharedQueue.m in Sources */,
@@ -13284,6 +13228,7 @@
 				924B14F0200DB28A00CB65D2 /* AIRGMSPolygon.m in Sources */,
 				62C770211FF33C3200F66527 /* TxOrderConfirmPaymentForm.m in Sources */,
 				62C770651FF33C3200F66527 /* CountRatingResult.m in Sources */,
+				F9C41A31205666A8008FE23C /* HomePageCategoryLayoutSection.swift in Sources */,
 				924B14FF200DB28A00CB65D2 /* AIRGMSMarker.m in Sources */,
 				F977FAB21FE8AB7A00183A85 /* SettingPrivacyViewController.m in Sources */,
 				F977FD0D1FE8AB7E00183A85 /* ReportProductGetTypeResult.swift in Sources */,
@@ -13300,6 +13245,7 @@
 				62C7712F1FF33C3400F66527 /* SearchResult.m in Sources */,
 				F977FB8B1FE8AB7B00183A85 /* CategoryIntermediaryHotListImage.swift in Sources */,
 				F977FA871FE8AB7A00183A85 /* UIView+HVDLayout.m in Sources */,
+				F9C41A2F20566632008FE23C /* HomePageCategoryData.swift in Sources */,
 				F977FE0D1FE8AB8100183A85 /* PulsaCategoryRoot.swift in Sources */,
 				62C771A91FF33C3500F66527 /* LikeDislikeResult.m in Sources */,
 				62C771B11FF33C3500F66527 /* ProductFeed.m in Sources */,
@@ -13308,7 +13254,6 @@
 				F977FDDF1FE8AB8000183A85 /* ShopNotesPageViewController.m in Sources */,
 				F97700911FE8AB8600183A85 /* TPCryptoManager.swift in Sources */,
 				F977FBD71FE8AB7C00183A85 /* OrderRejectExplanationViewController.m in Sources */,
-				F977FADA1FE8AB7A00183A85 /* HomePageCategoryData.swift in Sources */,
 				848FA6FD1FEBF8BF00A22EDE /* ProblemDetailTableViewController.swift in Sources */,
 				F772719A20355FDC00D959AF /* TokoCashHelpViewModel.swift in Sources */,
 				DADB9F4E1F3C46CE002B1FAE /* FBTweakShakeWindow.m in Sources */,
@@ -13383,6 +13328,7 @@
 				F954C4631FC55B6D008C0B30 /* main.m in Sources */,
 				F977FDFE1FE8AB8100183A85 /* PulsaCategory.swift in Sources */,
 				92A4CBB4201731CC00C42D37 /* SellerInfoList.swift in Sources */,
+				F9C41A2C20566574008FE23C /* HomePageCategoryResponse.swift in Sources */,
 				F977FA291FE8AB7900183A85 /* JSONAbleType.swift in Sources */,
 				62C770BC1FF33C3300F66527 /* DriverInfo.m in Sources */,
 				924AAD31203144900019CAFE /* NetworkingRemoteConfig.swift in Sources */,
@@ -13604,7 +13550,6 @@
 				F977FB901FE8AB7B00183A85 /* CategoryIntermediaryCuratedProductSection.swift in Sources */,
 				F977FA491FE8AB7900183A85 /* NSStringCategory.m in Sources */,
 				F977FD411FE8AB7F00183A85 /* SearchShopModelView.swift in Sources */,
-				F977FAE81FE8AB7A00183A85 /* HomePageCategoryResponse.swift in Sources */,
 				F977FE501FE8AB8100183A85 /* FeedEmptyStateComponentView.swift in Sources */,
 				F977FB8D1FE8AB7B00183A85 /* CategoryNavigationTableViewCell.swift in Sources */,
 				F977FC381FE8AB7D00183A85 /* AlertPickerView.m in Sources */,
@@ -13672,7 +13617,6 @@
 				F97700B21FE8AB8600183A85 /* HomePageHeaderSectionStyle.swift in Sources */,
 				DADB9F691F3C46CF002B1FAE /* XYPieChart.m in Sources */,
 				F98052502018AAFE00CE6D67 /* ReactTopChatManager.m in Sources */,
-				F977FDAF1FE8AB8000183A85 /* DigitalGoodsDataSource.swift in Sources */,
 				62C7715E1FF33C3400F66527 /* ShopSettingsResult.m in Sources */,
 				F977FC821FE8AB7D00183A85 /* ShopInfoViewController.m in Sources */,
 				F772714B20355FDB00D959AF /* TokoCashActivationOTPViewController.swift in Sources */,
@@ -13821,7 +13765,6 @@
 				62C770BD1FF33C3300F66527 /* OrderBookingData.m in Sources */,
 				F977FAD21FE8AB7A00183A85 /* ProfileSettingViewController.m in Sources */,
 				F977FC431FE8AB7D00183A85 /* TooltipAlert.swift in Sources */,
-				E57974DE1FEA743600610655 /* TokopointsSectionViewController.swift in Sources */,
 				E57974D51FEA741F00610655 /* MyCouponListTableViewController.swift in Sources */,
 				DADB9F521F3C46CE002B1FAE /* HPTextViewInternal.m in Sources */,
 				62C771D01FF33C3500F66527 /* PromoCategory.m in Sources */,
@@ -14224,7 +14167,6 @@
 				F977FD5F1FE8AB7F00183A85 /* TableViewScrollAndSwipe.m in Sources */,
 				F977FB951FE8AB7C00183A85 /* CategoryIntermediaryHotListResponse.swift in Sources */,
 				F97700671FE8AB8500183A85 /* DigitalFavourite.swift in Sources */,
-				F977FADF1FE8AB7A00183A85 /* HomePageViewController.swift in Sources */,
 				F977FA541FE8AB7900183A85 /* RCTSharingReferable.swift in Sources */,
 				F977FAFB1FE8AB7A00183A85 /* FavoritedShopCell.m in Sources */,
 				62C771971FF33C3400F66527 /* ContactUsActionResultError.m in Sources */,
@@ -14274,7 +14216,6 @@
 				62C770BF1FF33C3300F66527 /* OrderCustomer.m in Sources */,
 				F772718820355FDC00D959AF /* Date.swift in Sources */,
 				F977FC0E1FE8AB7C00183A85 /* ShipmentWebViewController.m in Sources */,
-				F977FAE71FE8AB7A00183A85 /* AnnouncementTickerView.m in Sources */,
 				F977FA2E1FE8AB7900183A85 /* UIKitCategory.m in Sources */,
 				62C7712A1FF33C3400F66527 /* SearchAutoCompleteGeneral.m in Sources */,
 				F977FA311FE8AB7900183A85 /* UIViewController+ReactNavigation.swift in Sources */,
@@ -14396,7 +14337,6 @@
 				848FA6E01FEBF8BE00A22EDE /* ConfirmAlertViewController.swift in Sources */,
 				F977FA711FE8AB7A00183A85 /* ProductDescriptionViewController.swift in Sources */,
 				62C7706D1FF33C3200F66527 /* TalkList.m in Sources */,
-				F977FAE01FE8AB7A00183A85 /* LayoutRowType.swift in Sources */,
 				F97700551FE8AB8500183A85 /* DigitalForm.swift in Sources */,
 				F977FC8E1FE8AB7D00183A85 /* CloseShopRequest.m in Sources */,
 				F977FD151FE8AB7E00183A85 /* SalesViewController.m in Sources */,
@@ -14426,7 +14366,6 @@
 				62C770AD1FF33C3300F66527 /* CategoryResponse.swift in Sources */,
 				F977FA741FE8AB7A00183A85 /* OneClickResponse.swift in Sources */,
 				F977FE531FE8AB8100183A85 /* FeedDetailHeaderComponentView.swift in Sources */,
-				F977FADD1FE8AB7A00183A85 /* HomePageCategoryLayoutSection.swift in Sources */,
 				F977FB421FE8AB7B00183A85 /* TokopediaCacheManager.m in Sources */,
 				62C770CB1FF33C3300F66527 /* CatalogInfo.m in Sources */,
 				F980525D2018AAFE00CE6D67 /* ReactDynamicFilterModule.m in Sources */,
@@ -14470,7 +14409,6 @@
 				62C771D71FF33C3500F66527 /* ProductWishlistCheckResult.swift in Sources */,
 				F772716B20355FDB00D959AF /* TokoCashMoveToSaldoSuccessViewModel.swift in Sources */,
 				62C771B41FF33C3500F66527 /* ShipmentKeroToken.swift in Sources */,
-				F977FAE91FE8AB7A00183A85 /* OfficialStoreSectionViewController.swift in Sources */,
 				E50465C420159F3100FD0872 /* NativeNPSView.swift in Sources */,
 				F977FC141FE8AB7C00183A85 /* CourierInfoViewCell.m in Sources */,
 				F977FBC71FE8AB7C00183A85 /* OrderProductView.swift in Sources */,

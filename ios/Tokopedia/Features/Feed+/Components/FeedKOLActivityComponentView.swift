@@ -9,6 +9,7 @@
 import NativeNavigation
 import Render
 import RxSwift
+import TTTAttributedLabel
 import UIKit
 
 internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState> {

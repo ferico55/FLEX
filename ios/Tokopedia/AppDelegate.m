@@ -196,6 +196,14 @@
             
             [self didReceiveNotificationBackgroundState:pushNotificationData];
         }
+        
+        // fetch new remote config value and apply fetched value
+        // need to be here so it does not block main UI thread
+        FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
+        __weak typeof(FIRRemoteConfig) *weakRemoteConfig = remoteConfig;
+        [remoteConfig fetchWithCompletionHandler:^(FIRRemoteConfigFetchStatus status, NSError * _Nullable error) {
+            [weakRemoteConfig activateFetched];
+        }];
     });
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.1")) {

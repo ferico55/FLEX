@@ -7,6 +7,7 @@
 //
 
 import Render
+import TTTAttributedLabel
 import UIKit
 
 internal class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDelegate, TTTAttributedLabelDelegate {
