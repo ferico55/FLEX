@@ -14,7 +14,7 @@ final public class TokoCashProfileViewModel: ViewModelType {
     
     public struct Input {
         public let trigger: Driver<Void>
-        public let selectedIndex: Driver<Int>
+        public let selectedIndex: Driver<TokoCashAccount>
     }
     
     public struct Output {
@@ -67,13 +67,9 @@ final public class TokoCashProfileViewModel: ViewModelType {
         
         let accountViewModels = accounts.map { $0.map { TokoCashAccountViewModel(with: $0) } }
         
-        let selectedAccount = input.selectedIndex.withLatestFrom(accounts) { (index, accounts) -> TokoCashAccount in
-            return accounts[index]
-        }
-        
         let deleteActivityIndicator = ActivityIndicator()
         let deleteErrorTracker = ErrorTracker()
-        let deleteAccountResponse = selectedAccount.flatMap { account in
+        let deleteAccountResponse = input.selectedIndex.flatMap { account in
             return TokoCashUseCase.requestRevokeAccount(revokeToken: account.refreshToken ?? "",
                                                         identifier: account.identifier ?? "",
                                                         identifierType: account.identifierType ?? "")

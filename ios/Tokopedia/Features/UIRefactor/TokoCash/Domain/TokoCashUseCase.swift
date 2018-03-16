@@ -13,18 +13,48 @@ import RxSwift
 @objc public class TokoCashUseCase: NSObject {
     
     public class func requestBalance() -> Observable<WalletStore> {
+        
+        let userManager = UserAuthentificationManager()
+        let userInformation = userManager.getUserLoginData()
+        let type = userInformation?["oAuthToken.tokenType"] as? String ?? ""
+        let tokoCashToken = userManager.getTokoCashToken() ?? ""
+        
+        guard !type.isEmpty, !tokoCashToken.isEmpty else {
+            return WalletProvider().request(.getToken)
+                .filterSuccessfulStatusAndRedirectCodes()
+                .catchError { error -> Observable<Response> in
+                    if let moyaError: MoyaError = error as? MoyaError,
+                        let response: Response = moyaError.response,
+                        response.statusCode == 402 {
+                        return Observable.error(error)
+                    }
+                    return Observable.empty()
+                }
+                .map(to: TokoCashToken.self)
+                .flatMap { walletToken -> Observable<WalletStore> in
+                    guard let token = walletToken.token else { return Observable.empty() }
+                    SecureStorageManager().storeTokoCashToken(token)
+                    return TokoCashNetworkProvider()
+                        .request(.balance())
+                        .filterSuccessfulStatusAndRedirectCodes()
+                        .retryWithAuthIfNeeded()
+                        .map(to: WalletStore.self)
+                }
+        }
+        
         return TokoCashNetworkProvider()
             .request(.balance())
             .filterSuccessfulStatusAndRedirectCodes()
             .retryWithAuthIfNeeded()
             .map(to: WalletStore.self)
+        
     }
     
     public class func requestBalance(completionHandler: @escaping (WalletStore) -> Void, andErrorHandler errorHandler: @escaping (Swift.Error) -> Void) {
         TokoCashUseCase
             .requestBalance()
             .catchError { error -> Observable<WalletStore> in
-                return Observable.error(error)
+                Observable.error(error)
             }
             .subscribe(onNext: { result in
                 completionHandler(result)
@@ -37,7 +67,7 @@ import RxSwift
         
         var parameter: [String: Any] = [
             "type": historyType,
-            "lang": "id"
+            "lang": "id",
         ]
         
         if historyType != "pending" {

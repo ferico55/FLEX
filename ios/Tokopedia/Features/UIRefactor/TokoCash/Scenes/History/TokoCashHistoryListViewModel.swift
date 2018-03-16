@@ -168,9 +168,10 @@ final public class TokoCashHistoryListViewModel: ViewModelType {
             return items.isEmpty
         }).startWith(false)
         
-        let emptyState = selectedType.map { type -> String in
-            return type ?? "all"
-        }
+        let emptyState = isEmptyState.filter { return $0 }
+            .withLatestFrom(selectedType) { _, type -> String in
+                return type ?? "all"
+        }.startWith("all")
         
         let itemsViewModel = items.asDriver().map { $0.map { TokoCashHistoryListItemViewModel(with: $0) } }
         

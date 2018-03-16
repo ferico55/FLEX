@@ -8250,18 +8250,18 @@
 		F77270F620355FDB00D959AF /* History */ = {
 			isa = PBXGroup;
 			children = (
+				F772711120355FDB00D959AF /* TokoCashHistoryListItemTableViewCell.swift */,
+				F772712220355FDB00D959AF /* TokoCashHistoryListItemViewModel.swift */,
+				F772711D20355FDB00D959AF /* TokoCashHistoryListNavigator.swift */,
+				F772711720355FDB00D959AF /* TokoCashHistoryListViewController.swift */,
+				F772711020355FDB00D959AF /* TokoCashHistoryListViewModel.swift */,
 				F77270F720355FDB00D959AF /* TokoCashHistoryListItemTableViewCell.xib */,
+				F772710F20355FDB00D959AF /* TokoCashHistoryListViewController.xib */,
+				F772711820355FDB00D959AF /* Detail */,
+				F772711E20355FDB00D959AF /* Filter */,
 				F77270F820355FDB00D959AF /* Move To Saldo */,
 				F772710820355FDB00D959AF /* Nominal */,
-				F772710F20355FDB00D959AF /* TokoCashHistoryListViewController.xib */,
-				F772711020355FDB00D959AF /* TokoCashHistoryListViewModel.swift */,
-				F772711120355FDB00D959AF /* TokoCashHistoryListItemTableViewCell.swift */,
 				F772711220355FDB00D959AF /* Pending Transaction */,
-				F772711720355FDB00D959AF /* TokoCashHistoryListViewController.swift */,
-				F772711820355FDB00D959AF /* Detail */,
-				F772711D20355FDB00D959AF /* TokoCashHistoryListNavigator.swift */,
-				F772711E20355FDB00D959AF /* Filter */,
-				F772712220355FDB00D959AF /* TokoCashHistoryListItemViewModel.swift */,
 			);
 			path = History;
 			sourceTree = "<group>";

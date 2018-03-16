@@ -47,13 +47,14 @@ extension Date {
     
     public func tpDateFormat1() -> String {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd+MMM+yyyy"
+        formatter.dateFormat = "dd+MM+yyyy"
         let string = formatter.string(from: self)
         return string
     }
     
     public func tpDateFormat2() -> String {
         let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "id")
         formatter.dateFormat = "dd MMM yyyy"
         let string = formatter.string(from: self)
         return string
