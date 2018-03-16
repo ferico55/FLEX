@@ -55,7 +55,7 @@ internal class TokoCashNetworkProvider: NetworkProvider<TokoCashTarget> {
             parameters: parameters,
             parameterEncoding: target.parameterEncoding,
             httpHeaderFields: headers
-        ).adding(httpHeaderFields: hmac.authorizedHeaders())
+            ).adding(httpHeaderFields: hmac.authorizedHeaders())
     }
     
     fileprivate class func endpointClosure(for target: TokoCashTarget) -> Endpoint<TokoCashTarget> {
@@ -67,7 +67,7 @@ internal class TokoCashNetworkProvider: NetworkProvider<TokoCashTarget> {
             return TokoCashNetworkProvider.defaultEndpointCreatorTokocash(for: target)
                 .adding(
                     httpHeaderFields: headers
-                )
+            )
         default:
             let userManager = UserAuthentificationManager()
             let userInformation = userManager.getUserLoginData()

@@ -246,4 +246,5 @@
 #import "RequestCart.h"
 #import "AlertPickerView.h"
 
+#import "PromoViewController.h"
 #import "ProfileSettingViewController.h"

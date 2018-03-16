@@ -560,6 +560,19 @@ public class TPRoutes: NSObject {
 
             return true
         }
+        
+        JLRoutes.global().addRoute("/promo/section/:subCategorySlug") { (params: [String: Any]) -> Bool in
+            guard let subCategorySlug = params["subCategorySlug"] as? String else { return false }
+            
+            let viewController = PromoViewController()
+            viewController.subCategorySlug = subCategorySlug
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            
+            return true
+        }
 
         // MARK: Gold Merchant (Webview)
         JLRoutes.global().addRoute("/gold") { (params: [String: Any]) -> Bool in

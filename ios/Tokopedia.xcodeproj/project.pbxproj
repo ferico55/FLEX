@@ -711,6 +711,7 @@
 		E517179020315E0A00F46831 /* ProductVariantNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178E20315E0900F46831 /* ProductVariantNode.swift */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
+		E54A4009203E810A008B5A19 /* TokoCashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */; };
 		E576C2652034180E008524AA /* CentralizedOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2572034180D008524AA /* CentralizedOTPViewController.swift */; };
 		E576C2662034180E008524AA /* ModeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2592034180D008524AA /* ModeCell.swift */; };
 		E576C2672034180E008524AA /* VerificationModeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576C25A2034180D008524AA /* VerificationModeListViewController.xib */; };
@@ -928,7 +929,6 @@
 		F772719920355FDC00D959AF /* TokoCashHelpNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713720355FDB00D959AF /* TokoCashHelpNavigator.swift */; };
 		F772719A20355FDC00D959AF /* TokoCashHelpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713820355FDB00D959AF /* TokoCashHelpViewModel.swift */; };
 		F772719B20355FDC00D959AF /* TokoCashUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713A20355FDB00D959AF /* TokoCashUseCase.swift */; };
-		F772719C20355FDC00D959AF /* TokoCashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713B20355FDB00D959AF /* TokoCashNetworkProvider.swift */; };
 		F772719D20355FDC00D959AF /* TokoCashPayment.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713D20355FDB00D959AF /* TokoCashPayment.swift */; };
 		F772719E20355FDC00D959AF /* TokoCashMoveToSaldo.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713E20355FDB00D959AF /* TokoCashMoveToSaldo.swift */; };
 		F772719F20355FDC00D959AF /* TokoCashHistory.swift in Sources */ = {isa = PBXBuildFile; fileRef = F772713F20355FDB00D959AF /* TokoCashHistory.swift */; };
@@ -3391,6 +3391,7 @@
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
 		E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfoAnalyticsManager.swift; sourceTree = "<group>"; };
+		E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokoCashNetworkProvider.swift; sourceTree = "<group>"; };
 		E576C2572034180D008524AA /* CentralizedOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CentralizedOTPViewController.swift; sourceTree = "<group>"; };
 		E576C2592034180D008524AA /* ModeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeCell.swift; sourceTree = "<group>"; };
 		E576C25A2034180D008524AA /* VerificationModeListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerificationModeListViewController.xib; sourceTree = "<group>"; };
@@ -3608,7 +3609,6 @@
 		F772713720355FDB00D959AF /* TokoCashHelpNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashHelpNavigator.swift; sourceTree = "<group>"; };
 		F772713820355FDB00D959AF /* TokoCashHelpViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashHelpViewModel.swift; sourceTree = "<group>"; };
 		F772713A20355FDB00D959AF /* TokoCashUseCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashUseCase.swift; sourceTree = "<group>"; };
-		F772713B20355FDB00D959AF /* TokoCashNetworkProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashNetworkProvider.swift; sourceTree = "<group>"; };
 		F772713D20355FDB00D959AF /* TokoCashPayment.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashPayment.swift; sourceTree = "<group>"; };
 		F772713E20355FDB00D959AF /* TokoCashMoveToSaldo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashMoveToSaldo.swift; sourceTree = "<group>"; };
 		F772713F20355FDB00D959AF /* TokoCashHistory.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashHistory.swift; sourceTree = "<group>"; };
@@ -8378,7 +8378,7 @@
 			isa = PBXGroup;
 			children = (
 				F772713A20355FDB00D959AF /* TokoCashUseCase.swift */,
-				F772713B20355FDB00D959AF /* TokoCashNetworkProvider.swift */,
+				E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */,
 				F772713C20355FDB00D959AF /* Model */,
 			);
 			path = Domain;
@@ -13045,6 +13045,7 @@
 				F977FAA61FE8AB7A00183A85 /* TransactionCartWebViewViewController.m in Sources */,
 				62C7711D1FF33C3400F66527 /* ManageProductResult.m in Sources */,
 				62C770261FF33C3200F66527 /* TransactionATCFormDetail.m in Sources */,
+				E54A4009203E810A008B5A19 /* TokoCashNetworkProvider.swift in Sources */,
 				F977FB711FE8AB7B00183A85 /* CategoryNavigationViewController.swift in Sources */,
 				F772715E20355FDB00D959AF /* TokoCashQRPaymentViewModel.swift in Sources */,
 				62C771251FF33C3400F66527 /* ReplacementDetail.swift in Sources */,
@@ -13262,7 +13263,6 @@
 				924B14EF200DB28A00CB65D2 /* AIRGoogleMapMarker.m in Sources */,
 				F977FDEE1FE8AB8000183A85 /* EtalaseRequest.m in Sources */,
 				62C771591FF33C3400F66527 /* ShipmentPackage.m in Sources */,
-				F772719C20355FDC00D959AF /* TokoCashNetworkProvider.swift in Sources */,
 				F977FCD51FE8AB7E00183A85 /* SliderObject.m in Sources */,
 				F977FA4F1FE8AB7900183A85 /* Referable.swift in Sources */,
 				F977FB881FE8AB7B00183A85 /* CategoryIntermediaryHotListItem.swift in Sources */,
