@@ -547,7 +547,7 @@ public class TPRoutes: NSObject {
 
             guard let completeURL = url?.url else { return false }
 
-            openWebView(completeURL)
+            openWebView(completeURL, title: params["title"] as? String)
 
             return true
         }
@@ -1301,7 +1301,7 @@ public class TPRoutes: NSObject {
         }
     }
 
-    private static func openWebView(_ url: URL, title: String = "") {
+    private static func openWebView(_ url: URL, title: String? = "") {
         let controller = WebViewController()
         let userManager = UserAuthentificationManager()
 

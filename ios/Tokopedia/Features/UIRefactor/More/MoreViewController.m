@@ -970,6 +970,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewController *webView = [WebViewController new];
     webView.strURL = [auth webViewUrlFromUrl:tokopointsMainpageUrl];
+    webView.strTitle = @"TokoPoints";
     webView.shouldAuthorizeRequest = true;
     webView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webView animated:YES];
