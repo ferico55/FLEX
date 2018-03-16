@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="11762" systemVersion="15G31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -42,17 +42,14 @@
                                     <constraint firstAttribute="width" constant="1" id="5hP-1h-cdY"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Lokasi Pickup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSn-F8-09T">
-                                <rect key="frame" x="73" y="11" width="239" height="21"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="21" id="6Fs-1K-oEu"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="(Tandai jika menggunakan layanan Go-Send atau Grab)" textAlignment="natural" lineBreakMode="wordWrap" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dSn-F8-09T">
+                                <rect key="frame" x="73" y="34" width="239" height="29"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                <color key="textColor" red="0.33333333333333331" green="0.33333333333333331" blue="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lz5-8u-ie0">
-                                <rect key="frame" x="73" y="32" width="239" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tandai Lokasi Pickup" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Lz5-8u-ie0">
+                                <rect key="frame" x="73" y="9" width="239" height="21"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="21" id="eiS-gX-ujv"/>
                                 </constraints>
@@ -72,10 +69,10 @@
                             <constraint firstAttribute="trailing" secondItem="Lz5-8u-ie0" secondAttribute="trailing" constant="8" id="Gig-Jv-v46"/>
                             <constraint firstItem="tfY-LF-vcd" firstAttribute="leading" secondItem="UC6-HC-4ft" secondAttribute="trailing" id="La3-uv-SKT"/>
                             <constraint firstItem="Gs8-Aj-OUw" firstAttribute="leading" secondItem="XFj-P4-ZkF" secondAttribute="leading" id="MXL-Jt-axV"/>
-                            <constraint firstItem="dSn-F8-09T" firstAttribute="top" secondItem="Gs8-Aj-OUw" secondAttribute="bottom" constant="10" id="NSx-Rm-6Re"/>
+                            <constraint firstItem="dSn-F8-09T" firstAttribute="top" secondItem="Lz5-8u-ie0" secondAttribute="bottom" constant="4" id="NSx-Rm-6Re"/>
                             <constraint firstItem="UC6-HC-4ft" firstAttribute="leading" secondItem="XFj-P4-ZkF" secondAttribute="leading" id="PGO-6Q-z5U"/>
                             <constraint firstAttribute="width" constant="320" id="Pdc-fr-NOz"/>
-                            <constraint firstItem="Lz5-8u-ie0" firstAttribute="top" secondItem="dSn-F8-09T" secondAttribute="bottom" id="SZA-Jj-jXj"/>
+                            <constraint firstItem="Lz5-8u-ie0" firstAttribute="top" secondItem="Gs8-Aj-OUw" secondAttribute="bottom" constant="8" id="SZA-Jj-jXj"/>
                             <constraint firstItem="dSn-F8-09T" firstAttribute="leading" secondItem="tfY-LF-vcd" secondAttribute="trailing" constant="8" id="Ucc-ff-erg"/>
                             <constraint firstItem="Gs8-Aj-OUw" firstAttribute="top" secondItem="XFj-P4-ZkF" secondAttribute="top" id="hsN-0M-9xK"/>
                             <constraint firstAttribute="height" constant="64" id="m88-Kv-J19"/>
@@ -103,8 +100,10 @@
                 </constraints>
             </tableViewCellContentView>
             <connections>
+                <outlet property="lblOptional" destination="dSn-F8-09T" id="t7W-wS-khB"/>
                 <outlet property="pickupAddressTextView" destination="V4D-wD-vLi" id="gcO-i2-AuY"/>
                 <outlet property="pickupLocationLabel" destination="Lz5-8u-ie0" id="xrM-rt-omX"/>
+                <outlet property="viewPinpoint" destination="XFj-P4-ZkF" id="tez-Kw-qeD"/>
             </connections>
             <point key="canvasLocation" x="204" y="405.5"/>
         </tableViewCell>

@@ -538,7 +538,12 @@ public class TPRoutes: NSObject {
                 return true
             }
             var url = URLComponents(string: decodedURL)
-            url?.queryItems = getUTMQueryItems(url: URL(string: decodedURL)!)
+            
+            guard let urlForQuery = URL(string: decodedURL) else {
+                return true
+            }
+            
+            url?.queryItems = getUTMQueryItems(url: urlForQuery)
 
             guard let completeURL = url?.url else { return false }
 

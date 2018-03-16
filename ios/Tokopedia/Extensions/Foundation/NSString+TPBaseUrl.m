@@ -441,7 +441,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary* urls = @{
                            @(TPUrlProduction) : @"https://gw.tokopedia.com",
-                           @(TPUrlStaging) : @"http://gw-staging.tokopedia.com",
+                           @(TPUrlStaging) : @"https://gw-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"http://gw-staging.tokopedia.com",
                            @(TPUrlDevelopment) : @"http://gw-staging.tokopedia.com"
                            };

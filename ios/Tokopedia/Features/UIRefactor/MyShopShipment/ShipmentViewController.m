@@ -9,7 +9,6 @@
 #import "ShipmentViewController.h"
 #import "CourierInfoViewController.h"
 #import "GeneralTableViewController.h"
-#import "NavigateViewController.h"
 #import "ShipmentWebViewController.h"
 
 #import "Tokopedia-Swift.h"
@@ -31,12 +30,21 @@
 
 #import "NSURL+Dictionary.h"
 
+#import <CoreLocation/CoreLocation.h>
+
+@import SwiftOverlays;
+
 @interface ShipmentViewController ()
 <
 GeneralTableViewControllerDelegate,
 ShipmentWebViewDelegate,
-TKPPlacePickerDelegate
+CLLocationManagerDelegate
 >
+{
+    CLLocationManager *locationManager;
+    double userLatitude;
+    double userLongitude;
+}
 
 @property (strong, nonatomic) NSArray *couriers;
 @property (strong, nonatomic) NSArray *provinces;
@@ -58,7 +66,10 @@ TKPPlacePickerDelegate
 
 @end
 
-@implementation ShipmentViewController
+@implementation ShipmentViewController {
+    BOOL hasSelectedLocation;
+    BOOL hasSelectedDistrict;
+}
 
 #pragma mark - View life cycle
 
@@ -101,6 +112,17 @@ TKPPlacePickerDelegate
             [wSelf.zipcodeTextfield resignFirstResponder];
         });
     };
+    hasSelectedLocation = NO;
+    
+    // get current location
+    userLatitude = -6.1757247;
+    userLongitude = 106.8265106;
+    locationManager = [CLLocationManager new];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager requestWhenInUseAuthorization];
+    [locationManager startUpdatingLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated {
@@ -202,7 +224,12 @@ TKPPlacePickerDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat height = 44;
     if (indexPath.section == 1) {
-        height = 175;
+        if (hasSelectedDistrict && ![_shop.postalCode isEqualToString:@""]) {
+            height = 175;
+        }
+        else {
+            height = 111;
+        }
     }
     return height;
 }
@@ -276,17 +303,22 @@ TKPPlacePickerDelegate
     
     [cell.postalCodeTextField addTarget:self action:@selector(postalCodeTextFieldDidChange:) forControlEvents:UIControlEventEditingChanged];
     [cell.postalCodeTextField addTarget:self action:@selector(postalCodeTextFieldBeginEditing:) forControlEvents:UIControlEventEditingDidBegin];
+    [cell.postalCodeTextField addTarget:self action:@selector(postalCodeTextFieldEndEditing:) forControlEvents:UIControlEventEditingDidEnd];
     [_zipcodeRecommendation setTextField:cell.postalCodeTextField];
     return cell;
 }
 
 - (ShipmentLocationPickupViewCell *)pickupCellForRowAtIndexPath:(NSIndexPath *)indexPath {
     ShipmentLocationPickupViewCell *cell = [self.tableView dequeueReusableCellWithIdentifier:@"pickup"];
-    cell.pickupLocationLabel.text = self.shop.locationAddress;
+    cell.pickupLocationLabel.text = [self.shop.locationAddress isEqualToString:@""] ? @"Tandai lokasi Anda" : self.shop.locationAddress;
+    [cell.lblOptional setHidden:![self.shop.locationAddress isEqualToString:@""]];
     cell.pickupAddressTextView.text = self.shop.address;
     cell.pickupAddressTextView.placeholder = @"Tulis alamat pickup dengan lengkap";
     NSNotificationCenter *notification = [NSNotificationCenter defaultCenter];
     [notification addObserver:self selector:@selector(addressTextViewDidChange:) name:UITextViewTextDidChangeNotification object:cell.pickupAddressTextView];
+    
+    [cell showPinpointView:(hasSelectedDistrict && ![_shop.postalCode isEqualToString:@""])];
+    
     return cell;
 }
 
@@ -408,20 +440,42 @@ TKPPlacePickerDelegate
                 wSelf.selectedDistrict = district;
                 [wSelf.zipcodeRecommendation setZipcodeCellsWithPostalCodes:district.zipCodes];
                 wSelf.zipcodeList = district.zipCodes;
+                if (district.zipCodes.count > 0) {
+                    wSelf.shop.postalCode = district.zipCodes[0];
+                }
                 [wSelf fetchLogisticFormData];
+                
+                hasSelectedDistrict = YES;
+                
                 [wSelf.tableView reloadData];
             };
             
             [self presentViewController:navigationController animated:YES completion:nil];
         }
     } else if (indexPath.section == 1) {
-        CLLocationCoordinate2D coordinate;
-        if (self.shop.latitude && self.shop.longitude) {
-            coordinate = CLLocationCoordinate2DMake(self.shop.latitude, self.shop.longitude);
-        } else {
-            coordinate = CLLocationCoordinate2DMake(0, 0);
+        CGFloat latitude = self.shop.latitude != 0 ? self.shop.latitude : -6.1757247;
+        CGFloat longitude = self.shop.longitude != 0 ? self.shop.longitude : 106.8265106;
+        NSString *districtName = (self.selectedDistrict.districtLabel ?: _shop.districtName) ?: @"";
+        
+        if (hasSelectedLocation) {
+            [self openMapWithLatitude:latitude longitude:longitude];
         }
-        [NavigateViewController navigateToMap:coordinate type:TypePlacePickerTypeEditPlace fromViewController:self];
+        else {
+            if ([self.zipcodeTextfield.text isEqualToString:@""]) {
+                [StickyAlertView showErrorMessage:@[@"Format kode pos tidak sesuai."]];
+                return;
+            }
+            __weak typeof(self) wSelf = self;
+            [SwiftOverlays showBlockingWaitOverlay];
+            [TokopointsService geocodeWithAddress:districtName latitudeLongitude:nil onSuccess:^(GeocodeResponse *response) {
+                [SwiftOverlays removeAllBlockingOverlays];
+                [wSelf openMapWithLatitude:response.latitude longitude:response.longitude];
+            } onFailure:^(NSError *error) {
+                [SwiftOverlays removeAllBlockingOverlays];
+                NSLog(@"%@", error.localizedDescription);
+                [wSelf openMapWithLatitude:userLatitude longitude:userLongitude];
+            }];
+        }
     } else if ([self showsCourierAdditionalOptionAtIndexPath:indexPath]) {
         ShipmentCourierData *courier = [self courierAtIndexPath:indexPath];
         ShipmentWebViewController *controller = [ShipmentWebViewController new];
@@ -435,6 +489,24 @@ TKPPlacePickerDelegate
         controller.title = courier.name;
         [self.navigationController pushViewController:controller animated:YES];
     }
+}
+
+- (void)openMapWithLatitude:(CGFloat)latitude longitude:(CGFloat)longitude {
+    NSString *districtId = (self.selectedDistrict.districtID ?: _shop.districtId) ?: @"";
+    
+    __weak typeof(self) wSelf = self;
+    MapViewController *mv = [[MapViewController alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) districtId:districtId postalCode:self.zipcodeTextfield.text onLocationSelected:^(NSString *name, CLLocationCoordinate2D coordinate) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            wSelf.shop.locationAddress = name;
+            wSelf.shop.address = name;
+            wSelf.shop.latitude = coordinate.latitude;
+            wSelf.shop.longitude = coordinate.longitude;
+            [wSelf.tableView reloadData];
+            
+            hasSelectedLocation = true;
+        });
+    }];
+    [self.navigationController pushViewController:mv animated:YES];
 }
 
 #pragma mark - Table footer view
@@ -541,6 +613,12 @@ TKPPlacePickerDelegate
     
     self.couriers = couriers;
     self.shop = data.shop;
+    if (_zipcodeList.count > 0) {
+        self.shop.postalCode = _zipcodeList[0];
+    }
+    if (self.shipmentType == ShipmentTypeSettings) {
+        hasSelectedDistrict = YES;
+    }
     self.loc = data.loc;
     self.paymentOptions = data.paymentOptions;
     
@@ -790,53 +868,16 @@ TKPPlacePickerDelegate
                                   }];
 }
 
-#pragma mark - Place Picker delegate
-
-- (void)pickAddress:(GMSAddress *)address
-         suggestion:(NSString *)suggestion
-          longitude:(double)longitude
-           latitude:(double)latitude
-           mapImage:(UIImage *)mapImage {
-    NSString *addressStreet= @"";
-    
-    if (![suggestion isEqualToString:@""]) {
-        NSArray *addressSuggestions = [suggestion componentsSeparatedByString:@","];
-        addressStreet = addressSuggestions[0];
-    }
-    NSString *locationAddress = [self streetNameFromAddress:address];
-    NSString *street= locationAddress;
-    if (addressStreet.length != 0) {
-        addressStreet = [NSString stringWithFormat:@"%@\n%@",addressStreet,street];
-    } else {
-        addressStreet = street;
-    }
-    self.shop.locationAddress = addressStreet;
-    self.shop.address = addressStreet;
-    self.shop.latitude = latitude;
-    self.shop.longitude = longitude;
-    [self.tableView reloadData];
-}
-
-- (NSString *)streetNameFromAddress:(GMSAddress *)address {
-    NSString *street = @"Tentukan Peta Lokasi";
-    TKPAddressStreet *addressStreet = [TKPAddressStreet new];
-    street = [addressStreet getStreetAddress:address.thoroughfare];
-    return street;
-}
-
-- (void)showAddressFromLatitude:(CLLocationDegrees)latitude longitude:(CLLocationDegrees)longitude {
+- (void)showAddressFromLatitude:(double)latitude longitude:(double)longitude {
     __weak typeof(self) welf = self;
-    CLLocationCoordinate2D coordinate = CLLocationCoordinate2DMake(latitude, longitude);
-    [[GMSGeocoder geocoder] reverseGeocodeCoordinate:coordinate
-                                   completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                                       if (error || response == nil){
-                                           welf.shop.locationAddress = @"Tandai lokasi Anda";
-                                       } else {
-                                           GMSAddress *placemark = [response results][0];
-                                           welf.shop.locationAddress = [self streetNameFromAddress:placemark];
-                                       }
-                                       [welf.tableView reloadData];
-                                   }];
+    
+    [TokopointsService geocodeWithAddress:nil latitudeLongitude:[NSString stringWithFormat:@"%f,%f", latitude, longitude] onSuccess:^(GeocodeResponse *response) {
+        welf.shop.locationAddress = response.shortAddress;
+        [welf.tableView reloadData];
+    } onFailure:^(NSError *error) {
+        [welf.tableView reloadData];
+        [StickyAlertView showErrorMessage:@[error.localizedDescription]];
+    }];
 }
 
 #pragma mark - Web view delegate
@@ -894,6 +935,10 @@ TKPPlacePickerDelegate
     self.shop.postalCode = textField.text;
 }
 
+- (void)postalCodeTextFieldEndEditing:(UITextField *)textField {
+    [self.tableView reloadData];
+}
+
 - (void)postalCodeTextFieldBeginEditing:(UITextField *)textField {
     _zipcodeTextfield.text = @"";
     self.shop.postalCode = textField.text;
@@ -923,6 +968,12 @@ TKPPlacePickerDelegate
     [indicatorView startAnimating];
     UIBarButtonItem *button = [[UIBarButtonItem alloc] initWithCustomView:indicatorView];
     return button;
+}
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    userLatitude = [locations lastObject].coordinate.latitude;
+    userLongitude = [locations lastObject].coordinate.longitude;
+    [locationManager stopUpdatingLocation];
 }
 
 @end

@@ -775,6 +775,8 @@
 		E5ADEDC720353953006488AF /* UICollectionView+Dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */; };
 		E5ADEDC820353953006488AF /* UITableView+Dequeue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */; };
 		E5B4E7FF1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */; };
+		E5BDE50A205BCB090088B08D /* GeocodeResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BDE509205BCB080088B08D /* GeocodeResponse.swift */; };
+		E5BE72FC205BC7E70045CB79 /* MapViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5BE72FB205BC7E60045CB79 /* MapViewController.swift */; };
 		E5CDEB0F2004C42900C41219 /* HomePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF22004C41700C41219 /* HomePage.swift */; };
 		E5CDEB102004C42900C41219 /* MorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF32004C41700C41219 /* MorePage.swift */; };
 		E5CDEB112004C42900C41219 /* LoginPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CDEAF42004C41700C41219 /* LoginPage.swift */; };
@@ -3455,6 +3457,8 @@
 		E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Dequeue.swift"; sourceTree = "<group>"; };
 		E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITableView+Dequeue.swift"; sourceTree = "<group>"; };
 		E5B4E7FE1FF4E67B004EB1FE /* ProductTalkDetailHeaderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTalkDetailHeaderViewController.swift; sourceTree = "<group>"; };
+		E5BDE509205BCB080088B08D /* GeocodeResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GeocodeResponse.swift; sourceTree = "<group>"; };
+		E5BE72FB205BC7E60045CB79 /* MapViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapViewController.swift; sourceTree = "<group>"; };
 		E5CDEAF22004C41700C41219 /* HomePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = HomePage.swift; path = Class/HomePage.swift; sourceTree = "<group>"; };
 		E5CDEAF32004C41700C41219 /* MorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MorePage.swift; path = Class/MorePage.swift; sourceTree = "<group>"; };
 		E5CDEAF42004C41700C41219 /* LoginPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = LoginPage.swift; path = Class/LoginPage.swift; sourceTree = "<group>"; };
@@ -5371,13 +5375,13 @@
 		62C76BDC1FF33C3000F66527 /* Object */ = {
 			isa = PBXGroup;
 			children = (
-				E5ADEDBC2035393D006488AF /* Complaint */,
 				62C76E121FF33C3100F66527 /* Activation */,
 				62C76F641FF33C3100F66527 /* Address */,
 				62C76DF11FF33C3100F66527 /* AnnouncementTicker */,
 				62C76E541FF33C3100F66527 /* Carousel */,
 				62C76DFF1FF33C3100F66527 /* Catalog */,
 				62C76D7C1FF33C3000F66527 /* Category */,
+				E5ADEDBC2035393D006488AF /* Complaint */,
 				62C76F5B1FF33C3100F66527 /* ContactUs */,
 				62C76E511FF33C3100F66527 /* Coupon */,
 				62C76D241FF33C3000F66527 /* Deposit */,
@@ -5393,6 +5397,7 @@
 				62C76FB41FF33C3100F66527 /* FavoritedShop */,
 				62C76D191FF33C3000F66527 /* FavoriteShopAction */,
 				62C76F8B1FF33C3100F66527 /* GeneralAction */,
+				E5BDE508205BCB080088B08D /* Geocode */,
 				62C76C9A1FF33C3000F66527 /* GooglePlaces */,
 				62C76DCC1FF33C3000F66527 /* HistoryProduct */,
 				62C76D301FF33C3000F66527 /* Hotlist */,
@@ -8002,6 +8007,14 @@
 			path = Complaint;
 			sourceTree = "<group>";
 		};
+		E5BDE508205BCB080088B08D /* Geocode */ = {
+			isa = PBXGroup;
+			children = (
+				E5BDE509205BCB080088B08D /* GeocodeResponse.swift */,
+			);
+			path = Geocode;
+			sourceTree = "<group>";
+		};
 		E5CDEAFB2004C41C00C41219 /* Myshop */ = {
 			isa = PBXGroup;
 			children = (
@@ -9225,6 +9238,7 @@
 		F977EFCB1FE8AB6F00183A85 /* Address */ = {
 			isa = PBXGroup;
 			children = (
+				E5BE72FB205BC7E60045CB79 /* MapViewController.swift */,
 				F977EFD11FE8AB6F00183A85 /* SettingAddressDetailViewController.h */,
 				F977EFD51FE8AB6F00183A85 /* SettingAddressDetailViewController.m */,
 				F977EFD41FE8AB6F00183A85 /* SettingAddressDetailViewController.xib */,
@@ -12872,6 +12886,7 @@
 				F977FB7D1FE8AB7B00183A85 /* CategoryNavigationTableViewController.swift in Sources */,
 				62C770681FF33C3200F66527 /* WholesalePrice.m in Sources */,
 				E57974C31FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift in Sources */,
+				E5BDE50A205BCB090088B08D /* GeocodeResponse.swift in Sources */,
 				F977FE511FE8AB8100183A85 /* FeedKOLRecommendationComponentView.swift in Sources */,
 				62C771CB1FF33C3500F66527 /* ProductEditDetail.swift in Sources */,
 				F97700A71FE8AB8600183A85 /* TKPMappingManager.m in Sources */,
@@ -13074,6 +13089,7 @@
 				F980524F2018AAFE00CE6D67 /* ReactInteractionHelper.m in Sources */,
 				F977FDDB1FE8AB8000183A85 /* ResolutionCenterCreatePOSTRequest.m in Sources */,
 				F977FD3B1FE8AB7F00183A85 /* SearchResultViewController.m in Sources */,
+				E5BE72FC205BC7E70045CB79 /* MapViewController.swift in Sources */,
 				62C771321FF33C3400F66527 /* ShopProductPageCampaignInfo.swift in Sources */,
 				F772717A20355FDC00D959AF /* TokoCashPendingTransactionViewModel.swift in Sources */,
 				F977FCD41FE8AB7E00183A85 /* SliderData.m in Sources */,

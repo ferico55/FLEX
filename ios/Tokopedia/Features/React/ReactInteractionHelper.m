@@ -51,6 +51,16 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
                                                                   action:nil];
 }
 
+RCT_EXPORT_METHOD(showSimpleErrorStickyAlert:(NSString*) message) {
+    [self destroyLastNotificationView];
+    lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                    type:NotificationTypeError
+                                                                duration:4.0
+                                                             buttonTitle:nil
+                                                             dismissable:YES
+                                                                  action:nil];
+}
+
 RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
     lastNotificationView = [UIViewController showNotificationWithMessage:message
@@ -174,6 +184,14 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RC
 - (UIViewController*) topMostViewController {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     return [rootViewController topMostViewController];
+}
+
+RCT_EXPORT_METHOD(showLoadingOverlay) {
+    [SwiftOverlays showBlockingWaitOverlay];
+}
+
+RCT_EXPORT_METHOD(removeLoadingOverlay) {
+    [SwiftOverlays removeAllBlockingOverlays];
 }
 
 @end

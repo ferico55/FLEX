@@ -15,5 +15,9 @@
 
 @property (weak, nonatomic) IBOutlet RSKPlaceholderTextView *pickupAddressTextView;
 @property (weak, nonatomic) IBOutlet UILabel *pickupLocationLabel;
+@property (weak, nonatomic) IBOutlet UIView *viewPinpoint;
+@property (weak, nonatomic) IBOutlet UILabel *lblOptional;
+
+- (void)showPinpointView:(BOOL)show;
 
 @end
