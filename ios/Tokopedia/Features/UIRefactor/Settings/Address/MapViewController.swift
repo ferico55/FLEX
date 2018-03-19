@@ -48,6 +48,14 @@ internal class MapViewController: ReactViewController {
     }
     
     internal func locationDidSelected(_ notification: Notification) {
+        guard let instanceId = notification.userInfo?["nativeNavigationInstanceId"] as? String else {
+            return
+        }
+        
+        if instanceId != nativeNavigationInstanceId {
+            return
+        }
+        
         let districtName = notification.userInfo?["name"] as? String
         let latitude = (notification.userInfo?["coordinate"] as? [String: Double])?["latitude"]
         let longitude = (notification.userInfo?["coordinate"] as? [String: Double])?["longitude"]
