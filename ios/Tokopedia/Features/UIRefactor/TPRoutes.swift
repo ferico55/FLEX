@@ -552,17 +552,20 @@ public class TPRoutes: NSObject {
             return true
         }
 
-        // MARK: Promo (Webview)
+        // MARK: Promo
         JLRoutes.global().addRoute("/promo") { (params: [String: Any]) -> Bool in
-            openWebView(routeParams: params)
+            let isLogin = UserAuthentificationManager().isLogin
+            NotificationCenter.default.post(name: Notification.Name("navigateToPageInTabBar"), object: "0")
+            NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": isLogin ? 3 : 2])
+            
             return true
         }
-
-        // MARK: Promo (Native)
-        JLRoutes.global().addRoute("/promoNative") { (_: [String: Any]) -> Bool in
+        
+        JLRoutes.global().addRoute("/promoNative") { (params: [String: Any]) -> Bool in
             let isLogin = UserAuthentificationManager().isLogin
+            NotificationCenter.default.post(name: Notification.Name("navigateToPageInTabBar"), object: "0")
             NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": isLogin ? 3 : 2])
-
+            
             return true
         }
         
