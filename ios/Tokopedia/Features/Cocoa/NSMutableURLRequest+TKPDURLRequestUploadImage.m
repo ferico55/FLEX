@@ -11,6 +11,7 @@
 #import "TkpdHMAC.h"
 #import "NSURL+Dictionary.h"
 #import "Tokopedia-Swift.h"
+#import "NSString+MD5.h"
 
 @implementation NSMutableURLRequest (TKPDURLRequestUploadImage)
 
@@ -69,7 +70,7 @@
     TkpdHMAC *hmac = [TkpdHMAC new];
     
     NSString* baseUrl = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
-    [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(RKRequestMethodGET) path:url.path parameter:[url parameters]];
+    [hmac signatureWithWebviewUrl: url];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:url];

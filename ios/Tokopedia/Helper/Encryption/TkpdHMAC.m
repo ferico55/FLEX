@@ -137,8 +137,31 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     _baseUrl = url;
     _date = date;
     _signature = output;
+}
+
+- (void)signatureWithWebviewUrl:(NSURL*)url {
+    [self setRequestMethod:@"GET"];
+    [self setQueryMD5:url];
+    [self setTkpdPath:url.path];
+    [self setSecret:@"web_service_v4"];
     
+    NSString* date = [self getDate];
+    NSString *output;
     
+    NSString *stringToSign = [NSString stringWithFormat:@"GET\n%@\n%@\n%@\n%@", [self getParameterMD5], [self getContentTypeWithBaseUrl:url.baseURL.absoluteString],
+                              date, [self getTkpdPath]];
+    
+    const char *cKey = [@"web_service_v4" cStringUsingEncoding:NSASCIIStringEncoding];
+    const char *cData = [stringToSign cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    unsigned char cHMAC[CC_SHA1_DIGEST_LENGTH];
+    CCHmac(kCCHmacAlgSHA1, cKey, strlen(cKey), cData, strlen(cData), cHMAC);
+    NSData *HMAC = [[NSData alloc] initWithBytes:cHMAC length:sizeof(cHMAC)];
+    output = [self base64forData:HMAC];
+    
+    _baseUrl = url.baseURL.absoluteString;
+    _date = date;
+    _signature = output;
 }
 
 - (void)signatureWithBaseUrlPulsa:(NSString*)url
@@ -333,6 +356,13 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
 
     NSString* joinedParameters = [strings componentsJoinedByString:@"&"];
     _parameterMD5 = [joinedParameters encryptWithMD5];
+}
+
+- (void)setQueryMD5:(NSURL*)url {
+    NSString *result = [[url query] stringByReplacingOccurrencesOfString:@"+" withString:@" "];
+    result = [result stringByRemovingPercentEncoding];
+    
+    _parameterMD5 = [result encryptWithMD5];
 }
 
 - (NSString*)getRequestMethod {
