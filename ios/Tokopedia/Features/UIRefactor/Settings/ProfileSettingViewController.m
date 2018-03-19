@@ -160,7 +160,10 @@
             }
             case 3: {
                 //Pembayaran
-                PaymentViewController *vc = [PaymentViewController new];
+                PaymentSettingViewController *vc = [PaymentSettingViewController new];
+                PaymentSettingNavigator *navigator = [[PaymentSettingNavigator alloc] initWithNavigationController:self.navigationController];
+                PaymentSettingViewModel * viewModel = [[PaymentSettingViewModel alloc] initWithNavigator:navigator];
+                vc.viewModel = viewModel;
                 [self.navigationController pushViewController:vc animated:YES];
                 break;
             }

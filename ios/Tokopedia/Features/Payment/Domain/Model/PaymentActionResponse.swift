@@ -9,21 +9,21 @@
 import UIKit
 import Unbox
 
-final class PaymentActionResponse: Unboxable {
+final public class PaymentActionResponse: Unboxable {
 
-    var success = false
-    var message: String?
-    var urlString: String?
-    var parameterString: String?
+    public var success = false
+    public var message: String?
+    public var urlString: String?
+    public var parameterString: String?
 
-    init(success: Bool, message: String?, urlString: String?, parameterString: String?) {
+    public init(success: Bool, message: String?, urlString: String?, parameterString: String?) {
         self.success = success
         self.message = message
         self.urlString = urlString
         self.parameterString = parameterString
     }
 
-    convenience init(unboxer: Unboxer) throws {
+    convenience public init(unboxer: Unboxer) throws {
         self.init(
             success: try unboxer.unbox(key: "success"),
             message: unboxer.unbox(key: "message"),

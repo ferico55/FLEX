@@ -59,4 +59,11 @@ extension Date {
         let string = formatter.string(from: self)
         return string
     }
+    
+    public func tpDateFormat3() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
+        let string = formatter.string(from: self)
+        return string
+    }
 }

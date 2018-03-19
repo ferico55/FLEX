@@ -6,21 +6,21 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
+import Moya
+import MoyaUnbox
 import UIKit
 
-import MoyaUnbox
-import Moya
-
-class ScroogeProvider: NetworkProvider<ScroogeTarget> {
-    init() {
+internal class ScroogeProvider: NetworkProvider<ScroogeTarget> {
+    public init() {
         super.init(endpointClosure: ScroogeProvider.endpointClosure,
-                   manager: DefaultAlamofireManager.sharedManager)
+                   manager: DefaultAlamofireManager.sharedManager,
+                   plugins: [NetworkLoggerPlugin(verbose: true)])
     }
-
+    
     fileprivate class func endpointClosure(for target: ScroogeTarget) -> Endpoint<ScroogeTarget> {
         let userID = UserAuthentificationManager().getUserId() ?? ""
         let appVersion = UIApplication.getAppVersionString()
-
+        
         let jsonHeaders = target.method == .get ? [:] : [
             "Accept": "application/json",
             "X-APP-VERSION": appVersion,
@@ -30,17 +30,17 @@ class ScroogeProvider: NetworkProvider<ScroogeTarget> {
             "X-Tkpd-UserId": userID,
             "Content-Type": "application/json"
         ]
-
+        
         let headers = target.parameterEncoding is Moya.JSONEncoding ? jsonHeaders : [:]
-
+        
         return NetworkProvider.defaultEndpointCreator(for: target)
             .adding(
                 httpHeaderFields: headers
-            )
+        )
     }
 }
 
-enum ScroogeTarget {
+public enum ScroogeTarget {
     case getListOneClick()
     case getOneClickAccessToken()
     case registerOneClick(OneClickData)
@@ -55,19 +55,19 @@ enum ScroogeTarget {
 }
 
 extension String {
-    func hmac(key: String) -> String {
+    public func hmac(key: String) -> String {
         let cKey = key.cString(using: String.Encoding.utf8)
         let cData = cString(using: String.Encoding.utf8)
         var result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA1_DIGEST_LENGTH))
         let length: Int = Int(strlen(cKey!))
         let data: Int = Int(strlen(cData!))
         CCHmac(CCHmacAlgorithm(kCCHmacAlgSHA1), cKey!, length, cData!, data, &result)
-
+        
         let hmacData: NSData = NSData(bytes: result, length: Int(CC_SHA1_DIGEST_LENGTH))
-
+        
         var bytes = [UInt8](repeating: 0, count: hmacData.length)
         hmacData.getBytes(&bytes, length: hmacData.length)
-
+        
         var hexString = ""
         for byte in bytes {
             hexString += String(format: "%02hhx", UInt8(byte))
@@ -78,8 +78,8 @@ extension String {
 
 extension ScroogeTarget: TargetType {
     /// The target's base `URL`.
-    var baseURL: URL {
-
+    public var baseURL: URL {
+        
         let string: String
         switch self {
         case .getListCreditCard, .deleteCreditCard, .register, .validatePayment:
@@ -87,12 +87,12 @@ extension ScroogeTarget: TargetType {
         default:
             string = NSString.oneClickURL()
         }
-
+        
         return URL(string: string)!
     }
-
+    
     /// The path to be appended to `baseURL` to form the full `URL`.
-    var path: String {
+    public var path: String {
         switch self {
         case .getListOneClick: return "/ws/oneclick"
         case .getOneClickAccessToken: return "/ws/oneclick"
@@ -107,14 +107,14 @@ extension ScroogeTarget: TargetType {
         case .validatePayment: return "/v2/payment/cc/fingerprint"
         }
     }
-
+    
     /// The HTTP method used in the request.
-    var method: Moya.Method {
+    public var method: Moya.Method {
         return .post
     }
-
+    
     /// The parameters to be incoded in the request.
-    var parameters: [String: Any]? {
+    public var parameters: [String: Any]? {
         let authManager = UserAuthentificationManager()
         switch self {
         case .getListOneClick:
@@ -164,7 +164,7 @@ extension ScroogeTarget: TargetType {
             formatter.locale = usLocale as Locale
             let dateString = formatter.string(from: Date())
             let userID = authManager.getUserId() ?? ""
-
+            
             let signatureString = "\(userID)tokopedia\(dateString)"
             return [
                 "merchant_code": "tokopedia",
@@ -179,7 +179,7 @@ extension ScroogeTarget: TargetType {
             formatter.locale = usLocale as Locale
             let dateString = formatter.string(from: Date())
             let userID = authManager.getUserId() ?? ""
-
+            
             let signatureString = "\(userID)tokopedia\(dateString)"
             return [
                 "token_id": tokenID,
@@ -214,9 +214,9 @@ extension ScroogeTarget: TargetType {
                             "state":status
                     ]],
                 "signature": signatureString.hmac(key: secretKey)
-        ]
+            ]
         case let .register(publicKey, signature, transactionID, ccHash, dateString):
-
+            
             let auth = UserAuthentificationManager()
             
             return [
@@ -228,9 +228,9 @@ extension ScroogeTarget: TargetType {
                 "transaction_id": transactionID,
                 "cc_hashed": ccHash
             ]
-
+            
         case let .validatePayment(publicKey, signature, parameter, dateString):
-
+            
             let auth = UserAuthentificationManager()
             
             let param = parameter.combineWith(values: [
@@ -242,20 +242,20 @@ extension ScroogeTarget: TargetType {
                 ])
             
             return param
+        }
     }
-    }
-
+    
     /// The method used for parameter encoding.
-    var parameterEncoding: ParameterEncoding {
+    public var parameterEncoding: ParameterEncoding {
         switch self {
         case .getListCreditCard, .deleteCreditCard, .getCCAuthenticationStatus, .updateCCAuthenticationStatus: return JSONEncoding.default
         default: return URLEncoding.default
         }
     }
-
+    
     /// Provides stub data for use in testing.
-    var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
-
+    public var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
+    
     /// The type of HTTP task to be performed.
-    var task: Task { return .request }
+    public var task: Task { return .request }
 }
