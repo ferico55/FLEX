@@ -66,7 +66,7 @@ RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeError
                                                                 duration:4.0
-                                                             buttonTitle:@"Coba Lagi"
+                                                             buttonTitle:nil
                                                              dismissable:YES
                                                                   action:nil];
 }
