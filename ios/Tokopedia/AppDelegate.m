@@ -24,7 +24,6 @@
 #import <React/RCTRootView.h>
 #import "ReactHybridViewController.h"
 #import "HybridNavigationManager.h"
-#import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 #import "lecore.h"
 

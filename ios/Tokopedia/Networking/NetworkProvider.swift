@@ -6,11 +6,11 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
+import Crashlytics
 import FirebaseRemoteConfig
 import Moya
 import RxSwift
 import UIKit
-import Crashlytics
 
 extension TargetType {
     internal func urlString() -> String? {

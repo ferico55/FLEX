@@ -15,7 +15,6 @@
 #import "NSURL+Dictionary.h"
 #import "NSNumberFormatter+IDRFormater.h"
 #import "TKPDTabViewController.h"
-#import "ProductAddEditViewController.h"
 #import "GAIDictionaryBuilder.h"
 #import "search.h"
 #import "Tokopedia-Swift.h"
@@ -26,7 +25,11 @@
 typedef NS_ENUM(NSInteger, EventCategoryType) {
     EventCategoryTypeHomepage,
     EventCategoryTypeRegister,
-    
+};
+
+typedef NS_ENUM(NSInteger, TrackProductType) {
+    TrackProductTypeAdd = 1,
+    TrackProductTypeCopy = 2,
 };
 
 @interface AnalyticsManager()
@@ -680,7 +683,7 @@ typedef NS_ENUM(NSInteger, EventCategoryType) {
 }
 
 + (void)trackAddProductType:(NSInteger)type {
-    if (type == TYPE_ADD_EDIT_PRODUCT_ADD) {
+    if (type == TrackProductTypeAdd) {
         [self trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_CLICK label:@"Add"];
     } else {
         [self trackEventName:@"clickProduct" category:GA_EVENT_CATEGORY_SHOP_PRODUCT action:GA_EVENT_ACTION_COPY label:@"Product"];

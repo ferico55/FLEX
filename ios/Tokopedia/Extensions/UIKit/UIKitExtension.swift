@@ -91,7 +91,7 @@ extension UISearchController: PropertyStoring {
     public typealias T = SearchBarWrapperView?
     
     private struct CustomProperties {
-        static var wrapperView: SearchBarWrapperView? = nil
+        static var wrapperView: SearchBarWrapperView?
     }
     
     public var wrapperView: SearchBarWrapperView? {
@@ -109,8 +109,8 @@ extension UISearchController: PropertyStoring {
         searchResultsUpdater = viewController as? UISearchResultsUpdating
         searchBar.placeholder = "Cari Produk atau Toko"
         searchBar.barTintColor = .tpGreen()
-        searchBar.setTextFieldColor(color: UIColor.fromHexString("E5E5E5"))
-        searchBar.setTextColor(color: UIColor(red: 0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha: 0.7))
+        searchBar.setTextFieldColor(color: #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1))
+        searchBar.setTextColor(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7))
         searchBar.backgroundImage = UIImage()
         
         hidesNavigationBarDuringPresentation = false
@@ -137,7 +137,7 @@ extension UISearchController: PropertyStoring {
     }
     
     public func getSearchWrapperView() -> SearchBarWrapperView? {
-        return wrapperView ?? nil
+        return wrapperView
     }
 }
 
@@ -163,11 +163,13 @@ extension UISearchController: UISearchControllerDelegate {
     }
 }
 
-extension UIApplication {
+@objc extension UIApplication {
     public class func getAppVersionStringWithoutDot() -> String {
-        var appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-        appVersion = appVersion.replacingOccurrences(of: ".", with: "")
-        return appVersion
+        guard let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return ""
+        }
+        var appVersionWithoutDot = appVersion.replacingOccurrences(of: ".", with: "")
+        return appVersionWithoutDot
     }
     
     public class func getAppVersionString() -> String {
@@ -400,7 +402,7 @@ extension UIScrollView {
 }
 
 extension UIImage {
-    convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+    internal convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
         color.setFill()
@@ -496,7 +498,6 @@ extension UIImage {
             context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.height, height: self.size.width))
         default:
             context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
-            break
         }
         
         // And now we just create a new UIImage from the drawing context
@@ -537,7 +538,7 @@ extension UIImage {
 
 extension UIDevice {
     
-    var modelName: String {
+    internal var modelName: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         

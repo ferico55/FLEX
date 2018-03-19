@@ -84,6 +84,19 @@ RCT_EXPORT_METHOD(showErrorStickyAlertWithCallback:(NSString*) message callback:
                                                                   }];
 }
 
+RCT_EXPORT_METHOD(showErrorStickyAlertWithDuration:(NSString*) message duration: (nonnull NSNumber*) duration callback:(RCTResponseSenderBlock)callback) {
+    [self destroyLastNotificationView];
+    
+    lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                    type:NotificationTypeError
+                                                                duration:duration.floatValue
+                                                             buttonTitle:@"Coba Lagi"
+                                                             dismissable:YES
+                                                                  action:^{
+                                                                      callback(@[[NSNull null]]);
+                                                                  }];
+}
+
 -(void)destroyLastNotificationView {
     if(lastNotificationView) {
         [lastNotificationView setHidden:YES];
@@ -159,7 +172,7 @@ RCT_EXPORT_METHOD(forceLogout) {
     [tabManager sendLogoutEvent];
 }
 
-RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected minSize: (nonnull NSNumber*) minSize callback: (RCTResponseSenderBlock)callback) {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];
     
@@ -168,7 +181,7 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RC
         __block int count = (int) result.count;
         for(DKAsset* asset in result) {
             PHAsset *originalAsset = asset.originalAsset;
-            if (originalAsset.pixelWidth < 300 || originalAsset.pixelHeight < 300) {
+            if (originalAsset.pixelWidth < minSize.intValue || originalAsset.pixelHeight < minSize.intValue) {
                 [resultUri addObject:@"small"];
                 continue;
             }

@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary* urls = @{
                            @(TPUrlProduction) : @"https://goldmerchant.tokopedia.com",
-                           @(TPUrlStaging) : @"https://goldmerchants-staging.tokopedia.com",
+                           @(TPUrlStaging) : @"https://goldmerchant-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"https://goldmerchant.tokopedia.com",
                            @(TPUrlDevelopment) : @"https://goldmerchant.tokopedia.com"
                            };

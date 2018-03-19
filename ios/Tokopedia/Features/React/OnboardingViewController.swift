@@ -8,14 +8,14 @@
 
 import UIKit
 
-@objc enum OnboardingAction: Int {
+@objc internal enum OnboardingAction: Int {
     case next = 1
     case prev = 0
     case cancel = -1
 }
 
 // ini bikin extension aja buat implement delegate nya
-class OnboardingViewController: UIViewController {
+internal class OnboardingViewController: UIViewController {
     
     @IBOutlet private var titleLabel: UILabel!
     @IBOutlet private var messageLabel: UILabel!
@@ -31,14 +31,23 @@ class OnboardingViewController: UIViewController {
     private var overlayView: UIView?
     fileprivate let callback: (OnboardingAction) -> Void
     private let anchorView: UIView
+    private let fromPresentedViewController: Bool
     
-    init(title: String, message: String, currentStep: Int, totalStep: Int, anchorView: UIView, presentingViewController: UIViewController, callback: @escaping (OnboardingAction) -> Void) {
+    public init(title: String,
+         message: String,
+         currentStep: Int,
+         totalStep: Int,
+         anchorView: UIView,
+         presentingViewController: UIViewController,
+         fromPresentedViewController: Bool,
+         callback: @escaping (OnboardingAction) -> Void) {
         titleText = title
         messageText = message
         self.currentStep = currentStep
         self.totalStep = totalStep
         self.callback = callback
         self.anchorView = anchorView
+        self.fromPresentedViewController = fromPresentedViewController
         superViewController = presentingViewController
         super.init(nibName: nil, bundle: nil)
         
@@ -49,11 +58,11 @@ class OnboardingViewController: UIViewController {
         popoverPresentationController?.backgroundColor = UIColor.black
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         let titleFont = UIFont.boldSystemFont(ofSize: 18)
@@ -68,7 +77,7 @@ class OnboardingViewController: UIViewController {
         } else {
             backButton.isHidden = currentStep == 0
             
-            if (currentStep > 0) {
+            if currentStep > 0 {
                 let swipeRightGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(handleSwipeGesture))
                 swipeRightGestureRecognizer.direction = .right
                 self.view.addGestureRecognizer(swipeRightGestureRecognizer)
@@ -89,9 +98,18 @@ class OnboardingViewController: UIViewController {
         }
         
         view.backgroundColor = UIColor.black
+        
+        overlayView = makeOverlayView()
+        if let overlay = overlayView {
+            if self.fromPresentedViewController {
+                UIApplication.shared.keyWindow?.addSubview(overlay)
+            } else {
+                self.superViewController?.view.addSubview(overlay)
+            }
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         view.superview?.layer.cornerRadius = 8
         
@@ -111,29 +129,28 @@ class OnboardingViewController: UIViewController {
         additionalHeight += newMessageHeight - firstHeight
         let size = view.systemLayoutSizeFitting(UILayoutFittingCompressedSize)
         preferredContentSize = CGSize(width: view.frame.width, height: size.height + additionalHeight)
-        
-        overlayView = makeOverlayView()
-        if let overlay = overlayView {
-            self.superViewController?.view.addSubview(overlay)
-        }
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    override open func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         overlayView?.removeFromSuperview()
     }
     
     // MARK: Onboarding methods
-    func showOnboarding() {
-        self.superViewController?.present(self, animated: true, completion: nil)
+    public func showOnboarding() {
+        if self.fromPresentedViewController {
+            UIApplication.topViewController()?.present(self, animated: true, completion: nil)
+        } else {
+            UIApplication.shared.keyWindow?.rootViewController?.present(self, animated: true, completion: nil)
+        }
     }
     
     private func makeOverlayView() -> UIView {
-        guard let superVC = self.superViewController else {
+        guard let window = UIApplication.shared.keyWindow?.rootViewController else {
             return UIView()
         }
-        let overlayView = UIView(frame: superVC.view.frame)
-        overlayView.backgroundColor = UIColor(white: 0, alpha: 0.5)
+        let overlayView = UIView(frame: window.view.frame)
+        overlayView.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.5)
         
         let overlayRect = anchorView.convert(anchorView.bounds, to: nil)
         let maskLayer = CAShapeLayer()
@@ -148,27 +165,25 @@ class OnboardingViewController: UIViewController {
         return overlayView
     }
     
-    func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
+    internal func handleSwipeGesture(gesture: UISwipeGestureRecognizer) {
         switch gesture.direction {
         case .left:
             self.btnNextTap(gesture)
-            break
         case .right:
             self.btnBackTap(gesture)
-            break
         default:
             print("default")
         }
     }
     
     // MARK: IBActions
-    @IBAction func btnNextTap(_ sender: Any) {
+    @IBAction private func btnNextTap(_ sender: Any) {
         dismiss(animated: true, completion: {
             self.callback(.next)
         })
     }
     
-    @IBAction func btnBackTap(_ sender: Any) {
+    @IBAction private func btnBackTap(_ sender: Any) {
         dismiss(animated: true, completion: {
             self.callback(.prev)
         })

@@ -6,6 +6,7 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
+import NativeNavigation
 import UIKit
 
 @objc(OpenShopSuccessViewController) open class OpenShopSuccessViewController: UITableViewController {
@@ -14,12 +15,12 @@ import UIKit
     open var shopName: NSString!
     open var shopUrl: NSString!
     
-    @IBOutlet weak var headerLabel: UILabel!
-    @IBOutlet var headerView: UIView!
-    @IBOutlet var footerView: UIView!
-    @IBOutlet weak var addProductButton: UIButton!
+    @IBOutlet private weak var headerLabel: UILabel!
+    @IBOutlet private var headerView: UIView!
+    @IBOutlet private var footerView: UIView!
+    @IBOutlet private weak var addProductButton: UIButton!
     
-    override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
+    override public init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         let nib = nibNameOrNil ?? "OpenShopSuccessViewController"
         super.init(nibName: nib, bundle: nibBundleOrNil)
     }
@@ -85,7 +86,7 @@ import UIKit
 
     override open func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         var cell = tableView.dequeueReusableCell(withIdentifier: "cell") as UITableViewCell!
-        if (cell == nil) {
+        if cell == nil {
             cell = UITableViewCell(style:.default, reuseIdentifier: "cell")
             cell?.selectionStyle = UITableViewCellSelectionStyle.none
             cell?.textLabel?.numberOfLines = 0
@@ -95,11 +96,11 @@ import UIKit
         paragraphStyle.lineSpacing = 5
         let attributes = [NSFontAttributeName: UIFont.largeTheme()!, NSParagraphStyleAttributeName: paragraphStyle]
         
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             let text = shopUrl as String
             cell?.textLabel?.attributedText = NSAttributedString(string: text, attributes: attributes)
-            cell?.textLabel?.textColor = UIColor(red: 0.0, green: 122.0/255.0, blue: 1, alpha: 1)
-        } else if (indexPath.section == 1) {
+            cell?.textLabel?.textColor = #colorLiteral(red: 0, green: 0.4784313725, blue: 1, alpha: 1)
+        } else if indexPath.section == 1 {
             let text = "Secara otomatis toko Anda saat ini sudah dapat diakses oleh pengunjung Tokopedia.\n\nUntuk pengaturan, gunakan halaman pengaturan toko, dan jangan lewatkan kesempatan untuk melakukan transaksi pertama Anda."
             cell?.textLabel?.attributedText = NSAttributedString(string: text, attributes: attributes)
         }
@@ -108,7 +109,7 @@ import UIKit
     }
     
     override open func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             return 44
         } else {
             return 172
@@ -124,24 +125,26 @@ import UIKit
     }
     
     open override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if (indexPath.section == 0) {
+        if indexPath.section == 0 {
             let container = ShopViewController()
             container.data = ["shop_domain": shopDomain]
             navigationController?.pushViewController(container, animated: true)
         }
     }
 
-    @IBAction func didTapAddProductButton(_ sender: UIButton) {
-        let controller = ProductAddEditViewController()
-        controller.type = .ADD
-        let navigation = UINavigationController(rootViewController: controller)
+    @IBAction private func didTapAddProductButton(_ sender: UIButton) {
+        let userAuthManager = UserAuthentificationManager()
+        let vc = ReactViewController(moduleName: "AddProductScreen", props: [
+            "authInfo": userAuthManager.getUserLoginData() as AnyObject
+            ])
+        let navigation = UINavigationController(rootViewController: vc)
         navigation.navigationBar.isTranslucent = false
         navigationController?.present(navigation, animated: true, completion:nil)
         navigationController?.popToRootViewController(animated: true)
     }
     
-    func didTapDoneButton(_ button: UIBarButtonItem) -> Void {
-        navigationController!.popToRootViewController(animated: true)
+    internal func didTapDoneButton(_ button: UIBarButtonItem) {
+        navigationController?.popToRootViewController(animated: true)
     }
     
 }

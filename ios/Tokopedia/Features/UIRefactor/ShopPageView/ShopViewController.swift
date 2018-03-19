@@ -321,11 +321,11 @@ internal class ShopViewController: UIViewController {
             handler: { [unowned self] _ in
                 self.openShopInfo(shop)
             }
-        ) as! UIBarButtonItem
+        ) as! UIBarButtonItem // this looks safe to be forced
         
         let refreshBarButton = UIBarButtonItem().bk_init(with: .refresh) { [weak self] _ in
             self?.refreshCurrentViewController()
-        } as! UIBarButtonItem
+        } as! UIBarButtonItem // this looks safe to be forced
         
         self.navigationItem.rightBarButtonItems = [refreshBarButton, infoBarButton]
         
@@ -446,12 +446,14 @@ internal class ShopViewController: UIViewController {
             label: "Add Product"
         )
         
-        let viewController = ProductAddEditViewController()
-        viewController.type = .ADD
+        let userAuthManager = UserAuthentificationManager()
+        let vc = ReactViewController(moduleName: "AddProductScreen", props: [
+            "authInfo": userAuthManager.getUserLoginData() as AnyObject
+            ])
         
-        let navigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController, animated: true, completion: nil)
-        
+        let navigation = UINavigationController(rootViewController: vc)
+        navigation.navigationBar.isTranslucent = false
+        self.present(navigation, animated: true, completion: nil)
     }
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {

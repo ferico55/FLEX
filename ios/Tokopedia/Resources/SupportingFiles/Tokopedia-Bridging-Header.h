@@ -37,8 +37,6 @@
 #import "RequestUploadImage.h"
 #import "UserAuthentificationManager.h"
 
-#import "ProductAddEditViewController.h"
-
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "EtalaseList.h"
@@ -169,7 +167,6 @@
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"
 #import "SearchViewController.h"
-#import "ProcessingAddProducts.h"
 #import "TkpdHMAC.h"
 #import "NSDictionaryCategory.h"
 #include "ifaddrs.h"

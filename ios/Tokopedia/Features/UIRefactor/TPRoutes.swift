@@ -426,7 +426,7 @@ public class TPRoutes: NSObject {
                 let userManager = UserAuthentificationManager()
                 if userManager.isLogin && !userManager.userHasShop() {
                     let controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
-                    UIApplication.topViewController()?.navigationController!.pushViewController(controller, animated: true)
+                    UIApplication.topViewController()?.navigationController?.pushViewController(controller, animated: true)
                 }
             }
             return true
@@ -538,12 +538,8 @@ public class TPRoutes: NSObject {
                 return true
             }
             var url = URLComponents(string: decodedURL)
-            
-            guard let urlForQuery = URL(string: decodedURL) else {
-                return true
-            }
-            
-            url?.queryItems = getUTMQueryItems(url: urlForQuery)
+            guard let queryUrl = URL(string: decodedURL) else { return false }
+            url?.queryItems = getUTMQueryItems(url: queryUrl)
 
             guard let completeURL = url?.url else { return false }
 
@@ -830,16 +826,6 @@ public class TPRoutes: NSObject {
             return true
         }
 
-        // MARK: Retry Add Product
-        JLRoutes.global().addRoute("/add-product/:formId") { (params: [String: Any]) -> Bool in
-
-            if let formId = params["formId"] as? String {
-                TPRoutes.retryRequestForFormId(formId)
-            }
-
-            return true
-        }
-
         // MARK: Home Page (Native)
         JLRoutes.global().addRoute("home") { (_: [String: Any]) -> Bool in
             if let viewController = UIApplication.topViewController() {
@@ -933,8 +919,9 @@ public class TPRoutes: NSObject {
                 return true
             }
             var url = URLComponents(string: decodedURL)
-            url?.queryItems = getUTMQueryItems(url: urlString)
-
+            guard let queryUrl = URL(string: decodedURL) else { return true }
+            url?.queryItems = getUTMQueryItems(url: queryUrl)
+            
             guard let completeURL = url?.url else { return false }
 
             let controller = WebViewController()
@@ -975,7 +962,7 @@ public class TPRoutes: NSObject {
             AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
                 let userManager = UserAuthentificationManager()
                 var controller = UIViewController()
-
+                
                 if !userManager.userHasShop() {
                     controller = OpenShopViewController(nibName: "OpenShopViewController", bundle: nil)
                 } else {
@@ -1001,7 +988,7 @@ public class TPRoutes: NSObject {
             AuthenticationService.shared.ensureLoggedInFromViewController(topVc) {
                 let userManager = UserAuthentificationManager()
                 let seamlessURL = userManager.webViewUrl(fromUrl: url)
-
+           
                 if userManager.userHasShop() {
                     TransactionCartWebViewViewController.pushToppay(fromURL: seamlessURL, viewController: topVc, shouldAuthorizedRequest: true)
                 }
@@ -1245,10 +1232,47 @@ public class TPRoutes: NSObject {
 
             return true
         }
-
+        
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/productList") { (params: [String: Any]) -> Bool in
+            guard let topViewController = UIApplication.topViewController() else { return true }
+            if topViewController.isKind(of: ProductListMyShopViewController.self) {
+                // return immediately since user already on designated page
+                return true
+            }
+            let vc = ProductListMyShopViewController()
+            vc.data = [:]
+            vc.hidesBottomBarWhenPushed = true
+            if let navigationController = topViewController.navigationController {
+                navigationController.popToRootViewController(animated: false)
+                navigationController.pushViewController(vc, animated: true)
+            }
+            return true
+        }
+        
         // MARK: Login and Registration (Redirect to web view)
         JLRoutes.global().add(["/login", "/registration"]) { _ in
-            openWebView(URL(string: "https://m.tokopedia.com")!)
+            if let url = URL(string: "https://m.tokopedia.com") {
+                openWebView(url)
+            }
+            return true
+        }
+        
+        // add product screen
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/addProduct") { (params: [String: Any]) -> Bool in
+            let userAuthManager = UserAuthentificationManager()
+            let vc = ReactViewController(moduleName: "AddProductScreen", props: [
+                "authInfo": userAuthManager.getUserLoginData() as AnyObject,
+                ])
+            let navigation = UINavigationController(rootViewController: vc)
+            navigation.navigationBar.isTranslucent = false
+            guard let topViewController = UIApplication.topViewController() else { return true }
+            if topViewController.isKind(of: ReactViewController.self) {
+                topViewController.dismiss(animated: true, completion: {
+                    UIApplication.topViewController()?.present(navigation, animated: true, completion: nil)
+                })
+            } else {
+                UIApplication.topViewController()?.present(navigation, animated: true, completion: nil)
+            }
             return true
         }
     }
@@ -1270,38 +1294,6 @@ public class TPRoutes: NSObject {
         let controller = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: true, didVerifiedPhoneNumber: nil)
         let navigationController = UINavigationController(rootViewController: controller)
         UIApplication.topViewController()?.navigationController?.present(navigationController, animated: true, completion: nil)
-    }
-
-    private static func retryRequestForFormId(_ formId: String) {
-        ProcessingAddProducts.sharedInstance().products.bk_each { form in
-            guard let productForm = form as? ProductEditResult else { return }
-            if productForm.formId == formId {
-                RequestAddEditProduct.fetchAddProduct(productForm, isDuplicate: productForm.duplicate, onSuccess: {
-                    ProcessingAddProducts.sharedInstance().products.remove(productForm)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "tokopedia.ADDPRODUCTPOSTNOTIFICATIONNAME"), object: nil)
-
-                }, onFailure: {
-                    productForm.isUploadFailed = true
-                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
-                    var message = "Gagal Tambah Produk"
-                    if productForm.duplicate == "1" {
-                        message = "Gagal Salin Produk"
-                    }
-                    TPNotification.showNotification(text: "\(message) \(productForm.product.product_name)",
-                                                    buttonTitle: "Coba Kembali",
-                                                    userInfo: [
-                                                        "url_deeplink": "tokopedia://add-product/\(productForm.formId)",
-                                                        "button_title": "Coba Kembali"
-                                                    ],
-                                                    categoryIdentifier: "PRODUCT_CATEGORY",
-                                                    requestIdentifier: "RETRY_ADD_PRODUCT")
-                })
-                productForm.isUploadFailed = false
-                NotificationCenter.default.post(name: NSNotification.Name(rawValue: "RefreshOnProcessAddProduct"), object: nil)
-
-            }
-        }
     }
 
     private static func getUTMQueryItems(url: URL) -> [URLQueryItem]? {
@@ -1403,9 +1395,10 @@ public class TPRoutes: NSObject {
                                    } else {
                                        shopExists(true)
                                    }
-        }) { _ in
-            shopExists(false)
-        }
+                                },
+                               onFailure: { _ in
+                                    shopExists(false)
+                                })
     }
 
     private static func navigateToInboxReview(reputationId: String?) {

@@ -26,12 +26,11 @@
     FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
                 (@{
                    (@{}): @"-Blank-",
+                   EMAIL_PASSWORD(@"nada.fathia+01@tokopedia.com", @"nadafathia"),
                    EMAIL_PASSWORD(@"evelyn.greselda+46@tokopedia.com", @"asdf1234"),
                    EMAIL_PASSWORD(@"evelyn.greselda+45@tokopedia.com", @"asdf1234"),
                    EMAIL_PASSWORD(@"deadora.hendra+01@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"deadora.hendra+02@tokopedia.com", @"tokopedia1995"),
-                   EMAIL_PASSWORD(@"deadora.hendra+03@tokopedia.com", @"tokopedia1995"),
-                   EMAIL_PASSWORD(@"deadora.hendra+04@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),

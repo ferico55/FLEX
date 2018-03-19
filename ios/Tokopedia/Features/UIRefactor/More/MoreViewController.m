@@ -52,6 +52,7 @@
 #import "Tokopedia-Swift.h"
 #import "CMPopTipView.h"
 @import BlocksKit;
+@import NativeNavigation;
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
@@ -504,7 +505,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                return 5;
+                return 6;
             else return 0;
             break;
             
@@ -646,9 +647,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
     }
     else if (indexPath.section == 2) {
+        UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
         if(indexPath.row == 0) {
-            UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
-            
             [AnalyticsManager trackClickNavigateFromMore:@"Shop" parent:MORE_SECTION_2];
             ShopViewController *container = [[ShopViewController alloc] init];
             container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
@@ -662,24 +662,29 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
+            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen" props: @{@"authInfo": [authenticationManager getUserLoginData]}];
+            addProductViewController.hidesBottomBarWhenPushed = YES;
+            UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:addProductViewController];
+            navigation.navigationBar.translucent = NO;
+            [self.navigationController presentViewController: navigation animated:YES completion:nil];
+        } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Daftar Produk" parent:MORE_SECTION_2];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
-        } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
-            EtalaseViewController *vc = [EtalaseViewController new];
-            vc.delegate = self;
-            vc.isEditable = YES;
-            vc.showOtherEtalase = NO;
-            [vc setEnableAddEtalase:YES];
-            vc.hidesBottomBarWhenPushed = YES;
-            
-            NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
-            [vc setShopId:shopId];
-            [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if(indexPath.row == 4) {
+            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
+            
+            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"ManageShowcaseScreen"
+                                                                                                   props: @{
+                                                                                                            @"authInfo": [authenticationManager getUserLoginData],
+                                                                                                            @"action": @"manage"
+                                                                                                            }];
+            addProductViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:addProductViewController animated:YES];
+            return;
+        } else if(indexPath.row == 5) {
             [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_2];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }

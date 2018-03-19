@@ -719,131 +719,145 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
                 view.bounces = true
                 view.delegate = self
                 self.scrollView = view
-            }.add(children: [
-                ProductHeaderNode(identifier: "header",
-                                  state: state,
-                                  didTapReview: { [unowned self] productDetail in
-                                      AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Review")
+                }.add(children: [
+                    ProductHeaderNode(identifier: "header",
+                                      state: state,
+                                      didTapReview: { [unowned self] productDetail in
+                                        AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Review")
 
-                                      AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
+                                        AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Ulasan_Pdp", attributes: moengageAttributes(product: productDetail))
 
-                                      if let url = URL(string: "tokopedia://product/\(productDetail.id)/review") {
-                                          TPRoutes.routeURL(url)
-                                          return
-                                      }
-                                  },
-                                  didTapDiscussion: { [unowned self] productDetail in
-                                      AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Talk")
+                                        if let url = URL(string: "tokopedia://product/\(productDetail.id)/review") {
+                                            TPRoutes.routeURL(url)
+                                            return
+                                        }
+                                    },
+                                    didTapDiscussion: { [unowned self] productDetail in
+                                        AnalyticsManager.trackEventName("clickPDP", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Talk")
 
-                                      AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Diskusi_Pdp", attributes: moengageAttributes(product: productDetail))
+                                        AnalyticsManager.moEngageTrackEvent(withName: "Clicked_Diskusi_Pdp", attributes: moengageAttributes(product: productDetail))
 
-                                      let vc = ProductTalkViewController()
-                                      let images = productDetail.images
+                                        let vc = ProductTalkViewController()
+                                        let images = productDetail.images
 
-                                      let dataTalk: [AnyHashable: Any] =
-                                          [
-                                              kTKPDDETAILPRODUCT_APIIMAGESRCKEY: (!images.isEmpty) ? images[0].normalURL : "",
-                                              kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY: productDetail.soldCount,
-                                              kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY: productDetail.viewCount,
-                                              API_PRODUCT_NAME_KEY: productDetail.name,
-                                              API_PRODUCT_PRICE_KEY: productDetail.info.price,
-                                              "talk_shop_id": productDetail.shop.id,
-                                              "talk_product_status": productDetail.info.status.rawValue,
-                                              "product_id": productDetail.id,
-                                              "auth_key": UserAuthentificationManager().getUserLoginData() ?? NSNull(),
-                                              "talk_product_image": (!images.isEmpty) ? images[0].normalURL : ""
-                                          ]
+                                        let dataTalk: [AnyHashable: Any] =
+                                            [
+                                                kTKPDDETAILPRODUCT_APIIMAGESRCKEY: (!images.isEmpty) ? images[0].normalURL : "",
+                                                kTKPDDETAILPRODUCT_APIPRODUCTSOLDKEY: productDetail.soldCount,
+                                                kTKPDDETAILPRODUCT_APIPRODUCTVIEWKEY: productDetail.viewCount,
+                                                API_PRODUCT_NAME_KEY: productDetail.name,
+                                                API_PRODUCT_PRICE_KEY: productDetail.info.price,
+                                                "talk_shop_id": productDetail.shop.id,
+                                                "talk_product_status": productDetail.info.status.rawValue,
+                                                "product_id": productDetail.id,
+                                                "auth_key": UserAuthentificationManager().getUserLoginData() ?? NSNull(),
+                                                "talk_product_image": (!images.isEmpty) ? images[0].normalURL : ""
+                                        ]
 
-                                      vc.data = dataTalk
-                                      self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                        vc.data = dataTalk
+                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
 
-                                  },
-                                  didTapCourier: { [unowned self] _ in
-                                      guard let shipments = self.state?.productDetail?.shipments else {
-                                          return
-                                      }
+                                    },
+                                    didTapCourier: { [unowned self] _ in
+                                        guard let shipments = self.state?.productDetail?.shipments else {
+                                            return
+                                        }
 
-                                      let vc = ProductShipmentViewController(shipments: shipments)
-                                      self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                  },
-                                  didTapWishlist: { [unowned self] isWishlist in
-                                      if isWishlist {
-                                          AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
-                                      }
-                                      self.updateWishlist(isWishlist)
-                                  },
-                                  updateWishlistState: { [unowned self] isWishlist in
-                                      self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist))
-                                  },
-                                  didTapProductEdit: { [unowned self] productDetail in
-                                      let vc = ProductAddEditViewController()
-                                      vc.forceProductEditType()
-                                      vc.productID = productDetail.id
+                                        let vc = ProductShipmentViewController(shipments: shipments)
+                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                    },
+                                    didTapWishlist: { [unowned self] isWishlist in
+                                        if isWishlist {
+                                            AnalyticsManager.trackEventName("clickWishlist", category: GA_EVENT_CATEGORY_PRODUCT_DETAIL_PAGE, action: GA_EVENT_ACTION_CLICK, label: "Add to Wishlist")
+                                        }
+                                        self.updateWishlist(isWishlist)
+                                    },
+                                    updateWishlistState: { [unowned self] isWishlist in
+                                        self.store.dispatch(ProductDetailAction.updateWishlist(isWishlist))
+                                    },
+                                    didTapProductEdit: { [unowned self] productDetail in
+                                        if productDetail.info.status.rawValue == "0" || productDetail.info.status.rawValue == "-1" {
+                                            let alert = UIAlertController(title: "Produk berada dalam pengawasasn", message: "Produk dalam pengawasan \(productDetail.name).", preferredStyle: .alert)
+                                            
+                                            alert.addAction(UIAlertAction(title: "Tutup", style: .default, handler: nil))
+                                            self.viewController.navigationController?.present(alert, animated: true, completion: nil)
+                                            return
+                                        } else if productDetail.info.hasVariant {
+                                            let alert = UIAlertController(title: "Produk dengan Varian", message: "Saat ini produk yang memiliki varian hanya bisa diubah dan dihapus melalui desktop.", preferredStyle: .alert)
+                                            
+                                            alert.addAction(UIAlertAction(title: "Tutup", style: .default, handler: nil))
+                                            self.viewController.navigationController?.present(alert, animated: true, completion: nil)
+                                            return
+                                        }
+                                        
+                                        let userAuthManager = UserAuthentificationManager()
+                                        let vc = ReactViewController(moduleName: "AddProductScreen", props: [
+                                            "authInfo": userAuthManager.getUserLoginData() as AnyObject,
+                                            "productId": productDetail.id as AnyObject,
+                                            "action": "edit" as AnyObject
+                                            ])
+                                        let navigation = UINavigationController(rootViewController: vc)
+                                        navigation.navigationBar.isTranslucent = false
+                                        self.viewController.present(navigation, animated: true, completion: nil)
+                                    },
+                                    didTapProductImage: { [unowned self] index in
+                                        if let vc = GalleryViewController(photoSource: self.viewController, withStarting: Int32(index), usingNetwork: true, canDownload: true) {
+                                            self.viewController.navigationController?.present(vc, animated: true, completion: nil)
+                                        }
+                                    }),
+                                    navigationView(),
+                                    ProductOptionInfoNode.createNode(identifier: "Option-Info-Container",
+                                                     state: state,
+                                                     didTapWholesale: { [unowned self] wholesales in
+                                                        let vc = ProductWholesaleViewController(wholesales: wholesales)
+                                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                                     },
+                                                     didTapVariant: { [unowned self] (productVariant, productDetail) in
+                                                        self.redirectToVariant(productDetail, productVariant: productVariant)
 
-                                      let nav = UINavigationController(rootViewController: vc)
-                                      self.viewController.navigationController?.present(nav, animated: true, completion: nil)
-                                  },
-                                  didTapProductImage: { [unowned self] index in
-                                      if let vc = GalleryViewController(photoSource: self.viewController,
-                                                                        withStarting: Int32(index),
-                                                                        usingNetwork: true,
-                                                                        canDownload: true) {
-                                          self.viewController.navigationController?.present(vc, animated: true, completion: nil)
-                                      }
-                }),
-                navigationView(),
-                ProductOptionInfoNode.createNode(identifier: "Option-Info-Container",
-                                                 state: state,
-                                                 didTapWholesale: { [unowned self] wholesales in
-                                                     let vc = ProductWholesaleViewController(wholesales: wholesales)
-                                                     self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                                 },
-                                                 didTapVariant: { [unowned self] productVariant, productDetail in
-                                                     self.redirectToVariant(productDetail, productVariant: productVariant)
-
-                }),
-                ProductInfoNode(identifier: "info",
-                                state: state,
-                                didTapCategory: { [unowned self] category in
-                                    let navigateVC = NavigateViewController()
-                                    navigateVC.navigateToIntermediaryCategory(from: self.viewController, withCategoryId: category.id, categoryName: "", isIntermediary: true)
-                                },
-                                didTapStorefront: { [unowned self] productDetail in
-                                    let vc = ShopViewController()
-                                    var data: [AnyHashable: Any] = [
-                                        kTKPDDETAIL_APISHOPIDKEY: productDetail.shop.id,
-                                        "product_etalase_name": productDetail.info.etalaseName,
-                                        "product_etalase_id": productDetail.info.etalaseId
-                                    ]
-                                    if let authData = UserAuthentificationManager().getUserLoginData() {
-                                        data = [
+                                    }),
+                                    ProductInfoNode(identifier: "info",
+                                    state: state,
+                                    didTapCategory: { [unowned self] category in
+                                        let navigateVC = NavigateViewController()
+                                        navigateVC.navigateToIntermediaryCategory(from: self.viewController, withCategoryId: category.id, categoryName: "", isIntermediary: true)
+                                    },
+                                    didTapStorefront: { [unowned self] productDetail in
+                                        let vc = ShopViewController()
+                                        var data: [AnyHashable: Any] = [
                                             kTKPDDETAIL_APISHOPIDKEY: productDetail.shop.id,
-                                            kTKPD_AUTHKEY: authData,
                                             "product_etalase_name": productDetail.info.etalaseName,
                                             "product_etalase_id": productDetail.info.etalaseId
                                         ]
-                                    }
-                                    if productDetail.info.etalaseId != "" {
-                                        let etalase = EtalaseList()
-                                        etalase.etalase_id = productDetail.info.etalaseId
-                                        etalase.etalase_name = productDetail.info.etalaseName
-                                        vc.initialEtalase = etalase
-                                    }
-                                    vc.data = data
-                                    self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                },
-                                didTapReturnInfo: { [unowned self] url in
-                                    let vc = WebViewController()
-                                    vc.strTitle = "Keterangan Pengembalian Barang"
-                                    vc.strURL = url
-                                    self.viewController.navigationController?.pushViewController(vc, animated: true)
-                                },
-                                didTapCatalog: { [unowned self] catalogId in
-                                    let navigateViewController = NavigateViewController()
-
-                                    navigateViewController.navigateToCatalog(from: self.viewController, withCatalogID: catalogId)
-
-                }),
+                                        if let authData = UserAuthentificationManager().getUserLoginData() {
+                                            data = [
+                                                kTKPDDETAIL_APISHOPIDKEY: productDetail.shop.id,
+                                                kTKPD_AUTHKEY: authData,
+                                                "product_etalase_name": productDetail.info.etalaseName,
+                                                "product_etalase_id": productDetail.info.etalaseId
+                                            ]
+                                        }
+                                        if productDetail.info.etalaseId != "" {
+                                            let etalase = EtalaseList()
+                                            etalase.etalase_id = productDetail.info.etalaseId
+                                            etalase.etalase_name = productDetail.info.etalaseName
+                                            vc.initialEtalase = etalase
+                                        }
+                                        vc.data = data
+                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                        },
+                                    didTapReturnInfo: { [unowned self] url in
+                                        let vc = WebViewController()
+                                        vc.strTitle = "Keterangan Pengembalian Barang"
+                                        vc.strURL = url
+                                        self.viewController.navigationController?.pushViewController(vc, animated: true)
+                                        },
+                                    didTapCatalog: { [unowned self] catalogId in
+                                        let navigateViewController = NavigateViewController()
+                                        
+                                        navigateViewController.navigateToCatalog(from: self.viewController, withCatalogID: catalogId)
+                                        
+                                    }),
                 ProductDescriptionNode(identifier: "description",
                                        viewController: self.viewController,
                                        state: state,
@@ -1176,27 +1190,25 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
 
         AnalyticsManager.trackEventName("clickProduct", category: GA_EVENT_CATEGORY_SHOP_PRODUCT, action: GA_EVENT_ACTION_CLICK, label: "Promote")
 
-        DetailProductRequest
-            .fetchPromoteProduct(productDetail.id,
-                                 onSuccess: { [weak self] data in
-                                     let productName = data.product_name ?? ""
-                                     let message = "Promo pada produk \"\(productName)\" telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."
-                                     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-                                     let cancelButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                                     alertController.addAction(cancelButton)
+        DetailProductRequest.fetchPromoteProduct(productDetail.id, onSuccess: { [weak self] data in
+            let productName = data.product_name ?? ""
+            let message = "Promo pada produk \"\(productName)\" telah berhasil! Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko."
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            let cancelButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(cancelButton)
 
-                                     self?.viewController.present(alertController, animated: true, completion: nil)
-                                 },
-                                 onFailure: { [weak self] data in
-                                     let productName = data.product_name ?? ""
-                                     let timeExpired = data.time_expired ?? ""
-                                     let message = "Anda belum dapat menggunakan Fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko. Promo masih aktif untuk produk \"\(productName)\" berlaku sampai \(timeExpired)"
-                                     let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-                                     let cancelButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
-                                     alertController.addAction(cancelButton)
+            self?.viewController.present(alertController, animated: true, completion: nil)
 
-                                     self?.viewController.present(alertController, animated: true, completion: nil)
-            })
+        }, onFailure:  { [weak self] data in
+            let productName = data.product_name ?? ""
+            let timeExpired = data.time_expired ?? ""
+            let message = "Anda belum dapat menggunakan Fitur Promo pada saat ini. Fitur Promo berlaku setiap 60 menit sekali untuk masing-masing toko. Promo masih aktif untuk produk \"\(productName)\" berlaku sampai \(timeExpired)"
+            let alertController = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+            let cancelButton = UIAlertAction(title: "OK", style: .cancel, handler: nil)
+            alertController.addAction(cancelButton)
+
+            self?.viewController.present(alertController, animated: true, completion: nil)
+        })
     }
 
     internal func updateWishlist(_ isWishlist: Bool) {

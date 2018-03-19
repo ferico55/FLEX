@@ -506,13 +506,14 @@
 }
 
 - (void)navigateToAddProductFromViewController:(UIViewController*)viewController {
-    ProductAddEditViewController *controller = [ProductAddEditViewController new];
-    controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-    nav.navigationBar.translucent = NO;
-    
-    [viewController presentViewController:nav animated:YES completion:nil];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    ReactViewController *controller = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen"
+                                                                                props:@{
+                                                                                        @"authInfo": [userManager getUserLoginData]
+                                                                                        }];
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigation.navigationBar.translucent = NO;
+    [viewController presentViewController:navigation animated:YES completion:nil];
 }
 + (void)navigateToReferralWelcomeWithData:(NSDictionary*)data {
     NSString *code = data[@"code"];

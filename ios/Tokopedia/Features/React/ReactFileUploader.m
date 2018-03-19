@@ -28,6 +28,7 @@ RCT_EXPORT_METHOD(uploadImage:(NSDictionary*) options callback:(RCTPromiseResolv
     NSURL *url = [[NSURL alloc] initWithString:[options objectForKey:@"imageUri"]];
     NSData *data = [[NSData alloc] initWithContentsOfURL:url];
     UIImage *img = [[UIImage alloc] initWithData:data];
+    __block BOOL isRejected = NO;
     [RequestUploadImage requestUploadImage:img
                             withUploadHost:[options objectForKey:@"host"]
                                       path:@"/upload/attachment"
@@ -39,6 +40,11 @@ RCT_EXPORT_METHOD(uploadImage:(NSDictionary*) options callback:(RCTPromiseResolv
                                      resolve(imageResult.pic_obj);
                                  }
                                  onFailure:^(NSError *errorResult) {
+                                     // prevent multiple callback invocation
+                                     if (isRejected) {
+                                         return;
+                                     }
+                                     isRejected = YES;
                                      reject(@"upload_failed", @"Failed to upload image", nil);
                                  }];
 }

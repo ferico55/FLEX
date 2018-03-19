@@ -50,7 +50,10 @@ RCT_EXPORT_MODULE();
              @"paymentURL": NSString.paymentURL,
              @"tokocashUrl": NSString.tokocashUrl,
              @"tokopointsUrl": NSString.tokopointsUrl,
-             @"jsUrl": NSString.jsUrl
+             @"jsUrl": NSString.jsUrl,
+             @"hadesUrl": NSString.hadesUrl,
+             @"merlinUrl": NSString.merlinUrl,
+             @"goldMerchantUrl": NSString.goldMerchantUrl
              };
 }
 
