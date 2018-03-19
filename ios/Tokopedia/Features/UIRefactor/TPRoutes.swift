@@ -633,19 +633,37 @@ public class TPRoutes: NSObject {
 
         // MARK: Toppicks (Webview)
         JLRoutes.global().addRoute("/toppicks") { (params: [String: Any]) -> Bool in
-            openWebView(routeParams: params)
+            guard let url = params[kJLRouteURLKey] as? URL, let path = params[kJLRoutePatternKey] as? String else { return true }
+            var components = URLComponents(string: url.absoluteString)
+            components?.scheme = "https"
+            components?.host = "www.tokopedia.com"
+            components?.path = path
+            components?.queryItems = getUTMQueryItems(url: url)
+            if components?.queryItems == nil {
+                components?.queryItems = [URLQueryItem(name: "flag_app", value: "1")]
+            } else {
+                components?.queryItems?.append(URLQueryItem(name: "flag_app", value: "1"))
+            }
+            guard let toppicksUrl = components?.url else { return false }
+            openWebView(toppicksUrl)
             return true
         }
-
+        
         // MARK: Toppicks - Detail (Webview)
         JLRoutes.global().addRoute("/toppicks/:toppicksName") { (params: [String: Any]) -> Bool in
-            let url = params[kJLRouteURLKey] as? NSURL
-            guard let urlString = url?.absoluteString else { return true }
-
-            var parameters = params
-            parameters[kJLRouteURLKey] = addFlagApp(urlString: urlString)
-
-            openWebView(routeParams: parameters)
+            guard let url = params[kJLRouteURLKey] as? URL, let topPicksName = params["toppicksName"] as? String, let path = params[kJLRoutePatternKey] as? String  else { return true }
+            var components = URLComponents(string: url.absoluteString)
+            components?.scheme = "https"
+            components?.host = "www.tokopedia.com"
+            components?.path = path.replacingOccurrences(of: ":toppicksName", with: topPicksName)
+            components?.queryItems = getUTMQueryItems(url: url)
+            if components?.queryItems == nil {
+                components?.queryItems = [URLQueryItem(name: "flag_app", value: "1")]
+            } else {
+                components?.queryItems?.append(URLQueryItem(name: "flag_app", value: "1"))
+            }
+            guard let toppicksUrl = components?.url else { return false }
+            openWebView(toppicksUrl)
             return true
         }
 

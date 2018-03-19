@@ -85,15 +85,18 @@ internal class DigitalCategoryMenuViewController: UIViewController, DigitalFavou
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "Daftar Produk", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/products")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/products") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Daftar Transaksi", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Langganan", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Batal", style: .cancel) { _ in
@@ -207,50 +210,51 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                             let textField = UITextField()
                             textField.textColor = UIColor.black.withAlphaComponent(0.54)
                             return textField
+                        },
+                        configure: { [unowned self] view, layout, _ in
+                            layout.height = 25
+                            layout.marginBottom = 5
+                            
+                            view.font = .largeTheme()
+                            view.text = textInputState.text
+                            view.placeholder = textInput.placeholder
+                            view.clearButtonMode = .always
+                            
+                            if textInput.type == .number || textInput.type == .phone {
+                                let keyboard = MMNumberKeyboard()
+                                keyboard.allowsDecimalPoint = false
+                                
+                                view.inputView = keyboard
+                            }
+                            
+                            if self.store.state.favourites.count > 0 {
+                                view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                    guard let favourites = self?.store.state.favourites, let `self` = self else { return }
+                                    let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.operatorID ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
+                                    viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
+                                    viewController.title = "Nomor Favorit"
+                                    self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                                }).disposed(by: self.disposeBag)
+                            } else {
+                                
+                                view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                    guard let `self` = self else { return }
+                                    self.store.state.showErrorClientNumber = true
+                                }).disposed(by: self.disposeBag)
+                                
+                                view.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
+                                    guard let `self` = self else { return }
+                                    self.store.state.showErrorClientNumber = false
+                                }).disposed(by: self.disposeBag)
+                                
+                                view.rx.text.orEmpty.changed
+                                    .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
+                                    .dispatch(to: self.store)
+                                    .disposed(by: self.disposeBag)
+                                
+                            }
                         }
-                    ) { [unowned self] view, layout, _ in
-                        layout.height = 25
-                        layout.marginBottom = 5
-                        
-                        view.font = .largeTheme()
-                        view.text = textInputState.text
-                        view.placeholder = textInput.placeholder
-                        view.clearButtonMode = .always
-                        
-                        if textInput.type == .number || textInput.type == .phone {
-                            let keyboard = MMNumberKeyboard()
-                            keyboard.allowsDecimalPoint = false
-                            
-                            view.inputView = keyboard
-                        }
-                        
-                        if self.store.state.favourites.count > 0 {
-                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
-                                guard let favourites = self?.store.state.favourites, let `self` = self else { return }
-                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.operatorID ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
-                                viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
-                                viewController.title = "Nomor Favorit"
-                                self.viewController?.navigationController?.pushViewController(viewController, animated: true)
-                            }).disposed(by: self.disposeBag)
-                        } else {
-                            
-                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
-                                guard let `self` = self else { return }
-                                self.store.state.showErrorClientNumber = true
-                            }).disposed(by: self.disposeBag)
-                            
-                            view.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
-                                guard let `self` = self else { return }
-                                self.store.state.showErrorClientNumber = false
-                            }).disposed(by: self.disposeBag)
-                            
-                            view.rx.text.orEmpty.changed
-                                .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
-                                .dispatch(to: self.store)
-                                .disposed(by: self.disposeBag)
-                            
-                        }
-                    }.add(
+                    ).add(
                         child: Node<UIImageView>(identifier: "icon") { [unowned self] imageView, layout, _ in
                             layout.width = 35
                             layout.height = 35
@@ -283,10 +287,10 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                         
                         button.setImage(#imageLiteral(resourceName: "icon_phonebook"), for: .normal)
                         
-                        // FIXME: the number of callback increases as the number of tap increases
                         button.rx.tap
                             .flatMap { () -> Observable<String> in
-                                self.phoneBookService.findContact(from: self.viewController!)
+                                guard let viewController = self.viewController else { return Observable.empty() }
+                                self.phoneBookService.findContact(from: viewController)
                                 return self.phoneBookService.phoneNumberSelected.asObservable()
                             }
                             .map { text in
@@ -300,10 +304,10 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
             Node<UILabel> { label, _, _ in
                 label.font = .smallTheme()
                 label.textColor = .red
-                
-                label.text = self.state!.showErrors ? textInput.errorMessage(
+                guard let state = self.state, let form = state.form else { return }
+                label.text = state.showErrors ? textInput.errorMessage(
                     for: textInputState.text,
-                    operators: self.state!.form!.operators
+                    operators: form.operators
                 ) : nil
             }
         ])
@@ -490,27 +494,28 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                     label.addGestureRecognizer(gestureRecognizer)
                     
                     return label
-                }
-            ) { label, _, _ in
-                label.numberOfLines = 0
-                label.font = .smallTheme()
-                label.textColor = .tpSecondaryBlackText()
-                if let infoString = state.selectedProduct?.detail,
-                    let detailString = state.selectedProduct?.urlText, !infoString.isEmpty {
-                    if !detailString.isEmpty {
-                        let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
-                        let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
-                        let text = NSMutableAttributedString()
-                        text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
-                        text.append(attributedString)
-                        label.attributedText = text
+                },
+                configure: { label, _, _ in
+                    label.numberOfLines = 0
+                    label.font = .smallTheme()
+                    label.textColor = .tpSecondaryBlackText()
+                    if let infoString = state.selectedProduct?.detail,
+                        let detailString = state.selectedProduct?.urlText, !infoString.isEmpty {
+                        if !detailString.isEmpty {
+                            let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
+                            let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
+                            let text = NSMutableAttributedString()
+                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
+                            text.append(attributedString)
+                            label.attributedText = text
+                        } else {
+                            label.text = NSAttributedString(fromHTML: infoString).string
+                        }
                     } else {
-                        label.text = NSAttributedString(fromHTML: infoString).string
+                        label.text = ""
                     }
-                } else {
-                    label.text = ""
                 }
-            }
+            )
         ])
         
         return Node<UIView>(identifier: "widget") { view, layout, _ in
@@ -568,7 +573,8 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                     label.textColor = .tpSecondaryBlackText()
                     if state.selectedProduct?.promoPriceText != state.selectedProduct?.priceText {
                         label.font = .microTheme()
-                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state.selectedProduct?.priceText)!)
+                        guard let selectedProduct = state.selectedProduct else { return }
+                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: selectedProduct.priceText)
                         attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSRange(location: 0, length: attributeString.length))
                         label.attributedText = attributeString
                     } else {
@@ -585,7 +591,7 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                 layout.marginBottom = 0
             },
             {
-                guard state.form!.isInstantPaymentAvailable else { return NilNode() }
+                guard let form = state.form, form.isInstantPaymentAvailable else { return NilNode() }
                 
                 return Node { _, layout, _ in
                     layout.flexDirection = .row
@@ -637,10 +643,11 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                 button.layer.cornerRadius = 3
                 
                 return button
-            }, configure: { button, layout, _ -> (Void) in
+            }, configure: { button, layout, _ -> Void in
                 let addToCartProgress = state.addToCartProgress
                 
-                let title = addToCartProgress == .idle ? self.store.state.selectedOperator?.buttonText : "Sedang proses..."
+                let text = self.store.state.selectedOperator != nil ? self.store.state.selectedOperator?.buttonText : "Beli"
+                let title = addToCartProgress == .idle ? text : "Sedang proses..."
                 
                 button.setTitle(title, for: .normal)
                 
@@ -663,11 +670,11 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                         let productId = state.selectedProduct?.id
                         let textInputs = state.textInputStates.map { key, value in
                             return [key, value.text]
-                            }
-                            .reduce([String: String]()) { result, item in
-                                var newResult = result
-                                newResult[item[0]] = item[1]
-                                return newResult
+                        }
+                        .reduce([String: String]()) { result, item in
+                            var newResult = result
+                            newResult[item[0]] = item[1]
+                            return newResult
                         }
                         
                         guard productId != nil else { return }
@@ -685,11 +692,11 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                         )
                         cache.storeLastOrder(lastOrder: lastOrder)
                         self.saveInstantPaymentCheck()
-                        
+                        guard let viewController = self.viewController, let productID = productId else { return }
                         DigitalService()
                             .purchase(
-                                from: self.viewController!,
-                                withProductId: productId!,
+                                from: viewController,
+                                withProductId: productID,
                                 categoryId: self.categoryId,
                                 inputFields: textInputs,
                                 instantPaymentEnabled: form.isInstantPaymentAvailable && state.isInstantPaymentEnabled,
@@ -721,8 +728,8 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
         self.disposeBag = DisposeBag()
         
         unowned let `self` = self
-        
-        if state!.isLoadingFailed {
+        guard let state = state else { return NilNode() }
+        if state.isLoadingFailed {
             // can't use no result view, button not responding
             return Node<UIView>(identifier: "no result") { view, layout, size in
                 view.backgroundColor = .white
@@ -762,7 +769,7 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
             ])
         }
         
-        guard (state?.form) != nil else {
+        guard let form = state.form else {
             return Node(identifier: "loader") { view, layout, size in
                 view.backgroundColor = .white
                 layout.width = size.width
@@ -827,13 +834,14 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                             view.addGestureRecognizer(gestureRecognizer)
                             
                             return view
+                        },
+                        configure: { view, layout, _ in
+                            view.backgroundColor = .white
+                            
+                            layout.padding = 14
+                            layout.marginVertical = 5
                         }
-                    ) { view, layout, _ in
-                        view.backgroundColor = .white
-                        
-                        layout.padding = 14
-                        layout.marginVertical = 5
-                    }.add(children: [
+                    ).add(children: [
                         Node<UILabel>(identifier: "detail") { label, _, _ in
                             label.text = banner.detail
                             label.numberOfLines = 0
@@ -922,13 +930,14 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
                             view.addGestureRecognizer(gestureRecognizer)
                             
                             return view
+                        },
+                        configure: { view, layout, _ in
+                            view.backgroundColor = .white
+                            
+                            layout.padding = 14
+                            layout.marginVertical = 5
                         }
-                    ) { view, layout, _ in
-                        view.backgroundColor = .white
-                        
-                        layout.padding = 14
-                        layout.marginVertical = 5
-                    }.add(children: [
+                    ).add(children: [
                         Node<UILabel>(identifier: "detail") { label, _, _ in
                             label.text = banner.detail
                             label.numberOfLines = 0
@@ -992,9 +1001,10 @@ internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, 
         
         return Observable.create { [weak self] observer in
             let auth = UserAuthentificationManager()
-            let userId = auth.getUserId()!
             let deviceId = auth.getMyDeviceToken()
-            let dict = auth.getUserLoginData()!
+            guard let userId = auth.getUserId(),
+                let dict = auth.getUserLoginData()
+            else { return Disposables.create() }
             
             let oAuthToken = OAuthToken()
             oAuthToken.tokenType = dict["oAuthToken.tokenType"] as? String ?? ""
@@ -1124,9 +1134,7 @@ extension PhoneBookService: CNContactPickerDelegate {
     @available(iOS 9.0, *)
     internal func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if contactProperty.key == CNContactPhoneNumbersKey {
-            guard let phoneNumber = contactProperty.value else { return }
-            
-            let phone = phoneNumber as! CNPhoneNumber
+            guard let phoneNumber = contactProperty.value, let phone = phoneNumber as? CNPhoneNumber else { return }
             self.phoneNumberSelected.onNext(phone.stringValue)
         }
     }
@@ -1145,7 +1153,7 @@ extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
         
         if ABMultiValueGetCount(phones) > 0 {
             let index = Int(identifier) as CFIndex
-            let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as! String
+            let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as? String ?? ""
             
             self.phoneNumberSelected.onNext(phoneNumber)
         }

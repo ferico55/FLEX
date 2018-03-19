@@ -7,14 +7,14 @@
 //
 
 import Foundation
-import RxSwift
 import Moya
-import Unbox
+import RxSwift
 import SwiftyJSON
+import Unbox
 
-class DigitalService {
+public class DigitalService {
     
-    func purchase(
+    public func purchase(
         from viewController: UIViewController,
         withProductId productId: String,
         categoryId: String,
@@ -28,7 +28,7 @@ class DigitalService {
         guard let navigationController = viewController.navigationController else {
             fatalError("No Controller")
         }
-        let viewController = navigationController.topViewController!
+        guard let viewController = navigationController.topViewController else { return Observable.empty() }
         
         if !UserAuthentificationManager().isLogin {
             onNavigateToCart()
@@ -46,21 +46,21 @@ class DigitalService {
                         instantCheckout: instantPaymentEnabled
                     ))
             }
-            .mapJSON() // TODO: use proper mapping
+            .mapJSON()
             .flatMap { response -> Observable<Void> in
                 onNavigateToCart()
                 
-                let result = response as! [String: Any]
+                guard let result = response as? [String: Any] else { throw "Response broken" }
                 
                 let unboxer = Unboxer(dictionary: result)
                 
                 if let _ = try? unboxer.unbox(keyPath: "data") as [String: Any] {
-                    let needOtp = try! unboxer.unbox(keyPath: "data.attributes.need_otp") as Bool
-                    let cartId = try! unboxer.unbox(keyPath: "data.id") as String
+                    guard let needOtp = try? unboxer.unbox(keyPath: "data.attributes.need_otp") as Bool,
+                        let cartId = try? unboxer.unbox(keyPath: "data.id") as String else { return Observable.empty() }
                     
                     return self.verifyOtp(from: viewController, needOtp: needOtp, cartId: cartId)
                 } else {
-                    let errorMessage = try! unboxer.unbox(keyPath: "errors.0.title") as String
+                    guard let errorMessage = try? unboxer.unbox(keyPath: "errors.0.title") as String else { throw "No Error Message" }
                     
                     throw errorMessage
                 }
@@ -72,7 +72,7 @@ class DigitalService {
                 if instantPaymentEnabled {
                     onNeedLoading()
                     
-                    return self.cart(categoryId: categoryId) // FIXME: reference cycle
+                    return self.cart(categoryId: categoryId)
                         .flatMap { cartId -> Observable<Response> in
                             onNeedLoading()
                             
@@ -142,7 +142,7 @@ class DigitalService {
             }
     }
     
-    func purchase(categoryId: String, operatorId: String, productId: String, textInputs: [String: String], instantCheckout: Bool) -> Observable<String> {
+    public func purchase(categoryId: String, operatorId: String, productId: String, textInputs: [String: String], instantCheckout: Bool) -> Observable<String> {
         return DigitalProvider().request(.deleteCart(categoryId))
             .mapJSON()
             .map { response -> Bool in
@@ -169,7 +169,8 @@ class DigitalService {
                             .stringValue {
                             return categoryId
                         }
-                        throw (result.dictionaryValue["errors"]?[0].dictionaryValue["title"]?.stringValue)!
+                        let errorMessage = result.dictionaryValue["errors"]?[0].dictionaryValue["title"]?.stringValue ?? ""
+                        throw errorMessage
                     }
                 
             }
@@ -183,7 +184,7 @@ class DigitalService {
         
     }
     
-    func lastOrder(categoryId: String) -> Observable<DigitalLastOrder> {
+    internal func lastOrder(categoryId: String) -> Observable<DigitalLastOrder> {
         return Observable.concat(
             getWSLastOrder(category: categoryId),
             getCacheLastOrder(category: categoryId),
@@ -194,7 +195,7 @@ class DigitalService {
         .map { $0! }
     }
     
-    func lastOrder(categoryId: String, favourites: DigitalFavourites?) -> Observable<DigitalLastOrder> {
+    internal func lastOrder(categoryId: String, favourites: DigitalFavourites?) -> Observable<DigitalLastOrder> {
         return Observable.concat(
             lastOrderFromFavourites(favourites: favourites),
             getCacheLastOrder(category: categoryId),
@@ -205,7 +206,7 @@ class DigitalService {
         .map { $0! }
     }
     
-    func getWSLastOrder(category: String) -> Observable<DigitalLastOrder?> {
+    private func getWSLastOrder(category: String) -> Observable<DigitalLastOrder?> {
         if !UserAuthentificationManager().isLogin {
             return Observable<DigitalLastOrder?>.empty()
         }
@@ -217,7 +218,7 @@ class DigitalService {
         }
     }
     
-    func getCacheLastOrder(category: String) -> Observable<DigitalLastOrder?> {
+    private func getCacheLastOrder(category: String) -> Observable<DigitalLastOrder?> {
         return Observable.create { (observer) -> Disposable in
             let cache = PulsaCache()
             
@@ -230,7 +231,7 @@ class DigitalService {
         }
     }
     
-    func getDefaultLastOrder(category: String) -> Observable<DigitalLastOrder?> {
+    private func getDefaultLastOrder(category: String) -> Observable<DigitalLastOrder?> {
         return Observable.create { observer -> Disposable in
             let order: DigitalLastOrder = { () -> DigitalLastOrder in
                 switch category {
@@ -247,7 +248,7 @@ class DigitalService {
         }
     }
     
-    func getFavouriteList(category: String, operatorID: String = "", clientNumber: String = "", productID: String = "") -> Observable<DigitalFavourites?> {
+    internal func getFavouriteList(category: String, operatorID: String = "", clientNumber: String = "", productID: String = "") -> Observable<DigitalFavourites?> {
         if !UserAuthentificationManager().isLogin {
             return Observable.create { observer -> Disposable in
                 observer.onNext(nil)
@@ -270,7 +271,7 @@ class DigitalService {
         
     }
     
-    func lastOrderFromFavourites(favourites: DigitalFavourites?) -> Observable<DigitalLastOrder?> {
+    private func lastOrderFromFavourites(favourites: DigitalFavourites?) -> Observable<DigitalLastOrder?> {
         return Observable.create { observer -> Disposable in
             let order: DigitalLastOrder? = { () -> DigitalLastOrder? in
                 guard let favs = favourites, favs.index >= 0, let lastOrder = favs.list?[favs.index],
@@ -296,10 +297,11 @@ class DigitalService {
         
         return Observable.create { [weak self] observer in
             let auth = UserAuthentificationManager()
-            let userId = auth.getUserId()!
             let deviceId = auth.getMyDeviceToken()
-            let dict = auth.getUserLoginData()!
-            let userName = dict["full_name"] as! String
+            guard let userId = auth.getUserId(),
+                let dict = auth.getUserLoginData(),
+                let userName = dict["full_name"] as? String
+                else { return Disposables.create() }
             
             let oAuthToken = OAuthToken()
             oAuthToken.tokenType = dict["oAuthToken.tokenType"] as? String ?? ""
@@ -331,7 +333,6 @@ class DigitalService {
                 .map { _ in return }
         }
         .do(
-            // TODO: try to use onCompleted
             onNext: {
                 viewController.dismiss(animated: true, completion: nil)
             },
