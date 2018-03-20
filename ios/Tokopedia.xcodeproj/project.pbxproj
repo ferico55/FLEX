@@ -547,6 +547,11 @@
 		84184684203C41070053074A /* ReferralResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8418467F203C41060053074A /* ReferralResponse.swift */; };
 		84184685203C41070053074A /* ReferralPromoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184680203C41060053074A /* ReferralPromoContent.swift */; };
 		84184686203C41070053074A /* ReferralService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 84184682203C41060053074A /* ReferralService.swift */; };
+		843805F52057DA3200D50809 /* ACRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843805F12057DA3100D50809 /* ACRemoteConfig.swift */; };
+		843805F62057DA3200D50809 /* AudioRecorder.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 843805F22057DA3100D50809 /* AudioRecorder.storyboard */; };
+		843805F72057DA3200D50809 /* AudioCampaignService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843805F32057DA3100D50809 /* AudioCampaignService.swift */; };
+		843805F82057DA3200D50809 /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843805F42057DA3100D50809 /* AudioRecorderViewController.swift */; };
+		843805FB2057DA4400D50809 /* FBTweakShakeWindow+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */; };
 		848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */; };
 		848FA6DE1FEBF8BE00A22EDE /* RCCreateComplaintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */; };
 		848FA6DF1FEBF8BE00A22EDE /* RCCreateComplaintResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */; };
@@ -3161,6 +3166,12 @@
 		8418467F203C41060053074A /* ReferralResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralResponse.swift; sourceTree = "<group>"; };
 		84184680203C41060053074A /* ReferralPromoContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralPromoContent.swift; sourceTree = "<group>"; };
 		84184682203C41060053074A /* ReferralService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ReferralService.swift; sourceTree = "<group>"; };
+		843805F12057DA3100D50809 /* ACRemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ACRemoteConfig.swift; sourceTree = "<group>"; };
+		843805F22057DA3100D50809 /* AudioRecorder.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = AudioRecorder.storyboard; sourceTree = "<group>"; };
+		843805F32057DA3100D50809 /* AudioCampaignService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioCampaignService.swift; sourceTree = "<group>"; };
+		843805F42057DA3100D50809 /* AudioRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderViewController.swift; sourceTree = "<group>"; };
+		843805F92057DA4200D50809 /* FBTweakShakeWindow+Multiple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBTweakShakeWindow+Multiple.h"; sourceTree = "<group>"; };
+		843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FBTweakShakeWindow+Multiple.m"; sourceTree = "<group>"; };
 		848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainCell.swift; sourceTree = "<group>"; };
 		848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponse.swift; sourceTree = "<group>"; };
 		848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponseData.swift; sourceTree = "<group>"; };
@@ -7244,6 +7255,17 @@
 			path = WebService;
 			sourceTree = "<group>";
 		};
+		843805F02057DA3100D50809 /* AudioCampaign */ = {
+			isa = PBXGroup;
+			children = (
+				843805F12057DA3100D50809 /* ACRemoteConfig.swift */,
+				843805F22057DA3100D50809 /* AudioRecorder.storyboard */,
+				843805F32057DA3100D50809 /* AudioCampaignService.swift */,
+				843805F42057DA3100D50809 /* AudioRecorderViewController.swift */,
+			);
+			path = AudioCampaign;
+			sourceTree = "<group>";
+		};
 		848FA6941FEBF8BD00A22EDE /* Revamp */ = {
 			isa = PBXGroup;
 			children = (
@@ -8694,6 +8716,8 @@
 		F977EED71FE8AB6E00183A85 /* UIKit */ = {
 			isa = PBXGroup;
 			children = (
+				843805F92057DA4200D50809 /* FBTweakShakeWindow+Multiple.h */,
+				843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */,
 				E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */,
 				E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */,
 				E57974C01FEA73D600610655 /* Modal.swift */,
@@ -8771,6 +8795,7 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				843805F02057DA3100D50809 /* AudioCampaign */,
 				E576C2562034180D008524AA /* CentralizedOTP */,
 				9244D36E2029850D005CFB89 /* Forbidden */,
 				F977EF2D1FE8AB6E00183A85 /* Cache */,
@@ -12136,6 +12161,7 @@
 				F977FBDF1FE8AB7C00183A85 /* RejectReasonProductDescriptionViewController.xib in Resources */,
 				E5D8A5752010A311003E66BA /* OtherVerificationViewController.xib in Resources */,
 				F977FCAE1FE8AB7E00183A85 /* InfoAddressView.xib in Resources */,
+				843805F62057DA3200D50809 /* AudioRecorder.storyboard in Resources */,
 				F977FB1D1FE8AB7B00183A85 /* InboxTicketCell.xib in Resources */,
 				F977FD621FE8AB7F00183A85 /* ProfileCompletionProgressViewController.xib in Resources */,
 				F954C4531FC55B6D008C0B30 /* icon_login@2x.png in Resources */,
@@ -13345,6 +13371,7 @@
 				F977FE161FE8AB8100183A85 /* InboxTalkViewController.m in Sources */,
 				F772715620355FDB00D959AF /* TokoCashQRPaymentFailedNavigator.swift in Sources */,
 				62C771341FF33C3400F66527 /* ShopProductPageResult.swift in Sources */,
+				843805F52057DA3200D50809 /* ACRemoteConfig.swift in Sources */,
 				F977FDF21FE8AB8000183A85 /* PulsaCategoryAttribute.swift in Sources */,
 				F977FE041FE8AB8100183A85 /* PulsaRelationData.swift in Sources */,
 				62C770EF1FF33C3300F66527 /* CatalogShopAWS.m in Sources */,
@@ -13989,6 +14016,7 @@
 				DADB9F5E1F3C46CF002B1FAE /* MHVerticalTabBarController.m in Sources */,
 				62C770F51FF33C3300F66527 /* ProductTalkCommentActionResult.m in Sources */,
 				62C770DA1FF33C3300F66527 /* TrackOrderHistory.m in Sources */,
+				843805F72057DA3200D50809 /* AudioCampaignService.swift in Sources */,
 				F977006C1FE8AB8500183A85 /* DigitalState.swift in Sources */,
 				F977FC461FE8AB7D00183A85 /* AlertListView.m in Sources */,
 				F977FDF11FE8AB8000183A85 /* PulsaView.swift in Sources */,
@@ -14046,6 +14074,7 @@
 				F977FDBC1FE8AB8000183A85 /* FilterLocationViewController.m in Sources */,
 				F977FD5F1FE8AB7F00183A85 /* TableViewScrollAndSwipe.m in Sources */,
 				F977FB951FE8AB7C00183A85 /* CategoryIntermediaryHotListResponse.swift in Sources */,
+				843805FB2057DA4400D50809 /* FBTweakShakeWindow+Multiple.m in Sources */,
 				F97700671FE8AB8500183A85 /* DigitalFavourite.swift in Sources */,
 				F977FA541FE8AB7900183A85 /* RCTSharingReferable.swift in Sources */,
 				F977FAFB1FE8AB7A00183A85 /* FavoritedShopCell.m in Sources */,
@@ -14394,6 +14423,7 @@
 				848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */,
 				F98052652018AAFE00CE6D67 /* ReactPermissionManager.m in Sources */,
 				62C7710A1FF33C3300F66527 /* Login.m in Sources */,
+				843805F82057DA3200D50809 /* AudioRecorderViewController.swift in Sources */,
 				F977FAF61FE8AB7A00183A85 /* MyWishlistShopReputation.swift in Sources */,
 				62C771CD1FF33C3500F66527 /* PromoShop.m in Sources */,
 				62C770A21FF33C3300F66527 /* EditResolution.swift in Sources */,
