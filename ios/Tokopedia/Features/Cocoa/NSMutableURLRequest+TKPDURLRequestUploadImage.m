@@ -70,7 +70,7 @@
     TkpdHMAC *hmac = [TkpdHMAC new];
     
     NSString* baseUrl = [NSString stringWithFormat:@"%@://%@", url.scheme, url.host];
-    [hmac signatureWithWebviewUrl: url];
+    [hmac signatureWithBaseUrl:baseUrl method:RKStringFromRequestMethod(RKRequestMethodGET) path:url.path parameter:[url parameters]];
     
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
     [request setURL:url];
