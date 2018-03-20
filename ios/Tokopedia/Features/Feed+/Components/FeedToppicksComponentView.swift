@@ -38,8 +38,7 @@ internal class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
                 layout.width = size.width
             }.add(children: [
                 self.titleView(),
-                self.phoneItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page: state.page, row: state.row)
+                self.phoneItemLayout(toppicks: toppicks, size: size)
             ]),
             self.blankSpace()
         ])
@@ -63,8 +62,7 @@ internal class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             }.add(children: [
                 self.titleView(),
                 self.horizontalLine(size: size),
-                self.padItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page: state.page, row: state.row)
+                self.padItemLayout(toppicks: toppicks, size: size)
             ]),
             self.blankSpace()
         ])
@@ -203,46 +201,6 @@ internal class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
             layout.flexGrow = 1
             layout.flexShrink = 1
         })
-    }
-    
-    private func seeAll(page: Int, row: Int) -> NodeType {
-        return Node<UIView>() { view, layout, _ in
-            view.backgroundColor = .white
-            view.borderWidth = 1
-            view.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
-            
-            layout.flexDirection = .row
-            layout.justifyContent = .flexEnd
-            layout.alignItems = .center
-            layout.paddingTop = 11
-            layout.paddingBottom = 11
-            
-        }.add(children: [
-            Node<UIButton>() { button, layout, _ in
-                button.setTitle("Lihat Semua", for: .normal)
-                button.backgroundColor = .white
-                button.titleLabel?.font = .smallThemeSemibold()
-                button.setTitleColor(.tpGreen(), for: .normal)
-                
-                layout.width = 94
-                layout.marginRight = 10
-                
-                button.bk_(whenTapped: { [weak self] in
-                    if let url = URL(string: "https://www.tokopedia.com/toppicks") {
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(page).\(row) Toppicks - Lihat Semua")
-                        TPRoutes.routeURL(url)
-                    }
-                })
-            },
-            Node<UIImageView>(identifier: "arrow") { view, layout, _ in
-                view.image = #imageLiteral(resourceName: "icon_forward")
-                view.tintColor = .tpGreen()
-                
-                layout.height = 16
-                layout.width = 10
-                layout.right = 10
-            }
-        ])
     }
     
     private func blankSpace() -> NodeType {
