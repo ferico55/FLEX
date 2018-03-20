@@ -196,7 +196,8 @@ extension UISearchController: UISearchControllerDelegate {
     }
     
     public class func topViewController() -> UIViewController? {
-        return topViewController(UIApplication.shared.keyWindow?.rootViewController)
+        let window = UIApplication.shared.delegate?.window ?? UIApplication.shared.keyWindow
+        return topViewController(window?.rootViewController)
     }
 }
 
