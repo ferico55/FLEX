@@ -259,26 +259,6 @@ typedef enum TagRequest {
     
     NSArray* viewControllers = [NSArray arrayWithObjects:_swipevc, categoryvc, wishlistController, cart, moreVC, nil];
     
-    A2DynamicDelegate *delegate = self.bk_dynamicDelegate;
-    __block NSUInteger idx = 0;
-    [delegate implementMethod:@selector(tabBarController:didSelectViewController:) withBlock:^(UITabBarController *tabBarController, UIViewController *viewController) {
-        [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
-                                category:GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV
-                                  action:[NSString stringWithFormat:@"click %@ nav", tabBarController.tabBar.selectedItem.title]
-                                   label:@""];
-        if (tabBarController.selectedIndex == 0) {
-            ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
-            [tabManager sendRedirectHomeTabEvent];
-        }
-        if (idx == tabBarController.selectedIndex) {
-            if ([viewControllers[tabBarController.selectedIndex] respondsToSelector:@selector(scrollToTop)]) {
-                [viewControllers[tabBarController.selectedIndex] scrollToTop];
-            }
-        } else {
-            idx = tabBarController.selectedIndex;
-        }
-    }];
-    
     self.viewControllers = [viewControllers bk_map:^UIViewController *(UIViewController *vc) {
         return [[UINavigationController alloc] initWithRootViewController:vc];
     }];
@@ -566,9 +546,20 @@ typedef enum TagRequest {
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
         [[NSNotificationCenter defaultCenter] postNotificationName:TKPDUserDidTappedTapBar object:nil userInfo:nil];
+        if ([[UIApplication topViewController] respondsToSelector:@selector(scrollToTop)]) {
+            [[UIApplication topViewController] performSelector:@selector(scrollToTop)];
+        }
     }
     previousController = viewController;
-
+    
+    [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
+                            category:GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV
+                              action:[NSString stringWithFormat:@"click %@ nav", tabBarController.tabBar.selectedItem.title]
+                               label:@""];
+    if (tabBarController.selectedIndex == 0) {
+        ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+        [tabManager sendRedirectHomeTabEvent];
+    }
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
