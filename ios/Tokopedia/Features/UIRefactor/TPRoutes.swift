@@ -6,8 +6,10 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
+import Crashlytics
 import FirebaseRemoteConfig
 import JLRoutes
+import LogEntries
 import NativeNavigation
 import RxSwift
 import UIKit
@@ -20,6 +22,10 @@ private struct LinkReroute {
         self.path = path
         self.applink = applink
     }
+}
+
+private struct RoutingError: Error {
+    let url: URL
 }
 
 public class TPRoutes: NSObject {
@@ -264,7 +270,25 @@ public class TPRoutes: NSObject {
         }
 
         JLRoutes.global().unmatchedURLHandler = { _, url, _ in
-            if let url = url {
+            guard let url = url else { return }
+            
+            if url.scheme == "tokopedia" {
+                let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
+                    UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
+                
+                UIApplication.topViewController()?.present(alert, animated: true)
+                
+                Crashlytics.sharedInstance().recordError(RoutingError(url: url))
+                LELog.sharedInstance().log([
+                    "event": "Unmatched routing URL",
+                    "url": url
+                ] as NSObject)
+            } else {
                 self.openWebView(url)
             }
         }
