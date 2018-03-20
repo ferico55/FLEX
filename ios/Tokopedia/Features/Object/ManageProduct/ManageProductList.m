@@ -39,7 +39,8 @@
                                              @"product_name",
                                              @"product_currency_symbol",
                                              @"product_no_idr_price",
-                                             @"product_etalase_id"]];
+                                             @"product_etalase_id",
+                                             @"product_variant"]];
     return mapping;
 }
 

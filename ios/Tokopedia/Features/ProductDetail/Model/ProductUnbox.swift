@@ -43,6 +43,7 @@ internal struct ProductUnbox {
     internal var mostHelpfulReviews: [ProductReview]
     internal var latestDiscussion: ProductTalk?
     internal var variantProduct: ProductVariant?
+    internal let hasVariant: Bool
 }
 
 extension ProductUnbox: Unboxable {
@@ -86,6 +87,7 @@ extension ProductUnbox: Unboxable {
 
         self.mostHelpfulReviews = [ProductReview]()
         self.latestDiscussion = nil
+        self.hasVariant = try unboxer.unbox(keyPath: "data.info.has_variant")
     }
 
     internal func lastLevelCategory() -> ProductCategory {

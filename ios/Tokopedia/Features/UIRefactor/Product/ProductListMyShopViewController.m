@@ -523,6 +523,7 @@ NoResultDelegate
                                  @"picture_status": pictureStatus,
                                  @"condition": productCondition,
                                  @"keyword": keyword,
+                                 @"show_variant": @(1),
                                  };
     return parameters;
 }
@@ -687,6 +688,13 @@ NoResultDelegate
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
+                                                      ManageProductList *product = _products[indexPath.row];
+                                                      if (product.product_variant == 1) {
+                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Produk dengan Varian" message:@"Saat ini produk yang memiliki varian hanya bisa diubah dan dihapus melalui desktop." preferredStyle:UIAlertControllerStyleAlert];
+                                                          [alert addAction: [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                                                          [weakSelf presentViewController:alert animated:YES completion:nil];
+                                                          return YES;
+                                                      }
                                                       [weakSelf showDeleteAlertForProductAtIndexPath:indexPath];
                                                       return YES;
                                                   }];
@@ -703,6 +711,13 @@ NoResultDelegate
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
+                                                      if (product.product_variant == 1) {
+                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Produk dengan Varian" message:@"Saat ini produk yang memiliki varian hanya bisa diubah dan dihapus melalui desktop." preferredStyle:UIAlertControllerStyleAlert];
+                                                          [alert addAction: [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                                                          [welf presentViewController:alert animated:YES completion:nil];
+                                                          return YES;
+                                                      }
+
                                                       NSInteger productStatus = [product.product_status integerValue];
                                                       if (productStatus == PRODUCT_STATE_BANNED || productStatus == PRODUCT_STATE_PENDING) {
                                                           NSArray *errorMessages = @[@"Tidak dapat mengubah status produk. Produk sedang dalam pengawasan."];
@@ -729,13 +744,19 @@ NoResultDelegate
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:0 green:122/255.0 blue:255.0/255 alpha:1.0];
     __weak typeof(self) welf = self;
+    ManageProductList *product = _products[indexPath.row];
     MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_MOVE_TO_ETALASE
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
+                                                      if (product.product_variant == 1) {
+                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Produk dengan Varian" message:@"Saat ini produk yang memiliki varian hanya bisa diubah dan dihapus melalui desktop." preferredStyle:UIAlertControllerStyleAlert];
+                                                          [alert addAction: [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                                                          [welf presentViewController:alert animated:YES completion:nil];
+                                                          return YES;
+                                                      }
+
                                                       welf.lastActionIndexPath = indexPath;
-
-
                                                       UIAlertView *alert =[[UIAlertView alloc] initWithTitle:@"Apakah stok produk ini tersedia?"
                                                                                                      message:nil
                                                                                                     delegate:welf
@@ -756,11 +777,18 @@ NoResultDelegate
 - (MGSwipeButton *)duplicateButtonForRowAtIndexPath:(NSIndexPath *)indexPath {
     CGFloat padding = 0;
     UIColor *backgroundColor = [UIColor colorWithRed:199.0/255 green:199.0/255.0 blue:199.0/255 alpha:1.0];
+    __weak typeof(self) weakSelf = self;
     MGSwipeButton *button = [MGSwipeButton buttonWithTitle:BUTTON_DUPLICATE_PRODUCT
                                            backgroundColor:backgroundColor
                                                    padding:padding
                                                   callback:^BOOL(MGSwipeTableCell *sender) {
                                                       ManageProductList *list = _products[indexPath.row];
+                                                      if (list.product_variant == 1) {
+                                                          UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Produk dengan Varian" message:@"Saat ini produk yang memiliki varian hanya bisa diubah dan dihapus melalui desktop." preferredStyle:UIAlertControllerStyleAlert];
+                                                          [alert addAction: [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil]];
+                                                          [weakSelf presentViewController:alert animated:YES completion:nil];
+                                                          return YES;
+                                                      }
                                                       UserAuthentificationManager *userAuthManager = [UserAuthentificationManager new];
                                                       UIViewController *addProductViewController = [[ReactViewController alloc]
                                                                                                     initWithModuleName:@"AddProductScreen"
@@ -771,7 +799,7 @@ NoResultDelegate
                                                                                                             }];
                                                       UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:addProductViewController];
                                                       navigation.navigationBar.translucent = NO;
-                                                      [self presentViewController:navigation animated:YES completion:nil];
+                                                      [weakSelf presentViewController:navigation animated:YES completion:nil];
                                                       return YES;
                                                   }];
     [button.titleLabel setFont:[UIFont largeTheme]];
