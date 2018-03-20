@@ -18,7 +18,7 @@ RCT_EXPORT_MODULE(EventManager)
     @"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct",
     @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped",
     @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab",
-    @"DidTapFavoriteShopButton", @"DidEditProfile"
+    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat"
   ];
 }
 
@@ -68,6 +68,18 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)sendProfileEditedEvent {
     [self sendEventWithName:@"DidEditProfile" body:nil];
+}
+
+- (void)didTapAturOnTopChat {
+    [self sendEventWithName:@"didTapAturOnTopChat" body:nil];
+}
+
+- (void)didTapInfoOnGroupChat {
+    [self sendEventWithName:@"didTapInfoOnGroupChat" body:nil];
+}
+
+- (void)didTapShareOnGroupChat:(NSInteger)shareTag {
+    [self sendEventWithName:@"didTapShareOnGroupChat" body:@(shareTag)];
 }
 
 @end

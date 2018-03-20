@@ -706,7 +706,6 @@
 		E50465C420159F3100FD0872 /* NativeNPSView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465BE20159F3000FD0872 /* NativeNPSView.swift */; };
 		E50465C520159F3100FD0872 /* NativeNPSView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50465BF20159F3000FD0872 /* NativeNPSView.xib */; };
 		E50465C720159FBF00FD0872 /* Bundle+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */; };
-		E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */; };
 		E517178320315DB400F46831 /* LoadingButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178220315DB400F46831 /* LoadingButton.swift */; };
 		E517178820315DDF00F46831 /* ProductDetailAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178520315DDF00F46831 /* ProductDetailAnalyticsManager.swift */; };
 		E517178920315DDF00F46831 /* VariantManagerBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = E517178620315DDF00F46831 /* VariantManagerBridge.m */; };
@@ -714,6 +713,12 @@
 		E517178C20315DF800F46831 /* ProductVariant.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178B20315DF800F46831 /* ProductVariant.swift */; };
 		E517178F20315E0A00F46831 /* ProductOptionInfoNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178D20315E0900F46831 /* ProductOptionInfoNode.swift */; };
 		E517179020315E0A00F46831 /* ProductVariantNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E517178E20315E0900F46831 /* ProductVariantNode.swift */; };
+		E520972620612A4B002F5301 /* TabView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520971F20612A4A002F5301 /* TabView.swift */; };
+		E520972720612A4B002F5301 /* GroupChatDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520972020612A4A002F5301 /* GroupChatDetailViewController.swift */; };
+		E520972820612A4B002F5301 /* ChatPagerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E520972120612A4A002F5301 /* ChatPagerViewController.xib */; };
+		E520972920612A4B002F5301 /* ChatPagerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520972220612A4A002F5301 /* ChatPagerViewController.swift */; };
+		E520972A20612A4C002F5301 /* ChatTemplateTipsActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520972420612A4A002F5301 /* ChatTemplateTipsActionSheet.swift */; };
+		E520972B20612A4C002F5301 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = E520972520612A4A002F5301 /* RemoteConfig.swift */; };
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
 		E54A4009203E810A008B5A19 /* TokoCashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */; };
@@ -1054,7 +1059,6 @@
 		F977006E1FE8AB8500183A85 /* DigitalAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9801FE8AB7600183A85 /* DigitalAnalyticsManager.swift */; };
 		F97700701FE8AB8500183A85 /* MoreWrapperViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9831FE8AB7700183A85 /* MoreWrapperViewController.m */; };
 		F97700711FE8AB8500183A85 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F977F9841FE8AB7700183A85 /* MainViewController.m */; };
-		F97700721FE8AB8500183A85 /* RemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9881FE8AB7700183A85 /* RemoteConfig.swift */; };
 		F97700911FE8AB8600183A85 /* TPCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C01FE8AB7700183A85 /* TPCryptoManager.swift */; };
 		F97700921FE8AB8600183A85 /* CreditCardTouchIDData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C11FE8AB7700183A85 /* CreditCardTouchIDData.swift */; };
 		F97700931FE8AB8600183A85 /* AsymmetricCryptoManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F977F9C21FE8AB7700183A85 /* AsymmetricCryptoManager.swift */; };
@@ -3389,7 +3393,6 @@
 		E50465BE20159F3000FD0872 /* NativeNPSView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NativeNPSView.swift; sourceTree = "<group>"; };
 		E50465BF20159F3000FD0872 /* NativeNPSView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NativeNPSView.xib; sourceTree = "<group>"; };
 		E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Bundle+Extensions.swift"; sourceTree = "<group>"; };
-		E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
 		E517178220315DB400F46831 /* LoadingButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoadingButton.swift; sourceTree = "<group>"; };
 		E517178520315DDF00F46831 /* ProductDetailAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductDetailAnalyticsManager.swift; sourceTree = "<group>"; };
 		E517178620315DDF00F46831 /* VariantManagerBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = VariantManagerBridge.m; sourceTree = "<group>"; };
@@ -3397,6 +3400,12 @@
 		E517178B20315DF800F46831 /* ProductVariant.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVariant.swift; sourceTree = "<group>"; };
 		E517178D20315E0900F46831 /* ProductOptionInfoNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductOptionInfoNode.swift; sourceTree = "<group>"; };
 		E517178E20315E0900F46831 /* ProductVariantNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProductVariantNode.swift; sourceTree = "<group>"; };
+		E520971F20612A4A002F5301 /* TabView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TabView.swift; sourceTree = "<group>"; };
+		E520972020612A4A002F5301 /* GroupChatDetailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GroupChatDetailViewController.swift; sourceTree = "<group>"; };
+		E520972120612A4A002F5301 /* ChatPagerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChatPagerViewController.xib; sourceTree = "<group>"; };
+		E520972220612A4A002F5301 /* ChatPagerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatPagerViewController.swift; sourceTree = "<group>"; };
+		E520972420612A4A002F5301 /* ChatTemplateTipsActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatTemplateTipsActionSheet.swift; sourceTree = "<group>"; };
+		E520972520612A4A002F5301 /* RemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		E52517BB1F83840F008FDBCF /* TokopediaUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TokopediaUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E52517BF1F838410008FDBCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
@@ -5129,7 +5138,6 @@
 		F977F9841FE8AB7700183A85 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
 		F977F9851FE8AB7700183A85 /* MoreWrapperViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MoreWrapperViewController.h; sourceTree = "<group>"; };
 		F977F9861FE8AB7700183A85 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
-		F977F9881FE8AB7700183A85 /* RemoteConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoteConfig.swift; sourceTree = "<group>"; };
 		F977F9C01FE8AB7700183A85 /* TPCryptoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TPCryptoManager.swift; sourceTree = "<group>"; };
 		F977F9C11FE8AB7700183A85 /* CreditCardTouchIDData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditCardTouchIDData.swift; sourceTree = "<group>"; };
 		F977F9C21FE8AB7700183A85 /* AsymmetricCryptoManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsymmetricCryptoManager.swift; sourceTree = "<group>"; };
@@ -7840,6 +7848,35 @@
 			path = Utility;
 			sourceTree = "<group>";
 		};
+		E520971D20612A4A002F5301 /* Chat */ = {
+			isa = PBXGroup;
+			children = (
+				E520971E20612A4A002F5301 /* GroupChat */,
+				E520972120612A4A002F5301 /* ChatPagerViewController.xib */,
+				E520972220612A4A002F5301 /* ChatPagerViewController.swift */,
+				E520972320612A4A002F5301 /* TopChat */,
+			);
+			path = Chat;
+			sourceTree = "<group>";
+		};
+		E520971E20612A4A002F5301 /* GroupChat */ = {
+			isa = PBXGroup;
+			children = (
+				E520971F20612A4A002F5301 /* TabView.swift */,
+				E520972020612A4A002F5301 /* GroupChatDetailViewController.swift */,
+			);
+			path = GroupChat;
+			sourceTree = "<group>";
+		};
+		E520972320612A4A002F5301 /* TopChat */ = {
+			isa = PBXGroup;
+			children = (
+				E520972420612A4A002F5301 /* ChatTemplateTipsActionSheet.swift */,
+				E520972520612A4A002F5301 /* RemoteConfig.swift */,
+			);
+			path = TopChat;
+			sourceTree = "<group>";
+		};
 		E52517BC1F838410008FDBCF /* TokopediaUITests */ = {
 			isa = PBXGroup;
 			children = (
@@ -8795,6 +8832,7 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
+				E520971D20612A4A002F5301 /* Chat */,
 				843805F02057DA3100D50809 /* AudioCampaign */,
 				E576C2562034180D008524AA /* CentralizedOTP */,
 				9244D36E2029850D005CFB89 /* Forbidden */,
@@ -8817,7 +8855,6 @@
 				F977EF0E1FE8AB6E00183A85 /* Referral */,
 				F977F5061FE8AB7300183A85 /* Register */,
 				92A4CBA8201731CC00C42D37 /* SellerInfo */,
-				F977F9871FE8AB7700183A85 /* TopChat */,
 				F977EF5F1FE8AB6F00183A85 /* UIRefactor */,
 			);
 			path = Features;
@@ -11449,15 +11486,6 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		F977F9871FE8AB7700183A85 /* TopChat */ = {
-			isa = PBXGroup;
-			children = (
-				E5070FA51FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift */,
-				F977F9881FE8AB7700183A85 /* RemoteConfig.swift */,
-			);
-			path = TopChat;
-			sourceTree = "<group>";
-		};
 		F977F9891FE8AB7700183A85 /* React */ = {
 			isa = PBXGroup;
 			children = (
@@ -12089,6 +12117,7 @@
 				F977FA601FE8AB7900183A85 /* DistrictViewController.xib in Resources */,
 				F97700B51FE8AB8600183A85 /* Entypo.ttf in Resources */,
 				F90DF79F202AD20500FF9043 /* onboarding4.json in Resources */,
+				E520972820612A4B002F5301 /* ChatPagerViewController.xib in Resources */,
 				F977FC9E1FE8AB7D00183A85 /* ShopTagDescriptionViewCell.xib in Resources */,
 				F772719320355FDC00D959AF /* TokoCashAccountTableViewCell.xib in Resources */,
 				F977FC3A1FE8AB7D00183A85 /* AlertDonation.xib in Resources */,
@@ -12947,6 +12976,7 @@
 				F98052662018AAFE00CE6D67 /* ReactTPRoutes.m in Sources */,
 				62C770C61FF33C3300F66527 /* OrderShipment.m in Sources */,
 				62C770C21FF33C3300F66527 /* ActionOrderResult.m in Sources */,
+				E520972720612A4B002F5301 /* GroupChatDetailViewController.swift in Sources */,
 				F977FD2E1FE8AB7F00183A85 /* SearchAutoCompleteViewModel.m in Sources */,
 				F977FDAE1FE8AB8000183A85 /* OfficialStorePromoViewController.m in Sources */,
 				62C770AF1FF33C3300F66527 /* CategoryList.m in Sources */,
@@ -12979,6 +13009,7 @@
 				F772715020355FDB00D959AF /* TokoCashQRCodeViewModel.swift in Sources */,
 				62C770C71FF33C3300F66527 /* CatalogMarketPlace.m in Sources */,
 				62C7704E1FF33C3200F66527 /* SearchAWSResult.m in Sources */,
+				E520972B20612A4C002F5301 /* RemoteConfig.swift in Sources */,
 				E50465C120159F3000FD0872 /* NativeNPSManagerBridge.m in Sources */,
 				62C770B21FF33C3300F66527 /* OrderResult.m in Sources */,
 				62C770F01FF33C3300F66527 /* CatalogAddProduct.m in Sources */,
@@ -13223,7 +13254,6 @@
 				F977FD361FE8AB7F00183A85 /* SpellCheckRequest.m in Sources */,
 				F977FBC81FE8AB7C00183A85 /* OrderButtonView.swift in Sources */,
 				E57974C11FEA73D700610655 /* Modal.swift in Sources */,
-				F97700721FE8AB8500183A85 /* RemoteConfig.swift in Sources */,
 				F977FD7B1FE8AB7F00183A85 /* MiniSlideObject.m in Sources */,
 				F977FAA21FE8AB7A00183A85 /* Donation.swift in Sources */,
 				F977FDFD1FE8AB8100183A85 /* PulsaStatusRoot.swift in Sources */,
@@ -13313,7 +13343,6 @@
 				F977FB531FE8AB7B00183A85 /* InboxResolutionCenterComplainViewController.m in Sources */,
 				62C771261FF33C3400F66527 /* List.m in Sources */,
 				924B14F1200DB28A00CB65D2 /* AIRGoogleMapURLTileManager.m in Sources */,
-				E5070FA61FEA428E00DABBD9 /* ChatTemplateTipsActionSheet.swift in Sources */,
 				62C770B01FF33C3300F66527 /* OrderPayment.m in Sources */,
 				F977FA4E1FE8AB7900183A85 /* ReferralRemoteConfig.swift in Sources */,
 				F977FCD81FE8AB7E00183A85 /* MyShopEtalaseEditViewController.m in Sources */,
@@ -13377,6 +13406,7 @@
 				62C770EF1FF33C3300F66527 /* CatalogShopAWS.m in Sources */,
 				62C771961FF33C3400F66527 /* ContactUsActionResult.m in Sources */,
 				F97700AF1FE8AB8600183A85 /* VersionCheckerConfig.m in Sources */,
+				E520972620612A4B002F5301 /* TabView.swift in Sources */,
 				62C771411FF33C3400F66527 /* NoteDetail.swift in Sources */,
 				F977FE171FE8AB8100183A85 /* MyShopNoteViewController.m in Sources */,
 				DADB9F461F3C46CE002B1FAE /* _FBTweakCategoryViewController.m in Sources */,
@@ -13805,6 +13835,7 @@
 				F977FDB21FE8AB8000183A85 /* FilterConditionViewController.m in Sources */,
 				62C771991FF33C3400F66527 /* AddressDistrict.m in Sources */,
 				F977FBCF1FE8AB7C00183A85 /* DueDateViewController.m in Sources */,
+				E520972920612A4B002F5301 /* ChatPagerViewController.swift in Sources */,
 				F97700701FE8AB8500183A85 /* MoreWrapperViewController.m in Sources */,
 				F977FA261FE8AB7900183A85 /* AceTarget.swift in Sources */,
 				F977FB2B1FE8AB7B00183A85 /* TopAdsComponentView.swift in Sources */,
@@ -13890,6 +13921,7 @@
 				62C770751FF33C3200F66527 /* DetailPriceAlert.m in Sources */,
 				62C771D41FF33C3500F66527 /* WishListObjectList.m in Sources */,
 				F977FC591FE8AB7D00183A85 /* GenerateHostObservable.swift in Sources */,
+				E520972A20612A4C002F5301 /* ChatTemplateTipsActionSheet.swift in Sources */,
 				F977FDBF1FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.m in Sources */,
 				F977FE011FE8AB8100183A85 /* PulsaRelationships.swift in Sources */,
 				F977FE5A1FE8AB8100183A85 /* FeedPromotionComponentView.swift in Sources */,

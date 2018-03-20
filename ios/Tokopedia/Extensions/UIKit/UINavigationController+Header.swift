@@ -16,7 +16,7 @@ extension UINavigationController {
         UINavigationController.setDefaultNav()
     }
     
-    func setGreen() {
+    public func setGreen() {
         self.navigationBar.barTintColor = UIColor.tpGreen()
         self.navigationBar.tintColor = UIColor.white
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
@@ -43,12 +43,13 @@ extension UINavigationController {
         UIApplication.shared.statusBarStyle = .lightContent
     }
     
-    func setWhite() {
+    public func setWhite() {
+        self.navigationBar.setBackgroundImage(nil, for: .default)
         self.navigationBar.barTintColor = UIColor.white
         self.navigationBar.tintColor = UIColor.tpPrimaryBlackText()
-        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
+        self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)]
         self.navigationBar.isTranslucent = false
-        self.navigationBar.shadowImage = UIImage(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
+        self.navigationBar.shadowImage = UIImage(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
         
         let barButtonAttributes = [NSStrokeColorAttributeName: UIColor.tpPrimaryBlackText()]
         UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
@@ -58,7 +59,7 @@ extension UINavigationController {
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 0.1), for: .default)
         } else {
             // this causes back button to always appears white in ios 11
-            UIBarButtonItem.appearance().tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+            UIBarButtonItem.appearance().tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
         }
         
         if #available(iOS 9.0, *) {
@@ -69,13 +70,13 @@ extension UINavigationController {
         UIApplication.shared.statusBarStyle = .default
     }
     
-    class func setDefaultNav() {
-        UINavigationBar.appearance().setBackgroundImage(UIImage(), for: .default)
+    class public func setDefaultNav() {
+        UINavigationBar.appearance().setBackgroundImage(nil, for: .default)
         UINavigationBar.appearance().barTintColor = UIColor.white
-        UINavigationBar.appearance().tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
-        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)]
+        UINavigationBar.appearance().tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
+        UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)]
         UINavigationBar.appearance().isTranslucent = false
-        UINavigationBar.appearance().shadowImage = UIImage(color: UIColor(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
+        UINavigationBar.appearance().shadowImage = UIImage(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12), size: CGSize(width: 1, height: 0.3))
         
         let barButtonAttributes = [NSStrokeColorAttributeName: UIColor.tpPrimaryBlackText()]
         UIBarButtonItem.appearance().setTitleTextAttributes(barButtonAttributes, for: UIControlState.normal)
@@ -85,7 +86,7 @@ extension UINavigationController {
             UIBarButtonItem.appearance().setBackButtonTitlePositionAdjustment(UIOffset(horizontal: 0, vertical: 0.1), for: .default)
         } else {
             // this causes back button to always appears white in ios 11
-            UIBarButtonItem.appearance().tintColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.7)
+            UIBarButtonItem.appearance().tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7)
         }
         
         if #available(iOS 9.0, *) {

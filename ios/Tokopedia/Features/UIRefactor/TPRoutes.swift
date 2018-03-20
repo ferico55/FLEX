@@ -1097,86 +1097,153 @@ public class TPRoutes: NSObject {
         // MARK: TopChat (Native)
         JLRoutes.global().addRoute("/topchat") { (_: [String: Any]) -> Bool in
             let userManager = UserAuthentificationManager()
-            let auth = userManager.getUserLoginData()
-
-            var viewController: UIViewController
-
-            if UI_USER_INTERFACE_IDIOM() == .pad {
-                let userID = userManager.getUserId()
-                let name = userManager.getUserFullName()
-                let shopName = userManager.getShopName()
-                let masterModule = ReactModule(name: "TopChatMain", props: [
-                    "authInfo": auth as AnyObject,
-                    "fromIpad": true as AnyObject
-                ])
-                let detailModule = ReactModule(name: "TopChatDetail", props: [
-                    "fromIpad": true as AnyObject,
-                    "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
-                    "user_id": userID as AnyObject,
-                    "full_name": name as AnyObject,
-                    "shop_name": shopName as AnyObject
-                ])
-
-                viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
-            } else {
-                viewController = ReactViewController(moduleName: "TopChatMain", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject])
+            if userManager.isLogin {
+                let viewController = ChatPagerViewController(initialPage: .topchat)
+                viewController.hidesBottomBarWhenPushed = true
+                UIApplication.topViewController()?
+                    .navigationController?
+                    .pushViewController(viewController, animated: true)
             }
-
-            viewController.hidesBottomBarWhenPushed = true
-            UIApplication.topViewController()?
-                .navigationController?
-                .pushViewController(viewController, animated: true)
-
             return true
         }
 
         JLRoutes.global().addRoute("/topchat/:message_id") { (params: [String: Any]) -> Bool in
             guard let message_id = params["message_id"] as? String else { return false }
             let userManager = UserAuthentificationManager()
-            let auth = userManager.getUserLoginData()
-            var viewController: UIViewController
+            
+            if userManager.isLogin {
+                let auth = userManager.getUserLoginData()
+                var viewController: UIViewController
 
-            if UI_USER_INTERFACE_IDIOM() == .pad {
-                let userID = userManager.getUserId()
-                let name = userManager.getUserFullName()
-                let shopName = userManager.getShopName()
-                let masterModule = ReactModule(name: "TopChatMain", props: [
-                    "authInfo": auth as AnyObject,
-                    "fromIpad": true as AnyObject,
-                    "msg_id_applink": message_id as AnyObject
-                ])
-                let detailModule = ReactModule(name: "TopChatDetail", props: [
-                    "fromIpad": true as AnyObject,
-                    "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
-                    "user_id": userID as AnyObject,
-                    "full_name": name as AnyObject,
-                    "shop_name": shopName as AnyObject,
-                    "msg_id_applink": message_id as AnyObject
-                ])
+                if UI_USER_INTERFACE_IDIOM() == .pad {
+                    let userID = userManager.getUserId()
+                    let name = userManager.getUserFullName()
+                    let shopName = userManager.getShopName()
+                    let masterModule = ReactModule(name: "TopChatMain", props: [
+                        "authInfo": auth as AnyObject,
+                        "fromIpad": true as AnyObject,
+                        "msg_id_applink": message_id as AnyObject
+                    ])
+                    let detailModule = ReactModule(name: "TopChatDetail", props: [
+                        "fromIpad": true as AnyObject,
+                        "statusBarHeight": UIApplication.shared.statusBarFrame.height as AnyObject,
+                        "user_id": userID as AnyObject,
+                        "full_name": name as AnyObject,
+                        "shop_name": shopName as AnyObject,
+                        "msg_id_applink": message_id as AnyObject
+                    ])
 
-                viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
-            } else {
-                viewController = ReactViewController(moduleName: "TopChatDetail", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
-            }
-
-            viewController.hidesBottomBarWhenPushed = true
-
-            guard let topVc = UIApplication.topViewController() else { return false }
-            if topVc.isKind(of: ReactViewController.self) || topVc.isKind(of: ReactSplitViewController.self) {
-                if let countVc = topVc.navigationController?.viewControllers.count {
-                    if countVc > 2 {
-                        topVc.navigationController?.viewControllers.removeLast()
-                    }
+                    viewController = ReactSplitViewController(masterModule: masterModule, detailModule: detailModule)
+                } else {
+                    viewController = ReactViewController(moduleName: "TopChatDetail", props: ["authInfo": auth as AnyObject, "fromIpad": false as AnyObject, "msg_id_applink": message_id as AnyObject])
                 }
-                UIApplication.topViewController()?.navigationController?.replaceTopViewController(viewController: viewController)
-            } else {
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(viewController, animated: true)
-            }
 
+                viewController.hidesBottomBarWhenPushed = true
+
+                guard let topVc = UIApplication.topViewController() else { return false }
+                if topVc.isKind(of: ReactViewController.self) || topVc.isKind(of: ReactSplitViewController.self) {
+                    if let countVc = topVc.navigationController?.viewControllers.count {
+                        if countVc > 2 {
+                            topVc.navigationController?.viewControllers.removeLast()
+                        }
+                    }
+                    UIApplication.topViewController()?.navigationController?.replaceTopViewController(viewController: viewController)
+                } else {
+                    UIApplication.topViewController()?
+                        .navigationController?
+                        .pushViewController(viewController, animated: true)
+                }
+            }
             return true
         }
+        
+        // MARK: GroupChat to list of channel
+        JLRoutes.global().addRoute("/groupchat") { (_: [String: Any]) -> Bool in
+            guard let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    let viewController = ChatPagerViewController(initialPage: .groupchat)
+                    viewController.hidesBottomBarWhenPushed = true
+                    
+                    if topViewController.isKind(of: ChatPagerViewController.self) {
+                        topNavigation.viewControllers.removeLast()
+                    }
+                    
+                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    topNavigation.pushViewController(viewController, animated: true)
+                }
+            }
+            
+            return true
+        }
+        
+        // MARK: GroupChat to specific chat room
+        JLRoutes.global().addRoute("/groupchat/:channel_uuid") { (params: [String: Any]) -> Bool in
+            guard let channel_uuid = params["channel_uuid"] as? String, let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
+       
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    let viewController = ChatPagerViewController(initialPage: .groupchat, appLink: channel_uuid)
+                    viewController.hidesBottomBarWhenPushed = true
+                    
+                    if topViewController.isKind(of: ChatPagerViewController.self) {
+                        topNavigation.viewControllers.removeLast()
+                    }
+                    
+                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    topNavigation.pushViewController(viewController, animated: true)
+                }
+            }
+            
+            return true
+        }
+        
+        // MARK: GroupChat to specific chat room via list
+        JLRoutes.global().addRoute("/groupchat/list/:channel_uuid") { (params: [String: Any]) -> Bool in
+            guard let channel_uuid = params["channel_uuid"] as? String, let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    let viewController = ChatPagerViewController(initialPage: .groupchat, appLink: channel_uuid)
+                    viewController.hidesBottomBarWhenPushed = true
+                    
+                    if topViewController.isKind(of: ChatPagerViewController.self) {
+                        topNavigation.viewControllers.removeLast()
+                    }
+                    
+                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                        topNavigation.viewControllers.removeLast(2)
+                    }
+                    
+                    topNavigation.pushViewController(viewController, animated: true)
+                }
+            }
+            
+            return true
+        }
+        
         // MARK: Referral code
         JLRoutes.global().addRoute("/referral") { (_: [String: Any]) -> Bool in
             NavigateViewController.navigateToReferralScreen()
