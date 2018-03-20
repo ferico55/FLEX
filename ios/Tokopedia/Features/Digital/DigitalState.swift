@@ -182,6 +182,7 @@ internal struct DigitalState: Render.StateType, ReSwift.StateType {
     }
     
     internal func selectedOperator(fromForm: DigitalForm, orOperatorId: String?) -> DigitalOperator? {
-        return fromForm.operators.filter { $0.operatorID == orOperatorId }.first ?? fromForm.defaultOperator
+        guard let operatorID = orOperatorId else { return fromForm.defaultOperator }
+        return fromForm.operators.filter { $0.operatorID == operatorID }.first ?? fromForm.defaultOperator
     }
 }
