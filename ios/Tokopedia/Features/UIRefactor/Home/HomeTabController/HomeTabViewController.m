@@ -393,7 +393,11 @@ UINavigationControllerDelegate
     NSDictionary* data = [notification.userInfo objectForKey:@"data"];
     if ([data objectForKey:@"applinks"] != nil) {
         NSString* applinks = [data objectForKey:@"applinks"];
-        [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+        //Need to delay, so routeURL called after popToRoot. Push Notification purpose.
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+        });
     } else {
         _redirectHandler = [[RedirectHandler alloc]init];
         _redirectHandler.delegate = self;

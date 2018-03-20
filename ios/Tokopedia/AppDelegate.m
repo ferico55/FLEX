@@ -104,8 +104,7 @@
                                       bridge:[UIApplication sharedApplication].reactBridge
                                       viewName:name
                                       viewParams:params];
-    MainViewController *mainViewController = (MainViewController*)_window.rootViewController;
-    [mainViewController.selectedViewController.navigationController pushViewController:reactView animated:true];
+    [[UIApplication topViewController].navigationController pushViewController:reactView animated:true];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -189,11 +188,7 @@
                 }];
             }
         }
-        NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
-        if (pushNotificationData) {
-            
-            [self didReceiveNotificationBackgroundState:pushNotificationData];
-        }
+
         
         // fetch new remote config value and apply fetched value
         // need to be here so it does not block main UI thread
@@ -203,6 +198,13 @@
             [weakRemoteConfig activateFetched];
         }];
     });
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"10.0.0")) {
+        NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
+        if (pushNotificationData) {
+            [self didReceiveNotificationBackgroundState:pushNotificationData];
+        }
+    }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.1")) {
         //opening Quick Action in background state
