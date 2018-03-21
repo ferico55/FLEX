@@ -22,6 +22,7 @@ extension UINavigationController {
         self.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white]
         self.navigationBar.shadowOpacity = 0
         self.navigationBar.isTranslucent = false
+        self.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationBar.shadowImage = UIImage(color: UIColor.tpGreen(), size: CGSize(width: 1, height: 0.3))
         
         let barButtonAttributes = [NSStrokeColorAttributeName: UIColor.white]
