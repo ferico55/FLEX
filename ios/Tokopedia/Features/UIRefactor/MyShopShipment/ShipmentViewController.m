@@ -874,6 +874,9 @@ CLLocationManagerDelegate
     [TokopointsService geocodeWithAddress:nil latitudeLongitude:[NSString stringWithFormat:@"%f,%f", latitude, longitude] onSuccess:^(GeocodeResponse *response) {
         welf.shop.locationAddress = response.shortAddress;
         [welf.tableView reloadData];
+        if (latitude != 0 && longitude != 0 && ![response.shortAddress isEqualToString:@""]) {
+            hasSelectedLocation = YES;
+        }
     } onFailure:^(NSError *error) {
         [welf.tableView reloadData];
         [StickyAlertView showErrorMessage:@[error.localizedDescription]];

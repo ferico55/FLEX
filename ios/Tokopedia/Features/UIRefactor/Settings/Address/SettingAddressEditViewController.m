@@ -477,10 +477,7 @@
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
-    _longitude = @"106.8265106";
-    _latitude = @"-6.1757247";
     hasSelectedDistrict = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT;
-    hasSelectedLocation = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT;
     if (data) {
         _type = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
         
@@ -522,6 +519,8 @@
                     [_buttonMapLocation setCustomAttributedText:response.shortAddress];
                     _opsionalLabel.hidden = YES;
                     _constraintBottomMapName.constant = 0;
+                    
+                    hasSelectedLocation = YES;
                 }
             } onFailure:^(NSError *error) {
                 [StickyAlertView showErrorMessage:@[error.localizedDescription]];
