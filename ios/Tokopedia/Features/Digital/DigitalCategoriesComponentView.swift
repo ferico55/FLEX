@@ -116,7 +116,7 @@ internal class DigitalCategoriesComponentView: ComponentView<DigitalCategoryStat
                 view.numberOfLines = 0
                 view.lineBreakMode = .byClipping
                 view.textAlignment = .center
-                layout.margin = 10
+                layout.margin = 4
             }
             
             let digitalCategoryImageView = Node<UIImageView> {
