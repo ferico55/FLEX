@@ -626,6 +626,7 @@
 		9244D37120298537005CFB89 /* ForbiddenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9244D36F20298537005CFB89 /* ForbiddenViewController.swift */; };
 		9244D37220298537005CFB89 /* ForbiddenViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9244D37020298537005CFB89 /* ForbiddenViewController.xib */; };
 		92454ABA203E7A8300D3F58F /* CrashlyticsPlugin.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92454AB9203E7A8300D3F58F /* CrashlyticsPlugin.swift */; };
+		92489A002073299F00876F5B /* ReactBuildConfig.m in Sources */ = {isa = PBXBuildFile; fileRef = 924899FF2073299F00876F5B /* ReactBuildConfig.m */; };
 		924AAD31203144900019CAFE /* NetworkingRemoteConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */; };
 		924B14ED200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */; };
 		924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 924B14CB200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m */; };
@@ -3251,6 +3252,8 @@
 		9244D36F20298537005CFB89 /* ForbiddenViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForbiddenViewController.swift; sourceTree = "<group>"; };
 		9244D37020298537005CFB89 /* ForbiddenViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ForbiddenViewController.xib; sourceTree = "<group>"; };
 		92454AB9203E7A8300D3F58F /* CrashlyticsPlugin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CrashlyticsPlugin.swift; sourceTree = "<group>"; };
+		924899FE2073299F00876F5B /* ReactBuildConfig.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ReactBuildConfig.h; sourceTree = "<group>"; };
+		924899FF2073299F00876F5B /* ReactBuildConfig.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReactBuildConfig.m; sourceTree = "<group>"; };
 		924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkingRemoteConfig.swift; sourceTree = "<group>"; };
 		924B14C7200DB28A00CB65D2 /* AIRGoogleMapPolyline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AIRGoogleMapPolyline.h; sourceTree = "<group>"; };
 		924B14C8200DB28A00CB65D2 /* AIRGoogleMapUrlTile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AIRGoogleMapUrlTile.m; sourceTree = "<group>"; };
@@ -11597,6 +11600,8 @@
 				F977F9F41FE8AB7800183A85 /* ViewControllerSwipeGestureProtocol.swift */,
 				F7D8CA392017556400725BDB /* ViewModelType.swift */,
 				F999AA232046350D007A0356 /* GeneralEnum.swift */,
+				924899FE2073299F00876F5B /* ReactBuildConfig.h */,
+				924899FF2073299F00876F5B /* ReactBuildConfig.m */,
 			);
 			path = Helper;
 			sourceTree = "<group>";
@@ -13982,6 +13987,7 @@
 				62C770C91FF33C3300F66527 /* CatalogShops.m in Sources */,
 				F977FC601FE8AB7D00183A85 /* TKPImagePickerController.swift in Sources */,
 				F977FD8A1FE8AB8000183A85 /* FiltersTableViewController.swift in Sources */,
+				92489A002073299F00876F5B /* ReactBuildConfig.m in Sources */,
 				F977FD281FE8AB7F00183A85 /* SearchAutoCompleteCell.m in Sources */,
 				F977FE2F1FE8AB8100183A85 /* AccountActivationViewController.swift in Sources */,
 				F977FA581FE8AB7900183A85 /* HotlistBannerData.swift in Sources */,

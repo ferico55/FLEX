@@ -136,8 +136,10 @@
 #endif
 	
     dispatch_async(dispatch_get_main_queue(), ^{
+#ifndef DEBUG
         // Init Fabric
         [Fabric with:@[CrashlyticsKit]];
+#endif
 
         // Configure Third Party Apps
         [self configureGTMInApplication:application withOptions:launchOptions];
