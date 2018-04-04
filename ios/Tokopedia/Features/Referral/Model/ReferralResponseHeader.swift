@@ -8,12 +8,12 @@
 
 import SwiftyJSON
 internal class ReferralResponseHeader: NSObject {
-    internal var message: String?
+    internal var message: [String]?
     internal var reason: String?
     internal var errorCode = 0
     override internal init(){}
     internal init(json:[String:JSON]) {
-        if let message = json["message"]?.string {
+        if let message = json["messages"]?.arrayObject as? [String] {
             self.message = message
         }
         if let reason = json["reason"]?.string {

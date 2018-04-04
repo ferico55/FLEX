@@ -261,7 +261,7 @@ internal class RegisterSocialMediaViewController: UIViewController, UITextFieldD
                     self.successCallback()
                 } else {
                     result.message_error.forEach({ message in
-                        AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "\(self.userProfile.providerName) - \(message)")
+                        AnalyticsManager.trackRegisterSuccess(withLabel: "\(self.userProfile.providerName) - \(message)")
                     })
                     StickyAlertView.showErrorMessage(result.message_error)
                 }

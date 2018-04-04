@@ -552,6 +552,7 @@
 		843805F72057DA3200D50809 /* AudioCampaignService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843805F32057DA3100D50809 /* AudioCampaignService.swift */; };
 		843805F82057DA3200D50809 /* AudioRecorderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 843805F42057DA3100D50809 /* AudioRecorderViewController.swift */; };
 		843805FB2057DA4400D50809 /* FBTweakShakeWindow+Multiple.m in Sources */ = {isa = PBXBuildFile; fileRef = 843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */; };
+		8439723320612F540068C0A4 /* WKWebViewControllerReferral.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8439723220612F540068C0A4 /* WKWebViewControllerReferral.swift */; };
 		848FA6DD1FEBF8BE00A22EDE /* CreateComplainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */; };
 		848FA6DE1FEBF8BE00A22EDE /* RCCreateComplaintResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */; };
 		848FA6DF1FEBF8BE00A22EDE /* RCCreateComplaintResponseData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */; };
@@ -3177,6 +3178,7 @@
 		843805F42057DA3100D50809 /* AudioRecorderViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioRecorderViewController.swift; sourceTree = "<group>"; };
 		843805F92057DA4200D50809 /* FBTweakShakeWindow+Multiple.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "FBTweakShakeWindow+Multiple.h"; sourceTree = "<group>"; };
 		843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "FBTweakShakeWindow+Multiple.m"; sourceTree = "<group>"; };
+		8439723220612F540068C0A4 /* WKWebViewControllerReferral.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WKWebViewControllerReferral.swift; sourceTree = "<group>"; };
 		848FA6971FEBF8BD00A22EDE /* CreateComplainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreateComplainCell.swift; sourceTree = "<group>"; };
 		848FA6991FEBF8BD00A22EDE /* RCCreateComplaintResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponse.swift; sourceTree = "<group>"; };
 		848FA69A1FEBF8BD00A22EDE /* RCCreateComplaintResponseData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCCreateComplaintResponseData.swift; sourceTree = "<group>"; };
@@ -8881,6 +8883,7 @@
 		F977EF0F1FE8AB6E00183A85 /* UI */ = {
 			isa = PBXGroup;
 			children = (
+				8439723220612F540068C0A4 /* WKWebViewControllerReferral.swift */,
 				84184675203C3EAC0053074A /* ReferralWelcomeController.swift */,
 				84184676203C3EAD0053074A /* VerifyPhoneTableViewController.swift */,
 				F977EF111FE8AB6E00183A85 /* CodeShareTableViewController.swift */,
@@ -14435,6 +14438,7 @@
 				F977FD541FE8AB7F00183A85 /* TextField.m in Sources */,
 				62C770C01FF33C3300F66527 /* OrderDeadline.m in Sources */,
 				62C771C41FF33C3500F66527 /* FavoritedShopResult.m in Sources */,
+				8439723320612F540068C0A4 /* WKWebViewControllerReferral.swift in Sources */,
 				F977FBAA1FE8AB7C00183A85 /* DetailShipmentStatusCell.m in Sources */,
 				62C771171FF33C3400F66527 /* GetCouponResponse.swift in Sources */,
 				62C770761FF33C3200F66527 /* PriceAlertResult.m in Sources */,

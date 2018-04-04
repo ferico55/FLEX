@@ -37,9 +37,13 @@ import Foundation
         buo.title = referable.title.kv_decodeHTMLCharacterEntities()
         var shareText = buo.title
         if referable is ReferralSharing || referable is AppSharing {
-            shareText = referable.buoDescription + " Cek - \n"
+            shareText = referable.buoDescription + " Cek : \n"
         } else {
             buo.contentDescription = referable.buoDescription
+        }
+        if let referalSharing = referable as? ReferralSharing {
+            linkProperties.addControlParam("$og_title", withValue: referalSharing.ogTitle)
+            linkProperties.addControlParam("$og_description", withValue: referalSharing.ogDescription)
         }
         buo.showShareSheet(with: linkProperties, andShareText: shareText, from: viewController) { (_: String?, _: Bool) in
         }

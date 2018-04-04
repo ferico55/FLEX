@@ -659,7 +659,10 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     
     [tracker set:kGAIUserId value:login.result.user_id];
 }
-
++ (void)trackRegisterSuccessWithLabel:(NSString *)label {
+    [AnalyticsManager trackEventName:@"registerSuccess" category:GA_EVENT_CATEGORY_REGISTER action:GA_EVENT_ACTION_REGISTER_SUCCESS label:label];
+    [[BranchAnalytics new] sendLoginSignupEventWithIsLogin:NO];
+}
 + (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString *)label {
     
     if (inboxType == InboxTypeTalk) {

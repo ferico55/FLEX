@@ -73,6 +73,7 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 + (void)moEngageTrackEvent;
 
 // Specific trackers
++ (void)trackRegisterSuccessWithLabel:(NSString *)label;
 + (void)trackLogin:(Login *)login;
 + (void)trackSegmentedControlTapped:(NSInteger)inboxType label:(NSString*)label;
 + (void)trackInboxTicketClickWithType:(InboxCustomerServiceType)type;

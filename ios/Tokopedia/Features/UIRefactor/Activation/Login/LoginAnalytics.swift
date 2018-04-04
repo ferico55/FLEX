@@ -7,33 +7,34 @@
 //
 
 import Foundation
-class LoginAnalytics {
+internal class LoginAnalytics {
 
-    func trackLoginErrorEvent(label: String) {
+    internal func trackLoginErrorEvent(label: String) {
         self.trackLoginEvent(name: "loginError", action: GA_EVENT_ACTION_LOGIN_ERROR, label: label)
     }
-    func trackLoginSuccessEvent(label: String) {
+    internal func trackLoginSuccessEvent(label: String) {
         self.trackLoginEvent(name: "loginSuccess", action: GA_EVENT_ACTION_LOGIN_SUCCESS, label: label)
+        BranchAnalytics().sendLoginSignupEvent(isLogin: true)
     }
-    func trackLoginClickEvent(label: String) {
+    internal func trackLoginClickEvent(label: String) {
         self.trackLoginEvent(name: "clickLogin", action: GA_EVENT_ACTION_CLICK, label: label)
     }
     //    MARK: - GA_EVENT_CATEGORY_LOGIN
-    func trackLoginEvent(name: String, action: String, label: String) {
+    internal func trackLoginEvent(name: String, action: String, label: String) {
         AnalyticsManager.trackEventName(name,
                                         category: GA_EVENT_CATEGORY_LOGIN,
                                         action: action,
                                         label: label)
     }
     //    MARK: - Touch Id
-    func trackTouchIdClickEvent(name: String, label: String) {
+    internal func trackTouchIdClickEvent(name: String, label: String) {
         AnalyticsManager.trackEventName(name,
                                         category: GA_EVENT_CATEGORY_SETUP_TOUCHID,
                                         action: GA_EVENT_ACTION_CLICK,
                                         label: label)
     }
     //    MARK: - Mo engage event
-    func trackMoEngageEvent(with login: Login) {
+    internal func trackMoEngageEvent(with login: Login) {
         let attributes = ["mobile_number": login.result.phoneNumber ?? "", "customer_id": login.result.user_id ?? "", "medium": login.medium , "email": login.result.email ?? ""]
         AnalyticsManager.moEngageTrackEvent(withName: "Login", attributes: attributes)
     }

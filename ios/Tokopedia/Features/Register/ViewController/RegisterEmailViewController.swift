@@ -192,26 +192,26 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
                 if result.smartRegisterAction == .defaultAction {
                     if let errorMessages = result.errorMessages {
                         errorMessages.forEach({ message in
-                            AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "Email - \(message)")
+                            AnalyticsManager.trackRegisterSuccess(withLabel: "Email - \(message)")
                         })
                         StickyAlertView.showErrorMessage(errorMessages)
                         return
                     }
-                    AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "Email")
+                    AnalyticsManager.trackRegisterSuccess(withLabel: "Email")
                     let activationVC = AccountActivationViewController(email: self.registerFormData.email)
                     activationVC.isLoginPresented = self.isLoginPresented
                     self.navigationController?.pushViewController(activationVC, animated: true)
                 } else if result.smartRegisterAction == .loginAutomatically {
                     if let errorMessages = result.errorMessages {
                         errorMessages.forEach({ message in
-                            AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "Email - \(message)")
+                            AnalyticsManager.trackRegisterSuccess(withLabel: "Email - \(message)")
                         })
                     }
                     self.loginExistingUser()
                 } else if result.smartRegisterAction == .resetPassword {
                     if let errorMessages = result.errorMessages {
                         errorMessages.forEach({ message in
-                            AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "Email - \(message)")
+                            AnalyticsManager.trackRegisterSuccess(withLabel: "Email - \(message)")
                         })
                     }
                     self.navigateToResetPassword()
@@ -222,7 +222,7 @@ class RegisterEmailViewController: UIViewController, UITextFieldDelegate, MMNumb
                 } else {
                     if let errorMessages = result.errorMessages {
                         errorMessages.forEach({ message in
-                            AnalyticsManager.trackEventName("registerSuccess", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_REGISTER_SUCCESS, label: "Email - \(message)")
+                            AnalyticsManager.trackRegisterSuccess(withLabel: "Email - \(message)")
                         })
                         StickyAlertView.showErrorMessage(errorMessages)
                         return

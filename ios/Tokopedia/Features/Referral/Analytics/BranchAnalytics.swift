@@ -11,41 +11,50 @@ import Foundation
 
 internal class BranchAnalytics: NSObject {
     internal func sendCommerceEvent(params:[String:Any]) {
-        let currency = (params["currency"] as? String) ?? ""
-        var metadata: [String: Any] = [:]
-        var products: [BNCProduct] = []
+        var products = [BranchUniversalObject]()
         if let itemName = params["items[name]"] as? String {
-            let product = BNCProduct()
-            product.name = itemName
-            product.sku = (params["items[id]"] as? String) ?? "PULSA"
+            let buo = BranchUniversalObject()
+            buo.title = itemName
+            let metadata = BranchContentMetadata()
+            metadata.sku = (params["items[id]"] as? String) ?? ""
+            metadata.productName = itemName
             let price = (params["items[price]"] as? String) ?? ""
-            product.price = NSDecimalNumber(string: price)
-            product.quantity = (params["items[quantity]"] as? NSNumber) ?? 0.0
-            products.append(product)
-            metadata["productType"] = "digital"
-        } else {
-            metadata["productType"] = "marketplace"
+            metadata.price = NSDecimalNumber(string:price)
+            metadata.quantity = (params["items[quantity]"] as? NSNumber)?.doubleValue ?? 0.0
+            metadata.currency = BNCCurrency.IDR
+            buo.contentMetadata = metadata
+            products.append(buo)
         }
         let productItems: [[String:Any]] = (params["items"] as? [[String : Any]]) ?? []
         for pItem in productItems {
-            let product = BNCProduct()
-            product.sku = (pItem["id"] as? String) ?? ""
-            product.name = (pItem["name"] as? String) ?? ""
+            let buo = BranchUniversalObject()
+            buo.title = (pItem["name"] as? String) ?? ""
+            let metadata = BranchContentMetadata()
+            metadata.sku = (pItem["id"] as? String) ?? ""
+            metadata.productName = (pItem["name"] as? String) ?? ""
             let price = (pItem["price"] as? NSNumber) ?? 0
-            product.price = NSDecimalNumber(decimal: price.decimalValue)
-            product.quantity = (pItem["quantity"] as? NSNumber) ?? 0.0
-            products.append(product)
+            metadata.price = NSDecimalNumber(string: price.stringValue)
+            metadata.quantity = (pItem["quantity"] as? NSNumber)?.doubleValue ?? 0.0
+            metadata.currency = BNCCurrency.IDR
+            buo.contentMetadata = metadata
+            products.append(buo)
         }
-        let commerceEvent = BNCCommerceEvent()
-        commerceEvent.currency = currency
+        let event = BranchEvent.standardEvent(.purchase)
+        event.contentItems = NSMutableArray(array: products)
+        event.currency = .IDR
         if let revenue = params["amount"] as? String {
-            commerceEvent.revenue = NSDecimalNumber(string: revenue)
+            event.revenue = NSDecimalNumber(string: revenue)
         }
-        commerceEvent.products = products
-        metadata["userId"] = UserAuthentificationManager().getUserId()
-        metadata["paymentId"] = params["transaction_id"]
-        Branch.getInstance().send(commerceEvent, metadata: metadata, withCompletion: { (response, error) in
-        })
+        event.transactionID = params["transaction_id"] as? String
+        event.customData = ["userId":UserAuthentificationManager().getUserId()]
+        event.logEvent()
+    }
+    internal func sendLoginSignupEvent(isLogin:Bool) {
+        let name = (isLogin) ? "login" : "sign_up"
+        let event = BranchEvent.customEvent(withName: name)
+        event.customData["email"] = UserAuthentificationManager().getUserEmail()
+        event.customData["phone"] = UserAuthentificationManager().getUserPhoneNumber() ?? ""
+        event.logEvent()
     }
     //    MARK: - GA_EVENT_CATEGORY_LOGIN
     internal func trackReferralCodeLabelEvent(action: String) {

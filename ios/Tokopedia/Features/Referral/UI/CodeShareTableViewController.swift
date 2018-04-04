@@ -95,9 +95,16 @@ internal class CodeShareTableViewController: UITableViewController {
             return
         }
         if self.isReferralOn {
+            appSharing.feature = "Referral"
             appSharing.coupanCode = promo.code
             appSharing.buoDescription = promo.content
-            ReferralManager().share(object: appSharing, from: self, anchor: sender)
+            ReferralRemoteConfig.shared.getogTitle { (ogTitle: String) in
+                appSharing.ogTitle = ogTitle
+                ReferralRemoteConfig.shared.getogDescription { (ogDescription: String) in
+                    appSharing.ogDescription = ogDescription + promo.code
+                    ReferralManager().share(object: appSharing, from: self, anchor: sender)
+                }
+            }
         } else {
             ReferralRemoteConfig.shared.getAppShareDescription { (description: String) in
                 appSharing.buoDescription = description
@@ -108,7 +115,7 @@ internal class CodeShareTableViewController: UITableViewController {
         BranchAnalytics().trackReferralCodeLabelEvent(action: "click share code")
     }
     @IBAction private func howItWorksTapped(sender: UIButton) {
-        let webViewController = WKWebViewController(urlString: "https://www.tokopedia.com/referral", shouldAuthorizeRequest: false)
+        let webViewController = WKWebViewControllerReferral(urlString: "https://www.tokopedia.com/referral", shouldAuthorizeRequest: false)
         self.navigationController?.pushViewController(webViewController, animated: true)
         BranchAnalytics().trackClickReferralEvent(action: "click how it works", label: "")
     }
@@ -127,7 +134,7 @@ internal class CodeShareTableViewController: UITableViewController {
                     self.copyButton.isEnabled = true
                     ReferralManager().referralCode = content.code
                 } else if let error = promoResponse.header.message {
-                    StickyAlertView.showErrorMessage([error])
+                    StickyAlertView.showErrorMessage(error)
                 }
             case let .failure(error):
                 StickyAlertView.showErrorMessage([error.localizedDescription])

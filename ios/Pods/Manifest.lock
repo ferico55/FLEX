@@ -32,9 +32,9 @@ PODS:
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
   - boost-for-react-native (1.63.0)
-  - Branch (0.20.3):
-    - Branch/Core (= 0.20.3)
-  - Branch/Core (0.20.3)
+  - Branch (0.22.5):
+    - Branch/Core (= 0.22.5)
+  - Branch/Core (0.22.5)
   - BVLinearGradient (2.4.0):
     - React
   - CCBottomRefreshControl (0.5.2)
@@ -330,7 +330,7 @@ DEPENDENCIES:
   - AppsFlyerFramework (~> 4.5.1)
   - BEMCheckBox (~> 1.2.0)
   - BlocksKit (~> 2.2.5)
-  - Branch (= 0.20.3)
+  - Branch (= 0.22.5)
   - BVLinearGradient (from `./react-podspecs/react-native-linear-gradient.podspec.json`)
   - CCBottomRefreshControl
   - CFAlertViewController (from `https://github.com/digitkhrisnaa/CFAlertViewController`, branch `modifications`)
@@ -528,7 +528,7 @@ SPEC CHECKSUMS:
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
   boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
-  Branch: eec127cb61e0f7f1aa9c351adcad22fa980e001d
+  Branch: 4f0482418d99e77d15b0e6065ef216c10e24797b
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
   CCBottomRefreshControl: 389780b4488321c91d18f66a6da5ef9606df6de5
   CFAlertViewController: 8be0b595d03ed43b922b02bff5077d56b2f456ef
@@ -633,6 +633,6 @@ SPEC CHECKSUMS:
   yoga: 7b0269feb6b97ed7f9410a6490bd70014cea3a2b
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 7e3a671d6385c730402ba353f0a7c42467f1b561
+PODFILE CHECKSUM: 76de2cb91148d06ca77413becb51b8fd74926a13
 
 COCOAPODS: 1.3.1

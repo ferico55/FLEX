@@ -21,6 +21,8 @@ internal class ReferralSharing:NSObject, Referable {
         return path
     }
     internal var feature = "App"
+    internal var ogTitle = "Beli & Bayar Ini Itu Mudah, Bonus Cashback s.d 30rb"
+    internal var ogDescription = "Cobain mudahnya penuhi semua kebutuhan harianmu lewat Aplikasi Tokopedia, yuk! Download sekarang & nikmati cashback s.d 30rb untuk transaksi pertamamu. Kode: "
     internal var title = "Tokopedia, Satu Aplikasi untuk Semua Kebutuhan "
     internal var buoDescription = "Mudahnya beli produk idaman, pulsa, token listrik, tiket liburan, hingga bayar berbagai tagihan, semua dimulai dari aplikasi Tokopedia. Kamu juga bisa mulai & kembangkan bisnis di sini. Yuk, download sekarang!"
     internal var utmCampaign = "app"
