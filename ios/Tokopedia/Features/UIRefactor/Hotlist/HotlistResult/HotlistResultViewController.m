@@ -759,6 +759,15 @@ ProductCellDelegate
         CGRect tempRect = CGRectZero;
         tempRect.size =[_header systemLayoutSizeFittingSize:UILayoutFittingCompressedSize];
         tempRect.size.width = self.view.bounds.size.width;
+        
+        float scale = 0.0;
+        if(IS_IPAD) {
+            scale = self.view.bounds.size.width / (_imageview.image.size.width * 2.0);
+        } else {
+            scale = self.view.bounds.size.width / _imageview.image.size.width;
+        }
+        tempRect.size.height = _imageview.image.size.height * scale;
+        
         _header.frame = tempRect;
         
         headerHeight = tempRect.size.height;
