@@ -818,8 +818,10 @@ public class TPRoutes: NSObject {
 
         JLRoutes.global().add(["/discovery/:id", "/b/:id"]) { (params: [String: Any]) -> Bool in
             guard let id = params["id"] as? String else { return false }
+            
+            let params = decodePlus(params: queryParams(params: params))
 
-            let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject])
+            let viewController = ReactViewController(moduleName: "TopPicks", props: ["page_id": id as AnyObject, "params": params as AnyObject ])
             viewController.hidesBottomBarWhenPushed = true
 
             UIApplication.topViewController()?
