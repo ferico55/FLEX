@@ -6,13 +6,14 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import DKImagePickerController
-class RCProofViewController: UIViewController {
+import UIKit
+
+internal class RCProofViewController: UIViewController {
     @IBOutlet private weak var button: UIButton!
-    var selectedPhotos: [DKAsset]?
-    var attchmentMessage: String?
-    override func viewDidLoad() {
+    internal var selectedPhotos: [DKAsset]?
+    internal var attchmentMessage: String?
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         self.setupUI()
         self.refreshUI()
@@ -23,17 +24,27 @@ class RCProofViewController: UIViewController {
         self.selectedPhotos = RCManager.shared.rcCreateStep1Data?.selectedPhotos
         self.attchmentMessage = RCManager.shared.rcCreateStep1Data?.attchmentMessage
     }
-    func refreshUI() {
+    internal func refreshUI() {
         if self.validate() {
             self.markButtonHighlighted()
         } else {
             self.markButtonDisabled()
         }
     }
-    private func validate()->Bool {
+    private func validate(_ showError: Bool = false)->Bool {
         guard let data = RCManager.shared.rcCreateStep1Data  else {return false}
-        if data.isProofSubmissionRequired && self.selectedPhotos == nil {
-            return false
+        if data.isProofSubmissionRequired {
+            guard let selectedPhotos = self.selectedPhotos else {
+                return false
+            }
+            for photo in selectedPhotos {
+                if let asset = photo.originalAsset, asset.pixelWidth < 300 || asset.pixelHeight < 300 {
+                    if showError {
+                        StickyAlertView.showErrorMessage(["Gambar terlalu kecil, minimal 300 pixel"])
+                    }
+                    return false
+                }
+            }
         }
         if let text = self.attchmentMessage {
             if text.count < 30 {
@@ -45,7 +56,7 @@ class RCProofViewController: UIViewController {
         return true
     }
     @IBAction private func submitTapped(sender: UIButton) {
-        guard self.validate() else {return}
+        guard self.validate(true) else {return}
         RCManager.shared.rcCreateStep1Data?.attchmentMessage = self.attchmentMessage
         RCManager.shared.rcCreateStep1Data?.selectedPhotos = self.selectedPhotos
         self.navigationController?.popViewController(animated: true)
@@ -54,14 +65,14 @@ class RCProofViewController: UIViewController {
         self.view.endEditing(true)
     }
 //    MARK:-
-    func markButtonHighlighted() {
+    internal func markButtonHighlighted() {
         self.button.backgroundColor = UIColor.tpGreen()
         self.button.setTitleColor(.white, for: .normal)
         self.button.layer.borderWidth = 0.0
     }
-    func markButtonDisabled() {
-        self.button.backgroundColor = UIColor(white: 0.0, alpha: 0.12)
-        self.button.setTitleColor(UIColor(white: 0.0, alpha: 0.38), for: .normal)
+    internal func markButtonDisabled() {
+        self.button.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+        self.button.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.38), for: .normal)
         self.button.layer.borderWidth = 0.0
     }
 }

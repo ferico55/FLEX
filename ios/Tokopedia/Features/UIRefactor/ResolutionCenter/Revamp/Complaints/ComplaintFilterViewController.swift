@@ -99,6 +99,7 @@ extension ComplaintFilterViewController: UITableViewDelegate {
         }
         else {
             datePicker.minimumDate = nil
+            datePicker.maximumDate = Date()
             if indexPath.row == data.count {
                 // start date
                 datePicker.date = startTime ?? Date()
@@ -122,7 +123,7 @@ extension ComplaintFilterViewController: UITableViewDelegate {
                     if self.endTime == nil {
                         self.endTime = Date()
                     }
-                    else if self.endTime! < self.startTime! {
+                    if let endTime = self.endTime, let startTime = self.startTime, endTime < startTime {
                         self.endTime = self.startTime
                     }
                 }

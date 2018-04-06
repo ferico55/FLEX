@@ -33,7 +33,7 @@
                    EMAIL_PASSWORD(@"deadora.hendra+02@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
-                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
+                   EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2020"),
                    EMAIL_PASSWORD(@"alwan.ubaidillah+101@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"alwan.ubaidillah+103@tokopedia.com", @"tokopedia2016"),
                    EMAIL_PASSWORD(@"alwan.ubaidillah+003@tokopedia.com", @"tokopedia2016"),

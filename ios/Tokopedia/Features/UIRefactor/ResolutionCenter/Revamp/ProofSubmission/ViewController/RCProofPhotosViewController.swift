@@ -6,25 +6,26 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import DKImagePickerController
-class RCProofPhotosViewController: UICollectionViewController {
-    weak var parentController: RCProofTableController?
+import UIKit
+
+internal class RCProofPhotosViewController: UICollectionViewController {
+    weak internal var parentController: RCProofTableController?
     fileprivate var selectedPhotos: [DKAsset] = []
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         if let photos = RCManager.shared.rcCreateStep1Data?.selectedPhotos {
             self.selectedPhotos.append(contentsOf: photos)
         }
     }
-    override func didMove(toParentViewController parent: UIViewController?) {
+    internal override func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         if let parent = parent as? RCProofTableController {
             self.parentController = parent
         }
     }
 //    MARK:-
-    func showImagePicker() {
+    internal func showImagePicker() {
         TKPImagePickerController.showImagePicker(
             self,
             assetType: .allAssets,
@@ -45,10 +46,10 @@ class RCProofPhotosViewController: UICollectionViewController {
         })
     }
 // MARK:- UICollectionViewDataSource
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    internal override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return self.selectedPhotos.count + 1
     }
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+    internal override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "RCPhotosCollectionCell", for: indexPath) as? RCPhotosCollectionCell else {return UICollectionViewCell()}
         if indexPath.item >= self.selectedPhotos.count {
             cell.imageView.image = #imageLiteral(resourceName: "camera_reso")
@@ -61,14 +62,21 @@ class RCProofPhotosViewController: UICollectionViewController {
             })
             cell.removeButton.isHidden = false
             cell.removeButtonHandler = {[weak self]()->Void in
-                self?.selectedPhotos.remove(at: indexPath.item)
-                self?.collectionView?.reloadData()
+                guard let `self` = self else { return }
+                self.selectedPhotos.remove(at: indexPath.item)
+                if self.selectedPhotos.count > 0 {
+                    self.parentController?.parentController?.selectedPhotos = self.selectedPhotos
+                } else {
+                    self.parentController?.parentController?.selectedPhotos =  nil
+                }
+                self.collectionView?.reloadData()
+                self.parentController?.parentController?.refreshUI()
             }
         }
         
         return cell
     }
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    internal override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.item >= self.selectedPhotos.count {
             self.showImagePicker()
         }

@@ -8,17 +8,17 @@
 
 import UIKit
 
-class CreateComplainViewController: UIViewController {
-    var order: TxOrderStatusList!
+internal class CreateComplainViewController: UIViewController {
+    internal var order: TxOrderStatusList!
     //    MARK:- IBoutlets
     @IBOutlet private weak var createButton: UIButton!
     @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
-    var isAllChecksPassed: Bool {
+    internal var isAllChecksPassed: Bool {
         guard let data = RCManager.shared.rcCreateStep1Data else {return false}
         return (data.selectedProblemItem.count > 0) && data.isSolutionAdded && data.isProofAdded
     }
     //  MARK:- Lifecycle
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Buat Komplain"
         RCManager.shared.order = self.order
@@ -28,16 +28,16 @@ class CreateComplainViewController: UIViewController {
         RCManager.shared.rcCreateStep1Data = nil
     }
     //    MARK:- Update UI
-    func updateCreateButton() {
+    internal func updateCreateButton() {
         if self.isAllChecksPassed {
             self.createButton.backgroundColor = UIColor.tpGreen()
             self.createButton.setTitleColor(UIColor.white, for: .normal)
         } else {
-            self.createButton.backgroundColor = UIColor(white: 0.0, alpha: 0.12)
-            self.createButton.setTitleColor(UIColor(white: 0.0, alpha: 0.38), for: .normal)
+            self.createButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.12)
+            self.createButton.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.38), for: .normal)
         }
     }
-    func makeActivityIndicator(toShow: Bool) {
+    internal func makeActivityIndicator(toShow: Bool) {
         if toShow {
             self.activityIndicator.startAnimating()
             self.createButton.setTitle("", for: .normal)
@@ -55,22 +55,22 @@ class CreateComplainViewController: UIViewController {
     }
     //    MARK:- Action
     @IBAction private func createButtonTapped(sender: UIButton) {
-        self.showConfirmationAlert()
         if self.isAllChecksPassed {
+            self.showConfirmationAlert()
         }
     }
     //    MARK:- Display pages
-    func showSelectProblemScreen() {
+    internal func showSelectProblemScreen() {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "ProblemsListViewController") as? ProblemsListViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    func showSolutionsListScreen() {
+    internal func showSolutionsListScreen() {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "SolutionListViewController") as? SolutionListViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }
     }
-    func showProofSubmissionScreen() {
+    internal func showProofSubmissionScreen() {
         if let viewController = self.storyboard?.instantiateViewController(withIdentifier: "RCProofViewController") as? RCProofViewController {
             self.navigationController?.pushViewController(viewController, animated: true)
         }

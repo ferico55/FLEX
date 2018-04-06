@@ -250,13 +250,13 @@ internal class ComplaintsViewController: UIViewController {
                 self.imgViewEmptyInbox.image = #imageLiteral(resourceName: "inbox_empty_first_load")
                 self.lblTitleEmptyInbox.text = "Tidak ada komplain"
                 self.lblMessageEmptyInbox.text = "Saat ini Anda belum memiliki Komplain."
-                self.btnResetFilter.titleLabel?.text = "Coba Lagi"
+                self.btnResetFilter.setTitleWithoutAnimation("Coba Lagi")
             }
             else {
                 self.imgViewEmptyInbox.image = #imageLiteral(resourceName: "inbox_empty")
                 self.lblTitleEmptyInbox.text = "Oopppsss…"
                 self.lblMessageEmptyInbox.text = "Kami tidak dapat menemukan komplain yang Anda cari."
-                self.btnResetFilter.titleLabel?.text = "Reset Filter"
+                self.btnResetFilter.setTitleWithoutAnimation("Reset Filter")
             }
         }
         else {
@@ -572,5 +572,16 @@ extension ComplaintsViewController: ComplaintFilterViewDelegate {
             activityIndicator.startAnimating()
             refreshComplaints()
         }
+    }
+}
+
+extension UIButton {
+    internal func setTitleWithoutAnimation(_ title: String?) {
+        UIView.setAnimationsEnabled(false)
+        
+        setTitle(title, for: .normal)
+        layoutIfNeeded()
+        
+        UIView.setAnimationsEnabled(true)
     }
 }
