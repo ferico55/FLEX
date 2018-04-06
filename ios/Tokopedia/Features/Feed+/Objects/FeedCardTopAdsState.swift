@@ -81,7 +81,7 @@ internal struct FeedTopAdsShopState: Render.StateType, ReSwift.StateType {
         self.topadsClickURL = topAdsURL
         self.topadsImpressionURL = shop.imageShop?.sUrl ?? ""
         
-        if let products = shop.imageProduct {
+        if let products = shop.imageProduct, products.count >= 3 {
             self.productImages = products.map { product in
                 if let product = product {
                     return product.imageUrl

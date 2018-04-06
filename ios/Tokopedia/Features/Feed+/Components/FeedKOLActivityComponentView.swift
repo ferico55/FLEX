@@ -25,11 +25,11 @@ internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState>
         super.init()
     }
     
-    required internal init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+    internal override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
         if let contentState = state, let state = contentState.kolPost {
             self.contentState = contentState
             return self.componentContainer(state: state, size: size)
@@ -58,6 +58,7 @@ internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState>
                 self.horizontalLine(),
                 self.headerView(state: state, size: size),
                 self.contentImage(state: state, size: size),
+                self.postTag(state: state, size: size),
                 self.description(state: state, size: size),
                 self.horizontalLine(),
                 self.actionButtons(state: state, size: size)
@@ -197,52 +198,47 @@ internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState>
     private func contentImage(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
         return Node<UIImageView>() { view, layout, _ in
             layout.width = (UI_USER_INTERFACE_IDIOM() == .pad) ? 560 : UIScreen.main.bounds.width
+            layout.aspectRatio = 1
             
             view.contentMode = .scaleAspectFit
             view.setImageWith(URL(string: state.imageURL), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
-            view.isUserInteractionEnabled = true
-            
-            let gestureRecognizer = UITapGestureRecognizer()
-            gestureRecognizer.rx.event.subscribe(onNext: { _ in
-                if let url = URL(string: state.tagURL) {
-                    AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: 0)
-                    TPRoutes.routeURL(url)
-                }
-            }).disposed(by: self.rx_disposeBag)
-            
-            view.addGestureRecognizer(gestureRecognizer)
-            
-            if let width = view.image?.size.width, let height = view.image?.size.height, height != 0 {
-                let aspectRatio = width / height
-                
-                layout.height = layout.width / aspectRatio
-            }
         }
-        .add(
-            child: (state.tagCaption != "") ? Node<UIView>() { view, layout, _ in
-                layout.position = .absolute
-                layout.bottom = 0
-                layout.right = 0
-                layout.padding = 5
-                layout.height = 24
-                layout.justifyContent = .center
-                layout.alignItems = .center
-                layout.flexGrow = 1
-                layout.flexShrink = 1
-                
-                view.backgroundColor = UIColor.black.withAlphaComponent(0.40)
-                
-                if #available(iOS 11, *) {
-                    view.layer.cornerRadius = 13
-                    view.layer.maskedCorners = [.layerMinXMinYCorner]
-                }
-            }
-            .add(child: Node<UILabel>() { label, _, _ in
-                label.text = state.tagCaption
-                label.font = .microThemeSemibold()
-                label.textColor = .white
-            }) : NilNode()
-        )
+    }
+    
+    private func postTag(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
+        if state.tagCaption != "" {
+            return Node<UIView>() { _, layout, _ in
+                layout.marginLeft = 10
+                layout.marginRight = 10
+                layout.marginTop = 8
+            }.add(children: [
+                Node<UILabel>() { label, layout, size in
+                    label.text = state.tagCaption
+                    label.textColor = .tpGreen()
+                    label.font = .microThemeSemibold()
+                    label.isUserInteractionEnabled = true
+                    
+                    let gestureRecognizer = UITapGestureRecognizer()
+                    gestureRecognizer.rx.event.subscribe(onNext: { [weak self] _ in
+                        guard let `self` = self else {
+                            return
+                        }
+                        
+                        if let url = URL(string: state.tagURL) {
+                            AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: 0)
+                            TPRoutes.routeURL(url)
+                        }
+                    }).disposed(by: self.rx_disposeBag)
+                    
+                    label.addGestureRecognizer(gestureRecognizer)
+                    
+                    layout.marginBottom = 8
+                },
+                self.horizontalLine()
+            ])
+        }
+        
+        return NilNode()
     }
     
     private func description(state: FeedCardKOLPostState, size: CGSize) -> NodeType {
