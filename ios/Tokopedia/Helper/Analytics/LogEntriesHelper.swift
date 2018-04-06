@@ -6,10 +6,9 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import LogEntries
 
-class LogEntriesHelper: NSObject {
+internal class LogEntriesHelper: NSObject {
     private class func logOnLogEntries(data: Any) {
         guard let data = data as? NSObject, let logger = LELog.sharedInstance() else {
             return
@@ -18,7 +17,17 @@ class LogEntriesHelper: NSObject {
         logger.log(data)
     }
     
-    class func logForceLogout(lastURL: String) {
+    internal class func logShowMaintenance(event: String, lastURL: String?, statusCode: Int) {
+        var url = lastURL ?? ""
+        let data = [
+            "event": event,
+            "url": url,
+            "response_code": String(statusCode)
+        ]
+        self.logOnLogEntries(data: data)
+    }
+    
+    internal class func logForceLogout(lastURL: String) {
         guard let loginData = UserAuthentificationManager().getUserLoginData() else {
             return
         }

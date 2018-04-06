@@ -128,6 +128,7 @@ internal class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: Tar
                 let type = ResponseType(response: response)
                 switch type {
                 case .maintenance, .tooManyRequests:
+                    LogEntriesHelper.logShowMaintenance(event: type.rawValue, lastURL: token.urlString(), statusCode: response.statusCode)
                     NavigateViewController.navigateToMaintenanceViewController()
                 case .forbidden:
                     if RemoteConfig.remoteConfig().shouldShowForbiddenScreen {

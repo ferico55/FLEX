@@ -303,6 +303,11 @@
                     [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
                 }
             } else if ([status isEqualToString:@"UNDER_MAINTENANCE"] || [status isEqualToString:@"TOO_MANY_REQUEST"]) {
+                NSArray *responseDescriptors = _objectRequest.responseDescriptors;
+                RKResponseDescriptor *response = responseDescriptors[0];
+                NSString *path = response.pathPattern;
+                NSString *baseURL = [response.baseURL absoluteString];
+                [LogEntriesHelper logShowMaintenanceWithEvent:status lastURL:[NSString stringWithFormat:@"%@%@", baseURL, path] statusCode:operation.HTTPRequestOperation.response.statusCode];
                 [RequestErrorHandler redirectToMaintenance];
             } else {
                 
