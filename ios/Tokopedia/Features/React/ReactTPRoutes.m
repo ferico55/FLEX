@@ -33,5 +33,12 @@ RCT_EXPORT_METHOD(navigate:(NSString*)url) {
     }
 }
 
+RCT_EXPORT_METHOD(navigateAttribution:(NSString*)url
+                  withParams:(NSDictionary*)params) {
+    if(url != nil && ![url isEqualToString:@""]) {
+        [TPRoutes routeURL:[NSURL URLWithString:url] additionalQuery:params];
+    }
+}
+
 
 @end

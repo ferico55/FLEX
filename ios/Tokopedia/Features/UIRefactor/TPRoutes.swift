@@ -1463,6 +1463,34 @@ public class TPRoutes: NSObject {
 
         return JLRoutes.routeURL(url)
     }
+    
+    @discardableResult
+    public static func routeURL(_ url: URL?, additionalQuery: [String: Any]) -> Bool {
+        guard let url = url, var urlComponent = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
+            return false
+        }
+        
+        var newQueryItem: [URLQueryItem] = []
+        
+        if let urlComp = urlComponent.queryItems, urlComp.count > 0 {
+            for queryItem in urlComp {
+                newQueryItem.append(queryItem)
+            }
+        }
+        
+        for (key, value) in additionalQuery {
+            let queryItem = URLQueryItem(name: key, value: value as? String)
+            newQueryItem.append(queryItem)
+        }
+        
+        urlComponent.queryItems = newQueryItem
+        
+        guard let modifiedURL = urlComponent.url else {
+            return false
+        }
+        
+        return TPRoutes.routeURL(modifiedURL)
+    }
 
     private static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
         let topViewController = UIApplication.topViewController()
