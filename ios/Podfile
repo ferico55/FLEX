@@ -68,7 +68,6 @@ def common_pods
     
     #Custom View Component
     pod 'CCBottomRefreshControl'
-    pod 'AHKActionSheet', '~>0.5.4'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'DownPicker', '~> 0.1.34'
     pod 'EAIntroView', '~> 2.12.0'

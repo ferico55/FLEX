@@ -26,7 +26,9 @@ RCT_EXPORT_METHOD(registerUploadingProduct: (NSDictionary*) product){
     [uploadingProducts addObject:uploadingProduct];
     [processor setProducts: uploadingProducts];
     
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
+    });
 }
 
 RCT_EXPORT_METHOD(removeProcessingProduct: (NSDictionary *) product) {
@@ -45,14 +47,18 @@ RCT_EXPORT_METHOD(removeProcessingProduct: (NSDictionary *) product) {
     }
     
     [processor setProducts: uploadingProducts];
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
-    if ([product objectForKey:@"refresh"]) {
-        [[NSNotificationCenter defaultCenter] postNotificationName: ADD_PRODUCT_POST_NOTIFICATION_NAME object: nil];
-    }
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
+        if ([product objectForKey:@"refresh"]) {
+            [[NSNotificationCenter defaultCenter] postNotificationName: ADD_PRODUCT_POST_NOTIFICATION_NAME object: nil];
+        }
+    });
 }
 
 RCT_EXPORT_METHOD(triggerProductListUpdate) {
-    [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [[NSNotificationCenter defaultCenter] postNotificationName: @"RefreshOnProcessAddProduct" object: nil];
+    });
 }
 
 @end
