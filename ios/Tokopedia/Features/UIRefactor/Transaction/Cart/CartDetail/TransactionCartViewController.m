@@ -926,17 +926,11 @@ InputPromoViewDelegate
         cancelCartAlert.tag = 10;
         [cancelCartAlert show];
     } else {
-        if (product.errors.count == 0 ||
-            list.errors.count == 0 ||
-            [[product.errors firstObject].name isEqualToString:@"product-less-than-min"] ||
-            [[product.errors firstObject].name isEqualToString:@"product-more-than-max"] ||
-            [[list.errors firstObject].name isEqualToString:@"shopping-limit-exceeded"]) {
-            TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
-            [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
-            editViewController.data = _dataInput;
-            editViewController.delegate = self;
-            [self.navigationController pushViewController:editViewController animated:YES];
-        }
+        TransactionCartEditViewController *editViewController = [TransactionCartEditViewController new];
+        [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
+        editViewController.data = _dataInput;
+        editViewController.delegate = self;
+        [self.navigationController pushViewController:editViewController animated:YES];
     }
 }
 

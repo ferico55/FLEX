@@ -46,53 +46,11 @@
 
 -(IBAction)tap:(id)sender
 {
-    UIActionSheet* popup = nil;
-    
-    if (_viewModelProduct.productErrors.count > 0) {
-        if ([_viewModelProduct.productErrors[0].name isEqualToString:@"product-less-than-min"] ||
-            [_viewModelProduct.productErrors[0].name isEqualToString:@"product-more-than-max"]) {
-            popup = [[UIActionSheet alloc] initWithTitle:nil
-                                                delegate:self
-                                       cancelButtonTitle:@"Batal"
-                                  destructiveButtonTitle:@"Hapus"
-                                       otherButtonTitles:@"Edit", nil];
-        } else {
-            popup = [[UIActionSheet alloc] initWithTitle:nil
-                                                delegate:self
-                                       cancelButtonTitle:@"Batal"
-                                  destructiveButtonTitle:@"Hapus"
-                                       otherButtonTitles:nil];
-        }
-    } else if (_viewModelCart.errors.count > 0) {
-        if ([_viewModelCart.errors[0].name isEqualToString:@"shopping-limit-exceeded"] ||
-            [_viewModelCart.errors[0].name isEqualToString:@"courier-max-limit"]) {
-            popup = [[UIActionSheet alloc] initWithTitle:nil
-                                                delegate:self
-                                       cancelButtonTitle:@"Batal"
-                                  destructiveButtonTitle:@"Hapus"
-                                       otherButtonTitles:@"Edit", nil];
-        } else {
-            popup = [[UIActionSheet alloc] initWithTitle:nil
-                                                delegate:self
-                                       cancelButtonTitle:@"Batal"
-                                  destructiveButtonTitle:@"Hapus"
-                                       otherButtonTitles:nil];
-        }
-    } else {
-        popup = [[UIActionSheet alloc] initWithTitle:nil
-                                            delegate:self
-                                   cancelButtonTitle:@"Batal"
-                              destructiveButtonTitle:@"Hapus"
-                                   otherButtonTitles:@"Edit", nil];
-    }
-    
-    if (!_viewModelCart.isEditingEnabled) {
-        popup = [[UIActionSheet alloc] initWithTitle:nil
-                                            delegate:self
-                                   cancelButtonTitle:@"Batal"
-                              destructiveButtonTitle:@"Hapus"
-                                   otherButtonTitles:nil];
-    }
+    UIActionSheet* popup = [[UIActionSheet alloc] initWithTitle:nil
+                                                       delegate:self
+                                              cancelButtonTitle:@"Batal"
+                                         destructiveButtonTitle:@"Hapus"
+                                              otherButtonTitles:@"Edit", nil];
     
     [popup showFromRect:_editButton.frame inView:self animated:YES];
     [_delegate tapMoreButtonActionAtIndexPath:_indexPath];
