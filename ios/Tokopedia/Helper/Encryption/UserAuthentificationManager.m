@@ -17,6 +17,7 @@
 #import "A2DynamicDelegate.h"
 
 @import CoreLocation;
+@import LogEntries;
 
 @implementation UserAuthentificationManager {
 
@@ -50,73 +51,35 @@
 }
 
 - (NSString *)getUserId {
-    if ([[self secureStorageDictionary] objectForKey:@"user_id"]) {
-        if ([[[self secureStorageDictionary] objectForKey:@"user_id"] isKindOfClass:[NSString class]]) {
-            return [[self secureStorageDictionary] objectForKey:@"user_id"];
-        } else {
-            return [[[self secureStorageDictionary] objectForKey:@"user_id"] stringValue];
-        }
-    }
-    return @"0";
+    return [self safeStringValueForKey:@"user_id" default: @"0"];
 }
 
 - (NSString *)getUserEmail {
-    if ([[self secureStorageDictionary] objectForKey:@"user_email"]) {
-        if ([[[self secureStorageDictionary] objectForKey:@"user_email"] isKindOfClass:[NSString class]]) {
-            return [[self secureStorageDictionary] objectForKey:@"user_email"];
-        } else {
-            return [[[self secureStorageDictionary] objectForKey:@"user_email"] stringValue];
-        }
-    }
-    return @"0";
+    return [self safeStringValueForKey:@"user_email" default:@"0"];
 }
 
 - (NSString*)getMyDeviceToken {
-    if ([[[self secureStorageDictionary] objectForKey:@"device_token"] isKindOfClass:[NSString class]]) {
-        return [[self secureStorageDictionary] objectForKey:@"device_token"]?: @"0";
-    } else {
-        return [[[self secureStorageDictionary] objectForKey:@"device_token"] stringValue]?: @"0";
-    }
+    return [self safeStringValueForKey:@"device_token" default:@"0"];
 }
 
 - (NSString *)getShopId {
-    if ([[self secureStorageDictionary] objectForKey:@"shop_id"]) {
-        if ([[[self secureStorageDictionary] objectForKey:@"shop_id"] isKindOfClass:[NSNumber class]]) {
-            return [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"shop_id"]];
-        } else {
-            return [[self secureStorageDictionary] objectForKey:@"shop_id"];
-        }        
-    } else {
-        return @"0";
-    }
+    return [self safeStringValueForKey:@"shop_id" default:@"0"];
 }
 
 - (NSString *)getShopName {
-    return [[self secureStorageDictionary] objectForKey:@"shop_name"]?:@"0";
+    return [self safeStringValueForKey:@"shop_name" default:@"0"];
 }
 
 - (NSString *)getUserFullName {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"full_name"]];
+    return [self safeStringValueForKey:@"full_name"];
 }
 
 - (NSString *)getUserShortName {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"short_name"]];
+    return [self safeStringValueForKey:@"short_name"];
 }
 
 - (NSString *)getUserPhoneNumber {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_phone"]];
-}
-
-- (NSString *)stringValueOf:(nullable id)value {
-    if (value) {
-        if ([value isKindOfClass:[NSString class]]) {
-            return value;
-        } else {
-            return [value stringValue];
-        }
-    }
-    
-    return @"";
+    return [self safeStringValueForKey:@"user_phone"];
 }
 
 -(NSString *)getShopHasTerm
@@ -304,11 +267,11 @@
 }
 
 - (NSString*)userLatitude {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_latitude"]];
+    return [self safeStringValueForKey:@"user_latitude" default:@"0"];
 }
 
 - (NSString*)userLongitude {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"user_longitude"]];
+    return [self safeStringValueForKey:@"user_longitude" default:@"0"];
 }
 
 - (BOOL)userHasShop {
@@ -328,7 +291,7 @@
 }
 
 - (BOOL)isOfficialStore {
-    return [[self secureStorageDictionary][@"shop_is_official"] boolValue];
+    return [self safeStringValueForKey:@"shop_is_official" default:@"0"].boolValue;
 }
 
 - (ShopType)shopType {
@@ -351,74 +314,109 @@
 }
 
 - (NSString *)getDOB {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"dob"]];
+    return [self safeStringValueForKey:@"dob"];
 }
 - (NSString *)getCity {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"city"]];
+    return [self safeStringValueForKey:@"city"];
 }
 - (NSString *)getProvince {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"province"]];
+    return [self safeStringValueForKey:@"province"];
 }
 - (NSString *)getRegistrationDate {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"registration_date"]];
+    return [self safeStringValueForKey:@"registration_date"];
 }
 - (NSNumber *)getTotalItemSold {
     return [[self secureStorageDictionary] objectForKey:@"total_sold_item"] ?: @(0);
 }
 - (NSString *)getShopLocation {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"shop_location"]];
+    return [self safeStringValueForKey:@"shop_location"];
 }
 - (NSString *)getDateShopCreated {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"date_shop_created"]];
+    return [self safeStringValueForKey:@"date_shop_created"];
 }
 - (BOOL)userIsSeller {
-    NSString* isSeller = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_seller"]];
+    NSString* isSeller = [self safeStringValueForKey:@"is_seller"];
     return [isSeller isEqualToString:@"1"];
 }
 - (NSString *)getGender {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"gender"]];
+    return [self safeStringValueForKey:@"gender"];
 }
 - (BOOL)userIsTokocashActive {
-    NSString* isTokocashActive = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_tokocash_active"]];
+    NSString* isTokocashActive = [self safeStringValueForKey:@"is_tokocash_active"];;
     return [isTokocashActive isEqualToString:@"1"];
 }
 - (NSString *)getTokocashAmount {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"tokocash_amt"] ?: @"0"];
+    return [self safeStringValueForKey:@"tokocash_amt" default:@"0"];
 }
 - (NSString *)getSaldoAmount {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"saldo_amt"] ?: @"0"];
+    return [self safeStringValueForKey:@"saldo_amt" default:@"0"];
 }
 - (NSString *)getTopAdsAmount {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"topads_amount"] ?: @"0"];
+    return [self safeStringValueForKey:@"topads_amount" default:@"0"];
 }
 - (BOOL)userIsTopAdsUser {
-    NSString* isTopAdsUser = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"is_topads_user"]];
+    NSString* isTopAdsUser = [self safeStringValueForKey:@"is_topads_user"];
     return [isTopAdsUser isEqualToString:@"1"];
 }
 - (BOOL)userHasPurchasedMarketplace {
-    NSString* hasPurchasedMarketplace = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_marketplace"]];
+    NSString* hasPurchasedMarketplace = [self safeStringValueForKey:@"has_purchased_marketplace"];
     return [hasPurchasedMarketplace isEqualToString:@"1"];
 }
 - (BOOL)userHasPurchasedDigital {
-    NSString* hasPurchasedDigital = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_digital"]];
+    NSString* hasPurchasedDigital = [self safeStringValueForKey:@"has_purchased_digital"];
     return [hasPurchasedDigital isEqualToString:@"1"];
 }
 - (BOOL)userHasPurchasedTicket {
-    NSString* hasPurchasedTicket = [NSString stringWithFormat:@"%@", [[self secureStorageDictionary] objectForKey:@"has_purchased_tiket"]];
+    NSString* hasPurchasedTicket = [self safeStringValueForKey:@"has_purchased_tiket"];
     return [hasPurchasedTicket isEqualToString:@"1"];
 }
 - (NSString *)getLastTransactionDate {
-    return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"last_transaction_date"]];
+    return [self safeStringValueForKey:@"last_transaction_date" default:@""];
 }
 - (NSNumber *)getTotalActiveProduct {
-    return [[self secureStorageDictionary] objectForKey:@"total_active_product"] ?: @(0);
+    return [[NSNumberFormatter new] numberFromString:[self safeStringValueForKey:@"total_active_product" default:@"0"]] ?: @(0);
 }
 - (NSNumber *)getShopScore {
-    return [[self secureStorageDictionary] objectForKey:@"shop_score"] ?: @(0);
+    return [[NSNumberFormatter new] numberFromString:[self safeStringValueForKey:@"shop_score" default:@"0"]] ?: @(0) ;
 }
 
 - (NSString *) getTokoCashToken {
-     return [self stringValueOf:[[self secureStorageDictionary] objectForKey:@"tokocash_token"] ?: @""];
+    return [self safeStringValueForKey:@"tokocash_token" default:@""];
+}
+
+- (nonnull NSString *)safeStringValueForKey:(nonnull NSString *)key default:(nonnull NSString *)defaultValue {
+    return [self safeStringValueForKey:key] ?: defaultValue;
+}
+
+- (nullable NSString *)safeStringValueForKey:(nonnull NSString *)key {
+    @try {
+        id value = self.secureStorageDictionary[key];
+        
+        if (!value) {
+            return nil;
+        }
+        
+        if ([value isKindOfClass:[NSString class]]) {
+            return value;
+        } else {
+            [LELog.sharedInstance log:@{
+                                        @"event": @"UNEXPECTED_KEYCHAIN_DATA_TYPE",
+                                        @"key": key,
+                                        @"class_type": [value class],
+                                        @"value": value
+                                        }];
+            
+            return [NSString stringWithFormat:@"%@", value];
+        }
+    } @catch(NSException *exception) {
+        [LELog.sharedInstance log:@{
+                                    @"event": @"UNEXPECTED_KEYCHAIN_READ_ERROR",
+                                    @"stack_trace": exception.callStackSymbols,
+                                    @"key": key
+                                    }];
+    }
+    
+    return nil;
 }
 
 -(NSDate *)convertStringToDateWithLocaleID:(NSString *)str
