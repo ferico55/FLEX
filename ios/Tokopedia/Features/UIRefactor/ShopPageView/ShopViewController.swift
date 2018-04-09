@@ -32,6 +32,7 @@ internal class ShopViewController: UIViewController {
     fileprivate var header: ShopHeaderView = ShopHeaderView.instanceFromNib()
     fileprivate var isOfficial: Bool = false
     fileprivate var headerHeight: CGFloat!
+    fileprivate var updateOSTabOnce: Bool = true // os tab update must be done after view appears, but only once in it's lifetime
     
     internal weak var delegate: ShopViewControllerDelegate?
     internal var productFilter: ShopProductFilter?
@@ -66,6 +67,16 @@ internal class ShopViewController: UIViewController {
         )
         
         self.requestShopInfo()
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(true)
+        if self.isOfficial && self.updateOSTabOnce {
+            self.segmentedPagerController.segmentedPager.segmentedControl.selectedSegmentIndex = 1
+            self.segmentedPagerController.segmentedPager.pager.showPage(at: 1, animated: false)
+            self.segmentedPagerController.segmentedPager.reloadData()
+        }
+        self.updateOSTabOnce = false
     }
     
     @objc
@@ -277,14 +288,6 @@ internal class ShopViewController: UIViewController {
             ])
         
         viewController.didMove(toParentViewController: self)
-        
-        let index = shop.result.info.isOfficial ? 1 : 0
-        DispatchQueue.main.async { [weak self] in
-            guard let `self` = self else { return }
-            if self.initialEtalase != nil {
-                self.segmentedPagerController.segmentedPager.pager.showPage(at: index, animated: true)
-            }
-        }
     }
     
     internal func getCurrentPageIndex() -> Int {
