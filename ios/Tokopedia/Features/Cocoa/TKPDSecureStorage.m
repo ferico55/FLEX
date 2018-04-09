@@ -78,6 +78,7 @@
         }
         
         _cachedKeychain = dictionary;
+        CFRelease(values);
         return dictionary;
     }
     return nil;
