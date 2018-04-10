@@ -6,26 +6,27 @@
 //  Copyright © 2018 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import RxCocoa
+import RxSwift
+import UIKit
 
-class TokoCashQRPaymentFailedViewController: UIViewController {
+public class TokoCashQRPaymentFailedViewController: UIViewController {
     
-    @IBOutlet weak var titleLabel: UILabel!
-    @IBOutlet weak var descLabel: UILabel!
-    @IBOutlet weak var retryButton: UIButton!
+    @IBOutlet weak private var titleLabel: UILabel!
+    @IBOutlet weak private var descLabel: UILabel!
+    @IBOutlet weak private var retryButton: UIButton!
     
     // view model
-    var viewModel: TokoCashQRPaymentFailedViewModel!
+    public var viewModel: TokoCashQRPaymentFailedViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Transaksi Gagal"
         bindViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationItem.setHidesBackButton(true, animated: true)
     }
@@ -39,8 +40,6 @@ class TokoCashQRPaymentFailedViewController: UIViewController {
                                                            retryTrigger: retryButton.rx.tap.asDriver())
         let output = viewModel.transform(input: input)
         
-        output.retry
-            .drive()
-            .disposed(by: rx_disposeBag)
+        output.retry.drive().disposed(by: rx_disposeBag)
     }
 }

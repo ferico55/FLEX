@@ -18,7 +18,7 @@ class LoginPage : Page, TokopediaTabBar {
     let passwordTextField = app.secureTextFields["passwordTextField"]
     let resetPassword = app.buttons["Lupa kata sandi?"]
     let loginButton = app.buttons["loginButton"]
-    let touchIdAlert = app.alerts["Integrasi dengan Touch ID"]
+    let touchIdAlert = app.alerts["Integrasi dengan \(NSString.authenticationType())"]
     
     func waitForPageLoaded() {
         waitFor(element: loginView, status: .Exists)

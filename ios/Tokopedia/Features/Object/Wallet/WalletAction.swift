@@ -9,20 +9,20 @@
 import Foundation
 import Unbox
 
-final class WalletAction: NSObject, Unboxable {
-    let text: String
-    let redirectUrl: String
-    let applinks: String
-    let visibility: String?
+final public class WalletAction: NSObject, Unboxable {
+    public let text: String
+    public let redirectUrl: String
+    public let applinks: String
+    public let visibility: String?
     
-    init(text: String = "", redirectUrl: String = "", applinks: String = "", visibility: String? = "0") {
+    public init(text: String = "", redirectUrl: String = "", applinks: String = "", visibility: String? = "0") {
         self.text = text
         self.redirectUrl = redirectUrl
         self.applinks = applinks
         self.visibility = visibility
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    convenience public init(unboxer: Unboxer) throws {
         let text = try unboxer.unbox(keyPath: "text") as String
         let redirectUrl = try unboxer.unbox(keyPath: "redirect_url") as String
         let applinks = try unboxer.unbox(keyPath: "applinks") as String

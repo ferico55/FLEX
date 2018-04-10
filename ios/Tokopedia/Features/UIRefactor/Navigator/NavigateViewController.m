@@ -11,9 +11,6 @@
 
 #import "WebViewInvoiceViewController.h"
 #import "string_more.h"
-#import "UserContainerViewController.h"
-#import "ProfileContactViewController.h"
-#import "ProfileFavoriteShopViewController.h"
 #import "HotlistResultViewController.h"
 #import "CatalogViewController.h"
 #import "SearchResultViewController.h"
@@ -162,11 +159,6 @@
     [viewController.navigationController pushViewController:cart animated:YES];
 }
 
--(void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID {
-    NSURL *url = [[NSURL alloc] initWithString:[NSString stringWithFormat:@"tokopedia://product/review/%@", productID]];
-    [TPRoutes routeURL:url];
-}
-
 //seller
 -(void)navigateToSellerNewOrderFromViewController:(UIViewController*)viewController {
     SalesNewOrderViewController *order = [SalesNewOrderViewController new];
@@ -229,11 +221,8 @@
 
 
 
--(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID
-{
-    UserContainerViewController *container = [UserContainerViewController new];
-    container.profileUserID = userID;
-    [viewController.navigationController pushViewController:container animated:YES];
+-(void)navigateToProfileFromViewController:(UIViewController *)viewController withUserID:(NSString *)userID {
+    [TPRoutes routeURL:[NSURL URLWithString:[NSString stringWithFormat:@"tokopedia://people/%@", userID]]];
 }
 
 -(void)navigateToShowImageFromViewController:(UIViewController *)viewController withImageDictionaries:(NSArray *)images imageDescriptions:(NSArray *)imageDesc indexImage:(NSInteger)index
@@ -517,15 +506,40 @@
 }
 
 - (void)navigateToAddProductFromViewController:(UIViewController*)viewController {
-    ProductAddEditViewController *controller = [ProductAddEditViewController new];
-    controller.type = TYPE_ADD_EDIT_PRODUCT_ADD;
-    
-    UINavigationController *nav = [[UINavigationController alloc] initWithRootViewController:controller];
-    nav.navigationBar.translucent = NO;
-    
-    [viewController presentViewController:nav animated:YES completion:nil];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    ReactViewController *controller = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen"
+                                                                                props:@{
+                                                                                        @"authInfo": [userManager getUserLoginData]
+                                                                                        }];
+    UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:controller];
+    navigation.navigationBar.translucent = NO;
+    [viewController presentViewController:navigation animated:YES completion:nil];
+}
++ (void)navigateToReferralWelcomeWithData:(NSDictionary*)data {
+    NSString *code = data[@"code"];
+    NSString *owner = data[@"owner"];
+    NSString *ownCode = [ReferralManager new].referralCode;
+    if (code == nil || owner == nil || [code compare:ownCode] == NSOrderedSame) {
+        [self navigateToReferralScreen];
+        return;
+    }
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
+    ReferralWelcomeController* welcomeController = [storyboard instantiateViewControllerWithIdentifier:@"ReferralWelcomeController"];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:welcomeController];
+    welcomeController.promoCode = code;
+    welcomeController.ownerName = owner;
+    welcomeController.dismisHandler = ^{
+        [(AppDelegate *)[UIApplication sharedApplication].delegate setupInitialViewController];
+    };
+    [UIApplication sharedApplication].keyWindow.rootViewController = navController;
 }
 
++ (void)navigateToReferralScreen {
+    UIViewController *viewController = [UIApplication topViewController];
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
+    CodeShareTableViewController* referralController = [storyboard instantiateInitialViewController];
+    [viewController.navigationController pushViewController: referralController animated:YES];
+}
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {
     splitViewController = nil;

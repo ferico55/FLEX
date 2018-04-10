@@ -6,34 +6,37 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import RestKit
+import UIKit
 
-enum ProviderType {
+public enum ProviderType {
     case login
     case register
 }
 
-class SignInProvider: NSObject {
-    var id: String = ""
-    var name: String = ""
-    var signInUrl: String = ""
-    var imageUrl: String = ""
-    var color: String = ""
+public class SignInProvider: NSObject {
+    public var id: String = ""
+    public var name: String = ""
+    public var signInUrl: String = ""
+    public var imageUrl: String = ""
+    public var color: String = ""
 
-    class func mapping() -> RKObjectMapping {
-        let mapping = RKObjectMapping(for: self)
-        mapping!.addAttributeMappings(from: [
-            "id": "id",
-            "name": "name",
-            "url": "signInUrl",
-            "image": "imageUrl",
-            "color": "color"
-        ])
-        return mapping!
+    class public func mapping() -> RKObjectMapping {
+        if let mapping = RKObjectMapping(for: self) {
+            mapping.addAttributeMappings(from: [
+                "id": "id",
+                "name": "name",
+                "url": "signInUrl",
+                "image": "imageUrl",
+                "color": "color"
+                ])
+            return mapping
+        }
+        
+        return RKObjectMapping()
     }
 
-    class func defaultProviders(useFor: ProviderType) -> [SignInProvider] {
+    class public func defaultProviders(useFor: ProviderType) -> [SignInProvider] {
         // MARK : List of Provider
         let fbProvider = SignInProvider()
         fbProvider.name = "Facebook"
@@ -77,9 +80,9 @@ class SignInProvider: NSObject {
         }
     }
     
-    class func touchIdProvider() -> SignInProvider {
+    class public func touchIdProvider() -> SignInProvider {
         let provider = SignInProvider()
-        provider.name = "Touch ID"
+        provider.name = NSString.authenticationType()
         provider.id = "touchid"
         provider.imageUrl = ""
         provider.color = "#ffffff"

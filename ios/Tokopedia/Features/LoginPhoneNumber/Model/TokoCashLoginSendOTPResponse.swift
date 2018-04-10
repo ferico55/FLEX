@@ -9,20 +9,20 @@
 import Foundation
 import SwiftyJSON
 
-struct TokoCashLoginSendOTPResponse {
-    let code: String
-    let otpAttempLeft: Int
-    let sent: Bool
-    let phoneNumber: String
+public struct TokoCashLoginSendOTPResponse {
+    public let code: String
+    public let otpAttempLeft: Int
+    public let sent: Bool
+    public let phoneNumber: String
     
-    init(code: String, otpAttempLeft: Int, sent: Bool, phoneNumber: String){
+    public init(code: String, otpAttempLeft: Int, sent: Bool, phoneNumber: String){
         self.code = code
         self.otpAttempLeft = otpAttempLeft
         self.sent = sent
         self.phoneNumber = phoneNumber
     }
     
-    init(json: JSON, phoneNumber: String){
+    public init(json: JSON, phoneNumber: String){
         let code = json["code"].stringValue
         let otpAttempLeft = json["data"]["otp_attempt_left"].intValue
         let sent = json["data"]["sent"].boolValue

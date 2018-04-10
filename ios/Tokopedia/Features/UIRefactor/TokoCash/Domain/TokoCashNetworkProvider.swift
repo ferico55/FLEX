@@ -10,11 +10,11 @@ import Moya
 import MoyaUnbox
 import enum Result.Result
 
-final class TokoCashNetworkPlugin: PluginType {
-    func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
+final public class TokoCashNetworkPlugin: PluginType {
+    public func didReceive(_ result: Result<Response, MoyaError>, target: TargetType) {
         switch result {
         case .success: break
-        case .failure(let error):
+        case let .failure(error):
             if case let .underlying(responseError) = error,
                 responseError._code == NSURLErrorNotConnectedToInternet {
                 StickyAlertView.showErrorMessage(["Tidak ada koneksi internet."])
@@ -23,16 +23,16 @@ final class TokoCashNetworkPlugin: PluginType {
     }
 }
 
-class TokocashNetworkProvider: NetworkProvider<TokoCashTarget> {
-    init() {
+internal class TokoCashNetworkProvider: NetworkProvider<TokoCashTarget> {
+    public init() {
         super.init(
-            endpointClosure: TokocashNetworkProvider.endpointClosure,
+            endpointClosure: TokoCashNetworkProvider.endpointClosure,
             manager: DefaultAlamofireManager.sharedManager,
             plugins: [NetworkLoggerPlugin(verbose: true), TokoCashNetworkPlugin()]
         )
     }
     
-    final class func defaultEndpointCreatorTokocash(for target: TokoCashTarget) -> Endpoint<TokoCashTarget> {
+    final public class func defaultEndpointCreatorTokocash(for target: TokoCashTarget) -> Endpoint<TokoCashTarget> {
         let hmac = TkpdHMAC()
         
         let headers = [
@@ -55,7 +55,7 @@ class TokocashNetworkProvider: NetworkProvider<TokoCashTarget> {
             parameters: parameters,
             parameterEncoding: target.parameterEncoding,
             httpHeaderFields: headers
-        ).adding(httpHeaderFields: hmac.authorizedHeaders())
+            ).adding(httpHeaderFields: hmac.authorizedHeaders())
     }
     
     fileprivate class func endpointClosure(for target: TokoCashTarget) -> Endpoint<TokoCashTarget> {
@@ -64,10 +64,10 @@ class TokocashNetworkProvider: NetworkProvider<TokoCashTarget> {
             let headers = [
                 "X-Msisdn": UserAuthentificationManager().getUserPhoneNumber() ?? ""
             ]
-            return TokocashNetworkProvider.defaultEndpointCreatorTokocash(for: target)
+            return TokoCashNetworkProvider.defaultEndpointCreatorTokocash(for: target)
                 .adding(
                     httpHeaderFields: headers
-                )
+            )
         default:
             let userManager = UserAuthentificationManager()
             let userInformation = userManager.getUserLoginData()
@@ -78,14 +78,14 @@ class TokocashNetworkProvider: NetworkProvider<TokoCashTarget> {
                 "Authorization": "\(type) \(tokoCashToken)"
             ]
             
-            return TokocashNetworkProvider.defaultEndpointCreator(for: target)
+            return TokoCashNetworkProvider.defaultEndpointCreator(for: target)
                 .adding(httpHeaderFields: headers)
         }
         
     }
 }
 
-enum TokoCashTarget {
+public enum TokoCashTarget {
     case getPendingCashBack(phoneNumber: String)
     case sendOTP(phoneNumber: String, accept: OTPAcceptType)
     case verifyOTP(phoneNumber: String, otpCode: String)
@@ -103,10 +103,10 @@ enum TokoCashTarget {
 
 extension TokoCashTarget: TargetType {
     /// The target's base `URL`.
-    var baseURL: URL { return URL(string: NSString.tokocashUrl())! }
+    public var baseURL: URL { return URL(string: NSString.tokocashUrl())! }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
-    var path: String {
+    public var path: String {
         switch self {
         case .getPendingCashBack : return "/api/v1/me/cashback/balance"
         case .sendOTP: return "/oauth/otp"
@@ -127,7 +127,7 @@ extension TokoCashTarget: TargetType {
     }
     
     /// The HTTP method used in the request.
-    var method: Moya.Method {
+    public var method: Moya.Method {
         switch self {
         case .getPendingCashBack: return .get
         case .sendOTP: return .post
@@ -147,14 +147,14 @@ extension TokoCashTarget: TargetType {
     }
     
     /// The parameters to be incoded in the request.
-    var parameters: [String: Any]? {
+    public var parameters: [String: Any]? {
         switch self {
         case let .getPendingCashBack(phoneNumber) :
             return ["msisdn": phoneNumber]
         case let .sendOTP(phoneNumber, accept):
             return [
                 "msisdn": phoneNumber,
-                "accept": accept
+                "accept": accept.rawValue
             ]
         case let .verifyOTP(phoneNumber, otpCode):
             return [
@@ -202,7 +202,7 @@ extension TokoCashTarget: TargetType {
     }
     
     /// The method used for parameter encoding.
-    var parameterEncoding: ParameterEncoding {
+    public var parameterEncoding: ParameterEncoding {
         switch self {
         case .action: return JSONEncoding.default
         case .payment: return JSONEncoding.default
@@ -212,9 +212,9 @@ extension TokoCashTarget: TargetType {
     }
     
     /// Provides stub data for use in testing.
-    var sampleData: Data { return Data() }
+    public var sampleData: Data { return Data() }
     
     /// The type of HTTP task to be performed.
-    var task: Task { return .request }
+    public var task: Task { return .request }
     
 }

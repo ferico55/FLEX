@@ -6,22 +6,23 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import RestKit
+import UIKit
 
 @objc(AccountInfo)
-class AccountInfo: NSObject {
-    var userId: String!
-    var createdPassword: Bool = false
-    var email = ""
-    var name = ""
-    var requiredFields = [String]()
-    var phoneNumber = ""
-    var phoneMasked = ""
-    var error: String?
-    var errorDescription: String?
+public class AccountInfo: NSObject {
+    public var userId: String!
+    public var createdPassword: Bool = false
+    public var email = ""
+    public var name = ""
+    public var requiredFields = [String]()
+    public var phoneNumber = ""
+    public var phoneMasked = ""
+    public var phoneVerified: Bool = false
+    public var error: String?
+    public var errorDescription: String?
 
-    class func mapping() -> RKObjectMapping {
+    class public func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(for: self)
         mapping?.addAttributeMappings(from:[
             "user_id": "userId",
@@ -32,7 +33,8 @@ class AccountInfo: NSObject {
             "phone": "phoneNumber",
             "phone_masked" : "phoneMasked",
             "error": "error",
-            "error_description": "errorDescription"
+            "error_description": "errorDescription",
+            "phone_verified": "phoneVerified"
         ])
         
         return mapping!

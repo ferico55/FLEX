@@ -1,22 +1,26 @@
-import UIKit
-import RxSwift
-import RxCocoa
-import NSObject_Rx
+import AddressBookUI
 import BEMCheckBox
+import BlocksKit
+import CFAlertViewController
+import ContactsUI
+import HMSegmentedControl
 import Masonry
+import MMNumberKeyboard
+import Moya
+import MoyaUnbox
+import NSAttributedString_DDHTML
+import NSObject_Rx
 import Render
 import ReSwift
-import BlocksKit
-import MMNumberKeyboard
+import RxCocoa
+import RxSwift
 import SwiftOverlays
 import TPKeyboardAvoiding
-import HMSegmentedControl
-import CFAlertViewController
-import Moya
-import NSAttributedString_DDHTML
+import UIKit
+import Unbox
 
 extension Array where Element: DigitalOperator {
-    func appropriateOperator(for text: String) -> DigitalOperator? {
+    internal func appropriateOperator(for text: String) -> DigitalOperator? {
         return self.first { (digitalOperator) -> Bool in
             digitalOperator.hasPrefix(for: text)
         }
@@ -40,12 +44,9 @@ extension ObservableType where E: ReSwift.Action {
     }
 }
 
-import Unbox
-import MoyaUnbox
-
 // MARK: UI
 
-class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumberProtocol {
+internal class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumberProtocol {
     
     fileprivate var store: Store<DigitalState>!
     
@@ -57,7 +58,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     fileprivate let clientNumber: String
     fileprivate let productID: String
     
-    required init(categoryId: String, operatorID: String = "", clientNumber: String = "", productID: String = "") {
+    internal required init(categoryId: String, operatorID: String = "", clientNumber: String = "", productID: String = "") {
         self.categoryId = categoryId
         self.operatorID = operatorID
         self.clientNumber = clientNumber
@@ -66,11 +67,11 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         self.hidesBottomBarWhenPushed = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("not used")
     }
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         
         let barButton = UIBarButtonItem(image: #imageLiteral(resourceName: "icon-option"), style: .plain, target: nil, action: nil)
@@ -84,15 +85,18 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
             let alertController = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
             
             alertController.addAction(UIAlertAction(title: "Daftar Produk", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/products")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/products") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Daftar Transaksi", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/order-list") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Langganan", style: .default) { _ in
-                TPRoutes.routeURL(URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe")!)
+                guard let url = URL(string: "tokopedia://webview?url=\(NSString.pulsaUrl())/subscribe") else { return }
+                TPRoutes.routeURL(url)
             })
             
             alertController.addAction(UIAlertAction(title: "Batal", style: .cancel) { _ in
@@ -121,13 +125,13 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         widgetView.state = state
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         AnalyticsManager.trackScreenName("Recharge Category Page")
     }
     
-    override func viewDidLayoutSubviews() {
+    internal override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.widgetView.render(in: self.view.bounds.size)
         self.store.subscribe(self.widgetView) // subscribe after rendering for the first time
@@ -138,12 +142,12 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
         store.unsubscribe(widgetView)
     }
     
-    override func viewWillDisappear(_ animated: Bool) {
+    internal override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         view.endEditing(true)
     }
     
-    func selectedFavouriteNumber(favourite: DigitalFavourite) {
+    internal func selectedFavouriteNumber(favourite: DigitalFavourite) {
         guard let categoryID = favourite.categoryID, let form = store.state.form else { return }
         let selectedData = DigitalLastOrder(categoryId: categoryID, operatorId: favourite.operatorID, productId: favourite.productID, clientNumber: favourite.clientNumber)
         AnalyticsManager.trackRechargeEvent(event: .homepage, category: form.name, action: "Select Number on User Profile", label: form.name)
@@ -151,7 +155,7 @@ class DigitalCategoryMenuViewController: UIViewController, DigitalFavouriteNumbe
     }
 }
 
-class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckBoxDelegate {
+internal class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckBoxDelegate {
     fileprivate var disposeBag = DisposeBag()
     fileprivate let store: Store<DigitalState>
     
@@ -163,7 +167,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
     fileprivate let clientNumber: String
     fileprivate let productID: String
     
-    init(store: Store<DigitalState>, categoryId: String, operatorID: String, clientNumber: String, productID: String, viewController: UIViewController) {
+    internal init(store: Store<DigitalState>, categoryId: String, operatorID: String, clientNumber: String, productID: String, viewController: UIViewController) {
         self.store = store
         self.categoryId = categoryId
         self.operatorID = operatorID
@@ -173,7 +177,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -206,50 +210,51 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             let textField = UITextField()
                             textField.textColor = UIColor.black.withAlphaComponent(0.54)
                             return textField
+                        },
+                        configure: { [unowned self] view, layout, _ in
+                            layout.height = 25
+                            layout.marginBottom = 5
+                            
+                            view.font = .largeTheme()
+                            view.text = textInputState.text
+                            view.placeholder = textInput.placeholder
+                            view.clearButtonMode = .always
+                            
+                            if textInput.type == .number || textInput.type == .phone {
+                                let keyboard = MMNumberKeyboard()
+                                keyboard.allowsDecimalPoint = false
+                                
+                                view.inputView = keyboard
+                            }
+                            
+                            if self.store.state.favourites.count > 0 {
+                                view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                    guard let favourites = self?.store.state.favourites, let `self` = self else { return }
+                                    let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.operatorID ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
+                                    viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
+                                    viewController.title = "Nomor Favorit"
+                                    self.viewController?.navigationController?.pushViewController(viewController, animated: true)
+                                }).disposed(by: self.disposeBag)
+                            } else {
+                                
+                                view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
+                                    guard let `self` = self else { return }
+                                    self.store.state.showErrorClientNumber = true
+                                }).disposed(by: self.disposeBag)
+                                
+                                view.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
+                                    guard let `self` = self else { return }
+                                    self.store.state.showErrorClientNumber = false
+                                }).disposed(by: self.disposeBag)
+                                
+                                view.rx.text.orEmpty.changed
+                                    .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
+                                    .dispatch(to: self.store)
+                                    .disposed(by: self.disposeBag)
+                                
+                            }
                         }
-                    ) { [unowned self] view, layout, _ in
-                        layout.height = 25
-                        layout.marginBottom = 5
-                        
-                        view.font = .largeTheme()
-                        view.text = textInputState.text
-                        view.placeholder = textInput.placeholder
-                        view.clearButtonMode = .always
-                        
-                        if textInput.type == .number || textInput.type == .phone {
-                            let keyboard = MMNumberKeyboard()
-                            keyboard.allowsDecimalPoint = false
-                            
-                            view.inputView = keyboard
-                        }
-                        
-                        if self.store.state.favourites.count > 0 {
-                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
-                                guard let favourites = self?.store.state.favourites, let `self` = self else { return }
-                                let viewController = DigitalFavouriteNumberViewController(favourites: favourites, categoryID: self.categoryId, operatorID: self.store.state.selectedOperator?.id ?? "", productID: self.store.state.selectedOperator?.defaultProduct?.id ?? "", number: textInputState.text, inputType: textInput.type)
-                                viewController.delegate = self.viewController as? DigitalFavouriteNumberProtocol
-                                viewController.title = "Nomor Favorit"
-                                self.viewController?.navigationController?.pushViewController(viewController, animated: true)
-                            }).disposed(by: self.disposeBag)
-                        } else {
-                            
-                            view.rx.controlEvent(.editingDidBegin).subscribe(onNext: { [weak self] in
-                                guard let `self` = self else { return }
-                                self.store.state.showErrorClientNumber = true
-                            }).disposed(by: self.disposeBag)
-                            
-                            view.rx.controlEvent(.editingDidEnd).subscribe(onNext: { [weak self] in
-                                guard let `self` = self else { return }
-                                self.store.state.showErrorClientNumber = false
-                            }).disposed(by: self.disposeBag)
-                            
-                            view.rx.text.orEmpty.changed
-                                .map { DigitalWidgetAction.changePhoneNumber(textInput: textInput, text: $0) }
-                                .dispatch(to: self.store)
-                                .disposed(by: self.disposeBag)
-                            
-                        }
-                    }.add(
+                    ).add(
                         child: Node<UIImageView>(identifier: "icon") { [unowned self] imageView, layout, _ in
                             layout.width = 35
                             layout.height = 35
@@ -282,10 +287,10 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         
                         button.setImage(#imageLiteral(resourceName: "icon_phonebook"), for: .normal)
                         
-                        // FIXME: the number of callback increases as the number of tap increases
                         button.rx.tap
                             .flatMap { () -> Observable<String> in
-                                self.phoneBookService.findContact(from: self.viewController!)
+                                guard let viewController = self.viewController else { return Observable.empty() }
+                                self.phoneBookService.findContact(from: viewController)
                                 return self.phoneBookService.phoneNumberSelected.asObservable()
                             }
                             .map { text in
@@ -299,16 +304,16 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             Node<UILabel> { label, _, _ in
                 label.font = .smallTheme()
                 label.textColor = .red
-                
-                label.text = self.state!.showErrors ? textInput.errorMessage(
+                guard let state = self.state, let form = state.form else { return }
+                label.text = state.showErrors ? textInput.errorMessage(
                     for: textInputState.text,
-                    operators: self.state!.form!.operators
+                    operators: form.operators
                 ) : nil
             }
         ])
     }
     
-    func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
+    private func mainContent(state: DigitalState?, size: CGSize) -> NodeType {
         unowned let `self` = self
         guard let state = state, let form = state.form else { return NilNode() }
         let operatorSelector = { () -> NodeType in
@@ -347,6 +352,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                                 return viewController.onOperatorSelected
                             }
                             .do(onNext: { selectedOperator in
+                                AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(self.state?.form?.name ?? "")", action: "select operator", label: "\(self.state?.form?.name ?? "") - \(selectedOperator.name)")
                                 AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: selectedOperator, product: self.state?.selectedProduct, action: "Select Operator")
                             })
                             .map { DigitalWidgetAction.selectOperator($0) }
@@ -408,7 +414,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         return productSelectionViewController.onProductSelected
                     }
                     .do(onNext: { selectedProduct in
-                        AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: selectedProduct, action: "Select Product")
+                        AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(self.state?.form?.name ?? "")", action: "select product", label: "\(self.state?.form?.name ?? "") - \(selectedProduct.name)")
                     })
                     .map { DigitalWidgetAction.selectProduct($0) }
                     .dispatch(to: self.store)
@@ -488,27 +494,28 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     label.addGestureRecognizer(gestureRecognizer)
                     
                     return label
-                }
-            ) { label, _, _ in
-                label.numberOfLines = 0
-                label.font = .smallTheme()
-                label.textColor = .tpSecondaryBlackText()
-                if let infoString = state.selectedProduct?.detail,
-                    let detailString = state.selectedProduct?.urlText, !infoString.isEmpty {
-                    if !detailString.isEmpty {
-                        let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
-                        let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
-                        let text = NSMutableAttributedString()
-                        text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
-                        text.append(attributedString)
-                        label.attributedText = text
+                },
+                configure: { label, _, _ in
+                    label.numberOfLines = 0
+                    label.font = .smallTheme()
+                    label.textColor = .tpSecondaryBlackText()
+                    if let infoString = state.selectedProduct?.detail,
+                        let detailString = state.selectedProduct?.urlText, !infoString.isEmpty {
+                        if !detailString.isEmpty {
+                            let attribute = [NSForegroundColorAttributeName: UIColor.tpGreen()]
+                            let attributedString = NSMutableAttributedString(string: detailString, attributes: attribute)
+                            let text = NSMutableAttributedString()
+                            text.append(NSMutableAttributedString(string: NSAttributedString(fromHTML: infoString).string + " "))
+                            text.append(attributedString)
+                            label.attributedText = text
+                        } else {
+                            label.text = NSAttributedString(fromHTML: infoString).string
+                        }
                     } else {
-                        label.text = NSAttributedString(fromHTML: infoString).string
+                        label.text = ""
                     }
-                } else {
-                    label.text = ""
                 }
-            }
+            )
         ])
         
         return Node<UIView>(identifier: "widget") { view, layout, _ in
@@ -566,8 +573,9 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     label.textColor = .tpSecondaryBlackText()
                     if state.selectedProduct?.promoPriceText != state.selectedProduct?.priceText {
                         label.font = .microTheme()
-                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: (state.selectedProduct?.priceText)!)
-                        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSMakeRange(0, attributeString.length))
+                        guard let selectedProduct = state.selectedProduct else { return }
+                        let attributeString: NSMutableAttributedString = NSMutableAttributedString(string: selectedProduct.priceText)
+                        attributeString.addAttribute(NSStrikethroughStyleAttributeName, value: 2, range: NSRange(location: 0, length: attributeString.length))
                         label.attributedText = attributeString
                     } else {
                         label.attributedText = nil
@@ -583,7 +591,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                 layout.marginBottom = 0
             },
             {
-                guard state.form!.isInstantPaymentAvailable else { return NilNode() }
+                guard let form = state.form, form.isInstantPaymentAvailable else { return NilNode() }
                 
                 return Node { _, layout, _ in
                     layout.flexDirection = .row
@@ -627,21 +635,19 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                     }
                 ])
             }(),
-            Node<UIButton>(
-                identifier: "buy",
-                create: {
-                    let button = UIButton(type: .system)
-                    button.setTitleColor(.white, for: .normal)
-                    button.backgroundColor = .tpOrange()
-                    button.titleLabel?.font = .largeTheme()
-                    button.layer.cornerRadius = 3
-                    
-                    return button
-                }
-            ) { button, layout, _ in
+            Node<UIButton>(identifier: "buy", create: { _ -> UIButton in
+                let button = UIButton(type: .system)
+                button.setTitleColor(.white, for: .normal)
+                button.backgroundColor = .tpOrange()
+                button.titleLabel?.font = .largeTheme()
+                button.layer.cornerRadius = 3
+                
+                return button
+            }, configure: { button, layout, _ -> Void in
                 let addToCartProgress = state.addToCartProgress
                 
-                let title = addToCartProgress == .idle ? "Beli" : "Sedang proses..."
+                let text = self.store.state.selectedOperator != nil ? self.store.state.selectedOperator?.buttonText : "Beli"
+                let title = addToCartProgress == .idle ? text : "Sedang proses..."
                 
                 button.setTitle(title, for: .normal)
                 
@@ -673,24 +679,24 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                         
                         guard productId != nil else { return }
                         if state.isInstantPaymentEnabled {
-                            AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action: "Click Beli with Instant Saldo")
+                            AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(form.name)", action: "click beli - \(form.name)", label: "instant")
                         } else {
-                            AnalyticsManager.trackRechargeEvent(event: .homepage, category: form, operators: state.selectedOperator, product: state.selectedProduct, action: "Click Beli")
+                            AnalyticsManager.trackEventName("clickDigitalNative", category: "digital - \(form.name)", action: "click beli - \(form.name)", label: "no instant")
                         }
                         let cache = PulsaCache()
                         let lastOrder = DigitalLastOrder(
                             categoryId: self.categoryId,
-                            operatorId: state.selectedOperator?.id,
+                            operatorId: state.selectedOperator?.operatorID,
                             productId: productId,
                             clientNumber: textInputs["client_number"]
                         )
                         cache.storeLastOrder(lastOrder: lastOrder)
                         self.saveInstantPaymentCheck()
-                        
+                        guard let viewController = self.viewController, let productID = productId else { return }
                         DigitalService()
                             .purchase(
-                                from: self.viewController!,
-                                withProductId: productId!,
+                                from: viewController,
+                                withProductId: productID,
                                 categoryId: self.categoryId,
                                 inputFields: textInputs,
                                 instantPaymentEnabled: form.isInstantPaymentAvailable && state.isInstantPaymentEnabled,
@@ -709,7 +715,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             .disposed(by: self.rx_disposeBag)
                     })
                     .disposed(by: self.disposeBag)
-            }.add(child: state.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
+            }).add(child: state.addToCartProgress == .onProgress ? Node<UIActivityIndicatorView>() { indicator, layout, _ in
                 indicator.activityIndicatorViewStyle = .white
                 indicator.startAnimating()
                 
@@ -718,12 +724,12 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         ])
     }
     
-    override func construct(state: DigitalState?, size: CGSize) -> NodeType {
+    internal override func construct(state: DigitalState?, size: CGSize) -> NodeType {
         self.disposeBag = DisposeBag()
         
         unowned let `self` = self
-        
-        if state!.isLoadingFailed {
+        guard let state = state else { return NilNode() }
+        if state.isLoadingFailed {
             // can't use no result view, button not responding
             return Node<UIView>(identifier: "no result") { view, layout, size in
                 view.backgroundColor = .white
@@ -763,7 +769,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
             ])
         }
         
-        guard (state?.form) != nil else {
+        guard let form = state.form else {
             return Node(identifier: "loader") { view, layout, size in
                 view.backgroundColor = .white
                 layout.width = size.width
@@ -828,13 +834,14 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             view.addGestureRecognizer(gestureRecognizer)
                             
                             return view
+                        },
+                        configure: { view, layout, _ in
+                            view.backgroundColor = .white
+                            
+                            layout.padding = 14
+                            layout.marginVertical = 5
                         }
-                    ) { view, layout, _ in
-                        view.backgroundColor = .white
-                        
-                        layout.padding = 14
-                        layout.marginVertical = 5
-                    }.add(children: [
+                    ).add(children: [
                         Node<UILabel>(identifier: "detail") { label, _, _ in
                             label.text = banner.detail
                             label.numberOfLines = 0
@@ -923,13 +930,14 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
                             view.addGestureRecognizer(gestureRecognizer)
                             
                             return view
+                        },
+                        configure: { view, layout, _ in
+                            view.backgroundColor = .white
+                            
+                            layout.padding = 14
+                            layout.marginVertical = 5
                         }
-                    ) { view, layout, _ in
-                        view.backgroundColor = .white
-                        
-                        layout.padding = 14
-                        layout.marginVertical = 5
-                    }.add(children: [
+                    ).add(children: [
                         Node<UILabel>(identifier: "detail") { label, _, _ in
                             label.text = banner.detail
                             label.numberOfLines = 0
@@ -993,9 +1001,10 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         
         return Observable.create { [weak self] observer in
             let auth = UserAuthentificationManager()
-            let userId = auth.getUserId()!
             let deviceId = auth.getMyDeviceToken()
-            let dict = auth.getUserLoginData()!
+            guard let userId = auth.getUserId(),
+                let dict = auth.getUserLoginData()
+            else { return Disposables.create() }
             
             let oAuthToken = OAuthToken()
             oAuthToken.tokenType = dict["oAuthToken.tokenType"] as? String ?? ""
@@ -1024,7 +1033,7 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }
     }
     
-    override func didRender() {
+    internal override func didRender() {
         guard let state = self.state else { return }
         
         self.viewController?.navigationItem.title = state.form?.title
@@ -1070,12 +1079,12 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         })
     }
     
-    func newState(state: DigitalState) {
+    internal func newState(state: DigitalState) {
         self.state = state
         self.render(in: self.bounds.size)
     }
     
-    func didTap(_ checkBox: BEMCheckBox) {
+    internal func didTap(_ checkBox: BEMCheckBox) {
         self.store.dispatch(DigitalWidgetAction.toggleInstantPayment)
         if checkBox.on {
             AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.state?.form, operators: self.state?.selectedOperator, product: self.state?.selectedProduct, action: "Check Instant Saldo")
@@ -1093,21 +1102,18 @@ class DigitalWidgetView: ComponentView<DigitalState>, StoreSubscriber, BEMCheckB
         }
     }
     
-    func loadInstantPaymentCheck() -> Bool {
+    internal func loadInstantPaymentCheck() -> Bool {
         return UserDefaults.standard.isInstantPaymentEnabled
     }
 }
 
 // MARK: address book
 
-import ContactsUI
-import AddressBookUI
-
-class PhoneBookService: NSObject {
+internal class PhoneBookService: NSObject {
     
-    var phoneNumberSelected = PublishSubject<String>()
+    internal var phoneNumberSelected = PublishSubject<String>()
     
-    func findContact(from viewController: UIViewController) {
+    internal func findContact(from viewController: UIViewController) {
         if #available(iOS 9.0, *) {
             let contactPicker = CNContactPickerViewController()
             
@@ -1126,18 +1132,16 @@ class PhoneBookService: NSObject {
 
 extension PhoneBookService: CNContactPickerDelegate {
     @available(iOS 9.0, *)
-    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+    internal func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         if contactProperty.key == CNContactPhoneNumbersKey {
-            guard let phoneNumber = contactProperty.value else { return }
-            
-            let phone = phoneNumber as! CNPhoneNumber
+            guard let phoneNumber = contactProperty.value, let phone = phoneNumber as? CNPhoneNumber else { return }
             self.phoneNumberSelected.onNext(phone.stringValue)
         }
     }
 }
 
 extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
-    func peoplePickerNavigationController(
+    internal func peoplePickerNavigationController(
         _ peoplePicker: ABPeoplePickerNavigationController,
         didSelectPerson person: ABRecord,
         property: ABPropertyID,
@@ -1149,7 +1153,7 @@ extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
         
         if ABMultiValueGetCount(phones) > 0 {
             let index = Int(identifier) as CFIndex
-            let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as! String
+            let phoneNumber = ABMultiValueCopyValueAtIndex(phones, index).takeRetainedValue() as? String ?? ""
             
             self.phoneNumberSelected.onNext(phoneNumber)
         }
@@ -1157,7 +1161,7 @@ extension PhoneBookService: ABPeoplePickerNavigationControllerDelegate {
 }
 
 extension String: Swift.Error {
-    var localizedDescription: String {
+    internal var localizedDescription: String {
         return self
     }
 }

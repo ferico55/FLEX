@@ -9,16 +9,16 @@
 import Foundation
 import Unbox
 
-struct TokoCashPaymentResponse {
-    let code: String?
-    let message: String?
-    let errors: String?
-    let config: String?
-    let data: TokoCashPayment?
+public struct TokoCashPaymentResponse {
+    public let code: String?
+    public let message: String?
+    public let errors: String?
+    public let config: String?
+    public let data: TokoCashPayment?
 }
 
 extension TokoCashPaymentResponse: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.code = try? unboxer.unbox(keyPath: "code")
         self.message = try? unboxer.unbox(keyPath: "message")
         self.errors = try? unboxer.unbox(keyPath: "errors")
@@ -27,23 +27,23 @@ extension TokoCashPaymentResponse: Unboxable {
     }
 }
 
-struct TokoCashPayment {
-    let payment_id: String?
-    let status: String?
-    let transaction_id: String?
-    let datetime: String?
-    let logo: String?
-    let balance: Int?
+public struct TokoCashPayment {
+    public let paymentId: String?
+    public let status: String?
+    public let transactionId: String?
+    public let datetime: String?
+    public let logo: String?
+    public let balance: Int?
     
-    var amount: Int?
-    var merchantName: String?
+    public var amount: Int?
+    public var merchantName: String?
 }
 
 extension TokoCashPayment: Unboxable {
-    init(unboxer: Unboxer) throws {
-        self.payment_id = try? unboxer.unbox(keyPath: "payment_id")
+    public init(unboxer: Unboxer) throws {
+        self.paymentId = try? unboxer.unbox(keyPath: "payment_id")
         self.status = try? unboxer.unbox(keyPath: "status")
-        self.transaction_id = try? unboxer.unbox(keyPath: "transaction_id")
+        self.transactionId = try? unboxer.unbox(keyPath: "transaction_id")
         self.datetime = try? unboxer.unbox(key: "datetime")
         self.logo = try? unboxer.unbox(keyPath: "logo")
         self.balance = try? unboxer.unbox(keyPath: "amount")

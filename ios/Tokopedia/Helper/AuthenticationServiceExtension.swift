@@ -35,7 +35,9 @@ extension AuthenticationService {
         } else {
             self.signInFromViewController(viewController) { _ in
                 if let theOnSuccess = onSuccess {
-                    theOnSuccess()
+                    DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+1.0, execute: {
+                        theOnSuccess()
+                    })
                 }
             }
         }

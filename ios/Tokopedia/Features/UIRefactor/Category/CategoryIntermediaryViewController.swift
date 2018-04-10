@@ -43,6 +43,8 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             layout.height = 0
             refreshControl.bk_addEventHandler({ _ in
                 state?.intermediaryViewController?.requestHotlist()
+                guard let categoryId = state?.categoryIntermediaryResult?.id else { return }
+                state?.intermediaryViewController?.requestTopAdsHeadline(departmentId: categoryId)
             }, for: .valueChanged)
         })
         
@@ -637,6 +639,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         let slider = iCarousel(frame: .zero)
         
         self.carouselDataSource = CarouselDataSource(banner: categoryIntermediaryResult.banner!.images, pageControl: pageControl, type: .category, slider: slider)
+        carouselDataSource.bannerIPhoneSize = CGSize(width: 375, height: 150)
         carouselDataSource.didSelectBanner = { [unowned self] banner, index in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.bannerTitle)
         }
@@ -752,7 +755,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }
     
     func requestTopAdsHeadline(departmentId: String) {
-        TopAdsService().requestTopAdsHeadline(departmentId: departmentId, onSuccess: { (topAdsHeadline) in
+        TopAdsService().requestTopAdsHeadline(departmentId: departmentId, source: .intermediary, onSuccess: { (topAdsHeadline) in
             self.intermediaryView.state?.topAdsHeadline = topAdsHeadline
         }) { (error) in
             

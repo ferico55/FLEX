@@ -6,12 +6,12 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import MXSegmentedPager
 import BlocksKit
-import TTTAttributedLabel
-import SwiftOverlays
+import MXSegmentedPager
 import NativeNavigation
+import SwiftOverlays
+import TTTAttributedLabel
+import UIKit
 
 private struct TabChild {
     let title: String
@@ -22,9 +22,9 @@ private struct TabChild {
     func didDisplayReviewPage()
 }
 
-class ShopViewController: UIViewController {
-    var data: [AnyHashable: Any]?
-    var initialEtalase: EtalaseList?
+internal class ShopViewController: UIViewController {
+    internal var data: [AnyHashable: Any]?
+    internal var initialEtalase: EtalaseList?
     
     fileprivate let authenticationService = AuthenticationService.shared
     fileprivate var tabChildren: [TabChild] = []
@@ -33,20 +33,20 @@ class ShopViewController: UIViewController {
     fileprivate var isOfficial: Bool = false
     fileprivate var headerHeight: CGFloat!
     
-    var delegate: ShopViewControllerDelegate?
-    var productFilter: ShopProductFilter?
+    internal weak var delegate: ShopViewControllerDelegate?
+    internal var productFilter: ShopProductFilter?
     
-    init() {
+    internal init() {
         super.init(nibName: nil, bundle: nil)
         
         self.hidesBottomBarWhenPushed = true
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         fatalError("not implemented")
     }
     
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         
         self.view.backgroundColor = .white
@@ -150,14 +150,16 @@ class ShopViewController: UIViewController {
     
     // update header content with model and sets the header height accordingly
     fileprivate func updateHeaderContent(_ viewModel: ShopHeaderViewModel) {
-        self.header.viewModel = viewModel
-        
-        self.header.setNeedsLayout()
-        self.header.layoutIfNeeded()
-        // manually set header height here
-        self.headerHeight = self.header.mainStackView.frame.size.height // grab height from the stack view not the main view (stack view determines content height)
-        self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
-        self.segmentedPagerController.segmentedPager.scrollToTop(animated: false) // reset scroll to top
+        DispatchQueue.main.async {
+            self.header.viewModel = viewModel
+            
+            self.header.setNeedsLayout()
+            self.header.layoutIfNeeded()
+            // manually set header height here
+            self.headerHeight = self.header.containerView.bounds.size.height // grab height from the stack view not the main view (stack view determines content height)
+            self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
+            self.segmentedPagerController.segmentedPager.scrollToTop(animated: false) // reset scroll to top
+        }
     }
     
     fileprivate func displayShop(_ shop: Shop) {
@@ -199,10 +201,10 @@ class ShopViewController: UIViewController {
         
         viewController.segmentedPager.segmentedControl.selectionStyle = .fullWidthStripe
         viewController.segmentedPager.segmentedControl.borderType = [.top, .bottom]
-        viewController.segmentedPager.segmentedControl.borderColor = UIColor(white: 0.937, alpha: 1)
+        viewController.segmentedPager.segmentedControl.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
         viewController.segmentedPager.segmentedControl.selectionIndicatorLocation = .down
-        viewController.segmentedPager.segmentedControl.selectionIndicatorColor = UIColor(red: 0.071, green: 0.780, blue: 0, alpha: 1)
-        viewController.segmentedPager.segmentedControl.verticalDividerColor = UIColor(white: 0.937, alpha: 1)
+        viewController.segmentedPager.segmentedControl.selectionIndicatorColor = #colorLiteral(red: 0.07058823529, green: 0.7803921569, blue: 0, alpha: 1)
+        viewController.segmentedPager.segmentedControl.verticalDividerColor = #colorLiteral(red: 0.937254902, green: 0.937254902, blue: 0.937254902, alpha: 1)
         viewController.segmentedPager.segmentedControl.isVerticalDividerEnabled = true
         viewController.segmentedPager.segmentedControl.titleTextAttributes = [
             NSFontAttributeName: UIFont.largeTheme()
@@ -285,11 +287,11 @@ class ShopViewController: UIViewController {
         }
     }
     
-    func getCurrentPageIndex() -> Int {
+    internal func getCurrentPageIndex() -> Int {
         return self.segmentedPagerController.segmentedPager.pager.indexForSelectedPage
     }
     
-    func isDisplayingReviewPage() -> Bool {
+    internal func isDisplayingReviewPage() -> Bool {
         let currentIndex = self.segmentedPagerController.segmentedPager.pager.indexForSelectedPage
         if self.isOfficial {
             return currentIndex == 3
@@ -298,34 +300,32 @@ class ShopViewController: UIViewController {
         }
     }
     
-    func minimizeHeader() {
+    internal func minimizeHeader() {
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = 0
         self.segmentedPagerController.segmentedPager.parallaxHeader.height = self.headerHeight
     }
     
-    // used by product detail review
-    // TODO: move all label configurations into the view controller
-    func setPropertyLabelDesc(_ label: TTTAttributedLabel) {
+    internal func setPropertyLabelDesc(_ label: TTTAttributedLabel) {
         label.backgroundColor = .clear
         label.textAlignment = .left
         label.font = UIFont.smallTheme()
-        label.textColor = UIColor(red: 117.0 / 255, green: 117.0 / 255, blue: 117.0 / 255, alpha: 1)
+        label.textColor = #colorLiteral(red: 0.4588235294, green: 0.4588235294, blue: 0.4588235294, alpha: 1)
         label.lineBreakMode = .byWordWrapping
         label.numberOfLines = 0
     }
     
     fileprivate func renderBarButtonsWithShop(_ shop: Shop, favoriteRequestInProgress: Bool = false) {
         let infoBarButton = UIBarButtonItem().bk_init(
-            with: UIImage(named: "icon_shop_info"),
+            with: #imageLiteral(resourceName: "icon_shop_info"),
             style: UIBarButtonItemStyle.plain,
             handler: { [unowned self] _ in
                 self.openShopInfo(shop)
             }
-        ) as! UIBarButtonItem
+        ) as! UIBarButtonItem // this looks safe to be forced
         
         let refreshBarButton = UIBarButtonItem().bk_init(with: .refresh) { [weak self] _ in
             self?.refreshCurrentViewController()
-        } as! UIBarButtonItem
+        } as! UIBarButtonItem // this looks safe to be forced
         
         self.navigationItem.rightBarButtonItems = [refreshBarButton, infoBarButton]
         
@@ -403,6 +403,10 @@ class ShopViewController: UIViewController {
                     self.renderBarButtonsWithShop(shop)
                     
                     self.notifyShopFavoriteChanged()
+                    
+                    if let manager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
+                        manager.sendFavoriteShopEvent()
+                    }
                 },
                 onFailure: {
                     self.renderBarButtonsWithShop(shop)
@@ -442,12 +446,14 @@ class ShopViewController: UIViewController {
             label: "Add Product"
         )
         
-        let viewController = ProductAddEditViewController()
-        viewController.type = .ADD
+        let userAuthManager = UserAuthentificationManager()
+        let vc = ReactViewController(moduleName: "AddProductScreen", props: [
+            "authInfo": userAuthManager.getUserLoginData() as AnyObject
+            ])
         
-        let navigationController = UINavigationController(rootViewController: viewController)
-        self.present(navigationController, animated: true, completion: nil)
-        
+        let navigation = UINavigationController(rootViewController: vc)
+        navigation.navigationBar.isTranslucent = false
+        self.present(navigation, animated: true, completion: nil)
     }
     
     fileprivate func messageShopOwnerWithShop(_ shop: Shop) {
@@ -486,15 +492,15 @@ class ShopViewController: UIViewController {
 }
 
 extension ShopViewController: MXSegmentedPagerDataSource {
-    func numberOfPages(in segmentedPager: MXSegmentedPager) -> Int {
+    internal func numberOfPages(in segmentedPager: MXSegmentedPager) -> Int {
         return tabChildren.count
     }
     
-    func segmentedPager(_ segmentedPager: MXSegmentedPager, titleForSectionAt index: Int) -> String {
+    internal func segmentedPager(_ segmentedPager: MXSegmentedPager, titleForSectionAt index: Int) -> String {
         return tabChildren[index].title
     }
     
-    func segmentedPager(_ segmentedPager: MXSegmentedPager, viewForPageAt index: Int) -> UIView {
+    internal func segmentedPager(_ segmentedPager: MXSegmentedPager, viewForPageAt index: Int) -> UIView {
         let viewController = tabChildren[index].viewController
         let view = viewController.view
         
@@ -508,7 +514,7 @@ extension ShopViewController: MXSegmentedPagerDataSource {
 }
 
 extension ShopViewController: MXSegmentedPagerDelegate {
-    func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
+    internal func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
         
         tabChildren.forEach { child in
             let tabChild = child.viewController as? ShopTabChild
@@ -535,7 +541,7 @@ extension ShopViewController: MXSegmentedPagerDelegate {
 }
 
 extension ShopViewController: CustomTopMostViewController {
-    func customTopMostViewController() -> UIViewController? {
+    internal func customTopMostViewController() -> UIViewController? {
         if self.segmentedPagerController == nil {
             return nil
         }

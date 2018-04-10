@@ -7,11 +7,11 @@
 //
 
 import Foundation
-class RCTSharingReferable: NSObject, Referable {
-    var desktopUrl: String = ""
-    var deeplinkPath: String = ""
-    var feature: String = ""
-    var title: String = ""
-    var buoDescription: String = ""
-    var utm_campaign: String = ""
+internal class RCTSharingReferable: NSObject, Referable {
+    internal var desktopUrl: String = ""
+    internal var deeplinkPath: String = ""
+    internal var feature: String = ""
+    internal var title: String = ""
+    internal var buoDescription: String = ""
+    internal var utmCampaign: String = ""
 }

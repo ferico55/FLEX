@@ -212,7 +212,7 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary* urls = @{
                            @(TPUrlProduction) : @"https://goldmerchant.tokopedia.com",
-                           @(TPUrlStaging) : @"https://goldmerchants-staging.tokopedia.com",
+                           @(TPUrlStaging) : @"https://goldmerchant-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"https://goldmerchant.tokopedia.com",
                            @(TPUrlDevelopment) : @"https://goldmerchant.tokopedia.com"
                            };
@@ -441,11 +441,25 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     
     NSDictionary* urls = @{
                            @(TPUrlProduction) : @"https://gw.tokopedia.com",
-                           @(TPUrlStaging) : @"http://gw-staging.tokopedia.com",
+                           @(TPUrlStaging) : @"https://gw-staging.tokopedia.com",
                            @(TPUrlAlpha) : @"http://gw-staging.tokopedia.com",
                            @(TPUrlDevelopment) : @"http://gw-staging.tokopedia.com"
                            };
     
     return [urls objectForKey:TPUrlIndex];
 }
+
++ (NSString*)bookingUrl {
+    NSNumber *TPUrlIndex = [NSString urlIndex];
+    
+    NSDictionary* urls = @{
+                           @(TPUrlProduction) : @"https://booking.tokopedia.com",
+                           @(TPUrlStaging) : @"https://booking-staging.tokopedia.com",
+                           @(TPUrlAlpha) : @"https://booking-staging.tokopedia.com",
+                           @(TPUrlDevelopment) : @"https://booking-staging.tokopedia.com"
+                           };
+    
+    return [urls objectForKey:TPUrlIndex];
+}
+
 @end

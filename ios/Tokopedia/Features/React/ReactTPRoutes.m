@@ -28,7 +28,7 @@ RCT_EXPORT_MODULE();
 }
 
 RCT_EXPORT_METHOD(navigate:(NSString*)url) {
-    if(url != nil) {
+    if(url != nil && ![url isEqualToString:@""]) {
         [TPRoutes routeURL:[NSURL URLWithString:url]];
     }
 }

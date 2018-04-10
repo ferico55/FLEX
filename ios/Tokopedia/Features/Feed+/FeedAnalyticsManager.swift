@@ -9,7 +9,7 @@
 import Foundation
 
 extension AnalyticsManager {
-    static func trackFeedProductClick(card: FeedCardProductState, position: Int) {
+    internal static func trackFeedProductClick(card: FeedCardProductState, position: Int) {
         if !card.isCampaign {
             let manager = AnalyticsManager()
             let eventLabel = card.isRecommendationProduct ? "inspirasi - \(card.recommendationProductSource)" : "product upload"
@@ -40,7 +40,7 @@ extension AnalyticsManager {
         }
     }
     
-    static func trackFeedImpression(card: FeedCardState) {
+    internal static func trackFeedImpression(card: FeedCardState) {
         let manager = AnalyticsManager()
         var eventLabel = ""
         if card.content.product.count > 0 ||
@@ -93,7 +93,7 @@ extension AnalyticsManager {
         }
     }
     
-    static func trackKOLImpression(cardContent: FeedCardContentState) {
+    internal static func trackKOLImpression(cardContent: FeedCardContentState) {
         let manager = AnalyticsManager()
         
         let eventDataLayer = [
@@ -155,7 +155,7 @@ extension AnalyticsManager {
         }
     }
     
-    static func trackKOLClick(cardContent: FeedCardContentState, index: Int) {
+    internal static func trackKOLClick(cardContent: FeedCardContentState, index: Int) {
         let manager = AnalyticsManager()
         
         let eventDataLayer = [
@@ -213,6 +213,22 @@ extension AnalyticsManager {
             
             manager.dataLayer.push(eventDataLayer)
             manager.dataLayer.push(eCommerceDataLayer)
+        }
+    }
+    
+    internal static func trackTopAdsImpression(content: FeedCardContentState) {
+        if content.type == .topAdsProduct {
+            if let products = content.topads?.products {
+                for product in products {
+                    TopAdsService.sendClickImpression(clickURLString: product.topAdsProductImpressionURL)
+                }
+            }
+            
+        } else if content.type == .topAdsShop {
+            let topAdsShop = content.topads?.shop
+            let impressionURL = topAdsShop?.topadsImpressionURL ?? ""
+            
+            TopAdsService.sendClickImpression(clickURLString: impressionURL)
         }
     }
 }

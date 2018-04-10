@@ -14,13 +14,13 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
 
     fileprivate var touchIDList = [String]()
     
-    @IBOutlet weak var tableView: UITableView!
-    @IBOutlet weak var noResultView: NoResultReusableView!
+    @IBOutlet private weak var tableView: UITableView!
+    @IBOutlet private weak var noResultView: NoResultReusableView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.title = "Pengaturan Touch ID"
+        self.title = "Pengaturan \(NSString.authenticationType())"
         self.touchIDList = TouchIDHelper.sharedInstance.loadTouchIDAccount()
         self.checkForDataAvailability()
         
@@ -28,8 +28,8 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
         self.tableView.tableFooterView = UIView()
         
         self.noResultView.generateAllElements("no-result.png",
-                                              title: "Tidak ada Touch ID yang terdaftar.",
-                                              desc: "Silahkan login ulang untuk menggunakan fitur ini.",
+                                              title: "Tidak ada \(NSString.authenticationType()) yang terdaftar.",
+                                              desc: "Silakan login ulang untuk menggunakan fitur ini.",
                                               btnTitle: nil)
     }
 
@@ -39,12 +39,12 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func removeButtonDidTap(_ index: Int) {
-        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Attempt")
+        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting \(NSString.authenticationType())", action: GA_EVENT_ACTION_CLICK, label: "\(NSString.authenticationType()) - Delete Attempt")
         
-        let alertController = UIAlertController(title: "Touch ID", message: "Apakah Anda ingin menghapus integrasi dengan akun ini?", preferredStyle: .alert)
+        let alertController = UIAlertController(title: "\(NSString.authenticationType())", message: "Apakah Anda ingin menghapus integrasi dengan akun ini?", preferredStyle: .alert)
         
         alertController.addAction(UIAlertAction(title: "Tidak", style: .default) { _ in
-            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
+            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting \(NSString.authenticationType())", action: GA_EVENT_ACTION_CLICK, label: "\(NSString.authenticationType()) - Delete Cancel")
         })
         
         alertController.addAction(UIAlertAction(title: "Hapus", style: .destructive) { _ in
@@ -57,16 +57,16 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
                         //Authentication was successful
                         self.removeTouchID(_: index)
                         
-                        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Success")
+                        AnalyticsManager.trackEventName("deleteTouchID", category: "Setting \(NSString.authenticationType())", action: GA_EVENT_ACTION_CLICK, label: "\(NSString.authenticationType()) - Delete Success")
                     }
                 } else {
                     DispatchQueue.main.async {
                         //Authentication failed. Show alert indicating what error occurred
                         if let error = error as? LAError ,
                             error.code != LAError.userCancel {
-                            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting Touch ID", action: GA_EVENT_ACTION_CLICK, label: "Touch ID - Delete Cancel")
+                            AnalyticsManager.trackEventName("deleteTouchID", category: "Setting \(NSString.authenticationType())", action: GA_EVENT_ACTION_CLICK, label: "\(NSString.authenticationType()) - Delete Cancel")
                             
-                            let alertController = UIAlertController(title: "Touch ID", message: error.localizedDescription, preferredStyle: .alert)
+                            let alertController = UIAlertController(title: "\(NSString.authenticationType())", message: error.localizedDescription, preferredStyle: .alert)
                             
                             alertController.addAction(UIAlertAction(title: "Ok", style: .cancel, handler: nil))
                             self.present(alertController, animated: true, completion: nil)
@@ -105,18 +105,11 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCell(withIdentifier: "cell")
-        if cell == nil {
-            cell = UITableViewCell(style: .default, reuseIdentifier: "cell")
-            cell?.textLabel?.font = UIFont.title2Theme()
-            cell?.selectionStyle = .none
-        }
-        
         let removeButton = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
-        removeButton.backgroundColor = UIColor.clear
-        removeButton.setTitleColor(UIColor.red, for: .normal)
+        removeButton.backgroundColor = .clear
+        removeButton.setTitleColor(.red, for: .normal)
         removeButton.setTitle("Hapus", for: .normal)
-        removeButton.titleLabel?.font = UIFont.title2Theme()
+        removeButton.titleLabel?.font = .title2Theme()
         removeButton.addTarget(self, action: #selector(removeButtonDidTap(_ :)), for: .touchUpInside)
         removeButton.bk_(whenTapped:{ [unowned self] in
             self.removeButtonDidTap(indexPath.row)
@@ -126,13 +119,18 @@ class SettingTouchIDViewController: UIViewController, UITableViewDelegate, UITab
         view.backgroundColor = UIColor.clear
         view.addSubview(removeButton)
         view.isUserInteractionEnabled = true
-        cell?.accessoryView = view
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "cell") ?? UITableViewCell(style: .default, reuseIdentifier: "cell")
+        
+        cell.textLabel?.font = .title2Theme()
+        cell.selectionStyle = .none
+        cell.accessoryView = view
         
         if self.touchIDList.count > 0 {
             let email = self.touchIDList[indexPath.row]
-            cell?.textLabel?.text = email
+            cell.textLabel?.text = email
         }
         
-        return cell!
+        return cell
     }
 }

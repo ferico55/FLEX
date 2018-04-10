@@ -6,14 +6,14 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
+import UIKit
 
-class ProductPriceNode: ContainerNode {
+internal class ProductPriceNode: ContainerNode {
     fileprivate let state: ProductDetailState
     fileprivate let didTapWholesale: ([ProductWholesale]) -> Void
     
-    init(identifier: String, state: ProductDetailState, didTapWholesale: @escaping ([ProductWholesale]) -> Void) {
+    internal init(identifier: String, state: ProductDetailState, didTapWholesale: @escaping ([ProductWholesale]) -> Void) {
         self.state = state
         self.didTapWholesale = didTapWholesale
         
@@ -23,18 +23,16 @@ class ProductPriceNode: ContainerNode {
             return
         }
         
-        if productDetail.wholesale.count == 0 {
+        if productDetail.wholesale.isEmpty {
             return
         }
         
         node.add(children: [
             container().add(children: [
-                GlobalRenderComponent.horizontalLine(identifier: "Price-Line-1", marginLeft: 0),
                 // TODO : for future update -> cicilan feature
 //                priceListview(title: "Cicilan", subtitle: "Bunga 0% mulai dari Rp 12.000"),
 //                GlobalRenderComponent.horizontalLine(identifier: "Price-Line-2", marginLeft: 15),
-                wholesaleView(),
-                GlobalRenderComponent.horizontalLine(identifier: "Price-Line-3", marginLeft: 0)
+                wholesaleView()
                 ])
             ])
     }
@@ -43,7 +41,6 @@ class ProductPriceNode: ContainerNode {
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
-            layout.marginTop = 10
             view.backgroundColor = .white
             view.isUserInteractionEnabled = true
         }
@@ -84,7 +81,7 @@ class ProductPriceNode: ContainerNode {
                     layout.position = .absolute
                     layout.width = 18
                     layout.height = 18
-                    view.image = UIImage(named: "icon_carret_next")
+                    view.image = #imageLiteral(resourceName: "icon_carret_next")
                 }
                 ])
     }

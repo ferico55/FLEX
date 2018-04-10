@@ -8,17 +8,17 @@
 
 import UIKit
 
-class CreatePasswordUserProfile: NSObject {
-    var name: String?
-    var email: String?
-    var birthDay: String?
-    var gender: String?
-    var provider = ""
-    var providerName = ""
-    var userId = ""
-    var accessToken: String?
+public class CreatePasswordUserProfile: NSObject {
+    public var name: String?
+    public var email: String?
+    public var birthDay: String?
+    public var gender: String?
+    public var provider = ""
+    public var providerName = ""
+    public var userId = ""
+    public var accessToken: String?
 
-    static func fromFacebook(userData: [String: String]) -> CreatePasswordUserProfile {
+    public static func fromFacebook(userData: [String: String]) -> CreatePasswordUserProfile {
         let userProfile = CreatePasswordUserProfile()
         userProfile.email = userData["email"]
         userProfile.name = userData["name"]
@@ -32,7 +32,7 @@ class CreatePasswordUserProfile: NSObject {
         return userProfile
     }
 
-    static func fromGoogle(user: GIDGoogleUser) -> CreatePasswordUserProfile {
+    public static func fromGoogle(user: GIDGoogleUser) -> CreatePasswordUserProfile {
         let userProfile = CreatePasswordUserProfile()
         userProfile.email = user.profile.email
         userProfile.name = user.profile.name
@@ -44,7 +44,7 @@ class CreatePasswordUserProfile: NSObject {
         return userProfile
     }
 
-    static func fromYahoo(token: String) -> CreatePasswordUserProfile {
+    public static func fromYahoo(token: String) -> CreatePasswordUserProfile {
         let userProfile = CreatePasswordUserProfile()
         userProfile.email = ""
         userProfile.name = ""

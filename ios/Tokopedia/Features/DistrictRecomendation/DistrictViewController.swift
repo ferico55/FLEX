@@ -21,6 +21,7 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
 
     var keroToken: String = ""
     var unixTime: Int = 0
+    var isRequesting = false
     var currentPage: Int = 1
 
     @IBOutlet weak private var searchBar: UISearchBar!
@@ -83,6 +84,7 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
                 guard let `self` = self else {
                     return
                 }
+                self.currentPage = 1
                 if query.characters.count == 0 {
                     self.districts.districtList = []
                     self.districtTable.reloadData()
@@ -106,7 +108,7 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
         districtTable.rx_reachedBottom
             .subscribe(onNext: { [weak self] _ in
                 if let myself = self {
-                    if myself.districts.nextAvailable {
+                    if myself.districts.nextAvailable && !myself.isRequesting {
                         myself.fetchDistricts(query: myself.searchBar.text!, page: myself.currentPage)
                     }
                 }
@@ -181,9 +183,7 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
     }
 
     func fetchDistricts(query: String, page _: Int) {
-        if self.query != query {
-            currentPage = 1
-        }
+        self.isRequesting = true
         service?.fetchDistricts(token: keroToken,
                                 unixTime: unixTime,
                                 query: query,
@@ -196,7 +196,6 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
             self.labelView.isHidden = true
             self.districts.nextAvailable = districts.nextAvailable
             if districts.nextAvailable { self.currentPage += 1 }
-            if !districts.nextAvailable { self.currentPage = 1 }
             if self.query == query {
                 if let currentDistricts = self.districts.districtList, let nextDistricts = districts.districtList {
                     self.districts.districtList = currentDistricts + nextDistricts
@@ -204,9 +203,9 @@ class DistrictViewController: UIViewController, UITableViewDelegate, UITableView
             } else {
                 self.districts.districtList = districts.districtList
             }
-            if districts.nextAvailable { self.currentPage += 1 }
             self.districtTable.reloadData()
             self.query = query
+            self.isRequesting = false
         }, onFailure: {
             StickyAlertView.showErrorMessage(["Kendala koneksi internet, silakan coba kembali."])
         })

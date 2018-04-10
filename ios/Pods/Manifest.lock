@@ -31,6 +31,7 @@ PODS:
   - Bolts/AppLinks (1.8.4):
     - Bolts/Tasks
   - Bolts/Tasks (1.8.4)
+  - boost-for-react-native (1.63.0)
   - Branch (0.20.3):
     - Branch/Core (= 0.20.3)
   - Branch/Core (0.20.3)
@@ -55,9 +56,10 @@ PODS:
     - DKImagePickerController/ImageManager (= 3.6.2)
   - DKImagePickerController/Camera (3.6.2)
   - DKImagePickerController/ImageManager (3.6.2)
+  - DoubleConversion (1.1.5)
   - DownPicker (0.1.34)
   - DTTJailbreakDetection (0.4.0)
-  - EAIntroView (2.8.3):
+  - EAIntroView (2.12.0):
     - EARestrictedScrollView (~> 1.1.0)
   - EARestrictedScrollView (1.1.0)
   - EZYGradientView-ObjC (1.3)
@@ -83,6 +85,11 @@ PODS:
     - GoogleToolboxForMac/NSData+zlib (~> 2.1)
     - Protobuf (~> 3.1)
   - FLEX (2.4.0)
+  - Folly (2016.09.26.00):
+    - boost-for-react-native
+    - DoubleConversion
+    - GLog
+  - GLog (0.3.4)
   - GoogleAnalytics (3.17.0)
   - GoogleAppUtilities (1.1.2):
     - GoogleSymbolUtilities (~> 1.1)
@@ -132,6 +139,16 @@ PODS:
   - JLRoutes (1.6.4)
   - KeychainAccess (3.0.1)
   - KMNavigationBarTransition (1.1.5)
+  - KSCrash/Core (1.15.16):
+    - KSCrash/Reporting/Filters/Basic
+  - KSCrash/Recording (1.15.16):
+    - KSCrash/Recording/Tools (= 1.15.16)
+  - KSCrash/Recording/Tools (1.15.16)
+  - KSCrash/Reporting/Filters/Base (1.15.16):
+    - KSCrash/Recording
+  - KSCrash/Reporting/Filters/Basic (1.15.16):
+    - KSCrash/Recording
+    - KSCrash/Reporting/Filters/Base
   - LogEntries (0.0.1)
   - lottie-ios (2.1.5)
   - Masonry (1.0.1)
@@ -178,50 +195,62 @@ PODS:
   - Popover (1.0.6)
   - Protobuf (3.3.0)
   - RATreeView (2.1.2)
-  - React (0.51.0):
-    - React/Core (= 0.51.0)
+  - React (0.52.1):
+    - React/Core (= 0.52.1)
+  - react-native-blur (0.8.0):
+    - React
   - react-native-maps (0.15.3):
     - React
-  - React/BatchedBridge (0.51.0):
+  - React/Core (0.52.1):
+    - yoga (= 0.52.1.React)
+  - React/CxxBridge (0.52.1):
+    - Folly (= 2016.09.26.00)
     - React/Core
-    - React/cxxreact_legacy
-  - React/Core (0.51.0):
-    - yoga (= 0.51.0.React)
-  - React/cxxreact_legacy (0.51.0):
-    - React/jschelpers_legacy
-  - React/DevSupport (0.51.0):
+    - React/cxxreact
+  - React/cxxreact (0.52.1):
+    - boost-for-react-native
+    - Folly (= 2016.09.26.00)
+    - React/jschelpers
+    - React/jsinspector
+  - React/DevSupport (0.52.1):
     - React/Core
     - React/RCTWebSocket
-  - React/fishhook (0.51.0)
-  - React/jschelpers_legacy (0.51.0)
-  - React/RCTActionSheet (0.51.0):
+  - React/fishhook (0.52.1)
+  - React/jschelpers (0.52.1):
+    - Folly (= 2016.09.26.00)
+    - React/PrivateDatabase
+  - React/jsinspector (0.52.1)
+  - React/PrivateDatabase (0.52.1)
+  - React/RCTActionSheet (0.52.1):
     - React/Core
-  - React/RCTAnimation (0.51.0):
+  - React/RCTAnimation (0.52.1):
     - React/Core
-  - React/RCTBlob (0.51.0):
+  - React/RCTBlob (0.52.1):
     - React/Core
-  - React/RCTCameraRoll (0.51.0):
+  - React/RCTCameraRoll (0.52.1):
     - React/Core
     - React/RCTImage
-  - React/RCTGeolocation (0.51.0):
+  - React/RCTGeolocation (0.52.1):
     - React/Core
-  - React/RCTImage (0.51.0):
+  - React/RCTImage (0.52.1):
     - React/Core
     - React/RCTNetwork
-  - React/RCTLinkingIOS (0.51.0):
+  - React/RCTLinkingIOS (0.52.1):
     - React/Core
-  - React/RCTNetwork (0.51.0):
+  - React/RCTNetwork (0.52.1):
     - React/Core
-  - React/RCTSettings (0.51.0):
+  - React/RCTSettings (0.52.1):
     - React/Core
-  - React/RCTText (0.51.0):
+  - React/RCTText (0.52.1):
     - React/Core
-  - React/RCTVibration (0.51.0):
+  - React/RCTVibration (0.52.1):
     - React/Core
-  - React/RCTWebSocket (0.51.0):
+  - React/RCTWebSocket (0.52.1):
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - React/tvOS (0.52.1):
+    - React/Core
   - ReactNativeSearchBar (3.3.1):
     - React
   - Render (2.1.1)
@@ -265,10 +294,20 @@ PODS:
     - RxCocoa (~> 3.0)
     - RxSwift (~> 3.0)
   - RxSwift (3.6.1)
+  - Sentry (3.10.0):
+    - Sentry/Core (= 3.10.0)
+    - Sentry/KSCrash (= 3.10.0)
+  - Sentry/Core (3.10.0)
+  - Sentry/KSCrash (3.10.0):
+    - KSCrash/Core (~> 1.15.12)
+  - SentryReactNative (0.34.0):
+    - React
+    - Sentry (~> 3.10.0)
+    - Sentry/KSCrash (~> 3.10.0)
   - SnapKit (3.2.0)
   - SOCKit (1.1)
   - SPTPersistentCache (1.1.0)
-  - SwiftLint (0.22.0)
+  - SwiftLint (0.25.0)
   - SwiftOverlays (4.0.0)
   - SwiftyJSON (3.1.4)
   - ToolTipMenu (5.0.0):
@@ -280,7 +319,7 @@ PODS:
   - Unbox (2.4.0)
   - VMaskTextField (1.0.8)
   - Wrap (2.1.1)
-  - yoga (0.51.0.React)
+  - yoga (0.52.1.React)
   - youtube-ios-player-helper (0.1.6)
 
 DEPENDENCIES:
@@ -299,9 +338,10 @@ DEPENDENCIES:
   - ComponentKit (~> 0.14)
   - Crashlytics (~> 3.9.0)
   - DKImagePickerController (from `https://github.com/ferico55/DKImagePickerController.git`, branch `3.6.2-tkpd`)
+  - DoubleConversion (from `./react-podspecs/DoubleConversion.podspec.json`)
   - DownPicker (~> 0.1.34)
   - DTTJailbreakDetection (~> 0.4.0)
-  - EAIntroView (~> 2.8.0)
+  - EAIntroView (~> 2.12.0)
   - EZYGradientView-ObjC (~> 1.3)
   - Fabric (~> 1.7.0)
   - FBSDKCoreKit (~> 4.19.0)
@@ -309,6 +349,8 @@ DEPENDENCIES:
   - FBSDKShareKit (~> 4.19.0)
   - FirebaseRemoteConfig (~> 2.0.2)
   - FLEX (from `https://github.com/Flipboard/FLEX.git`, commit `99eccdf4c34af9b1042d96313ad9cf12dd30ff1f`)
+  - Folly (from `./react-podspecs/Folly.podspec.json`)
+  - GLog (from `./react-podspecs/GLog.podspec.json`)
   - GoogleMaps (~> 2.1.1)
   - GooglePlaces (~> 2.1.1)
   - GoogleSignIn (~> 3.0.0)
@@ -339,9 +381,10 @@ DEPENDENCIES:
   - OAStackView (~> 1.0.1)
   - Popover (from `https://github.com/corin8823/Popover.git`, branch `master`)
   - RATreeView (~> 2.1.2)
+  - react-native-blur (from `./react-podspecs/react-native-blur.podspec.json`)
   - react-native-maps (from `./react-podspecs/react-native-maps.podspec.json`)
-  - React/BatchedBridge (from `./react-podspecs/React.podspec.json`)
   - React/Core (from `./react-podspecs/React.podspec.json`)
+  - React/CxxBridge (from `./react-podspecs/React.podspec.json`)
   - React/DevSupport (from `./react-podspecs/React.podspec.json`)
   - React/RCTActionSheet (from `./react-podspecs/React.podspec.json`)
   - React/RCTAnimation (from `./react-podspecs/React.podspec.json`)
@@ -354,6 +397,7 @@ DEPENDENCIES:
   - React/RCTText (from `./react-podspecs/React.podspec.json`)
   - React/RCTVibration (from `./react-podspecs/React.podspec.json`)
   - React/RCTWebSocket (from `./react-podspecs/React.podspec.json`)
+  - React/tvOS (from `./react-podspecs/React.podspec.json`)
   - ReactNativeSearchBar (from `./react-podspecs/ReactNativeSearchBar.podspec.json`)
   - Render (from `https://github.com/esam091/Render.git`, branch `change-namespace`)
   - RestKit (~> 0.27.0)
@@ -369,9 +413,10 @@ DEPENDENCIES:
   - RxCocoa (~> 3.6.1)
   - RxDataSources (~> 1.0)
   - RxSwift (~> 3.6.1)
+  - SentryReactNative (from `./react-podspecs/SentryReactNative.podspec.json`)
   - SnapKit (~> 3.2.0)
   - SPTPersistentCache (from `https://github.com/spotify/SPTPersistentCache.git`, branch `master`)
-  - SwiftLint (~> 0.22.0)
+  - SwiftLint (~> 0.25.0)
   - SwiftOverlays (from `https://github.com/digitkhrisnaa/SwiftOverlays.git`, branch `modifications`)
   - SwiftyJSON (~> 3.1.4)
   - ToolTipMenu (from `./react-podspecs/ToolTipMenu.podspec.json`)
@@ -395,9 +440,15 @@ EXTERNAL SOURCES:
   DKImagePickerController:
     :branch: 3.6.2-tkpd
     :git: https://github.com/ferico55/DKImagePickerController.git
+  DoubleConversion:
+    :podspec: ./react-podspecs/DoubleConversion.podspec.json
   FLEX:
     :commit: 99eccdf4c34af9b1042d96313ad9cf12dd30ff1f
     :git: https://github.com/Flipboard/FLEX.git
+  Folly:
+    :podspec: ./react-podspecs/Folly.podspec.json
+  GLog:
+    :podspec: ./react-podspecs/GLog.podspec.json
   HMSegmentedControl:
     :git: https://github.com/billionssg/HMSegmentedControl
   Interactable:
@@ -409,6 +460,8 @@ EXTERNAL SOURCES:
     :git: https://github.com/corin8823/Popover.git
   React:
     :podspec: ./react-podspecs/React.podspec.json
+  react-native-blur:
+    :podspec: ./react-podspecs/react-native-blur.podspec.json
   react-native-maps:
     :podspec: ./react-podspecs/react-native-maps.podspec.json
   ReactNativeSearchBar:
@@ -422,6 +475,8 @@ EXTERNAL SOURCES:
     :podspec: ./react-podspecs/RNSVG.podspec.json
   RNVectorIcons:
     :podspec: ./react-podspecs/RNVectorIcons.podspec.json
+  SentryReactNative:
+    :podspec: ./react-podspecs/SentryReactNative.podspec.json
   SPTPersistentCache:
     :branch: master
     :git: https://github.com/spotify/SPTPersistentCache.git
@@ -449,9 +504,9 @@ CHECKOUT OPTIONS:
   Popover:
     :commit: 468c0c09187b571d74a256d4e796d9ed104cfd2a
     :git: https://github.com/corin8823/Popover.git
-  ReactNativeSearchBar:
-    :commit: 368d1ba46305f8b1694f1c094f80c9a0351160b4
-    :git: https://github.com/umhan35/react-native-search-bar
+  react-native-blur:
+    :commit: a308f3c510b14e10fca33193216d0bf13f848bfd
+    :git: https://github.com/react-native-community/react-native-blur.git
   Render:
     :commit: 080e79380c17ece7ea712df6d37019688a525dfe
     :git: https://github.com/esam091/Render.git
@@ -461,9 +516,6 @@ CHECKOUT OPTIONS:
   SwiftOverlays:
     :commit: 38e4f30dcbbfc93d59b073f39f6a09711b4036b0
     :git: https://github.com/digitkhrisnaa/SwiftOverlays.git
-  ToolTipMenu:
-    :commit: d838d3132de8ee5a7c557c9ae58314e4de214b21
-    :git: https://github.com/chirag04/react-native-tooltip.git
 
 SPEC CHECKSUMS:
   AHKActionSheet: f0b312b5c689f72924d231c39dae140ecd5c1d46
@@ -475,6 +527,7 @@ SPEC CHECKSUMS:
   BEMCheckBox: 264b8b72aa92adbfefa265cc58a0cdb86b207b9f
   BlocksKit: 7f422b971407001178d181a43b99014ea2591fe6
   Bolts: 8a7995239dbe724f9cba2248b766d48b7ebdd322
+  boost-for-react-native: 39c7adb57c4e60d6c5479dd8623128eb5b3f0f2c
   Branch: eec127cb61e0f7f1aa9c351adcad22fa980e001d
   BVLinearGradient: 8913bd8fdc47b85abc801ae8bae007bbfb6b4ce5
   CCBottomRefreshControl: 389780b4488321c91d18f66a6da5ef9606df6de5
@@ -484,9 +537,10 @@ SPEC CHECKSUMS:
   Crashlytics: 64aad5dd97249dd3ff94b979fea140144590cdd3
   DBPrivacyHelper: c1e033776454dd3e16e8dcedf2e92d4d0a5e56df
   DKImagePickerController: 8d0c7595e5ffe1d353c60ba085e2cc6f28af3428
+  DoubleConversion: ebb6747c5b66026ad4f97b789c3ceac6f18e57a6
   DownPicker: c00ea63f08ae82116cc93d0eba74e86bf3d4c68e
   DTTJailbreakDetection: 5e356c5badc17995f65a83ed9483f787a0057b71
-  EAIntroView: e948c83e642f30010d427e643c18a6f2b529afed
+  EAIntroView: 249559079ddfdbe80e5bcb755c04c3b964b2ac27
   EARestrictedScrollView: b0c2a3f92fb2610bb44d71c5e4893777c89e45ef
   EZYGradientView-ObjC: 42e23b6e36bd75b7f7288198a328cbf7bc1b5aee
   Fabric: e6be012366472553807dada21243c5ab8d904151
@@ -498,6 +552,8 @@ SPEC CHECKSUMS:
   FirebaseInstanceID: 9fbf536668f4d3f0880e7438456dabd1376e294b
   FirebaseRemoteConfig: 5b3e3301ef2f237b1b588e8ef3211b5a22e9e15d
   FLEX: bd1a39e55b56bb413b6f1b34b3c10a0dc44ef079
+  Folly: 0e765a0b56a1bf180dcbd51ee178cd3a1e2ab986
+  GLog: 3e4e4ae9746ce6bf6e9420c7fc1e08ad59c8ba1a
   GoogleAnalytics: f42cc53a87a51fe94334821868d9c8481ff47a7b
   GoogleAppUtilities: a8a552aa74f6597f805e45b5a3962766c3134973
   GoogleAuthUtilities: ccad2e0a9284699973ff57c0dd24c3893657fda4
@@ -518,6 +574,7 @@ SPEC CHECKSUMS:
   JLRoutes: a2e6efb1b1070feccb6dc68e1646ca870f42115b
   KeychainAccess: 017ea25e313a49eda10bb19b0bb0760fb1edfe1a
   KMNavigationBarTransition: 7a52c9bc25b39b6e3343e980b453facee1591b82
+  KSCrash: e4cda5c8612c5f9478defcf43418f24870d313f4
   LogEntries: a1f16e3c9edc0d6a52209fe6cd7281ab07fb7657
   lottie-ios: 836cdbba92f62f3c6a00e37a4ce485321fe317cf
   Masonry: a1a931a0d08870ed8ae415a2ea5ea68ebcac77df
@@ -538,7 +595,8 @@ SPEC CHECKSUMS:
   Popover: f811ed4eb4c4843d7bfff357816ed0d97c4ba69e
   Protobuf: d582fecf68201eac3d79ed61369ef45734394b9c
   RATreeView: 380cde0090cfde21dc6ac29137f49d3b768fdd28
-  React: 352f02f1db6e4744f9a758527e13e3fdefbbd6ba
+  React: 50ec928fd77a4bfd47f5509d179134fdd17e2178
+  react-native-blur: cad4d93b364f91e7b7931b3fa935455487e5c33c
   react-native-maps: 6a886202fb8af8568615501c0f9f933ca282a7a3
   ReactNativeSearchBar: 029f19e3e1cd3aac66f681a999ecb5efbf59a699
   Render: bb3ec7d0956ea409263fbfda5ff60b8ba16c9579
@@ -556,10 +614,12 @@ SPEC CHECKSUMS:
   RxCocoa: 84a08739ab186248c7f31ce4ee92d6f8a947d690
   RxDataSources: b3389acc5fe2eefb8fcd81a2b76a876ad08bc82a
   RxSwift: f9de85ea20cd2f7716ee5409fc13523dc638e4e4
+  Sentry: 546079394a729c35ba8c10332942c25f96cac921
+  SentryReactNative: f569ae75563f006638fbb3a45f1e29fd84ada584
   SnapKit: 1ca44df72cfa543218d177cb8aab029d10d86ea7
   SOCKit: c7376ac262bea9115b8f749358f762522a47d392
   SPTPersistentCache: 8bd1b9fa089f01cf7e0ac5dce340ca58187f2024
-  SwiftLint: 1134786caedd2caab0560d2f36b76414a5a56808
+  SwiftLint: e14651157288e9e01d6e1a71db7014fb5744a8ea
   SwiftOverlays: b7777568241804a0974134aa079e6450ff331a38
   SwiftyJSON: c2842d878f95482ffceec5709abc3d05680c0220
   ToolTipMenu: 43eba8f2f496e991761aaa093e69e0a8b1796be9
@@ -570,9 +630,9 @@ SPEC CHECKSUMS:
   Unbox: c8b2ab69d3337597b4a3f47a0538807dc12db670
   VMaskTextField: e77fe33633f999c5c38e70bed0afece0625624a4
   Wrap: 9cc7da7551bb81d0846cb3df9fb624c6c32d267d
-  yoga: c8a06e50634d2d2b08c9500b71f3b734a13aa360
+  yoga: 7b0269feb6b97ed7f9410a6490bd70014cea3a2b
   youtube-ios-player-helper: 21ab92db027c7ff86cb17a3843a3f6eafc8158d2
 
-PODFILE CHECKSUM: 3b9e17cc941e7d6bfe6d104c1b741376021d71b2
+PODFILE CHECKSUM: 7e3a671d6385c730402ba353f0a7c42467f1b561
 
 COCOAPODS: 1.3.1

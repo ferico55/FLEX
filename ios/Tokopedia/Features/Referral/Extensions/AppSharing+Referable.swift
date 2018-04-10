@@ -7,15 +7,15 @@
 //
 
 import Foundation
-class AppSharing:NSObject, Referable {
-    var desktopUrl: String {
+internal class AppSharing:NSObject, Referable {
+    internal var desktopUrl: String {
         return "https://itunes.apple.com/id/app/tokopedia/id1001394201"
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         return "home"
     }
-    var feature = "App"
-    var title = "Tokopedia, Satu Aplikasi untuk Semua Kebutuhan"
-    var buoDescription = "Mudahnya beli produk idaman, pulsa, token listrik, tiket liburan, hingga bayar berbagai tagihan, semua dimulai dari aplikasi Tokopedia. Kamu juga bisa mulai & kembangkan bisnis di sini. Yuk, download sekarang!"
-    var utm_campaign = "app"
+    internal var feature = "App"
+    internal var title = "Tokopedia, Satu Aplikasi untuk Semua Kebutuhan "
+    internal var buoDescription = "Mudahnya beli produk idaman, pulsa, token listrik, tiket liburan, hingga bayar berbagai tagihan, semua dimulai dari aplikasi Tokopedia. Kamu juga bisa mulai & kembangkan bisnis di sini. Yuk, download sekarang!"
+    internal var utmCampaign = "app"
 }

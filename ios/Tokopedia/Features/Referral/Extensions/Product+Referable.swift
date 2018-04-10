@@ -8,24 +8,24 @@
 
 import Foundation
 extension Product: Referable {    
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         return self.data.info.product_url
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         return "product/" + self.data.info.product_id
     }
-    var feature: String {
+    internal var feature: String {
         return "Product"
     }
-    var title: String {
+    internal var title: String {
         let name = self.data.info.product_name ?? ""
         let shop_name = self.data.shop_info.shop_name ?? ""
         return name + " - " + shop_name + " | Tokopedia "
     }
-    var buoDescription: String {
+    internal var buoDescription: String {
         return self.data.info.product_description
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "product"
     }
 }

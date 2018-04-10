@@ -12,21 +12,21 @@ import RxSwift
 import RxCocoa
 
 class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
-    private var disposeBag = DisposeBag()
-    
-    override func construct(state: FeedDetailState?, size _: CGSize) -> NodeType {
+    override func construct(state: FeedDetailState?, size: CGSize) -> NodeType {
         guard let state = state else { return NilNode() }
         
         let shareButton = Node<UIButton>(identifier: "share") { button, layout, _ in
             button.setTitle("Bagikan", for: .normal)
             button.backgroundColor = .white
             button.titleLabel?.font = .largeThemeSemibold()
-            button.setTitleColor(UIColor.tpSecondaryBlackText(), for: .normal)
+            button.setTitleColor(.tpSecondaryBlackText(), for: .normal)
             
             button.rx.tap
-                .subscribe(onNext: { [weak self] in
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
-                    ReferralManager().share(object: state.source.shopState, from: UIApplication.topViewController()!, anchor: button)
+                .subscribe(onNext: { _ in
+                    if let topViewController = UIApplication.topViewController() {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Share - Product List")
+                        ReferralManager().share(object: state.source.shopState, from: topViewController, anchor: button)
+                    }
                 })
                 .disposed(by: self.rx_disposeBag)
             
@@ -57,10 +57,12 @@ class FeedDetailActionComponentView: ComponentView<FeedDetailState> {
                 button.setTitleColor(.white, for: .normal)
                 button.rx.tap
                     .subscribe(onNext: { [weak self] in
-                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Kunjungi Toko - Shop")
-                        TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
+                        if let url = URL(string: state.source.shopState.shopURL) {
+                            AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "Kunjungi Toko - Shop")
+                            TPRoutes.routeURL(url)
+                        }
                     })
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: self.rx_disposeBag)
                 
                 layout.height = 51.0
                 layout.flexGrow = 1

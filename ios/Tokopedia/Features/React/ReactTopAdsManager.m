@@ -36,7 +36,7 @@ RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
 RCT_EXPORT_METHOD(requestTopAdsHeadline:(NSString*)departmentId didSuccess:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {
     TopAdsService *topAdsService = [TopAdsService new];
     
-    [topAdsService getTopAdsJSONWithTopAdsFilter:[TopAdsFilter getTopAdsHeadlineCategoryFilterWithDepartmentId:departmentId] onSuccess:^(NSDictionary<NSString *,id> *promoResults) {
+    [topAdsService getTopAdsJSONWithTopAdsFilter:[TopAdsFilter getTopAdsHeadlineCategoryFilterWithDepartmentId:departmentId source: TopAdsSourceDirectory] onSuccess:^(NSDictionary<NSString *,id> *promoResults) {
         resolve(promoResults);
     } onFailure:^(NSError *error) {
         reject(@(error.code).stringValue, error.localizedDescription, error);

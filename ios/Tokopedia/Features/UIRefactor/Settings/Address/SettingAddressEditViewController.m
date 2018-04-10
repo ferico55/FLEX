@@ -15,22 +15,24 @@
 #import "AddressViewController.h"
 #import "TKPDTextView.h"
 #import "TokopediaNetworkManager.h"
-#import "NavigateViewController.h"
 #import "RequestObject.h"
 #import "RequestEditAddress.h"
 #import "RequestAddAddress.h"
 #import "Tokopedia-Swift.h"
+#import <CoreLocation/CoreLocation.h>
+
+@import SwiftOverlays;
 
 #pragma mark - Setting Address Edit View Controller
 @interface SettingAddressEditViewController ()
 <
     SettingAddressLocationViewDelegate,
+    CLLocationManagerDelegate,
     UITableViewDataSource,
     UITableViewDelegate,
     UIScrollViewDelegate,
     UITextFieldDelegate,
-    UITextViewDelegate,
-    TKPPlacePickerDelegate
+    UITextViewDelegate
 >
 {
     NSInteger _type;
@@ -55,6 +57,13 @@
     UIActivityIndicatorView *_act;
     
     ShipmentKeroToken *_keroToken;
+    
+    BOOL hasSelectedDistrict;
+    BOOL hasSelectedLocation;
+    
+    CLLocationManager *locationManager;
+    double userLatitude;
+    double userLongitude;
 }
 
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
@@ -147,14 +156,28 @@
     };
     
     [_textfieldpostcode bk_addEventHandler:^(UITextField* textField) {
-        textField.text = @"";
+        _textfieldpostcode.text = @"";
         wSelf.zipcodeRecommendation.textField = textField;
     } forControlEvents:UIControlEventEditingDidBegin];
+    
+    [_textfieldpostcode bk_addEventHandler:^(UITextField* textField) {
+        [wSelf.table reloadData];
+    } forControlEvents:UIControlEventEditingDidEnd];
     
     _zipcodeRecommendation.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 200);
     _textfieldpostcode.inputAccessoryView = _zipcodeRecommendation.tableView;
     
     _keroToken = [_data objectForKey:@"keroToken"];
+    
+    // get current location
+    userLatitude = -6.1757247;
+    userLongitude = 106.8265106;
+    locationManager = [CLLocationManager new];
+    locationManager.delegate = self;
+    locationManager.distanceFilter = kCLDistanceFilterNone;
+    locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+    [locationManager requestWhenInUseAuthorization];
+    [locationManager startUpdatingLocation];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -247,11 +270,18 @@
             [wSelf.zipcodeRecommendation setZipcodeCellsWithPostalCodes:district.zipCodes];
             wSelf.zipcodeList = district.zipCodes;
             
+            if (district.zipCodes.count > 0) {
+                wSelf.textfieldpostcode.text = district.zipCodes[0];
+            }
+            
             NSString *districtLabel = wSelf.selectedDistrict.districtLabel ?: list.districtLabel;
             
             [_buttondistrict setTitle:districtLabel forState:UIControlStateNormal];
             wSelf.zipcodeRecommendation.tableView.frame = CGRectMake(0, 0, SCREEN_WIDTH, 200);
             wSelf.textfieldpostcode.inputAccessoryView = wSelf.zipcodeRecommendation.tableView;
+            
+            hasSelectedDistrict = YES;
+            [wSelf.table reloadData];
         };
         UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:controller];
         [self presentViewController:navigationController animated:YES completion:nil];
@@ -277,8 +307,53 @@
 }
 
 - (IBAction)tapMap:(id)sender {
-    AddressFormList *address = [self getAddressWithAddressID:nil];
-    [NavigateViewController navigateToMap:CLLocationCoordinate2DMake([_latitude doubleValue], [_longitude doubleValue]) type:TypePlacePickerTypeEditPlace infoAddress:address.viewModel fromViewController:self ];
+    if (hasSelectedLocation) {
+        [self openMapWithLatitude:[_latitude doubleValue] longitude:[_longitude doubleValue]];
+    }
+    else {
+        if ([self.textfieldpostcode.text isEqualToString:@""]) {
+            [StickyAlertView showErrorMessage:@[@"Format kode pos tidak sesuai."]];
+            return;
+        }
+        AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+        NSString *districtName = (self.selectedDistrict.districtLabel ?: list.districtLabel) ?: @"";
+        
+        __weak typeof(self) wSelf = self;
+        [SwiftOverlays showBlockingWaitOverlay];
+        [TokopointsService geocodeWithAddress:districtName latitudeLongitude:nil onSuccess:^(GeocodeResponse *response) {
+            [SwiftOverlays removeAllBlockingOverlays];
+            if (response.latitude != 0 && response.longitude != 0) {
+                [wSelf openMapWithLatitude:response.latitude longitude:response.longitude];
+            }
+            else {
+                [wSelf openMapWithLatitude:userLatitude longitude:userLongitude];
+            }
+        } onFailure:^(NSError *error) {
+            [SwiftOverlays removeAllBlockingOverlays];
+            [wSelf openMapWithLatitude:userLatitude longitude:userLongitude];
+        }];
+    }
+}
+
+- (void)openMapWithLatitude:(CGFloat)latitude longitude:(CGFloat)longitude {
+    AddressFormList *list = [_data objectForKey:kTKPDPROFILE_DATAADDRESSKEY];
+    NSString *districtId = (self.selectedDistrict.districtID ?: list.district_id) ?: @"";
+    
+    __weak typeof(self) wSelf = self;
+    MapViewController *mv = [[MapViewController alloc] initWithCoordinate:CLLocationCoordinate2DMake(latitude, longitude) districtId:districtId postalCode:self.textfieldpostcode.text onLocationSelected:^(NSString *name, CLLocationCoordinate2D coordinate) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            wSelf.buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
+            [wSelf.buttonMapLocation setCustomAttributedText:[name isEqualToString:@""] ? @"Tandai lokasi Anda" : name];
+            wSelf.opsionalLabel.hidden = YES;
+            wSelf.constraintBottomMapName.constant = 0;
+            
+            wSelf.longitude = [NSString stringWithFormat:@"%f", coordinate.longitude];
+            wSelf.latitude = [NSString stringWithFormat:@"%f", coordinate.latitude];
+            
+            hasSelectedLocation = true;
+        });
+    }];
+    [self.navigationController pushViewController:mv animated:YES];
 }
 
 - (IBAction)gesture:(id)sender {
@@ -286,21 +361,6 @@
     [_activetextview resignFirstResponder];
     [_textviewaddress resignFirstResponder];
     [_datainput setObject:_textviewaddress.text forKey:kTKPDPROFILESETTING_APIADDRESSSTREETKEY];
-}
-
-#pragma mark - Picker Place Delegate
--(void)pickAddress:(GMSAddress *)address suggestion:(NSString *)suggestion longitude:(double)longitude latitude:(double)latitude mapImage:(UIImage *)mapImage
-{
-    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
-    NSString *addressStreet = [tkpAddressStreet getStreetAddress:address.thoroughfare];
-
-    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    [_buttonMapLocation setCustomAttributedText:[addressStreet isEqualToString:@""]?@"Tandai lokasi Anda":addressStreet];
-    _opsionalLabel.hidden = YES;
-    _constraintBottomMapName.constant = 0;
-    
-    _longitude = [[NSNumber numberWithDouble:longitude] stringValue];
-    _latitude = [[NSNumber numberWithDouble:latitude]stringValue];
 }
 
 #pragma mark - Request Action Submit
@@ -417,6 +477,10 @@
 -(void)setDefaultData:(NSDictionary*)data
 {
     _data = data;
+    _longitude = @"106.8265106";
+    _latitude = @"-6.1757247";
+    hasSelectedDistrict = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT;
+    hasSelectedLocation = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY] integerValue] == TYPE_ADD_EDIT_PROFILE_EDIT;
     if (data) {
         _type = [[_data objectForKey:kTKPDPROFILE_DATAEDITTYPEKEY]integerValue];
         
@@ -449,28 +513,18 @@
         _buttondistrict.enabled = YES;
         
         if ([list.longitude integerValue] != 0) {
-            [[GMSGeocoder geocoder] reverseGeocodeCoordinate:CLLocationCoordinate2DMake([list.latitude doubleValue], [list.longitude doubleValue]) completionHandler:^(GMSReverseGeocodeResponse *response, NSError *error) {
-                
-                if (error != nil){
-                    return;
-                }
-                
-                if (response == nil|| response.results.count == 0) {
+            _longitude = list.longitude;
+            _latitude = list.latitude;
+            
+            [TokopointsService geocodeWithAddress:nil latitudeLongitude:[NSString stringWithFormat:@"%@,%@", list.latitude, list.longitude] onSuccess:^(GeocodeResponse *response) {
+                if (![response.shortAddress isEqualToString:@""]) {
                     _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_buttonMapLocation setCustomAttributedText:@"Tandai lokasi Anda"];
-
-                } else {
-                    GMSAddress *address = [response results][0];
-                    TKPAddressStreet *tkpAddressStreet = [TKPAddressStreet new];
-                    NSString *addressString = [tkpAddressStreet getStreetAddress:address.thoroughfare];
-                    _buttonMapLocation.titleLabel.lineBreakMode = NSLineBreakByWordWrapping;
-                    [_buttonMapLocation setCustomAttributedText:addressString];
+                    [_buttonMapLocation setCustomAttributedText:response.shortAddress];
+                    _opsionalLabel.hidden = YES;
+                    _constraintBottomMapName.constant = 0;
                 }
-                
-
-                _opsionalLabel.hidden = YES;
-                _constraintBottomMapName.constant = 0;
-
+            } onFailure:^(NSError *error) {
+                [StickyAlertView showErrorMessage:@[error.localizedDescription]];
             }];
         }
     }
@@ -633,7 +687,7 @@
             return _section1Cells.count;
             break;
         case 2:
-            return _section2Cells.count;
+            return hasSelectedDistrict && ![_textfieldpostcode.text isEqualToString:@""] ? _section2Cells.count : _section2Cells.count - 1;
             break;
         case 3:
             return _section3Cells.count;
@@ -673,4 +727,11 @@
     sectionCount = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC||_type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO)?3:4;
     return sectionCount;
 }
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations {
+    userLatitude = [locations lastObject].coordinate.latitude;
+    userLongitude = [locations lastObject].coordinate.longitude;
+    [locationManager stopUpdatingLocation];
+}
+
 @end

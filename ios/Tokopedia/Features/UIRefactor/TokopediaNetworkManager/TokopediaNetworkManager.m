@@ -15,6 +15,9 @@
 #import "Tokopedia-Swift.h"
 #import "NSOperationQueue+SharedQueue.h"
 
+@import FirebaseRemoteConfig;
+@import Crashlytics;
+
 #define TkpdNotificationForcedLogout @"NOTIFICATION_FORCE_LOGOUT"
 
 @implementation TokopediaNetworkManager {
@@ -25,14 +28,15 @@
     NSInteger _requestCount;
     NSDictionary *_parameter;
     NSOperationQueue *_operationQueue;
+    RequestErrorHandler *_errorHandler;
 }
+
 @synthesize tagRequest;
 
 - (id)init {
     self = [super init];
     
     if(self != nil) {
-        
         _operationQueue = [NSOperationQueue new];
         _isUsingDefaultError = YES;
     }
@@ -157,6 +161,16 @@
 
 - (void)showErrorAlert:(NSError*)error {
     NSArray *errors;
+    
+    NSHTTPURLResponse *response = error.userInfo[AFRKNetworkingOperationFailingURLResponseErrorKey];
+    
+    if (response.statusCode == 403) {
+        if (FIRRemoteConfig.remoteConfig.shouldShowForbiddenScreen) {
+            [UIApplication.topViewController presentViewController:[ForbiddenViewController new] animated:YES completion:nil];
+        }
+        return;
+    }
+    
     if(error.code == -1011 || error.code == -999) {
         errors = @[@"Terjadi kendala pada server. Mohon coba beberapa saat lagi."];
     } else if (error.code == -1009) {
@@ -178,7 +192,7 @@
                  onSuccess:(void(^)(RKMappingResult* successResult, RKObjectRequestOperation* operation))successCallback
                  onFailure:(void(^)(NSError* errorResult)) errorCallback {
     if(_objectRequest.isExecuting) return;
-
+    
     [RKMIMETypeSerialization registerClass:[RKNSJSONSerialization class] forMIMEType:@"application/vnd.api+json"];
     
     NSDictionary* bindedParameters = [parameter autoParameters];
@@ -193,14 +207,14 @@
                                                                                              statusCodes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(200, 100)]];
     [_objectManager addResponseDescriptor:responseDescriptorStatus];
     
-
+    
     NSString *appVersion = [UIApplication getAppVersionString];
     [_objectManager.HTTPClient setDefaultHeader:@"X-APP-VERSION" value:appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Language" value:@"id-ID"];
     NSString *xDevice = [NSString stringWithFormat:@"ios-%@",appVersion];
     [_objectManager.HTTPClient setDefaultHeader:@"X-Device" value:xDevice];
     [_objectManager.HTTPClient setDefaultHeader:@"Accept-Encoding" value:@"gzip"];
-
+    
     RKManagedObjectRequestOperation *operation = nil;
     
     if(self.isUsingHmac) {
@@ -210,7 +224,7 @@
         NSDictionary* authorizedHeaders = [hmac authorizedHeaders];
         
         [authorizedHeaders bk_each:^(NSString* key, NSString* value) {
-             [_objectManager.HTTPClient setDefaultHeader:key value:value];
+            [_objectManager.HTTPClient setDefaultHeader:key value:value];
         }];
         
         [header bk_each:^(NSString *key, NSString *value) {
@@ -249,38 +263,49 @@
         NSLog(@"Request body %@", [[NSString alloc] initWithData:[operation.HTTPRequestOperation.request HTTPBody]  encoding:NSUTF8StringEncoding]);
 #endif
         
+        [Crashlytics.sharedInstance setObjectValue:operation.HTTPRequestOperation.responseString forKey:@"Response API"];
+        [Crashlytics.sharedInstance setObjectValue:parameter forKey:@"Request parameter"];
+        [Crashlytics.sharedInstance setObjectValue:operation.HTTPRequestOperation.request.URL forKey:@"Request URL"];
+        [Crashlytics.sharedInstance setObjectValue:header forKey:@"Request header"];
         NSDictionary* resultDict = mappingResult.dictionary;
         NSObject* mappedResult = [resultDict objectForKey:@""];
         
         if ([mappedResult respondsToSelector:@selector(status)]) {
             NSString* status = [mappedResult performSelector:@selector(status)];
             
-            if([status isEqualToString:@"OK"]) {
+            if ([status isEqualToString:@"OK"]) {
                 successCallback(mappingResult, operation);
-            } else if ([status isEqualToString:@"INVALID_REQUEST"]) {
-                //TODO :: Need to handle this status.
-            } else if ([status isEqualToString:@"UNDER_MAINTENANCE"]) {
-                [self requestMaintenance];
-            } else if ([status isEqualToString:@"TOO_MANY_REQUEST"]) {
-                [self requestMaintenance];
-            } else if ([status isEqualToString:@"REQUEST_DENIED"]) {
+            } else if ([status isEqualToString:@"INVALID_REQUEST"] || [status isEqualToString:@"REQUEST_DENIED"]) {
                 NSArray *responseDescriptors = _objectRequest.responseDescriptors;
                 RKResponseDescriptor *response = responseDescriptors[0];
                 NSString *path = response.pathPattern;
                 
-                if (![path isEqualToString:@"/v4/session/make_login.pl"]) {
-                    AuthenticationService *authService = AuthenticationService.shared;
-                    [authService getNewTokenOnCompletion:^(OAuthToken * _Nullable token, NSError * _Nullable error) {
-                        if (error == nil) {
-                            [authService reloginAccount];
-                        } else {
-                            NSString *baseURL = [response.baseURL absoluteString];
-                            
-                            [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", baseURL, path]];
-                            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
-                        }
-                    }];
+                NSString *baseURL = [response.baseURL absoluteString];
+                NSInteger requestCountMax = _maxTries?:kTKPDREQUESTCOUNTMAX;
+                
+                if (![path isEqualToString:@"/v4/session/make_login.pl"]  && _requestCount < requestCountMax) {
+                    _requestCount = requestCountMax;
+                    [RequestErrorHandler handleForceLogoutWithResponseType:status
+                                                                 urlString:[NSString stringWithFormat:@"%@%@", baseURL, path]
+                                                                 onSuccess:^{
+                                                                     [self
+                                                                      requestWithBaseUrl:baseUrl
+                                                                      path:path
+                                                                      method:method
+                                                                      header:header
+                                                                      parameter:parameter
+                                                                      mapping:mapping
+                                                                      onSuccess:successCallback
+                                                                      onFailure:errorCallback];
+                                                                 }];
+                } else {
+                    [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", baseURL, path]];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:@{}];
                 }
+            } else if ([status isEqualToString:@"UNDER_MAINTENANCE"] || [status isEqualToString:@"TOO_MANY_REQUEST"]) {
+                [RequestErrorHandler redirectToMaintenance];
+            } else {
+                
             }
         } else {
             successCallback(mappingResult, operation);
@@ -317,6 +342,7 @@
     } else {
         [_operationQueue addOperation:_objectRequest];
     }
+    
     NSTimeInterval timeInterval = _timeInterval ? _timeInterval : kTKPDREQUEST_TIMEOUTINTERVAL;
     
     __weak typeof(self) weakSelf = self;
@@ -324,7 +350,6 @@
         [weakSelf requestCancel];
     } repeats:NO];
     [[NSRunLoop currentRunLoop] addTimer:_requestTimer forMode:NSRunLoopCommonModes];
-
 }
 
 @end

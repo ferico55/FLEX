@@ -21,5 +21,10 @@
 - (void)popNavigation;
 - (void)sendRefreshEvent;
 - (void)sendRedirectHomeTabEvent;
+- (void)didTapAturOnTopChat;
+- (void)didTapInfoOnGroupChat;
+- (void)didTapShareOnGroupChat:(NSInteger)shareTag;
+- (void)sendFavoriteShopEvent;
+- (void)sendProfileEditedEvent;
 
 @end

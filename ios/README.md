@@ -14,49 +14,15 @@ Open `Tokopedia.xcworkspace` and build using Xcode
 ## React Native devs
 Write JS codes in the [submodule repo](https://github.com/tokopedia/reactnative-apps)
 
-#Third Party Library :
-- Restkit + AFNetworking (https://github.com/RestKit/RestKit)
-A framework for consuming and modelling web resource
-- BlocksKit (https://github.com/zwaldowski/BlocksKit)
-Utilites to make coding easier and straightforward
-- Tweaks (https://github.com/facebook/Tweaks)
-Adjust parameters and configuration with tweaks
-- Rollout.io
-Patch bugs, add new analytics, announce something, instantly! Without waiting for AppStore Review
-- Reveal (http://revealapp.com/)
-Inspect, modifying, debugging in runtime
+# Code Review
+We use SwiftLint to enforce consistent coding style, and you'll get errors when your code does not conform to the rules.
 
-Other Library :
-- NJKWebViewProgress
-- TTTAttributedLabel
-- UITableView+FDTemplateLayoutCell
-- FLEX
-- ComponentKit
-- EAIntroView
-- JLPermissions/Notification
-- GoogleAppIndexing
-- GoogleTagManager
-- GoogleMaps
-- Google/SignIn
-- FBSDKLoginKit
-- AppsFlyer
-- Localytics
-- Google/Analytics
+Some rules are automatically fixable by running this command in your terminal:
+```bash
+ios/Pods/SwiftLint/swiftlint autocorrect --path /path/to/filename
+```
 
-Important Tools to download :
-- Xcode 7.3
-- SourceTree
-- Charles
-- FileMerge
-
-
-Inspiration : https://github.com/vsouza/awesome-ios
-
-#Code Guideline 
-What will be reviewed when you submit your code to be merged : 
-- It’s not adviced to use secureStorage directly
-- Initialization dictionary should be clean, it must not contain nil value
-- If using method `objectAtIndex`, please be sure to check if array is not nil
+If have any suggestions about the rules, you can contact `@samuel.edwin` or `@renny.runiawati` on Slack.
 
 #API Docs 
 https://wiki.tokopedia.net/Tokopedia_Web_Service_v4_Documentation

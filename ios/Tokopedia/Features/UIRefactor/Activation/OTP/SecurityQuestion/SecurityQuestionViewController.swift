@@ -7,12 +7,13 @@
 //
 
 import Foundation
-import UIKit
-import TPKeyboardAvoiding
-import VMaskTextField
 import RestKit
+import TPKeyboardAvoiding
+import TTTAttributedLabel
+import UIKit
+import VMaskTextField
 
-class SecurityQuestionObjects: NSObject {
+internal class SecurityQuestionObjects: NSObject {
     var userID: String = ""
     var deviceID: String = ""
     var phoneNumber: String = ""
@@ -23,7 +24,7 @@ class SecurityQuestionObjects: NSObject {
 }
 
 @objc(SecurityQuestionViewController)
-class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
+internal class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
     /*
      questionType1 = "1" => Phone Number Question
      questionType1 = "2" => Account Number Question
@@ -31,12 +32,12 @@ class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
      questionType2 = "1" => OTP to email
      questionType2 = "2" => OTP to phone
      */
-    var questionType1: String!
-    var questionType2: String!
+    internal var questionType1: String!
+    internal var questionType2: String!
     
     fileprivate let securityQuestionObject: SecurityQuestionObjects!
     
-    var successAnswerCallback: ((SecurityAnswer) -> Void)!
+    public var successAnswerCallback: ((SecurityAnswer) -> Void)!
     
     @IBOutlet fileprivate var questionViewType1: UIView!
     @IBOutlet fileprivate var questionTitle: UILabel!
@@ -58,7 +59,7 @@ class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet fileprivate var otpInputField: VMaskTextField!
     
-    lazy var networkManager: TokopediaNetworkManager = {
+    lazy private var networkManager: TokopediaNetworkManager = {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
         
@@ -90,7 +91,7 @@ class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
     
     fileprivate var changePhoneNumberStatus: Bool = false
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Pertanyaan Keamanan"
         
@@ -101,16 +102,16 @@ class SecurityQuestionViewController: UIViewController, UITextFieldDelegate {
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Kembali", style: .plain, target: self, action: #selector(self.didTapCancelButton))
     }
     
-    init(securityQuestionObject: SecurityQuestionObjects) {
+    public init(securityQuestionObject: SecurityQuestionObjects) {
         self.securityQuestionObject = securityQuestionObject
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
         AnalyticsManager.trackScreenName("Security Question Page")

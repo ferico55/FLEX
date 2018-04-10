@@ -10,4 +10,6 @@
 
 @interface PromoViewController : UIViewController
 
+@property(nonatomic, strong) NSString* subCategorySlug;
+
 @end

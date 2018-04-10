@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_0" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="ForbiddenViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="textView" destination="7QG-f7-cYC" id="w4b-9E-5xJ"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="forbidden" translatesAutoresizingMaskIntoConstraints="NO" id="TZ7-4R-YOu">
+                    <rect key="frame" x="39" y="100" width="242" height="138"/>
+                </imageView>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Peringatan!" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aBe-3h-MJi">
+                    <rect key="frame" x="104" y="262.5" width="112" height="27"/>
+                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="22"/>
+                    <color key="textColor" red="0.40784313725490196" green="0.40784313725490196" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                    <nil key="highlightedColor"/>
+                </label>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3cN-l2-d5H">
+                    <rect key="frame" x="48.5" y="490" width="223" height="48"/>
+                    <color key="backgroundColor" red="0.25882352941176467" green="0.70980392156862748" blue="0.28627450980392155" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="223" id="SKr-8k-uaM"/>
+                        <constraint firstAttribute="height" constant="48" id="oaV-bZ-dzd"/>
+                    </constraints>
+                    <state key="normal" title="Coba Lagi">
+                        <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </state>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <action selector="buttonTap:" destination="-1" eventType="touchUpInside" id="Iln-qV-jye"/>
+                    </connections>
+                </button>
+                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="7QG-f7-cYC">
+                    <rect key="frame" x="13" y="305" width="293" height="163"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <color key="tintColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="163" id="9gN-JD-5uL"/>
+                        <constraint firstAttribute="width" constant="293" id="f6Y-0l-FrB"/>
+                    </constraints>
+                    <color key="textColor" red="0.40784313725490196" green="0.40784313725490196" blue="0.40784313725490196" alpha="1" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                </textView>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="7QG-f7-cYC" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="4kw-eq-WRl"/>
+                <constraint firstItem="TZ7-4R-YOu" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="80" id="5DO-pq-Nfe"/>
+                <constraint firstItem="7QG-f7-cYC" firstAttribute="top" secondItem="aBe-3h-MJi" secondAttribute="bottom" constant="15.5" id="O7J-EQ-CSF"/>
+                <constraint firstItem="3cN-l2-d5H" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="-30" id="ROE-Ck-sfl"/>
+                <constraint firstItem="aBe-3h-MJi" firstAttribute="top" secondItem="TZ7-4R-YOu" secondAttribute="bottom" constant="24.5" id="TJo-vk-9tj"/>
+                <constraint firstItem="3cN-l2-d5H" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="mal-oT-lxy"/>
+                <constraint firstItem="aBe-3h-MJi" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="yAL-eL-hB5"/>
+                <constraint firstItem="TZ7-4R-YOu" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="zkA-J1-we3"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="forbidden" width="242" height="138"/>
+    </resources>
+</document>

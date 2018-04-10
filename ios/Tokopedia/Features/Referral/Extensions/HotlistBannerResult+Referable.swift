@@ -8,24 +8,24 @@
 
 import Foundation
 extension HotlistBannerResult: Referable {    
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         let title = (self.info.alias_key ?? "")
         return NSString.tokopediaUrl() + "/hot/" + title
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         let title = (self.info.alias_key ?? "")
         return "hot/" + title
     }
-    var feature: String {
+    internal var feature: String {
         return "Hotlist"
     }
-    var title: String {
+    internal var title: String {
         return "Jual " +  self.info.title + " | Tokopedia "
     }
-    var buoDescription: String {
+    internal var buoDescription: String {
         return self.info.hotlist_description
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "hotlist"
     }
 }

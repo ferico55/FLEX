@@ -8,29 +8,27 @@
 
 import Foundation
 
-class TokoCashMoveToSaldoNavigator {
+public class TokoCashMoveToSaldoNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toHistory() {
+    public func toHistory() {
         navigationController.popViewController(animated: true)
     }
     
-    func toMoveToSaldoSuccess(_ response: TokoCashMoveToSaldoResponse) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashMoveToSaldoSuccessViewConstroller.self)
+    public func toMoveToSaldoSuccess(_ response: TokoCashMoveToSaldoResponse) {
+        let vc = TokoCashMoveToSaldoSuccessViewController()
         let navigator = TokoCashMoveToSaldoSuccessNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashMoveToSaldoSuccessViewModel(status: response, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toMoveToSaldoFailed() {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashMoveToSaldoFailedViewConstroller.self)
+    public func toMoveToSaldoFailed() {
+        let vc = TokoCashMoveToSaldoFailedViewController()
         let navigator = TokoCashMoveToSaldoFailedNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashMoveToSaldoFailedViewModel(navigator: navigator)
         navigationController.pushViewController(vc, animated: true)

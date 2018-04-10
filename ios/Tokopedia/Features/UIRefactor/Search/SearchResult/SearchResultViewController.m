@@ -103,6 +103,7 @@ ProductCellDelegate
 @property (assign, nonatomic) NSInteger hascatalog;
 @property (strong, nonatomic) UIRefreshControl *refreshControlNoResult;
 @property (strong, nonatomic) PromoResult *topAdsHeadlineData;
+@property (nonatomic) BOOL allowRequestTopAdsHeadline;
 
 @end
 
@@ -261,7 +262,7 @@ ProductCellDelegate
     _networkManager = [TokopediaNetworkManager new];
     _networkManager.isUsingHmac = YES;
     moyaNetworkManager = [[ProductAndWishlistNetworkManager alloc]init];
-    
+    _allowRequestTopAdsHeadline = YES;
     [self requestSearch];
     
     [_fourButtonsToolbar setHidden:NO];
@@ -500,6 +501,7 @@ ProductCellDelegate
         
         [_refreshControl beginRefreshing];
         
+        _allowRequestTopAdsHeadline = YES;
         [self requestSearch];
         [_act startAnimating];
     }
@@ -637,9 +639,9 @@ ProductCellDelegate
     [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(_searchNoResultScrollView.mas_top).offset(300);
         if (IS_IPAD) {
-            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width- 288]);
-            make.left.equalTo(_searchNoResultScrollView.mas_left).offset(144);
-            make.right.equalTo(_searchNoResultScrollView.mas_right).offset(-144);
+            make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width- 208]);
+            make.left.equalTo(_searchNoResultScrollView.mas_left).offset(104);
+            make.right.equalTo(_searchNoResultScrollView.mas_right).offset(-104);
         } else {
             make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
         }
@@ -681,11 +683,13 @@ ProductCellDelegate
                               @"search" : _suggestion};
     [self setData:newData];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"changeNavigationTitle" object:_suggestion];
+    _allowRequestTopAdsHeadline = YES;
     [self requestSearch];
 }
 
 #pragma mark - LoadingView Delegate
 - (IBAction)pressRetryButton:(id)sender {
+    _allowRequestTopAdsHeadline = YES;
     [self requestSearch];
     _isFailRequest = NO;
     [_collectionView reloadData];
@@ -1133,12 +1137,24 @@ ProductCellDelegate
 }
 
 - (void)requestTopAdsHeadline {
-    [_topAdsService requestTopAdsHeadlineWithKeyword:[_params objectForKey:@"search"]?:@"" onSuccess:^(PromoResult *topAdsHeadlineData) {
-        _topAdsHeadlineData = topAdsHeadlineData;
-        [_collectionView reloadData];
-    } onFailure:^(NSError * error) {
-        [_collectionView reloadData];
-    }];
+    if (_allowRequestTopAdsHeadline) {
+        _allowRequestTopAdsHeadline = NO;
+        if (_isFromDirectory) {
+            [_topAdsService requestTopAdsHeadlineWithDepartmentId: [_params objectForKey:@"sc"]?:@"" source: TopAdsSourceDirectory onSuccess:^(PromoResult *topAdsHeadlineData) {
+                _topAdsHeadlineData = topAdsHeadlineData;
+                [_collectionView reloadData];
+            } onFailure:^(NSError * error) {
+                [_collectionView reloadData];
+            }];
+        } else {
+            [_topAdsService requestTopAdsHeadlineWithKeyword:[_params objectForKey:@"search"]?:@"" source: TopAdsSourceSearch onSuccess:^(PromoResult *topAdsHeadlineData) {
+                _topAdsHeadlineData = topAdsHeadlineData;
+                [_collectionView reloadData];
+            } onFailure:^(NSError * error) {
+                [_collectionView reloadData];
+            }];
+        }
+    }
 }
 
 - (void)promoDidScrollToPosition:(NSNumber *)position atIndexPath:(NSIndexPath *)indexPath {

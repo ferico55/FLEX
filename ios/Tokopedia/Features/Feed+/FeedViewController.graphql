@@ -1,5 +1,5 @@
-query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
-	feed(limit: $limit, cursor: $cursor, userID: $userID) {
+query Feeds($userID: Int!, $limit: Int!, $cursor: String, $source: String) {
+	feed(limit: $limit, cursor: $cursor, userID: $userID, source: $source) {
 		data {
 			id
 			create_time
@@ -21,12 +21,13 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 			}
 			content {
 				type
+				display
 				total_product
 				products {
 					id
 					name
 					price
-                    price_int
+					price_int
 					image
 					image_single
 					wholesale {
@@ -126,7 +127,7 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 						app_url
 						image_url
 						price
-                        price_int
+						price_int
 						recommendation_type
 					}
 				}
@@ -187,7 +188,8 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 				kolrecommendation {
 					index
 					headerTitle
-	    			exploreLink
+					exploreLink
+					exploreText
 					kols {
 						userName
 						userId
@@ -209,6 +211,73 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 					click_url
 					click_applink
 				}
+				topads {
+					id
+					ad_ref_key
+					redirect
+					sticker_id
+					sticker_image
+					product_click_url
+					shop_click_url
+					product {
+						id
+						name
+						image {
+							m_url
+							s_url
+							xs_url
+							m_ecs
+							s_ecs
+							xs_ecs
+						}
+						uri
+						relative_uri
+						price_format
+						count_talk_format
+						count_review_format
+						category {
+							id
+						}
+						product_preorder
+						product_wholesale
+						free_return
+						product_cashback
+						product_cashback_rate
+						product_rating
+					}
+					shop {
+						id
+						name
+						domain
+						tagline
+						location
+						city
+						image_product {
+							product_id
+							product_name
+							image_url
+						}
+						image_shop {
+							cover_ecs
+							s_ecs
+							xs_ecs
+							s_url
+							xs_url
+						}
+						gold_shop
+						lucky_shop
+						shop_is_official
+						owner_id
+						is_owner
+						badges {
+							title
+							image_url
+						}
+						uri
+						gold_shop_badge
+					}
+					applinks
+				}
 			}
 		}
 		links {
@@ -224,11 +293,11 @@ query Feeds($userID: Int!, $limit: Int!, $cursor: String) {
 
 mutation DoLikeKOLPost($idPost: Int!, $action: Int!) {
 	do_like_kol_post(idPost: $idPost, action: $action) {
-        error
-        data {
-            success
-        }
-    }
+		error
+		data {
+			success
+		}
+	}
 }
 
 mutation DoFollowKOL($userID: Int!, $action: Int!) {

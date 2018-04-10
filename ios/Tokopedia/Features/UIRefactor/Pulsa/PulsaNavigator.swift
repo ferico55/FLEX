@@ -6,19 +6,19 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import Foundation
-import ContactsUI
 import AddressBookUI
+import ContactsUI
+import Foundation
 
-class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
-    var controller: UIViewController!
-    var pulsaView: PulsaView!
+internal class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
+    internal var controller: UIViewController!
+    internal var pulsaView: PulsaView!
     
-    override init() {
+    internal override init() {
         super.init()
     }
     
-    func navigateToAddressBook() {
+    internal func navigateToAddressBook() {
         if #available(iOS 9.0, *) {
             let contactPicker = CNContactPickerViewController()
             
@@ -38,6 +38,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToPulsaProduct(_ products: [PulsaProduct], selectedOperator: PulsaOperator) {
+        guard let navigationController = self.controller.navigationController else { return }
         let controller = PulsaProductViewController()
         
         controller.products = products.sorted(by: {
@@ -52,10 +53,11 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         controller.selectedOperator = selectedOperator
         
         controller.hidesBottomBarWhenPushed = true
-        self.controller.navigationController!.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     func navigateToPulsaOperator(_ operators: [PulsaOperator]) {
+        guard let navigationController = self.controller.navigationController else { return }
         let controller = PulsaOperatorViewController()
         
         controller.didTapOperator = { [unowned self] selectedOperator in
@@ -67,7 +69,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
         })
         
         controller.hidesBottomBarWhenPushed = true
-        self.controller.navigationController!.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     func navigateToLoginIfRequired() {
@@ -75,16 +77,18 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     func navigateToSuccess(_ url: URL) {
+        guard let navigationController = self.controller.navigationController else { return }
         let controller = WebViewController()
         controller.hidesBottomBarWhenPushed = true
         
         controller.strURL = url.absoluteString
         controller.shouldAuthorizeRequest = true
         
-        self.controller.navigationController!.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     func navigateToWKWebView(_ url: URL) {
+        guard let navigationController = self.controller.navigationController else { return }
         let controller = WKWebViewController(urlString: url.absoluteString, shouldAuthorizeRequest: true)
         controller.didReceiveNavigationAction = { [weak self] action in
             let url = action.request.url
@@ -94,33 +98,23 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
             }
         }
         controller.hidesBottomBarWhenPushed = true
-        self.controller.navigationController!.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     func navigateToCart(_ category: String) {
+        guard let navigationController = self.controller.navigationController else { return }
         let controller = DigitalCartViewController()
         controller.hidesBottomBarWhenPushed = true
         controller.categoryId = category
         
-        self.controller.navigationController!.pushViewController(controller, animated: true)
+        navigationController.pushViewController(controller, animated: true)
     }
     
     func navigateToWebTicker(_ url: URL) {
-        let controller = WebViewController()
-        controller.hidesBottomBarWhenPushed = true
-        
-        controller.strURL = url.absoluteString
-        controller.strTitle = ""
-        controller.onTapLinkWithUrl = { [weak self] url in
-            if url?.absoluteString == "https://www.tokopedia.com/" {
-                self!.controller.navigationController?.popViewController(animated: true)
-            }
-        }
-        
-        self.controller.navigationController?.pushViewController(controller, animated: true)
+        TPRoutes.routeURL(url)
     }
     
-    func navigateToDigitalCategories() {
+    internal func navigateToDigitalCategories() {
         let controller = DigitalCategoryListViewController()
         controller.title = "Pembayaran & Top Up"
         controller.hidesBottomBarWhenPushed = true
@@ -153,7 +147,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     
     // MARK: CNContactPickerdelegate
     @available(iOS 9.0, *)
-    func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
+    internal func contactPicker(_ picker: CNContactPickerViewController, didSelect contactProperty: CNContactProperty) {
         AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if contactProperty.key == CNContactPhoneNumbersKey {
             guard let phoneNumber = contactProperty.value else { return }
@@ -166,7 +160,7 @@ class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigatio
     }
     
     // MARK: ABPeoplePickerNavigationControllerDelegate
-    func peoplePickerNavigationController(_ peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
+    internal func peoplePickerNavigationController(_ peoplePicker: ABPeoplePickerNavigationController, didSelectPerson person: ABRecord, property: ABPropertyID, identifier: ABMultiValueIdentifier) {
         let phones: ABMultiValue = ABRecordCopyValue(person, kABPersonPhoneProperty).takeRetainedValue()
         AnalyticsManager.trackEventName("clickPulsa", category: GA_EVENT_CATEGORY_PULSA, action: GA_EVENT_ACTION_CLICK, label: "Select Contact on Phonebook")
         if ABMultiValueGetCount(phones) > 0 {

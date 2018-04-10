@@ -6,12 +6,12 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
 import RxSwift
+import UIKit
 
-class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
-    override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+internal class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
+    override internal func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
         guard let state = state, let toppicks = state.toppicks else { return NilNode() }
         
         if toppicks.count == 4 {
@@ -32,14 +32,13 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         }.add(children: [
             Node<UIView>() { view, layout, size in
                 view.borderWidth = 1
-                view.borderColor = UIColor.fromHexString("#e0e0e0")
+                view.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
                 
                 layout.flexDirection = .column
                 layout.width = size.width
             }.add(children: [
                 self.titleView(),
-                self.phoneItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page: state.page, row: state.row)
+                self.phoneItemLayout(toppicks: toppicks, size: size)
             ]),
             self.blankSpace()
         ])
@@ -56,15 +55,14 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         }.add(children: [
             Node<UIView>() { view, layout, size in
                 view.borderWidth = 1
-                view.borderColor = UIColor.fromHexString("#e0e0e0")
+                view.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
                 
                 layout.flexDirection = .column
                 layout.width = size.width
             }.add(children: [
                 self.titleView(),
                 self.horizontalLine(size: size),
-                self.padItemLayout(toppicks: toppicks, size: size),
-                self.seeAll(page: state.page, row: state.row)
+                self.padItemLayout(toppicks: toppicks, size: size)
             ]),
             self.blankSpace()
         ])
@@ -87,9 +85,10 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func phoneItemLayout(toppicks: [FeedCardToppicksState], size: CGSize) -> NodeType {
-        return Node<UIView>(identifier: "phone-item-layout") { _, layout, size in
+        return Node<UIView>(identifier: "phone-item-layout") { view, layout, size in
             layout.flexDirection = .column
             layout.width = size.width
+            view.backgroundColor = .white
         }.add(children: [
             self.horizontalLine(size: size),
             Node<UIView>(identifier: "main-content") { _, layout, _ in
@@ -113,11 +112,12 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func padItemLayout(toppicks: [FeedCardToppicksState], size: CGSize) -> NodeType {
-        return Node<UIView>(identifier: "pad-item-layout") { _, layout, size in
+        return Node<UIView>(identifier: "pad-item-layout") { view, layout, size in
             layout.padding = 6
             layout.height = 272
             layout.flexDirection = .row
             layout.width = size.width
+            view.backgroundColor = .white
         }.add(children: [
             self.padItem(state: toppicks[0]),
             Node<UIView>(identifier: "grid-layout") { _, layout, _ in
@@ -203,44 +203,6 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         })
     }
     
-    private func seeAll(page: Int, row: Int) -> NodeType {
-        return Node<UIView>() { view, layout, _ in
-            view.backgroundColor = .white
-            view.borderWidth = 1
-            view.borderColor = UIColor.fromHexString("#e0e0e0")
-            
-            layout.flexDirection = .row
-            layout.justifyContent = .flexEnd
-            layout.alignItems = .center
-            layout.paddingTop = 11
-            layout.paddingBottom = 11
-            
-        }.add(children: [
-            Node<UIButton>() { button, layout, _ in
-                button.setTitle("Lihat Semua", for: .normal)
-                button.backgroundColor = .white
-                button.titleLabel?.font = .smallThemeSemibold()
-                button.setTitleColor(.tpGreen(), for: .normal)
-                
-                layout.width = 94
-                layout.marginRight = 10
-                
-                button.bk_(whenTapped: { [weak self] in
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(page).\(row) Toppicks - Lihat Semua")
-                    TPRoutes.routeURL(URL(string: "tokopedia://toppicks")!)
-                })
-            },
-            Node<UIImageView>(identifier: "arrow") { view, layout, _ in
-                view.image = #imageLiteral(resourceName: "icon_forward")
-                view.tintColor = .tpGreen()
-                
-                layout.height = 16
-                layout.width = 10
-                layout.right = 10
-            }
-        ])
-    }
-    
     private func blankSpace() -> NodeType {
         return Node<UIView>(identifier: "blank-space") { view, layout, size in
             layout.height = 15
@@ -254,7 +216,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         return Node<UIView>(identifier: "horizontal-line") { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
+            view.backgroundColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
         }
     }
     
@@ -262,7 +224,7 @@ class FeedToppicksComponentView: ComponentView<FeedCardContentState> {
         return Node<UIView>(identifier: "vertical-line") { view, layout, _ in
             layout.width = 1
             
-            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
+            view.backgroundColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
         }
     }
 }

@@ -7,37 +7,32 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-protocol TokoCashDateFilterDelegate {
-    func getDateRange(_ selectedDateRange: TokoCashDateRangeItem, fromDate: Date, toDate: Date)
-}
-
-final class TokoCashDateFilterViewModel: ViewModelType {
+final public class TokoCashDateFilterViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let resetTrigger: Driver<Void>
-        let selectedItem: Driver<IndexPath>
-        let applyTrigger: Driver<Void>
-        let fromDate: Driver<Date>
-        let toDate: Driver<Date>
-        let isDateRange: Driver<Bool>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let resetTrigger: Driver<Void>
+        public let selectedItem: Driver<IndexPath>
+        public let applyTrigger: Driver<Void>
+        public let fromDate: Driver<Date>
+        public let toDate: Driver<Date>
+        public let isDateRange: Driver<Bool>
     }
     
-    struct Output {
-        let items: Driver<[TokoCashDateRangeItemViewModel]>
-        let fromDate: Driver<Date>
-        let fromDateMax: Driver<Date>
-        let fromDateString: Driver<String>
-        let toDate: Driver<Date>
-        let toDateMax: Driver<Date>
-        let toDateString: Driver<String>
-        let apply: Driver<Void>
+    public struct Output {
+        public let items: Driver<[TokoCashDateRangeItemViewModel]>
+        public let fromDate: Driver<Date>
+        public let fromDateMax: Driver<Date>
+        public let fromDateString: Driver<String>
+        public let toDate: Driver<Date>
+        public let toDateMax: Driver<Date>
+        public let toDateString: Driver<String>
+        public let apply: Driver<DateFilter>
     }
     
-    var delegate: TokoCashDateFilterDelegate?
     private var selectedDateRange: TokoCashDateRangeItem
     private var fromDate: Date
     private var toDate: Date
@@ -52,14 +47,14 @@ final class TokoCashDateFilterViewModel: ViewModelType {
         return arr
     }()
     
-    init(selectedDateRange: TokoCashDateRangeItem, fromDate: Date, toDate: Date, navigator: TokoCashDateFilterNavigator) {
+    public init(selectedDateRange: TokoCashDateRangeItem, fromDate: Date, toDate: Date, navigator: TokoCashDateFilterNavigator) {
         self.selectedDateRange = selectedDateRange
         self.fromDate = fromDate
         self.toDate = toDate
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let selectedRange = Driver.of(self.selectedDateRange)
         
@@ -120,16 +115,15 @@ final class TokoCashDateFilterViewModel: ViewModelType {
         }
         
         let apply = Driver.combineLatest(input.isDateRange, selectedItem, Driver.merge(fromDate, changeFromDate), toDate)
-            .do(onNext: { isDateRange, selectedDate, fromDate, toDate in
+            .map { (isDateRange, selectedDate, fromDate, toDate) -> DateFilter in
                 var fromDate = fromDate
                 var toDate = toDate
                 if isDateRange {
                     fromDate = selectedDate.fromDate
                     toDate = selectedDate.toDate
                 }
-                self.delegate?.getDateRange(selectedDate, fromDate: fromDate, toDate: toDate)
-                self.navigator.backToPreviousController()
-            }).mapToVoid()
+                return DateFilter(selectedDateRange: selectedDate, fromDate: fromDate, toDate: toDate)
+            }.do(onNext: { _ in self.navigator.backToPreviousController() })
         
         return Output(items: itemsViewModel,
                       fromDate: fromDate,

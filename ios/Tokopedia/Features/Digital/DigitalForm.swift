@@ -8,20 +8,20 @@
 
 import Unbox
 
-final class DigitalBanner: Unboxable {
-    let id: String
-    let detail: String
-    let voucherCode: String
-    let url: String
+internal final class DigitalBanner: Unboxable {
+    internal let id: String
+    internal let detail: String
+    internal let voucherCode: String
+    internal let url: String
     
-    init(id: String, detail: String, voucherCode: String, url: String) {
+    internal init(id: String, detail: String, voucherCode: String, url: String) {
         self.id = id
         self.detail = detail
         self.voucherCode = voucherCode
         self.url = url
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    internal convenience init(unboxer: Unboxer) throws {
         self.init(
             id: try unboxer.unbox(keyPath: "id"),
             detail: try unboxer.unbox(keyPath: "attributes.title"),
@@ -31,20 +31,20 @@ final class DigitalBanner: Unboxable {
     }
 }
 
-struct DigitalForm {
-    let name: String
-    let title: String
-    let operatorLabel: String
-    let operatorSelectonStyle: DigitalOperatorSelectionStyle
-    let operators: [DigitalOperator]
-    let isInstantPaymentAvailable: Bool
-    let defaultOperator: DigitalOperator?
-    let banners: [DigitalBanner]
-    let otherBanners: [DigitalBanner]
+internal struct DigitalForm {
+    internal let name: String
+    internal let title: String
+    internal let operatorLabel: String
+    internal let operatorSelectonStyle: DigitalOperatorSelectionStyle
+    internal let operators: [DigitalOperator]
+    internal let isInstantPaymentAvailable: Bool
+    internal let defaultOperator: DigitalOperator?
+    internal let banners: [DigitalBanner]
+    internal let otherBanners: [DigitalBanner]
 }
 
 extension DigitalForm: Unboxable {
-    init(unboxer: Unboxer) throws {
+    internal init(unboxer: Unboxer) throws {
         self.name = try unboxer.unbox(keyPath: "data.attributes.name")
         self.title = try unboxer.unbox(keyPath: "data.attributes.title")
         self.operatorLabel = try unboxer.unbox(keyPath: "data.attributes.operator_label")
@@ -53,7 +53,8 @@ extension DigitalForm: Unboxable {
             
             switch operatorStyleString {
             case "style_1":
-                let textInput: DigitalTextInput = try! unboxer.unbox(keyPath: "data.attributes.fields.0")
+                let textInputFields: DigitalTextInput? = try? unboxer.unbox(keyPath: "data.attributes.fields.0")
+                guard let textInput = textInputFields else { return .implicit }
                 return .prefixChecking(textInput)
  
             case "style_99": return .implicit
@@ -72,7 +73,7 @@ extension DigitalForm: Unboxable {
         }
         
         let defaultOperatorId = try unboxer.unbox(keyPath: "data.attributes.default_operator_id") as String
-        let defaultOperator = operators.first { $0.id == defaultOperatorId }
+        let defaultOperator = operators.first { $0.operatorID == defaultOperatorId }
         
         let includedBanners = includes.filter {
             "banner" == $0["type"] as! String

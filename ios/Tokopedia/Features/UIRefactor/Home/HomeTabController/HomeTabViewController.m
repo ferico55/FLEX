@@ -99,20 +99,11 @@ UINavigationControllerDelegate
     
     _userManager = [UserAuthentificationManager new];
     NSDictionary* userData = [_userManager getUserLoginData];
-    
-    FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
-    [remoteConfig fetchWithCompletionHandler:^(FIRRemoteConfigFetchStatus status, NSError * _Nullable error) {
-        // do nothing
-    }];
-    BOOL remoteValue = [[remoteConfig configValueForKey:@"iosapp_enable_new_home"] boolValue];
-    if (remoteValue) {
-        if (userData) {
-            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData}];
-        } else {
-            _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen"];
-        }
+
+    if (userData) {
+        _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props:@{@"authInfo": userData, @"cacheEnabled" : @(NO)}];
     } else {
-        _homePageController = [HomePageViewController new];
+        _homePageController = [[ReactViewController alloc] initWithModuleName:@"HomeScreen" props: @{@"cacheEnabled": @(NO)}];
     }
 
     _feedController = [FeedViewController new];
@@ -377,30 +368,17 @@ UINavigationControllerDelegate
 
 - (void)initNotificationManager {
     if ([_userManager isLogin]) {
-        __weak typeof(self) weakSelf = self;
-        [TokoCashUseCase requestBalanceWithCompletionHandler:^(WalletStore * wallet) {
-            typeof(self) strongSelf = weakSelf;
-            if (strongSelf) {
-                NSMutableArray *arrayOfTabBar = [[NSMutableArray alloc] initWithObjects:_barButton, nil];
-                if ([wallet.data.abTags containsObject:@"QR"]) {
-                    _QRCodeButton = [[UIButton alloc] init];
-                    _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
-                    [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
-                    [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
-                    [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
-                    [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
-                    [arrayOfTabBar addObject:[[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton]];
-                }
         
-                self.navigationItem.rightBarButtonItems = [arrayOfTabBar copy];
-                [_barButton reloadNotifications];
-            }
-        } andErrorHandler:^(NSError * error) {
-            self.navigationItem.rightBarButtonItems = @[_barButton];
-            [_barButton reloadNotifications];
-        }];
-    }
-    else {
+        _QRCodeButton = [[UIButton alloc] init];
+        _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
+        [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+        [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
+        [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
+        [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
+        
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:_barButton, [[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton], nil];
+        [_barButton reloadNotifications];
+    } else {
         self.navigationItem.rightBarButtonItems = nil;
     }
 }
@@ -415,7 +393,11 @@ UINavigationControllerDelegate
     NSDictionary* data = [notification.userInfo objectForKey:@"data"];
     if ([data objectForKey:@"applinks"] != nil) {
         NSString* applinks = [data objectForKey:@"applinks"];
-        [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+        //Need to delay, so routeURL called after popToRoot. Push Notification purpose.
+        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, 1 * NSEC_PER_SEC);
+        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+            [TPRoutes routeURL:[NSURL URLWithString:applinks]];
+        });
     } else {
         _redirectHandler = [[RedirectHandler alloc]init];
         _redirectHandler.delegate = self;
@@ -447,7 +429,6 @@ UINavigationControllerDelegate
     [self view];
     [self instantiateViewControllers];
     [self setSearchByImage];
-    [self redirectToProductFeed];
     [self setIndexPage:0];
 }
 
@@ -490,16 +471,21 @@ UINavigationControllerDelegate
 }
 
 - (void)scrollToTop {
+    NSArray *vcs = [_viewControllers mutableCopy];
+    if ([vcs[_page] respondsToSelector:@selector(scrollToTop)]) {
+        [vcs[_page] scrollToTop];
+    }
+    
     ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
     [tabManager sendScrollToTopEvent];
 }
 
 - (void) didTapQRCodeButton {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"TokoCash" bundle:nil];
-    TokoCashQRCodeViewController *vc = [storyboard instantiateViewControllerWithIdentifier:@"TokoCashQRCodeViewController"];
+    TokoCashQRCodeViewController *vc = [TokoCashQRCodeViewController new];
     TokoCashQRCodeNavigator *navigator = [[TokoCashQRCodeNavigator alloc] initWithNavigationController:self.navigationController];
     TokoCashQRCodeViewModel *viewModel = [[TokoCashQRCodeViewModel alloc] initWithNavigator:navigator];
     vc.viewModel = viewModel;
+    vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }
 

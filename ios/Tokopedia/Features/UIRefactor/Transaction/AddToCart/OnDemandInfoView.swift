@@ -128,7 +128,7 @@ class OnDemandInfoComponentView: ComponentView<OnDemandInfoState> {
             view, layout, _ in
             view.textColor = .tpSecondaryBlackText()
             view.font = UIFont.microTheme()
-            view.attributedText = theInfo.desc_hours_id.bolded(last: 3)
+            view.text = theInfo.desc_hours_id
             view.numberOfLines = 0
             view.textAlignment = .center
             layout.marginHorizontal = 36

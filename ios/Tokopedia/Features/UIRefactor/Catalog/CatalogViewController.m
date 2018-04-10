@@ -16,7 +16,6 @@
 #import "CatalogSpecificationCell.h"
 #import "CatalogSectionHeaderView.h"
 #import "CatalogShopViewController.h"
-#import "ProductAddEditViewController.h"
 #import "PriceAlert.h"
 #import "PriceAlertResult.h"
 #import "ShopBadgeLevel.h"

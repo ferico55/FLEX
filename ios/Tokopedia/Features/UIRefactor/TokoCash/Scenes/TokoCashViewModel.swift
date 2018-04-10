@@ -7,50 +7,49 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashViewModel: ViewModelType {
+final public class TokoCashViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let nominal: Driver<DigitalProduct?>
-        let nominalTrigger: Driver<Void>
-        let topUpTrigger: Driver<Void>
+    public struct Input {
+        public let didLoadTrigger: Driver<Void>
+        public let refreshTrigger: Driver<Void>
+        public let nominalTrigger: Driver<Void>
+        public let topUpTrigger: Driver<Void>
     }
     
-    struct Output {
-        let fetching: Driver<Bool>
-        let isTopUpVisible: Driver<Bool>
-        let selectedNominalString: Driver<String>
-        let balance: Driver<String>
-        let holdBalanceView: Driver<Bool>
-        let holdBalance: Driver<String>
-        let totalBalance: Driver<String>
-        let threshold: Driver<String>
-        let spendingProgress: Driver<Float>
-        let error: Driver<Error>
-        let nominal: Driver<[DigitalProduct]>
-        let topUp: Driver<String>
-        let topUpActivityIndicator: Driver<Bool>
-        let disableTopUpButton: Driver<Bool>
-        let backgroundButtonColor: Driver<UIColor>
+    public struct Output {
+        public let fetching: Driver<Bool>
+        public let balance: Driver<String>
+        public let holdBalance: Driver<String>
+        public let totalBalance: Driver<String>
+        public let threshold: Driver<String>
+        public let holdBalanceView: Driver<Bool>
+        public let spendingProgress: Driver<Float>
+        public let isTopUpVisible: Driver<Bool>
+        public let selectedNominalString: Driver<String>
+        public let nominal: Driver<DigitalProduct>
+        public let topUp: Driver<String>
+        public let topUpActivityIndicator: Driver<Bool>
+        public let disableTopUpButton: Driver<Bool>
+        public let backgroundButtonColor: Driver<UIColor>
     }
     
     private var topUpVisible: Bool
     private var navigator: TokoCashNavigator
     
-    init(_ topUpVisible: Bool, navigator: TokoCashNavigator) {
+    public init(_ topUpVisible: Bool, navigator: TokoCashNavigator) {
         self.topUpVisible = topUpVisible
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
-        let walletStore = input.trigger.flatMapLatest {
+        let walletStore = input.refreshTrigger.flatMapLatest {
             TokoCashUseCase.requestBalance()
                 .trackActivity(activityIndicator)
                 .trackError(errorTracker)
@@ -102,7 +101,7 @@ final class TokoCashViewModel: ViewModelType {
             return 1.0
         }.startWith(0.0)
         
-        let digitalProducts = input.trigger.flatMapLatest {
+        let digitalProducts = input.didLoadTrigger.flatMapLatest {
             return DigitalProvider()
                 .request(.category("103"))
                 .map(to: DigitalForm.self)
@@ -114,21 +113,21 @@ final class TokoCashViewModel: ViewModelType {
             return Driver.of(products)
         }
         
-        let selectedNominal = Driver.merge(nominalItems.flatMapLatest { digitalProducts -> SharedSequence<DriverSharingStrategy, DigitalProduct?> in
-            return Driver.of(digitalProducts.first)
-        }, input.nominal)
-        
-        let selectedNominalString = selectedNominal.map { digitalProduct -> String in
-            guard let dp = digitalProduct else { return "" }
-            return dp.priceText
-        }.startWith("")
-        
         let nominal = input.nominalTrigger
             .withLatestFrom(nominalItems)
-            .do(onNext: { digitalProduct in
-                guard let vc = self.navigator.navigationController.topViewController else { return }
-                self.navigator.toNominal(vc as! TokoCashNominalDelegate, nominal: digitalProduct)
-            })
+            .flatMapLatest { digitalProducts -> SharedSequence<DriverSharingStrategy, DigitalProduct> in
+                let vc = self.navigator.toNominal(nominal: digitalProducts)
+                return vc.nominal.asDriverOnErrorJustComplete()
+            }
+        
+        let selectedNominal = Driver.merge(nominalItems.flatMapLatest { digitalProducts -> SharedSequence<DriverSharingStrategy, DigitalProduct> in
+            guard let nominal = digitalProducts.first else { return Driver.empty() }
+            return Driver.of(nominal)
+        }, nominal)
+        
+        let selectedNominalString = selectedNominal.map { digitalProduct -> String in
+            return digitalProduct.priceText
+        }.startWith("")
         
         let topUpActivityIndicator = ActivityIndicator()
         let topUperrorTracker = ErrorTracker()
@@ -136,7 +135,7 @@ final class TokoCashViewModel: ViewModelType {
         let topUp = input.topUpTrigger.withLatestFrom(selectedNominal)
             .flatMapLatest { (digitalProduct) -> SharedSequence<DriverSharingStrategy, String> in
                 return DigitalService()
-                    .purchase(categoryId: "103", operatorId: "504", productId: digitalProduct?.id ?? "", textInputs: [:], instantCheckout: false)
+                    .purchase(categoryId: "103", operatorId: "504", productId: digitalProduct.id, textInputs: [:], instantCheckout: false)
                     .trackActivity(topUpActivityIndicator)
                     .trackError(topUperrorTracker)
                     .asDriverOnErrorJustComplete()
@@ -149,26 +148,22 @@ final class TokoCashViewModel: ViewModelType {
         }
         
         let backgroundButtonColor = disableTopUpButton.map { disableButton -> UIColor in
-            guard disableButton else { return UIColor(red: 224.0 / 255.0, green: 224.0 / 255.0, blue: 224.0 / 255.0, alpha: 1.0) }
-            return UIColor.tpOrange()
+            guard disableButton else { return #colorLiteral(red: 0.878000021, green: 0.878000021, blue: 0.878000021, alpha: 1) }
+            return #colorLiteral(red: 1, green: 0.4790000021, blue: 0.003000000026, alpha: 1)
         }
         
         return Output(fetching: activityIndicator.asDriver(),
-                      isTopUpVisible: isTopUpVisible,
-                      selectedNominalString: selectedNominalString,
                       balance: balance,
-                      holdBalanceView: holdBalanceView,
                       holdBalance: holdBalance,
                       totalBalance: totalBalance,
                       threshold: threshold,
+                      holdBalanceView: holdBalanceView,
                       spendingProgress: spendingProgress,
-                      error: errorTracker.asDriver(),
+                      isTopUpVisible: isTopUpVisible,
+                      selectedNominalString: selectedNominalString,
                       nominal: nominal,
                       topUp: topUp,
                       topUpActivityIndicator: topUpActivityIndicator.asDriver(),
-                      disableTopUpButton: disableTopUpButton,
-                      backgroundButtonColor: backgroundButtonColor)
+                      disableTopUpButton: disableTopUpButton, backgroundButtonColor: backgroundButtonColor)
     }
-    
 }
-

@@ -125,7 +125,8 @@
                       @"insurance_used_type",
                       @"insurance_type",
                       @"insurance_type_info",
-                      @"insurance_price"
+                      @"insurance_price",
+                      @"product_price_unfmt"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

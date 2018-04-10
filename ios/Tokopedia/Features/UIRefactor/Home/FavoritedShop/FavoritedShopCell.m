@@ -67,6 +67,7 @@
 }
 
 - (void)setupButtonIsFavorited:(BOOL)isFavorited {
+    _isfavoritedshop.hidden = isFavorited;
     [_isfavoritedshop setImage:[UIImage imageNamed:isFavorited?@"icon_check_favorited":@"icon_follow_plus"] forState:UIControlStateNormal];
     [_isfavoritedshop setTitle:isFavorited?@" Favorit":@"Favoritkan" forState:UIControlStateNormal];
     [_isfavoritedshop setTitleColor:isFavorited?[UIColor colorWithRed:0 green:0 blue:0 alpha:0.53]:[UIColor whiteColor] forState:UIControlStateNormal];
@@ -77,3 +78,4 @@
 }
 
 @end
+

@@ -8,22 +8,22 @@
 
 import Foundation
 extension ShopInfo: Referable {    
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         return self.shop_url
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         return "shop/" + self.shop_id
     }
-    var feature: String {
+    internal var feature: String {
         return "Shop"
     }
-    var title: String {
+    internal var title: String {
         return self.shop_name + " - " + self.shop_location + " | Tokopedia "
     }
-    var buoDescription: String {
+    internal var buoDescription: String {
         return self.shop_description
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "shop"
     }
 }

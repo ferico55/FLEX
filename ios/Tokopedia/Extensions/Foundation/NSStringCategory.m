@@ -7,6 +7,7 @@
 //
 
 #import "NSStringCategory.h"
+#import "Tokopedia-Swift.h"
 
 @implementation NSString (TkpdCategory)
 
@@ -254,6 +255,10 @@
 
 - (BOOL)empty {
     return self.length == 0;
+}
+
++ (NSString *)authenticationType {
+    return [[[UIDevice currentDevice] modelName] isEqualToString:@"iPhone X"] ? @"Face ID" : @"Touch ID";
 }
 
 @end

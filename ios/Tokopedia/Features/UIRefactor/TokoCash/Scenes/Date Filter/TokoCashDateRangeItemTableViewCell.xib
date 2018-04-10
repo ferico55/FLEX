@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokoCashDateRangeItemTableViewCell" rowHeight="73" id="3nG-3W-edH" customClass="TokoCashDateRangeItemTableViewCell" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="73"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="3nG-3W-edH" id="vXj-0e-n5Y">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="72.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4Xo-gC-Fb3">
+                        <rect key="frame" x="16" y="17" width="347" height="19"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="7Og-hx-plz">
+                        <rect key="frame" x="16" y="39" width="347" height="17"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.53000000000000003" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="4Xo-gC-Fb3" firstAttribute="leading" secondItem="vXj-0e-n5Y" secondAttribute="leading" constant="16" id="BXR-d6-Bxn"/>
+                    <constraint firstItem="7Og-hx-plz" firstAttribute="trailing" secondItem="4Xo-gC-Fb3" secondAttribute="trailing" id="Ftq-ZW-6Eh"/>
+                    <constraint firstItem="7Og-hx-plz" firstAttribute="top" secondItem="4Xo-gC-Fb3" secondAttribute="bottom" constant="3" id="I1f-WV-vbi"/>
+                    <constraint firstAttribute="bottom" secondItem="7Og-hx-plz" secondAttribute="bottom" constant="16.5" id="Wyo-H1-ldq"/>
+                    <constraint firstItem="7Og-hx-plz" firstAttribute="leading" secondItem="4Xo-gC-Fb3" secondAttribute="leading" id="eNK-9U-L4g"/>
+                    <constraint firstItem="4Xo-gC-Fb3" firstAttribute="top" secondItem="vXj-0e-n5Y" secondAttribute="top" constant="17" id="g99-nw-jp3"/>
+                    <constraint firstAttribute="trailing" secondItem="4Xo-gC-Fb3" secondAttribute="trailing" constant="12" id="pnh-W8-uT0"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="tintColor" red="1" green="0.3411764706" blue="0.094117647060000004" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="descLabel" destination="7Og-hx-plz" id="Yv9-La-2Mu"/>
+                <outlet property="titleLabel" destination="4Xo-gC-Fb3" id="GZz-jf-mQb"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

@@ -8,14 +8,15 @@
 
 import Foundation
 
-class TokoCashQRPaymentFailedNavigator {
+public class TokoCashQRPaymentFailedNavigator {
+    
     private let navigationController: UINavigationController
 
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
 
-    func toQRPage() {
+    public func toQRPage() {
         for vc in navigationController.viewControllers {
             if let viewController = vc as? TokoCashQRCodeViewController {
                 navigationController.popToViewController(viewController, animated: true)

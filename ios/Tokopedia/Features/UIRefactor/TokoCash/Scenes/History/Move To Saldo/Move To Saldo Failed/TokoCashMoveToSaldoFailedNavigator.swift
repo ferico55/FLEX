@@ -8,19 +8,19 @@
 
 import Foundation
 
-class TokoCashMoveToSaldoFailedNavigator {
+public class TokoCashMoveToSaldoFailedNavigator {
     
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func backToMoveToSaldo() {
+    public func backToMoveToSaldo() {
         navigationController.popViewController(animated: true)
     }
     
-    func backToTokoCash() {
+    public func backToTokoCash() {
         for vc in navigationController.viewControllers {
             if let viewController = vc as? TokoCashViewController {
                 navigationController.popToViewController(viewController, animated: true)

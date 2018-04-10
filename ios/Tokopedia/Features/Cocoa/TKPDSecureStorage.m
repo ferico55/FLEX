@@ -9,9 +9,11 @@
 #import "TKPDSecureStorage.h"
 #import "NSDictionaryCategory.h"
 
-@implementation TKPDSecureStorage {
-    NSDictionary *_cachedKeychain;
-}
+@interface TKPDSecureStorage()
+    @property (weak, nonatomic) NSDictionary *cachedKeychain;
+@end
+
+@implementation TKPDSecureStorage
 
 #pragma mark - Factory Methods
 + (TKPDSecureStorage*)standardKeyChains
@@ -38,7 +40,7 @@
         status = (SecItemCopyMatching((__bridge CFDictionaryRef)kTKPDSECURESTORAGE_GLOBALQUERYDATA, &values) == noErr) ;
         
         if(status) {
-            [((NSMutableDictionary*)savedKeychain)setObject:(__bridge id)(values) forKey:(__bridge id)kSecValueData];
+            [((NSMutableDictionary*)savedKeychain) setObject:(__bridge id)(values) forKey:(__bridge id)kSecValueData];
             [((NSMutableDictionary*)savedKeychain) setObject:(__bridge id)kSecClassGenericPassword forKey:(__bridge id)kSecClass];
             
             status = SecItemDelete((__bridge CFDictionaryRef)savedKeychain);
@@ -171,6 +173,9 @@
 }
 
 - (void)setKeychainWithValue:(id)value withKey:(NSString *)key {
+    if (!value) {
+        value = [NSNull null];
+    }
     [self setKeychainWithDictionary:@{key: value}];
 }
 

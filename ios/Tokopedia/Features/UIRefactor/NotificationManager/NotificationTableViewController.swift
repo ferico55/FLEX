@@ -6,78 +6,76 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import NativeNavigation
+import UIKit
 
-@objc protocol NotificationTableViewControllerDelegate {
+@objc internal protocol NotificationTableViewControllerDelegate {
     @objc optional func pushViewController(viewController: UIViewController)
     @objc optional func navigateUsingTPRoutes(urlString: String)
 }
 
-class NotificationTableViewController: UITableViewController, NewOrderDelegate, ShipmentConfirmationDelegate {
+internal class NotificationTableViewController: UITableViewController, NewOrderDelegate, ShipmentConfirmationDelegate {
     
-    private let cellTitles1 = ["Chat", "Diskusi", "Ulasan", "Layanan Pengguna", "Pusat Resolusi", "Info Penjual"]
-    private let cellTitles2 = ["Order Baru", "Konfirmasi Pengiriman", "Status Pengiriman", "Daftar Transaksi"]
-    private let cellTitles3 = ["Pesanan dibatalkan", "Status Pembayaran", "Status Pemesanan", "Konfirmasi Penerimaan", "Daftar Transaksi"]
-    private let headerTitles = ["Kotak Masuk", "Penjualan", "Pembelian"]
+    private let cellTitles: [[String]] = [
+        ["Chat", "Diskusi", "Ulasan", "Layanan Pengguna", "Info Penjual"],
+        ["Order Baru", "Konfirmasi Pengiriman", "Status Pengiriman", "Daftar Transaksi"],
+        ["Pesanan dibatalkan", "Status Pembayaran", "Status Pemesanan", "Konfirmasi Penerimaan", "Daftar Transaksi"],
+        ["Sebagai Pembeli", "Sebagai Penjual"]
+    ]
+    private let headerTitles = ["Kotak Masuk", "Penjualan", "Pembelian", "Komplain Saya"]
     private var userHasShop : Bool = false
     
-    private var notification : NotificationData? = nil
-    var delegate : NotificationTableViewControllerDelegate? = nil
+    private var notification : NotificationData?
+    internal weak var delegate : NotificationTableViewControllerDelegate?
     
-    private var _splitViewController: UISplitViewController? = nil
+    private var _splitViewController: UISplitViewController?
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(UINib(nibName: "NotificationTableViewCell", bundle: nil), forCellReuseIdentifier: "notificationTableViewCell")
+        tableView.sectionFooterHeight = 0
     }
 
-    override func didReceiveMemoryWarning() {
+    internal override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         // UA
         AnalyticsManager.trackScreenName("Top Notification Center")
     }
     
-    func setNotification(notification: NotificationData) {
+    internal func setNotification(notification: NotificationData) {
         self.notification = notification
         self.userHasShop = UserAuthentificationManager().userHasShop()
         self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
-
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+    internal override func numberOfSections(in tableView: UITableView) -> Int {
+        return headerTitles.count
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    internal override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var numberOfRows = 0
         
         switch section {
         case 0:
-            numberOfRows = UserAuthentificationManager().userHasShop() ? 6 : 5
-            break
-        case 1:
-            numberOfRows = 4
-            break
-        case 2:
-            numberOfRows = 5
-            break
+            numberOfRows = UserAuthentificationManager().userHasShop() ? 5 : 4
+        case 3:
+            numberOfRows = UserAuthentificationManager().userHasShop() ? 2 : 1
         default:
-            break
+            numberOfRows = cellTitles[section].count
         }
         
         return numberOfRows
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    internal override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "notificationTableViewCell", for: indexPath) as! NotificationTableViewCell
         
         cell.isHidden = false
@@ -88,93 +86,96 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
         var count = 0
         var indicatorAllowed = true
         
-        if (section == 0) {
-            cell.lblTitle.text = cellTitles1[row]
-            
-            if (row == 0) {
+        cell.lblTitle.text = cellTitles[section][row]
+        
+        if section == 0 {
+            if row == 0 {
                 count = notification?.inbox?.message ?? 0
             }
-            else if (row == 1) {
+            else if row == 1 {
                 count = notification?.inbox?.talk ?? 0
             }
-            else if (row == 2) {
+            else if row == 2 {
                 count = notification?.inbox?.review ?? 0
             }
-            else if (row == 3) {
+            else if row == 3 {
                 count = notification?.inbox?.ticket ?? 0
             }
-            else if (row == 4) {
-                count = notification?.resolution ?? 0
-            }
-            else if (row == 5) {
+            else if row == 4 {
                 count = notification?.sellerInfoNotif ?? 0
             }
         }
-        else if (section == 1) {
-            cell.lblTitle.text = cellTitles2[row]
+        else if section == 1 {
             indicatorAllowed = false
             
-            if (row == 0) {
+            if row == 0 {
                 count = notification?.sales?.newOrder ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
-            else if (row == 1) {
+            else if row == 1 {
                 count = notification?.sales?.shippingConfirm ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
-            else if (row == 2) {
+            else if row == 2 {
                 count = notification?.sales?.shippingStatus ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
             
-            if (!userHasShop) {
+            if !userHasShop {
                 cell.isHidden = true
             }
         }
-        else {
-            cell.lblTitle.text = cellTitles3[row]
+        else if section == 2 {
             indicatorAllowed = false
             
-            if (row == 0) {
+            if row == 0 {
                 count = notification?.purchase?.reorder ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
-            else if (row == 1) {
+            else if row == 1 {
                 count = notification?.purchase?.paymentConfirm ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
-            else if (row == 2) {
+            else if row == 2 {
                 count = notification?.purchase?.orderStatus ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
             }
-            else if (row == 3) {
+            else if row == 3 {
                 count = notification?.purchase?.deliveryConfirm ?? 0
-                if (count == 0) {
+                if count == 0 {
                     cell.isHidden = true
                 }
+            }
+        }
+        else if section == 3 {
+            if row == 0 {
+                count = notification?.resolutionAsBuyer ?? 0
+            }
+            else if row == 1 {
+                count = notification?.resolutionAsSeller ?? 0
             }
         }
         
         cell.lblCount.text = "\(count)"
-        if (count == 0) {
+        if count == 0 {
             cell.lblCount.isHidden = true
             cell.unreadIndicator.isHidden = true
         }
         else {
             cell.lblCount.isHidden = false
-            if (indicatorAllowed) {
+            if indicatorAllowed {
                 cell.unreadIndicator.isHidden = false
             }
         }
@@ -182,57 +183,66 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
         return cell
     }
     
-    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return headerTitles[section]
+    internal override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        if section == 1 && !userHasShop {
+            return nil
+        }
+        let header = UITableViewHeaderFooterView(frame: .zero)
+
+        header.textLabel?.text = headerTitles[section]
+        let view = UIView(frame: header.bounds)
+        view.backgroundColor = UIColor.groupTableViewBackground
+        header.backgroundView = view
+        header.backgroundView?.alpha = 0.7
+
+        return header
     }
     
-    override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+    internal override func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
         let header = view as? UITableViewHeaderFooterView
-        
         header?.textLabel?.font = UIFont.title2ThemeMedium()
-        header?.textLabel?.textColor = UIColor(red: 77.0/255.0, green: 77.0/255.0, blue: 77.0/255.0, alpha: 1)
-        header?.backgroundView?.alpha = 0.7
+        header?.textLabel?.textColor = UIColor.tpPrimaryBlackText()
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    internal override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         let section = indexPath.section
         let row = indexPath.row
         
         var count = 1
         
-        if (section == 1) {
-            if (!userHasShop) {
+        if section == 1 {
+            if !userHasShop {
                 count = 0
             }
-            else if (row == 0) {
+            else if row == 0 {
                 count = notification?.sales?.newOrder ?? 0
             }
-            else if (row == 1) {
+            else if row == 1 {
                 count = notification?.sales?.shippingConfirm ?? 0
             }
-            else if (row == 2) {
+            else if row == 2 {
                 count = notification?.sales?.shippingStatus ?? 0
             }
             
-            if (count == 0) {
+            if count == 0 {
                 return 0
             }
         }
-        else if (section == 2) {
-            if (row == 0) {
+        else if section == 2 {
+            if row == 0 {
                 count = notification?.purchase?.reorder ?? 0
             }
-            else if (row == 1) {
+            else if row == 1 {
                 count = notification?.purchase?.paymentConfirm ?? 0
             }
-            else if (row == 2) {
+            else if row == 2 {
                 count = notification?.purchase?.orderStatus ?? 0
             }
-            else if (row == 3) {
+            else if row == 3 {
                 count = notification?.purchase?.deliveryConfirm ?? 0
             }
             
-            if (count == 0) {
+            if count == 0 {
                 return 0
             }
         }
@@ -240,32 +250,29 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
         return 44
     }
     
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        if (section == 1 && !userHasShop) {
-            return 0
+    internal override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        if section == 1 && !userHasShop {
+            return 0.1
         }
         
         return 34
     }
     
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    internal override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         let section = indexPath.section
         let row = indexPath.row
         
-        if (section == 0) {
+        if section == 0 {
             switch row {
             case 0:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Message")
                 
                 self.delegate?.navigateUsingTPRoutes?(urlString: "tokopedia://topchat")
-                
-                break
-                
             case 1:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Product Discussion")
                 
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     let controller = InboxTalkSplitViewController()
                     controller.hidesBottomBarWhenPushed = true
                     self.delegate?.pushViewController?(viewController: controller)
@@ -293,9 +300,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                     
                     self.delegate?.pushViewController?(viewController: controller)
                 }
-                
-                break
-                
             case 2:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Review")
                 
@@ -303,7 +307,7 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 let auth = userManager.getUserLoginData() as AnyObject
                 
                 var reviewReactViewController = UIViewController()
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
+                if UIDevice.current.userInterfaceIdiom == .pad {
                     let props: [String: AnyObject] = ["authInfo": auth]
                     let masterModule = ReactModule(name: "InboxReview", props: props)
                     let detailModule = ReactModule(name: "InvoiceDetailScreen", props: props)
@@ -318,51 +322,25 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 reviewReactViewController.hidesBottomBarWhenPushed = true
                     
                 self.delegate?.pushViewController?(viewController: reviewReactViewController)
-                
-                break
-                
             case 3:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Layanan Pengguna")
                 
                 let userManager = UserAuthentificationManager()
                 let webViewController = WKWebViewController(urlString: userManager.webViewUrl(fromUrl: "https://m.tokopedia.com/help/ticket-list/mobile"), title: "Help")
-                
+                webViewController.hidesBottomBarWhenPushed = true
+
                 self.delegate?.pushViewController?(viewController: webViewController)
-                
-                break
-                
             case 4:
-                AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Resolution Center")
-                
-                if (UIDevice.current.userInterfaceIdiom == .pad) {
-                    let controller = InboxResolSplitViewController()
-                    controller.hidesBottomBarWhenPushed = true
-                    
-                    self.delegate?.pushViewController?(viewController: controller)
-                }
-                else {
-                    let controller = InboxResolutionCenterTabViewController()
-                    controller.hidesBottomBarWhenPushed = true
-                    
-                    self.delegate?.pushViewController?(viewController: controller)
-                }
-                
-                break
-                
-            case 5:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Seller Info")
                 
                 let controller = SellerInfoInboxViewController()
                 controller.hidesBottomBarWhenPushed = true
                 self.delegate?.pushViewController?(viewController: controller)
-                
-                break
-                
             default:
                 break
             }
         }
-        else if (section == 1) {
+        else if section == 1 {
             switch row {
             case 0:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "New Order")
@@ -372,9 +350,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 controller.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: controller)
-                
-                break
-                
             case 1:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Delivery Confirmation")
                 
@@ -383,9 +358,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 controller.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: controller)
-                
-                break
-                
             case 2:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Delivery Status")
                 
@@ -393,9 +365,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 controller.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: controller)
-                
-                break
-                
             case 3:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Sales Transaction List")
                 
@@ -403,13 +372,11 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 controller.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: controller)
-                
-                break
             default:
                 break
             }
         }
-        else if (section == 2) {
+        else if section == 2 {
             switch row {
             case 0:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Canceled Order")
@@ -421,9 +388,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 vc.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: vc)
-                
-                break
-                
             case 1:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Order Status")
                 
@@ -431,9 +395,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 vc.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: vc)
-                
-                break
-                
             case 2:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Order Status")
                 
@@ -443,9 +404,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 vc.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: vc)
-                
-                break
-                
             case 3:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Receive Confirmation")
                 
@@ -455,9 +413,6 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 vc.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: vc)
-                
-                break
-                
             case 4:
                 AnalyticsManager.trackEventName(GA_EVENT_NAME_EVENT_TOP_NAV, category: GA_EVENT_CATEGORY_TOP_NAV, action: GA_EVENT_ACTION_CLICK_NOTIFICATION_ICON, label: "Order Transaction List")
                 
@@ -467,17 +422,23 @@ class NotificationTableViewController: UITableViewController, NewOrderDelegate, 
                 vc.hidesBottomBarWhenPushed = true
                 
                 self.delegate?.pushViewController?(viewController: vc)
-                
-                break
             default:
                 break
             }
         }
-        
+        else if section == 3 {
+            var userType = ComplaintUserType.customer
+            if row == 1 {
+                userType = .seller
+            }
+            let vc = ComplaintsViewController(userType: userType)
+            vc.hidesBottomBarWhenPushed = true
+            self.delegate?.pushViewController?(viewController: vc)
+        }
     }
     
     // ShipmentConfirmationDelegate
-    func viewController(_ viewController: UIViewController!, numberOfProcessedOrder totalOrder: Int) {
+    internal func viewController(_ viewController: UIViewController!, numberOfProcessedOrder totalOrder: Int) {
         // do nothing
     }
 }

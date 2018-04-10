@@ -26,12 +26,11 @@
     FBTweakBind(self, loginData, @"Login", @"Test Accounts", @"Account", (@{}),
                 (@{
                    (@{}): @"-Blank-",
+                   EMAIL_PASSWORD(@"nada.fathia+01@tokopedia.com", @"nadafathia"),
                    EMAIL_PASSWORD(@"evelyn.greselda+46@tokopedia.com", @"asdf1234"),
                    EMAIL_PASSWORD(@"evelyn.greselda+45@tokopedia.com", @"asdf1234"),
                    EMAIL_PASSWORD(@"deadora.hendra+01@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"deadora.hendra+02@tokopedia.com", @"tokopedia1995"),
-                   EMAIL_PASSWORD(@"deadora.hendra+03@tokopedia.com", @"tokopedia1995"),
-                   EMAIL_PASSWORD(@"deadora.hendra+04@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"elly.susilowati+089@tokopedia.com", @"tokopedia2015"),
                    EMAIL_PASSWORD(@"elly.susilowati+090@tokopedia.com", @"tokopedia2015"),
@@ -50,7 +49,10 @@
                    EMAIL_PASSWORD(@"gunadi.qc@tokopedia.com", @"gun123qwerty"),
                    EMAIL_PASSWORD(@"andhika.djaffri+1@tokopedia.com", @"tokopedia789"),
                    EMAIL_PASSWORD(@"andhika.djaffri+2@tokopedia.com", @"tokopedia789"),
-                   EMAIL_PASSWORD(@"tri.sujarwo+0@tokopedia.com", @"Tokopedia1")
+                   EMAIL_PASSWORD(@"tri.sujarwo+0@tokopedia.com", @"Tokopedia1"),
+                   EMAIL_PASSWORD(@"akunmrmr@gmail.com", @"akunstarwars123"),
+                   EMAIL_PASSWORD(@"katherine.oliviani+prod2@tokopedia.com", @"1234567890"),
+                   EMAIL_PASSWORD(@"thessa.silviana+17@tokopedia.com", @"tokped1"),
                    })
                 );
 #endif

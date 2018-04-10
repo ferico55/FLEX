@@ -19,6 +19,7 @@
     formatter.currencyDecimalSeparator = @",";
     formatter.maximumFractionDigits = 0;
     formatter.minimumFractionDigits = 0;
+    formatter.locale = [[NSLocale alloc] initWithLocaleIdentifier:@"id_ID"];
     return formatter;
 }
 

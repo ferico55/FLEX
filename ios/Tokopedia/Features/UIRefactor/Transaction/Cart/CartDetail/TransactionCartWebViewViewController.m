@@ -151,7 +151,6 @@
 
 
 -(BOOL)webView:(UIWebView *)webView shouldStartLoadWithRequest:(NSURLRequest *)request navigationType:(UIWebViewNavigationType)navigationType {
-
     NSURL *callbackURL = [NSURL URLWithString:_callbackURL];
     if ([request.URL.absoluteString rangeOfString:callbackURL.path].location != NSNotFound) {
         NSDictionary *paramURL = [request.URL parameters];
@@ -172,6 +171,19 @@
         }
         
         return NO;
+    }
+    if ([request.URL.absoluteString containsString:@"thanks"] && [request.URL.parameters objectForKey:@"id"]) {
+        NSDictionary *param = _toppayParam;
+        if (!param && self.toppayQueryString) {
+            NSString *urlString = [NSString stringWithFormat:@"%@?%@",self.URLString,[self.toppayQueryString stringByRemovingPercentEncoding]];
+            NSURL *url = [NSURL URLWithString:[urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            param = [url parameters];
+        }
+        NSLog(@"%@",param);
+        if (param) {
+            BranchAnalytics *branch = [BranchAnalytics new];
+            [branch sendCommerceEventWithParams:param];
+        }
     }
     
     BOOL isCreditCardOTPPage = ([request.URL.path containsString:@"/v2/3dsecure/cc/veritrans/"] || [request.URL.path containsString:@"/v2/3dsecure/sprintasia"]);

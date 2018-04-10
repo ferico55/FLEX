@@ -274,6 +274,7 @@ extension SellerInfoInboxViewController: UITableViewDelegate {
                 let vc = WebViewController()
                 vc.strURL = item.externalLink
                 vc.strTitle = item.title
+                AnalyticsManager.trackSellerInfoArticleClick(article: item.title)
                 self.navigationController?.pushViewController(vc, animated: true)
             }
         }

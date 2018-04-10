@@ -8,22 +8,22 @@
 
 import Foundation
 extension ProductUnbox: Referable {
-    var desktopUrl: String {
+    internal var desktopUrl: String {
         return self.url
     }
-    var deeplinkPath: String {
+    internal var deeplinkPath: String {
         return "product/" + self.id
     }
-    var feature: String {
+    internal var feature: String {
         return "Product"
     }
-    var title: String {
+    internal var title: String {
         return self.name + " - " + self.shop.name + " | Tokopedia "
     }
-    var buoDescription: String {
-        return self.info.description
+    internal var buoDescription: String {
+        return self.info.descriptionHtml()
     }
-    var utm_campaign: String {
+    internal var utmCampaign: String {
         return "product"
     }
 }

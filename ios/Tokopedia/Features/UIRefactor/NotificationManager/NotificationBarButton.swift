@@ -8,25 +8,25 @@
 
 import UIKit
 
-class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDelegate {
+internal class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDelegate {
     
     private let lblCount = UILabel()
     
     private let notificationManager = NotificationManager.sharedManager
     private let notificationView = NotificationTableViewController()
-    private var notificationWindow: UIWindow? = nil
-    private var triangleView: UIImageView? = nil
-    private var parentViewController: UIViewController? = nil
+    private var notificationWindow: UIWindow?
+    private var triangleView: UIImageView?
+    private var parentViewController: UIViewController?
     
     private var tableViewOriginY: CGFloat = 0.0
     
     private var isOpen = false
     
-    required override init() {
+    internal required override init() {
         super.init()
     }
     
-    init(parentViewController: UIViewController) {
+    internal init(parentViewController: UIViewController) {
         super.init()
         
         lblCount.frame = CGRect(x: 22, y: 0, width: 17, height: 17)
@@ -76,7 +76,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         NotificationCenter.default.addObserver(self, selector: #selector(resetCount), name: NSNotification.Name(rawValue: "clearCacheNotificationBar"), object: nil)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -99,19 +99,22 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         notificationView.tableView.frame = notificationTableFrame
         notificationView.tableView.tableFooterView = UIView()
         
-        notificationView.tableView.contentInset = UIEdgeInsetsMake(0, 0, tableViewOriginY, 0)
+        notificationView.tableView.contentInset = UIEdgeInsets(top: 0, left: 0, bottom: tableViewOriginY, right: 0)
         
         notificationView.view.frame = notificationTableFrame
         
         // set blurred transparent background
-        let tView = UIVisualEffectView(frame: CGRect(x: 0, y: 0, width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height))
+        let tView = UIVisualEffectView(frame: notificationTableFrame)
         tView.effect = UIBlurEffect(style: .light)
-        notificationView.tableView.backgroundView = tView
+        notificationView.tableView.backgroundView = nil
+        notificationView.tableView.backgroundColor = .clear
+        
+        notificationWindow?.addSubview(tView)
         
         notificationWindow?.addSubview(notificationView.view)
     }
     
-    func notificationLoaded(_ notification: Notification) {
+    internal func notificationLoaded(_ notification: Notification) {
         guard let notificationData = notification.userInfo?["notification"] as? NotificationData else {
             return
         }
@@ -140,7 +143,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         prefs.synchronize()
     }
     
-    func resetCount() {
+    internal func resetCount() {
         self.lblCount.text = "0"
         self.lblCount.isHidden = true
     }
@@ -159,14 +162,14 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         }
     }
     
-    func notificationRead() {
+    internal func notificationRead() {
         setRead(read: true)
     }
     
     private func setRead(read: Bool) {
         DispatchQueue.main.async {
             if (read) {
-                self.lblCount.backgroundColor = UIColor(red: 10.0/255.0, green: 126.0/255.0, blue: 7.0/255.0, alpha: 1.0)
+                self.lblCount.backgroundColor = #colorLiteral(red: 0.03921568627, green: 0.4941176471, blue: 0.02745098039, alpha: 1)
                 
                 UIApplication.shared.applicationIconBadgeNumber = 0
             }
@@ -189,7 +192,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         lblCount.frame = CGRect(x: x, y: y, width: width + 10, height: height)
     }
     
-    func buttonTapped() {
+    internal func buttonTapped() {
         // show notification view in window
         
         AnalyticsManager.trackEventName("clickTopedIcon", category: GA_EVENT_CATEGORY_NOTIFICATION, action: GA_EVENT_ACTION_CLICK, label: "Bell Notification")
@@ -221,11 +224,11 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         }
     }
     
-    func hideNotificationView(sender: UITapGestureRecognizer) {
+    internal func hideNotificationView(sender: UITapGestureRecognizer) {
         hideNotificationView(callback: nil)
     }
     
-    func hideNotificationView(callback: ((_ isComplete: Bool) -> Void)?) {
+    internal func hideNotificationView(callback: ((_ isComplete: Bool) -> Void)?) {
         // hide notification window
         UIView.animate(withDuration: 0.2, animations: {
             self.notificationWindow?.transform = (self.notificationWindow?.transform.scaledBy(x: 0.01, y: 0.01))!
@@ -236,7 +239,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         }
     }
     
-    @objc func reloadNotifications() {
+    @objc internal func reloadNotifications() {
         notificationManager.loadNotifications()
     }
     
@@ -254,20 +257,20 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
     }
     
     // SwiftNotificationTableViewControllerDelegate
-    func pushViewController(viewController: UIViewController) {
+    internal func pushViewController(viewController: UIViewController) {
         self.hideNotificationView { (_) in
             self.parentViewController?.navigationController?.pushViewController(viewController, animated: true)
         }
     }
     
-    func navigateUsingTPRoutes(urlString: String) {
+    internal func navigateUsingTPRoutes(urlString: String) {
         self.hideNotificationView { (_) in
             TPRoutes.routeURL(URL(string: urlString)!)
         }
     }
     
     // notification observer action
-    func statusBarDidChangeFrame(notification: NSNotification) {
+    internal func statusBarDidChangeFrame(notification: NSNotification) {
         let orientation = UIApplication.shared.statusBarOrientation
         notificationWindow?.frame = screenBounds()
         
@@ -278,7 +281,7 @@ class NotificationBarButton: UIBarButtonItem, NotificationTableViewControllerDel
         triangleView?.frame = CGRect(x: screenWidth-40, y: tableViewOriginY - 5, width: 10, height: 5)
     }
     
-    func screenBounds() -> CGRect {
+    internal func screenBounds() -> CGRect {
         var bounds = UIScreen.main.bounds
         if (UIScreen.main.responds(to: #selector(getter: UIScreen.fixedCoordinateSpace))) {
             let currentCoordSpace = UIScreen.main.coordinateSpace

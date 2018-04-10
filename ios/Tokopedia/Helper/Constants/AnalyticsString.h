@@ -14,6 +14,7 @@
 #define GA_EVENT_CLICK_INTERMEDIARY @"clickIntermediary"
 #define GA_EVENT_NAME_EVENT_TOP_NAV @"eventTopNav"
 #define GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE @"userInteractionHomePage"
+#define GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL @"clickHomepage"
 
 #define GA_EVENT_NAME_CLICK_TOKOPOINTS_HOMEPAGE @"clickHomepage"
 #define GA_EVENT_NAME_TOKOPOINTS @"eventTokopoint"
@@ -96,6 +97,7 @@
 #define GA_EVENT_CATEGORY_ACTIVATION @"Activation"
 #define GA_EVENT_CATEGORY_REPLACEMENT @"Peluang Filter"
 #define GA_EVENT_CATEGORY_TOP_NAV @"top nav"
+#define GA_EVENT_CATEGORY_Referral @"Referral"
 
 #pragma mark - Event Action
 #define GA_EVENT_ACTION_CLICK @"Click"

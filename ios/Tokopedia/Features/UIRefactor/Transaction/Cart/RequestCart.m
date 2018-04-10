@@ -80,7 +80,7 @@
                                       @"client_id"      :clientID?:@"",
                                       @"fingerprint_support": @(hasTouchID),
                                       @"fingerprint_publickey": [service getPublicKey],
-                                      @"is_thankyou_native" : @"1"
+                                      @"is_thankyou_native_new": @"1"
                                       };
     
     if (![voucherCode isEqualToString:@""]) {
@@ -91,13 +91,16 @@
     [param addEntriesFromDictionary:partialDetail];
     [param addEntriesFromDictionary:cartListRate];
     
-    
+    NSString* deviceIdentifier = [DeviceIdentifier deviceId];
+    NSDictionary* header = @{@"X-GA-ID": deviceIdentifier};
+
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     networkManager.isUsingDefaultError = NO;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/action/tx/toppay_get_parameter.pl"
                                 method:RKRequestMethodPOST
+                                header:header
                              parameter:param
                                mapping:[TransactionAction mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -138,11 +141,14 @@
 +(void)fetchVoucherCode:(NSString*)voucherCode isPromoSuggestion:(BOOL)isPromoSuggestion success:(void (^)(TransactionVoucher *data))success error:(void (^)(NSError *error))error{
     
     NSDictionary* param = @{@"voucher_code": voucherCode, @"suggested": @(isPromoSuggestion)};
+    NSString* deviceIdentifier = [DeviceIdentifier deviceId];
+    NSDictionary* header = @{@"X-GA-ID": deviceIdentifier};
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/tx-voucher/check_voucher_code.pl"
                                 method:RKRequestMethodGET
+                                header:header
                              parameter:param
                                mapping:[TransactionVoucher mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {
@@ -182,9 +188,12 @@
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];
     networkManager.isUsingHmac = YES;
     networkManager.isUsingDefaultError = showError;
+    NSString* deviceIdentifier = [DeviceIdentifier deviceId];
+    NSDictionary* header = @{@"X-GA-ID": deviceIdentifier};
     [networkManager requestWithBaseUrl:[NSString v4Url]
                                   path:@"/v4/tx-voucher/check_voucher_code.pl"
                                 method:RKRequestMethodGET
+                                header:header
                              parameter:param
                                mapping:[TransactionVoucher mapping]
                              onSuccess:^(RKMappingResult *successResult, RKObjectRequestOperation *operation) {

@@ -8,13 +8,25 @@
 
 import Foundation
 
-struct TokoCashDateRangeItem {
-    let title: String
-    let fromDate: Date
-    let toDate: Date
-    var selected: Bool
+public struct DateFilter {
+    public let selectedDateRange: TokoCashDateRangeItem
+    public let fromDate: Date
+    public let toDate: Date
     
-    init(_ title: String, fromDate: Date, toDate: Date, selected: Bool) {
+    public init(selectedDateRange: TokoCashDateRangeItem, fromDate: Date, toDate: Date) {
+        self.selectedDateRange = selectedDateRange
+        self.fromDate = fromDate
+        self.toDate = toDate
+    }
+}
+
+public struct TokoCashDateRangeItem {
+    public let title: String
+    public let fromDate: Date
+    public let toDate: Date
+    public var selected: Bool
+    
+    public init(_ title: String, fromDate: Date, toDate: Date, selected: Bool) {
         self.title = title
         self.fromDate = fromDate
         self.toDate = toDate

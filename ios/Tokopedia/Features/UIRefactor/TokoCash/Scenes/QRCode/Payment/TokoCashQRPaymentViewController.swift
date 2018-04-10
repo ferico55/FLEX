@@ -7,30 +7,31 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-class TokoCashQRPaymentViewController: UIViewController {
+public class TokoCashQRPaymentViewController: UIViewController {
 
-    @IBOutlet weak var nameLabel: UILabel!
-    @IBOutlet weak var phoneNumberLabel: UILabel!
-    @IBOutlet weak var phoneView: UIView!
-    @IBOutlet weak var amountTextField: UITextField!
-    @IBOutlet weak var amountLineView: UIView!
-    @IBOutlet weak var balanceLabel: UILabel!
-    @IBOutlet weak var balanceAcitivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var notesTextField: UITextField!
-    @IBOutlet weak var paymentButton: UIButton!
-    @IBOutlet weak var paymentActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var nameLabel: UILabel!
+    @IBOutlet weak private var phoneNumberLabel: UILabel!
+    @IBOutlet weak private var phoneView: UIView!
+    @IBOutlet weak private var amountTextField: UITextField!
+    @IBOutlet weak private var amountLineView: UIView!
+    @IBOutlet weak private var balanceLabel: UILabel!
+    @IBOutlet weak private var balanceAcitivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var notesTextField: UITextField!
+    @IBOutlet weak private var paymentButton: UIButton!
+    @IBOutlet weak private var paymentActivityIndicator: UIActivityIndicatorView!
     
     private var isAnimation = false
     
     // view model
-    var viewModel: TokoCashQRPaymentViewModel!
+    public var viewModel: TokoCashQRPaymentViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Nominal Pembayaran"
         bindViewModel()
     }
     

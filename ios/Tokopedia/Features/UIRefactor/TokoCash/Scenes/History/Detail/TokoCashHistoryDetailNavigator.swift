@@ -8,25 +8,23 @@
 
 import Foundation
 
-class TokoCashHistoryDetailNavigator {
+public class TokoCashHistoryDetailNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toHelp(_ transactionId: String) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashHelpViewController.self)
+    public func toHelp(_ transactionId: String) {
+        let vc = TokoCashHelpViewController()
         let navigator = TokoCashHelpNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashHelpViewModel(transactionId, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toMoveToSaldo(_ historyItem: TokoCashHistoryItems) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashMoveToSaldoViewController.self)
+    public func toMoveToSaldo(_ historyItem: TokoCashHistoryItems) {
+        let vc = TokoCashMoveToSaldoViewController()
         let navigator = TokoCashMoveToSaldoNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashMoveToSaldoViewModel(historyItem: historyItem, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)

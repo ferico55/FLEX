@@ -7,20 +7,20 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 import VMaskTextField
-import RxSwift
-import RxCocoa
 
-class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate {
+public class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate {
     
-    @IBOutlet weak var phoneNumberLabel: UILabel!
-    @IBOutlet weak var otpButton: UIButton!
-    @IBOutlet weak var verificationCodeView: UIView!
-    @IBOutlet weak var verificationCodeTextField: VMaskTextField!
-    @IBOutlet weak var verificationButton: UIButton!
-    @IBOutlet weak var otpButtonActivityIndicator: UIActivityIndicatorView!
-    @IBOutlet weak var verificationButtonActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var phoneNumberLabel: UILabel!
+    @IBOutlet weak private var otpButton: UIButton!
+    @IBOutlet weak private var verificationCodeView: UIView!
+    @IBOutlet weak private var verificationCodeTextField: VMaskTextField!
+    @IBOutlet weak private var verificationButton: UIButton!
+    @IBOutlet weak private var otpButtonActivityIndicator: UIActivityIndicatorView!
+    @IBOutlet weak private var verificationButtonActivityIndicator: UIActivityIndicatorView!
     
     private let phoneNumber = Variable("")
     private let enableOTPButton = Variable(true)
@@ -32,8 +32,10 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
     private let resendTimer = 90
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Verifikasi Nomor Handphone"
         
         verificationCodeTextField.delegate = self
         verificationCodeTextField.mask = "#  #  #  #  #  #"
@@ -50,13 +52,13 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
         didTapVerificationButton()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         AnalyticsManager.trackScreenName("Tokocash Activation - Phone Verification Page")
     }
     
-    override func didReceiveMemoryWarning() {
+    override public func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
@@ -78,11 +80,11 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
                 self.otpButton.isEnabled = isEnable
                 self.otpButton.layer.borderWidth = 1.0
                 if isEnable {
-                    self.otpButton.backgroundColor = UIColor.tpGreen()
-                    self.otpButton.layer.borderColor = UIColor.clear.cgColor
+                    self.otpButton.backgroundColor = #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
+                    self.otpButton.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0).cgColor
                 } else {
-                    self.otpButton.backgroundColor = UIColor.clear
-                    self.otpButton.layer.borderColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12).cgColor
+                    self.otpButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+                    self.otpButton.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1199999973).cgColor
                 }
             })
             .addDisposableTo(rx_disposeBag)
@@ -97,7 +99,7 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
                     self.verificationButton.backgroundColor = .tpGreen()
                 } else {
                     self.verificationCodeView.isHidden = true
-                    self.verificationButton.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.12)
+                    self.verificationButton.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1199999973)
                 }
             })
             .addDisposableTo(rx_disposeBag)
@@ -117,11 +119,11 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
                     }
                     return !$0
                 }
-            }.bindTo(otpButton.rx.isEnabled)
+            }.bind(to: otpButton.rx.isEnabled)
             .addDisposableTo(rx_disposeBag)
         
         sendOTPActivityIndicator.asObservable()
-            .bindTo(otpButtonActivityIndicator.rx.isAnimating)
+            .bind(to: otpButtonActivityIndicator.rx.isAnimating)
             .addDisposableTo(rx_disposeBag)
     }
     
@@ -135,11 +137,11 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
                 }
                 return !$0
             }
-            .bindTo(verificationButton.rx.isEnabled)
+            .bind(to: verificationButton.rx.isEnabled)
             .addDisposableTo(rx_disposeBag)
         
         sendVerificationActivityIndicator.asObservable()
-            .bindTo(verificationButtonActivityIndicator.rx.isAnimating)
+            .bind(to: verificationButtonActivityIndicator.rx.isAnimating)
             .addDisposableTo(rx_disposeBag)
     }
     
@@ -203,7 +205,8 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
                     .trackActivity(self.sendVerificationActivityIndicator)
                     .subscribe(onNext: { succsess in
                         if succsess {
-                            self.performSegue(withIdentifier: "tokoCashActivationSuccessSegue", sender: nil)
+                            let vc = TokoCashActivationSuccessViewController()
+                            self.navigationController?.pushViewController(vc, animated: true)
                         }
                     }, onError: { error in
                         debugPrint("Error :", error)
@@ -213,7 +216,7 @@ class TokoCashActivationOTPViewController: UIViewController, UITextFieldDelegate
     }
     
     // MARK: - UITextField Delegate
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+    public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         return verificationCodeTextField.shouldChangeCharacters(in: range, replacementString: string)
     }
 }

@@ -29,9 +29,6 @@
                                 andImageURL:(NSString *)imageURL
                                 andShopName:(NSString *)shopName;
 
-- (void)navigateToProductReviewFromViewController:(UIViewController*)viewController withProductID:(NSString *)productID;
-
-//-(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId withShopId:(NSString *)shopId;
 -(void)navigateToInboxTalkFromViewController:(UIViewController *)viewController withTalkId:(NSString *)talkId;
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
@@ -82,6 +79,8 @@
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;
 - (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
++ (void)navigateToReferralWelcomeWithData:(NSDictionary*)data;
++ (void)navigateToReferralScreen;
 
 #pragma mark - Inbox
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;

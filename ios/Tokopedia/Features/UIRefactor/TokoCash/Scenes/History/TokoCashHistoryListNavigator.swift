@@ -8,37 +8,34 @@
 
 import Foundation
 
-class TokoCashHistoryListNavigator {
+public class TokoCashHistoryListNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toPendingTransaction(_ pendingItems: [TokoCashHistoryItems]) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashPendingTransactionViewController.self)
+    public func toPendingTransaction(_ pendingItems: [TokoCashHistoryItems]) {
+        let vc = TokoCashPendingTransactionViewController()
         let navigator = TokoCashPendingTransactionNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashPendingTransactionViewModel(pendingItems: pendingItems, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toDateFilter(_ delegate: TokoCashDateFilterDelegate,
-                      dateRange: TokoCashDateRangeItem = TokoCashDateRangeItem("7 Hari Terakhir", fromDate: Date.aWeekAgo(), toDate: Date(), selected: true),
+    public func toDateFilter(dateRange: TokoCashDateRangeItem = TokoCashDateRangeItem("7 Hari Terakhir", fromDate: Date.aWeekAgo(), toDate: Date(), selected: true),
                       fromDate: Date = Date(),
-                      toDate: Date = Date.aWeekAgo()) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashDateFilterViewController.self)
+                      toDate: Date = Date.aWeekAgo()) -> TokoCashDateFilterViewController {
+        let vc = TokoCashDateFilterViewController()
         let navigator = TokoCashDateFilterNavigator(navigationController: navigationController)
         let viewModel = TokoCashDateFilterViewModel(selectedDateRange: dateRange, fromDate: fromDate, toDate: toDate, navigator: navigator)
-        viewModel.delegate = delegate
         vc.viewModel = viewModel
         navigationController.pushViewController(vc, animated: true)
+        return vc
     }
     
-    func toHistoryDetail(_ historyItem: TokoCashHistoryItems) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashHistoryDetailViewController.self)
+    public func toHistoryDetail(_ historyItem: TokoCashHistoryItems) {
+        let vc = TokoCashHistoryDetailViewController()
         let navigator = TokoCashHistoryDetailNavigator(navigationController: navigationController)
         let viewModel = TokoCashHistoryDetailViewModel(historyItem: historyItem, navigator: navigator)
         vc.viewModel = viewModel

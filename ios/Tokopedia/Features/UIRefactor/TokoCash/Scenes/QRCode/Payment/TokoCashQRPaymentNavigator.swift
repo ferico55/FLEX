@@ -8,25 +8,23 @@
 
 import Foundation
 
-class TokoCashQRPaymentNavigator {
+public class TokoCashQRPaymentNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func toQRPaymentSuccess(_ paymentInfo: TokoCashPayment) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashQRPaymentSuccessViewController.self)
+    public func toQRPaymentSuccess(_ paymentInfo: TokoCashPayment) {
+        let vc = TokoCashQRPaymentSuccessViewController()
         let navigator = TokoCashQRPaymentSuccessNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashQRPaymentSuccessViewModel(paymentInfo: paymentInfo, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)
     }
     
-    func toQRPaymentFailed() {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashQRPaymentFailedViewController.self)
+    public func toQRPaymentFailed() {
+        let vc = TokoCashQRPaymentFailedViewController()
         let navigator = TokoCashQRPaymentFailedNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashQRPaymentFailedViewModel(navigator: navigator)
         navigationController.pushViewController(vc, animated: true)

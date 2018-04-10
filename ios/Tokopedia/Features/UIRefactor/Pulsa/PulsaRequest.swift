@@ -8,23 +8,19 @@
 
 import UIKit
 
-class PulsaRequest: NSObject {
-    var cache: PulsaCache = PulsaCache()
+internal class PulsaRequest: NSObject {
+    internal var cache: PulsaCache = PulsaCache()
     
-    var didReceiveCategory: (([PulsaCategory]) -> Void)!
-    var didReceiveOperator: (([PulsaOperator]) -> Void)!
-    var didReceiveProduct: (([PulsaProduct]) -> Void)!
-    var didNotSuccessReceiveCategory: (() -> Void)!
+    internal var didReceiveCategory: (([PulsaCategory]) -> Void)!
+    internal var didReceiveOperator: (([PulsaOperator]) -> Void)!
+    internal var didReceiveProduct: (([PulsaProduct]) -> Void)!
+    internal var didNotSuccessReceiveCategory: (() -> Void)!
     
-    override init() {
-        
-    }
-    
-    func requestCategory() {
+    internal func requestCategory() {
         self.checkMaintenanceStatus({ (status) in
-            if(!status.attributes.is_maintenance) {
+            if !status.attributes.is_maintenance {
                 self.cache.loadCategories { (cachedCategory) in
-                    if(cachedCategory == nil) {
+                    if cachedCategory == nil {
                         self.requestCategoryFromNetwork()
                     } else {
                         self.didReceiveCategory(cachedCategory!.data)
@@ -43,7 +39,7 @@ class PulsaRequest: NSObject {
         networkManager.isParameterNotEncrypted = true
         networkManager .
             request(withBaseUrl: NSString.pulsaApiUrl(),
-                               path: "/v1.1/category/list",
+                               path: "/v1.4/category/list",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaCategoryRoot.mapping(),
@@ -54,10 +50,10 @@ class PulsaRequest: NSObject {
                 },
                                onFailure: { (errors) -> Void in
                                 self.didNotSuccessReceiveCategory()
-            });
+            })
     }
     
-    func requestOperator() {
+    internal func requestOperator() {
         self.cache.loadOperators{ (cachedOperator) in
             if(cachedOperator == nil) {
                 self.requestOperatorFromNetwork()
@@ -73,7 +69,7 @@ class PulsaRequest: NSObject {
         networkManager.isParameterNotEncrypted = true
         networkManager .
             request(withBaseUrl: NSString.pulsaApiUrl(),
-                               path: "/v1.1/operator/list",
+                               path: "/v1.4/operator/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
                                mapping: PulsaOperatorRoot.mapping(),
@@ -84,10 +80,10 @@ class PulsaRequest: NSObject {
                 },
                                onFailure: { (errors) -> Void in
                                 
-            });
+            })
     }
     
-    func requestProduct(_ operatorId: String, categoryId: String) {
+    internal func requestProduct(_ operatorId: String, categoryId: String) {
         self.cache.loadProducts{ (cachedProduct) in
             if(cachedProduct == nil) {
                 self.requestProductFromNetwork(operatorId,  categoryId: categoryId)
@@ -103,7 +99,7 @@ class PulsaRequest: NSObject {
         networkManager.isParameterNotEncrypted = true
         networkManager .
             request(withBaseUrl: NSString.pulsaApiUrl(),
-                               path: "/v1.1/product/list",
+                               path: "/v1.4/product/list",
                                method: .GET,
                                parameter: ["device" : "ios"],
                                mapping: PulsaProductRoot.mapping(),
@@ -112,7 +108,7 @@ class PulsaRequest: NSObject {
                                 self.cache.storeProducts(productRoot)
                                 
                                 var products = [PulsaProduct]()
-                                if(categoryId != "" || operatorId != "") {
+                                if categoryId != "" || operatorId != "" {
                                     products = self.filterProductBy(productRoot.data, operatorId: operatorId, categoryId: categoryId)
                                 } else {
                                     products = productRoot.data
@@ -123,7 +119,7 @@ class PulsaRequest: NSObject {
                 },
                                onFailure: { (errors) -> Void in
                                 
-            });
+            })
 
     }
     
@@ -142,7 +138,7 @@ class PulsaRequest: NSObject {
         networkManager.isParameterNotEncrypted = true
         networkManager .
             request(withBaseUrl: NSString.pulsaApiUrl(),
-                               path: "/v1/status",
+                               path: "/v1.4/status",
                                method: .GET,
                                parameter: nil,
                                mapping: PulsaStatusRoot.mapping(),
@@ -153,6 +149,6 @@ class PulsaRequest: NSObject {
                 },
                                onFailure: { (errors) -> Void in
                                 onFailure()
-            });
+            })
     }
 }

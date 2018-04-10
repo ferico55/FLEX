@@ -6,32 +6,34 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
 import RxSwift
+import UIKit
 
-class FeedHeaderComponentView: ComponentView<FeedCardState> {
+internal class FeedHeaderComponentView: ComponentView<FeedCardState> {
     private var disposeBag = DisposeBag()
     
     private weak var viewController: UIViewController?
     
-    init(viewController: UIViewController) {
+    internal init(viewController: UIViewController) {
         self.viewController = viewController
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardState?, size: CGSize) -> NodeType {
+    override internal func construct(state: FeedCardState?, size: CGSize) -> NodeType {
         guard let state = state else { return NilNode() }
         
         let authorImage: NodeType = Node<UIButton>() { button, _, _ in
             button.bk_(whenTapped: {
                 if !(state.source.fromTokopedia) {
-                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "\(state.page).\(state.row) Feed - Shop")
-                    TPRoutes.routeURL(URL(string: state.source.shopState.shopURL)!)
+                    if let url = URL(string: state.source.shopState.shopURL) {
+                        AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "\(state.page).\(state.row) Feed - Shop")
+                        TPRoutes.routeURL(url)
+                    }
                 } else {
                     AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_CLICK, label: "\(state.page).\(state.row) Promotion - Promo Page Header")
                     NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 3])
@@ -43,14 +45,14 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             layout.height = 52
             
             imageView.borderWidth = 1.0
-            imageView.borderColor = UIColor.fromHexString("#e0e0e0")
+            imageView.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
             imageView.cornerRadius = 3.0
             imageView.clipsToBounds = true
             
             if state.source.fromTokopedia {
                 imageView.image = #imageLiteral(resourceName: "icon_source_tokopedia")
             } else {
-                imageView.setImageWith(URL(string: state.source.shopState.shopImage))
+                imageView.setImageWith(URL(string: state.source.shopState.shopImage), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
             }
             
         })
@@ -94,7 +96,13 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
                 label.attributedText = activity
             },
             Node<UILabel>(identifier: "timestamp") { label, _, _ in
-                label.text = state.source.fromTokopedia ? "Promo" : FeedService.feedCreateTimeFormatted(withCreatedTime: state.createTime!)
+                var formattedText = ""
+                
+                if let createTime = state.createTime, !state.source.fromTokopedia {
+                    formattedText = FeedService.feedCreateTimeFormatted(withCreatedTime: createTime)
+                }
+                
+                label.text = state.source.fromTokopedia ? "Promo" : formattedText
                 label.font = .microTheme()
                 label.textColor = UIColor.tpDisabledBlackText()
             }
@@ -108,7 +116,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             button.titleLabel?.font = .smallThemeSemibold()
             button.setTitleColor(UIColor.tpDisabledBlackText(), for: .normal)
             button.borderWidth = 1
-            button.borderColor = UIColor.fromHexString("#e0e0e0")
+            button.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
             
             button.rx.tap
                 .subscribe(onNext: {
@@ -148,7 +156,7 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
         let horizontalLine = Node<UIView>(identifier: "line") { view, layout, _ in
             layout.height = 1
             
-            view.backgroundColor = UIColor.fromHexString("#e0e0e0")
+            view.backgroundColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
         }
         
         let header = Node<UIView>() { view, layout, size in
@@ -182,14 +190,18 @@ class FeedHeaderComponentView: ComponentView<FeedCardState> {
             let attachment = NSTextAttachment()
             
             if state.shopState.shopIsGold {
-                attachment.image = UIImage(named: "icon_gold_merchant")
+                attachment.image = #imageLiteral(resourceName: "icon_gold_merchant")
             }
             
             if state.shopState.shopIsOfficial {
-                attachment.image = UIImage(named: "icon_official_store")
+                attachment.image = #imageLiteral(resourceName: "icon_official_store")
             }
             
-            attachment.bounds = CGRect(x: 0, y: -3, width: (attachment.image?.size.width)!, height: (attachment.image?.size.height)!)
+            if let width = attachment.image?.size.width, let height = attachment.image?.size.height {
+                attachment.bounds = CGRect(x: 0, y: -3, width: width, height: height)
+            } else {
+                attachment.bounds = .zero
+            }
             
             badges = NSAttributedString(attachment: attachment)
         }

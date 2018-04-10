@@ -54,7 +54,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                     DispatchQueue.main.async {
                         self.facebookLoginCompleted(result: result, error: error)
                     }
-            })
+                }
+            )
         }
         self.providersListView.onGoogleSelected = { (provider: SignInProvider) in
             if let signIn = GIDSignIn.sharedInstance() {
@@ -72,7 +73,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             LoginAnalytics().trackLoginClickEvent(label: provider.name)
             self.webViewLoginWithProvider(provider: provider)
         }
-        self.providersListView.onPhoneNumberSelected = { (provider: SignInProvider) in
+        self.providersListView.onPhoneNumberSelected = { (_: SignInProvider) in
             self.loginWithPhoneNumber()
         }
     }
@@ -94,8 +95,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     }
     //    MARK: - Do Login
     
-    // MARK : Login With Tokocash Phone Number
-    func loginWithPhoneNumber () {
+    // MARK: Login With Tokocash Phone Number
+    func loginWithPhoneNumber() {
         let controller = LoginPhoneNumberViewController(nibName: nil, bundle: nil)
         controller.hidesBottomBarWhenPushed = true
         self.navigationController?.pushViewController(controller, animated: true)
@@ -105,9 +106,11 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         let controller = WebViewSignInViewController(provider: provider)
         controller.onReceiveToken = { (token: String) in
             let service = AuthenticationService.shared
-            guard let parent = self.parentController?.parentController else {return}
+            guard let parent = self.parentController?.parentController else {
+                return
+            }
             service.loginDelegate = parent
-            service.onLoginComplete = { (_ login: Login?, _ error: Error?) -> Void in
+            service.onLoginComplete = { (_ login: Login?, _: Error?) -> Void in
                 if let login = login {
                     login.medium = provider.name
                     LoginAnalytics().trackLoginSuccessEvent(label: provider.name)
@@ -115,7 +118,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
                 }
             }
             service.login(withUserProfile: CreatePasswordUserProfile.fromYahoo(token: token))
-
+            
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -125,12 +128,12 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         guard emailIds.count > 0 else {
             return
         }
-        if emailIds.count == 1 {
-            touchIdHelper.loadTouchID(withEmail: emailIds.first!)
+        if emailIds.count == 1, let firstElement = emailIds.first {
+            touchIdHelper.loadTouchID(withEmail: firstElement)
             return
         }
         
-        let alertController = UIAlertController(title: "Silahkan pilih akun anda", message: nil, preferredStyle: .actionSheet)
+        let alertController = UIAlertController(title: "Silakan pilih akun Anda", message: nil, preferredStyle: .actionSheet)
         
         alertController.addAction(UIAlertAction(title: "Batal", style: .cancel, handler: nil))
         
@@ -147,7 +150,9 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     }
     
     func doLoginWithUser(profile: CreatePasswordUserProfile) {
-        guard let parent = self.parentController?.parentController else {return}
+        guard let parent = self.parentController?.parentController else {
+            return
+        }
         parent.makeActivityIndicator(toShow: true)
         let service = AuthenticationService.shared
         service.loginDelegate = parent
@@ -161,7 +166,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             } else if let login = login {
                 GIDSignIn.sharedInstance().signOut()
                 GIDSignIn.sharedInstance().disconnect()
-
+                
                 login.medium = profile.providerName
                 parent.loginSuccess(login: login)
             }
@@ -170,7 +175,9 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
     }
     //    MARK: - Facebook Login
     func facebookLoginCompleted(result: FBSDKLoginManagerLoginResult?, error: Error?) {
-        guard let parent = self.parentController?.parentController else {return}
+        guard let parent = self.parentController?.parentController else {
+            return
+        }
         guard error == nil else {
             parent.makeActivityIndicator(toShow: false)
             return
@@ -196,18 +203,22 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         }
     }
     func didReceiveFacebookUserData(userData: [String: String]?) {
-        guard let parent = self.parentController?.parentController else {return}
-        guard userData != nil else {
+        guard let parent = self.parentController?.parentController else {
+            return
+        }
+        guard let userData = userData else {
             debugPrint("Error: Failed to laod facebook user data")
             parent.makeActivityIndicator(toShow: false)
             return
         }
-        let profile = CreatePasswordUserProfile.fromFacebook(userData: userData!)
+        let profile = CreatePasswordUserProfile.fromFacebook(userData: userData)
         self.doLoginWithUser(profile: profile)
     }
     //    MARK: - GIDSignInDelegate
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
-        guard let parent = self.parentController?.parentController else {return}
+        guard let parent = self.parentController?.parentController else {
+            return
+        }
         if error != nil {
             parent.makeActivityIndicator(toShow: false)
             return

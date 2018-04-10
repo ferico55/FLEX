@@ -16,9 +16,17 @@
 - (void) viewDidLoad {
     [super viewDidLoad];
     
+    NSDictionary *paramsDict;
+    
+    if (_subCategorySlug) {
+        paramsDict = @{@"subCategorySlug": _subCategorySlug};
+    } else {
+        paramsDict = @{@"subCategorySlug": @""};
+    }
+    
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"
-                                              initialProperties:@{@"name" : @"Promo", @"params" : @{} }];
+                                              initialProperties:@{@"name" : @"Promo", @"params" : paramsDict }];
     rootView.accessibilityLabel = @"promoMainView";
     self.view = rootView;
 }

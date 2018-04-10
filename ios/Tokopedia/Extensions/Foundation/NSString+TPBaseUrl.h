@@ -42,5 +42,6 @@
 + (nonnull NSString*)ajaxAppUrl;
 + (nonnull NSString*)webSocketUrl;
 + (nonnull NSString*)tokopointsUrl;
++ (nonnull NSString*)bookingUrl;
 
 @end

@@ -9,45 +9,48 @@
 import Moya
 import MoyaUnbox
 
-@objc enum PromoServiceType: Int {
+@objc internal enum PromoServiceType: Int {
     case marketplace
     case digital
 }
 
-let type = [
+internal let type = [
     PromoServiceType.marketplace: "marketplace",
     PromoServiceType.digital: "digital"
 ]
 
-enum TokopointsTarget {
+internal enum TokopointsTarget {
     case getDrawerData
     case getCoupons(serviceType: PromoServiceType, productId: String?, categoryId: String?, page: Int64)
+    case geocode(address: String?, latitudeLongitude: String?)
 }
 
 extension TokopointsTarget: TargetType {
     /// The target's base `URL`.
-    var baseURL: URL {
+    internal var baseURL: URL {
         return URL(string: NSString.tokopointsUrl())!
     }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
-    var path: String {
+    internal var path: String {
         switch self {
         case .getDrawerData: return "/tokopoints/api/v1/points/drawer"
         case .getCoupons: return "/tokopoints/api/v1/coupon/list"
+        case .geocode: return "/maps/geocode"
         }
     }
     
     /// The HTTP method used in the request.
-    var method: Moya.Method {
+    internal var method: Moya.Method {
         switch self {
         case .getDrawerData: return .get
-        case .getCoupons: return.get
+        case .getCoupons: return .get
+        case .geocode: return .get
         }
     }
     
     /// The parameters to be incoded in the request.
-    var parameters: [String: Any]? {
+    internal var parameters: [String: Any]? {
         let userManager = UserAuthentificationManager()
         
         switch self {
@@ -67,19 +70,28 @@ extension TokopointsTarget: TargetType {
                 params["category_id"] = categoryId
             }
             return params
+        case let .geocode(address, latitudeLongitude):
+            var params: [String: Any] = [:]
+            if let address = address {
+                params["address"] = address
+            }
+            if let latitudeLongitude = latitudeLongitude {
+                params["latlng"] = latitudeLongitude
+            }
+            return params
         }
     }
     
     /// The method used for parameter encoding.
-    var parameterEncoding: ParameterEncoding {
+    internal var parameterEncoding: ParameterEncoding {
         return URLEncoding.default
     }
     
     /// Provides stub data for use in testing.
-    var sampleData: Data {
+    internal var sampleData: Data {
         return "{\"data\": 123 }".data(using: .utf8)!
     }
     
     /// The type of HTTP task to be performed.
-    var task: Task { return .request }
+    internal var task: Task { return .request }
 }

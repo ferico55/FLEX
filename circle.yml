@@ -7,12 +7,12 @@ machine:
 
 dependencies:
   override:
-    - yarn install
     - gem install fastlane
+    - bundle install
 
 test:
   override:
-    - yarn danger
+    - bundle exec danger
     - if [ $CIRCLE_BRANCH = 'feature/UITest' ]; then fastlane test ; fi
   post:
     - if [ $CIRCLE_BRANCH = 'feature/UITest' ]; then mkdir -p $CIRCLE_TEST_REPORTS/junit && cat fastlane/test_output/report.junit > $CIRCLE_TEST_REPORTS/junit/report.xml; fi

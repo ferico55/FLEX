@@ -10,45 +10,45 @@ import Foundation
 import Render
 import ReSwift
 
-enum DigitalAddToCartProgress {
+internal enum DigitalAddToCartProgress {
     case idle
     case onProgress
 }
 
-enum DigitalErrorState {
+internal enum DigitalErrorState {
     case noError
     case notShowing(String)
 }
 
-enum DigitalAlertState {
+internal enum DigitalAlertState {
     case idle
     case message(String)
 }
 
-struct DigitalTextInputState {
-    let text: String
-    let failedValidation: DigitalFieldValidation?
+internal struct DigitalTextInputState {
+    internal let text: String
+    internal let failedValidation: DigitalFieldValidation?
 }
 
-struct DigitalState: Render.StateType, ReSwift.StateType {
-    var selectedOperator: DigitalOperator?
-    var selectedProduct: DigitalProduct?
-    var form: DigitalForm?
-    var textInputStates: [String: DigitalTextInputState] = [:]
-    var isInstantPaymentEnabled = false
-    var isLoadingForm = false
-    var isLoadingFailed = false
-    var errorMessageState = DigitalErrorState.noError
-    var addToCartProgress = DigitalAddToCartProgress.idle
-    var showErrors = false
-    var showErrorClientNumber = false
-    var alertState = DigitalAlertState.idle
-    var errorMessages = [String: String]()
-    var favourites: [DigitalFavourite] = []
+internal struct DigitalState: Render.StateType, ReSwift.StateType {
+    internal var selectedOperator: DigitalOperator?
+    internal var selectedProduct: DigitalProduct?
+    internal var form: DigitalForm?
+    internal var textInputStates: [String: DigitalTextInputState] = [:]
+    internal var isInstantPaymentEnabled = false
+    internal var isLoadingForm = false
+    internal var isLoadingFailed = false
+    internal var errorMessageState = DigitalErrorState.noError
+    internal var addToCartProgress = DigitalAddToCartProgress.idle
+    internal var showErrors = false
+    internal var showErrorClientNumber = false
+    internal var alertState = DigitalAlertState.idle
+    internal var errorMessages = [String: String]()
+    internal var favourites: [DigitalFavourite] = []
     
-    var canAddToCart: Bool = true
+    internal var canAddToCart: Bool = true
     
-    var activeTextInputs: [DigitalTextInput] {
+    internal var activeTextInputs: [DigitalTextInput] {
         var allTextInputs = self.selectedOperator?.textInputs ?? []
         
         guard let operatorSelectionStyle = self.form?.operatorSelectonStyle else {
@@ -62,13 +62,13 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return allTextInputs
     }
     
-    var passesTextValidations: Bool {
+    internal var passesTextValidations: Bool {
         return self.activeTextInputs.first { textInput in
             textInput.failedValidation(for: textInputStates[textInput.id]?.text ?? "") != nil
         } == nil
     }
     
-    func loadForm() -> DigitalState {
+    internal func loadForm() -> DigitalState {
         var newState = self
         newState.isLoadingForm = true
         newState.isLoadingFailed = false
@@ -76,7 +76,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func loadFailed() -> DigitalState {
+    internal func loadFailed() -> DigitalState {
         var newState = self
         newState.isLoadingForm = false
         newState.isLoadingFailed = true
@@ -84,7 +84,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func changeOperator(operator: DigitalOperator?) -> DigitalState {
+    internal func changeOperator(operator: DigitalOperator?) -> DigitalState {
         var newState = self
         
         if self.selectedOperator !== `operator` {
@@ -103,7 +103,7 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func inputText(for textInput: DigitalTextInput, with text: String) -> DigitalState {
+    internal func inputText(for textInput: DigitalTextInput, with text: String) -> DigitalState {
         var newState = self
         
         let normalizedText = textInput.normalizedText(from: text)
@@ -118,13 +118,13 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func toggleInstantPayment() -> DigitalState {
+    internal func toggleInstantPayment() -> DigitalState {
         var newState = self
         newState.isInstantPaymentEnabled = !self.isInstantPaymentEnabled
         return newState
     }
     
-    func receive(form: DigitalForm, lastOrder: DigitalLastOrder, isInstant: Bool) -> DigitalState {
+    internal func receive(form: DigitalForm, lastOrder: DigitalLastOrder, isInstant: Bool) -> DigitalState {
         var newState = self
         newState.form = form
         newState.isLoadingForm = false
@@ -177,11 +177,12 @@ struct DigitalState: Render.StateType, ReSwift.StateType {
         return newState
     }
     
-    func selectProduct(fromOperator: DigitalOperator, orProductId: String?) -> DigitalProduct? {
+    internal func selectProduct(fromOperator: DigitalOperator, orProductId: String?) -> DigitalProduct? {
         return fromOperator.products.filter { $0.id == orProductId }.first ?? fromOperator.products.filter { $0.id == fromOperator.defaultProductId }.first
     }
     
-    func selectedOperator(fromForm: DigitalForm, orOperatorId: String?) -> DigitalOperator? {
-        return fromForm.operators.filter { $0.id == orOperatorId }.first ?? fromForm.defaultOperator
+    internal func selectedOperator(fromForm: DigitalForm, orOperatorId: String?) -> DigitalOperator? {
+        guard let operatorID = orOperatorId else { return fromForm.defaultOperator }
+        return fromForm.operators.filter { $0.operatorID == operatorID }.first ?? fromForm.defaultOperator
     }
 }

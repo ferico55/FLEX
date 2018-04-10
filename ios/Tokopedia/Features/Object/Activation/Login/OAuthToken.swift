@@ -7,15 +7,15 @@ import Foundation
 import RestKit
 
 @objc(OAuthToken)
-class OAuthToken: NSObject {
-    var accessToken: String!
-    var expiry: String!
-    var refreshToken: String = ""
-    var tokenType: String!
-    var error: String?
-    var errorDescription: String?
+public class OAuthToken: NSObject {
+    public var accessToken: String!
+    public var expiry: String!
+    public var refreshToken: String = ""
+    public var tokenType: String!
+    public var error: String?
+    public var errorDescription: String?
 
-    class func mapping() -> RKObjectMapping {
+    class public func mapping() -> RKObjectMapping {
         let mapping = RKObjectMapping(for: self)
         mapping?.addAttributeMappings(from:[
             "access_token": "accessToken",

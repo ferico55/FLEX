@@ -10,10 +10,10 @@ import Foundation
 import RxSwift
 
 @objc(ProductAndWishlistNetworkManager)
-class ProductAndWishlistNetworkManager: NSObject {
-    static let PRODUCT_PER_PAGE = 12
+internal class ProductAndWishlistNetworkManager: NSObject {
+    internal static let productPerPage = 12
     
-    func requestSearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(SearchProductWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func requestSearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(SearchProductWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:SearchProductWrapper?
         AceProvider()
             .request(.searchProductWith(params: params, path: path))
@@ -62,7 +62,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             })
     }
     
-    func requestIntermediaryCategory(forCategoryID:String, withCompletionHandler completionHandler: @escaping(CategoryIntermediaryResult) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func requestIntermediaryCategory(forCategoryID:String, withCompletionHandler completionHandler: @escaping(CategoryIntermediaryResult) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:CategoryIntermediaryResult?
         NetworkProvider<HadesTarget>()
             .request(.getCategoryIntermediary(forCategoryID: forCategoryID))
@@ -110,7 +110,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             }).disposed(by: self.rx_disposeBag)
     }
     
-    func checkWishlistStatusFor(products:[[SearchProduct]], withCompletionHandler completionHandler: @escaping([[SearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func checkWishlistStatusFor(products:[[SearchProduct]], withCompletionHandler completionHandler: @escaping([[SearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         
         //        var productIds:[String] = []
         let productIds:[String] = products.reduce([]) { allIds, productList in
@@ -135,7 +135,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             ).disposed(by: self.rx_disposeBag)
     }
     
-    func checkWishlistStatusFor(fuzzyProduct:[[FuzzySearchProduct]], withCompletionHandler completionHandler: @escaping([[FuzzySearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func checkWishlistStatusFor(fuzzyProduct:[[FuzzySearchProduct]], withCompletionHandler completionHandler: @escaping([[FuzzySearchProduct]]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         
         let productIds:[String] = fuzzyProduct.reduce([]) { allIds, productList in
             return allIds + productList.map { $0.productId }
@@ -159,7 +159,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             ).disposed(by: self.rx_disposeBag)
     }
     
-    func checkWishlistStatusFor(intermediaryCategorySection:[CategoryIntermediaryCuratedProductSection], withCompletionHandler completionHandler: @escaping([Any]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func checkWishlistStatusFor(intermediaryCategorySection:[CategoryIntermediaryCuratedProductSection], withCompletionHandler completionHandler: @escaping([Any]) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         let productIds:[String] = intermediaryCategorySection.reduce([]) { allIds, section in
             return allIds + section.products.map { $0.id }
         }
@@ -187,7 +187,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             ).disposed(by: self.rx_disposeBag)
     }
     
-    func requestProductShop(shopID:String,
+    internal func requestProductShop(shopID:String,
                             etalaseID:String,
                             keyword:String,
                             page:Int,
@@ -202,7 +202,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             "etalase_id":etalaseID,
             "keyword": keyword,
             "page": page,
-            "per_page": ProductAndWishlistNetworkManager.PRODUCT_PER_PAGE,
+            "per_page": ProductAndWishlistNetworkManager.productPerPage,
             orderBy.key: orderBy.value ?? "",
             "shop_domain":shopDomain
             ] as [String : Any]
@@ -220,10 +220,10 @@ class ProductAndWishlistNetworkManager: NSObject {
                     .map(to: ShopProductPageCampaignInfoResponse.self)
                     .map { result in
                         for info in result.data {
-                            let product = searchResult.list.first { $0.product_id == info.product_id }
-                            product?.original_price = info.original_price
-                            product?.percentage_amount = info.percentage_amount
-                            product?.end_date = info.end_date
+                            let product = searchResult.list.first { $0.product_id == info.productID }
+                            product?.original_price = info.originalPrice
+                            product?.percentage_amount = info.percentageAmount
+                            product?.end_date = info.endDate
                         }
                         return searchResult
                 }
@@ -237,7 +237,7 @@ class ProductAndWishlistNetworkManager: NSObject {
             .disposed(by: self.rx_disposeBag)
     }
     
-    func requestFeaturedProduct(shopID: String,
+    internal func requestFeaturedProduct(shopID: String,
                                 withCompletionHandler completionHandler: @escaping([FeaturedProduct]) -> Void,
                                 andErrorHandler errorHandler: @escaping(Error) -> Void) {
         NetworkProvider<GoldMerchantTarget>()
@@ -246,12 +246,12 @@ class ProductAndWishlistNetworkManager: NSObject {
             .subscribe(onNext: { result in
                 completionHandler(result)
             }, onError: { [] error in
-                errorHandler(error);
+                errorHandler(error)
             })
             .disposed(by: self.rx_disposeBag)
     }
     
-    func requestFuzzySearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(FuzzySearchWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func requestFuzzySearchWith(params:[String:Any], andPath path:String, withCompletionHandler completionHandler: @escaping(FuzzySearchWrapper) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:FuzzySearchWrapper?
         AceProvider()
             .request(.fuzzySearch(params: params, path: path))

@@ -6,30 +6,30 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import Foundation
-import MMNumberKeyboard
-import HMSegmentedControl
 import BEMCheckBox
-import JLPermissions
 import CFAlertViewController
+import Foundation
+import HMSegmentedControl
+import JLPermissions
+import MMNumberKeyboard
+import UIKit
 
 @objc
-class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
-    weak var navigator: PulsaNavigator!
+internal class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
+    internal weak var navigator: PulsaNavigator!
     
-    var onConsraintChanged: (() -> Void)?
-    var onLayoutComplete: ((CGSize) -> Void)?
+    internal var onConsraintChanged: (() -> Void)?
+    internal var onLayoutComplete: ((CGSize) -> Void)?
     
     fileprivate var stackView: UIStackView = UIStackView()
     fileprivate var pulsaCategoryControl: HMSegmentedControl = {
         let pulsaCategoryControl = HMSegmentedControl(sectionTitles: [])
         pulsaCategoryControl?.segmentWidthStyle = .fixed
         pulsaCategoryControl?.selectionIndicatorBoxOpacity = 0
-        pulsaCategoryControl?.selectionStyle = .box;
-        pulsaCategoryControl?.selectedSegmentIndex = HMSegmentedControlNoSegment;
+        pulsaCategoryControl?.selectionStyle = .box
+        pulsaCategoryControl?.selectedSegmentIndex = HMSegmentedControlNoSegment
         pulsaCategoryControl?.type = .text
-        pulsaCategoryControl?.selectionIndicatorLocation = .down;
+        pulsaCategoryControl?.selectionIndicatorLocation = .down
         pulsaCategoryControl?.selectionIndicatorHeight = 2
         return pulsaCategoryControl!
     }()
@@ -39,11 +39,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         noHandphoneLabel.textColor = self.titleTextColor
         return noHandphoneLabel
     }()
-    var numberField: UITextField!
+    internal var numberField: UITextField!
     lazy var productButton: UIButton = {
         var productButton = UIButton(frame: CGRect.zero)
         productButton.setTitle(ButtonConstant.defaultProductButtonTitle, for: UIControlState())
-        productButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.54), for: UIControlState())
+        productButton.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.54), for: UIControlState())
         productButton.backgroundColor = UIColor.white
         productButton.layer.borderWidth = 0
         productButton.contentHorizontalAlignment = .left
@@ -66,7 +66,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         buyButton.setTitleColor(.white, for: .disabled)
         buyButton.layer.cornerRadius = 3
         buyButton.setTitleColor(.white, for: .normal)
-        buyButton.backgroundColor = UIColor(red: 255.0/255.0, green: 87.0/255.0, blue: 34.0/255, alpha: 1)
+        buyButton.backgroundColor = #colorLiteral(red: 1, green: 0.3411764706, blue: 0.1333333333, alpha: 1)
         buyButton.isHidden = true
         buyButton.titleLabel?.font = UIFont.systemFont(ofSize: 14)
         
@@ -78,7 +78,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate var saldoButtonPlaceholder: UIView!
     fileprivate var buyButtonPlaceholder:UIView!
     fileprivate var phoneBook: UIImageView = {
-        var phoneBook = UIImageView(image: UIImage(named: "icon_phonebook"))
+        var phoneBook = UIImageView(image: #imageLiteral(resourceName: "icon_phonebook"))
         phoneBook.isUserInteractionEnabled = true
         return phoneBook
     }()
@@ -163,11 +163,11 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         return titleLabel
     }()
     
-    var selectedOperator = PulsaOperator()
-    var selectedCategory = PulsaCategory()
-    var selectedProduct = PulsaProduct() {
+    internal var selectedOperator = PulsaOperator()
+    internal var selectedCategory = PulsaCategory()
+    internal var selectedProduct = PulsaProduct() {
         didSet {
-            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select product - \(selectedCategory.attributes.name) - \(selectedProduct.attributes.desc)", label: "")
+            AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select product", label: "\(selectedCategory.attributes.name) - \(selectedProduct.attributes.desc)")
         }
     }
     
@@ -176,38 +176,38 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     fileprivate var inputtedNumber: String?
     fileprivate var listOperators: [PulsaOperator]?
     
-    var didTapAddressbook: (() -> Void)?
-    var didTapProduct:(([PulsaProduct]) -> Void)?
-    var didTapOperator:(([PulsaOperator]) -> Void)?
-    var didTapSeeAll: (() -> Void)?
-    var didAskedForLogin: (() -> Void)?
-    var didShowAlertPermission: (() -> Void)?
-    var didSuccessPressBuy: ((URL) -> Void)?
+    internal var didTapAddressbook: (() -> Void)?
+    internal var didTapProduct:(([PulsaProduct]) -> Void)?
+    internal var didTapOperator:(([PulsaOperator]) -> Void)?
+    internal var didTapSeeAll: (() -> Void)?
+    internal var didAskedForLogin: (() -> Void)?
+    internal var didShowAlertPermission: (() -> Void)?
+    internal var didSuccessPressBuy: ((URL) -> Void)?
     
-    fileprivate let WIDGET_LEFT_MARGIN: CGFloat = 16
-    fileprivate let WIDGET_RIGHT_MARGIN: CGFloat = 16
+    fileprivate let widgetLeftMargin: CGFloat = 16
+    fileprivate let widgetRightMargin: CGFloat = 16
     fileprivate let underlineOffset: CGFloat = 4
     
     fileprivate var arrangedPrefix = [Prefix]()
     
-    fileprivate let tokopediaGreenColor = UIColor(red: 66.0/255, green: 181.0/255, blue: 73.0/255, alpha: 1)
-    fileprivate let underlineViewColor = UIColor(red: 216.0/255, green: 216.0/255, blue: 216.0/255, alpha: 1)
-    fileprivate let titleTextColor = UIColor(red: 158.0/255, green: 158.0/255, blue: 158.0/255, alpha: 1)
+    fileprivate let tokopediaGreenColor = #colorLiteral(red: 0.2588235294, green: 0.7098039216, blue: 0.2862745098, alpha: 1)
+    fileprivate let underlineViewColor = #colorLiteral(red: 0.8470588235, green: 0.8470588235, blue: 0.8470588235, alpha: 1)
+    fileprivate let titleTextColor = #colorLiteral(red: 0.6196078431, green: 0.6196078431, blue: 0.6196078431, alpha: 1)
     
-    struct Prefix {
-        var phoneNumber: String
-        var image: String
-        var id: String
+    internal struct Prefix {
+        internal var phoneNumber: String
+        internal var image: String
+        internal var id: String
     }
     
-    struct ButtonConstant {
-        static let defaultProductButtonTitle = "- Pilih -"
+    internal struct ButtonConstant {
+        internal static let defaultProductButtonTitle = "- Pilih -"
     }
     
-    struct CategoryConstant {
-        static let Pulsa = "1"
-        static let PaketData = "2"
-        static let Listrik = "3"
+    internal struct CategoryConstant {
+        internal static let Pulsa = "1"
+        internal static let PaketData = "2"
+        internal static let Listrik = "3"
     }
     
     public init(categories: [PulsaCategory]) {
@@ -218,7 +218,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         NotificationCenter .default.addObserver(self, selector: #selector(self.didSwipeHomePage), name: NSNotification.Name(rawValue: "didSwipeHomePage"), object: nil)
         NotificationCenter .default.addObserver(self, selector: #selector(self.didSwipeHomePage), name: NSNotification.Name(rawValue: "didSwipeHomeTab"), object: nil)
         
-        pulsaCategoryControl.redDotImage = UIImage(named: "red_dot")
+        pulsaCategoryControl.redDotImage = #imageLiteral(resourceName: "red_dot")
         categories.enumerated().forEach { index, category in
             pulsaCategoryControl.sectionTitles.append(category.attributes.name)
             if category.attributes.is_new {
@@ -264,13 +264,13 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     public func setCategories(categories: [PulsaCategory]) {
         pulsaCategoryControl = HMSegmentedControl(sectionTitles: [])
-        pulsaCategoryControl.redDotImage = UIImage(named: "red_dot")
+        pulsaCategoryControl.redDotImage = #imageLiteral(resourceName: "red_dot")
         pulsaCategoryControl.segmentWidthStyle = .fixed
         pulsaCategoryControl.selectionIndicatorBoxOpacity = 0
-        pulsaCategoryControl.selectionStyle = .box;
-        pulsaCategoryControl.selectedSegmentIndex = HMSegmentedControlNoSegment;
+        pulsaCategoryControl.selectionStyle = .box
+        pulsaCategoryControl.selectedSegmentIndex = HMSegmentedControlNoSegment
         pulsaCategoryControl.type = .text
-        pulsaCategoryControl.selectionIndicatorLocation = .down;
+        pulsaCategoryControl.selectionIndicatorLocation = .down
         pulsaCategoryControl.selectionIndicatorHeight = 2
 
         categories.enumerated().forEach { index, category in
@@ -301,7 +301,6 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             let selectedCategory = categories[control.selectedSegmentIndex]
             self.buildViewByCategory(selectedCategory)
             self.resignFirstResponder()
-//            self.findFirstResponder()?.resignFirstResponder()
             }, for: .valueChanged)
         
         let categoryControlUnderline = UIView()
@@ -316,7 +315,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         requestOperatorsWithInitialCategory(categories.first!)
     }
     
-    required init(coder: NSCoder) {
+    internal required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
@@ -395,7 +394,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             self.selectedOperator = selectedOperator
             if (self.operatorButton != nil) {
                 self.operatorButton.setTitle(self.selectedOperator.attributes.name, for: .normal)
-                 AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select operator - \(selectedCategory.attributes.name) - \(selectedOperator.attributes.name)", label: "")
+                 AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "select operator", label: "\(selectedCategory.attributes.name) - \(selectedOperator.attributes.name)")
             }
         }
     }
@@ -440,7 +439,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     fileprivate func buildViewByCategory(_ category: PulsaCategory) {
         self.selectedCategory = category
-        AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "click \(selectedCategory.attributes.name)", label: "")
+        AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL, category: GA_EVENT_CATEGORY_HOMEPAGE_DIGITAL_WIDGET, action: "click widget", label: selectedCategory.attributes.name)
         self.resetPulsaOperator()
         self.buildAllView(category)
         self.getLastOrder(category: category.id!)
@@ -473,9 +472,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         operatorButton = UIButton(frame: CGRect.zero)
         operatorButton.setTitle(operatorTitle, for: .normal)
         
-        operatorButton.setTitleColor(UIColor(red: 0/255, green: 0/255, blue: 0/255, alpha: 0.54), for: UIControlState())
+        operatorButton.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.54), for: UIControlState())
         operatorButton.contentHorizontalAlignment = .left
-        operatorButton.contentEdgeInsets = UIEdgeInsetsMake(0, -15, 0, 0)
+        operatorButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -15, bottom: 0, right: 0)
         
         operatorPickerPlaceholder.addSubview(operatorButton)
         
@@ -544,7 +543,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             make?.right.equalTo()(self.buttonsPlaceholder)?.with().offset()(-16)
         }
         
-        productButton.contentEdgeInsets = UIEdgeInsetsMake(0, -16, 0, 0)
+        productButton.contentEdgeInsets = UIEdgeInsets(top: 0, left: -16, bottom: 0, right: 0)
         
         buttonsPlaceholder.mas_makeConstraints { make in
             make?.height.equalTo()(0)
@@ -662,7 +661,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         
         noHandphoneLabel.mas_makeConstraints { (make) in
             make?.top.mas_equalTo()(self.fieldPlaceholder.mas_top)?.offset()(16)
-            make?.left.equalTo()(self.fieldPlaceholder.mas_left)?.offset()(self.WIDGET_LEFT_MARGIN)
+            make?.left.equalTo()(self.fieldPlaceholder.mas_left)?.offset()(self.widgetLeftMargin)
         }
         
         if numberField != nil {
@@ -673,7 +672,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         numberField.borderStyle = .none
         numberField.rightViewMode = .always
         numberField.keyboardType = .numberPad
-        numberField.textColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.54)
+        numberField.textColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.54)
         numberField.clearButtonMode = .always
         
         let keyboard =  MMNumberKeyboard(frame: CGRect.zero)
@@ -684,7 +683,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         numberField.inputView = keyboard
         
         if(category.attributes.use_phonebook) {
-            phoneBook = UIImageView(image: UIImage(named: "icon_phonebook"))
+            phoneBook = UIImageView(image: #imageLiteral(resourceName: "icon_phonebook"))
             phoneBook.isUserInteractionEnabled = true
             fieldPlaceholder.addSubview(phoneBook)
             
@@ -770,7 +769,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         }
     }
     
-    func goToDigitalCategory(sender:UITapGestureRecognizer) {
+    internal func goToDigitalCategory(sender:UITapGestureRecognizer) {
+        AnalyticsManager.trackEventName("clickDigitalNative", category: "homepage digital", action: "click lihat semua produk", label: "")
         self.didTapSeeAll?()
     }
     
@@ -782,7 +782,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             }).disposed(by: self.rx_disposeBag)
     }
     
-    func setLastOrderData(order:DigitalLastOrder) {
+    internal func setLastOrderData(order:DigitalLastOrder) {
         self.inputtedNumber = order.clientNumber
         if let input = self.inputtedNumber, let numberField = self.numberField {
             numberField.text = input
@@ -794,8 +794,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     }
     
     //MARK: Show or Hide View
-    
-    func hideErrors() {
+    internal func hideErrors() {
         _ = self.numberErrorPlaceholder?.mas_updateConstraints { make in
             make?.height.equalTo()(0)
         }
@@ -930,9 +929,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             buyButton.isEnabled = false
             
             if (self.saldoCheckBox.on) {
-                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli with Instant Saldo from Widget")
+                AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL, category: "homepage digital widget", action: "click beli - \(self.selectedCategory.attributes.name)", label: "instant")
             } else {
-                AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Click Beli from Widget")
+                AnalyticsManager.trackEventName(GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE_DIGITAL, category: "homepage digital widget", action: "click beli - \(self.selectedCategory.attributes.name)", label: "no instant")
             }
             AnalyticsManager.trackDigitalProductAddToCart(category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, isInstant: self.saldoCheckBox.on)
             
@@ -966,14 +965,14 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     
     // MARK: MMNumberKeyboard Delegate
     
-    func numberKeyboardShouldReturn(_ numberKeyboard: MMNumberKeyboard!) -> Bool {
+    internal func numberKeyboardShouldReturn(_ numberKeyboard: MMNumberKeyboard!) -> Bool {
         self.didPressBuyButton()
         return true
     }
     
     // set custom keyboard to textField inputview will remove shouldChangeCharactersInRange:replacementString delegate
     // as an alternative, i tried to check maximum length through MMNumberKeyboard's delegate to estimate maximum length
-    func numberKeyboard(_ numberKeyboard: MMNumberKeyboard!, shouldInsertText text: String!) -> Bool {
+    internal func numberKeyboard(_ numberKeyboard: MMNumberKeyboard!, shouldInsertText text: String!) -> Bool {
         if(self.selectedOperator.attributes.name != "") {
             if((self.numberField.text?.characters.count)! <= self.selectedOperator.attributes.maximum_length - 1) {
                 return true
@@ -1137,9 +1136,9 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
     }
     
     fileprivate func attachArrowToButton(_ button: UIButton) {
-        button.setImage(UIImage(named: "icon_arrow_down_grey"), for: UIControlState())
+        button.setImage(#imageLiteral(resourceName: "icon_arrow_down_grey"), for: UIControlState())
         button.layoutIfNeeded()
-        button.imageEdgeInsets = UIEdgeInsetsMake(0, self.productButton.frame.size.width - 15, 0, 0)
+        button.imageEdgeInsets = UIEdgeInsets(top: 0, left: self.productButton.frame.size.width - 15, bottom: 0, right: 0)
     }
     
     fileprivate func activateContactPermission() {
@@ -1171,7 +1170,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
             }, for: .editingChanged)
     }
     
-    func checkInputtedNumber() {
+    internal func checkInputtedNumber() {
         self.hideErrors()
         //operator must exists first
         //fix this to prevent crash using serial dispatch
@@ -1197,12 +1196,8 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         return convertedNumber
     }
     
-    func didTap(_ checkBox: BEMCheckBox) {
-        if (checkBox.on) {
-            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Check Instant Saldo from Widget")
-        } else {
-            AnalyticsManager.trackRechargeEvent(event: .homepage, category: self.selectedCategory, operators: self.selectedOperator, product: self.selectedProduct, action: "Uncheck Instant Saldo from Widget")
-        }
+    internal func didTap(_ checkBox: BEMCheckBox) {
+        
     }
     
     fileprivate func saveInstantPaymentCheck() {
@@ -1224,7 +1219,7 @@ class PulsaView: UIView, MMNumberKeyboardDelegate, BEMCheckBoxDelegate {
         self.navigator.controller.present(actionSheet, animated: true, completion: nil)
     }
     
-    override func layoutSubviews() {
+    internal override func layoutSubviews() {
         super.layoutSubviews()
         
         notifyContentSizeChanged()

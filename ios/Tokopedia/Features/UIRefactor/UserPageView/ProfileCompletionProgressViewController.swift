@@ -6,48 +6,48 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Moya
-import Unbox
 import RxSwift
+import UIKit
+import Unbox
 
 @objc(ProfileCompletionProgressViewController)
-class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDelegate, NoResultDelegate {
+internal class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDelegate, NoResultDelegate {
 
-    var profileCompleted: Int = 50
-    var birthday: Date!
-    var gender: Int = 0
-    var completionStep: Int = 0
+    private var profileCompleted: Int = 50
+    private var birthday = Date()
+    private var gender: Int = 0
+    private var completionStep: Int = 0
 
-    var phoneVerificationController: PhoneVerificationViewController!
-    var userProfileInfo: ProfileCompletionInfo!
+    private var phoneVerificationController: PhoneVerificationViewController!
+    private var userProfileInfo: ProfileCompletionInfo!
 
     fileprivate var noResultView: NoResultReusableView!
 
-    @IBOutlet weak var kelengkapanProfil: UILabel!
+    @IBOutlet private weak var kelengkapanProfil: UILabel!
 
-    @IBOutlet weak var progressBar: UIProgressView!
-    @IBOutlet weak var progressLabel: UILabel!
-    @IBOutlet weak var contentView: UIView!
-    @IBOutlet var phoneVerifContainer: UIView!
+    @IBOutlet private weak var progressBar: UIProgressView!
+    @IBOutlet private weak var progressLabel: UILabel!
+    @IBOutlet private weak var contentView: UIView!
+    @IBOutlet private var phoneVerifContainer: UIView!
     // gender
-    @IBOutlet var genderView: UIView!
-    @IBOutlet weak var maleButton: UIButton!
-    @IBOutlet weak var maleLabel: UILabel!
-    @IBOutlet weak var femaleButton: UIButton!
-    @IBOutlet weak var femaleLabel: UILabel!
-    @IBOutlet weak var genderLanjut: UIButton!
+    @IBOutlet private var genderView: UIView!
+    @IBOutlet private weak var maleButton: UIButton!
+    @IBOutlet private weak var maleLabel: UILabel!
+    @IBOutlet private weak var femaleButton: UIButton!
+    @IBOutlet private weak var femaleLabel: UILabel!
+    @IBOutlet private weak var genderLanjut: UIButton!
     // DOB
-    @IBOutlet var birthdayView: UIView!
-    @IBOutlet weak var birthdayButton: UIButton!
-    @IBOutlet weak var dobLanjut: UIButton!
+    @IBOutlet private var birthdayView: UIView!
+    @IBOutlet private weak var birthdayButton: UIButton!
+    @IBOutlet private weak var dobLanjut: UIButton!
     // finish page
-    @IBOutlet var finishPageView: UIView!
-    @IBOutlet weak var seeProfileButton: UIButton!
+    @IBOutlet private var finishPageView: UIView!
+    @IBOutlet private weak var seeProfileButton: UIButton!
 
-    @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
+    @IBOutlet private weak var activityIndicator: UIActivityIndicatorView!
 
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         activityIndicator.startAnimating()
 
@@ -59,8 +59,9 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         setUserProgress()
 
         view.addSubview(contentView)
-        contentView.mas_makeConstraints { make in
-            make?.edges.equalTo()(self.view)
+        
+        contentView.snp.makeConstraints { make in
+            make.edges.equalTo(self.view)
         }
 
         dobLanjut.layer.cornerRadius = 3
@@ -74,31 +75,31 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         noResultView.generateAllElements("icon_no_data_grey.png", title: "Whoops!\nTidak ada koneksi Internet", desc: "Harap coba lagi", btnTitle: "Coba Kembali")
     }
 
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
     }
 
-    override func didReceiveMemoryWarning() {
+    internal override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
 
-    func setProgressBar() {
+    private func setProgressBar() {
         // progress color
-        let progressBarTrack: UIColor = UIColor(red: 200.0 / 225.0, green: 200.0 / 225.0, blue: 220.0 / 225.0, alpha: 1)
-        var progressBarColor: UIColor!
+        let progressBarTrack: UIColor = #colorLiteral(red: 0.7843137255, green: 0.7843137255, blue: 0.862745098, alpha: 1)
+        var progressBarColor: UIColor
         switch profileCompleted {
         case 60:
-            progressBarColor = UIColor(red: 127.0 / 225.0, green: 190.0 / 225.0, blue: 51.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0.4980392157, green: 0.7450980392, blue: 0.2, alpha: 1)
         case 70:
-            progressBarColor = UIColor(red: 78.0 / 225.0, green: 188.0 / 225.0, blue: 74.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0.3058823529, green: 0.737254902, blue: 0.2901960784, alpha: 1)
         case 80:
-            progressBarColor = UIColor(red: 39.0 / 225.0, green: 160.0 / 225.0, blue: 46.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0.1529411765, green: 0.6274509804, blue: 0.1803921569, alpha: 1)
         case 90:
-            progressBarColor = UIColor(red: 8.0 / 225.0, green: 132.0 / 225.0, blue: 31.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0.03137254902, green: 0.5176470588, blue: 0.1215686275, alpha: 1)
         case 100:
-            progressBarColor = UIColor(red: 0.0 / 225.0, green: 112.0 / 225.0, blue: 20.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0, green: 0.4392156863, blue: 0.07843137255, alpha: 1)
         default:
-            progressBarColor = UIColor(red: 175.0 / 225.0, green: 213.0 / 225.0, blue: 100.0 / 225.0, alpha: 1)
+            progressBarColor = #colorLiteral(red: 0.6862745098, green: 0.8352941176, blue: 0.3921568627, alpha: 1)
         }
 
         progressLabel.text = "\(profileCompleted)%"
@@ -107,16 +108,16 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         progressBar.progressTintColor = progressBarColor
     }
 
-    func showCompletionStep() {
+    private func showCompletionStep() {
         completionStep += 1
 
         guard profileCompleted < 100 else {
             activityIndicator.isHidden = true
             navigationItem.rightBarButtonItem = nil
             view.addSubview(finishPageView)
-            finishPageView.mas_makeConstraints { make in
-                make?.edges.equalTo()(self.view)
-            }
+            finishPageView.snp.makeConstraints({ make in
+                make.edges.equalTo(self.view)
+            })
             return
         }
 
@@ -135,7 +136,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         }
     }
 
-    func setUserProgress() {
+    private func setUserProgress() {
         UserRequest.getUserCompletion(onSuccess: { profileInfo in
             self.kelengkapanProfil.isHidden = false
             self.progressBar.isHidden = false
@@ -150,10 +151,13 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         })
     }
 
-    func submitUserProfile(birthday: Date?, gender _: Int) {
+    private func submitUserProfile(birthday: Date?, gender _: Int) {
         UserRequest.editProfile(birthday: birthday, gender: gender, onSuccess: { _ in
             self.setUserProgress()
             if self.completionStep == 3 {
+                if let manager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
+                    manager.sendProfileEditedEvent()
+                }
                 if !self.userProfileInfo.phoneVerified || self.userProfileInfo.bday == "0001-01-01T00:00:00Z" || self.gender == 0 {
                     self.navigationController?.popViewController(animated: true)
                 } else {
@@ -168,7 +172,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         })
     }
 
-    func tapLewati() {
+    @objc private func tapLewati() {
         if completionStep == 1 {
             phoneVerificationController?.view.removeFromSuperview()
         } else if completionStep == 2 {
@@ -183,7 +187,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         showCompletionStep()
     }
 
-    public func buttonDidTapped(_: Any!) {
+    internal func buttonDidTapped(_: Any!) {
         noResultView.removeFromSuperview()
         navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Lewati",
                                                             style: .plain,
@@ -192,7 +196,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         setUserProgress()
     }
 
-    func setDisable() {
+    private func setDisable() {
         if completionStep == 2 {
             dobLanjut.isEnabled = false
             dobLanjut.isUserInteractionEnabled = false
@@ -213,7 +217,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         }
     }
 
-    func showEmptyStatePage() {
+    private func showEmptyStatePage() {
         kelengkapanProfil.isHidden = true
         progressBar.isHidden = true
         progressLabel.isHidden = true
@@ -222,7 +226,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
     }
 
     // MARK: Profile Completion - Phone
-    func showPhoneCompletion() {
+    private func showPhoneCompletion() {
         phoneVerificationController = PhoneVerificationViewController(phoneNumber: "", isFirstTimeVisit: false, didVerifiedPhoneNumber: goToNextPage)
         phoneVerificationController.view.frame = CGRect(x: 0, y: 40, width: contentView.frame.size.width, height: contentView.frame.size.height - 40)
         addChildViewController(phoneVerificationController)
@@ -236,7 +240,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         }
     }
 
-    fileprivate func goToNextPage() {
+    private func goToNextPage() {
         phoneVerificationController.willMove(toParentViewController: self)
         phoneVerificationController.view.removeFromSuperview()
         phoneVerificationController.removeFromParentViewController()
@@ -244,8 +248,8 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
     }
 
     // MARK: Profile Completion - DOB
-    func showDOBCompletion() {
-        birthdayButton.setTitleColor(UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.18), for: .normal)
+    private func showDOBCompletion() {
+        birthdayButton.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.18), for: .normal)
         birthdayButton.contentHorizontalAlignment = .left
         contentView.addSubview(birthdayView)
         birthdayView.snp.makeConstraints { make in
@@ -256,8 +260,11 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         AnalyticsManager.trackScreenName("Profile Completion - Date of Birth Page")
     }
 
-    @IBAction func tapBirthdayButton(_: Any) {
-        let birthdayPicker: AlertDatePickerView = AlertDatePickerView.newview() as! AlertDatePickerView
+    @IBAction private func tapBirthdayButton(_: Any) {
+        guard let birthdayPicker = AlertDatePickerView.newview() as? AlertDatePickerView else {
+            return
+        }
+
         birthdayPicker.delegate = self
         birthdayPicker.isSetMinimumDate = true
         birthdayPicker.data = ["type": kTKPDALERT_DATAALERTTYPEREGISTERKEY.rawValue]
@@ -265,31 +272,31 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: GA_EVENT_ACTION_CLICK, label: "DOB")
     }
 
-    @objc(alertView:clickedButtonAtIndex:) func alertView(_ alertView: TKPDAlertView, clickedButtonAt _: Int) {
+    @objc(alertView:clickedButtonAtIndex:) internal func alertView(_ alertView: TKPDAlertView, clickedButtonAt _: Int) {
         let date: Date! = (alertView.data["datepicker"] as? Date)
         birthday = date
         birthdayButton.setTitle(string(fromDate: date), for: .normal)
-        birthdayButton.setTitleColor(UIColor(red: 0, green: 0, blue: 0, alpha: 0.7), for: .normal)
+        birthdayButton.setTitleColor(#colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7), for: .normal)
         dobLanjut.isUserInteractionEnabled = true
         dobLanjut.backgroundColor = .tpGreen()
         dobLanjut.isEnabled = true
         dobLanjut.setTitleColor(.white, for: .normal)
     }
 
-    func string(fromDate date: Date) -> String {
+    private func string(fromDate date: Date) -> String {
         let formatter = DateFormatter()
         formatter.dateFormat = "dd MMMM yyyy"
         return formatter.string(from: date)
     }
 
-    @IBAction func tapDOBLanjut(_: Any) {
+    @IBAction private func tapDOBLanjut(_: Any) {
         submitUserProfile(birthday: birthday, gender: 0)
         phoneVerifContainer.removeFromSuperview()
         birthdayView.removeFromSuperview()
     }
 
     // MARK: Profile Completion - Gender
-    func showGenderCompletion() {
+    private func showGenderCompletion() {
         contentView.addSubview(genderView)
         genderView.snp.makeConstraints { make in
             make.top.equalTo(self.progressBar.snp.bottom).offset(40)
@@ -300,7 +307,7 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         AnalyticsManager.trackScreenName("Profile Completion - Gender Page")
     }
 
-    @IBAction func tapMale() {
+    @IBAction private func tapMale() {
         gender = 1
         maleButton.isSelected = true
         femaleButton.isSelected = false
@@ -308,14 +315,14 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         genderLanjut.backgroundColor = .tpGreen()
         genderLanjut.isEnabled = true
         genderLanjut.setTitleColor(.white, for: .normal)
-        maleLabel.textColor = UIColor(red: 66.0 / 255.0, green: 181.0 / 255.0, blue: 73.0 / 255.0, alpha: 1)
+        maleLabel.textColor = .tpGreen()
         maleLabel.font = UIFont.smallThemeSemibold()
         femaleLabel.textColor = UIColor.tpSecondaryBlackText()
         femaleLabel.font = UIFont.smallTheme()
         AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: GA_EVENT_ACTION_CLICK, label: "Gender")
     }
 
-    @IBAction func tapFemale() {
+    @IBAction private func tapFemale() {
         gender = 2
         maleButton.isSelected = false
         femaleButton.isSelected = true
@@ -325,19 +332,19 @@ class ProfileCompletionProgressViewController: UIViewController, TKPDAlertViewDe
         genderLanjut.setTitleColor(.white, for: .normal)
         maleLabel.textColor = UIColor.tpSecondaryBlackText()
         maleLabel.font = UIFont.smallTheme()
-        femaleLabel.textColor = UIColor(red: 66.0 / 255.0, green: 181.0 / 255.0, blue: 73.0 / 255.0, alpha: 1)
+        femaleLabel.textColor = .tpGreen()
         femaleLabel.font = UIFont.smallThemeSemibold()
         AnalyticsManager.trackEventName("profileCompletion", category: "Fill Personal Information", action: "Click", label: "Gender")
     }
 
-    @IBAction func tapGenderLanjut(_: Any) {
+    @IBAction private func tapGenderLanjut(_: Any) {
         submitUserProfile(birthday: nil, gender: gender)
         phoneVerifContainer.removeFromSuperview()
         birthdayView.removeFromSuperview()
     }
 
     // MARK: finish page
-    @IBAction func tapSeeProfile(_: Any) {
+    @IBAction private func tapSeeProfile(_: Any) {
         navigationController?.popViewController(animated: true)
     }
 }

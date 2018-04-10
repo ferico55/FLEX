@@ -23,9 +23,7 @@
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
 #import "ReactHybridViewController.h"
-#import "UserContainerViewController.h"
 #import "HybridNavigationManager.h"
-#import "ProcessingAddProducts.h"
 #import "UIApplication+React.h"
 #import "lecore.h"
 
@@ -45,7 +43,6 @@
 @end
 
 @implementation AppDelegate {
-    NSString *deepLinkPathOpened;
 }
 
 #ifdef DEBUG
@@ -61,10 +58,7 @@
 }
 #endif	
 	
-- (BOOL)shouldShowOnboarding:(NSDictionary *)launchOptions {
-    if ([launchOptions valueForKey:UIApplicationLaunchOptionsURLKey]) {
-        return NO;
-    }
+- (BOOL)shouldShowOnboarding {
     BOOL hasShownOnboarding = [[NSUserDefaults standardUserDefaults] boolForKey:@"has_shown_onboarding"];
     
     BOOL alwaysShowOnboarding = FBTweakValue(@"Others", @"Onboarding", @"Always show onboarding", NO);
@@ -73,8 +67,8 @@
     return shouldShowOnboarding;
 }
 
-- (UIViewController*)frontViewController:(NSDictionary *)launchOptions {
-    return [self shouldShowOnboarding: launchOptions]?
+- (UIViewController*)frontViewController {
+    return [self shouldShowOnboarding]?
     [[IntroViewController alloc] initWithNibName:@"IntroViewController" bundle:nil]:
     [MainViewController new];
 }
@@ -110,8 +104,7 @@
                                       bridge:[UIApplication sharedApplication].reactBridge
                                       viewName:name
                                       viewParams:params];
-    
-    [_nav pushViewController:reactView animated:true];
+    [[UIApplication topViewController].navigationController pushViewController:reactView animated:true];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
@@ -129,41 +122,12 @@
     [self hideTitleBackButton];
     [JLRoutes setShouldDecodePlusSymbols:NO];
     
-    UIViewController* viewController = [self frontViewController:launchOptions];
     _window = [[FBTweakShakeWindow alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     _window.autoresizingMask = (UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight);
     _window.backgroundColor = [UIColor whiteColor];
-    _window.rootViewController = viewController;
-    _nav = [[UINavigationController alloc] initWithRootViewController:viewController];
+    [self setupInitialViewController];
     [_window makeKeyAndVisible];
-    Branch *branch = [Branch getInstance];
-    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
-        if (!error && params) {
-            //Check universal link
-            NSString *ios_deeplink_path = params[@"$ios_deeplink_path"];
-            if (ios_deeplink_path == nil) {
-                return;
-            }
-            NSString *urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
-            urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-            if ([self shallOpenDeepLinkPath:urlString] == NO) {
-                return;
-            }
-            if ([_nav.topViewController isKindOfClass:[IntroViewController class]]) {
-                MainViewController *viewController = [MainViewController new];
-                _window.rootViewController = viewController;
-            }
-            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-                NSURL *url = [NSURL URLWithString:urlString];
-                if (url != nil) {
-                    [TPRoutes routeURL:url];
-                }
-            });
-        }
-    }];
-    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
-    [branch setIdentity:[userManager getUserId]];
-    
+
 #ifdef DEBUG
     [self showFlexManagerOnSecretGesture];
     [[BITHockeyManager sharedHockeyManager] configureWithIdentifier:@"4b779275ebcf4c80ba9ead4639424033"];
@@ -200,38 +164,47 @@
             [[NSUserDefaults standardUserDefaults] setObject:@[@"id"] forKey:@"AppleLanguages"];
             [[NSUserDefaults standardUserDefaults] synchronize];
         }
+        [self configureBranchIOWith:launchOptions];
     });
-    
+
     //opening URL in background state
 	dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        //universal search link, only available in iOS 9
         NSURL *url = [launchOptions valueForKey:UIApplicationLaunchOptionsURLKey];
-        if(url && [self shallOpenDeepLinkPath:url.absoluteString]) {
+        if (url != nil && ![url.host containsString:@".link"]) {
             [TPRoutes routeURL:url];
         } else {
-            //universal search link, only available in iOS 9
-            if(SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.0")) {
-                NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
-                if (userActivityDictionary) {
-                    [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
-                        if ([obj isKindOfClass:[NSUserActivity class]]) {
-                            NSUserActivity *userActivity = obj;
-                            BOOL canHandle = [[Branch getInstance] continueUserActivity:userActivity];
-                            if(canHandle == NO) {
-                                NSURL *url = userActivity.webpageURL;
-                                [TPRoutes routeURL:url];
-                            }
+            NSDictionary *userActivityDictionary = [launchOptions objectForKey:UIApplicationLaunchOptionsUserActivityDictionaryKey];
+            if (userActivityDictionary) {
+                [userActivityDictionary enumerateKeysAndObjectsUsingBlock:^(id  _Nonnull key, id  _Nonnull obj, BOOL * _Nonnull stop) {
+                    if ([obj isKindOfClass:[NSUserActivity class]]) {
+                        NSUserActivity *userActivity = obj;
+                        BOOL canHandle = [[Branch getInstance] continueUserActivity:userActivity];
+                        if(canHandle == NO) {
+                            NSURL *url = userActivity.webpageURL;
+                            [TPRoutes routeURL:url];
                         }
-                    }];
-                }
+                    }
+                }];
             }
         }
+
         
+        // fetch new remote config value and apply fetched value
+        // need to be here so it does not block main UI thread
+        FIRRemoteConfig *remoteConfig = [[FIRRemoteConfig class] remoteConfig];
+        __weak typeof(FIRRemoteConfig) *weakRemoteConfig = remoteConfig;
+        [remoteConfig fetchWithCompletionHandler:^(FIRRemoteConfigFetchStatus status, NSError * _Nullable error) {
+            [weakRemoteConfig activateFetched];
+        }];
+    });
+    
+    if (SYSTEM_VERSION_LESS_THAN(@"10.0.0")) {
         NSDictionary *pushNotificationData = launchOptions[UIApplicationLaunchOptionsRemoteNotificationKey];
         if (pushNotificationData) {
-            
             [self didReceiveNotificationBackgroundState:pushNotificationData];
         }
-    });
+    }
     
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"9.1")) {
         //opening Quick Action in background state
@@ -249,6 +222,10 @@
                                                        didFinishLaunchingWithOptions:launchOptions];
     
     return didFinishLaunching;
+}
+- (void)setupInitialViewController {
+    UIViewController* viewController = [self frontViewController];
+    _window.rootViewController = viewController;
 }
 
 -(void)startAppsee{
@@ -391,6 +368,45 @@
                                     timeout:nil
                                    notifier:self];
 }
+#pragma mark: - Branch Integration
+- (void)configureBranchIOWith:(NSDictionary *)launchOptions {
+    Branch *branch = [Branch getInstance];
+    NSString * gaClientId = [self.tracker get:kGAIClientId];
+    [branch setRequestMetadataKey:@"$google_analytics_client_id" value:gaClientId];
+    [branch initSessionWithLaunchOptions:launchOptions andRegisterDeepLinkHandler:^(NSDictionary *params, NSError *error) {
+        if (!error && params) {
+            NSString *urlString;
+            if (params[@"branch_promo"]) {
+                [[NSUserDefaults standardUserDefaults] setValue:params[@"branch_promo"] forKey:API_VOUCHER_CODE_KEY];
+                [[NSUserDefaults standardUserDefaults] synchronize];
+            }
+            if (params[@"$web_only"]) {
+                urlString = params[@"$original_url"];
+            } else if (params[@"$ios_deeplink_path"]) {
+                NSString *ios_deeplink_path = params[@"$ios_deeplink_path"];
+                urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
+                BOOL containsReferralCode = [ios_deeplink_path containsString:@"referral"];
+                if ([_window.rootViewController isKindOfClass:[IntroViewController class]] && containsReferralCode == NO) {
+                    MainViewController *viewController = [MainViewController new];
+                    _window.rootViewController = viewController;
+                }
+            }
+            if (urlString != nil) {
+                urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+                NSURL *url = [NSURL URLWithString:urlString];
+                if (url != nil) {
+                    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                        [TPRoutes routeURL:url];
+                    });
+                }
+            }
+        }
+    }];
+    UserAuthentificationManager *userManager = [UserAuthentificationManager new];
+    if ([userManager isLogin]) {
+        [branch setIdentity:[userManager getUserId]];
+    }
+}
 
 - (void)applicationDidBecomeActive:(UIApplication *)application {
 #ifdef DEBUG
@@ -519,12 +535,9 @@
                 application:application
                 openURL:url
                 sourceApplication:sourceApplication
-                annotation:annotation] == YES && [url.scheme containsString:@"tokopedia"] == NO) {
+                annotation:annotation] == YES) {
         return YES;
     } else {
-        if ([self shallOpenDeepLinkPath:url.absoluteString] == NO) {
-            return NO;
-        }
         return [TPRoutes routeURL: url];
     }
     
@@ -559,22 +572,6 @@
 - (void)application:(UIApplication *)application performActionForShortcutItem:(UIApplicationShortcutItem *)shortcutItem completionHandler:(void (^)(BOOL))completionHandler {
     
     [[QuickActionHelper sharedInstance] handleQuickAction:shortcutItem];
-}
-
-- (BOOL)shallOpenDeepLinkPath:(NSString *)path {
-    if (path == nil) {
-        return NO;
-    }
-    if (deepLinkPathOpened == nil) {
-        deepLinkPathOpened = path;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            deepLinkPathOpened = nil;
-        });
-        return YES;
-    } else {
-        deepLinkPathOpened = nil;
-        return NO;
-    }
 }
 
 #pragma mark - reset persist data if freshly installed

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="FloatingSortFilterViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="view" destination="i5M-Pr-FkT" id="iJS-8i-c1h"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="170" height="35"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="fnd-dF-zaR">
+                    <rect key="frame" x="84.5" y="8" width="1" height="19"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="1" id="lhj-tZ-pnz"/>
+                    </constraints>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ApT-Ln-DD8">
+                    <rect key="frame" x="93.5" y="0.0" width="68.5" height="35"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Filter" image="icon-filter">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="btnFilterDidTapped:" destination="-1" eventType="touchUpInside" id="qXN-sC-hv5"/>
+                    </connections>
+                </button>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Wav-45-7JT">
+                    <rect key="frame" x="8" y="0.0" width="68.5" height="35"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Urutkan" image="icon-sort">
+                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
+                    </state>
+                    <connections>
+                        <action selector="btnSortDidTapped:" destination="-1" eventType="touchUpInside" id="0Oh-Pk-7ba"/>
+                    </connections>
+                </button>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="Wav-45-7JT" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="7eV-hU-Cp7"/>
+                <constraint firstItem="Wav-45-7JT" firstAttribute="trailing" secondItem="fnd-dF-zaR" secondAttribute="leading" constant="-8" id="MIY-3M-IAE"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="ApT-Ln-DD8" secondAttribute="trailing" constant="8" id="WJp-rG-60D"/>
+                <constraint firstItem="fnd-dF-zaR" firstAttribute="bottom" secondItem="fnl-2z-Ty3" secondAttribute="bottom" constant="-8" id="Wa1-e3-pid"/>
+                <constraint firstItem="fnd-dF-zaR" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="b3q-qs-rHm"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="ApT-Ln-DD8" secondAttribute="bottom" id="nu1-Pt-bfn"/>
+                <constraint firstItem="Wav-45-7JT" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="o0z-7a-PCa"/>
+                <constraint firstItem="fnd-dF-zaR" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="8" id="pWR-mp-4CF"/>
+                <constraint firstItem="ApT-Ln-DD8" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" id="t90-na-ExF"/>
+                <constraint firstItem="ApT-Ln-DD8" firstAttribute="leading" secondItem="fnd-dF-zaR" secondAttribute="trailing" constant="8" id="ycV-Qs-nUc"/>
+                <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Wav-45-7JT" secondAttribute="bottom" id="zmT-fM-bk6"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
+            <userDefinedRuntimeAttributes>
+                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                    <real key="value" value="17.5"/>
+                </userDefinedRuntimeAttribute>
+            </userDefinedRuntimeAttributes>
+            <point key="canvasLocation" x="59" y="54.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="icon-filter" width="22" height="22"/>
+        <image name="icon-sort" width="21" height="21"/>
+    </resources>
+</document>

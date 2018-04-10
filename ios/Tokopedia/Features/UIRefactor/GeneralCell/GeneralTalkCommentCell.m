@@ -11,6 +11,8 @@
 #import "ShopReputation.h"
 #import "SmileyAndMedal.h"
 #import "TTTAttributedLabel.h"
+#import "NSURL+TKPURL.h"
+#import <BlocksKit/BlocksKit.h>
 
 @implementation GeneralTalkCommentCell
 
@@ -46,9 +48,7 @@
 }
 
 - (void)attributedLabel:(TTTAttributedLabel *)label didSelectLinkWithURL:(NSURL *)url {
-    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [url.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
-    
-    self.onTapTalkWithUrl([NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]]);
+    self.onTapTalkWithUrl([url TKPMeUrl]);
 }
 
 - (void)setComment:(TalkCommentList *)list {
@@ -121,8 +121,15 @@
     user_image.image = nil;
 
     [user_image setImageWithURL:url placeholderImage:[UIImage imageNamed:@"default-boy.png"]];
+    UITapGestureRecognizer* tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapImage)];
+    [user_image setUserInteractionEnabled:YES];
+    [user_image addGestureRecognizer:tapGesture];
 
     [self.user_name setText:[UIColor colorWithRed:10/255.0f green:126/255.0f blue:7/255.0f alpha:1.0f] withFont:[UIFont smallThemeMedium]];
+}
+
+- (void)tapImage {
+    self.onTapUser(self.comment.comment_user_id);
 }
 
 

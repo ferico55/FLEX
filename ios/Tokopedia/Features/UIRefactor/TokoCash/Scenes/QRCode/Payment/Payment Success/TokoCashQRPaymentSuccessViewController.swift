@@ -6,42 +6,43 @@
 //  Copyright © 2018 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
-import RxCocoa
 import Lottie
+import RxCocoa
+import RxSwift
+import UIKit
 
-class TokoCashQRPaymentSuccessViewController: UIViewController {
+public class TokoCashQRPaymentSuccessViewController: UIViewController {
     
-    @IBOutlet weak var animationView: UIView!
-    @IBOutlet weak var checkmarkImageView: UIImageView!
-    @IBOutlet weak var descView: UIView!
-    @IBOutlet weak var merchantNameLabel: UILabel!
-    @IBOutlet weak var amountLabel: UILabel!
-    @IBOutlet weak var datetimeLabel: UILabel!
-    @IBOutlet weak var transactionIdLabel: UILabel!
-    @IBOutlet weak var balanceLabel: UILabel!
-    @IBOutlet weak var backToHomeButton: UIButton!
-    @IBOutlet weak var helpButton: UIButton!
+    @IBOutlet weak private var animationView: UIView!
+    @IBOutlet weak private var checkmarkImageView: UIImageView!
+    @IBOutlet weak private var descView: UIView!
+    @IBOutlet weak private var merchantNameLabel: UILabel!
+    @IBOutlet weak private var amountLabel: UILabel!
+    @IBOutlet weak private var datetimeLabel: UILabel!
+    @IBOutlet weak private var transactionIdLabel: UILabel!
+    @IBOutlet weak private var balanceLabel: UILabel!
+    @IBOutlet weak private var backToHomeButton: UIButton!
+    @IBOutlet weak private var helpButton: UIButton!
     
     private var isAnimation = false
     
     // view model
-    var viewModel: TokoCashQRPaymentSuccessViewModel!
+    public var viewModel: TokoCashQRPaymentSuccessViewModel!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
+        title = "Transaksi Berhasil"
         bindViewModel()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationItem.setHidesBackButton(true, animated: true)
     }
     
-    override func viewDidLayoutSubviews() {
+    override public func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         
         if !isAnimation {

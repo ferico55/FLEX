@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Navigation Controller-->
+        <scene sceneID="J6b-EW-D1L">
+            <objects>
+                <navigationController storyboardIdentifier="AudioRecorderNavigationController" id="q60-qp-Rbg" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ZmY-mB-clg">
+                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="50X-TL-qrO" kind="relationship" relationship="rootViewController" id="PBd-n2-d1w"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aSN-b0-fOe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-1561" y="22"/>
+        </scene>
+        <!--Audio Recorder View Controller-->
+        <scene sceneID="fxE-KA-j9U">
+            <objects>
+                <viewController storyboardIdentifier="AudioRecorderViewController" id="50X-TL-qrO" customClass="AudioRecorderViewController" customModule="Tokopedia" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="CxY-5d-F1l">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Preparing recording..." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Yqu-qG-z5P">
+                                <rect key="frame" x="112.5" y="325" width="148.5" height="18"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                <color key="textColor" white="0.17268415178571428" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z5R-y6-xQi">
+                                <rect key="frame" x="87" y="500" width="200" height="40"/>
+                                <color key="backgroundColor" red="0.50142630290000001" green="0.75" blue="0.40365912799999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="40" id="IC0-f9-yFV"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="15"/>
+                                <state key="normal" title="Share">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                </state>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="3"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="ShareButtonClicked:" destination="50X-TL-qrO" eventType="touchUpInside" id="yi3-zO-1Wa"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="z5R-y6-xQi" firstAttribute="leading" secondItem="SXR-Qo-Ah1" secondAttribute="leading" constant="87" id="A4u-fE-NFS"/>
+                            <constraint firstItem="Yqu-qG-z5P" firstAttribute="centerX" secondItem="CxY-5d-F1l" secondAttribute="centerX" id="G5N-GS-hYf"/>
+                            <constraint firstItem="SXR-Qo-Ah1" firstAttribute="trailing" secondItem="z5R-y6-xQi" secondAttribute="trailing" constant="88" id="GOc-PD-gdW"/>
+                            <constraint firstItem="SXR-Qo-Ah1" firstAttribute="bottom" secondItem="z5R-y6-xQi" secondAttribute="bottom" constant="127" id="H54-Of-aSR"/>
+                            <constraint firstItem="Yqu-qG-z5P" firstAttribute="centerY" secondItem="CxY-5d-F1l" secondAttribute="centerY" id="I70-5k-kiY"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="SXR-Qo-Ah1"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="s26-WW-U1C">
+                        <barButtonItem key="rightBarButtonItem" systemItem="done" id="k0f-sd-52T">
+                            <connections>
+                                <action selector="doneButtonClicked:" destination="50X-TL-qrO" id="hQV-Q5-9CK"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="activityLabel" destination="Yqu-qG-z5P" id="nHm-Mq-92S"/>
+                        <outlet property="shareButton" destination="z5R-y6-xQi" id="UY7-B9-qce"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OED-r2-QGd" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-370.39999999999998" y="20.239880059970016"/>
+        </scene>
+    </scenes>
+</document>

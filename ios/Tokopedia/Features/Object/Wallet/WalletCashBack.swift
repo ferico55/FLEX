@@ -9,12 +9,12 @@
 import Foundation
 import SwiftyJSON
 
-final class WalletCashBack: NSObject {
-    let amount: String?
-    let amountText: String?
-    let currency: String?
-
-    init(amount: String? = nil, amountText: String? = nil, currency: String? = nil) {
+final public class WalletCashBack: NSObject {
+    public let amount: String?
+    public let amountText: String?
+    public let currency: String?
+    
+    public init(amount: String? = nil, amountText: String? = nil, currency: String? = nil) {
         self.amount = amount
         self.amountText = amountText
         self.currency = currency
@@ -22,13 +22,13 @@ final class WalletCashBack: NSObject {
 }
 
 extension WalletCashBack: JSONAbleType {
-    static func fromJSON(_ source: [String: Any]) -> WalletCashBack {
+    public static func fromJSON(_ source: [String: Any]) -> WalletCashBack {
         let json = JSON(source)
-
+        
         let amount = json["amount"].stringValue
         let amountText = json["amount_text"].stringValue
         let currency = json["currency"].stringValue
-
+        
         return WalletCashBack(amount: amount, amountText: amountText, currency: currency)
     }
 }

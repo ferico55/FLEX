@@ -37,8 +37,6 @@
 #import "RequestUploadImage.h"
 #import "UserAuthentificationManager.h"
 
-#import "ProductAddEditViewController.h"
-
 #import <GoogleMaps/GoogleMaps.h>
 
 #import "EtalaseList.h"
@@ -76,7 +74,6 @@
 #import "StickyAlertView+NetworkErrorHandler.h"
 #import "iCarousel.h"
 #import "CarouselDataSource.h"
-#import "AnnouncementTickerView.h"
 
 #import "NSString+HTML.h"
 #import "ResolutionCenterCreateTroubleList.h"
@@ -170,7 +167,6 @@
 #import "TKPDSecureStorage.h"
 #import "VerifiedStatus.h"
 #import "SearchViewController.h"
-#import "ProcessingAddProducts.h"
 #import "TkpdHMAC.h"
 #import "NSDictionaryCategory.h"
 #include "ifaddrs.h"
@@ -222,7 +218,6 @@
 #import "MyWishlistViewController.h"
 #import "TransactionCartViewController.h"
 #import "MoreWrapperViewController.h"
-#import "UserContainerViewController.h"
 
 #import "string_alert.h"
 
@@ -247,3 +242,6 @@
 
 #import "RequestCart.h"
 #import "AlertPickerView.h"
+
+#import "PromoViewController.h"
+#import "ProfileSettingViewController.h"

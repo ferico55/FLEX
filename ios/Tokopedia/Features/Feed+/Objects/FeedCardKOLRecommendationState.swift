@@ -6,27 +6,29 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
 import ReSwift
+import UIKit
 
-struct FeedCardKOLRecommendationState: Render.StateType, ReSwift.StateType {
-    var cardID = 0
-    var users: [FeedCardKOLRecommendedUserState] = []
-    var redirectURL = ""
-    var title = ""
-    var justFollowedUserID = 0
-    var justFollowedUserIndex = -1
-    var page = 0
-    var row = 0
+internal struct FeedCardKOLRecommendationState: Render.StateType, ReSwift.StateType {
+    internal var cardID = 0
+    internal var users: [FeedCardKOLRecommendedUserState] = []
+    internal var redirectURL = ""
+    internal var exploreText = ""
+    internal var title = ""
+    internal var justFollowedUserID = 0
+    internal var justFollowedUserIndex = -1
+    internal var page = 0
+    internal var row = 0
     
-    init() {}
+    internal init() {}
     
-    init(content: FeedsQuery.Data.Feed.Datum.Content, page: Int, row: Int) {
-        if let recommendation = content.kolrecommendation, let kols = recommendation.kols, kols.count > 0 {
+    internal init(content: FeedsQuery.Data.Feed.Datum.Content, page: Int, row: Int) {
+        if let recommendation = content.kolrecommendation, let kols = recommendation.kols, !(kols.isEmpty) {
             self.cardID = recommendation.index ?? 0
             self.title = recommendation.headerTitle ?? ""
             self.redirectURL = recommendation.exploreLink ?? ""
+            self.exploreText = recommendation.exploreText ?? ""
             self.page = page
             self.row = row
             

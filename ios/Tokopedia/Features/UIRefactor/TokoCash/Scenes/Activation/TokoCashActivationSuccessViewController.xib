@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashActivationSuccessViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="successLabel" destination="KcK-uw-Bhf" id="A2n-d8-pJy"/>
+                <outlet property="view" destination="eHW-z3-t2X" id="rFH-Ed-Q9b"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="eHW-z3-t2X">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XAe-gc-TRz">
+                    <rect key="frame" x="0.0" y="159" width="375" height="349"/>
+                    <subviews>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gHB-qQ-Cqc">
+                            <rect key="frame" x="95" y="241" width="186" height="52"/>
+                            <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="deviceRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="186" id="XV8-ac-SZR"/>
+                                <constraint firstAttribute="height" constant="52" id="cKE-9T-hsg"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Ke Halaman Utama">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <integer key="value" value="2"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="didTapBackToHomeButton:" destination="-1" eventType="touchUpInside" id="PUM-Mo-jqz"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="KcK-uw-Bhf">
+                            <rect key="frame" x="20" y="172" width="335" height="33"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="67" id="vI2-6a-s9L"/>
+                            </constraints>
+                            <string key="text">Selamat  Anda berhasil melakukan aktivasi TokoCash dengan nomor 6281295355588.
+Kini Anda bisa bertransaksi dengan lebih mudah di Tokopedia.</string>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54098886989999995" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Aktivasi TokoCash Berhasil!" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D8n-gI-gco">
+                            <rect key="frame" x="20" y="128" width="335" height="20"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="20" id="yhu-pa-6Yu"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54438677229999999" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_tokocash" translatesAutoresizingMaskIntoConstraints="NO" id="Rm1-33-BeM">
+                            <rect key="frame" x="131" y="20" width="114" height="86"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="86" id="aDI-RM-Etz"/>
+                                <constraint firstAttribute="width" constant="114" id="skM-66-DtE"/>
+                            </constraints>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Rm1-33-BeM" firstAttribute="top" secondItem="XAe-gc-TRz" secondAttribute="top" constant="20" id="1WY-cB-7Aj"/>
+                        <constraint firstItem="KcK-uw-Bhf" firstAttribute="leading" secondItem="XAe-gc-TRz" secondAttribute="leading" constant="20" id="4zm-OU-JeU"/>
+                        <constraint firstAttribute="bottom" secondItem="gHB-qQ-Cqc" secondAttribute="bottom" constant="55.5" id="9ka-ED-0jF"/>
+                        <constraint firstItem="KcK-uw-Bhf" firstAttribute="top" secondItem="D8n-gI-gco" secondAttribute="bottom" constant="24" id="B3y-KG-Yuc"/>
+                        <constraint firstItem="D8n-gI-gco" firstAttribute="leading" secondItem="XAe-gc-TRz" secondAttribute="leading" constant="20" id="C3g-rg-FZU"/>
+                        <constraint firstAttribute="trailing" secondItem="KcK-uw-Bhf" secondAttribute="trailing" constant="20" id="Ffw-qq-CXM"/>
+                        <constraint firstItem="gHB-qQ-Cqc" firstAttribute="centerX" secondItem="XAe-gc-TRz" secondAttribute="centerX" id="aLw-F0-q1e"/>
+                        <constraint firstItem="Rm1-33-BeM" firstAttribute="centerX" secondItem="XAe-gc-TRz" secondAttribute="centerX" id="jxk-8U-B3p"/>
+                        <constraint firstAttribute="trailing" secondItem="D8n-gI-gco" secondAttribute="trailing" constant="20" id="nrk-yz-zci"/>
+                        <constraint firstItem="D8n-gI-gco" firstAttribute="top" secondItem="Rm1-33-BeM" secondAttribute="bottom" constant="22" id="owb-pW-F3r"/>
+                        <constraint firstItem="gHB-qQ-Cqc" firstAttribute="top" secondItem="KcK-uw-Bhf" secondAttribute="bottom" constant="36" id="u9g-bL-Zmu"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="XAe-gc-TRz" firstAttribute="centerX" secondItem="eHW-z3-t2X" secondAttribute="centerX" id="Nj5-Es-iEe"/>
+                <constraint firstItem="XAe-gc-TRz" firstAttribute="centerY" secondItem="eHW-z3-t2X" secondAttribute="centerY" id="UKB-eU-flj"/>
+                <constraint firstItem="XAe-gc-TRz" firstAttribute="leading" secondItem="eHW-z3-t2X" secondAttribute="leading" id="ZT7-bl-cKP"/>
+                <constraint firstAttribute="trailing" secondItem="XAe-gc-TRz" secondAttribute="trailing" id="f1f-IO-E3S"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="yNy-d4-fVV"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="icon_tokocash" width="114" height="86"/>
+    </resources>
+</document>

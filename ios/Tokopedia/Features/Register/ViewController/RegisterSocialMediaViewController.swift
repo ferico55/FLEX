@@ -6,13 +6,14 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import TPKeyboardAvoiding
+import FBSDKLoginKit
 import MMNumberKeyboard
 import RxSwift
-import FBSDKLoginKit
+import TPKeyboardAvoiding
+import TTTAttributedLabel
+import UIKit
 
-class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, MMNumberKeyboardDelegate {
+internal class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, MMNumberKeyboardDelegate {
     
     private let userProfile: CreatePasswordUserProfile!
     private let token: OAuthToken!
@@ -43,7 +44,7 @@ class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, 
     private let doneButtonIsEnabled = Variable(false)
     private let doneButtonIsLoading = Variable(false)
     
-    init(userProfile: CreatePasswordUserProfile, token: OAuthToken, accountInfo: AccountInfo, successCallback: @escaping (() -> Void)) {
+    public init(userProfile: CreatePasswordUserProfile, token: OAuthToken, accountInfo: AccountInfo, successCallback: @escaping (() -> Void)) {
         self.userProfile = userProfile
         self.token = token
         self.accountInfo = accountInfo
@@ -51,11 +52,11 @@ class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, 
         super.init(nibName: nil, bundle: nil)
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         self.title = "Daftar"
         
@@ -65,16 +66,12 @@ class RegisterSocialMediaViewController: UIViewController, UITextFieldDelegate, 
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(title: "Kembali", style: .plain, target: self, action: #selector(self.didTapBackButton))
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override open func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Register With \(self.userProfile.providerName) Page")
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-    }
-    
-    override func viewDidLayoutSubviews() {
+    override open func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.setupForm()
     }

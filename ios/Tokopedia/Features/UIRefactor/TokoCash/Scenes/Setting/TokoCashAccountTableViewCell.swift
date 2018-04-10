@@ -6,16 +6,25 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
+import RxCocoa
+import RxSwift
 import UIKit
 
-class TokoCashAccountTableViewCell: UITableViewCell {
+public class TokoCashAccountTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var identifierLabel: UILabel!
-    @IBOutlet weak var authDateLabel: UILabel!
-    @IBOutlet weak var deleteButton: UIButton!
+    @IBOutlet weak private var identifierLabel: UILabel!
+    @IBOutlet weak private var authDateLabel: UILabel!
+    @IBOutlet weak private var deleteButton: UIButton!
+
+    public let account = PublishSubject<TokoCashAccount>()
     
-    func bind(_ viewModel: TokoCashAccountViewModel) {
-        identifierLabel.text = viewModel.identifier
-        authDateLabel.text = viewModel.authDate
+    public func bind(_ viewModel: TokoCashAccountViewModel) {
+        
+        let input =  TokoCashAccountViewModel.Input(deleteButtonTrigger: deleteButton.rx.tap.asDriver())
+        let output = viewModel.transform(input: input)
+        
+        output.identifier.drive(identifierLabel.rx.text).addDisposableTo(rx_disposeBag)
+        output.authDate.drive(authDateLabel.rx.text).addDisposableTo(rx_disposeBag)
+        output.deleteAccount.drive(account).addDisposableTo(rx_disposeBag)
     }
 }

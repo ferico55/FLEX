@@ -11,14 +11,21 @@ import Render
 
 class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> {
     override func construct(state: FeedDetailProductState?, size: CGSize) -> NodeType {
+        guard let state = state else {
+            return Node<UIView>() { _, _, _ in
+                
+            }
+        }
         
         return Node<UIView>() { view, layout, size in
             layout.width = size.width
             layout.flexDirection = .column
             
-            view.bk_(whenTapped: { [weak self] in
-                AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - PDP")
-                TPRoutes.routeURL(URL(string: (state?.productURL)!)!)
+            view.bk_(whenTapped: { _ in
+                if let url = URL(string: state.productURL) {
+                    AnalyticsManager.trackEventName("clickFeed", category: GA_EVENT_CATEGORY_FEED, action: GA_EVENT_ACTION_VIEW, label: "Product List - PDP")
+                    TPRoutes.routeURL(url)
+                }
             })
         }.add(children: [
             Node<UIView>() { _, layout, size in
@@ -36,7 +43,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                         layout.height = 100
                         layout.width = 100
                         
-                        imageView.setImageWith(URL(string: (state?.productImage)!), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
+                        imageView.setImageWith(URL(string: state.productImage), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
                         imageView.borderWidth = 1.0
                         imageView.borderColor = UIColor.fromHexString("#e0e0e0")
                     }),
@@ -47,7 +54,7 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                         layout.marginTop = 10
                     }.add(children: [
                         Node<UILabel>(identifier: "product-name") { label, layout, size in
-                            label.text = state?.productName
+                            label.text = state.productName
                             label.font = .smallThemeSemibold()
                             label.textColor = UIColor.tpPrimaryBlackText()
                             label.numberOfLines = 2
@@ -59,12 +66,12 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
                         Node<UILabel>(identifier: "product-price") { label, layout, _ in
                             layout.marginBottom = 3.0
                             
-                            label.text = state?.productPrice
+                            label.text = state.productPrice
                             label.font = .smallThemeSemibold()
                             label.textColor = .tpOrange()
                         },
-                        self.starsComponent(withRate: (state?.productRating)!),
-                        self.productStatus(getCashback: (state?.productCashback)!, isWholesale: (state?.productWholesale)!, isPreorder: (state?.productPreorder)!, isFreeReturns: (state?.productFreeReturns)!)
+                        self.starsComponent(withRate: state.productRating),
+                        self.productStatus(getCashback: state.productCashback, isWholesale: state.productWholesale, isPreorder: state.productPreorder, isFreeReturns: state.productFreeReturns)
                     ])
                 ])
             ]),
@@ -93,10 +100,16 @@ class FeedDetailProductCellComponentView: ComponentView<FeedDetailProductState> 
             })
         }
         
-        return (rate == 0) ? NilNode() : Node<UIView>(identifier: "stars") { _, layout, _ in
-            layout.flexDirection = .row
-            layout.marginBottom = 3
-        }.add(children: starsArray as! [NodeType])
+        if let starsArrayNode = starsArray as? [NodeType] {
+            return (rate == 0) ? NilNode() : Node<UIView>(identifier: "stars") { _, layout, _ in
+                layout.flexDirection = .row
+                layout.marginBottom = 3
+            }.add(children: starsArrayNode)
+        } else {
+            return Node<UIView>() { _, _, _ in
+                
+            }
+        }
     }
     
     private func productStatus(getCashback cashbackAmount: String, isWholesale: Bool, isPreorder: Bool, isFreeReturns: Bool) -> NodeType {

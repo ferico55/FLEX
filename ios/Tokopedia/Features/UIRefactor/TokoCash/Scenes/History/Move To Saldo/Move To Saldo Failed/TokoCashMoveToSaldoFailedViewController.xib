@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
+    </customFonts>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="TokoCashMoveToSaldoFailedViewController" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="homeButton" destination="I4n-HW-xDQ" id="fhf-n0-0Dz"/>
+                <outlet property="retryButton" destination="yTI-P7-dke" id="OLc-K8-vts"/>
+                <outlet property="view" destination="s5N-0s-i0g" id="dHc-4U-ffq"/>
+            </connections>
+        </placeholder>
+        <view contentMode="scaleToFill" id="s5N-0s-i0g">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="8e8-wz-ZV4">
+                    <rect key="frame" x="0.0" y="180" width="375" height="307.5"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="icon_tokocash_money_sad" translatesAutoresizingMaskIntoConstraints="NO" id="Pnp-Lb-wyD">
+                            <rect key="frame" x="117.5" y="20" width="139" height="78"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="139" id="Lx5-OB-jTD"/>
+                                <constraint firstAttribute="height" constant="78" id="cTN-2F-YkI"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Pemindahan Dana ke Saldo Tokopedia Gagal" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XE3-2R-pq2">
+                            <rect key="frame" x="20" y="128" width="335" height="19.5"/>
+                            <constraints>
+                                <constraint firstAttribute="height" priority="250" constant="20" id="cwU-QG-o77"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
+                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.5383197623" colorSpace="calibratedRGB"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yTI-P7-dke">
+                            <rect key="frame" x="94" y="235.5" width="186" height="52"/>
+                            <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="deviceRGB"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="186" id="74L-Ge-bHE"/>
+                                <constraint firstAttribute="height" constant="52" id="xq7-LB-xpp"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Coba Lagi">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="I4n-HW-xDQ">
+                            <rect key="frame" x="94" y="171.5" width="186" height="52"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="186" id="Iwg-cy-hRF"/>
+                                <constraint firstAttribute="height" constant="52" id="wCR-4Y-gkz"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="14"/>
+                            <state key="normal" title="Ke Halaman TokoCash">
+                                <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="deviceRGB"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                    <real key="value" value="3"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                    <real key="value" value="1"/>
+                                </userDefinedRuntimeAttribute>
+                                <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                    <color key="value" red="0.0" green="0.0" blue="0.0" alpha="0.12" colorSpace="deviceRGB"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="XE3-2R-pq2" firstAttribute="leading" secondItem="8e8-wz-ZV4" secondAttribute="leading" constant="20" id="0gR-US-1Nb"/>
+                        <constraint firstItem="XE3-2R-pq2" firstAttribute="top" secondItem="Pnp-Lb-wyD" secondAttribute="bottom" constant="30" id="3gH-bJ-dTJ"/>
+                        <constraint firstItem="yTI-P7-dke" firstAttribute="top" secondItem="I4n-HW-xDQ" secondAttribute="bottom" constant="12" id="MMS-RW-Y6I"/>
+                        <constraint firstItem="Pnp-Lb-wyD" firstAttribute="top" secondItem="8e8-wz-ZV4" secondAttribute="top" constant="20" id="OwH-M8-oKI"/>
+                        <constraint firstItem="I4n-HW-xDQ" firstAttribute="top" secondItem="XE3-2R-pq2" secondAttribute="bottom" constant="24" id="bnD-O3-TEy"/>
+                        <constraint firstItem="yTI-P7-dke" firstAttribute="centerX" secondItem="8e8-wz-ZV4" secondAttribute="centerX" id="iLu-pi-YtT"/>
+                        <constraint firstItem="I4n-HW-xDQ" firstAttribute="centerX" secondItem="8e8-wz-ZV4" secondAttribute="centerX" id="jvz-eV-OM5"/>
+                        <constraint firstItem="Pnp-Lb-wyD" firstAttribute="centerX" secondItem="8e8-wz-ZV4" secondAttribute="centerX" id="m7u-kk-Q6h"/>
+                        <constraint firstAttribute="trailing" secondItem="XE3-2R-pq2" secondAttribute="trailing" constant="20" id="mSl-EQ-RMR"/>
+                        <constraint firstAttribute="bottom" secondItem="yTI-P7-dke" secondAttribute="bottom" constant="20" id="wVk-5K-dAV"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="8e8-wz-ZV4" secondAttribute="trailing" id="9s3-WX-gpy"/>
+                <constraint firstItem="8e8-wz-ZV4" firstAttribute="leading" secondItem="s5N-0s-i0g" secondAttribute="leading" id="NJf-uo-o3I"/>
+                <constraint firstItem="8e8-wz-ZV4" firstAttribute="centerY" secondItem="s5N-0s-i0g" secondAttribute="centerY" id="mhQ-e0-Sux"/>
+            </constraints>
+            <viewLayoutGuide key="safeArea" id="Kgb-iD-JXI"/>
+        </view>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+    </objects>
+    <resources>
+        <image name="icon_tokocash_money_sad" width="139" height="77"/>
+    </resources>
+</document>

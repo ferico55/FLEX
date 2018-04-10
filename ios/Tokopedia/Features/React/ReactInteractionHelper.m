@@ -34,7 +34,7 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink capti
     object.deeplinkPath = deeplink;
     object.title = caption;
     object.feature = @"Promo";
-    object.utm_campaign = @"promo";
+    object.utmCampaign = @"promo";
     RCTView* view = anchorTag == 0 ? nil : (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
     UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     ReferralManager *referralManager = [[ReferralManager alloc] init];
@@ -51,12 +51,22 @@ RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {
                                                                   action:nil];
 }
 
+RCT_EXPORT_METHOD(showSimpleErrorStickyAlert:(NSString*) message) {
+    [self destroyLastNotificationView];
+    lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                    type:NotificationTypeError
+                                                                duration:4.0
+                                                             buttonTitle:nil
+                                                             dismissable:YES
+                                                                  action:nil];
+}
+
 RCT_EXPORT_METHOD(showErrorStickyAlert:(NSString*) message) {
     [self destroyLastNotificationView];
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeError
                                                                 duration:4.0
-                                                             buttonTitle:@"Coba Lagi"
+                                                             buttonTitle:nil
                                                              dismissable:YES
                                                                   action:nil];
 }
@@ -67,6 +77,19 @@ RCT_EXPORT_METHOD(showErrorStickyAlertWithCallback:(NSString*) message callback:
     lastNotificationView = [UIViewController showNotificationWithMessage:message
                                                                     type:NotificationTypeError
                                                                 duration:6.0
+                                                             buttonTitle:@"Coba Lagi"
+                                                             dismissable:YES
+                                                                  action:^{
+                                                                      callback(@[[NSNull null]]);
+                                                                  }];
+}
+
+RCT_EXPORT_METHOD(showErrorStickyAlertWithDuration:(NSString*) message duration: (nonnull NSNumber*) duration callback:(RCTResponseSenderBlock)callback) {
+    [self destroyLastNotificationView];
+    
+    lastNotificationView = [UIViewController showNotificationWithMessage:message
+                                                                    type:NotificationTypeError
+                                                                duration:duration.floatValue
                                                              buttonTitle:@"Coba Lagi"
                                                              dismissable:YES
                                                                   action:^{
@@ -149,7 +172,7 @@ RCT_EXPORT_METHOD(forceLogout) {
     [tabManager sendLogoutEvent];
 }
 
-RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RCTResponseSenderBlock)callback) {
+RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected minSize: (nonnull NSNumber*) minSize callback: (RCTResponseSenderBlock)callback) {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];
     
@@ -158,7 +181,7 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RC
         __block int count = (int) result.count;
         for(DKAsset* asset in result) {
             PHAsset *originalAsset = asset.originalAsset;
-            if (originalAsset.pixelWidth < 300 || originalAsset.pixelHeight < 300) {
+            if (originalAsset.pixelWidth < minSize.intValue || originalAsset.pixelHeight < minSize.intValue) {
                 [resultUri addObject:@"small"];
                 continue;
             }
@@ -174,6 +197,14 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected callback: (RC
 - (UIViewController*) topMostViewController {
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     return [rootViewController topMostViewController];
+}
+
+RCT_EXPORT_METHOD(showLoadingOverlay) {
+    [SwiftOverlays showBlockingWaitOverlay];
+}
+
+RCT_EXPORT_METHOD(removeLoadingOverlay) {
+    [SwiftOverlays removeAllBlockingOverlays];
 }
 
 @end

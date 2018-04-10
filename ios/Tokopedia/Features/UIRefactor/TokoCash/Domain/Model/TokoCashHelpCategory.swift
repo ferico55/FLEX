@@ -8,11 +8,11 @@
 
 import Foundation
 
-final class TokoCashHelpCategory: NSObject {
-    var categoryId: String
-    var translation: String
+public final class TokoCashHelpCategory: NSObject {
+    public var categoryId: String
+    public var translation: String
     
-    init(categoryId: String, translation: String) {
+    public init(categoryId: String, translation: String) {
         self.categoryId = categoryId
         self.translation = translation
     }

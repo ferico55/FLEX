@@ -7,7 +7,7 @@
 //
 import UIKit
 
-class SearchBarWrapperView: UIView {
+public class SearchBarWrapperView: UIView {
     
     /*
      // Only override draw() if you perform custom drawing.
@@ -17,25 +17,25 @@ class SearchBarWrapperView: UIView {
      }
      */
     
-    let searchBar: UISearchBar
+    public let searchBar: UISearchBar
     
-    init(customSearchBar: UISearchBar) {
+    public init(customSearchBar: UISearchBar) {
         searchBar = customSearchBar
         super.init(frame: CGRect.zero)
         
         addSubview(searchBar)
     }
     
-    override convenience init(frame: CGRect) {
+    override convenience public init(frame: CGRect) {
         self.init(customSearchBar: UISearchBar())
         self.frame = frame
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func layoutSubviews() {
+    override public func layoutSubviews() {
         super.layoutSubviews()
         searchBar.frame = bounds
     }

@@ -10,8 +10,16 @@
 
 @implementation ShipmentLocationPickupViewCell
 
+- (void)awakeFromNib {
+    self.pickupLocationLabel.text = @"Tandai Lokasi Pickup";
+}
+
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
+}
+
+- (void)showPinpointView:(BOOL)show {
+    [_viewPinpoint setHidden:!show];
 }
 
 #pragma mark - Text view delegate

@@ -764,8 +764,8 @@ public final class FeedDetailQuery: GraphQLQuery {
 
 public final class FeedsQuery: GraphQLQuery {
   public static let operationString =
-    "query Feeds($userID: Int!, $limit: Int!, $cursor: String) {" +
-    "  feed(limit: $limit, cursor: $cursor, userID: $userID) {" +
+    "query Feeds($userID: Int!, $limit: Int!, $cursor: String, $source: String) {" +
+    "  feed(limit: $limit, cursor: $cursor, userID: $userID, source: $source) {" +
     "    __typename" +
     "    data {" +
     "      __typename" +
@@ -792,6 +792,7 @@ public final class FeedsQuery: GraphQLQuery {
     "      content {" +
     "        __typename" +
     "        type" +
+    "        display" +
     "        total_product" +
     "        products {" +
     "          __typename" +
@@ -980,6 +981,7 @@ public final class FeedsQuery: GraphQLQuery {
     "          index" +
     "          headerTitle" +
     "          exploreLink" +
+    "          exploreText" +
     "          kols {" +
     "            __typename" +
     "            userName" +
@@ -1004,6 +1006,81 @@ public final class FeedsQuery: GraphQLQuery {
     "          click_url" +
     "          click_applink" +
     "        }" +
+    "        topads {" +
+    "          __typename" +
+    "          id" +
+    "          ad_ref_key" +
+    "          redirect" +
+    "          sticker_id" +
+    "          sticker_image" +
+    "          product_click_url" +
+    "          shop_click_url" +
+    "          product {" +
+    "            __typename" +
+    "            id" +
+    "            name" +
+    "            image {" +
+    "              __typename" +
+    "              m_url" +
+    "              s_url" +
+    "              xs_url" +
+    "              m_ecs" +
+    "              s_ecs" +
+    "              xs_ecs" +
+    "            }" +
+    "            uri" +
+    "            relative_uri" +
+    "            price_format" +
+    "            count_talk_format" +
+    "            count_review_format" +
+    "            category {" +
+    "              __typename" +
+    "              id" +
+    "            }" +
+    "            product_preorder" +
+    "            product_wholesale" +
+    "            free_return" +
+    "            product_cashback" +
+    "            product_cashback_rate" +
+    "            product_rating" +
+    "          }" +
+    "          shop {" +
+    "            __typename" +
+    "            id" +
+    "            name" +
+    "            domain" +
+    "            tagline" +
+    "            location" +
+    "            city" +
+    "            image_product {" +
+    "              __typename" +
+    "              product_id" +
+    "              product_name" +
+    "              image_url" +
+    "            }" +
+    "            image_shop {" +
+    "              __typename" +
+    "              cover_ecs" +
+    "              s_ecs" +
+    "              xs_ecs" +
+    "              s_url" +
+    "              xs_url" +
+    "            }" +
+    "            gold_shop" +
+    "            lucky_shop" +
+    "            shop_is_official" +
+    "            owner_id" +
+    "            is_owner" +
+    "            badges {" +
+    "              __typename" +
+    "              title" +
+    "              image_url" +
+    "            }" +
+    "            uri" +
+    "            gold_shop_badge" +
+    "          }" +
+    "          applinks" +
+    "        }" +
     "      }" +
     "    }" +
     "    links {" +
@@ -1023,22 +1100,24 @@ public final class FeedsQuery: GraphQLQuery {
   public var userID: Int
   public var limit: Int
   public var cursor: String?
+  public var source: String?
 
-  public init(userID: Int, limit: Int, cursor: String? = nil) {
+  public init(userID: Int, limit: Int, cursor: String? = nil, source: String? = nil) {
     self.userID = userID
     self.limit = limit
     self.cursor = cursor
+    self.source = source
   }
 
   public var variables: GraphQLMap? {
-    return ["userID": userID, "limit": limit, "cursor": cursor]
+    return ["userID": userID, "limit": limit, "cursor": cursor, "source": source]
   }
 
   public struct Data: GraphQLSelectionSet {
     public static let possibleTypes = ["Query"]
 
     public static let selections: [GraphQLSelection] = [
-      GraphQLField("feed", arguments: ["limit": Variable("limit"), "cursor": Variable("cursor"), "userID": Variable("userID")], type: .object(Feed.self)),
+      GraphQLField("feed", arguments: ["limit": Variable("limit"), "cursor": Variable("cursor"), "userID": Variable("userID"), "source": Variable("source")], type: .object(Feed.self)),
     ]
 
     public var snapshot: Snapshot
@@ -1372,6 +1451,7 @@ public final class FeedsQuery: GraphQLQuery {
           public static let selections: [GraphQLSelection] = [
             GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
             GraphQLField("type", type: .scalar(String.self)),
+            GraphQLField("display", type: .scalar(String.self)),
             GraphQLField("total_product", type: .scalar(Int.self)),
             GraphQLField("products", type: .list(.object(Product.self))),
             GraphQLField("promotions", type: .list(.object(Promotion.self))),
@@ -1386,6 +1466,7 @@ public final class FeedsQuery: GraphQLQuery {
             GraphQLField("kolrecommendation", type: .object(Kolrecommendation.self)),
             GraphQLField("favorite_cta", type: .object(FavoriteCtum.self)),
             GraphQLField("kol_cta", type: .object(KolCtum.self)),
+            GraphQLField("topads", type: .list(.object(Topad.self))),
           ]
 
           public var snapshot: Snapshot
@@ -1394,8 +1475,8 @@ public final class FeedsQuery: GraphQLQuery {
             self.snapshot = snapshot
           }
 
-          public init(type: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil, favoriteCta: FavoriteCtum? = nil, kolCta: KolCtum? = nil) {
-            self.init(snapshot: ["__typename": "FeedContent", "type": type, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation, "favorite_cta": favoriteCta, "kol_cta": kolCta])
+          public init(type: String? = nil, display: String? = nil, totalProduct: Int? = nil, products: [Product?]? = nil, promotions: [Promotion?]? = nil, statusActivity: String? = nil, newStatusActivity: NewStatusActivity? = nil, topPicks: [TopPick?]? = nil, redirectUrlApp: String? = nil, officialStore: [OfficialStore?]? = nil, inspirasi: [Inspirasi?]? = nil, kolpost: Kolpost? = nil, followedkolpost: Followedkolpost? = nil, kolrecommendation: Kolrecommendation? = nil, favoriteCta: FavoriteCtum? = nil, kolCta: KolCtum? = nil, topads: [Topad?]? = nil) {
+            self.init(snapshot: ["__typename": "FeedContent", "type": type, "display": display, "total_product": totalProduct, "products": products, "promotions": promotions, "status_activity": statusActivity, "new_status_activity": newStatusActivity, "top_picks": topPicks, "redirect_url_app": redirectUrlApp, "official_store": officialStore, "inspirasi": inspirasi, "kolpost": kolpost, "followedkolpost": followedkolpost, "kolrecommendation": kolrecommendation, "favorite_cta": favoriteCta, "kol_cta": kolCta, "topads": topads])
           }
 
           public var __typename: String {
@@ -1413,6 +1494,15 @@ public final class FeedsQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue, forKey: "type")
+            }
+          }
+
+          public var display: String? {
+            get {
+              return snapshot["display"]! as! String?
+            }
+            set {
+              snapshot.updateValue(newValue, forKey: "display")
             }
           }
 
@@ -1539,6 +1629,15 @@ public final class FeedsQuery: GraphQLQuery {
             }
             set {
               snapshot.updateValue(newValue?.snapshot, forKey: "kol_cta")
+            }
+          }
+
+          public var topads: [Topad?]? {
+            get {
+              return (snapshot["topads"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Topad(snapshot: $0) } } }
+            }
+            set {
+              snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "topads")
             }
           }
 
@@ -3410,6 +3509,7 @@ public final class FeedsQuery: GraphQLQuery {
               GraphQLField("index", type: .scalar(Int.self)),
               GraphQLField("headerTitle", type: .scalar(String.self)),
               GraphQLField("exploreLink", type: .scalar(String.self)),
+              GraphQLField("exploreText", type: .scalar(String.self)),
               GraphQLField("kols", type: .list(.object(Kol.self))),
             ]
 
@@ -3419,8 +3519,8 @@ public final class FeedsQuery: GraphQLQuery {
               self.snapshot = snapshot
             }
 
-            public init(index: Int? = nil, headerTitle: String? = nil, exploreLink: String? = nil, kols: [Kol?]? = nil) {
-              self.init(snapshot: ["__typename": "KolRecommendedDataType", "index": index, "headerTitle": headerTitle, "exploreLink": exploreLink, "kols": kols])
+            public init(index: Int? = nil, headerTitle: String? = nil, exploreLink: String? = nil, exploreText: String? = nil, kols: [Kol?]? = nil) {
+              self.init(snapshot: ["__typename": "KolRecommendedDataType", "index": index, "headerTitle": headerTitle, "exploreLink": exploreLink, "exploreText": exploreText, "kols": kols])
             }
 
             public var __typename: String {
@@ -3456,6 +3556,15 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "exploreLink")
+              }
+            }
+
+            public var exploreText: String? {
+              get {
+                return snapshot["exploreText"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "exploreText")
               }
             }
 
@@ -3686,6 +3795,802 @@ public final class FeedsQuery: GraphQLQuery {
               }
               set {
                 snapshot.updateValue(newValue, forKey: "click_applink")
+              }
+            }
+          }
+
+          public struct Topad: GraphQLSelectionSet {
+            public static let possibleTypes = ["TopAd"]
+
+            public static let selections: [GraphQLSelection] = [
+              GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+              GraphQLField("id", type: .scalar(GraphQLID.self)),
+              GraphQLField("ad_ref_key", type: .scalar(String.self)),
+              GraphQLField("redirect", type: .scalar(String.self)),
+              GraphQLField("sticker_id", type: .scalar(GraphQLID.self)),
+              GraphQLField("sticker_image", type: .scalar(String.self)),
+              GraphQLField("product_click_url", type: .scalar(String.self)),
+              GraphQLField("shop_click_url", type: .scalar(String.self)),
+              GraphQLField("product", type: .object(Product.self)),
+              GraphQLField("shop", type: .object(Shop.self)),
+              GraphQLField("applinks", type: .scalar(String.self)),
+            ]
+
+            public var snapshot: Snapshot
+
+            public init(snapshot: Snapshot) {
+              self.snapshot = snapshot
+            }
+
+            public init(id: GraphQLID? = nil, adRefKey: String? = nil, redirect: String? = nil, stickerId: GraphQLID? = nil, stickerImage: String? = nil, productClickUrl: String? = nil, shopClickUrl: String? = nil, product: Product? = nil, shop: Shop? = nil, applinks: String? = nil) {
+              self.init(snapshot: ["__typename": "TopAd", "id": id, "ad_ref_key": adRefKey, "redirect": redirect, "sticker_id": stickerId, "sticker_image": stickerImage, "product_click_url": productClickUrl, "shop_click_url": shopClickUrl, "product": product, "shop": shop, "applinks": applinks])
+            }
+
+            public var __typename: String {
+              get {
+                return snapshot["__typename"]! as! String
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "__typename")
+              }
+            }
+
+            public var id: GraphQLID? {
+              get {
+                return snapshot["id"]! as! GraphQLID?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "id")
+              }
+            }
+
+            public var adRefKey: String? {
+              get {
+                return snapshot["ad_ref_key"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "ad_ref_key")
+              }
+            }
+
+            public var redirect: String? {
+              get {
+                return snapshot["redirect"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "redirect")
+              }
+            }
+
+            public var stickerId: GraphQLID? {
+              get {
+                return snapshot["sticker_id"]! as! GraphQLID?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "sticker_id")
+              }
+            }
+
+            public var stickerImage: String? {
+              get {
+                return snapshot["sticker_image"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "sticker_image")
+              }
+            }
+
+            public var productClickUrl: String? {
+              get {
+                return snapshot["product_click_url"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "product_click_url")
+              }
+            }
+
+            public var shopClickUrl: String? {
+              get {
+                return snapshot["shop_click_url"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "shop_click_url")
+              }
+            }
+
+            public var product: Product? {
+              get {
+                return (snapshot["product"]! as! Snapshot?).flatMap { Product(snapshot: $0) }
+              }
+              set {
+                snapshot.updateValue(newValue?.snapshot, forKey: "product")
+              }
+            }
+
+            public var shop: Shop? {
+              get {
+                return (snapshot["shop"]! as! Snapshot?).flatMap { Shop(snapshot: $0) }
+              }
+              set {
+                snapshot.updateValue(newValue?.snapshot, forKey: "shop")
+              }
+            }
+
+            public var applinks: String? {
+              get {
+                return snapshot["applinks"]! as! String?
+              }
+              set {
+                snapshot.updateValue(newValue, forKey: "applinks")
+              }
+            }
+
+            public struct Product: GraphQLSelectionSet {
+              public static let possibleTypes = ["TopAdslistProduct"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("id", type: .scalar(GraphQLID.self)),
+                GraphQLField("name", type: .scalar(String.self)),
+                GraphQLField("image", type: .object(Image.self)),
+                GraphQLField("uri", type: .scalar(String.self)),
+                GraphQLField("relative_uri", type: .scalar(String.self)),
+                GraphQLField("price_format", type: .scalar(String.self)),
+                GraphQLField("count_talk_format", type: .scalar(String.self)),
+                GraphQLField("count_review_format", type: .scalar(String.self)),
+                GraphQLField("category", type: .object(Category.self)),
+                GraphQLField("product_preorder", type: .scalar(Bool.self)),
+                GraphQLField("product_wholesale", type: .scalar(Bool.self)),
+                GraphQLField("free_return", type: .scalar(String.self)),
+                GraphQLField("product_cashback", type: .scalar(Bool.self)),
+                GraphQLField("product_cashback_rate", type: .scalar(String.self)),
+                GraphQLField("product_rating", type: .scalar(Int.self)),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(id: GraphQLID? = nil, name: String? = nil, image: Image? = nil, uri: String? = nil, relativeUri: String? = nil, priceFormat: String? = nil, countTalkFormat: String? = nil, countReviewFormat: String? = nil, category: Category? = nil, productPreorder: Bool? = nil, productWholesale: Bool? = nil, freeReturn: String? = nil, productCashback: Bool? = nil, productCashbackRate: String? = nil, productRating: Int? = nil) {
+                self.init(snapshot: ["__typename": "TopAdslistProduct", "id": id, "name": name, "image": image, "uri": uri, "relative_uri": relativeUri, "price_format": priceFormat, "count_talk_format": countTalkFormat, "count_review_format": countReviewFormat, "category": category, "product_preorder": productPreorder, "product_wholesale": productWholesale, "free_return": freeReturn, "product_cashback": productCashback, "product_cashback_rate": productCashbackRate, "product_rating": productRating])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var id: GraphQLID? {
+                get {
+                  return snapshot["id"]! as! GraphQLID?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "id")
+                }
+              }
+
+              public var name: String? {
+                get {
+                  return snapshot["name"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "name")
+                }
+              }
+
+              public var image: Image? {
+                get {
+                  return (snapshot["image"]! as! Snapshot?).flatMap { Image(snapshot: $0) }
+                }
+                set {
+                  snapshot.updateValue(newValue?.snapshot, forKey: "image")
+                }
+              }
+
+              public var uri: String? {
+                get {
+                  return snapshot["uri"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "uri")
+                }
+              }
+
+              public var relativeUri: String? {
+                get {
+                  return snapshot["relative_uri"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "relative_uri")
+                }
+              }
+
+              public var priceFormat: String? {
+                get {
+                  return snapshot["price_format"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "price_format")
+                }
+              }
+
+              public var countTalkFormat: String? {
+                get {
+                  return snapshot["count_talk_format"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "count_talk_format")
+                }
+              }
+
+              public var countReviewFormat: String? {
+                get {
+                  return snapshot["count_review_format"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "count_review_format")
+                }
+              }
+
+              public var category: Category? {
+                get {
+                  return (snapshot["category"]! as! Snapshot?).flatMap { Category(snapshot: $0) }
+                }
+                set {
+                  snapshot.updateValue(newValue?.snapshot, forKey: "category")
+                }
+              }
+
+              public var productPreorder: Bool? {
+                get {
+                  return snapshot["product_preorder"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "product_preorder")
+                }
+              }
+
+              public var productWholesale: Bool? {
+                get {
+                  return snapshot["product_wholesale"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "product_wholesale")
+                }
+              }
+
+              public var freeReturn: String? {
+                get {
+                  return snapshot["free_return"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "free_return")
+                }
+              }
+
+              public var productCashback: Bool? {
+                get {
+                  return snapshot["product_cashback"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "product_cashback")
+                }
+              }
+
+              public var productCashbackRate: String? {
+                get {
+                  return snapshot["product_cashback_rate"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "product_cashback_rate")
+                }
+              }
+
+              public var productRating: Int? {
+                get {
+                  return snapshot["product_rating"]! as! Int?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "product_rating")
+                }
+              }
+
+              public struct Image: GraphQLSelectionSet {
+                public static let possibleTypes = ["TopAdslistImage"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("m_url", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("s_url", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("xs_url", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("m_ecs", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("s_ecs", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("xs_ecs", type: .nonNull(.scalar(String.self))),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(mUrl: String, sUrl: String, xsUrl: String, mEcs: String, sEcs: String, xsEcs: String) {
+                  self.init(snapshot: ["__typename": "TopAdslistImage", "m_url": mUrl, "s_url": sUrl, "xs_url": xsUrl, "m_ecs": mEcs, "s_ecs": sEcs, "xs_ecs": xsEcs])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var mUrl: String {
+                  get {
+                    return snapshot["m_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "m_url")
+                  }
+                }
+
+                public var sUrl: String {
+                  get {
+                    return snapshot["s_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "s_url")
+                  }
+                }
+
+                public var xsUrl: String {
+                  get {
+                    return snapshot["xs_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "xs_url")
+                  }
+                }
+
+                public var mEcs: String {
+                  get {
+                    return snapshot["m_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "m_ecs")
+                  }
+                }
+
+                public var sEcs: String {
+                  get {
+                    return snapshot["s_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "s_ecs")
+                  }
+                }
+
+                public var xsEcs: String {
+                  get {
+                    return snapshot["xs_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "xs_ecs")
+                  }
+                }
+              }
+
+              public struct Category: GraphQLSelectionSet {
+                public static let possibleTypes = ["TopAdsCategoryType"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("id", type: .scalar(String.self)),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(id: String? = nil) {
+                  self.init(snapshot: ["__typename": "TopAdsCategoryType", "id": id])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var id: String? {
+                  get {
+                    return snapshot["id"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "id")
+                  }
+                }
+              }
+            }
+
+            public struct Shop: GraphQLSelectionSet {
+              public static let possibleTypes = ["TopAdslistShop"]
+
+              public static let selections: [GraphQLSelection] = [
+                GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                GraphQLField("id", type: .scalar(GraphQLID.self)),
+                GraphQLField("name", type: .scalar(String.self)),
+                GraphQLField("domain", type: .scalar(String.self)),
+                GraphQLField("tagline", type: .scalar(String.self)),
+                GraphQLField("location", type: .scalar(String.self)),
+                GraphQLField("city", type: .scalar(String.self)),
+                GraphQLField("image_product", type: .list(.object(ImageProduct.self))),
+                GraphQLField("image_shop", type: .object(ImageShop.self)),
+                GraphQLField("gold_shop", type: .scalar(Bool.self)),
+                GraphQLField("lucky_shop", type: .scalar(String.self)),
+                GraphQLField("shop_is_official", type: .scalar(Bool.self)),
+                GraphQLField("owner_id", type: .scalar(GraphQLID.self)),
+                GraphQLField("is_owner", type: .scalar(Bool.self)),
+                GraphQLField("badges", type: .list(.object(Badge.self))),
+                GraphQLField("uri", type: .scalar(String.self)),
+                GraphQLField("gold_shop_badge", type: .scalar(Bool.self)),
+              ]
+
+              public var snapshot: Snapshot
+
+              public init(snapshot: Snapshot) {
+                self.snapshot = snapshot
+              }
+
+              public init(id: GraphQLID? = nil, name: String? = nil, domain: String? = nil, tagline: String? = nil, location: String? = nil, city: String? = nil, imageProduct: [ImageProduct?]? = nil, imageShop: ImageShop? = nil, goldShop: Bool? = nil, luckyShop: String? = nil, shopIsOfficial: Bool? = nil, ownerId: GraphQLID? = nil, isOwner: Bool? = nil, badges: [Badge?]? = nil, uri: String? = nil, goldShopBadge: Bool? = nil) {
+                self.init(snapshot: ["__typename": "TopAdslistShop", "id": id, "name": name, "domain": domain, "tagline": tagline, "location": location, "city": city, "image_product": imageProduct, "image_shop": imageShop, "gold_shop": goldShop, "lucky_shop": luckyShop, "shop_is_official": shopIsOfficial, "owner_id": ownerId, "is_owner": isOwner, "badges": badges, "uri": uri, "gold_shop_badge": goldShopBadge])
+              }
+
+              public var __typename: String {
+                get {
+                  return snapshot["__typename"]! as! String
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "__typename")
+                }
+              }
+
+              public var id: GraphQLID? {
+                get {
+                  return snapshot["id"]! as! GraphQLID?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "id")
+                }
+              }
+
+              public var name: String? {
+                get {
+                  return snapshot["name"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "name")
+                }
+              }
+
+              public var domain: String? {
+                get {
+                  return snapshot["domain"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "domain")
+                }
+              }
+
+              public var tagline: String? {
+                get {
+                  return snapshot["tagline"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "tagline")
+                }
+              }
+
+              public var location: String? {
+                get {
+                  return snapshot["location"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "location")
+                }
+              }
+
+              public var city: String? {
+                get {
+                  return snapshot["city"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "city")
+                }
+              }
+
+              public var imageProduct: [ImageProduct?]? {
+                get {
+                  return (snapshot["image_product"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { ImageProduct(snapshot: $0) } } }
+                }
+                set {
+                  snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "image_product")
+                }
+              }
+
+              public var imageShop: ImageShop? {
+                get {
+                  return (snapshot["image_shop"]! as! Snapshot?).flatMap { ImageShop(snapshot: $0) }
+                }
+                set {
+                  snapshot.updateValue(newValue?.snapshot, forKey: "image_shop")
+                }
+              }
+
+              public var goldShop: Bool? {
+                get {
+                  return snapshot["gold_shop"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "gold_shop")
+                }
+              }
+
+              public var luckyShop: String? {
+                get {
+                  return snapshot["lucky_shop"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "lucky_shop")
+                }
+              }
+
+              public var shopIsOfficial: Bool? {
+                get {
+                  return snapshot["shop_is_official"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "shop_is_official")
+                }
+              }
+
+              public var ownerId: GraphQLID? {
+                get {
+                  return snapshot["owner_id"]! as! GraphQLID?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "owner_id")
+                }
+              }
+
+              public var isOwner: Bool? {
+                get {
+                  return snapshot["is_owner"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "is_owner")
+                }
+              }
+
+              public var badges: [Badge?]? {
+                get {
+                  return (snapshot["badges"]! as! [Snapshot?]?).flatMap { $0.map { $0.flatMap { Badge(snapshot: $0) } } }
+                }
+                set {
+                  snapshot.updateValue(newValue.flatMap { $0.map { $0.flatMap { $0.snapshot } } }, forKey: "badges")
+                }
+              }
+
+              public var uri: String? {
+                get {
+                  return snapshot["uri"]! as! String?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "uri")
+                }
+              }
+
+              public var goldShopBadge: Bool? {
+                get {
+                  return snapshot["gold_shop_badge"]! as! Bool?
+                }
+                set {
+                  snapshot.updateValue(newValue, forKey: "gold_shop_badge")
+                }
+              }
+
+              public struct ImageProduct: GraphQLSelectionSet {
+                public static let possibleTypes = ["TopAdslistShopProduct"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("product_id", type: .nonNull(.scalar(GraphQLID.self))),
+                  GraphQLField("product_name", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("image_url", type: .nonNull(.scalar(String.self))),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(productId: GraphQLID, productName: String, imageUrl: String) {
+                  self.init(snapshot: ["__typename": "TopAdslistShopProduct", "product_id": productId, "product_name": productName, "image_url": imageUrl])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var productId: GraphQLID {
+                  get {
+                    return snapshot["product_id"]! as! GraphQLID
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "product_id")
+                  }
+                }
+
+                public var productName: String {
+                  get {
+                    return snapshot["product_name"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "product_name")
+                  }
+                }
+
+                public var imageUrl: String {
+                  get {
+                    return snapshot["image_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "image_url")
+                  }
+                }
+              }
+
+              public struct ImageShop: GraphQLSelectionSet {
+                public static let possibleTypes = ["TopAdslistImageShop"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("cover_ecs", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("s_ecs", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("xs_ecs", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("s_url", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("xs_url", type: .nonNull(.scalar(String.self))),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(coverEcs: String, sEcs: String, xsEcs: String, sUrl: String, xsUrl: String) {
+                  self.init(snapshot: ["__typename": "TopAdslistImageShop", "cover_ecs": coverEcs, "s_ecs": sEcs, "xs_ecs": xsEcs, "s_url": sUrl, "xs_url": xsUrl])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var coverEcs: String {
+                  get {
+                    return snapshot["cover_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "cover_ecs")
+                  }
+                }
+
+                public var sEcs: String {
+                  get {
+                    return snapshot["s_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "s_ecs")
+                  }
+                }
+
+                public var xsEcs: String {
+                  get {
+                    return snapshot["xs_ecs"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "xs_ecs")
+                  }
+                }
+
+                public var sUrl: String {
+                  get {
+                    return snapshot["s_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "s_url")
+                  }
+                }
+
+                public var xsUrl: String {
+                  get {
+                    return snapshot["xs_url"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "xs_url")
+                  }
+                }
+              }
+
+              public struct Badge: GraphQLSelectionSet {
+                public static let possibleTypes = ["TopAdsBadge"]
+
+                public static let selections: [GraphQLSelection] = [
+                  GraphQLField("__typename", type: .nonNull(.scalar(String.self))),
+                  GraphQLField("title", type: .scalar(String.self)),
+                  GraphQLField("image_url", type: .scalar(String.self)),
+                ]
+
+                public var snapshot: Snapshot
+
+                public init(snapshot: Snapshot) {
+                  self.snapshot = snapshot
+                }
+
+                public init(title: String? = nil, imageUrl: String? = nil) {
+                  self.init(snapshot: ["__typename": "TopAdsBadge", "title": title, "image_url": imageUrl])
+                }
+
+                public var __typename: String {
+                  get {
+                    return snapshot["__typename"]! as! String
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "__typename")
+                  }
+                }
+
+                public var title: String? {
+                  get {
+                    return snapshot["title"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "title")
+                  }
+                }
+
+                public var imageUrl: String? {
+                  get {
+                    return snapshot["image_url"]! as! String?
+                  }
+                  set {
+                    snapshot.updateValue(newValue, forKey: "image_url")
+                  }
+                }
               }
             }
           }

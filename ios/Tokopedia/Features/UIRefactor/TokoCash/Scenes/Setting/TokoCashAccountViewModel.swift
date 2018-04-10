@@ -7,15 +7,45 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
-final class TokoCashAccountViewModel {
-    let account: TokoCashAccount
-    let identifier: String
-    let authDate: String
+public final class TokoCashAccountViewModel {
     
-    init(with account: TokoCashAccount) {
+    public struct Input {
+        public let deleteButtonTrigger: Driver<Void>
+    }
+    
+    public struct Output {
+        public let identifier: Driver<String>
+        public let authDate: Driver<String>
+        public let deleteAccount: Driver<TokoCashAccount>
+    }
+    
+    private let account: TokoCashAccount
+    
+    public init(with account: TokoCashAccount) {
         self.account = account
-        self.identifier = account.identifier ?? ""
-        self.authDate = account.authDateFmt ?? ""
+    }
+    
+    public func transform(input: Input) -> Output {
+        
+        let account = Driver.of(self.account)
+        
+        let identifier = account.map { account -> String in
+            return account.identifier ?? ""
+        }
+        
+        let authDate = account.map { account -> String in
+            account.authDateFmt ?? ""
+        }
+        
+        let deleteAccount = input.deleteButtonTrigger.withLatestFrom(account) { _, account -> TokoCashAccount in
+            return account
+        }
+        
+        return Output(identifier: identifier,
+                      authDate: authDate,
+                      deleteAccount: deleteAccount)
     }
 }

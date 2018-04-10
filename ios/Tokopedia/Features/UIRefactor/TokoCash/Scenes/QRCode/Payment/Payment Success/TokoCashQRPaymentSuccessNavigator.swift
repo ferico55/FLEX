@@ -8,22 +8,20 @@
 
 import Foundation
 
-class TokoCashQRPaymentSuccessNavigator {
+public class TokoCashQRPaymentSuccessNavigator {
     
-    private let storyboard: UIStoryboard
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
-        self.storyboard = UIStoryboard(name: "TokoCash", bundle: nil)
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func backToHome() {
+    public func backToHome() {
         navigationController.popToRootViewController(animated: true)
     }
     
-    func toHelp(_ transactionId: String) {
-        let vc = storyboard.instantiateViewController(ofType: TokoCashHelpViewController.self)
+    public func toHelp(_ transactionId: String) {
+        let vc = TokoCashHelpViewController()
         let navigator = TokoCashHelpNavigator(navigationController: navigationController)
         vc.viewModel = TokoCashHelpViewModel(transactionId, navigator: navigator)
         navigationController.pushViewController(vc, animated: true)

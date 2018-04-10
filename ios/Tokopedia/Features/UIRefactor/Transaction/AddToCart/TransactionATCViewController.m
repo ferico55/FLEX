@@ -128,7 +128,12 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     _headerTableView = [NSArray sortViewsWithTagInArray:_headerTableView];
     _isnodata = YES;
     
-    [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+    if (_notesToSeller) {
+        _remarkTextView.text = _notesToSeller;
+    } else {
+        [self setPlaceholder:@"Contoh: Warna Putih/Ukuran XL/Edisi ke-2" textView:_remarkTextView];
+    }
+
     _remarkTextView.delegate = self;
     
     requestPriceDelayedActionManager = [DelayedActionManager new];
@@ -373,7 +378,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     NSArray *shipmentAvailable = _ATCForm.form.shipment;
     NSString *insurance = @"1";
     NSNumber *catID = _ATCForm.form.product_detail.product_cat_id;
-    NSString *orderValue = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] stringValue];
+    NSString *orderValue = _selectedProduct.product_price_unfmt;
     NSString *productInsurance = _ATCForm.form.product_detail.product_must_insurance;
     
     [RequestRates fetchRateWithName:name
@@ -628,7 +633,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
                         
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [product.product_price_unfmt integerValue];
                         NSInteger qty = [_productQuantityTextField.text integerValue];
                         
                         NSNumber *price = [NSNumber numberWithInteger:(productPrice / qty)];
@@ -656,7 +661,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
                     {
                         [self cell:cell setAccesoryType:UITableViewCellAccessoryNone isLoading:!_isFinishRequesting];
 
-                        NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:product.product_price] integerValue];
+                        NSInteger productPrice = [product.product_price_unfmt integerValue];
 
                         NSInteger shipmentPackagePrice = [_selectedShipmentPackage.price integerValue];
                         
@@ -888,7 +893,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     
     [AnalyticsManager trackProductAddToCart:_selectedProduct];
     
-    NSNumber *price = [[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price];
+    NSString *price = _selectedProduct.product_price_unfmt;
     
     [[AppsFlyerTracker sharedTracker] trackEvent:AFEventAddToCart withValues:@{
                                                                                AFEventParamContentId : _selectedProduct.product_id?:@"",
@@ -926,6 +931,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 
 -(void)successActionCalculate:(TransactionCalculatePriceResult*)data{
     _selectedProduct.product_price = data.product.price;
+    _selectedProduct.product_price_unfmt = data.product.product_price_unfmt;
     [self setProduct:_selectedProduct];
     [self adjustViewIsLoading:NO];
     [_tableView reloadData];
@@ -999,17 +1005,33 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
         case TAG_BUTTON_TRANSACTION_BUY:
         {
             if (buttonIndex==0) {
-                [self.navigationController popViewControllerAnimated:YES];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"doRefreshingCart" object:nil userInfo:nil];
+                if (self.isModal) {
+                    [self.navigationController dismissViewControllerAnimated:YES completion:NULL];
+                } else {
+                    [self.navigationController popViewControllerAnimated:YES];
+                }
+                
+                [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
             }
             else
             {
                 [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Add to Cart"];
                 UINavigationController *navController=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:3];
                 [navController popToRootViewControllerAnimated:YES];
-                UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
-                [self.tabBarController setSelectedIndex:3];
-                [selfNav popToRootViewControllerAnimated:YES];
+                
+                if (self.isModal) {
+                    [self.navigationController dismissViewControllerAnimated:true completion:^{
+                        UIViewController* topViewController = [UIApplication topViewController];
+                        UINavigationController *selfNav=(UINavigationController*)[topViewController.tabBarController.viewControllers objectAtIndex:topViewController.tabBarController.selectedIndex];
+                        [topViewController.tabBarController setSelectedIndex:3];
+                        [selfNav popToRootViewControllerAnimated:YES];
+                    }];
+                } else {
+                    UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
+                    [self.tabBarController setSelectedIndex:3];
+                    [selfNav popToRootViewControllerAnimated:YES];
+                }
+                
                 [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
             }
             
@@ -1020,6 +1042,16 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     }
 }
 
+- (BOOL)isModal {
+    if([self presentingViewController])
+        return YES;
+    if([[[self navigationController] presentingViewController] presentedViewController] == [self navigationController])
+        return YES;
+    if([[[self tabBarController] presentingViewController] isKindOfClass:[UITabBarController class]])
+        return YES;
+    
+    return NO;
+}
 
 #pragma mark - Setting Address Delegate
 -(void)SettingAddressViewController:(SettingAddressViewController *)viewController withUserInfo:(NSDictionary *)userInfo
@@ -1181,12 +1213,12 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 
 -(NSInteger)insuranceStatus
 {
-    NSInteger productPrice = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedProduct.product_price] integerValue];
+    NSInteger productPrice = [_selectedProduct.product_price_unfmt integerValue];
     
     /* Untuk auto insurance*/
     NSInteger insurance = _selectedShipmentPackage ? [_selectedShipmentPackage.insuranceType integerValue] : 2;
     NSInteger shipmentID = [_selectedShipment.shipper_id integerValue];
-    NSInteger ongkir = [[[NSNumberFormatter IDRFormatter] numberFromString:_selectedShipmentPackage.price] integerValue];
+    NSInteger ongkir = [_selectedShipmentPackage.price integerValue];
     
     if (shipmentID == 6) { //wahana
         if (productPrice >= 300000) {

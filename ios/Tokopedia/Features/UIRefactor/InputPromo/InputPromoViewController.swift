@@ -6,55 +6,54 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import MXSegmentedPager
+import UIKit
 
 @objc
-protocol InputPromoViewDelegate {
+internal protocol InputPromoViewDelegate {
     @objc optional func didUseVoucher(_ inputPromoViewController: InputPromoViewController, voucherData: Any, serviceType: PromoServiceType, promoType: PromoType)
 }
 
-@objc enum PromoType: Int {
+@objc internal enum PromoType: Int {
     case coupon
     case voucher
 }
 
-class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDelegate, MyCouponListTableViewDelegate {
+internal class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDelegate, MyCouponListTableViewDelegate {
+    public weak var delegate: InputPromoViewDelegate?
+    private var serviceType: PromoServiceType = .marketplace
+    public var cart: DigitalCart?
+    public var couponEnabled = false
+    private var placeholderView: UIView?
     
-    var delegate: InputPromoViewDelegate? = nil
-    var serviceType: PromoServiceType = .marketplace
-    var cart: DigitalCart? = nil
-    var couponEnabled = false
-    var placeholderView: UIView? = nil
+    private var loadingWindow = UIWindow()
     
-    var loadingWindow = UIWindow()
+    private var inputPromoCodeViewController: InputPromoCodeViewController?
+    private var myCouponListTableViewController: MyCouponListTableViewController?
     
-    private var inputPromoCodeViewController: InputPromoCodeViewController? = nil
-    private var myCouponListTableViewController: MyCouponListTableViewController? = nil
-    
-    init(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
+    public init(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
         super.init(nibName: nil, bundle: nil)
         
         setProperties(serviceType: serviceType, cart: cart, couponEnabled: couponEnabled)
     }
     
-    init(serviceType: PromoServiceType, couponEnabled: Bool) {
+    public init(serviceType: PromoServiceType, couponEnabled: Bool) {
         super.init(nibName: nil, bundle: nil)
         
         setProperties(serviceType: serviceType, cart: nil, couponEnabled: couponEnabled)
     }
     
-    func setProperties(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
+    private func setProperties(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
         self.serviceType = serviceType
         self.cart = cart
         self.couponEnabled = couponEnabled
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required public init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         
         segmentedPager.segmentedControl.backgroundColor = .white
@@ -63,7 +62,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         segmentedPager.segmentedControl.selectionIndicatorHeight = 2
         segmentedPager.segmentedControl.selectionStyle = .fullWidthStripe
         segmentedPager.segmentedControl.titleTextAttributes = [
-            NSForegroundColorAttributeName: UIColor(white: 0.0, alpha: 0.38),
+            NSForegroundColorAttributeName: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.38),
             NSFontAttributeName: UIFont.systemFont(ofSize: 14.0)
         ]
         segmentedPager.segmentedControl.selectedTitleTextAttributes = [NSForegroundColorAttributeName: UIColor.tpGreen()]
@@ -85,7 +84,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         }
         
         loadingWindow = UIWindow()
-        loadingWindow.backgroundColor = UIColor(white: 0, alpha: 0.3)
+        loadingWindow.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3)
         loadingWindow.frame = UIScreen.main.bounds
         let loadingView = Bundle.main.loadNibNamed("SelectCouponLoadingView", owner: self, options: nil)?[0] as? UIView
         loadingView?.frame = UIScreen.main.bounds
@@ -93,7 +92,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
             loadingWindow.addSubview(loadingView)
         }
         
-        self.navigationItem.setLeftBarButton(UIBarButtonItem(image: UIImage(named: "icon_close_grey"), style: .done, target: self, action: #selector(btnCloseDidTapped(_:))), animated: false)
+        self.navigationItem.setLeftBarButton(UIBarButtonItem(image: #imageLiteral(resourceName: "icon_close_grey"), style: .done, target: self, action: #selector(btnCloseDidTapped(_:))), animated: false)
         
         let label = UILabel()
         label.text = "Checkout"
@@ -103,19 +102,19 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         self.navigationItem.titleView = label
     }
 
-    override func didReceiveMemoryWarning() {
+    override open func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override open func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
         guard let navigationController = self.navigationController else {
             return
         }
         if couponEnabled && !UserDefaults.standard.bool(forKey: "coupon_onboarding_shown") {
-            let vc = OnboardingViewController(title: "Kode Promo dan Kupon tidak dapat digabung.", message: "Penggunaan Kode Promo tidak dapat digabung dengan Kupon yang Anda miliki.", currentStep: 1, totalStep: 1, anchorView: segmentedPager.segmentedControl, presentingViewController: navigationController, callback: { (action) in
+            let vc = OnboardingViewController(title: "Kode Promo dan Kupon tidak dapat digabung.", message: "Penggunaan Kode Promo tidak dapat digabung dengan Kupon yang Anda miliki.", currentStep: 1, totalStep: 1, anchorView: segmentedPager.segmentedControl, presentingViewController: navigationController, fromPresentedViewController: false, callback: { (action) in
                 self.placeholderView?.removeFromSuperview()
                 self.placeholderView = nil
             })
@@ -128,7 +127,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
     }
     
     // MXSegmentedPagerController delegates
-    override func numberOfPages(in segmentedPager: MXSegmentedPager) -> Int {
+    override internal func numberOfPages(in segmentedPager: MXSegmentedPager) -> Int {
         if couponEnabled {
             return 2
         }
@@ -136,7 +135,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         return 1
     }
     
-    override func segmentedPager(_ segmentedPager: MXSegmentedPager, titleForSectionAt index: Int) -> String {
+    override internal func segmentedPager(_ segmentedPager: MXSegmentedPager, titleForSectionAt index: Int) -> String {
         switch index {
         case 0:
             return "Kode Promo"
@@ -147,7 +146,7 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         }
     }
     
-    override func segmentedPager(_ segmentedPager: MXSegmentedPager, viewForPageAt index: Int) -> UIView {
+    override internal func segmentedPager(_ segmentedPager: MXSegmentedPager, viewForPageAt index: Int) -> UIView {
         switch index {
         case 0:
             return (inputPromoCodeViewController?.view)!
@@ -158,24 +157,24 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         }
     }
     
-    override func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelect view: UIView) {
+    override internal func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelect view: UIView) {
         inputPromoCodeViewController?.view.endEditing(true)
     }
     
-    override func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
+    override internal func segmentedPager(_ segmentedPager: MXSegmentedPager, didSelectViewWith index: Int) {
         if index == 1 {
             AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - kode promo & kupon page", action: "click kupon saya", label: "kupon saya")
         }
     }
 
-    @IBAction func btnCloseDidTapped(_ sender: Any) {
+    @IBAction private func btnCloseDidTapped(_ sender: Any) {
         AnalyticsManager.trackEventName(GA_EVENT_NAME_TOKOPOINTS, category: "tokopoints - kode promo & kupon page", action: "click close button", label: "close")
         
         dismiss(animated: true, completion: nil)
     }
     
     // MyCouponListTableViewDelegate
-    func showLoading(myCouponListTableViewController: MyCouponListTableViewController, show: Bool) {
+    internal func showLoading(myCouponListTableViewController: MyCouponListTableViewController, show: Bool) {
         if show {
             loadingWindow.makeKeyAndVisible()
         }
@@ -185,13 +184,13 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         }
     }
     
-    func didUseVoucher(myCouponListTableViewController: MyCouponListTableViewController, voucherData: Any, serviceType: PromoServiceType) {
+    internal func didUseVoucher(myCouponListTableViewController: MyCouponListTableViewController, voucherData: Any, serviceType: PromoServiceType) {
         self.delegate?.didUseVoucher?(self, voucherData: voucherData, serviceType: serviceType, promoType: .coupon)
         dismiss(animated: true, completion: nil)
     }
     
     // InputPromoCodeViewDelegate
-    func showLoading(inputPromoCodeViewController: InputPromoCodeViewController, show: Bool) {
+    internal func showLoading(inputPromoCodeViewController: InputPromoCodeViewController, show: Bool) {
         if show {
             loadingWindow.makeKeyAndVisible()
         }
@@ -201,23 +200,23 @@ class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDe
         }
     }
     
-    func didUseVoucher(inputPromoCodeViewController: InputPromoCodeViewController, voucherData: Any, serviceType: PromoServiceType) {
+    internal func didUseVoucher(inputPromoCodeViewController: InputPromoCodeViewController, voucherData: Any, serviceType: PromoServiceType) {
         self.delegate?.didUseVoucher?(self, voucherData: voucherData, serviceType: serviceType, promoType: .voucher)
         dismiss(animated: true, completion: nil)
     }
     
     // OnboardingViewControllerDelegate
-    func didTapNextButton() {
+    internal func didTapNextButton() {
         self.placeholderView?.removeFromSuperview()
         self.placeholderView = nil
     }
     
-    func didTapBackButton() {
+    internal func didTapBackButton() {
         self.placeholderView?.removeFromSuperview()
         self.placeholderView = nil
     }
     
-    func didDimissOnboarding() {
+    internal func didDimissOnboarding() {
         self.placeholderView?.removeFromSuperview()
         self.placeholderView = nil
     }

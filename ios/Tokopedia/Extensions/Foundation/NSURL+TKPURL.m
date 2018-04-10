@@ -13,17 +13,12 @@
 
 - (NSURL *)TKPMeUrl{
     
-    NSString *urlString = self.absoluteString;
-    urlString = [urlString stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    
-    if([urlString containsString:@"tokopedia.com"]) {
-        UserAuthentificationManager *auth = [UserAuthentificationManager new];
-        urlString = [auth webViewUrlFromUrl:urlString];
-    } else {
-        urlString = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [urlString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    NSString* theRealUrl = [NSString stringWithFormat:@"https://tkp.me/r?url=%@", [self.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."]];
+    if ([[self.host stringByReplacingOccurrencesOfString:@"*" withString:@"."] containsString:@"tokopedia.com"]) {
+        theRealUrl = [self.absoluteString stringByReplacingOccurrencesOfString:@"*" withString:@"."];
     }
     
-    return [NSURL URLWithString:urlString];
+    return [NSURL URLWithString:[theRealUrl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
 }
 
 

@@ -9,16 +9,16 @@
 import Foundation
 import Unbox
 
-struct TokoCashQRInfoResponse {
-    let code: String?
-    let message: String?
-    let errors: String?
-    let config: String?
-    var data: TokoCashQRInfo?
+public struct TokoCashQRInfoResponse {
+    public let code: String?
+    public let message: String?
+    public let errors: String?
+    public let config: String?
+    public var data: TokoCashQRInfo?
 }
 
 extension TokoCashQRInfoResponse: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.code = try? unboxer.unbox(keyPath: "code")
         self.message = try? unboxer.unbox(keyPath: "message")
         self.errors = try? unboxer.unbox(keyPath: "errors")
@@ -27,17 +27,17 @@ extension TokoCashQRInfoResponse: Unboxable {
     }
 }
 
-struct TokoCashQRInfo {
-    let name: String?
-    let email: String?
-    let phoneNumber: String?
-    let amount: Int?
+public struct TokoCashQRInfo {
+    public let name: String?
+    public let email: String?
+    public let phoneNumber: String?
+    public let amount: Int?
     
-    var merchantIdentifier: String?
+    public var merchantIdentifier: String?
 }
 
 extension TokoCashQRInfo: Unboxable {
-    init(unboxer: Unboxer) throws {
+    public init(unboxer: Unboxer) throws {
         self.name = try? unboxer.unbox(keyPath: "name")
         self.email = try? unboxer.unbox(keyPath: "email")
         self.phoneNumber = try? unboxer.unbox(keyPath: "phone_number")

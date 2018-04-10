@@ -8,15 +8,15 @@
 
 import Foundation
 
-class TokoCashMoveToSaldoSuccessNavigator {
-
+public class TokoCashMoveToSaldoSuccessNavigator {
+    
     private let navigationController: UINavigationController
     
-    init(navigationController: UINavigationController) {
+    public init(navigationController: UINavigationController) {
         self.navigationController = navigationController
     }
     
-    func backToTokoCash() {
+    public func backToTokoCash() {
         for vc in navigationController.viewControllers {
             if let viewController = vc as? TokoCashViewController {
                 navigationController.popToViewController(viewController, animated: true)

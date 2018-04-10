@@ -6,27 +6,28 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
+import TTTAttributedLabel
+import UIKit
 
-class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDelegate, TTTAttributedLabelDelegate {
+internal class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDelegate, TTTAttributedLabelDelegate {
     
     private var productInfo: ProductInfo
     private var productDescriptionComponent: ProductDescriptionComponentView!
     
-    override var canBecomeFirstResponder: Bool { return true }
+    internal override var canBecomeFirstResponder: Bool { return true }
     
     // MARK: - Lifecycle
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    init(productInfo: ProductInfo) {
+    internal init(productInfo: ProductInfo) {
         self.productInfo = productInfo
         super.init(nibName: nil, bundle: nil)
     }
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Deskripsi Produk"
@@ -35,22 +36,22 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
         productDescriptionComponent.state = ProductDescriptionState(productInfo: productInfo)
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
      
         AnalyticsManager.trackScreenName("Product Detail - Description Page")
     }
     
-    override func viewDidLayoutSubviews() {
+    internal override func viewDidLayoutSubviews() {
         productDescriptionComponent.render(in: view.bounds.size)
     }
     
     // MARK: - GestureRecognizer Delegate
-    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+    internal func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
         return true
     }
     
-    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+    internal override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         var result = false
         
         if action == #selector(ProductDetailViewController.copy(_:)) {
@@ -63,53 +64,40 @@ class ProductDescriptionViewController: UIViewController, UIGestureRecognizerDel
     }
     
     @objc
-    override func copy(_ sender: Any?) {
+    internal override func copy(_ sender: Any?) {
         UIPasteboard.general.string = productInfo.descriptionHtml()
     }
     
     // MARK: - TTTAttributedLabel Delegate
-    func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
-        var trueURL = "https://tkp.me/r?url=" + url.absoluteString.replacingOccurrences(of: "*", with: ".")
-        if url.host == "www.tokopedia.com" {
-            trueURL = url.absoluteString
-        }
-        
-        let vc = WebViewController()
-        vc.strURL = trueURL
-        vc.strTitle = "Mengarahkan..."
-        vc.onTapLinkWithUrl = { [weak self] url in
-            if url?.absoluteString == "https://www.tokopedia.com/" {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-        navigationController?.pushViewController(vc, animated: true)
+    internal func attributedLabel(_ label: TTTAttributedLabel!, didSelectLinkWith url: URL!) {
+        TPRoutes.routeURL(url.TKPMeUrl())
     }
 }
 
 // MARK: - ProductShipmentComponentView
 
-struct ProductDescriptionState: StateType {
-    let productInfo: ProductInfo
+internal struct ProductDescriptionState: StateType {
+    internal let productInfo: ProductInfo
     
-    init(productInfo: ProductInfo) {
+    internal init(productInfo: ProductInfo) {
         self.productInfo = productInfo
     }
 }
 
-class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
+internal class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
     
     private let viewController: ProductDescriptionViewController
     
-    init(viewController: ProductDescriptionViewController) {
+    internal init(viewController: ProductDescriptionViewController) {
         self.viewController = viewController
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: ProductDescriptionState?, size: CGSize = CGSize.undefined) -> NodeType {
+    internal override func construct(state: ProductDescriptionState?, size: CGSize = CGSize.undefined) -> NodeType {
         
         func descriptionView() -> NodeType {
             guard let productInfo = state?.productInfo else {
@@ -135,7 +123,9 @@ class ProductDescriptionComponentView: ComponentView<ProductDescriptionState> {
                 layout.height = descriptionSize.height + 50
                 
                 view.enabledTextCheckingTypes = NSTextCheckingResult.CheckingType.link.rawValue
-                let detector = try! NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+                guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+                    return
+                }
                 let matches = detector.matches(in: fullString, options: [], range: NSRange(location: 0, length: fullString.utf16.count))
                 
                 for match in matches {

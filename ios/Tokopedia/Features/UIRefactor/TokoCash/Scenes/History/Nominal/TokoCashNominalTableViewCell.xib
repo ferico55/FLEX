@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="TokoCashNominalTableViewCell" rowHeight="62" id="Eya-Lg-gHi" customClass="TokoCashNominalTableViewCell" customModule="Tokopedia" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="62"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Eya-Lg-gHi" id="L1h-Zy-PLU">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="61.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VLU-Ic-LF4">
+                        <rect key="frame" x="12" y="24" width="351" height="21"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="VLU-Ic-LF4" firstAttribute="top" secondItem="L1h-Zy-PLU" secondAttribute="top" constant="24" id="B19-XO-D1p"/>
+                    <constraint firstAttribute="trailing" secondItem="VLU-Ic-LF4" secondAttribute="trailing" constant="12" id="HcB-Lc-tBj"/>
+                    <constraint firstAttribute="bottom" secondItem="VLU-Ic-LF4" secondAttribute="bottom" constant="16.5" id="aI6-y8-gOI"/>
+                    <constraint firstItem="VLU-Ic-LF4" firstAttribute="leading" secondItem="L1h-Zy-PLU" secondAttribute="leading" constant="12" id="pdT-1T-yTU"/>
+                </constraints>
+            </tableViewCellContentView>
+            <color key="tintColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+            <connections>
+                <outlet property="titleLabel" destination="VLU-Ic-LF4" id="Ozm-wZ-Z3g"/>
+            </connections>
+        </tableViewCell>
+    </objects>
+</document>

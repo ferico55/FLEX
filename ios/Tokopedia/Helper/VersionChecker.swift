@@ -6,8 +6,8 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import FirebaseRemoteConfig
+import UIKit
 
 private enum RemoteConfigKey: String {
     case latestVersion = "iosapp_latest_version_code"
@@ -18,14 +18,15 @@ private enum RemoteConfigKey: String {
     case updateLink = "iosapp_update_link"
     case isQaTesting = "iosapp_qa_now_testing"
     case topChat = "enable_topchat"
+    case groupChat = "ios_enable_groupchat"
 }
 
 @objc (VersionChecker)
-class VersionChecker : NSObject {
+public class VersionChecker : NSObject {
     private let remoteConfig: RemoteConfig
     private var expirationDuration: TimeInterval = 10800; //3 hours
 
-    override init(){
+    override public init(){
         remoteConfig = RemoteConfig.remoteConfig()
         let versionCheckerConfig : VersionCheckerConfig = VersionCheckerConfig()
 
@@ -40,12 +41,13 @@ class VersionChecker : NSObject {
             "iosapp_update_message":"Update tokopedia versi terbaru untuk medapatkan pengalaman berbelanja yang lebih baik" as NSObject,
             "iosapp_is_force_update":"false" as NSObject,
             "enable_topchat":"true" as NSObject,
+            "ios_enable_groupchat":"false" as NSObject
         ]
 
         remoteConfig.setDefaults(appDefaults)
     }
 
-    func checkForceUpdate(){
+    public func checkForceUpdate(){
         remoteConfig.fetch(withExpirationDuration: expirationDuration){
         (status, error) -> Void in
             if status == .success {

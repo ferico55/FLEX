@@ -8,11 +8,11 @@
 
 import UIKit
 
-class TokoCashNominalTableViewCell: UITableViewCell {
+public class TokoCashNominalTableViewCell: UITableViewCell {
     
-    @IBOutlet weak var titleLabel: UILabel!
+    @IBOutlet weak private var titleLabel: UILabel!
     
-    func bind(_ viewModel: TokoCashNominalItemViewModel) {
+    public func bind(_ viewModel: TokoCashNominalItemViewModel) {
         self.titleLabel.text = viewModel.title
     }
 }

@@ -44,26 +44,26 @@
                     </userDefinedRuntimeAttributes>
                 </imageView>
                 <stackView opaque="NO" contentMode="scaleToFill" spacing="4" translatesAutoresizingMaskIntoConstraints="NO" id="l5U-Su-lcp">
-                    <rect key="frame" x="64" y="13" width="174" height="14"/>
+                    <rect key="frame" x="64" y="13" width="175" height="15"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Promoted by" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Pl9-NX-tkE">
-                            <rect key="frame" x="0.0" y="0.0" width="56" height="14"/>
+                            <rect key="frame" x="0.0" y="0.0" width="56" height="15"/>
                             <fontDescription key="fontDescription" type="system" pointSize="9"/>
                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="3" translatesAutoresizingMaskIntoConstraints="NO" id="1KL-Kv-jTa">
-                            <rect key="frame" x="60" y="0.0" width="114" height="14"/>
+                            <rect key="frame" x="60" y="0.0" width="115" height="15"/>
                             <subviews>
                                 <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="O03-fR-nx5">
-                                    <rect key="frame" x="0.0" y="0.0" width="14" height="14"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="15" height="15"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="14" id="QT5-FS-wgr"/>
-                                        <constraint firstAttribute="height" constant="14" id="ick-PV-2yl"/>
+                                        <constraint firstAttribute="width" constant="15" id="QT5-FS-wgr"/>
+                                        <constraint firstAttribute="height" constant="15" id="ick-PV-2yl"/>
                                     </constraints>
                                 </stackView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="LEGO Official Store" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fr6-k0-pvI">
-                                    <rect key="frame" x="17" y="0.0" width="97" height="14"/>
+                                    <rect key="frame" x="18" y="0.0" width="97" height="15"/>
                                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="10"/>
                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
@@ -73,7 +73,7 @@
                     </subviews>
                 </stackView>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Inspiring the Builders of Tomorrow Builders Tomorrow Builders" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="5F1-hX-DdV">
-                    <rect key="frame" x="64" y="31" width="248" height="29"/>
+                    <rect key="frame" x="64" y="32" width="248" height="29"/>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="12"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>

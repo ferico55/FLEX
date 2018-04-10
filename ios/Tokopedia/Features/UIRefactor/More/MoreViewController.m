@@ -21,9 +21,6 @@
 #import "SalesViewController.h"
 #import "PurchaseViewController.h"
 
-#import "ProfileFavoriteShopViewController.h"
-#import "ProfileContactViewController.h"
-
 #import "ShopFavoritedViewController.h"
 #import "EtalaseViewController.h"
 
@@ -35,7 +32,6 @@
 
 #import "TKPDTabInboxTalkNavigationController.h"
 #import "DepositSummaryViewController.h"
-#import "UserContainerViewController.h"
 #import "ProductListMyShopViewController.h"
 #import "InboxResolutionCenterTabViewController.h"
 #import "InboxResolSplitViewController.h"
@@ -56,6 +52,7 @@
 #import "Tokopedia-Swift.h"
 #import "CMPopTipView.h"
 @import BlocksKit;
+@import NativeNavigation;
 
 static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
@@ -128,6 +125,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 @property (weak, nonatomic) IBOutlet UIImageView *imgPointsTierView;
 @property (weak, nonatomic) IBOutlet UILabel *lblPoints;
 @property (weak, nonatomic) IBOutlet UIButton *btnRedeemPoints;
+@property (weak, nonatomic) IBOutlet UILabel *referralLabel;
 
 @end
 
@@ -242,6 +240,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     [self showHideAppShareCell];
     
     [_btnRedeemPoints setContentEdgeInsets:UIEdgeInsetsMake(0, 0, 0.01, 0)];
+    
+    [self updateReferralLabel];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -320,7 +320,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             if(self.popTipView != nil) {
                 [self.popTipView dismissAnimated:NO];
             }
-            self.popTipView = [[CMPopTipView alloc] initWithMessage:@"Pilih halaman setting dan pengaturan Touch ID untuk mengatur Touch ID anda"];
+            self.popTipView = [[CMPopTipView alloc] initWithMessage:[NSString stringWithFormat:@"Pilih halaman setting dan pengaturan %@ untuk mengatur %@ Anda", [NSString authenticationType], [NSString authenticationType]]];
             self.popTipView.delegate = self;
             self.popTipView.backgroundColor = [UIColor darkGrayColor];
             self.popTipView.animation = CMPopTipAnimationPop;
@@ -505,7 +505,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         case 2:
             if ([_auth objectForKey:@"shop_id"] &&
                 [[_auth objectForKey:@"shop_id"] integerValue] > 0)
-                return 5;
+                return 6;
             else return 0;
             break;
             
@@ -517,18 +517,22 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             break;
             
         case 4:
-            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 6 : 5;
+            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 5 : 4;
             break;
             
         case 5:
-            return 4;
+            return [[[UserAuthentificationManager alloc] init] userHasShop] ? 2 : 1;
             break;
             
         case 6:
+            return 4;
+            break;
+            
+        case 7:
             return _shouldDisplayPushNotificationCell?1:0;
             break;
             
-        case 7 :
+        case 8 :
             return 1;
             break;
             
@@ -574,6 +578,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }
         case 5:
             switch (indexPath.row) {
+                case 0: return 90;
+                default:
+                    return 52;
+            }
+        case 6:
+            switch (indexPath.row) {
                 case 0:
                     if (_shouldShowAppShare) {
                         return 52;
@@ -613,11 +623,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     if (indexPath.section == 1) {
         switch (indexPath.row) {
             case 0: {
-                NavigateViewController *navigateController = [NavigateViewController new];
                 [AnalyticsManager trackClickNavigateFromMore:@"Profile" parent:MORE_SECTION_1];
-
+                
                 UserAuthentificationManager *auth = [UserAuthentificationManager new];
-                [navigateController navigateToProfileFromViewController:wrapperController withUserID:auth.getUserId];
+                NSString *userID = [auth getUserId];
+                
+                [TPRoutes routeURL:[NSURL URLWithString:[NSString stringWithFormat:@"tokopedia://people/%@", userID]]];
             }
                 break;
             case 1: {
@@ -636,9 +647,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         }
     }
     else if (indexPath.section == 2) {
+        UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
         if(indexPath.row == 0) {
-            UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
-            
             [AnalyticsManager trackClickNavigateFromMore:@"Shop" parent:MORE_SECTION_2];
             ShopViewController *container = [[ShopViewController alloc] init];
             container.data = @{MORE_SHOP_ID : authenticationManager.getShopId,
@@ -652,24 +662,29 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
+            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen" props: @{@"authInfo": [authenticationManager getUserLoginData]}];
+            addProductViewController.hidesBottomBarWhenPushed = YES;
+            UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:addProductViewController];
+            navigation.navigationBar.translucent = NO;
+            [self.navigationController presentViewController: navigation animated:YES completion:nil];
+        } else if (indexPath.row == 3) {
             [AnalyticsManager trackClickNavigateFromMore:@"Daftar Produk" parent:MORE_SECTION_2];
             ProductListMyShopViewController *vc = [ProductListMyShopViewController new];
             vc.data = @{kTKPD_AUTHKEY:_auth?:@{}};
             vc.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:vc animated:YES];
-        } else if (indexPath.row == 3) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
-            EtalaseViewController *vc = [EtalaseViewController new];
-            vc.delegate = self;
-            vc.isEditable = YES;
-            vc.showOtherEtalase = NO;
-            [vc setEnableAddEtalase:YES];
-            vc.hidesBottomBarWhenPushed = YES;
-            
-            NSString* shopId = [_auth objectForKey:MORE_SHOP_ID]?:@{};
-            [vc setShopId:shopId];
-            [wrapperController.navigationController pushViewController:vc animated:YES];
         } else if(indexPath.row == 4) {
+            [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
+            
+            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"ManageShowcaseScreen"
+                                                                                                   props: @{
+                                                                                                            @"authInfo": [authenticationManager getUserLoginData],
+                                                                                                            @"action": @"manage"
+                                                                                                            }];
+            addProductViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:addProductViewController animated:YES];
+            return;
+        } else if(indexPath.row == 5) {
             [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_2];
             [TPRoutes routeURL:[NSURL URLWithString: @"tokopedia://topads/dashboard"]];
         }
@@ -695,24 +710,22 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             
             [wrapperController.navigationController pushViewController:wkWebViewController animated:YES];
         } else if (indexPath.row == 4) {
-            [AnalyticsManager trackClickNavigateFromMore:@"Pusat Resolusi" parent:MORE_SECTION_4];
-            if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
-                InboxResolSplitViewController *controller = [InboxResolSplitViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-                
-            } else {
-                InboxResolutionCenterTabViewController *controller = [InboxResolutionCenterTabViewController new];
-                controller.hidesBottomBarWhenPushed = YES;
-                [wrapperController.navigationController pushViewController:controller animated:YES];
-            }
-        } else if (indexPath.row == 5) {
+            [AnalyticsManager trackSellerInfoMenuClick];
             SellerInfoInboxViewController *controller = [SellerInfoInboxViewController new];
             controller.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:controller animated:YES];
         }
     }
     else if (indexPath.section == 5) {
+        ComplaintUserType userType = ComplaintUserTypeCustomer;
+        if (indexPath.row == 1) {
+            userType = ComplaintUserTypeSeller;
+        }
+        ComplaintsViewController *vc = [[ComplaintsViewController alloc] initWithUserType: userType];
+        vc.hidesBottomBarWhenPushed = true;
+        [wrapperController.navigationController pushViewController:vc animated:YES];
+    }
+    else if (indexPath.section == 6) {
         if (indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Share ke Teman" parent:MORE_SECTION_OTHERS];
             [self shareToFriend];
@@ -737,11 +750,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             }];
         }
     }
-    else if (indexPath.section == 6) {
+    else if (indexPath.section == 7) {
         [AnalyticsManager trackClickNavigateFromMore:@"Push Notifikasi" parent:MORE_SECTION_OTHERS];
         [self activatePushNotification];
     }
-    else if (indexPath.section == 7) {
+    else if (indexPath.section == 8) {
         if(indexPath.row == 0) {
             [AnalyticsManager trackClickNavigateFromMore:@"Keluar" parent:MORE_SECTION_OTHERS];
             [tableView deselectRowAtIndexPath:indexPath animated:YES];
@@ -780,9 +793,38 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 #pragma mark - Referral
 - (void)shareToFriend {
+    [ReferralRemoteConfig.shared showReferralCodeOnCompletion:^(BOOL show) {
+        [self showReferralScreen:show];
+    }];
+}
+
+- (void)showReferralScreen:(BOOL) show {
     UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Referral" bundle:nil];
-    CodeShareTableViewController *viewController = [storyboard instantiateInitialViewController];
+    UIViewController *viewController = nil;
+    if ([_walletActivationButton isHidden] || !show) {
+        viewController = [storyboard instantiateInitialViewController];
+        viewController.hidesBottomBarWhenPushed = YES;
+    } else {
+        if ([UserAuthentificationManager new].isUserPhoneVerified) {
+            TokoCashActivationViewController *tokoCashActivationVC = [TokoCashActivationViewController new];
+            tokoCashActivationVC.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:tokoCashActivationVC animated:YES];
+        } else {
+            viewController = [storyboard instantiateViewControllerWithIdentifier:@"VerifyPhoneTableViewController"];
+            viewController.hidesBottomBarWhenPushed = YES;
+        }
+    }
     [self.navigationController pushViewController:viewController animated:YES];
+}
+
+- (void)updateReferralLabel {
+    [ReferralRemoteConfig.shared showReferralCodeOnCompletion:^(BOOL show) {
+        if (show) {
+            self.referralLabel.text = @"Dapatkan TokoCash";
+        } else {
+            self.referralLabel.text = @"Share ke Teman";
+        }
+    }];
 }
 
 - (void)navigateToContactUs:(NSNotification*)notification{
@@ -933,6 +975,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UserAuthentificationManager *auth = [UserAuthentificationManager new];
     WebViewController *webView = [WebViewController new];
     webView.strURL = [auth webViewUrlFromUrl:tokopointsMainpageUrl];
+    webView.strTitle = @"TokoPoints";
     webView.shouldAuthorizeRequest = true;
     webView.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:webView animated:YES];

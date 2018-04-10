@@ -9,23 +9,23 @@
 import Foundation
 import Unbox
 
-final class WalletStore: NSObject, Unboxable {
-    let code: String?
-    let message: String?
-    let error: String?
-    let data: WalletData?
-    var shouldShowActivation: Bool {
+final public class WalletStore: NSObject, Unboxable {
+    public let code: String?
+    public let message: String?
+    public let error: String?
+    public let data: WalletData?
+    public var shouldShowActivation: Bool {
         return self.data?.link == 0
     }
     
-    init(code: String? = "", message: String? = "", error: String? = "", data: WalletData?) {
+    public init(code: String? = "", message: String? = "", error: String? = "", data: WalletData?) {
         self.code = code
         self.message = message
         self.error = error
         self.data = data
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    convenience public init(unboxer: Unboxer) throws {
         let code = unboxer.unbox(keyPath: "code") as String?
         let message = unboxer.unbox(keyPath: "message") as String?
         let error = unboxer.unbox(keyPath: "error") as String?
@@ -34,7 +34,7 @@ final class WalletStore: NSObject, Unboxable {
         self.init(code: code, message: message, error: error, data: data)
     }
     
-    func isExpired() -> Bool {
+    public func isExpired() -> Bool {
         let userAuth = UserAuthentificationManager()
         let userInformation = userAuth.getUserLoginData()
         
@@ -45,7 +45,7 @@ final class WalletStore: NSObject, Unboxable {
         return true
     }
     
-    func walletFullUrl() -> String {
+    public func walletFullUrl() -> String {
         if let data = self.data {
             if self.shouldShowActivation {
                 return "\(data.walletActionFullUrl())"

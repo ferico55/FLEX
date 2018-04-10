@@ -14,7 +14,12 @@ RCT_EXPORT_MODULE(EventManager)
 
 
 - (NSArray<NSString *> *)supportedEvents {
-    return @[@"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct", @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped", @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab"];
+  return @[
+    @"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct",
+    @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped",
+    @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab",
+    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat"
+  ];
 }
 
 - (void)sendScrollToTopEvent {
@@ -55,6 +60,26 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)sendRedirectHomeTabEvent {
     [self sendEventWithName:@"RedirectToHomeTab" body:nil];
+}
+
+- (void)sendFavoriteShopEvent {
+    [self sendEventWithName:@"DidTapFavoriteShopButton" body:nil];
+}
+
+- (void)sendProfileEditedEvent {
+    [self sendEventWithName:@"DidEditProfile" body:nil];
+}
+
+- (void)didTapAturOnTopChat {
+    [self sendEventWithName:@"didTapAturOnTopChat" body:nil];
+}
+
+- (void)didTapInfoOnGroupChat {
+    [self sendEventWithName:@"didTapInfoOnGroupChat" body:nil];
+}
+
+- (void)didTapShareOnGroupChat:(NSInteger)shareTag {
+    [self sendEventWithName:@"didTapShareOnGroupChat" body:@(shareTag)];
 }
 
 @end

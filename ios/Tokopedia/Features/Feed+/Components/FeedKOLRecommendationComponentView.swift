@@ -6,25 +6,25 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
 import RxSwift
+import UIKit
 
-class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
+internal class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
     private var onTapFollowUser: ((FeedCardKOLRecommendationState) -> Void)!
     private var currentState: FeedCardKOLRecommendationState = FeedCardKOLRecommendationState()
     private var contentState = FeedCardContentState()
     
-    init(onTapFollowUser: @escaping ((FeedCardKOLRecommendationState) -> Void)) {
+    internal init(onTapFollowUser: @escaping ((FeedCardKOLRecommendationState) -> Void)) {
         self.onTapFollowUser = onTapFollowUser
         super.init()
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
+    override internal func construct(state: FeedCardContentState?, size: CGSize) -> NodeType {
         if let contentState = state, let state = contentState.kolRecommendation {
             self.contentState = contentState
             self.currentState = state
@@ -46,7 +46,7 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
                 layout.width = size.width
                 
                 view.borderWidth = 1
-                view.borderColor = .fromHexString("#e0e0e0")
+                view.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
             }.add(children: [
                 self.titleView(state: state, size: size),
                 self.celebScrollView(state: state, size: size),
@@ -103,11 +103,11 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
             layout.flexDirection = .column
             layout.alignItems = .center
             
-            view.layer.shadowColor = UIColor.fromHexString("#e0e0e0").cgColor
+            view.layer.shadowColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1).cgColor
             view.layer.shadowOpacity = 0.75
             view.layer.borderWidth = 1.0
             view.layer.shadowOffset = CGSize(width: 0, height: 0)
-            view.layer.borderColor = UIColor.fromHexString("#e0e0e0").cgColor
+            view.layer.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1).cgColor
             
             view.cornerRadius = 6
             view.backgroundColor = .white
@@ -129,7 +129,7 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
                 
                 view.cornerRadius = 30
                 view.borderWidth = 1.0
-                view.borderColor = .fromHexString("#e0e0e0")
+                view.borderColor = #colorLiteral(red: 0.8784313725, green: 0.8784313725, blue: 0.8784313725, alpha: 1)
                 view.clipsToBounds = true
                 
                 view.setImageWith(URL(string: user.userPhoto), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
@@ -166,15 +166,12 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
                     .subscribe(onNext: {
                         var newState = self.currentState
                         
-                        for (index, element) in newState.users.enumerated() {
-                            if element.userID == user.userID {
-                                newState.justFollowedUserID = user.userID
-                                newState.justFollowedUserIndex = index
-                                
-                                if !user.isFollowed {
-                                    AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: index)
-                                }
-                                
+                        for (index, element) in newState.users.enumerated() where element.userID == user.userID {
+                            newState.justFollowedUserID = user.userID
+                            newState.justFollowedUserIndex = index
+                            
+                            if !user.isFollowed {
+                                AnalyticsManager.trackKOLClick(cardContent: self.contentState, index: index)
                             }
                         }
                         
@@ -187,15 +184,17 @@ class FeedKOLRecommendationComponentView: ComponentView<FeedCardContentState> {
     }
     
     private func seeMore(state: FeedCardKOLRecommendationState, size: CGSize) -> NodeType {
-        return Node<UIView>() { _, layout, size in
+        return Node<UIView>() { view, layout, size in
             layout.flexDirection = .row
             layout.justifyContent = .flexEnd
             layout.alignItems = .center
             layout.width = size.width
             layout.padding = 10
+            
+            view.backgroundColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }.add(children: [
             Node<UIButton>() { button, layout, _ in
-                button.setTitle("Explore Lebih Lanjut", for: .normal)
+                button.setTitle(state.exploreText == "" ? "Explore Lebih Lanjut" : state.exploreText, for: .normal)
                 button.titleLabel?.font = .title2ThemeMedium()
                 button.setTitleColor(.tpGreen(), for: .normal)
                 

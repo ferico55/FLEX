@@ -24,11 +24,16 @@ def react_pods
         'RCTActionSheet',
         'RCTSettings',
         'RCTLinkingIOS',
-        'BatchedBridge',
+        'CxxBridge',
         'RCTCameraRoll',
+        'tvOS',
     ]
     
+    pod 'Folly', :podspec => './react-podspecs/Folly.podspec.json'
+    pod 'GLog', :podspec => './react-podspecs/GLog.podspec.json'
+    pod 'DoubleConversion', :podspec => './react-podspecs/DoubleConversion.podspec.json'
     pod 'yoga', :podspec => './react-podspecs/yoga.podspec.json'
+
     pod 'native-navigation', :podspec => './react-podspecs/native-navigation.podspec.json'
     pod 'RNDeviceInfo', :podspec => './react-podspecs/RNDeviceInfo.podspec.json'
     pod 'CodePush', :podspec => './react-podspecs/CodePush.podspec.json'
@@ -39,6 +44,8 @@ def react_pods
     pod 'BVLinearGradient', :podspec => './react-podspecs/react-native-linear-gradient.podspec.json'
     pod 'ReactNativeSearchBar', :podspec => './react-podspecs/ReactNativeSearchBar.podspec.json'
     pod 'ToolTipMenu', :podspec => './react-podspecs/ToolTipMenu.podspec.json'
+    pod 'react-native-blur', :podspec => './react-podspecs/react-native-blur.podspec.json'
+    pod 'SentryReactNative', :podspec => './react-podspecs/SentryReactNative.podspec.json'
 end
 
 def common_pods
@@ -57,14 +64,14 @@ def common_pods
     pod 'RestKit',  '~> 0.27.0'
     pod 'SPTPersistentCache', :git => 'https://github.com/spotify/SPTPersistentCache.git', :branch => 'master'
     pod 'youtube-ios-player-helper', '~> 0.1.6'
-    pod 'SwiftLint', '~> 0.22.0'
+    pod 'SwiftLint', '~> 0.25.0'
     
     #Custom View Component
     pod 'CCBottomRefreshControl'
     pod 'AHKActionSheet', '~>0.5.4'
     pod 'BEMCheckBox' , '~>1.2.0'
     pod 'DownPicker', '~> 0.1.34'
-    pod 'EAIntroView', '~> 2.8.0'
+    pod 'EAIntroView', '~> 2.12.0'
     pod 'EZYGradientView-ObjC', '~> 1.3'
     pod 'HMSegmentedControl', :git => 'https://github.com/billionssg/HMSegmentedControl'
     pod 'JDStatusBarNotification', '~> 1.5.6'
@@ -113,7 +120,6 @@ def common_pods
     pod 'RestKit/Testing', '~> 0.27.0'
     pod 'SnapKit', '~> 3.2.0'
     pod 'KeychainAccess', '~> 3.0'
-    
     pod 'lottie-ios', '~> 2.0'
     pod 'Apollo', '~> 0.6.5'
     pod 'CFAlertViewController', :git => 'https://github.com/digitkhrisnaa/CFAlertViewController', :branch => 'modifications'
@@ -179,9 +185,31 @@ post_install do |installer|
     
     # prevent automatic c++ headers inclusion in Objective-C files which causes compile errors
     clear_component_kit_umbrella_header
+
+    remove_unused_yoga_header
 end
 
 def clear_component_kit_umbrella_header
     file = File.open('./Pods/Target Support Files/ComponentKit/ComponentKit-umbrella.h', 'w')
     file.close
+end
+
+def remove_unused_yoga_header
+    # some imported headers break the compilation because they contain C++ code
+    filepath = './Pods/Target Support Files/yoga/yoga-umbrella.h'
+
+    contents = []
+    
+    file = File.open(filepath, 'r')
+    file.each_line do | line |
+        contents << line
+    end
+    file.close
+
+    contents.delete_at(14) # #import "YGNodePrint.h"
+    contents.delete_at(14) # #import "Yoga-internal.h"
+
+    file = File.open(filepath, 'w') do |f| 
+        f.puts(contents)
+    end
 end

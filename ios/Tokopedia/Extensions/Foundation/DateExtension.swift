@@ -9,14 +9,20 @@
 import Foundation
 
 extension Date {
-    func string(_ format: String) -> String {
+    internal func string(_ format: String) -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = format
         
         return dateFormatter.string(from:self)
     }
     
-    var firstDayOfWeek: Date {
+    internal static func fromString(_ string: String, format: String) -> Date? {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = format
+        return dateFormatter.date(from: string)
+    }
+    
+    internal var firstDayOfWeek: Date {
         var beginningOfWeek = Date()
         var interval = TimeInterval()
         
@@ -24,127 +30,127 @@ extension Date {
         return beginningOfWeek
     }
     
-    func addWeeks(_ numWeeks: Int) -> Date {
+    internal func addWeeks(_ numWeeks: Int) -> Date {
         var components = DateComponents()
         components.weekOfYear = numWeeks
         
         return Calendar.current.date(byAdding: components, to: self)!
     }
     
-    func weeksAgo(_ numWeeks: Int) -> Date {
+    internal func weeksAgo(_ numWeeks: Int) -> Date {
         return addWeeks(-numWeeks)
     }
     
-    func addDays(_ numDays: Int) -> Date {
+    internal func addDays(_ numDays: Int) -> Date {
         var components = DateComponents()
         components.day = numDays
         
         return Calendar.current.date(byAdding: components, to: self)!
     }
     
-    func daysAgo(_ numDays: Int) -> Date {
+    internal func daysAgo(_ numDays: Int) -> Date {
         return addDays(-numDays)
     }
     
-    func addHours(_ numHours: Int) -> Date {
+    internal func addHours(_ numHours: Int) -> Date {
         var components = DateComponents()
         components.hour = numHours
         
         return Calendar.current.date(byAdding: components, to: self)!
     }
     
-    func hoursAgo(_ numHours: Int) -> Date {
+    internal func hoursAgo(_ numHours: Int) -> Date {
         return addHours(-numHours)
     }
     
-    func addMinutes(_ numMinutes: Double) -> Date {
+    internal func addMinutes(_ numMinutes: Double) -> Date {
         return self.addingTimeInterval(60 * numMinutes)
     }
     
-    func minutesAgo(_ numMinutes: Double) -> Date {
+    internal func minutesAgo(_ numMinutes: Double) -> Date {
         return addMinutes(-numMinutes)
     }
     
-    var startOfDay: Date {
+    internal var startOfDay: Date {
         return Calendar.current.startOfDay(for: self)
     }
     
-    var endOfDay: Date {
+    internal var endOfDay: Date {
         let cal = Calendar.current
         var components = DateComponents()
         components.day = 1
         return cal.date(byAdding: components, to: self.startOfDay)!.addingTimeInterval(-1)
     }
     
-    var zeroBasedDayOfWeek: Int? {
+    internal var zeroBasedDayOfWeek: Int? {
         let comp = Calendar.current.component(.weekday, from: self)
         return comp - 1
     }
     
-    func hoursTo(_ date: Date) -> Int {
+    internal func hoursTo(_ date: Date) -> Int {
         return Calendar.current.dateComponents([.hour], from: self, to: date).hour!
     }
     
-    func daysTo(_ date: Date) -> Int {
+    internal func daysTo(_ date: Date) -> Int {
         let calendar = Calendar.current
         let components = calendar.dateComponents([.day], from: self.startOfDay, to: date.startOfDay)
         
         return components.day!
     }
     
-    func minutesTo(_ date: Date) -> Int {
+    internal func minutesTo(_ date: Date) -> Int {
         return Calendar.current.dateComponents([.minute], from: self, to: date).minute!
     }
     
-    func yearsTo(_ date: Date) -> Int {
+    internal func yearsTo(_ date: Date) -> Int {
         return Calendar.current.dateComponents([.year], from: self, to: date).year!
     }
     
-    func isToday() -> Bool {
+    internal func isToday() -> Bool {
         let calendar = Calendar.current
         return calendar.isDateInToday(self)
     }
     
-    func isYesterday() -> Bool {
+    internal func isYesterday() -> Bool {
         let calendar = Calendar.current
         return calendar.isDateInYesterday(self)
     }
     
-    var percentageOfDay: Double {
+    internal var percentageOfDay: Double {
         let totalSeconds = self.endOfDay.timeIntervalSince(self.startOfDay) + 1
         let seconds = self.timeIntervalSince(self.startOfDay)
         let percentage = seconds / totalSeconds
         return max(min(percentage, 1.0), 0.0)
     }
     
-    var numberOfWeeksInMonth: Int {
+    internal var numberOfWeeksInMonth: Int {
         let calendar = Calendar.current
         let weekRange = (calendar as NSCalendar).range(of: NSCalendar.Unit.weekOfYear, in: NSCalendar.Unit.month, for: self)
         
         return weekRange.length
     }
     
-    var year: Int {
+    internal var year: Int {
         return Calendar.current.component(.year, from: self)
     }
     
-    var month: Int {
+    internal var month: Int {
         return Calendar.current.component(.month, from: self)
     }
     
-    var day: Int {
+    internal var day: Int {
         return Calendar.current.component(.day, from: self)
     }
     
-    var hour: Int {
+    internal var hour: Int {
         return Calendar.current.component(.hour, from: self)
     }
     
-    var minute: Int {
+    internal var minute: Int {
         return Calendar.current.component(.minute, from: self)
     }
     
-    var second: Int {
+    internal var second: Int {
         return Calendar.current.component(.second, from: self)
     }
 }

@@ -6,34 +6,32 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import RxSwift
 import NativeNavigation
+import RxSwift
+import UIKit
 
-class TokoCashActivationSuccessViewController: UIViewController {
+public class TokoCashActivationSuccessViewController: UIViewController {
     
-    @IBOutlet weak var successLabel: UILabel!
+    @IBOutlet weak private var successLabel: UILabel!
     
     private let phoneNumber = Variable("")
     
     // MARK: - Lifecycle
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
+        
+        title = "Aktivasi TokoCash Berhasil"
         
         setupPhoneNumber()
         requestPhoneNumber()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationItem.setHidesBackButton(true, animated: true)
         
         AnalyticsManager.trackScreenName("Tokocash Activation - Success Page")
-    }
-    
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
     }
     
     // MARK: - Setup View
@@ -72,7 +70,7 @@ class TokoCashActivationSuccessViewController: UIViewController {
         }
     }
     
-    @IBAction func didTapBackToHomeButton(_ sender: Any) {
+    @IBAction private func didTapBackToHomeButton(_ sender: Any) {
         if let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager {
             tabManager.sendRedirectHomeTabEvent()
         }

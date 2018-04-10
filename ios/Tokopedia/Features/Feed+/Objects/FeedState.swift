@@ -6,18 +6,19 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
+import Apollo
 import Foundation
 import Render
 import ReSwift
-import Apollo
+import UIKit
 
-enum FeedContentType {
+internal enum FeedContentType {
     case invalid
     case notHandled
     case newProduct
     case editProduct
-    case topAds
+    case topAdsShop
+    case topAdsProduct
     case promotion
     case officialStoreBrand
     case officialStoreCampaign
@@ -32,77 +33,80 @@ enum FeedContentType {
     case nextPageError
 }
 
-enum FeedErrorType {
+internal enum FeedErrorType {
     case emptyFeed
     case serverError
 }
 
-struct FeedState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var hasNextPage = false
-    var totalData = 0
-    var feedCards: [FeedCardState] = []
-    var cursor = ""
-    var topads: TopAdsFeedPlusState?
-    var errorType: FeedErrorType = .emptyFeed
-    var emptyStateButtonIsLoading = false
-    var page = 0
+internal struct FeedState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var hasNextPage = false
+    internal var totalData = 0
+    internal var feedCards: [FeedCardState] = []
+    internal var cursor = ""
+    internal var topads: TopAdsFeedPlusState?
+    internal var errorType: FeedErrorType = .emptyFeed
+    internal var emptyStateButtonIsLoading = false
+    internal var page = 0
 }
 
-struct FeedCardState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var cursor: String? = ""
-    var cardID: String? = ""
-    var createTime: String? = ""
-    var type: String? = ""
-    var source = FeedCardSourceState()
-    var content = FeedCardContentState()
-    var topads: TopAdsFeedPlusState?
-    var isEmptyState = false
-    var errorType: FeedErrorType = .emptyFeed
-    var refreshButtonIsLoading = false
-    var isNextPageError = false
-    var nextPageReloadIsLoading = false
-    var row = 0
-    var page = 0
-    var isImpression = false
+internal struct FeedCardState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var cursor: String? = ""
+    internal var cardID: String? = ""
+    internal var createTime: String? = ""
+    internal var type: String? = ""
+    internal var source = FeedCardSourceState()
+    internal var content = FeedCardContentState()
+    internal var topads: TopAdsFeedPlusState?
+    internal var isEmptyState = false
+    internal var errorType: FeedErrorType = .emptyFeed
+    internal var refreshButtonIsLoading = false
+    internal var isNextPageError = false
+    internal var nextPageReloadIsLoading = false
+    internal var row = 0
+    internal var page = 0
+    internal var isImpression = false
 }
 
-struct FeedCardSourceState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var type = 0
-    var fromTokopedia = false
-    var shopState = FeedCardShopState()
+internal struct FeedCardSourceState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var type = 0
+    internal var fromTokopedia = false
+    internal var shopState = FeedCardShopState()
 }
 
-struct FeedCardContentState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var type: FeedContentType = .notHandled
-    var typeString = ""
-    var totalProduct: Int? = 0
-    var product: [FeedCardProductState?] = []
-    var promotion: [FeedCardPromotionState] = []
-    var activity = FeedCardActivityState()
-    var officialStore: [FeedCardOfficialStoreState]?
-    var redirectURL = ""
-    var toppicks: [FeedCardToppicksState]?
-    var inspiration: FeedCardInspirationState?
-    var kolPost: FeedCardKOLPostState?
-    var kolRecommendation: FeedCardKOLRecommendationState?
-    var favoriteCTA: FeedCardFavoriteCTAState?
-    var kolCTA: FeedCardContentProductCommunicationState?
-    var page = 0
-    var row = 0
-    var isKOLContent = false
+internal struct FeedCardContentState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var type: FeedContentType = .notHandled
+    internal var typeString = ""
+    internal var totalProduct: Int? = 0
+    internal var product: [FeedCardProductState?] = []
+    internal var promotion: [FeedCardPromotionState] = []
+    internal var activity = FeedCardActivityState()
+    internal var officialStore: [FeedCardOfficialStoreState]?
+    internal var redirectURL = ""
+    internal var toppicks: [FeedCardToppicksState]?
+    internal var inspiration: FeedCardInspirationState?
+    internal var kolPost: FeedCardKOLPostState?
+    internal var kolRecommendation: FeedCardKOLRecommendationState?
+    internal var favoriteCTA: FeedCardFavoriteCTAState?
+    internal var kolCTA: FeedCardContentProductCommunicationState?
+    internal var topads: FeedCardTopAdsState?
+    internal var page = 0
+    internal var row = 0
+    internal var isKOLContent = false
+    internal var isTopAds = false
+    internal var display = ""
 }
 
-struct FeedCardFavoriteCTAState: Render.StateType, ReSwift.StateType {
-    var title = ""
-    var subtitle = ""
+internal struct FeedCardFavoriteCTAState: Render.StateType, ReSwift.StateType {
+    internal var title = ""
+    internal var subtitle = ""
     
-    init() {}
+    internal init() {}
     
-    init(favoriteCTA: FeedsQuery.Data.Feed.Datum.Content.FavoriteCtum) {
+    internal init(favoriteCTA: FeedsQuery.Data.Feed.Datum.Content.FavoriteCtum) {
         if let title = favoriteCTA.titleId,
             let subtitle = favoriteCTA.subtitleId {
             self.title = title
@@ -111,14 +115,14 @@ struct FeedCardFavoriteCTAState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
-    var source = ""
-    var activity = ""
-    var amount = 0
+internal struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
+    internal var source = ""
+    internal var activity = ""
+    internal var amount = 0
     
-    init() {}
+    internal init() {}
     
-    init(statusActivity: FeedsQuery.Data.Feed.Datum.Content.NewStatusActivity) {
+    internal init(statusActivity: FeedsQuery.Data.Feed.Datum.Content.NewStatusActivity) {
         if let source = statusActivity.source,
             let activity = statusActivity.activity,
             let amount = statusActivity.amount {
@@ -130,20 +134,20 @@ struct FeedCardActivityState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardInspirationState: Render.StateType, ReSwift.StateType {
-    let onPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var title = ""
-    var products: [FeedCardProductState?] = []
+internal struct FeedCardInspirationState: Render.StateType, ReSwift.StateType {
+    internal let onPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var title = ""
+    internal var products: [FeedCardProductState?] = []
     
-    init() {}
+    internal init() {}
     
-    init(data: FeedsQuery.Data.Feed.Datum.Content.Inspirasi, row: Int) {
+    internal init(data: FeedsQuery.Data.Feed.Datum.Content.Inspirasi, row: Int) {
         self.title = data.title ?? ""
         
         if let recommendation = data.recommendation {
-            let productArray: [FeedCardProductState] = recommendation.enumerated().map { index,product in
+            let productArray: [FeedCardProductState] = recommendation.enumerated().map { index, product in
                 if let product = product, let source = data.source {
-                    var productState = FeedCardProductState(recommendationProduct: product, row: row, position:index)
+                    var productState = FeedCardProductState(recommendationProduct: product, row: row, position: index)
                     productState.recommendationProductSource = source
                     
                     return productState
@@ -157,18 +161,18 @@ struct FeedCardInspirationState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardToppicksState: Render.StateType, ReSwift.StateType {
-    let onPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var name = ""
-    var isParent = false
-    var imageURL = ""
-    var redirectURL = ""
-    var page = 0
-    var row = 0
+internal struct FeedCardToppicksState: Render.StateType, ReSwift.StateType {
+    internal let onPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var name = ""
+    internal var isParent = false
+    internal var imageURL = ""
+    internal var redirectURL = ""
+    internal var page = 0
+    internal var row = 0
     
-    init() {}
+    internal init() {}
     
-    init(toppick: FeedsQuery.Data.Feed.Datum.Content.TopPick, page: Int, row: Int) {
+    internal init(toppick: FeedsQuery.Data.Feed.Datum.Content.TopPick, page: Int, row: Int) {
         self.name = toppick.name ?? ""
         self.isParent = toppick.isParent ?? false
         self.imageURL = toppick.imageUrl ?? ""
@@ -178,53 +182,73 @@ struct FeedCardToppicksState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardShopState: Render.StateType, ReSwift.StateType {
-    var shopName = ""
-    var shopImage = ""
-    var shopIsGold = false
-    var shopIsOfficial = false
-    var shopURL = ""
-    var shareURL = ""
-    var shareDescription = ""
+internal struct FeedCardShopState: Render.StateType, ReSwift.StateType {
+    internal var shopName = ""
+    internal var shopImage = ""
+    internal var shopIsGold = false
+    internal var shopIsOfficial = false
+    internal var shopURL = ""
+    internal var shareURL = ""
+    internal var shareDescription = ""
 }
 
-struct FeedCardProductState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var productID = ""
-    var productName = ""
-    var productPrice = ""
-    var productPriceAmount = 0
-    var productImageSmall = ""
-    var productImageLarge = ""
-    var productURL = ""
-    var productRating = 0
-    var productWholesale = false
-    var productFreeReturns = false
-    var productPreorder = false
-    var productCashback = ""
-    var productWishlisted = false
-    var isMore = false
-    var isLargeCell = false
-    var remaining: Int? = 0
-    var cardID = ""
-    var isRecommendationProduct = false
-    var recommendationProductSource = ""
+internal struct FeedCardProductState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var productID = ""
+    internal var productName = ""
+    internal var productPrice = ""
+    internal var productPriceAmount = 0
+    internal var productImageSmall = ""
+    internal var productImageLarge = ""
+    internal var productURL = ""
+    internal var productRating = 0
+    internal var productWholesale = false
+    internal var productFreeReturns = false
+    internal var productPreorder = false
+    internal var productCashback = ""
+    internal var productWishlisted = false
+    internal var isMore = false
+    internal var isLargeCell = false
+    internal var remaining: Int? = 0
+    internal var cardID = ""
+    internal var isRecommendationProduct = false
+    internal var recommendationProductSource = ""
     
-    var isCampaign = false
-    var originalPrice = ""
-    var discountPercentage = 0
-    var hasLabels = false
-    var labels: [FeedCardProductLabelState] = []
-    var shopImageURL = ""
-    var shopName = ""
-    var shopURL = ""
-    var isFreeReturns = false
-    var page = 0
-    var row = 0
-    var position = 0
-    init() {}
+    internal var isTopAdsProduct = false
+    internal var topAdsProductClickURL = ""
+    internal var topAdsProductImpressionURL = ""
     
-    init(recommendationProduct: FeedsQuery.Data.Feed.Datum.Content.Inspirasi.Recommendation, row: Int, position: Int) {
+    internal var isCampaign = false
+    internal var originalPrice = ""
+    internal var discountPercentage = 0
+    internal var hasLabels = false
+    internal var labels: [FeedCardProductLabelState] = []
+    internal var shopImageURL = ""
+    internal var shopName = ""
+    internal var shopURL = ""
+    internal var isFreeReturns = false
+    internal var page = 0
+    internal var row = 0
+    internal var position = 0
+    internal init() {}
+    
+    internal init(topAdsProduct: FeedsQuery.Data.Feed.Datum.Content.Topad.Product, url: String, topAdsProductClickURL: String, topAdsProductImpressionURL: String) {
+        guard let name = topAdsProduct.name,
+            let price = topAdsProduct.priceFormat,
+            let image = topAdsProduct.image?.sEcs else {
+            return
+        }
+        
+        self.productName = name
+        self.productPrice = price
+        self.productURL = url
+        self.productImageSmall = image
+        self.isTopAdsProduct = true
+        self.topAdsProductClickURL = topAdsProductClickURL
+        self.topAdsProductImpressionURL = topAdsProductImpressionURL
+    }
+    
+    internal init(recommendationProduct: FeedsQuery.Data.Feed.Datum.Content.Inspirasi.Recommendation, row: Int, position: Int) {
         guard let name = recommendationProduct.name,
             let price = recommendationProduct.price,
             let image = recommendationProduct.imageUrl,
@@ -241,7 +265,7 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
         self.position = position
     }
     
-    init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page: Int, row: Int) {
+    internal init(officialStoreProduct: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page: Int, row: Int) {
         guard let product = officialStoreProduct.data,
             let shop = product.shop,
             let badges = product.badges,
@@ -287,40 +311,40 @@ struct FeedCardProductState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardPromotionState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var banneriPad = ""
-    var banneriPhone = ""
-    var promotionID = ""
-    var period = ""
-    var voucherCode = ""
-    var desc = ""
-    var minimumTransaction = ""
-    var promoURL = ""
-    var isSinglePromotion = false
-    var hasNoCode = false
-    var promoName = ""
-    var page = 0
-    var row = 0
+internal struct FeedCardPromotionState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var banneriPad = ""
+    internal var banneriPhone = ""
+    internal var promotionID = ""
+    internal var period = ""
+    internal var voucherCode = ""
+    internal var desc = ""
+    internal var minimumTransaction = ""
+    internal var promoURL = ""
+    internal var isSinglePromotion = false
+    internal var hasNoCode = false
+    internal var promoName = ""
+    internal var page = 0
+    internal var row = 0
 }
 
-struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
-    let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
-    var title = ""
-    var shopImageURL = ""
-    var shopURL = ""
-    var isCampaign = false
-    var bannerURL = ""
-    var borderHexString = ""
-    var redirectURL = "tokopedia://official-store/mobile"
-    var products: [FeedCardOfficialStoreProductState] = []
-    var incomplete = false
-    var page = 0
-    var row = 0
+internal struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
+    internal let oniPad = (UI_USER_INTERFACE_IDIOM() == .pad)
+    internal var title = ""
+    internal var shopImageURL = ""
+    internal var shopURL = ""
+    internal var isCampaign = false
+    internal var bannerURL = ""
+    internal var borderHexString = ""
+    internal var redirectURL = "tokopedia://official-store/mobile"
+    internal var products: [FeedCardOfficialStoreProductState] = []
+    internal var incomplete = false
+    internal var page = 0
+    internal var row = 0
     
-    init() {}
+    internal init() {}
     
-    init(data: FeedsQuery.Data.Feed.Datum.Content.OfficialStore, redirectURL: String, page: Int, row: Int) {
+    internal init(data: FeedsQuery.Data.Feed.Datum.Content.OfficialStore, redirectURL: String, page: Int, row: Int) {
         self.shopURL = data.shopAppsUrl ?? ""
         self.shopImageURL = data.micrositeUrl ?? ""
         
@@ -351,13 +375,13 @@ struct FeedCardOfficialStoreState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardOfficialStoreProductState: Render.StateType, ReSwift.StateType {
-    var brandLogoURL = ""
-    var productDetail = FeedCardProductState()
+internal struct FeedCardOfficialStoreProductState: Render.StateType, ReSwift.StateType {
+    internal var brandLogoURL = ""
+    internal var productDetail = FeedCardProductState()
     
-    init() {}
+    internal init() {}
     
-    init(productData: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page: Int, row: Int) {
+    internal init(productData: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product, page: Int, row: Int) {
         self.brandLogoURL = productData.brandLogo ?? ""
         self.productDetail = FeedCardProductState(officialStoreProduct: productData, page: page, row: row)
         self.productDetail.page = page
@@ -365,15 +389,15 @@ struct FeedCardOfficialStoreProductState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardProductLabelState: Render.StateType, ReSwift.StateType {
-    var hasLabel = false
-    var backgroundColor = ""
-    var text = ""
-    var textColor: UIColor = .white
+internal struct FeedCardProductLabelState: Render.StateType, ReSwift.StateType {
+    internal var hasLabel = false
+    internal var backgroundColor = ""
+    internal var text = ""
+    internal var textColor: UIColor = .white
     
-    init() {}
+    internal init() {}
     
-    init(productLabel: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product.Datum.Label) {
+    internal init(productLabel: FeedsQuery.Data.Feed.Datum.Content.OfficialStore.Product.Datum.Label) {
         self.backgroundColor = productLabel.color
         self.text = productLabel.title
         
@@ -383,17 +407,17 @@ struct FeedCardProductLabelState: Render.StateType, ReSwift.StateType {
     }
 }
 
-struct FeedCardKOLRecommendedUserState: Render.StateType, ReSwift.StateType {
-    var isFollowed = false
-    var userName = ""
-    var userID = 0
-    var userPhoto = ""
-    var userInfo = ""
-    var userURL = ""
+internal struct FeedCardKOLRecommendedUserState: Render.StateType, ReSwift.StateType {
+    internal var isFollowed = false
+    internal var userName = ""
+    internal var userID = 0
+    internal var userPhoto = ""
+    internal var userInfo = ""
+    internal var userURL = ""
     
-    init() {}
+    internal init() {}
     
-    init(recommendedUser: FeedsQuery.Data.Feed.Datum.Content.Kolrecommendation.Kol, page: Int, row: Int) {
+    internal init(recommendedUser: FeedsQuery.Data.Feed.Datum.Content.Kolrecommendation.Kol, page: Int, row: Int) {
         self.isFollowed = recommendedUser.isFollowed ?? false
         self.userName = recommendedUser.userName ?? ""
         self.userID = recommendedUser.userId ?? 0
@@ -403,8 +427,8 @@ struct FeedCardKOLRecommendedUserState: Render.StateType, ReSwift.StateType {
     }
 }
 
-class FeedStateManager: NSObject {
-    func initFeedState(queryResult: FeedsQuery.Data?, page: Int, row: inout Int) -> FeedState {
+internal class FeedStateManager: NSObject {
+    internal func initFeedState(queryResult: FeedsQuery.Data?, page: Int, row: inout Int) -> FeedState {
         guard let result = queryResult,
             let feed = result.feed,
             let feedData = feed.data,
@@ -541,7 +565,7 @@ class FeedStateManager: NSObject {
             
             let productArray: [FeedCardProductState] = products.enumerated().map { index, product in
                 if let product = product {
-                    var productState = self.initFeedProduct(feedProduct: product, cardID: cardID, page: page, row: row, position:index)
+                    var productState = self.initFeedProduct(feedProduct: product, cardID: cardID, page: page, row: row, position: index)
                     
                     if products.count > 6 && index == 5 {
                         productState.isMore = true
@@ -649,6 +673,19 @@ class FeedStateManager: NSObject {
             
             if let kolCTA = feedContent.kolCta {
                 content.kolCTA = FeedCardContentProductCommunicationState(data: kolCTA, page: page, row: row)
+            } else {
+                content.type = .invalid
+            }
+        case "topads":
+            if let display = feedContent.display {
+                content.type = display == "product" ? .topAdsProduct : .topAdsShop
+                content.topads = FeedCardTopAdsState(content: feedContent)
+                content.isTopAds = true
+                
+                if content.topads?.validity == .invalid {
+                    content.type = .invalid
+                    content.isTopAds = false
+                }
             } else {
                 content.type = .invalid
             }

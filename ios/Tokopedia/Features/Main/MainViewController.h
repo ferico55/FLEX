@@ -28,7 +28,7 @@ typedef NS_ENUM(NSInteger, MainViewControllerPage) {
     MainViewControllerPageRegister
 };
 
-@interface MainViewController : UIViewController
+@interface MainViewController : UITabBarController
 
 - (instancetype)initWithPage:(MainViewControllerPage)page;
 

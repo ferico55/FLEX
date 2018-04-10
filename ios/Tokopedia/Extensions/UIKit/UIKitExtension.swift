@@ -6,8 +6,8 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import UIKit
 
 extension UISearchBar {
     
@@ -18,19 +18,19 @@ extension UISearchBar {
         return element
     }
     
-    func getSearchBarTextField() -> UITextField? {
+    public func getSearchBarTextField() -> UITextField? {
         
         return getViewElement(type: UITextField.self)
     }
     
-    func setTextColor(color: UIColor) {
+    public func setTextColor(color: UIColor) {
         
         if let textField = getSearchBarTextField() {
             textField.textColor = color
         }
     }
     
-    func setTextFieldColor(color: UIColor) {
+    public func setTextFieldColor(color: UIColor) {
         
         if let textField = getViewElement(type: UITextField.self) {
             switch searchBarStyle {
@@ -44,14 +44,14 @@ extension UISearchBar {
         }
     }
     
-    func setPlaceholderTextColor(color: UIColor) {
+    public func setPlaceholderTextColor(color: UIColor) {
         
         if let textField = getSearchBarTextField() {
             textField.attributedPlaceholder = NSAttributedString(string: placeholder != nil ? placeholder! : "", attributes: [NSForegroundColorAttributeName: color])
         }
     }
     
-    func setTextFieldClearButtonColor(color: UIColor) {
+    public func setTextFieldClearButtonColor(color: UIColor) {
         
         if let textField = getSearchBarTextField() {
             
@@ -62,7 +62,7 @@ extension UISearchBar {
         }
     }
     
-    func setSearchImageColor(color: UIColor) {
+    public func setSearchImageColor(color: UIColor) {
         
         if let imageView = getSearchBarTextField()?.leftView as? UIImageView {
             imageView.image = imageView.image?.transform(withNewColor: color)
@@ -70,7 +70,7 @@ extension UISearchBar {
     }
 }
 
-protocol PropertyStoring {
+public protocol PropertyStoring {
     
     associatedtype T
     
@@ -78,7 +78,7 @@ protocol PropertyStoring {
 }
 
 extension PropertyStoring {
-    func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T {
+    public func getAssociatedObject(_ key: UnsafeRawPointer!, defaultValue: T) -> T {
         guard let value = objc_getAssociatedObject(self, key) as? T else {
             return defaultValue
         }
@@ -88,13 +88,13 @@ extension PropertyStoring {
 
 extension UISearchController: PropertyStoring {
     
-    typealias T = SearchBarWrapperView?
+    public typealias T = SearchBarWrapperView?
     
     private struct CustomProperties {
-        static var wrapperView: SearchBarWrapperView? = nil
+        static var wrapperView: SearchBarWrapperView?
     }
     
-    var wrapperView: SearchBarWrapperView? {
+    public var wrapperView: SearchBarWrapperView? {
         get {
             return getAssociatedObject(&CustomProperties.wrapperView, defaultValue: nil)
         }
@@ -103,14 +103,14 @@ extension UISearchController: PropertyStoring {
         }
     }
     
-    func setSearchBarToTop(viewController: UIViewController, title: String) {
+    public func setSearchBarToTop(viewController: UIViewController, title: String) {
         
         delegate = viewController as? UISearchControllerDelegate
         searchResultsUpdater = viewController as? UISearchResultsUpdating
         searchBar.placeholder = "Cari Produk atau Toko"
         searchBar.barTintColor = .tpGreen()
-        searchBar.setTextFieldColor(color: UIColor.fromHexString("E5E5E5"))
-        searchBar.setTextColor(color: UIColor(red: 0 / 255.0, green: 0 / 255.0, blue: 0 / 255.0, alpha: 0.7))
+        searchBar.setTextFieldColor(color: #colorLiteral(red: 0.8980392157, green: 0.8980392157, blue: 0.8980392157, alpha: 1))
+        searchBar.setTextColor(color: #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.7))
         searchBar.backgroundImage = UIImage()
         
         hidesNavigationBarDuringPresentation = false
@@ -132,12 +132,12 @@ extension UISearchController: PropertyStoring {
         viewController.navigationItem.titleView = wrapperView
     }
     
-    func setSearchBarToTop(viewController: UIViewController) {
+    public func setSearchBarToTop(viewController: UIViewController) {
         setSearchBarToTop(viewController: viewController, title: "")
     }
     
-    func getSearchWrapperView() -> SearchBarWrapperView? {
-        return wrapperView ?? nil
+    public func getSearchWrapperView() -> SearchBarWrapperView? {
+        return wrapperView
     }
 }
 
@@ -163,19 +163,21 @@ extension UISearchController: UISearchControllerDelegate {
     }
 }
 
-extension UIApplication {
-    class func getAppVersionStringWithoutDot() -> String {
-        var appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-        appVersion = appVersion.replacingOccurrences(of: ".", with: "")
-        return appVersion
+@objc extension UIApplication {
+    public class func getAppVersionStringWithoutDot() -> String {
+        guard let appVersion: String = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String else {
+            return ""
+        }
+        var appVersionWithoutDot = appVersion.replacingOccurrences(of: ".", with: "")
+        return appVersionWithoutDot
     }
     
-    class func getAppVersionString() -> String {
+    public class func getAppVersionString() -> String {
         let appVersion: String = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
         return appVersion
     }
     
-    class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
+    public class func topViewController(_ base: UIViewController? = UIApplication.shared.keyWindow?.rootViewController) -> UIViewController? {
         if let search = base as? UISearchController {
             return search.presentingViewController
         }
@@ -193,8 +195,9 @@ extension UIApplication {
         return base
     }
     
-    class func topViewController() -> UIViewController? {
-        return topViewController(UIApplication.shared.keyWindow?.rootViewController)
+    public class func topViewController() -> UIViewController? {
+        let window = UIApplication.shared.delegate?.window ?? UIApplication.shared.keyWindow
+        return topViewController(window?.rootViewController)
     }
 }
 
@@ -238,11 +241,11 @@ extension UIScreen {
 
 extension UIFont {
     
-    func sizeOfString(string: String, constrainedToWidth width: Double) -> CGSize {
+    public func sizeOfString(string: String, constrainedToWidth width: Double) -> CGSize {
         return sizeOfString(string: string, constrainedToWidth: width, andHeight: Double.greatestFiniteMagnitude)
     }
     
-    func sizeOfString(string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
+    public func sizeOfString(string: String, constrainedToWidth width: Double, andHeight height: Double) -> CGSize {
         return (string as NSString).boundingRect(with: CGSize(width: width, height: height),
                                                  options: NSStringDrawingOptions.usesLineFragmentOrigin,
                                                  attributes: [NSFontAttributeName: self],
@@ -251,21 +254,21 @@ extension UIFont {
 }
 
 @IBDesignable
-class DesignableView: UIView {
+public class DesignableView: UIView {
 }
 
 @IBDesignable
-class DesignableButton: UIButton {
+public class DesignableButton: UIButton {
 }
 
 @IBDesignable
-class DesignableLabel: UILabel {
+public class DesignableLabel: UILabel {
 }
 
 @IBDesignable
 extension UIView {
     
-    @IBInspectable var cornerRadius: CGFloat {
+    @IBInspectable public var cornerRadius: CGFloat {
         get {
             return layer.cornerRadius
         } set {
@@ -273,7 +276,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowColor: UIColor? {
+    @IBInspectable public var shadowColor: UIColor? {
         get {
             if let color = layer.shadowColor {
                 return UIColor(cgColor: color)
@@ -289,7 +292,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowOpacity: Float {
+    @IBInspectable public var shadowOpacity: Float {
         get {
             return layer.shadowOpacity
         } set {
@@ -297,7 +300,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowRadius: CGFloat {
+    @IBInspectable public var shadowRadius: CGFloat {
         get {
             return layer.shadowRadius
         } set {
@@ -305,7 +308,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var shadowOffset: CGSize {
+    @IBInspectable public var shadowOffset: CGSize {
         get {
             return layer.shadowOffset
         } set {
@@ -313,7 +316,7 @@ extension UIView {
         }
     }
 
-    @IBInspectable var borderWidth: CGFloat {
+    @IBInspectable public var borderWidth: CGFloat {
         get {
             return layer.borderWidth
         } set {
@@ -321,7 +324,7 @@ extension UIView {
         }
     }
     
-    @IBInspectable var borderColor: UIColor {
+    @IBInspectable public var borderColor: UIColor {
         get {
             return UIColor(cgColor: layer.borderColor!)
         } set {
@@ -338,13 +341,13 @@ extension UIView {
         }
     }
     
-    func removeAllSubviews() {
+    public func removeAllSubviews() {
         subviews.forEach({ view in
             view.removeFromSuperview()
         })
     }
     
-    func addDashedLine(color: UIColor, lineWidth: CGFloat) {
+    public func addDashedLine(color: UIColor, lineWidth: CGFloat) {
         backgroundColor = .clear
         
         let shapeLayer = CAShapeLayer()
@@ -367,40 +370,40 @@ extension UIView {
 }
 
 extension UIView {
-    class func loadFirstFromNib<T>(name: String, type: T.Type, owner: Any?, options: [AnyHashable : Any]? = nil) -> T? {
+    public class func loadFirstFromNib<T>(name: String, type: T.Type, owner: Any?, options: [AnyHashable : Any]? = nil) -> T? {
         guard let views = Bundle.main.loadNibNamed(name, owner: owner, options: options), let view = views[0] as? T else { return nil }
         return view
     }
 }
 
 extension UISplitViewController {
-    func replaceDetailViewController(_ viewController: UIViewController) {
+    public func replaceDetailViewController(_ viewController: UIViewController) {
         let masterViewController = viewControllers.first!
         viewControllers = [masterViewController, viewController]
     }
     
-    func getDetailViewController() -> UIViewController {
+    public func getDetailViewController() -> UIViewController {
         let detailViewController = viewControllers.last!
         return detailViewController
     }
 }
 
 extension UIScrollView {
-    func scrollToBottomAnimated(_ animated: Bool) {
+    public func scrollToBottomAnimated(_ animated: Bool) {
         if contentSize.height > bounds.size.height {
             let bottomOffset = CGPoint(x: 0, y: contentSize.height - bounds.size.height)
             setContentOffset(bottomOffset, animated: animated)
         }
     }
     
-    func scrollToTop() {
+    public func scrollToTop() {
         let inset = self.contentInset
         self.setContentOffset(CGPoint(x: -inset.left, y: -inset.top), animated: true)
     }
 }
 
 extension UIImage {
-    convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
+    internal convenience init(color: UIColor, size: CGSize = CGSize(width: 1, height: 1)) {
         let rect = CGRect(x: 0, y: 0, width: size.width, height: size.height)
         UIGraphicsBeginImageContextWithOptions(rect.size, false, 0)
         color.setFill()
@@ -410,7 +413,7 @@ extension UIImage {
         self.init(cgImage: (image?.cgImage!)!)
     }
     
-    func transform(withNewColor color: UIColor) -> UIImage {
+    public func transform(withNewColor color: UIColor) -> UIImage {
         UIGraphicsBeginImageContextWithOptions(size, false, scale)
         
         let context = UIGraphicsGetCurrentContext()!
@@ -430,7 +433,7 @@ extension UIImage {
     }
     
     // MARK: - UIImage+Resize
-    func fixOrientation() -> UIImage {
+    public func fixOrientation() -> UIImage {
         
         if self.imageOrientation == UIImageOrientation.up {
             return self
@@ -496,7 +499,6 @@ extension UIImage {
             context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.height, height: self.size.width))
         default:
             context.draw(cgImage, in: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
-            break
         }
         
         // And now we just create a new UIImage from the drawing context
@@ -509,7 +511,7 @@ extension UIImage {
         
     }
     
-    func compressImageData(maxSizeInMB: Int) -> Data? {
+    public func compressImageData(maxSizeInMB: Int) -> Data? {
         let image = self.fixOrientation()
         let sizeInBytes = maxSizeInMB * 1024 * 1024
         var needCompress: Bool = true
@@ -537,7 +539,7 @@ extension UIImage {
 
 extension UIDevice {
     
-    var modelName: String {
+    internal var modelName: String {
         var systemInfo = utsname()
         uname(&systemInfo)
         
@@ -583,7 +585,7 @@ extension UIDevice {
 }
 
 extension UINavigationController {
-    func replaceTopViewController(viewController: UIViewController) {
+    public func replaceTopViewController(viewController: UIViewController) {
         if self.viewControllers.count > 0 {
             self.viewControllers[self.viewControllers.count - 1] = viewController
         }
@@ -591,7 +593,7 @@ extension UINavigationController {
 }
 
 extension UIScrollView {
-    var rx_reachedBottom: Observable<Void> {
+    public var rx_reachedBottom: Observable<Void> {
         return rx.contentOffset
             .debounce(0.025, scheduler: MainScheduler.instance)
             .flatMap { [weak self] contentOffset -> Observable<Void> in
@@ -603,7 +605,7 @@ extension UIScrollView {
                 let y = contentOffset.y + scrollView.contentInset.top
                 let threshold = max(0.0, scrollView.contentSize.height - visibleHeight)
                 
-                return y > threshold ? Observable.just() : Observable.empty()
+                return y >= threshold ? Observable.just() : Observable.empty()
             }
         
     }

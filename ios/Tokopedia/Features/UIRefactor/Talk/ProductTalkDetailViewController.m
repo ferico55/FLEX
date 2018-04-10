@@ -321,16 +321,16 @@
     cell.delegate = self;
     cell.del = self;
     cell.onTapTalkWithUrl = ^(NSURL* url){
-        WebViewController *controller = [[WebViewController alloc] init];
-        controller.strURL = url.absoluteString;
-        controller.strTitle = @"Mengarahkan...";
-        controller.onTapLinkWithUrl = ^(NSURL* url) {
-            if([url.absoluteString isEqualToString:@"https://www.tokopedia.com/"]) {
-                [weakSelf.navigationController popViewControllerAnimated:YES];
-            }
-        };
+        [TPRoutes routeURL:url];
+    };
+    
+    cell.onTapUser = ^(NSString* userId) {
+        if (!weakSelf.enableDeepNavigation) {
+            return;
+        }
         
-        [weakSelf.navigationController pushViewController:controller animated:YES];
+        NavigateViewController* controller = [NavigateViewController new];
+        [controller navigateToProfileFromViewController:self withUserID:userId];
     };
     
     TalkCommentList *list = _list[indexPath.row];
@@ -449,14 +449,13 @@
         return;
     }
     
-    if([[_data objectForKey:@"talk_product_status"] isEqualToString:@"1"]) {
-        [NavigateViewController navigateToProductFromViewController:self
-                                                      withProductID:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"]
-                                                            andName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME]
-                                                           andPrice:nil
-                                                        andImageURL:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE]
-                                                        andShopName:nil];
-    }
+    [NavigateViewController navigateToProductFromViewController:self
+                                                  withProductID:[_data objectForKey:TKPD_TALK_PRODUCT_ID]?:[_data objectForKey:@"product_id"]
+                                                        andName:[_data objectForKey:TKPD_TALK_PRODUCT_NAME]
+                                                       andPrice:nil
+                                                    andImageURL:[_data objectForKey:TKPD_TALK_PRODUCT_IMAGE]
+                                                    andShopName:nil];
+
 }
 
 - (void)tapErrorComment {

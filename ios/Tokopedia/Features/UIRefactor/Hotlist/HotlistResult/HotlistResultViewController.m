@@ -249,6 +249,8 @@ ProductCellDelegate
     _topAdsService = [TopAdsService new];
     
     [self fetchDataHotlistBanner];
+    [self requestTopAdsHeadline];
+
     
     self.scrollDirection = ScrollDirectionDown;
     
@@ -494,6 +496,7 @@ ProductCellDelegate
 #pragma mark - Methods
 - (IBAction)pressRetryButton:(id)sender {
     [self requestHotlist];
+    [self requestTopAdsHeadline];
 }
 
 - (void)registerNibCell:(NSString *)strTag withIdentifier:(NSString *)strIdentifier isFooterView:(BOOL)isFooter isHeader:(BOOL)isHeader {
@@ -596,6 +599,7 @@ ProductCellDelegate
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
+    [self requestTopAdsHeadline];
 }
 
 -(BOOL)isPromoHeaderEmpty {
@@ -840,8 +844,8 @@ ProductCellDelegate
 }
 
 - (void)requestTopAdsHeadline {
-    if (_redirectedSearchKeyword) {
-        [_topAdsService requestTopAdsHeadlineWithKeyword:_redirectedSearchKeyword onSuccess:^(PromoResult *topAdsHeadlineData) {
+    if (_redirectedSearchKeyword && _bannerResult.disableTopAds == 0) {
+        [_topAdsService requestTopAdsHeadlineWithKeyword:_redirectedSearchKeyword source:TopAdsSourceHotlist onSuccess:^(PromoResult *topAdsHeadlineData) {
             _topAdsHeadlineData = topAdsHeadlineData;
             [_collectionView reloadData];
         } onFailure:^(NSError * error) {
@@ -1000,7 +1004,6 @@ ProductCellDelegate
     
     if (_bannerResult.disableTopAds == 0){
         [self requestPromo];
-        [self requestTopAdsHeadline];
     }
     
     [_collectionView reloadData];

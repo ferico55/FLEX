@@ -8,11 +8,11 @@
 
 import Foundation
 import RestKit
-typealias SignOptionsRequestCompletion = (_ providers: [SignInProvider]?, _ error: Error?) -> Void
-class SignOptionsRequest {
-    var completionHandler: SignOptionsRequestCompletion?
-    let networkManager = TokopediaNetworkManager()
-    func getThirdPartySignOptions() {
+public typealias SignOptionsRequestCompletion = (_ providers: [SignInProvider]?, _ error: Error?) -> Void
+public class SignOptionsRequest {
+    public var completionHandler: SignOptionsRequestCompletion?
+    private let networkManager = TokopediaNetworkManager()
+    public func getThirdPartySignOptions() {
         guard let completionHandler = self.completionHandler else {
             return
         }

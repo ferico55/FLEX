@@ -6,27 +6,27 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import MMNumberKeyboard
+import UIKit
 
-protocol DigitalFavouriteNumberProtocol {
+internal protocol DigitalFavouriteNumberProtocol {
     func selectedFavouriteNumber(favourite:DigitalFavourite)
 }
 
-class DigitalFavouriteNumberViewController: UIViewController, UITableViewDataSource, UITextFieldDelegate {
+internal class DigitalFavouriteNumberViewController: UIViewController, UITableViewDataSource, UITextFieldDelegate {
 
-    @IBOutlet var searchTextField: UITextField!
-    @IBOutlet var tableView: UITableView!
-    var favourites:[DigitalFavourite] = []
-    var data:[DigitalFavourite] = []
-    var delegate:DigitalFavouriteNumberProtocol?
-    var number = ""
-    var categoryID = ""
-    var operatorID = ""
-    var productID = ""
-    var inputType:DigitalTextInputType = .text
+    @IBOutlet fileprivate var searchTextField: UITextField!
+    @IBOutlet fileprivate var tableView: UITableView!
+    internal var delegate:DigitalFavouriteNumberProtocol?
+    fileprivate var favourites:[DigitalFavourite] = []
+    fileprivate var data:[DigitalFavourite] = []
+    fileprivate var number = ""
+    fileprivate var categoryID = ""
+    fileprivate var operatorID = ""
+    fileprivate var productID = ""
+    fileprivate var inputType:DigitalTextInputType = .text
     
-    convenience init(favourites: [DigitalFavourite], categoryID:String, operatorID:String, productID:String, number:String, inputType:DigitalTextInputType) {
+    internal convenience init(favourites: [DigitalFavourite], categoryID:String, operatorID:String, productID:String, number:String, inputType:DigitalTextInputType) {
         self.init()
         self.favourites = favourites
         self.data = favourites
@@ -37,7 +37,7 @@ class DigitalFavouriteNumberViewController: UIViewController, UITableViewDataSou
         self.inputType = inputType
     }
     
-    override func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: self.searchTextField.frame.size.height))
         self.searchTextField.leftView = paddingView
@@ -58,18 +58,18 @@ class DigitalFavouriteNumberViewController: UIViewController, UITableViewDataSou
         self.searchTextField.becomeFirstResponder()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         AnalyticsManager.trackScreenName("Recharge Favourite Number Page")
     }
     
-    override func viewDidLayoutSubviews() {
+    internal override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         self.tableView.sizeToFit()
     }
 
-    @IBAction func textFieldChange(_ sender: UITextField) {
+    @IBAction private func textFieldChange(_ sender: UITextField) {
         guard let text = sender.text else { return }
         if !text.isEmpty {
             self.data = self.favourites.filter {
@@ -92,11 +92,18 @@ class DigitalFavouriteNumberViewController: UIViewController, UITableViewDataSou
         self.tableView.frame = frame
 
     }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        let favourite = DigitalFavourite(categoryID: self.categoryID, operatorID: self.operatorID, productID: self.productID, clientNumber: textField.text, name: nil)
+        delegate?.selectedFavouriteNumber(favourite: favourite)
+        self.navigationController?.popViewController(animated: true)
+        return true
+    }
 }
 
 extension DigitalFavouriteNumberViewController:MMNumberKeyboardDelegate {
     func numberKeyboardShouldReturn(_ numberKeyboard: MMNumberKeyboard!) -> Bool {
-        let favourite = DigitalFavourite(categoryID: self.categoryID, operatorID: nil, productID: nil, clientNumber: self.searchTextField.text, name: nil)
+        let favourite = DigitalFavourite(categoryID: self.categoryID, operatorID: self.operatorID, productID: self.productID, clientNumber: self.searchTextField.text, name: nil)
         delegate?.selectedFavouriteNumber(favourite: favourite)
         self.navigationController?.popViewController(animated: true)
         return true
@@ -104,24 +111,24 @@ extension DigitalFavouriteNumberViewController:MMNumberKeyboardDelegate {
 }
 
 extension DigitalFavouriteNumberViewController:UITableViewDelegate {
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    internal func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: "DigitalFavouriteNumberCell") as? DigitalFavouriteNumberCell else { fatalError("The dequeued cell is not an instance of DigitalFavouriteNumberCell") }
         cell.numberLabel.text = data[indexPath.row].clientNumber
         cell.nameLabel.text = data[indexPath.row].name
         return cell
     }
     
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    internal func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let favourite = self.data[indexPath.row]
         delegate?.selectedFavouriteNumber(favourite: favourite)
         self.navigationController?.popViewController(animated: true)
     }
     
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    internal func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.data.count
     }
     
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    internal func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
 }

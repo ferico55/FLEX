@@ -44,7 +44,7 @@ class ScreenshotHelper: NSObject {
         alert.onTapShare = { [weak self] sender in
             guard let `self` = self else { return }
             AnalyticsManager.trackEventName("clickScreenshot", category: GA_EVENT_CATEGORY_SCREENSHOT, action: GA_EVENT_ACTION_CLICK, label: "Share")
-            self.share(image: img, fromViewController: self.topViewController, withSender: sender)
+            self.share(image: img, withSender: sender)
         }
         
         alert.onTapClose = { _ in
@@ -63,13 +63,10 @@ class ScreenshotHelper: NSObject {
         return self.screenshotAlert!
     }
     
-    private func share(image: UIImage, fromViewController viewController: UIViewController, withSender sender: Any) {
+    private func share(image: UIImage, withSender sender: Any) {
         let controller = UIActivityViewController.share(with: image, anchor: sender as! UIView)
-        
-        if viewController.navigationController != nil {
-            viewController.navigationController?.present(controller!, animated: true, completion: nil)
-        } else {
-            self.tabBarController.present(controller!, animated: true, completion: nil)
+        if let topViewController = UIApplication.topViewController() {
+            topViewController.present(controller!, animated: true, completion: nil)
         }
     }
 }

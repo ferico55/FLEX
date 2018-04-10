@@ -88,13 +88,14 @@ class TopAdsFilter: NSObject {
         
     }
     
-    static func getTopAdsHeadlineCategoryFilter(departmentId: String) -> TopAdsFilter {
+    static func getTopAdsHeadlineCategoryFilter(departmentId: String, source: TopAdsSource) -> TopAdsFilter {
         let filter = TopAdsFilter.getTopAdsHeadlineFilter()
         filter.departementId = departmentId
+        filter.source = source
         return filter
     }
     
-    static func getTopAdsHeadlineCategoryFilter(keyword: String) -> TopAdsFilter {
+    static func getTopAdsHeadlineFilter(keyword: String) -> TopAdsFilter {
         let filter = TopAdsFilter.getTopAdsHeadlineFilter()
         filter.searchKeyword = keyword
         return filter
@@ -105,7 +106,6 @@ class TopAdsFilter: NSObject {
         filter.ep = .headline
         filter.numberOfProductItems = 1
         filter.numberOfShopItems = 0
-        filter.source = .directory
         filter.bannerTemplateId = "3,4"
         filter.currentPage = 1
         
@@ -370,9 +370,9 @@ class TopAdsService: NSObject {
             }).disposed(by: self.rx_disposeBag)
     }
     
-    func requestTopAdsHeadline(keyword: String, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
-        let filter = TopAdsFilter.getTopAdsHeadlineCategoryFilter(keyword: keyword)
-        
+    func requestTopAdsHeadline(keyword: String, source: TopAdsSource, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
+        let filter = TopAdsFilter.getTopAdsHeadlineFilter(keyword: keyword)
+        filter.source = source
         requestTopAds(topAdsFilter: filter, onSuccess: { promoResults in
             guard let promoResultFirst = promoResults.first else { return }
             onSuccess(promoResultFirst)
@@ -381,8 +381,8 @@ class TopAdsService: NSObject {
         })
     }
     
-    func requestTopAdsHeadline(departmentId: String, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
-        let filter = TopAdsFilter.getTopAdsHeadlineCategoryFilter(departmentId: departmentId)
+    func requestTopAdsHeadline(departmentId: String, source: TopAdsSource, onSuccess: @escaping (_ result: PromoResult) -> Void, onFailure: @escaping(_ error: Swift.Error)-> Void) {
+        let filter = TopAdsFilter.getTopAdsHeadlineCategoryFilter(departmentId: departmentId, source: source)
         
         requestTopAds(topAdsFilter: filter, onSuccess: { promoResults in
             guard let promoResultFirst = promoResults.first else { return }

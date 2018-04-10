@@ -6,17 +6,17 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Render
+import UIKit
 
-class ProductSellerInfoNode: ContainerNode {
+internal class ProductSellerInfoNode: ContainerNode {
     fileprivate let state: ProductDetailState
     fileprivate let didTapShop: (ProductShop) -> Void
     fileprivate let didTapFavorite: (Bool) -> Void
     fileprivate let didTapMessage: () -> Void
     fileprivate let didTapReputation: (UIView, String) -> Void
     
-    init(identifier: String, state: ProductDetailState, didTapShop: @escaping (ProductShop) -> Void, didTapFavorite: @escaping (Bool) -> Void, didTapMessage: @escaping () -> Void, didTapReputation: @escaping (UIView, String) -> Void) {
+    internal init(identifier: String, state: ProductDetailState, didTapShop: @escaping (ProductShop) -> Void, didTapFavorite: @escaping (Bool) -> Void, didTapMessage: @escaping () -> Void, didTapReputation: @escaping (UIView, String) -> Void) {
         self.state = state
         self.didTapShop = didTapShop
         self.didTapFavorite = didTapFavorite
@@ -46,7 +46,7 @@ class ProductSellerInfoNode: ContainerNode {
         }
     }
     
-    func titleLabel() -> NodeType {
+    private func titleLabel() -> NodeType {
         return Node<UILabel>() { view, layout, _ in
             layout.marginLeft = 15
             layout.marginTop = 22
@@ -221,7 +221,7 @@ class ProductSellerInfoNode: ContainerNode {
                 view.titleLabel?.font = .microTheme()
                 view.setTitle("Favorit", for: .normal)
                 view.setTitleColor(.tpPrimaryBlackText(), for: .normal)
-                view.titleEdgeInsets = UIEdgeInsetsMake(0, 10, 0, 0)
+                view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
                 _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                     self.didTapFavorite(false)
                 })
@@ -230,7 +230,7 @@ class ProductSellerInfoNode: ContainerNode {
                     layout.height = 10
                     layout.marginTop = 11
                     layout.marginLeft = 12
-                    view.image = UIImage(named: "icon_check_favorited")
+                    view.image = #imageLiteral(resourceName: "icon_check_favorited")
                     view.backgroundColor = .clear
                 })
         }
@@ -246,10 +246,10 @@ class ProductSellerInfoNode: ContainerNode {
             view.layer.borderWidth = 1
             view.layer.borderColor = UIColor.tpLine().cgColor
             view.backgroundColor = .tpGreen()
-            view.titleLabel?.font = .microTheme()
             view.setTitle("Favoritkan", for: .normal)
+            view.titleLabel?.font = UIFont.systemFont(ofSize: 11)
             view.setTitleColor(.white, for: .normal)
-            view.titleEdgeInsets = UIEdgeInsetsMake(0, 14, 0, 0)
+            view.titleEdgeInsets = UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0)
             _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                 self.didTapFavorite(true)
             })
@@ -258,7 +258,7 @@ class ProductSellerInfoNode: ContainerNode {
                 layout.height = 14
                 layout.marginTop = 9
                 layout.marginLeft = 6
-                view.image = UIImage(named: "icon_plus_white")
+                view.image = #imageLiteral(resourceName: "icon_plus_white")
                 view.backgroundColor = .clear
             })
     }
@@ -276,6 +276,7 @@ class ProductSellerInfoNode: ContainerNode {
                 view.layer.borderColor = UIColor.tpLine().cgColor
                 view.titleLabel?.font = .microTheme()
                 view.setTitle("Chat Penjual", for: .normal)
+                view.titleLabel?.font = UIFont.systemFont(ofSize: 11)
                 view.setTitleColor(.tpPrimaryBlackText(), for: .normal)
                 _ = view.rx.tap.subscribe(onNext: { [unowned self] _ in
                     self.didTapMessage()
@@ -295,7 +296,7 @@ class ProductSellerInfoNode: ContainerNode {
                     layout.marginRight = 5
                     layout.width = 12
                     layout.height = 12
-                    view.image = iconImage ?? UIImage(named: "")
+                    view.image = iconImage
                 },
                 Node<UILabel>() { view, layout, size in
                     layout.width = size.width - 240
@@ -320,8 +321,8 @@ class ProductSellerInfoNode: ContainerNode {
                     layout.marginLeft = 15
                     layout.flexShrink = 1
                     }.add(children: [
-                        sellerInfoDescription(iconImage: UIImage(named: "icon_location_grey"), title: productShop.location),
-                        sellerInfoDescription(iconImage: UIImage(named: "icon_clock"), title: productShop.lastLogin)
+                        sellerInfoDescription(iconImage: #imageLiteral(resourceName: "icon_location_grey"), title: productShop.location),
+                        sellerInfoDescription(iconImage: #imageLiteral(resourceName: "icon_clock"), title: productShop.lastLogin)
                         ]),
                 Node { _, layout, _ in
                     layout.justifyContent = .spaceBetween

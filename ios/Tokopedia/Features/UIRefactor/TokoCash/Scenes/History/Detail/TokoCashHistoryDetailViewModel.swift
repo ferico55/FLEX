@@ -7,43 +7,43 @@
 //
 
 import Foundation
-import RxSwift
 import RxCocoa
+import RxSwift
 
-final class TokoCashHistoryDetailViewModel: ViewModelType {
+final public class TokoCashHistoryDetailViewModel: ViewModelType {
     
-    struct Input {
-        let trigger: Driver<Void>
-        let helpTrigger: Driver<Void>
-        let moveToTrigger: Driver<Void>
+    public struct Input {
+        public let trigger: Driver<Void>
+        public let helpTrigger: Driver<Void>
+        public let moveToTrigger: Driver<Void>
     }
     
-    struct Output {
-        let icon: Driver<String>
-        let title: Driver<String>
-        let desc: Driver<String>
-        let nominal: Driver<String>
-        let nominalColor: Driver<UIColor>
-        let notes: Driver<String>
-        let transaction: Driver<String>
-        let message: Driver<String>
-        let showMoveToSaldoButton: Driver<Bool>
-        let helpButtonBorderColor: Driver<CGColor>
-        let helpButtonBackgroundColor: Driver<UIColor>
-        let helpButtonTitleColor: Driver<UIColor>
-        let help: Driver<String>
-        let moveToSaldo: Driver<TokoCashHistoryItems>
+    public struct Output {
+        public let icon: Driver<String>
+        public let title: Driver<String>
+        public let desc: Driver<String>
+        public let nominal: Driver<String>
+        public let nominalColor: Driver<UIColor>
+        public let notes: Driver<String>
+        public let transaction: Driver<String>
+        public let message: Driver<String>
+        public let showMoveToSaldoButton: Driver<Bool>
+        public let helpButtonBorderColor: Driver<CGColor>
+        public let helpButtonBackgroundColor: Driver<UIColor>
+        public let helpButtonTitleColor: Driver<UIColor>
+        public let help: Driver<String>
+        public let moveToSaldo: Driver<TokoCashHistoryItems>
     }
     
     private let historyItem: TokoCashHistoryItems
     private let navigator: TokoCashHistoryDetailNavigator
     
-    init(historyItem: TokoCashHistoryItems, navigator: TokoCashHistoryDetailNavigator) {
+    public init(historyItem: TokoCashHistoryItems, navigator: TokoCashHistoryDetailNavigator) {
         self.historyItem = historyItem
         self.navigator = navigator
     }
     
-    func transform(input: Input) -> Output {
+    public func transform(input: Input) -> Output {
         
         let item = input.trigger.flatMapLatest {
             return Driver.of(self.historyItem)
@@ -67,11 +67,11 @@ final class TokoCashHistoryDetailViewModel: ViewModelType {
         
         let nominalColor = item.map { (historyItem) -> UIColor in
             if historyItem.amountChangesSymbol == "-" {
-                return UIColor.tpRed()
+                return #colorLiteral(red: 0.8349999785, green: 0, blue: 0, alpha: 1)
             } else if historyItem.amountChangesSymbol == "+" {
-                return UIColor.tpGreen()
+                return #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
             } else {
-                return UIColor.tpPrimaryBlackText()
+                return #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.6999999881)
             }
         }
         
@@ -93,15 +93,15 @@ final class TokoCashHistoryDetailViewModel: ViewModelType {
         }
         
         let helpButtonBorderColor = showMoveToSaldoButton.map { isHidden -> CGColor in
-            return isHidden ? UIColor.tpGreen().cgColor : UIColor.tpLine().cgColor
+            return isHidden ? #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1).cgColor : #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.1199999973).cgColor
         }
         
         let helpButtonBackgroundColor = showMoveToSaldoButton.map { isHidden -> UIColor in
-            return isHidden ? UIColor.tpGreen() : UIColor.white
+            return isHidden ? #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }
         
         let helpButtonTitleColor =  showMoveToSaldoButton.map { isHidden -> UIColor in
-            return isHidden ? UIColor.white : UIColor.tpDisabledBlackText()
+            return isHidden ? #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) : #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.3799999952)
         }
         
         let transactionId = item.map { historyItem -> String in

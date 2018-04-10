@@ -6,11 +6,11 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import MoyaUnbox
 import Moya
+import MoyaUnbox
 
-class MojitoProvider: NetworkProvider<MojitoTarget> {
-    init() {
+internal class MojitoProvider: NetworkProvider<MojitoTarget> {
+    internal init() {
         super.init(endpointClosure: MojitoProvider.endpointClosure)
     }
     
@@ -31,21 +31,22 @@ class MojitoProvider: NetworkProvider<MojitoTarget> {
     }
 }
 
-enum MojitoTarget{
+internal enum MojitoTarget{
     case getProductWishStatus(productIds: [String])
     case setWishlist(withProductId: String)
     case unsetWishlist(withProductId: String)
     case getProductCampaignInfo(withProductIds:String)
     case requestOfficialStore(categoryId: String)
     case requestOfficialStoreHomePage
+    case setRecentView(productID: String)
 }
 
 extension MojitoTarget : TargetType {
     /// The target's base `URL`.
-    var baseURL: URL { return URL(string: NSString.mojitoUrl())! }
+    internal var baseURL: URL { return URL(string: NSString.mojitoUrl())! }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
-    var path: String {
+    internal var path: String {
         switch self {
         case let .getProductWishStatus(productIds):
             let userManager = UserAuthentificationManager()
@@ -61,20 +62,22 @@ extension MojitoTarget : TargetType {
             return "os/api/v1/brands/category/ios/\(categoryId)"
         case .requestOfficialStoreHomePage:
             return "/os/api/v2/brands/list/widget/ios"
+        case .setRecentView:
+            return "/recentview/pixel.gif"
         }
     }
     
     /// The HTTP method used in the request.
-    var method: Moya.Method {
+    internal var method: Moya.Method {
         switch self {
-        case .getProductWishStatus, .requestOfficialStore, .requestOfficialStoreHomePage, .getProductCampaignInfo: return .get
+        case .getProductWishStatus, .requestOfficialStore, .requestOfficialStoreHomePage, .getProductCampaignInfo, .setRecentView: return .get
         case .setWishlist: return .post
         case .unsetWishlist: return .delete
         }
     }
     
     /// The parameters to be incoded in the request.
-    var parameters: [String: Any]? {
+    internal var parameters: [String: Any]? {
         let userManager = UserAuthentificationManager()
         
         switch self {
@@ -82,12 +85,13 @@ extension MojitoTarget : TargetType {
         case let .getProductCampaignInfo(productIds): return [ "pid":productIds ]
         case .requestOfficialStore: return nil
         case .requestOfficialStoreHomePage: return ["device":"ios"]
+        case let .setRecentView(productID): return ["product_id" : productID, "user_id" : userManager.getUserId()!]
         default: return [:]
         }
     }
     
     /// The method used for parameter encoding.
-    var parameterEncoding: ParameterEncoding {
+    internal var parameterEncoding: ParameterEncoding {
         switch self {
         case .requestOfficialStore : return JSONEncoding.default
         default: return URLEncoding.default
@@ -95,8 +99,8 @@ extension MojitoTarget : TargetType {
     }
     
     /// Provides stub data for use in testing.
-    var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
+    internal var sampleData: Data { return "{ \"data\": 123 }".data(using: .utf8)! }
     
     /// The type of HTTP task to be performed.
-    var task: Task { return .request }
+    internal var task: Task { return .request }
 }

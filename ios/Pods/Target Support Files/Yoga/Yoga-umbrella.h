@@ -12,8 +12,6 @@
 
 #import "YGEnums.h"
 #import "YGMacros.h"
-#import "YGNodeList.h"
-#import "Yoga-internal.h"
 #import "Yoga.h"
 
 FOUNDATION_EXPORT double yogaVersionNumber;

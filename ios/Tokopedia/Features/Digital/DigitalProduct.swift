@@ -6,39 +6,39 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Unbox
 import Render
+import Unbox
 
-enum DigitalProductStatus: Int {
+public enum DigitalProductStatus: Int {
     case available = 1
     case inactive = 2
     case outOfStock = 3
 }
 
-final class DigitalProduct: Unboxable, StateType {
-    let id: String
-    let name: String
-    let priceText: String
-    let promoPriceText: String
-    let detail: String
-    let promoTag: String
-    let status: DigitalProductStatus
-    let url:String
-    let urlText:String
+final public class DigitalProduct: Unboxable, StateType {
+    public let id: String
+    public let name: String
+    public let priceText: String
+    public let promoPriceText: String
+    public let detail: String
+    public let promoTag: String
+    public let status: DigitalProductStatus
+    public let url:String
+    public let urlText:String
     
-    var hasDiscount: Bool {
+    public var hasDiscount: Bool {
         return self.priceText != self.promoPriceText
     }
     
-    init(id: String,
-         name: String,
-         priceText: String,
-         detail: String,
-         promoPriceText: String? = nil,
-         promoTag: String = "",
-         status: DigitalProductStatus = .available,
-         url:String = "",
-         urlText:String = "") {
+    public init(id: String,
+                name: String,
+                priceText: String,
+                detail: String,
+                promoPriceText: String? = nil,
+                promoTag: String = "",
+                status: DigitalProductStatus = .available,
+                url:String = "",
+                urlText:String = "") {
         self.id = id
         self.name = name
         self.priceText = priceText
@@ -50,7 +50,7 @@ final class DigitalProduct: Unboxable, StateType {
         self.urlText = urlText
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    convenience public init(unboxer: Unboxer) throws {
         let id = try unboxer.unbox(keyPath: "id") as String
         let name = try unboxer.unbox(keyPath: "attributes.desc") as String
         let priceText = try unboxer.unbox(keyPath: "attributes.price") as String
