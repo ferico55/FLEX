@@ -662,7 +662,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             salesController.hidesBottomBarWhenPushed = YES;
             [wrapperController.navigationController pushViewController:salesController animated:YES];
         } else if (indexPath.row == 2) {
-            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen" props: @{@"authInfo": [authenticationManager getUserLoginData]}];
+            ReactViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"AddProductScreen" props: @{@"authInfo": [authenticationManager getUserLoginData]}];
             addProductViewController.hidesBottomBarWhenPushed = YES;
             UINavigationController *navigation = [[UINavigationController alloc] initWithRootViewController:addProductViewController];
             navigation.navigationBar.translucent = NO;
@@ -676,13 +676,14 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         } else if(indexPath.row == 4) {
             [AnalyticsManager trackClickNavigateFromMore:@"Etalase" parent:MORE_SECTION_2];
             
-            UIViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"ManageShowcaseScreen"
+            ReactViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"ManageShowcaseScreen"
                                                                                                    props: @{
                                                                                                             @"authInfo": [authenticationManager getUserLoginData],
                                                                                                             @"action": @"manage"
                                                                                                             }];
             addProductViewController.hidesBottomBarWhenPushed = YES;
-            [self.navigationController pushViewController:addProductViewController animated:YES];
+            _wrapperViewController.hidesBottomBarWhenPushed = NO;
+            [wrapperController.navigationController pushViewController:addProductViewController animated:YES];
             return;
         } else if(indexPath.row == 5) {
             [AnalyticsManager trackClickNavigateFromMore:@"TopAds" parent:MORE_SECTION_2];

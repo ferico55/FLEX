@@ -15,6 +15,7 @@
 #import "ShipmentViewController.h"
 #import "MyShopNoteViewController.h"
 #import "EditShopViewController.h"
+@import NativeNavigation;
 
 @interface ShopSettingViewController ()
 <
@@ -84,27 +85,18 @@
         }
         case 1:
         {
+            UserAuthentificationManager *authenticationManager = [UserAuthentificationManager new];
             [AnalyticsManager trackEventName:@"clickManageShop"
                                     category:GA_EVENT_CATEGORY_MANAGE_SHOP
                                       action:GA_EVENT_ACTION_CLICK
                                        label:@"Etalase"];
-            EtalaseViewController *vc = [EtalaseViewController new];
-            vc.isEditable = YES;
-            vc.showOtherEtalase = NO;
-            [vc setEnableAddEtalase:YES];
-            vc.hidesBottomBarWhenPushed = YES;
-            
-            UserAuthentificationManager *_userAuth = [UserAuthentificationManager new];
-            NSString *shopId = [_userAuth getShopId];
-            [vc setShopId:shopId];
-            
-            UINavigationController *nav = [[UINavigationController alloc]initWithRootViewController:vc];
-            UIColor *backgroundColor = [UIColor colorWithRed:18.0/255.0 green:199.0/255.0 blue:0.0/255.0 alpha:1];
-            nav.navigationBar.backgroundColor = [UIColor colorWithCGColor:backgroundColor.CGColor];
-            nav.navigationBar.translucent = NO;
-            nav.navigationBar.tintColor = [UIColor whiteColor];
-            [self.navigationController pushViewController:vc animated:YES];
-
+            ReactViewController *addProductViewController = [[ReactViewController alloc] initWithModuleName:@"ManageShowcaseScreen"
+                                                                                                   props: @{
+                                                                                                            @"authInfo": [authenticationManager getUserLoginData],
+                                                                                                            @"action": @"manage"
+                                                                                                            }];
+            addProductViewController.hidesBottomBarWhenPushed = YES;
+            [self.navigationController pushViewController:addProductViewController animated:YES];
             break;
         }
         case 2:
