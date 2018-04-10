@@ -1263,9 +1263,60 @@ public class TPRoutes: NSObject {
                 return false
             }
 
-            isShopExists(shopName, shopExists: { isExists in
-                if isExists {
+            isShopExists(shopName, shopExists: { shopId in
+                if shopId != nil {
                     navigator.navigateToShop(from: UIApplication.topViewController(), withShopName: shopName)
+                } else {
+                    let title = params["title"] as? String ?? ""
+                    openWebView(url, title: title)
+                }
+            })
+            return true
+        }
+        JLRoutes.global().addRoute("/:shopName/talk") { (params: [String: Any]) -> Bool in
+            guard let url = params[kJLRouteURLKey] as? URL,
+                let shopName = params["shopName"] as? String,
+                url.scheme != "tokopedia" else {
+                    return false
+            }
+
+            isShopExists(shopName, shopExists: { shopId in
+                if let shopId = shopId {
+                    navigator.navigateToShopTalk(from: UIApplication.topViewController(), withShopID: shopId)
+                } else {
+                    let title = params["title"] as? String ?? ""
+                    openWebView(url, title: title)
+                }
+            })
+            return true
+        }
+        JLRoutes.global().addRoute("/:shopName/review") { (params: [String: Any]) -> Bool in
+            guard let url = params[kJLRouteURLKey] as? URL,
+                let shopName = params["shopName"] as? String,
+                url.scheme != "tokopedia" else {
+                    return false
+            }
+            
+            isShopExists(shopName, shopExists: { shopId in
+                if let shopId = shopId {
+                    navigator.navigateToShopReview(from: UIApplication.topViewController(), withShopID: shopId)
+                } else {
+                    let title = params["title"] as? String ?? ""
+                    openWebView(url, title: title)
+                }
+            })
+            return true
+        }
+        JLRoutes.global().addRoute("/:shopName/note") { (params: [String: Any]) -> Bool in
+            guard let url = params[kJLRouteURLKey] as? URL,
+                let shopName = params["shopName"] as? String,
+                url.scheme != "tokopedia" else {
+                    return false
+            }
+            
+            isShopExists(shopName, shopExists: { shopId in
+                if let shopId = shopId {
+                    navigator.navigateToShopNote(from: UIApplication.topViewController(), withShopID: shopId)
                 } else {
                     let title = params["title"] as? String ?? ""
                     openWebView(url, title: title)
@@ -1315,8 +1366,8 @@ public class TPRoutes: NSObject {
                 return false
             }
 
-            isShopExists(shopName, shopExists: { isExists in
-                if isExists {
+            isShopExists(shopName, shopExists: { shopId in
+                if shopId != nil {
                     NavigateViewController.navigateToProduct(from: UIApplication.topViewController(), withProductID: "", andName: productName, andPrice: "", andImageURL: "", andShopName: shopName)
                 } else {
                     openWebView(url as URL)
@@ -1492,7 +1543,7 @@ public class TPRoutes: NSObject {
         return TPRoutes.routeURL(modifiedURL)
     }
 
-    private static func isShopExists(_ domain: String, shopExists: @escaping ((Bool) -> Void)) {
+    private static func isShopExists(_ domain: String, shopExists: @escaping ((String?) -> Void)) {
         let topViewController = UIApplication.topViewController()
         topViewController?.showWaitOverlay()
 
@@ -1506,19 +1557,19 @@ public class TPRoutes: NSObject {
                                mapping: Shop.mapping(),
                                onSuccess: { [weak topViewController] mappingResult, _ in
                                    topViewController?.removeAllOverlays()
-                                   guard mappingResult.dictionary() != nil else { return shopExists(false) }
+                                   guard mappingResult.dictionary() != nil else { return shopExists(nil) }
                                    let result: Dictionary = mappingResult.dictionary() as Dictionary
 
                                    guard let response = result[""] as? Shop else { return }
 
                                    if response.result.info == nil {
-                                       shopExists(false)
+                                       shopExists(nil)
                                    } else {
-                                       shopExists(true)
+                                       shopExists(response.result.info.shop_id)
                                    }
                                 },
                                onFailure: { _ in
-                                    shopExists(false)
+                                    shopExists(nil)
                                 })
     }
 

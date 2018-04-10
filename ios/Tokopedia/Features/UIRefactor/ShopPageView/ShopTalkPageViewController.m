@@ -173,6 +173,8 @@ ShopTabChild>
 
     UINib *cellNib = [UINib nibWithNibName:@"TalkCell" bundle:nil];
     [_table registerNib:cellNib forCellReuseIdentifier:@"TalkCellIdentifier"];
+    
+    self.title = @"Diskusi";
 
     [self initNotification];
     [self requestTalk];

@@ -138,12 +138,14 @@
 {
     ShopTalkPageViewController *talk = [ShopTalkPageViewController new];
     talk.data = @{@"shop_id" : shopID?:@""};
+    talk.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:talk animated:YES];
 }
 
 -(void)navigateToShopReviewFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
     ReactViewController* reviewViewController = [[ReactViewController alloc] initWithModuleName:@"ShopReviewScreen" props:@{@"shopID": shopID}];
+    reviewViewController.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:reviewViewController animated:YES];
 }
 
@@ -151,6 +153,7 @@
 {
     ShopNotesPageViewController *notes = [ShopNotesPageViewController new];
     notes.data = @{@"shop_id" : shopID?:@""};
+    notes.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:notes animated:YES];
 }
 

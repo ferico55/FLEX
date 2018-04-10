@@ -145,6 +145,8 @@
         _isNoData = NO;
     }
     
+    self.title = @"Catatan";
+    
     [_refreshControl endRefreshing];
     [self initNotification];
     [self requestNotes];
