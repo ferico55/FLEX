@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UILabel *totalReviewLabel;
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
 @property (strong, nonatomic) LOTAnimationView *unsetWishlistAnimationView;
+@property (strong, nonatomic) IBOutlet UIView *soldOutView;
 @property (strong, nonatomic) IBOutlet UIImageView *topAdsBadgeImageView;
 @end
 
@@ -162,6 +163,7 @@
         [self.discountView setHidden:YES];
         self.productPriceLabelTopConstraint.constant = 0;
     }
+    self.soldOutView.hidden = !viewModel.isSoldOut;
 }
 
 - (void) updateLayout {

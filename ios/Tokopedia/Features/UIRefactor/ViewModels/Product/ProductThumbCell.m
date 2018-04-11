@@ -29,6 +29,7 @@
 @property (strong, nonatomic) IBOutlet UIButton *buttonWishlist;
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
 @property (strong, nonatomic) IBOutlet UIImageView *topAdsBadgeImageView;
+@property (strong, nonatomic) IBOutlet UIView *soldOutView;
 @property (strong, nonatomic) LOTAnimationView *unsetWishlistAnimationView;
 @end
 
@@ -334,6 +335,7 @@
         self.catalogPriceLabel.hidden = YES;
         self.discountView.hidden = YES;
     }
+    self.soldOutView.hidden = !viewModel.isSoldOut;
 }
 
 - (void)setLabels:(NSArray<ProductLabel*>*) labels {

@@ -9,36 +9,38 @@
 import Unbox
 
 @objc(ShopProductPageList)
-final class ShopProductPageList: NSObject, Unboxable {
-    let shop_gold_status: String
-    let shop_id: String
-    let shop_url: String
-    let product_id: String
-    let product_talk_count: String
-    let product_image: String
-    var product_price: String = ""
-    let shop_location: String
-    let product_image_300: String
-    let product_image_700: String
-    let shop_name: String
-    let product_review_count: String
-    let product_url: String
-    let product_name: String
-    var original_price: String?
-    var end_date: String?
-    var percentage_amount: Int?
-    let badges: [ProductBadge]?
-    let labels: [ProductLabel]?
-    let product_wholesale: Int
-    let product_preorder: Int
-    var isOnWishlist = false
-    var is_product_preorder: Bool {
+internal final class ShopProductPageList: NSObject, Unboxable {
+    internal let shop_gold_status: String
+    internal let shop_id: String
+    internal let shop_url: String
+    internal let product_id: String
+    internal let product_talk_count: String
+    internal let product_image: String
+    internal var product_price: String = ""
+    internal let shop_location: String
+    internal let product_image_300: String
+    internal let product_image_700: String
+    internal let shop_name: String
+    internal let product_review_count: String
+    internal let product_url: String
+    internal let product_name: String
+    internal var original_price: String?
+    internal var end_date: String?
+    internal var percentage_amount: Int?
+    internal let badges: [ProductBadge]?
+    internal let labels: [ProductLabel]?
+    internal let product_wholesale: Int
+    internal let product_preorder: Int
+    internal var isOnWishlist = false
+    internal var is_product_preorder: Bool {
         return product_preorder == 1
     }
-    var is_product_wholesale: Bool {
+    internal var is_product_wholesale: Bool {
         return product_wholesale == 1
     }
-    var viewModel: ProductModelView {
+    internal let isSoldOut: Bool
+    
+    internal var viewModel: ProductModelView {
         let vm = ProductModelView()
         vm.productName = product_name
         vm.productPrice = product_price
@@ -59,6 +61,7 @@ final class ShopProductPageList: NSObject, Unboxable {
         } else {
             vm.percentage_amount = 0
         }
+        vm.isSoldOut = isSoldOut
         return vm
         
     }
@@ -80,7 +83,8 @@ final class ShopProductPageList: NSObject, Unboxable {
          badges: [ProductBadge]?,
          labels: [ProductLabel]?,
          product_wholesale: Int,
-         product_preorder: Int) {
+         product_preorder: Int,
+         isSoldOut: Bool) {
         self.shop_gold_status = shop_gold_status
         self.shop_id = shop_id
         self.shop_url = shop_url
@@ -99,9 +103,13 @@ final class ShopProductPageList: NSObject, Unboxable {
         self.labels = labels
         self.product_wholesale = product_wholesale
         self.product_preorder = product_preorder
+        self.isSoldOut = isSoldOut
     }
     
     convenience init(unboxer: Unboxer) throws {
+        
+        let isSoldOut = try? unboxer.unbox(keyPath: "sold_out_status") as Bool
+        
         self.init(
             shop_gold_status: try unboxer.unbox(keyPath: "shop_gold_status"),
             shop_id: try unboxer.unbox(keyPath: "shop_id"),
@@ -120,7 +128,8 @@ final class ShopProductPageList: NSObject, Unboxable {
             badges: try? unboxer.unbox(keyPath: "badges") as [ProductBadge],
             labels: try? unboxer.unbox(keyPath: "labels") as [ProductLabel],
             product_wholesale: try unboxer.unbox(keyPath: "product_wholesale"),
-            product_preorder: try unboxer.unbox(keyPath: "product_preorder")
+            product_preorder: try unboxer.unbox(keyPath: "product_preorder"),
+            isSoldOut: isSoldOut ?? false
         )
     }
     

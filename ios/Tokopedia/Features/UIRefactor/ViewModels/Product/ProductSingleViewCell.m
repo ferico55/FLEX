@@ -23,6 +23,7 @@
 @property (strong, nonatomic) LOTAnimationView *setWishlistAnimationView;
 @property (strong, nonatomic) LOTAnimationView *unsetWishlistAnimationView;
 @property (strong, nonatomic) IBOutlet UIButton *buttonWishlist;
+@property (strong, nonatomic) IBOutlet UIView *soldOutView;
 
 @end
 
@@ -293,6 +294,7 @@
     [self.iconOvalWhite setHidden:NO];
     [self resetWishlistButtonAnimation];
     [self setWishlistButtonState:viewModel.isOnWishlist];
+    self.soldOutView.hidden = !viewModel.isSoldOut;
 }
 
 - (void) updateLayout {

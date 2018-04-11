@@ -49,5 +49,6 @@
 
 @property (strong, nonatomic) NSString *productRate;
 @property (strong, nonatomic) NSString *totalReview;
+@property (nonatomic) BOOL isSoldOut;
 
 @end
