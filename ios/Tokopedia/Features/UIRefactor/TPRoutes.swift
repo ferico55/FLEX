@@ -554,6 +554,21 @@ public class TPRoutes: NSObject {
 
             return true
         }
+        
+        JLRoutes.global().addRoute("/customercare/:caseId") { (params: [String: Any]) -> Bool in
+            
+            guard let caseId = params["caseId"] as? String else {
+                return true
+            }
+            let userManager = UserAuthentificationManager()
+            let viewController = WKWebViewController(urlString: userManager.webViewUrl(fromUrl: "\(NSString.mobileSiteUrl())/help/ticket-detail/\(caseId)/mobile"), title: "Help")
+            viewController.hidesBottomBarWhenPushed = true
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushViewController(viewController, animated: true)
+            
+            return true
+        }
 
         // MARK: General Webview
         JLRoutes.global().addRoute("/webview") { (params: [String: Any]) -> Bool in
