@@ -56,6 +56,8 @@ internal struct ProductPossibilityChildren {
     internal let productID: String
     internal let price: String
     internal let stock: Int
+    internal let stockString: String
+    internal let stockLimit: String
     internal let sku: String?
     internal let optionIDS: [String]
     internal let isEnabled: Bool
@@ -68,10 +70,12 @@ internal struct ProductPossibilityChildren {
     internal let url: String
     internal let campaign: ShopProductCampaign
 
-    internal init(productID: String, price: String, stock: Int, sku: String?, optionIDS: [String], isEnabled: Bool, name: String, isBuyable: Bool, isWishlist: Bool, originalPicture: String, thumbnailPicture: String, priceFormat: String, url: String, campaign: ShopProductCampaign) {
+    internal init(productID: String, price: String, stock: Int, sku: String?, optionIDS: [String], isEnabled: Bool, name: String, isBuyable: Bool, isWishlist: Bool, originalPicture: String, thumbnailPicture: String, priceFormat: String, url: String, campaign: ShopProductCampaign, stockString: String, stockLimit: String) {
         self.productID = productID
         self.price = price
         self.stock = stock
+        self.stockString = stockString
+        self.stockLimit = stockLimit
         self.sku = sku
         self.optionIDS = optionIDS
         self.isEnabled = isEnabled
@@ -89,6 +93,8 @@ internal struct ProductPossibilityChildren {
         let productID = json["product_id"].stringValue
         let price = json["price"].stringValue
         let stock = json["stock"].intValue
+        let stockString = json["stock_wording"].stringValue
+        let stockLimit = json["is_limited_stock"].stringValue
         let sku = json["sku"].string
         let optionIDS = json["option_ids"].arrayValue.map { $0.stringValue }
         let isEnabled = json["enabled"].boolValue
@@ -101,7 +107,7 @@ internal struct ProductPossibilityChildren {
         let url = json["url"].stringValue
         let campaign = ShopProductCampaign(json: json["campaign"])
 
-        self.init(productID: productID, price: price, stock: stock, sku: sku, optionIDS: optionIDS, isEnabled: isEnabled, name: name, isBuyable: isBuyable, isWishlist: isWishlist, originalPicture: originalPicture, thumbnailPicture: thumbnailPicture, priceFormat: priceFormat, url: url, campaign: campaign)
+        self.init(productID: productID, price: price, stock: stock, sku: sku, optionIDS: optionIDS, isEnabled: isEnabled, name: name, isBuyable: isBuyable, isWishlist: isWishlist, originalPicture: originalPicture, thumbnailPicture: thumbnailPicture, priceFormat: priceFormat, url: url, campaign: campaign, stockString: stockString, stockLimit: stockLimit)
     }
 
     internal var dictionary: [String : Any] {
@@ -109,6 +115,8 @@ internal struct ProductPossibilityChildren {
             "productID": self.productID,
             "price": self.price,
             "stock": self.stock,
+            "stockString" : self.stockString,
+            "stockLimit" : self.stockLimit,
             "sku": self.sku ?? "",
             "optionIDS": self.optionIDS,
             "isEnabled": self.isEnabled,

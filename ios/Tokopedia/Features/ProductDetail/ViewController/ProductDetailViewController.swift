@@ -223,6 +223,7 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
 
                     self.loadProductMostHelpfulReview(product: product)
                     self.loadProductLatestDiscussion(product: product)
+                    self.loadProductStock(product: product)
 
                     if let _ = product.campaign {
                         self.setupCampaignTimer()
@@ -334,6 +335,32 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
 
                 case let .error(error) :
                     print("\(error.localizedDescription)")
+                default:
+                    break
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+    }
+    
+    private func loadProductStock(product: ProductUnbox) {
+        let provider = NetworkProvider<V4Target>()
+        provider.request(.getStockProduct(withProductId: product.id))
+            .map(to: ProductStock.self)
+            .subscribe({ event in
+                switch event {
+                case let .next(stock) :
+                    if stock.stockString != "" {
+                        self.product?.stockProduct = stock
+                    }
+                    
+                    if let product = self.product {
+                        self.store.dispatch(ProductDetailAction.receive(product, nil))
+                    }
+                    
+                case let .error(error) :
+                    if let product = self.product {
+                        self.store.dispatch(ProductDetailAction.receive(product, nil))
+                    }
                 default:
                     break
                 }

@@ -88,6 +88,8 @@ internal class VariantManager: NSObject {
         product.info.price = productJSON["productPrice"].stringValue
         product.isWishlisted = productJSON["productIsWishlist"].boolValue
         product.url = productJSON["productURL"].stringValue
+        product.stockProduct?.stockString = productJSON["productStockString"].stringValue
+        product.stockProduct?.isLimited = productJSON["productStockLimit"].boolValue
         
         let isBuyable = productJSON["productIsBuyable"].boolValue
         

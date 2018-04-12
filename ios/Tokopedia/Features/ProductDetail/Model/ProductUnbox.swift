@@ -43,6 +43,7 @@ internal struct ProductUnbox {
     internal var mostHelpfulReviews: [ProductReview]
     internal var latestDiscussion: ProductTalk?
     internal var variantProduct: ProductVariant?
+    internal var stockProduct: ProductStock?
     internal let hasVariant: Bool
 }
 
@@ -419,6 +420,27 @@ extension ProductReview: Unboxable {
         self.reviewerID = try unboxer.unbox(keyPath: "user.user_id")
         self.reviewerName = try unboxer.unbox(keyPath: "user.full_name")
         self.reviewerImage = try unboxer.unbox(keyPath: "user.user_image")
+    }
+}
+
+internal struct ProductStock {
+    internal var stockString: String
+    internal let stock: Int
+    internal var isLimited: Bool
+    
+    
+    internal init(stockString: String, stock: Int = 0, isLimited: Bool = false) {
+        self.stockString = stockString
+        self.stock = stock
+        self.isLimited = isLimited
+    }
+}
+
+extension ProductStock: Unboxable {
+    internal init(unboxer: Unboxer) throws {
+        self.stockString = try unboxer.unbox(keyPath: "data.stock_wording")
+        self.stock = try unboxer.unbox(keyPath: "data.stock")
+        self.isLimited = try unboxer.unbox(keyPath: "data.is_limited_stock")
     }
 }
 

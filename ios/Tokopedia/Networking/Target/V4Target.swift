@@ -16,6 +16,7 @@ internal enum V4Target {
     case moveToEtalase(withProductId: String, etalaseId: String, etalaseName: String)
     case getProductsForShop(parameters: [String:Any], isAce: Bool)
     case getVariantProduct(withProductId: String)
+    case getStockProduct(withProductId: String)
 }
 
 extension V4Target: TargetType {
@@ -26,6 +27,8 @@ extension V4Target: TargetType {
             let baseUrl: String = isAce ? NSString.aceUrl() : NSString.tomeUrl()
             return URL(string: baseUrl)!
         case .getVariantProduct:
+            return URL(string: NSString.tomeUrl())!
+        case .getStockProduct:
             return URL(string: NSString.tomeUrl())!
         default : return URL(string: NSString.v4Url())!
         }
@@ -40,13 +43,15 @@ extension V4Target: TargetType {
         case .moveToEtalase: return "/v4/action/product/edit_etalase.pl"
         case .getProductsForShop: return "/v1/web-service/shop/get_shop_product"
         case let .getVariantProduct(productID): return String(format: "/v2/product/%@/variant", productID)
+            
+        case let .getStockProduct(productID): return String(format: "/v2/product/%@/stock", productID)
         }
     }
     
     /// The HTTP method used in the request.
     internal var method: Moya.Method {
         switch self {
-        case .getProductDetail, .getProductsForShop, .getVariantProduct: return .get
+        case .getProductDetail, .getProductsForShop, .getStockProduct, .getVariantProduct: return .get
         case .setFavorite, .moveToWarehouse, .moveToEtalase: return .post
         }
     }

@@ -415,7 +415,8 @@ internal class ProductHeaderNode: ContainerNode {
                 productPriceView(),
                 productCashbackView(),
                 productComponentOfficialStoreTag(),
-                productPricePromoView()
+                productPricePromoView(),
+                productStockView()
                 ])
     }
     
@@ -488,7 +489,7 @@ internal class ProductHeaderNode: ContainerNode {
                     view.layer.cornerRadius = 4
                     view.layer.masksToBounds = true
                     view.textAlignment = .left
-                    view.attributedText = NSAttributedString(fromHTML: "Dapatkan <font color=\"#42b549\">Cashback \(cashback)</font> ke Tokocash", normalFont: UIFont.microTheme(),boldFont: UIFont.microThemeSemibold(), italicFont: UIFont.microThemeSemibold())
+                    view.attributedText = NSAttributedString(fromHTML: "Dapatkan <font color=\"#42b549\">Cashback \(cashback)</font> ke TokoCash", normalFont: UIFont.microTheme(),boldFont: UIFont.microThemeSemibold(), italicFont: UIFont.microThemeSemibold())
                     view.accessibilityLabel = "cashbackLabel"
                     
                     layout.marginRight = 5
@@ -569,6 +570,50 @@ internal class ProductHeaderNode: ContainerNode {
             productPricePromoLabel(),
             productPriceTimerView()
         ])
+    }
+    
+    private func productStockView() -> NodeType {
+        
+        guard let endDate = state.productDetail?.stockProduct else {
+            return NilNode()
+        }
+        
+        return Node(identifier: "Product-Stock-View") { view, layout, _ in
+            layout.flexDirection = .row
+            layout.marginLeft = 15
+            layout.marginRight = 15
+            layout.marginBottom = 10
+            layout.padding = 5
+            
+            view.layer.cornerRadius = 5
+            view.backgroundColor = .fromHexString("#f1f1f1")
+            }.add(children: [
+                Node<UIImageView>() { view, layout, _ in
+                    layout.width = 25
+                    layout.height = 19
+                    layout.marginRight = 5
+                    layout.alignSelf = .center
+                    
+                    if let isLimited = self.state.productDetail?.stockProduct?.isLimited, isLimited == true {
+                        view.image = #imageLiteral(resourceName: "limitedStock")
+                    } else {
+                        view.image = #imageLiteral(resourceName: "availableStock")
+                    }
+                },
+                Node<UILabel>(identifier: "Product-Stock-Label") { view, layout, _ in
+                    layout.height = 15
+                    layout.alignSelf = .center
+                    
+                    view.font = .microTheme()
+                    view.text = self.state.productDetail?.stockProduct?.stockString
+                    
+                    if let isLimited = self.state.productDetail?.stockProduct?.isLimited, isLimited == true {
+                        view.textColor = .fromHexString("#ff5722")
+                    } else {
+                        view.textColor = .tpSecondaryBlackText()
+                    }
+                }
+            ])
     }
     
     private func productPricePromoLabel() -> NodeType {

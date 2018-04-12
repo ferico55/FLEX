@@ -1447,7 +1447,9 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
                                                           "productDefaultPict": productDetail.images[0].normalURL as AnyObject,
                                                           "productPrice": productDetail.info.price as AnyObject,
                                                           "productCampaign": productDetail.campaign as AnyObject,
-                                                          "productIsWishlist": productDetail.isWishlisted as AnyObject
+                                                          "productIsWishlist": productDetail.isWishlisted as AnyObject,
+                                                          "productStockString" : productDetail.stockProduct?.stockString as AnyObject,
+                                                          "productStockLimit" : productDetail.stockProduct?.isLimited as AnyObject
         ])
 
         VariantManager.product = productDetail
