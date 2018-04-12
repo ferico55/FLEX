@@ -48,6 +48,7 @@
 #ifdef DEBUG
 - (void)onThreeFingerTap {
     [[FLEXManager sharedManager] showExplorer];
+    [self showBundleVersion];
 }
 
 - (void)showFlexManagerOnSecretGesture {
@@ -56,6 +57,15 @@
     gesture.cancelsTouchesInView = YES;
     [_window addGestureRecognizer:gesture];
 }
+
+- (void)showBundleVersion {
+    NSString *buildNumber = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleVersion"];
+    UIAlertController *alertController = [UIAlertController alertControllerWithTitle:nil message:buildNumber preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *closeAction = [UIAlertAction actionWithTitle:@"Close" style:UIAlertActionStyleCancel handler:nil];
+    [alertController addAction:closeAction];
+    [UIApplication.topViewController presentViewController:alertController animated:YES completion:nil];
+}
+
 #endif	
 	
 - (BOOL)shouldShowOnboarding {
