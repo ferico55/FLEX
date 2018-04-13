@@ -191,8 +191,6 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     
     _isNoDataDeposit  = YES;
     
-    _isWalletActive = YES;
-    
     _operationQueue = [[NSOperationQueue alloc] init];
     
     _fullNameLabel.text = [_auth objectForKey:@"full_name"];
@@ -342,8 +340,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
         
         [weakSelf showActivationButton:wallet];
     } andErrorHandler:^(NSError * error) {
-        _isWalletActive = YES;
-        if (error.code == 3) {
+        if (error.code == 402) {
+            _isWalletActive = YES;
             WalletAction *action = [[WalletAction alloc] initWithText:@"Aktivasi" redirectUrl:@"" applinks:@"" visibility:@"0"];
             WalletData *data = [[WalletData alloc] initWithAction:action balance:@"" rawBalance:0 totalBalance:@"" rawTotalBalance:0 holdBalance:@"" rawHoldBalance:0 rawThreshold:0 text:@"TokoCash" redirectUrl:@"" link:0 hasPendingCashback:NO applinks:@"tokopedia://wallet/activation" abTags:[[NSArray alloc] init]];
             WalletStore *wallet = [[WalletStore alloc] initWithCode:@"" message:@"" error:@"" data:data];
@@ -353,18 +351,16 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             _walletApplink = wallet.data.applinks;
             
             [weakSelf showActivationButton:wallet];
-            
-        }else if(error.code == 9991) {
-            
-            [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", NSString.tokocashUrl, @"/api/v1/wallet/balance"]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        }else {
+            _isWalletActive = NO;
+            [_walletActivationButton setHidden:YES];
+            _walletBalanceLabel.text = @"-";
         }
     }];
 }
 
 - (void)showActivationButton:(WalletStore*)wallet {
     [_walletActivationButton setHidden:!wallet.shouldShowActivation];
-    _isWalletActive = wallet.shouldShowActivation;
     [_walletActivationButton setTitle:wallet.data.action.text forState:UIControlStateNormal];
     [_walletActivationButton bk_whenTapped:^{
         [TPRoutes routeURL:[NSURL URLWithString:_walletApplink]];
@@ -491,15 +487,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 {
     switch (section) {
         case 0:{
-            if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"8.3")) {
-                return 2;
-            } else {
-                if (_isWalletActive) {
-                    return 2;
-                } else {
-                    return 1;
-                }
-            }
+            return 2;
         }
         case 1: return 3;
         case 2:
@@ -611,7 +599,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
                 [AnalyticsManager trackClickNavigateFromMore:@"Saldo" parent:@"Header Saldo"];
             }
         } else if (indexPath.row == 1) {
-            if (!_isWalletActive) {
+            if (_isWalletActive) {
                 [TPRoutes routeURL:[NSURL URLWithString:_walletApplink]];
             } else {
                 [tableView deselectRowAtIndexPath:indexPath animated:NO];

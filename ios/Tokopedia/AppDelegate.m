@@ -26,6 +26,8 @@
 #import "HybridNavigationManager.h"
 #import "UIApplication+React.h"
 #import "lecore.h"
+#import "AnalyticsManager.h"
+#import "StickyAlertView.h"
 
 @import NativeNavigation;
 @import GooglePlaces;
@@ -394,14 +396,15 @@
             }
             if (params[@"$web_only"]) {
                 urlString = params[@"$original_url"];
+            } else if (params[@"$ios_tc_deeplink_path"]) {
+                NSString *iosDeeplinkPath = params[@"$ios_tc_deeplink_path"];
+                urlString = [self getURLStringWith:iosDeeplinkPath];
+                [AnalyticsManager trackEventName:@"campaignEvent" category:@"trigger based campaign" action:@"scan qr code - success" label:urlString];
+                [self configureReferral:iosDeeplinkPath];
             } else if (params[@"$ios_deeplink_path"]) {
-                NSString *ios_deeplink_path = params[@"$ios_deeplink_path"];
-                urlString = [NSString stringWithFormat:@"tokopedia://%@",ios_deeplink_path];
-                BOOL containsReferralCode = [ios_deeplink_path containsString:@"referral"];
-                if ([_window.rootViewController isKindOfClass:[IntroViewController class]] && containsReferralCode == NO) {
-                    MainViewController *viewController = [MainViewController new];
-                    _window.rootViewController = viewController;
-                }
+                NSString *iosDeeplinkPath = params[@"$ios_deeplink_path"];
+                urlString = [self getURLStringWith:iosDeeplinkPath];
+                [self configureReferral:iosDeeplinkPath];
             }
             if (urlString != nil) {
                 urlString = [urlString stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
@@ -412,11 +415,28 @@
                     });
                 }
             }
+        }else {
+            [StickyAlertView showErrorMessage:[NSArray arrayWithObject:@"Halaman tidak ditemukan"]];
         }
+        
     }];
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     if ([userManager isLogin]) {
         [branch setIdentity:[userManager getUserId]];
+    }
+}
+
+-(NSString *) getURLStringWith:(NSString *) deeplink {
+    NSURL *baseURL = [[NSURL alloc] initWithString:@"tokopedia://"];
+    NSString *urlString = [[[NSURL alloc] initWithString:deeplink relativeToURL:baseURL] absoluteString];
+    return urlString;
+}
+
+-(void) configureReferral:(NSString *) deeplink {
+    BOOL containsReferralCode = [deeplink containsString:@"referral"];
+    if ([_window.rootViewController isKindOfClass:[IntroViewController class]] && containsReferralCode == NO) {
+        MainViewController *viewController = [MainViewController new];
+        _window.rootViewController = viewController;
     }
 }
 

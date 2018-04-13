@@ -24,7 +24,7 @@ RCT_EXPORT_METHOD(requestTokocash:(RCTPromiseResolveBlock)resolve reject:(__unus
                        @"pendingCashback": @(NO)
                        });
     } andErrorHandler:^(NSError * error) {
-        if (error.code == 3) {
+        if (error.code == 402) {
             // aktivasi
             NSString* phoneNumber = [[UserAuthentificationManager new] getUserPhoneNumber];
             [WalletService getPendingCashbackWithPhoneNumber:phoneNumber completionHandler:^(WalletCashBackResponse * _Nullable response) {
@@ -41,10 +41,7 @@ RCT_EXPORT_METHOD(requestTokocash:(RCTPromiseResolveBlock)resolve reject:(__unus
                           @"pendingCashback": @(NO)
                           });
             }];
-        } else if(error.code == 9991) {
-            // force logout
-            [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", NSString.tokocashUrl, @"/api/v1/wallet/balance"]];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+        }else {
             reject(@(error.code).stringValue, error.localizedDescription, error);
         }
     }];
@@ -57,7 +54,7 @@ RCT_EXPORT_METHOD(showPendingCashbackPopup: (NSString*) applink balance: (NSStri
     }];
     
     
-    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:@"Bonus Cashback" subtitle:[NSString stringWithFormat:@"Anda mendapatkan cashback Tokocash sebesar %@", balance] image:[UIImage imageNamed:@"icon_cashback"] buttons:@[cashbackButton, closeButton] isAlternative:YES];
+    CFAlertViewController *alertViewController = [TooltipAlert createAlertWithTitle:@"Bonus Cashback" subtitle:[NSString stringWithFormat:@"Anda mendapatkan cashback TokoCash sebesar %@", balance] image:[UIImage imageNamed:@"icon_cashback"] buttons:@[cashbackButton, closeButton] isAlternative:YES];
     UIViewController *rootViewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     UIViewController *topMostViewController = [rootViewController topMostViewController];
     [topMostViewController presentViewController:alertViewController animated: YES completion:nil];

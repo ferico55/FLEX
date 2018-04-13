@@ -7,6 +7,7 @@
 //
 
 import AVFoundation
+import Branch
 import Foundation
 import Moya
 import RxCocoa
@@ -35,19 +36,15 @@ import RxSwift
         public let isHideScanView: Driver<Bool>
         public let isHideFlashButton: Driver<Bool>
         public let flashButtonImage: Driver<UIImage?>
+        public let activityIndicator: Driver<Bool>
         public let validationColor: Driver<UIColor>
         public let QRInfo: Driver<TokoCashQRInfo?>
         public let triggerCampaign: Driver<URL>
-        public let failedMessage: Driver<String>
+        public let failedMessage: Driver<[String]>
     }
     
     private let isSetupCamera = Variable(false)
     private let accessCamera = Variable(false)
-    private let navigator: TokoCashQRCodeNavigator
-    
-    public init(navigator: TokoCashQRCodeNavigator) {
-        self.navigator = navigator
-    }
     
     public func transform(input: Input) -> Output {
         // camera access
@@ -73,9 +70,7 @@ import RxSwift
         let cameraSetting = input.cameraAccessTrigger.withLatestFrom(cameraAccessStatus)
             .flatMapLatest { cameraAccess -> SharedSequence<DriverSharingStrategy, Void> in
                 return cameraAccess == .denied ? Driver.just() : Driver.empty()
-            }.do(onNext: { _ in
-                self.navigator.toAppSetting()
-            })
+            }
         
         let setupCameraView = Driver.combineLatest(accessCamera.asDriver(), isSetupCamera.asDriver(), input.triggerviewDidLayoutSubviews.map { _ -> Bool in
             true
@@ -123,22 +118,38 @@ import RxSwift
                 return !identifier.isEmpty
             }
         
-        let isQR = inputIdentifier
-            .map { identifier -> Bool in
-                guard !identifier.isEmpty, (identifier.range(of: "tokopedia://w/") != nil) else { return false }
-                return true
-            }
+        let isBranchLink = inputIdentifier.flatMapLatest { identifier -> SharedSequence<DriverSharingStrategy, Bool> in
+            let isDeepLink = Branch.getInstance().handleDeepLink(withNewSession: URL(string: identifier))
+            return isDeepLink ? Driver.of(true) : Driver.of(false)
+        }
         
-        let isTc = inputIdentifier
-            .map { identifier -> Bool in
-                guard !identifier.isEmpty, (identifier.range(of: "tokopedia://tc/") != nil) else { return false }
-                return true
+        let isLogin = PublishSubject<Bool>()
+        let isQR = inputIdentifier.map { identifier -> Bool in
+            guard identifier.range(of: "tokopedia://w/") != nil else { return false }
+            return true
+        }.do(onNext: { isQR in
+            guard isQR, let topViewController = UIApplication.topViewController() else {
+                isLogin.onNext(false)
+                return
             }
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController, onSuccess: {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    isLogin.onNext(true)
+                }
+            })
+            
+        })
         
-        let inValidQRCode = Driver.zip(isQR, isTc)
-            .flatMapLatest { (isQR, isTc) -> SharedSequence<DriverSharingStrategy, String> in
-                guard !isQR && !isTc else { return Driver.empty() }
-                return Driver.of("Kode QR yang anda scan invalid")
+        let isTc = inputIdentifier.map { identifier -> Bool in
+            guard identifier.range(of: "tokopedia://tc/") != nil else { return false }
+            return true
+        }
+        
+        let inValidQRCode = Driver.zip(isBranchLink, isQR, isTc)
+            .flatMapLatest { (isBranchLink, isQR, isTc) -> SharedSequence<DriverSharingStrategy, [String]> in
+                guard !isBranchLink && !isQR && !isTc else { return Driver.empty() }
+                return Driver.of(["Kode QR yang anda scan invalid"])
             }
         
         let identifier = Driver.merge(isQR, isTc).filter { return $0 }
@@ -151,14 +162,15 @@ import RxSwift
                 return Driver.empty()
             }
         
+        let activityIndicator = ActivityIndicator()
         let errorTracker = ErrorTracker()
         
         // QR Payment
         // Check if user is authenticated
-        let QRTag = isQR.filter { return $0 }
-            .withLatestFrom(identifier)
+        let QRTag = isLogin.asDriverOnErrorJustComplete().filter { return $0 }
             .flatMapLatest { _ -> SharedSequence<DriverSharingStrategy, WalletStore> in
                 return TokoCashUseCase.requestBalance()
+                    .trackActivity(activityIndicator)
                     .trackError(errorTracker)
                     .asDriverOnErrorJustComplete()
             }.map { response -> Bool in
@@ -167,13 +179,14 @@ import RxSwift
             }
         // unauthenticated users message
         let userNotAuthorized = QRTag.filter { !$0 }
-            .map { _ -> String in
-                return "Pengguna tidak terotorisasi"
+            .map { _ -> [String] in
+                return ["Pengguna tidak terotorisasi"]
             }
         // get QR info
         let QRInfoResponse = QRTag.filter { return $0 }
             .withLatestFrom(identifier).flatMapLatest { identifier -> SharedSequence<DriverSharingStrategy, TokoCashQRInfoResponse> in
                 return TokoCashUseCase.requestQRInfo(identifier)
+                    .trackActivity(activityIndicator)
                     .trackError(errorTracker)
                     .map { response -> TokoCashQRInfoResponse in
                         var rspn = response
@@ -192,15 +205,25 @@ import RxSwift
                     .asDriverOnErrorJustComplete()
             }
         
+        let trackCampaignErrorMessage = trackCampaignResponse.flatMapLatest { response -> SharedSequence<DriverSharingStrategy, [String]> in
+            guard let errorMessage = response.errorMessage else { return Driver.empty() }
+            AnalyticsManager.trackEventName("campaignEvent", category: "trigger based campaign", action: "scan qr code - fail", label: errorMessage.joined(separator: "-"))
+            return Driver.just(errorMessage)
+        }
+        
         // validation color
         let validationColor = Driver.merge(input.trigger.flatMapLatest {
             Driver.of(#colorLiteral(red: 1, green: 1, blue: 1, alpha: 1))
+        }, isBranchLink.map { isBranchLink -> UIColor in
+            isBranchLink ? #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1) : #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         }, QRInfoResponse.map { response -> UIColor in
             guard let code = response.code, code == "200000" else { return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) }
             return #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
         }, trackCampaignResponse.map { response -> UIColor in
-            guard let responseStatus = response.status, responseStatus == "OK" else { return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1) }
-            return #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
+            if response.errorMessage == nil {
+                return #colorLiteral(red: 0, green: 0.7217311263, blue: 0.2077963948, alpha: 1)
+            }
+            return #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
         })
         
         // navigation if success
@@ -209,32 +232,27 @@ import RxSwift
             return true
         }.map { response -> TokoCashQRInfo? in
             return response.data
-        }.delay(0.3).do(onNext: { data in
-            guard let QRInfo = data else { return }
-            self.navigator.toQRPayment(QRInfo)
-        })
+        }
         
         let triggerCampaign = trackCampaignResponse.flatMapLatest { response -> SharedSequence<DriverSharingStrategy, URL> in
             guard let stringURL = response.data, !stringURL.isEmpty, let url = URL(string: stringURL) else { return Driver.empty() }
             return Driver.of(url)
-        }.delay(0.3).do(onNext: { url in
-            TPRoutes.routeURL(url as URL)
-        })
+        }
         
         // error message
-        let errorLocalization = errorTracker.flatMapLatest { error -> SharedSequence<DriverSharingStrategy, String> in
+        let errorLocalization = errorTracker.flatMapLatest { error -> SharedSequence<DriverSharingStrategy, [String]> in
             guard let moyaError: MoyaError = error as? MoyaError, let response: Response = moyaError.response else { return Driver.empty() }
             let statusCode = response.statusCode
-            if statusCode == 400 || statusCode == 500 {
-                return Driver.of("Kode QR yang anda scan invalid")
+            if statusCode == 400 {
+                return Driver.of(["Kode QR yang anda scan invalid"])
             } else if statusCode == 402 {
-                return Driver.of("Akun Anda belum terhubung dengan Tokocash")
+                return Driver.of(["Akun Anda belum terhubung dengan Tokocash"])
             } else {
-                return Driver.of("Terjadi kendala pada server. Mohon coba beberapa saat lagi.")
+                return Driver.of(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])
             }
         }
         
-        let failedMessage = Driver.merge(errorLocalization, userNotAuthorized, inValidQRCode)
+        let failedMessage = Driver.merge(errorLocalization, userNotAuthorized, inValidQRCode, trackCampaignErrorMessage)
         
         return Output(needRequestAccess: needRequestAccess,
                       cameraSetting: cameraSetting,
@@ -245,6 +263,7 @@ import RxSwift
                       isHideScanView: isHideScanView,
                       isHideFlashButton: isHideFlashButton,
                       flashButtonImage: flashButtonImage,
+                      activityIndicator: activityIndicator.asDriver(),
                       validationColor: validationColor,
                       QRInfo: QRInfo,
                       triggerCampaign: triggerCampaign,

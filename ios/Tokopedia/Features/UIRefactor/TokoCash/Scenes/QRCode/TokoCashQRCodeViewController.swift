@@ -22,6 +22,7 @@ public class TokoCashQRCodeViewController: UIViewController {
     @IBOutlet private weak var flashButton: UIButton!
     
     // var
+    private let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
     private var videoCaptureDevice: AVCaptureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
     private var device = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
     private var output = AVCaptureMetadataOutput()
@@ -32,22 +33,38 @@ public class TokoCashQRCodeViewController: UIViewController {
     private let isTorchActive = Variable(false)
     fileprivate let identifier = Variable("")
     
+    // navigator
+    private lazy var navigator: TokoCashQRCodeNavigator = {
+        let nv = TokoCashQRCodeNavigator(navigationController: self.navigationController)
+        return nv
+    }()
+    
     // view model
-    public var viewModel: TokoCashQRCodeViewModel!
+    private var viewModel: TokoCashQRCodeViewModel
+    
+    public init() {
+        viewModel = TokoCashQRCodeViewModel()
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    public required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     public override func viewDidLoad() {
         super.viewDidLoad()
         
         title = "Scan Kode QR"
+        AnalyticsManager.trackScreenName("QR Scanner")
         
         NotificationCenter.default.addObserver(self, selector: #selector(didBecomeActive), name: NSNotification.Name.UIApplicationDidBecomeActive, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: NSNotification.Name.UIApplicationWillEnterForeground, object: nil)
         
+        configureActivityIndicator()
         bindViewModel()
     }
     
     private func bindViewModel() {
-        assert(viewModel != nil)
         
         let viewWillAppear = rx.sentMessage(#selector(UIViewController.viewWillAppear(_:)))
             .mapToVoid()
@@ -56,7 +73,6 @@ public class TokoCashQRCodeViewController: UIViewController {
         let viewDidLayoutSubviews = rx.sentMessage(#selector(UIViewController.viewDidLayoutSubviews))
             .mapToVoid()
             .asDriverOnErrorJustComplete()
-        
         
         let viewWillDisappear = rx.sentMessage(#selector(UIViewController.viewWillDisappear(_:)))
             .mapToVoid()
@@ -73,23 +89,23 @@ public class TokoCashQRCodeViewController: UIViewController {
         let output = viewModel.transform(input: input)
         
         output.needRequestAccess.drive().disposed(by: rx_disposeBag)
-        output.cameraSetting.drive().disposed(by: rx_disposeBag)
+        output.cameraSetting.drive(onNext: navigator.toAppSetting).disposed(by: rx_disposeBag)
         
-        output.setupCameraView.drive(onNext: { _ in
-            self.setupCamera()
-            self.drawOverlay()
+        output.setupCameraView.drive(onNext: { [weak self] _ in
+            self?.setupCamera()
+            self?.drawOverlay()
         }).disposed(by: rx_disposeBag)
         
-        output.runCamera.drive(onNext: { isRunning in
+        output.runCamera.drive(onNext: { [weak self] isRunning in
             guard isRunning else {
-                if self.captureSession.isRunning == true {
-                    self.captureSession.stopRunning()
+                if self?.captureSession.isRunning == true {
+                    self?.captureSession.stopRunning()
                 }
                 return
             }
-            if self.captureSession.isRunning == false {
-                self.identifier.value = ""
-                self.captureSession.startRunning()
+            if self?.captureSession.isRunning == false {
+                self?.identifier.value = ""
+                self?.captureSession.startRunning()
             }
         }).disposed(by: rx_disposeBag)
         
@@ -97,12 +113,10 @@ public class TokoCashQRCodeViewController: UIViewController {
             .drive(cameraAccessView.rx.isHidden)
             .disposed(by: rx_disposeBag)
         
-        output.cameraSetting.drive().disposed(by: rx_disposeBag)
-        
         output.isHideScanView
-            .drive(onNext: { isHidden in
-                self.messageLabel.isHidden = isHidden
-                self.QRCodeView.isHidden = isHidden
+            .drive(onNext: { [weak self] isHidden in
+                self?.messageLabel.isHidden = isHidden
+                self?.QRCodeView.isHidden = isHidden
             })
             .disposed(by: rx_disposeBag)
         
@@ -114,26 +128,43 @@ public class TokoCashQRCodeViewController: UIViewController {
             .drive(flashButton.rx.image(for: .normal))
             .disposed(by: rx_disposeBag)
         
+        output.activityIndicator
+            .drive(activityIndicator.rx.isAnimating)
+            .disposed(by: rx_disposeBag)
+        
         output.validationColor
-            .drive(onNext: { color in
-                self.scanImageView.tintColor = color
+            .drive(onNext: { [weak self] color in
+                self?.scanImageView.tintColor = color
             }).disposed(by: rx_disposeBag)
         
-        output.QRInfo
-            .drive()
+        output.QRInfo.delay(0.3)
+            .drive(onNext: { [weak self] data in
+                guard let QRInfo = data else { return }
+                self?.navigator.toQRPayment(QRInfo)
+            })
             .disposed(by: rx_disposeBag)
         
         output.triggerCampaign
-            .drive()
+            .delay(0.3)
+            .drive(onNext: { url in
+                AnalyticsManager.trackEventName("campaignEvent", category: "trigger based campaign", action: "scan qr code - success", label: url.absoluteString)
+                TPRoutes.routeURL(url as URL)
+            })
             .disposed(by: rx_disposeBag)
         
         output.failedMessage
-            .drive(onNext: { message in
-                StickyAlertView.showErrorMessage([message])
+            .drive(onNext: { [weak self] message in
+                StickyAlertView.showErrorMessage(message)
                 DispatchQueue.main.asyncAfter(deadline: .now() + 1.0, execute: {
-                    self.identifier.value = ""
+                    self?.identifier.value = ""
                 })
             }).disposed(by: rx_disposeBag)
+    }
+    
+    private func configureActivityIndicator() {
+        activityIndicator.hidesWhenStopped = true
+        let barButton = UIBarButtonItem(customView: activityIndicator)
+        navigationItem.setRightBarButton(barButton, animated: true)
     }
     
     private func setupCamera() {
@@ -219,14 +250,14 @@ public class TokoCashQRCodeViewController: UIViewController {
     }
     
     @objc private func didBecomeActive() {
-        if !self.animation.isAnimationPlaying {
-            self.animation.play()
+        if !animation.isAnimationPlaying {
+            animation.play()
         }
     }
     
     @objc private func willEnterForeground() {
-        if self.animation.isAnimationPlaying {
-            self.animation.pause()
+        if animation.isAnimationPlaying {
+            animation.pause()
         }
     }
 }

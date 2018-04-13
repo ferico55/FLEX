@@ -14,7 +14,6 @@ public class TriggerCampaignTargetUseCase {
     public class func requestQRTriggerCampaign(identifier: String) -> Observable<TriggerCampaignResponse> {
         return TriggerCampaignNetworkProvider()
             .request(.QRTriggerCampaign(identifier: identifier))
-            .filterSuccessfulStatusAndRedirectCodes()
             .map(to: TriggerCampaignResponse.self)
     }
 }

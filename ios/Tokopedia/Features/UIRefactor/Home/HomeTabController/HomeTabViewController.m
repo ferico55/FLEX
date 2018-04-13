@@ -367,19 +367,18 @@ UINavigationControllerDelegate
 #pragma mark - Notification Manager
 
 - (void)initNotificationManager {
+    _QRCodeButton = [[UIButton alloc] init];
+    _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
+    [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
+    [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
+    [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
+    [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
+    
     if ([_userManager isLogin]) {
-        
-        _QRCodeButton = [[UIButton alloc] init];
-        _QRCodeButton.frame = CGRectMake(0, 0, 30, 20);
-        [_QRCodeButton setImageEdgeInsets:UIEdgeInsetsMake(0.0, 10.0, 0.0, 0.0)];
-        [_QRCodeButton setImage:[UIImage imageNamed: @"qr_code"] forState:UIControlStateNormal];
-        [_QRCodeButton addTarget:self action:@selector(didTapQRCodeButton) forControlEvents:UIControlEventTouchUpInside];
-        [_QRCodeButton setSemanticContentAttribute: UISemanticContentAttributeForceRightToLeft];
-        
         self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:_barButton, [[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton], nil];
         [_barButton reloadNotifications];
     } else {
-        self.navigationItem.rightBarButtonItems = nil;
+        self.navigationItem.rightBarButtonItems = [NSArray arrayWithObjects:[[UIBarButtonItem alloc] initWithCustomView:_QRCodeButton], nil];
     }
 }
 
@@ -481,10 +480,10 @@ UINavigationControllerDelegate
 }
 
 - (void) didTapQRCodeButton {
+    
+    [AnalyticsManager trackEventName:@"clickHomePage" category:@"homepage" action:@" click top nav" label:@"qr code icon"];
+    
     TokoCashQRCodeViewController *vc = [TokoCashQRCodeViewController new];
-    TokoCashQRCodeNavigator *navigator = [[TokoCashQRCodeNavigator alloc] initWithNavigationController:self.navigationController];
-    TokoCashQRCodeViewModel *viewModel = [[TokoCashQRCodeViewModel alloc] initWithNavigator:navigator];
-    vc.viewModel = viewModel;
     vc.hidesBottomBarWhenPushed = YES;
     [self.navigationController pushViewController:vc animated:YES];
 }

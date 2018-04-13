@@ -59,7 +59,12 @@ import RxSwift
             .subscribe(onNext: { result in
                 completionHandler(result)
             }, onError: { [] error in
-                errorHandler(error)
+                if let moyaError: MoyaError = error as? MoyaError,
+                    let response: Response = moyaError.response {
+                    let statusCode = response.statusCode
+                    let errorCode = NSError(domain: "", code: statusCode, userInfo: nil)
+                    errorHandler(errorCode)
+                }
             })
     }
     

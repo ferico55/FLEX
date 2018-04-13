@@ -320,6 +320,37 @@ public class TPRoutes: NSObject {
             nc.pushViewController(vc, animated: true)
             return true
         }
+        
+        // MARK: QR
+        JLRoutes.global().addRoute("/tc/:id") { (params: [String: Any]) -> Bool in
+            guard let topViewController = UIApplication.topViewController() else { return false }
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController, onSuccess: {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    guard ((topViewController as? TokoCashQRCodeViewController) == nil),
+                        let nc = topViewController.navigationController else { return }
+                    let vc = TokoCashQRCodeViewController()
+                    vc.hidesBottomBarWhenPushed = true
+                    nc.pushViewController(vc, animated: true)
+                }
+            })
+           return true
+        }
+        
+        JLRoutes.global().addRoute("/w/:id") { (params: [String: Any]) -> Bool in
+            guard let topViewController = UIApplication.topViewController() else { return false }
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController, onSuccess: {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    guard ((topViewController as? TokoCashQRCodeViewController) == nil),
+                        let nc = topViewController.navigationController else { return }
+                    let vc = TokoCashQRCodeViewController()
+                    vc.hidesBottomBarWhenPushed = true
+                    nc.pushViewController(vc, animated: true)
+                }
+            })
+            return true
+        }
 
         // MARK: Digital Category List (Native)
         JLRoutes.global().addRoute("/digital") { _ in
