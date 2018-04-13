@@ -1153,11 +1153,16 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/topchat") { (_: [String: Any]) -> Bool in
             let userManager = UserAuthentificationManager()
             if userManager.isLogin {
+                guard let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
+                
                 let viewController = ChatPagerViewController(initialPage: .topchat)
-                viewController.hidesBottomBarWhenPushed = true
-                UIApplication.topViewController()?
-                    .navigationController?
-                    .pushViewController(viewController, animated: true)
+                
+                if topViewController.isKind(of: ChatPagerViewController.self) {
+                    topNavigation.replaceTopViewController(viewController: viewController)
+                }else {
+                    viewController.hidesBottomBarWhenPushed = true
+                    topNavigation.pushViewController(viewController, animated: true)
+                }
             }
             return true
         }
@@ -1197,15 +1202,10 @@ public class TPRoutes: NSObject {
 
                 guard let topVc = UIApplication.topViewController() else { return false }
                 if topVc.isKind(of: ReactViewController.self) || topVc.isKind(of: ReactSplitViewController.self) {
-                    if let countVc = topVc.navigationController?.viewControllers.count {
-                        if countVc > 2 {
-                            topVc.navigationController?.viewControllers.removeLast()
-                        }
-                    }
-                    UIApplication.topViewController()?.navigationController?.replaceTopViewController(viewController: viewController)
+                    topVc.navigationController?.popViewController(animated: true)
+                    topVc.navigationController?.pushViewController(viewController, animated: true)
                 } else {
-                    UIApplication.topViewController()?
-                        .navigationController?
+                   topVc.navigationController?
                         .pushViewController(viewController, animated: true)
                 }
             }
@@ -1216,27 +1216,22 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/groupchat") { (_: [String: Any]) -> Bool in
             guard let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
             
-            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
-                let userManager = UserAuthentificationManager()
-                if userManager.isLogin {
-                    let viewController = ChatPagerViewController(initialPage: .groupchat)
-                    viewController.hidesBottomBarWhenPushed = true
-                    
-                    if topViewController.isKind(of: ChatPagerViewController.self) {
-                        topNavigation.viewControllers.removeLast()
-                    }
-                    
-                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    topNavigation.pushViewController(viewController, animated: true)
-                }
+            let viewController = ChatPagerViewController(initialPage: .groupchat)
+            viewController.hidesBottomBarWhenPushed = true
+            
+            if topViewController.isKind(of: ChatPagerViewController.self) {
+                topNavigation.viewControllers.removeLast()
             }
+
+            if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                topNavigation.viewControllers.removeLast(2)
+            }
+
+            if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                topNavigation.viewControllers.removeLast(2)
+            }
+
+            topNavigation.pushViewController(viewController, animated: true)
             
             return true
         }
@@ -1245,27 +1240,30 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/groupchat/:channel_uuid") { (params: [String: Any]) -> Bool in
             guard let channel_uuid = params["channel_uuid"] as? String, let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
        
-            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
-                let userManager = UserAuthentificationManager()
-                if userManager.isLogin {
-                    let viewController = ChatPagerViewController(initialPage: .groupchat, appLink: channel_uuid)
-                    viewController.hidesBottomBarWhenPushed = true
-                    
-                    if topViewController.isKind(of: ChatPagerViewController.self) {
-                        topNavigation.viewControllers.removeLast()
-                    }
-                    
-                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    topNavigation.pushViewController(viewController, animated: true)
-                }
+            let userManager = UserAuthentificationManager()
+            var props = ["channel_uuid" : channel_uuid as AnyObject]
+            
+            if userManager.isLogin {
+                let auth = userManager.getUserLoginData()
+                props["authInfo"] = auth as AnyObject
             }
+            
+            let viewController = GroupChatDetailViewController(initialProps: props)
+            viewController.hidesBottomBarWhenPushed = true
+            
+            if topViewController.isKind(of: ChatPagerViewController.self) {
+                topNavigation.viewControllers.removeLast()
+            }
+            
+            if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                topNavigation.viewControllers.removeLast(1)
+            }
+            
+            if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                topNavigation.viewControllers.removeLast(2)
+            }
+            
+            topNavigation.pushViewController(viewController, animated: true)
             
             return true
         }
@@ -1274,27 +1272,22 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/groupchat/list/:channel_uuid") { (params: [String: Any]) -> Bool in
             guard let channel_uuid = params["channel_uuid"] as? String, let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
             
-            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
-                let userManager = UserAuthentificationManager()
-                if userManager.isLogin {
-                    let viewController = ChatPagerViewController(initialPage: .groupchat, appLink: channel_uuid)
-                    viewController.hidesBottomBarWhenPushed = true
-                    
-                    if topViewController.isKind(of: ChatPagerViewController.self) {
-                        topNavigation.viewControllers.removeLast()
-                    }
-                    
-                    if topViewController.isKind(of: GroupChatDetailViewController.self) {
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
-                        topNavigation.viewControllers.removeLast(2)
-                    }
-                    
-                    topNavigation.pushViewController(viewController, animated: true)
-                }
+            let viewController = ChatPagerViewController(initialPage: .groupchat, appLink: channel_uuid)
+            viewController.hidesBottomBarWhenPushed = true
+            
+            if topViewController.isKind(of: ChatPagerViewController.self) {
+                topNavigation.viewControllers.removeLast()
             }
+            
+            if topViewController.isKind(of: GroupChatDetailViewController.self) {
+                topNavigation.viewControllers.removeLast(2)
+            }
+            
+            if topViewController.isKind(of: ReactViewController.self) && topNavigation.viewControllers.count > 2 && topNavigation.viewControllers[1].isKind(of: ChatPagerViewController.self){
+                topNavigation.viewControllers.removeLast(2)
+            }
+            
+            topNavigation.pushViewController(viewController, animated: true)
             
             return true
         }

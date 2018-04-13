@@ -133,7 +133,8 @@
         }
         
         // Italic Tag
-        else if (strncmp("i", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
+        else if (strncmp("i", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0 ||
+                 strncmp("em", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             if (italicFont) {
                 [nodeAttributedString addAttribute:NSFontAttributeName value:italicFont range:nodeAttributedStringRange];
             }
@@ -231,7 +232,7 @@
         // Paragraph Tag
         else if (strncmp("p", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             NSMutableParagraphStyle *paragraphStyle = [[NSParagraphStyle defaultParagraphStyle] mutableCopy];
-            
+
             if ([attributeDictionary objectForKey:@"align"]) {
                 NSString *alignString = [attributeDictionary[@"align"] lowercaseString];
                 
@@ -303,8 +304,12 @@
             }
             
             [nodeAttributedString addAttribute:NSParagraphStyleAttributeName value:paragraphStyle range:nodeAttributedStringRange];
+			
+			// MR - For some reason they are not adding the paragraph space when parsing the <p> tag
+			[nodeAttributedString appendAttributedString:[[NSAttributedString alloc] initWithString:@"\n"]];
         }
-        
+
+
         // Links
         else if (strncmp("a href", (const char *)xmlNode->name, strlen((const char *)xmlNode->name)) == 0) {
             
@@ -313,7 +318,7 @@
             {
                 NSString *title = [NSString stringWithCString:(const char *)value encoding:NSUTF8StringEncoding];
                 NSString *link = attributeDictionary[@"href"];
-                [nodeAttributedString addAttribute:NSLinkAttributeName value:link range:NSMakeRange(0, title.length)];
+                [nodeAttributedString addAttribute:NSLinkAttributeName value:link ?: @"" range:NSMakeRange(0, title.length)];
             }
         }
         

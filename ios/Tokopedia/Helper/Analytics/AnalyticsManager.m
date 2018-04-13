@@ -370,6 +370,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
 + (void)trackData:(NSDictionary *)data {
     AnalyticsManager *manager = [[self alloc] init];
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackCheckout:(NSArray *)shops step:(NSInteger)step option:(NSString *)option {

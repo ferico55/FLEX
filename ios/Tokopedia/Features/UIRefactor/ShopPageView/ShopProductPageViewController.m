@@ -498,7 +498,7 @@ NoResultDelegate
                                    label:eventLabel];
         
         ReferralManager *referralManager = [ReferralManager new];
-        [referralManager shareWithObject:_shop.result.info from:self anchor: sender];
+        [referralManager shareWithObject:_shop.result.info from:self anchor: sender onCompletion:nil];
      }
 }
 

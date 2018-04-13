@@ -25,6 +25,8 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
     
     private let nextButtonEnabled = Variable(false)
     
+    internal weak var parentController: LoginViewController?
+    
     override public func viewDidLoad() {
         super.viewDidLoad()
         self.setupView()
@@ -32,7 +34,10 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
     }
     
     @IBAction private func onTapNext(_ sender: UIButton) {
-        let phoneNumber = self.phoneNumberTextField.text!
+        guard let phoneNumber = self.phoneNumberTextField.text else {
+            return
+        }
+
         self.setButtonLoading(true)
         
         AnalyticsManager.trackEventName("clickLogin", category: "login with phone", action: "click on selanjutnya", label: "")
@@ -99,6 +104,7 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
     private func setToOtpScene(_ tokoCashData: TokoCashLoginSendOTPResponse) {
         let controller = LoginPhoneNumberOTPViewController(nibName: nil, bundle: nil)
         controller.hidesBottomBarWhenPushed = true
+        controller.parentController = self.parentController
         controller.tokoCashLoginSendOTPResponse = tokoCashData
         self.navigationController?.pushViewController(controller, animated: true)
     }

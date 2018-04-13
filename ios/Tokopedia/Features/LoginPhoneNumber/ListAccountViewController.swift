@@ -6,36 +6,36 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import Branch
 import SwiftOverlays
+import UIKit
 
-class ListAccountViewController: UIViewController {
+internal class ListAccountViewController: UIViewController {
     
-    @IBOutlet weak var contentStackView: UIStackView!
-    @IBOutlet weak var contentStackViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet weak var informationText: UILabel!
-    @IBOutlet weak var wrapperTrailing: NSLayoutConstraint!
-    @IBOutlet weak var wrapperLeading: NSLayoutConstraint!
-    @IBOutlet weak var titleLabelLeading: NSLayoutConstraint!
+    @IBOutlet private weak var contentStackView: UIStackView!
+    @IBOutlet private weak var contentStackViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet private weak var informationText: UILabel!
+    @IBOutlet private weak var wrapperTrailing: NSLayoutConstraint!
+    @IBOutlet private weak var wrapperLeading: NSLayoutConstraint!
+    @IBOutlet private weak var titleLabelLeading: NSLayoutConstraint!
     
     internal var tokocashLoginVerifyResponse : TokoCashLoginVerifyOTPResponse!
     internal var phoneNumber : String!
-    internal var onTapExit: (() -> Void)?
+    internal var onTapExit: ((_ login: Login?) -> Void)?
     
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         
         // Do any additional setup after loading the view.
         setupView()
     }
     
-    override func didReceiveMemoryWarning() {
+    override internal func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    override func viewDidLayoutSubviews() {
+    override internal func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         contentStackView.layoutIfNeeded()
         contentStackViewHeightConstraint.constant = CGFloat(75 * contentStackView.subviews.count)
@@ -49,7 +49,7 @@ class ListAccountViewController: UIViewController {
         }
         
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Keluar", style: .plain, target: self, action:#selector(self.didTapRightBar(_:)))
-        for (index, _ ) in tokocashLoginVerifyResponse.userDetails.enumerated() {
+        for index in tokocashLoginVerifyResponse.userDetails.indices {
             let cellData = tokocashLoginVerifyResponse.userDetails[index]
             let cell = self.setupCustomCell(cellData: cellData, index: index)
             self.contentStackView.addArrangedSubview(cell)
@@ -71,11 +71,11 @@ class ListAccountViewController: UIViewController {
         self.informationText.attributedText = attributedString
     }
     
-    @objc func didTapRightBar(_ sender: UIBarButtonItem) {
-        self.onTapExit?()
+    @objc internal func didTapRightBar(_ sender: UIBarButtonItem) {
+        self.onTapExit?(nil)
     }
     
-    @objc func didSelectUserToLogin (_ sender: UITapGestureRecognizer) {
+    @objc internal func didSelectUserToLogin (_ sender: UITapGestureRecognizer) {
         guard let sender = sender.view else { return }
         let email = tokocashLoginVerifyResponse.userDetails[sender.tag].email
         SwiftOverlays.showBlockingWaitOverlay()
@@ -86,7 +86,7 @@ class ListAccountViewController: UIViewController {
                 if result.responseCode == "200000" {
                     let service = AuthenticationService.shared
                     service.login(withTokocashCode : result.code)
-                    service.onLoginComplete = { [weak self] login, err in
+                    service.onLoginComplete = { [weak self] (_ login: Login?, _ err: Error?) -> Void in
                         guard let strongSelf = self else {
                             return
                         }
@@ -96,7 +96,7 @@ class ListAccountViewController: UIViewController {
                         else {
                             // MARK: Success Login with Selected User
                             AnalyticsManager.trackEventName("clickLogin", category: "login with phone", action: GA_EVENT_ACTION_LOGIN_SUCCESS, label: "Tokocash")
-                            strongSelf.notifyUserDidLogin()
+                            strongSelf.onTapExit?(login)
                         }
                         SwiftOverlays.removeAllBlockingOverlays()
                     }
@@ -109,22 +109,9 @@ class ListAccountViewController: UIViewController {
             .addDisposableTo(self.rx_disposeBag)
     }
     
-    private func notifyUserDidLogin() {
-        Branch.getInstance().setIdentity(UserAuthentificationManager().getUserId())
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
-        let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self)
-        if let manager = tabManager as? ReactEventManager {
-            manager.sendLoginEvent(UserAuthentificationManager().getUserLoginData())
-        }
-        
-        self.onTapExit?()
-    }
-    
     private func setupCustomCell(cellData: TokoCashVerifyUserDetail, index: Int) -> UIView {
         let frame = CGRect(x: 0, y: 0, width: self.view.bounds.width, height: 71)
-        let cell = AccountCustomCell.init(frame: frame)
+        let cell = AccountCustomCell(frame: frame)
         if UI_USER_INTERFACE_IDIOM() == .pad {
             cell.imageCell.translatesAutoresizingMaskIntoConstraints =  false
             cell.imageCell.leadingAnchor.constraint(equalTo: cell.leadingAnchor, constant: 0).isActive = true

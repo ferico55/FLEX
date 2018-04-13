@@ -324,7 +324,7 @@
         } else if (button.tag == 3) {
             if (_catalog) {
                 ReferralManager *referralManager = [ReferralManager new];
-                [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: button];
+                [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: button onCompletion:nil];
             }
         }
     }

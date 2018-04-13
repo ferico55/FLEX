@@ -17,14 +17,15 @@ public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegat
     private var emailId: String?
     private var password: String?
     private var loginResult: Login?
+    internal var shouldRedirectToHome = true
     @IBOutlet private weak var registerButton: UIBarButtonItem!
     //    MARK: - Lifecycle
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         TouchIDHelper.sharedInstance.delegate = self
-
+        
     }
-    override public func viewWillAppear(_ animated: Bool) {
+    public override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         self.setupUI()
         self.makeActivityIndicator(toShow: false)
@@ -160,7 +161,9 @@ public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegat
         Branch.getInstance().setIdentity(UserAuthentificationManager().getUserId())
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
+        if self.shouldRedirectToHome {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
+        }
         let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self)
         if let manager = tabManager as? ReactEventManager {
             manager.sendLoginEvent(UserAuthentificationManager().getUserLoginData())
@@ -203,32 +206,32 @@ public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegat
             let accountInfo = sender.accountInfo else {
             return
         }
-
+        
         let vc = RegisterSocialMediaViewController(userProfile: socialProfile,
                                                    token: token,
                                                    accountInfo: accountInfo,
                                                    successCallback: { _ in
                                                        onCompletion(nil)
         })
-
+        
         let navigationController = UINavigationController(rootViewController: vc)
         navigationController.navigationBar.isTranslucent = false
-
+        
         self.present(navigationController, animated: true, completion: nil)
         self.makeActivityIndicator(toShow: false)
     }
-
+    
     public func successLoginAfterCreatePassword(sender: AuthenticationService, login: Login) {
         login.justRegistered = true
         self.loginSuccess(login: login)
     }
-
+    
     //    MARK: - TouchIDHelperDelegate
     public func touchIDHelperActivationSucceed(_ helper: TouchIDHelper) {
         guard let loginResult = self.loginResult else {
             return
         }
-
+        
         self.loginSuccess(login: loginResult)
     }
     public func touchIDHelperActivationFailed(_ helper: TouchIDHelper) {
@@ -249,7 +252,7 @@ public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegat
     public func touchIDHelper(_ helper: TouchIDHelper, loadSucceedForEmail email: String, andPassword password: String) {
         self.isUsingTouchID = true
         self.emailId = email
-        self.password = password        
+        self.password = password
         for viewController in self.childViewControllers {
             if let tableController = viewController as? LoginTableViewController {
                 tableController.setField(email: email)

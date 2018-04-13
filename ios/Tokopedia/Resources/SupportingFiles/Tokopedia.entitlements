@@ -20,6 +20,7 @@
 		<string>applinks:alternate.tokopedia.link</string>
 		<string>applinks:trk.tokopedia.email</string>
 		<string>applinks:explorer.tokopedia.com</string>
+		<string>applinks:m-staging.tokopedia.com</string>
 	</array>
 </dict>
 </plist>

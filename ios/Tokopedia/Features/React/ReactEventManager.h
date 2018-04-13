@@ -26,5 +26,6 @@
 - (void)didTapShareOnGroupChat:(NSInteger)shareTag;
 - (void)sendFavoriteShopEvent;
 - (void)sendProfileEditedEvent;
+- (void)sendNotificationToGroupChat:(NSDictionary*)notificationData;;
 
 @end

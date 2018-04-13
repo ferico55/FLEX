@@ -593,7 +593,7 @@ ProductCellDelegate
             SearchProductWrapperReferable *referable = [SearchProductWrapperReferable new];
             referable.shareUrl = [self isSearchProductType] ? _fuzzyWrapper.data.shareURL : _searchProductWrapper.data.shareUrl;
             referable.title = title;
-            [referralManager shareWithObject:referable from:self anchor: button];
+            [referralManager shareWithObject:referable from:self anchor: button onCompletion:nil];
             
             [AnalyticsManager trackEventName:@"clickSearchResult" category:@"search share" action:[NSString stringWithFormat:@"click tab - %@", screenName] label:@"-"];
             

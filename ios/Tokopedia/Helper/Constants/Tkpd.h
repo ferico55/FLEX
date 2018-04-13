@@ -205,6 +205,7 @@ typedef enum {
 
 #define TokopediaNotificationRedirect @"redirectNotification"
 #define TokopediaNotificationReload @"reloadNotification"
+#define GroupChatNotification @"groupChatNotification"
 
 #define productCollectionViewCellWidth6plus 192
 #define productCollectionViewCellWidthNormal 159

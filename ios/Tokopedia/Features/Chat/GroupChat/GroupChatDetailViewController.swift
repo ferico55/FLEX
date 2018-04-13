@@ -12,31 +12,34 @@ import UIKit
 
 internal class GroupChatDetailViewController: UIViewController {
     
-    internal let props : [String:AnyObject]
+    internal let props: [String: AnyObject]
     private var titleBarText: String?
     private var navbarImage: UIImage?
     private var totalParticipant: String?
     private let titleView: UILabel = UILabel()
     private let subtitleView: UILabel = UILabel()
+    private var isNavbarTranslucent = false
     
-    internal convenience init(){
+    internal convenience init() {
         let userManager = UserAuthentificationManager()
         let auth = userManager.getUserLoginData()
         let defaultProps = ["authInfo": auth as AnyObject]
         self.init(initialProps: defaultProps)
     }
     
-    internal init(initialProps: [String:AnyObject]) {
+    internal init(initialProps: [String: AnyObject]) {
         self.props = initialProps
         super.init(nibName: nil, bundle: nil)
     }
     
-    required internal init?(coder aDecoder: NSCoder) {
+    internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override internal func viewDidLoad() {
+    internal override func viewDidLoad() {
         super.viewDidLoad()
+        
+        self.initNavbarView()
         
         NotificationCenter.default.rx.notification(Notification.Name("SET_GROUPCHAT_NAVBAR"))
             .asDriverOnErrorJustComplete()
@@ -45,13 +48,16 @@ internal class GroupChatDetailViewController: UIViewController {
                     return
                 }
                 
-                if let imageUrl = userInfo["imageUrl"] as? String {
-                    self.imageFromServerURL(urlString: imageUrl)
+                if let titleBar = userInfo["titleBar"] as? String {
+                    self.titleBarText = titleBar
                 }
                 
-                if let titleBar = userInfo["titleBar"] as? String, let totalParticipant = userInfo["totalParticipant"] as? String {
-                    self.titleBarText = titleBar
-                    self.totalParticipant = totalParticipant
+                if let hideNavbar = userInfo["setNavbarTranslucent"] as? Bool {
+                    if hideNavbar {
+                        self.initNavbarView()
+                    } else {
+                        self.showNavbarItem()
+                    }
                 }
                 
                 if let totalParticipant = userInfo["totalParticipant"] as? String {
@@ -60,11 +66,24 @@ internal class GroupChatDetailViewController: UIViewController {
             })
             .disposed(by: self.rx_disposeBag)
         
+        NotificationCenter.default.rx.notification(Notification.Name(GroupChatNotification))
+            .asDriverOnErrorJustComplete()
+            .drive(onNext: { notification in
+                guard let userInfo = notification.userInfo , let reactManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager else {
+                    return
+                }
+                
+                if let applinks = userInfo["applinks"] as? String, let desc = userInfo["desc"] as? String, let tkpCode = userInfo["tkp_code"] as? Int {
+                    let data = ["desc": desc, "tkpCode":tkpCode, "applinks": applinks] as [String: Any]
+                    reactManager.sendNotification(toGroupChat: data)
+                }
+            })
+            .disposed(by: self.rx_disposeBag)
+        
         // Set bar button item
         let shareButton = UIBarButtonItem(image: #imageLiteral(resourceName: "share_ios"), style: .plain, target: self, action: #selector(self.tapShareButton(sender:)))
         shareButton.tag = 2308 // For React Tag Purposes
-        let infoButton = UIBarButtonItem(image: #imageLiteral(resourceName: "whiteInfo") , style: .plain, target: self, action: #selector(self.tapInfoButton(sender:)))
-        self.navigationItem.rightBarButtonItems = [shareButton,infoButton]
+        self.navigationItem.rightBarButtonItem = shareButton
         
         // Do any additional setup after loading the view.
         let reactVC = ReactViewController(moduleName: "GroupChatDetail", props: self.props)
@@ -76,12 +95,29 @@ internal class GroupChatDetailViewController: UIViewController {
         }
     }
     
-    override internal func viewWillAppear(_ animated: Bool) {
+    internal override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        if let navBar = self.navigationController?.navigationBar ,self.navbarImage != nil {
-            UIApplication.shared.statusBarStyle = .lightContent
-            navBar.tintColor = #colorLiteral(red: 1, green: 1, blue: 1, alpha: 1)
+        if self.isNavbarTranslucent {
+            self.initNavbarView()
+        } else if !isNavbarTranslucent {
+            self.showNavbarItem()
         }
+    }
+    
+    internal override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar?.isTranslucent = false
+        navigationBar?.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        AnalyticsManager.trackEventName("clickBack", category: "groupchat room", action: "leave room", label: "")
+    }
+    
+    @objc private func tapDismiss() {
+        self.dismiss(animated: true)
+    }
+    
+    internal override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
     deinit {
@@ -90,32 +126,41 @@ internal class GroupChatDetailViewController: UIViewController {
     
     // MARK: Set Navbar
     private func initNavbarView() {
-        if let image = self.navbarImage, let navBar = self.navigationController?.navigationBar {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [weak self] in
-                guard let `self` = self else {
-                    return
-                }
-                self.titleView.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                self.subtitleView.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-                UIApplication.shared.statusBarStyle = .lightContent
-                navBar.setBackgroundImage(image, for: .default)
-                navBar.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-            }
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar?.tintColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        navigationBar?.isTranslucent = true
+        navigationBar?.setBackgroundImage(UIImage(), for: .default)
+        navigationBar?.backgroundColor = .clear
+        navigationBar?.shadowImage = UIImage()
+        if !self.isNavbarTranslucent {
+            self.isNavbarTranslucent = true
+        }
+    }
+    
+    private func showNavbarItem() {
+        let navigationBar = self.navigationController?.navigationBar
+        navigationBar?.tintColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
+        navigationBar?.isTranslucent = false
+        navigationBar?.backgroundColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        if self.isNavbarTranslucent {
+            self.isNavbarTranslucent = false
         }
     }
     
     // MARK: Set TitleBar
-    private func setTitle(title:String?, subtitle:String?) {
+    private func setTitle(title: String?, subtitle: String?) {
         if let title = title, let subtitle = subtitle {
-            titleView.text = title
-            titleView.font = .boldSystemFont(ofSize: 16)
-            titleView.textAlignment = .center
-            titleView.sizeToFit()
+            self.titleView.text = title
+            self.titleView.font = .boldSystemFont(ofSize: 16)
+            self.titleView.textColor = .white
+            self.titleView.textAlignment = .center
+            self.titleView.sizeToFit()
             
-            subtitleView.text = subtitle
-            subtitleView.font = .systemFont(ofSize: 11)
-            subtitleView.textAlignment = .center
-            subtitleView.sizeToFit()
+            self.subtitleView.text = subtitle
+            self.subtitleView.font = .systemFont(ofSize: 11)
+            self.subtitleView.textColor = .white
+            self.subtitleView.textAlignment = .center
+            self.subtitleView.sizeToFit()
             
             let stackView = UIStackView(arrangedSubviews: [titleView, subtitleView])
             stackView.distribution = .equalCentering
@@ -132,30 +177,11 @@ internal class GroupChatDetailViewController: UIViewController {
     }
     
     // MARK: UIBarButtonItem
-    @objc private func tapShareButton(sender: UIBarButtonItem){
-        let reactManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as! ReactEventManager
-        reactManager.didTapShare(onGroupChat: sender.tag)
-    }
-    
-    @objc private func tapInfoButton(sender: UIBarButtonItem){
-        let reactManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as! ReactEventManager
-        reactManager.didTapInfoOnGroupChat()
-    }
-    
-    // MARK: Get Image Async
-    private func imageFromServerURL(urlString: String) {
-        guard let url = URL(string: urlString) else {
+    @objc private func tapShareButton(sender: UIBarButtonItem) {
+        guard let reactManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self) as? ReactEventManager else {
             return
         }
         
-        let urlRequest = URLRequest(url: url)
-        let imageView = UIImageView()
-        imageView.setImageWithUrlRequest(urlRequest, success: { [weak self] (_, _, image, _) in
-            guard let `self` = self else {
-                return
-            }
-            self.navbarImage = image
-            self.initNavbarView()
-        }, failure: nil)
+        reactManager.didTapShare(onGroupChat: sender.tag)
     }
 }

@@ -735,7 +735,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [ReferralRemoteConfig.shared getAppShareDescriptionOnCompletion:^(NSString * _Nonnull description) {
                 AppSharing *appSharing = [AppSharing new];
                 appSharing.buoDescription = description;
-                [[ReferralManager new] shareWithObject:appSharing from: wrapperController anchor:[tableView cellForRowAtIndexPath:indexPath]];
+                [[ReferralManager new] shareWithObject:appSharing from: wrapperController anchor:[tableView cellForRowAtIndexPath:indexPath] onCompletion:nil];
             }];
         }
     }

@@ -22,9 +22,20 @@
 		52674E8E206CE3570080A628 /* VoucherTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52674E8D206CE3570080A628 /* VoucherTarget.swift */; };
 		52D7C0DE206B78C800FB497A /* AutoCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D7C0DD206B78C800FB497A /* AutoCode.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
+		62274AF52069DFD700F14FE2 /* GroupChatSprintSaleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62274AF32069DFD700F14FE2 /* GroupChatSprintSaleCell.swift */; };
+		62274AF62069DFD700F14FE2 /* GroupChatSprintSaleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62274AF42069DFD700F14FE2 /* GroupChatSprintSaleCell.xib */; };
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
 		622A6AB92015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */; };
+		62324D3A2068B2E500C4FD0F /* GroupChatTweaks.m in Sources */ = {isa = PBXBuildFile; fileRef = 62324D392068B2E400C4FD0F /* GroupChatTweaks.m */; };
+		62324D3D2068E67F00C4FD0F /* GroupChatJoinCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62324D3B2068E67F00C4FD0F /* GroupChatJoinCell.swift */; };
+		62324D3E2068E67F00C4FD0F /* GroupChatJoinCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 62324D3C2068E67F00C4FD0F /* GroupChatJoinCell.xib */; };
+		623B99CB20691130006288AF /* GroupChatPollingCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623B99C92069112F006288AF /* GroupChatPollingCell.swift */; };
+		623B99CC20691130006288AF /* GroupChatPollingCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 623B99CA2069112F006288AF /* GroupChatPollingCell.xib */; };
+		623D54A8206BB51E00B13B06 /* GroupChatGratificationCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623D54A6206BB51E00B13B06 /* GroupChatGratificationCell.swift */; };
+		623D54A9206BB51E00B13B06 /* GroupChatGratificationCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 623D54A7206BB51E00B13B06 /* GroupChatGratificationCell.xib */; };
+		623D54AC206BB8EA00B13B06 /* GroupChatAnnouncementCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 623D54AA206BB8EA00B13B06 /* GroupChatAnnouncementCell.swift */; };
+		623D54AD206BB8EA00B13B06 /* GroupChatAnnouncementCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 623D54AB206BB8EA00B13B06 /* GroupChatAnnouncementCell.xib */; };
 		62691B19203D8A8E008DC687 /* FeedTopAdsShopComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B17203D8A8D008DC687 /* FeedTopAdsShopComponentView.swift */; };
 		62691B1A203D8A8E008DC687 /* FeedTopAdsProductComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B18203D8A8D008DC687 /* FeedTopAdsProductComponentView.swift */; };
 		62691B1C203D8A99008DC687 /* FeedCardTopAdsState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 62691B1B203D8A98008DC687 /* FeedCardTopAdsState.swift */; };
@@ -726,6 +737,12 @@
 		E525C6DB20173930003CC99B /* NSDate+Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = E525C6DA20173930003CC99B /* NSDate+Formatter.swift */; };
 		E53FAC2020244076009EEC1E /* SellerInfoAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */; };
 		E54A4009203E810A008B5A19 /* TokoCashNetworkProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */; };
+		E555F9D12064AB1D007EB2A5 /* GroupChatTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = E555F9D02064AB1D007EB2A5 /* GroupChatTableView.m */; };
+		E555F9D32064E5F4007EB2A5 /* GroupChatTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E555F9D22064E5F4007EB2A5 /* GroupChatTableView.swift */; };
+		E555F9D52064E629007EB2A5 /* GroupChatTableViewManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E555F9D42064E629007EB2A5 /* GroupChatTableViewManager.swift */; };
+		E564E632206588A5005E9CE8 /* SectionItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = E564E631206588A5005E9CE8 /* SectionItem.swift */; };
+		E576573B206548A8003683DB /* GroupChatPlainMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5765739206548A8003683DB /* GroupChatPlainMessageCell.swift */; };
+		E576573C206548A9003683DB /* GroupChatPlainMessageCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576573A206548A8003683DB /* GroupChatPlainMessageCell.xib */; };
 		E576C2652034180E008524AA /* CentralizedOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2572034180D008524AA /* CentralizedOTPViewController.swift */; };
 		E576C2662034180E008524AA /* ModeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E576C2592034180D008524AA /* ModeCell.swift */; };
 		E576C2672034180E008524AA /* VerificationModeListViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E576C25A2034180D008524AA /* VerificationModeListViewController.xib */; };
@@ -2232,9 +2249,21 @@
 		52674E8D206CE3570080A628 /* VoucherTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherTarget.swift; sourceTree = "<group>"; };
 		52D7C0DD206B78C800FB497A /* AutoCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCode.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		62274AF32069DFD700F14FE2 /* GroupChatSprintSaleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatSprintSaleCell.swift; sourceTree = "<group>"; };
+		62274AF42069DFD700F14FE2 /* GroupChatSprintSaleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatSprintSaleCell.xib; sourceTree = "<group>"; };
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
 		622A6AB82015A76C00E89DAA /* FeedCardContentProductCommunicationState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardContentProductCommunicationState.swift; sourceTree = "<group>"; };
+		62324D382068B2E400C4FD0F /* GroupChatTweaks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GroupChatTweaks.h; sourceTree = "<group>"; };
+		62324D392068B2E400C4FD0F /* GroupChatTweaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatTweaks.m; sourceTree = "<group>"; };
+		62324D3B2068E67F00C4FD0F /* GroupChatJoinCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatJoinCell.swift; sourceTree = "<group>"; };
+		62324D3C2068E67F00C4FD0F /* GroupChatJoinCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatJoinCell.xib; sourceTree = "<group>"; };
+		623B99C92069112F006288AF /* GroupChatPollingCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatPollingCell.swift; sourceTree = "<group>"; };
+		623B99CA2069112F006288AF /* GroupChatPollingCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatPollingCell.xib; sourceTree = "<group>"; };
+		623D54A6206BB51E00B13B06 /* GroupChatGratificationCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatGratificationCell.swift; sourceTree = "<group>"; };
+		623D54A7206BB51E00B13B06 /* GroupChatGratificationCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatGratificationCell.xib; sourceTree = "<group>"; };
+		623D54AA206BB8EA00B13B06 /* GroupChatAnnouncementCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatAnnouncementCell.swift; sourceTree = "<group>"; };
+		623D54AB206BB8EA00B13B06 /* GroupChatAnnouncementCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatAnnouncementCell.xib; sourceTree = "<group>"; };
 		62691B17203D8A8D008DC687 /* FeedTopAdsShopComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTopAdsShopComponentView.swift; sourceTree = "<group>"; };
 		62691B18203D8A8D008DC687 /* FeedTopAdsProductComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedTopAdsProductComponentView.swift; sourceTree = "<group>"; };
 		62691B1B203D8A98008DC687 /* FeedCardTopAdsState.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCardTopAdsState.swift; sourceTree = "<group>"; };
@@ -3420,6 +3449,12 @@
 		E525C6DA20173930003CC99B /* NSDate+Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSDate+Formatter.swift"; sourceTree = "<group>"; };
 		E53FAC1F20244076009EEC1E /* SellerInfoAnalyticsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SellerInfoAnalyticsManager.swift; sourceTree = "<group>"; };
 		E54A4008203E810A008B5A19 /* TokoCashNetworkProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TokoCashNetworkProvider.swift; sourceTree = "<group>"; };
+		E555F9D02064AB1D007EB2A5 /* GroupChatTableView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = GroupChatTableView.m; sourceTree = "<group>"; };
+		E555F9D22064E5F4007EB2A5 /* GroupChatTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatTableView.swift; sourceTree = "<group>"; };
+		E555F9D42064E629007EB2A5 /* GroupChatTableViewManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatTableViewManager.swift; sourceTree = "<group>"; };
+		E564E631206588A5005E9CE8 /* SectionItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SectionItem.swift; sourceTree = "<group>"; };
+		E5765739206548A8003683DB /* GroupChatPlainMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupChatPlainMessageCell.swift; sourceTree = "<group>"; };
+		E576573A206548A8003683DB /* GroupChatPlainMessageCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = GroupChatPlainMessageCell.xib; sourceTree = "<group>"; };
 		E576C2572034180D008524AA /* CentralizedOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CentralizedOTPViewController.swift; sourceTree = "<group>"; };
 		E576C2592034180D008524AA /* ModeCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModeCell.swift; sourceTree = "<group>"; };
 		E576C25A2034180D008524AA /* VerificationModeListViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = VerificationModeListViewController.xib; sourceTree = "<group>"; };
@@ -7861,9 +7896,11 @@
 		E520971D20612A4A002F5301 /* Chat */ = {
 			isa = PBXGroup;
 			children = (
-				E520971E20612A4A002F5301 /* GroupChat */,
-				E520972120612A4A002F5301 /* ChatPagerViewController.xib */,
 				E520972220612A4A002F5301 /* ChatPagerViewController.swift */,
+				E520972120612A4A002F5301 /* ChatPagerViewController.xib */,
+				E520971E20612A4A002F5301 /* GroupChat */,
+				62324D382068B2E400C4FD0F /* GroupChatTweaks.h */,
+				62324D392068B2E400C4FD0F /* GroupChatTweaks.m */,
 				E520972320612A4A002F5301 /* TopChat */,
 			);
 			path = Chat;
@@ -7872,8 +7909,11 @@
 		E520971E20612A4A002F5301 /* GroupChat */ = {
 			isa = PBXGroup;
 			children = (
-				E520971F20612A4A002F5301 /* TabView.swift */,
 				E520972020612A4A002F5301 /* GroupChatDetailViewController.swift */,
+				E520971F20612A4A002F5301 /* TabView.swift */,
+				E576573D206548B4003683DB /* CustomCell */,
+				E564E63020658851005E9CE8 /* Model */,
+				E555F9CF2064AB04007EB2A5 /* React */,
 			);
 			path = GroupChat;
 			sourceTree = "<group>";
@@ -7946,6 +7986,43 @@
 				E5CDEB2C2004C7DF00C41219 /* Wishlist */,
 			);
 			path = Test;
+			sourceTree = "<group>";
+		};
+		E555F9CF2064AB04007EB2A5 /* React */ = {
+			isa = PBXGroup;
+			children = (
+				E555F9D02064AB1D007EB2A5 /* GroupChatTableView.m */,
+				E555F9D22064E5F4007EB2A5 /* GroupChatTableView.swift */,
+				E555F9D42064E629007EB2A5 /* GroupChatTableViewManager.swift */,
+			);
+			path = React;
+			sourceTree = "<group>";
+		};
+		E564E63020658851005E9CE8 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E564E631206588A5005E9CE8 /* SectionItem.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E576573D206548B4003683DB /* CustomCell */ = {
+			isa = PBXGroup;
+			children = (
+				623D54AA206BB8EA00B13B06 /* GroupChatAnnouncementCell.swift */,
+				623D54AB206BB8EA00B13B06 /* GroupChatAnnouncementCell.xib */,
+				623D54A6206BB51E00B13B06 /* GroupChatGratificationCell.swift */,
+				623D54A7206BB51E00B13B06 /* GroupChatGratificationCell.xib */,
+				62324D3B2068E67F00C4FD0F /* GroupChatJoinCell.swift */,
+				62324D3C2068E67F00C4FD0F /* GroupChatJoinCell.xib */,
+				E5765739206548A8003683DB /* GroupChatPlainMessageCell.swift */,
+				E576573A206548A8003683DB /* GroupChatPlainMessageCell.xib */,
+				623B99C92069112F006288AF /* GroupChatPollingCell.swift */,
+				623B99CA2069112F006288AF /* GroupChatPollingCell.xib */,
+				62274AF32069DFD700F14FE2 /* GroupChatSprintSaleCell.swift */,
+				62274AF42069DFD700F14FE2 /* GroupChatSprintSaleCell.xib */,
+			);
+			path = CustomCell;
 			sourceTree = "<group>";
 		};
 		E576C2562034180D008524AA /* CentralizedOTP */ = {
@@ -11994,6 +12071,7 @@
 				F97700B61FE8AB8600183A85 /* MaterialCommunityIcons.ttf in Resources */,
 				F98052592018AAFE00CE6D67 /* OnboardingViewController.xib in Resources */,
 				F977FDB71FE8AB8000183A85 /* FilterConditionViewController.xib in Resources */,
+				62324D3E2068E67F00C4FD0F /* GroupChatJoinCell.xib in Resources */,
 				F977FC0B1FE8AB7C00183A85 /* ShipmentLocationPickupViewCell.xib in Resources */,
 				F954C43E1FC55B6C008C0B30 /* TokopediaDB.db in Resources */,
 				F977FD1C1FE8AB7F00183A85 /* WebViewController.xib in Resources */,
@@ -12140,8 +12218,10 @@
 				F977FE211FE8AB8100183A85 /* PromoCollectionReusableView.xib in Resources */,
 				F977FDB51FE8AB8000183A85 /* FilterConditionCell.xib in Resources */,
 				F954C4571FC55B6D008C0B30 /* icon_more_active@2x.png in Resources */,
+				623D54AD206BB8EA00B13B06 /* GroupChatAnnouncementCell.xib in Resources */,
 				F977FB131FE8AB7B00183A85 /* ProductThumbCell.xib in Resources */,
 				F977FB651FE8AB7B00183A85 /* InboxResolutionCenterOpenViewController.xib in Resources */,
+				623D54A9206BB51E00B13B06 /* GroupChatGratificationCell.xib in Resources */,
 				F977FC781FE8AB7D00183A85 /* ShopSettingViewController.xib in Resources */,
 				F977FBEB1FE8AB7C00183A85 /* RejectReasonEditPriceViewController.xib in Resources */,
 				E5D8A5782010A311003E66BA /* LoginPhoneNumberViewController.xib in Resources */,
@@ -12177,6 +12257,7 @@
 				F977FDD11FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.xib in Resources */,
 				F977FCA31FE8AB7D00183A85 /* OpenShopDomainViewCell.xib in Resources */,
 				E5ADEDBB20353931006488AF /* ComplaintFilterTableViewCell.xib in Resources */,
+				E576573C206548A9003683DB /* GroupChatPlainMessageCell.xib in Resources */,
 				F977FE2B1FE8AB8100183A85 /* RegisterBaseViewController.xib in Resources */,
 				F977FB351FE8AB7B00183A85 /* DepositFormViewController.xib in Resources */,
 				F772716920355FDB00D959AF /* TokoCashMoveToSaldoViewController.xib in Resources */,
@@ -12192,6 +12273,7 @@
 				F977FB8F1FE8AB7B00183A85 /* CategoryResultViewController.xib in Resources */,
 				7A4672031EB2FEB400A72105 /* GTM-NCTWRP in Resources */,
 				7A466BC01EB2FEAE00A72105 /* Main.storyboard in Resources */,
+				623B99CC20691130006288AF /* GroupChatPollingCell.xib in Resources */,
 				F954C4541FC55B6D008C0B30 /* icon_cart_active@3x.png in Resources */,
 				F977FE331FE8AB8100183A85 /* EmptyStateView.xib in Resources */,
 				F977FC121FE8AB7C00183A85 /* CourierNoteViewCell.xib in Resources */,
@@ -12332,6 +12414,7 @@
 				E5ADEDB020353931006488AF /* ComplaintFilterCollectionViewCell.xib in Resources */,
 				F977FB311FE8AB7B00183A85 /* NoResultReusableView.xib in Resources */,
 				F977FABF1FE8AB7A00183A85 /* SettingBankNameViewController.xib in Resources */,
+				62274AF62069DFD700F14FE2 /* GroupChatSprintSaleCell.xib in Resources */,
 				F977FC041FE8AB7C00183A85 /* CourierOptionViewCell.xib in Resources */,
 				F977FC791FE8AB7D00183A85 /* ShopInfoShipmentCell.xib in Resources */,
 				F977FC991FE8AB7D00183A85 /* SendChatViewController.xib in Resources */,
@@ -13145,6 +13228,7 @@
 				F977FD391FE8AB7F00183A85 /* SpellCheckResponse.m in Sources */,
 				F977FB641FE8AB7B00183A85 /* InboxResolutionCenterOpenViewController.m in Sources */,
 				F977FD931FE8AB8000183A85 /* WebViewInvoiceViewController.m in Sources */,
+				E555F9D52064E629007EB2A5 /* GroupChatTableViewManager.swift in Sources */,
 				F977FC891FE8AB7D00183A85 /* EditShopTypeViewCell.m in Sources */,
 				62C7716C1FF33C3400F66527 /* UploadImageValidation.m in Sources */,
 				F97700AA1FE8AB8600183A85 /* TKPGooglePlaceDetailProductStore.m in Sources */,
@@ -13279,6 +13363,7 @@
 				F977FA5F1FE8AB7900183A85 /* ZipcodeRecommendationTableView.swift in Sources */,
 				F954C4631FC55B6D008C0B30 /* main.m in Sources */,
 				F977FDFE1FE8AB8100183A85 /* PulsaCategory.swift in Sources */,
+				62324D3A2068B2E500C4FD0F /* GroupChatTweaks.m in Sources */,
 				92A4CBB4201731CC00C42D37 /* SellerInfoList.swift in Sources */,
 				F9C41A2C20566574008FE23C /* HomePageCategoryResponse.swift in Sources */,
 				F977FA291FE8AB7900183A85 /* JSONAbleType.swift in Sources */,
@@ -13291,6 +13376,7 @@
 				62C771051FF33C3300F66527 /* Logout.m in Sources */,
 				62C770181FF33C3200F66527 /* TxOrderConfirmed.m in Sources */,
 				F977FB451FE8AB7B00183A85 /* HotlistCollectionCell.m in Sources */,
+				E555F9D32064E5F4007EB2A5 /* GroupChatTableView.swift in Sources */,
 				F977FA701FE8AB7A00183A85 /* ProductWholesaleViewController.swift in Sources */,
 				62C771711FF33C3400F66527 /* GenerateHostResult.m in Sources */,
 				F977FCBA1FE8AB7E00183A85 /* SecurityQuestionViewController.swift in Sources */,
@@ -13412,6 +13498,7 @@
 				F97700A81FE8AB8600183A85 /* UIViewController+TKPAdditions.m in Sources */,
 				F977FDAA1FE8AB8000183A85 /* ConfirmationRequest.swift in Sources */,
 				F977FC701FE8AB7D00183A85 /* CatalogSectionHeaderView.m in Sources */,
+				E576573B206548A8003683DB /* GroupChatPlainMessageCell.swift in Sources */,
 				F977FE241FE8AB8100183A85 /* ProductTalkFormViewController.m in Sources */,
 				F977FE161FE8AB8100183A85 /* InboxTalkViewController.m in Sources */,
 				F772715620355FDB00D959AF /* TokoCashQRPaymentFailedNavigator.swift in Sources */,
@@ -13428,6 +13515,7 @@
 				DADB9F461F3C46CE002B1FAE /* _FBTweakCategoryViewController.m in Sources */,
 				F977FE541FE8AB8100183A85 /* FeedNextPageErrorComponentView.swift in Sources */,
 				F977FD421FE8AB7F00183A85 /* WalletService.swift in Sources */,
+				62274AF52069DFD700F14FE2 /* GroupChatSprintSaleCell.swift in Sources */,
 				62C770EB1FF33C3300F66527 /* ShopBadgeLevel.m in Sources */,
 				F977FCE81FE8AB7E00183A85 /* GalleryPhoto.m in Sources */,
 				F97700991FE8AB8600183A85 /* FoundationHelper.swift in Sources */,
@@ -13658,6 +13746,7 @@
 				62C770771FF33C3300F66527 /* V4Response.m in Sources */,
 				F977FDB41FE8AB8000183A85 /* FilterConditionCell.m in Sources */,
 				62C770341FF33C3200F66527 /* TransactionCartResult.m in Sources */,
+				E564E632206588A5005E9CE8 /* SectionItem.swift in Sources */,
 				F977FAB81FE8AB7A00183A85 /* BankAccountRequest.m in Sources */,
 				62C76FF81FF33C3200F66527 /* TxEmoney.m in Sources */,
 				F977FB981FE8AB7C00183A85 /* CategoryIntermediaryViewController.swift in Sources */,
@@ -13722,6 +13811,7 @@
 				F977FC431FE8AB7D00183A85 /* TooltipAlert.swift in Sources */,
 				E57974D51FEA741F00610655 /* MyCouponListTableViewController.swift in Sources */,
 				DADB9F521F3C46CE002B1FAE /* HPTextViewInternal.m in Sources */,
+				623D54A8206BB51E00B13B06 /* GroupChatGratificationCell.swift in Sources */,
 				62C771D01FF33C3500F66527 /* PromoCategory.m in Sources */,
 				62C7702A1FF33C3200F66527 /* ShipmentAvailable.m in Sources */,
 				F977FE0F1FE8AB8100183A85 /* PulsaStatusAttribute.swift in Sources */,
@@ -14192,6 +14282,7 @@
 				E5D8A57B2010A311003E66BA /* NoAccountViewController.swift in Sources */,
 				92454ABA203E7A8300D3F58F /* CrashlyticsPlugin.swift in Sources */,
 				F98052612018AAFE00CE6D67 /* HybridNavigationManager.m in Sources */,
+				62324D3D2068E67F00C4FD0F /* GroupChatJoinCell.swift in Sources */,
 				F977FC3C1FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.swift in Sources */,
 				E57974D11FEA741F00610655 /* InputPromoCodeViewController.swift in Sources */,
 				F977FA251FE8AB7900183A85 /* V4Target.swift in Sources */,
@@ -14248,6 +14339,7 @@
 				622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */,
 				62C771A51FF33C3500F66527 /* PopUpNotification.swift in Sources */,
 				62C770A51FF33C3300F66527 /* ResolutionCenterDetail.m in Sources */,
+				E555F9D12064AB1D007EB2A5 /* GroupChatTableView.m in Sources */,
 				F977FBBF1FE8AB7C00183A85 /* PickupAddressView.swift in Sources */,
 				F977FB2D1FE8AB7B00183A85 /* RetryCollectionReusableView.m in Sources */,
 				F977FD131FE8AB7E00183A85 /* WKWebViewController.swift in Sources */,
@@ -14449,6 +14541,7 @@
 				8439723320612F540068C0A4 /* WKWebViewControllerReferral.swift in Sources */,
 				F977FBAA1FE8AB7C00183A85 /* DetailShipmentStatusCell.m in Sources */,
 				62C771171FF33C3400F66527 /* GetCouponResponse.swift in Sources */,
+				623B99CB20691130006288AF /* GroupChatPollingCell.swift in Sources */,
 				62C770761FF33C3200F66527 /* PriceAlertResult.m in Sources */,
 				62C7713C1FF33C3400F66527 /* Notes.swift in Sources */,
 				62C771001FF33C3300F66527 /* SecurityQuestion.m in Sources */,
@@ -14463,6 +14556,7 @@
 				62C7707F1FF33C3300F66527 /* Deposit.m in Sources */,
 				62C76FF61FF33C3200F66527 /* TxEMoneyResult.m in Sources */,
 				62C770511FF33C3200F66527 /* InboxTicketDetailAttachment.m in Sources */,
+				623D54AC206BB8EA00B13B06 /* GroupChatAnnouncementCell.swift in Sources */,
 				F977FB591FE8AB7B00183A85 /* ProductResolutionViewModel.swift in Sources */,
 				848FA6EB1FEBF8BF00A22EDE /* RCShipping.swift in Sources */,
 				F7CCD922205BFB0F00EB46A7 /* PaymentSaveCCViewController.swift in Sources */,

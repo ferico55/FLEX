@@ -78,7 +78,7 @@ def common_pods
     pod 'MMNumberKeyboard', '~> 0.1.8'
     pod 'MXSegmentedPager', '~> 3.2.0'
     pod 'NJKWebViewProgress',  '~> 0.2.3'
-    pod 'NSAttributedString-DDHTML', '1.2.0'
+    pod 'NSAttributedString-DDHTML', :git => 'https://github.com/esam091/NSAttributedString-DDHTML', :branch => 'master'
     pod 'OAStackView', '~> 1.0.1'
     pod 'Popover', :git => 'https://github.com/corin8823/Popover.git', :branch => 'master'
     pod 'RATreeView', '~> 2.1.2'

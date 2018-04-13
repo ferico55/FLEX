@@ -47,6 +47,7 @@ public class LoginPhoneNumberOTPViewController: UIViewController {
     private let boldAttributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.tpDisabledBlackText()]
     
     internal var tokoCashLoginSendOTPResponse: TokoCashLoginSendOTPResponse!
+    internal weak var parentController: LoginViewController?
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -293,9 +294,16 @@ public class LoginPhoneNumberOTPViewController: UIViewController {
         let controller = ListAccountViewController(nibName: nil, bundle: nil)
         controller.tokocashLoginVerifyResponse = data
         controller.phoneNumber = self.tokoCashLoginSendOTPResponse.phoneNumber
-        controller.onTapExit = { [weak controller] in
+        controller.onTapExit = { [weak controller] (_ login: Login?) in
             controller?.dismiss(animated: true, completion: { [weak self] in
-                self?.navigationController?.popToRootViewController(animated: true)
+                guard let `self` = self else {
+                    return
+                }
+                
+                self.navigationController?.popToRootViewController(animated: true)
+                if let parent = self.parentController, let login = login {
+                    parent.loginSuccess(login: login)
+                }
             })
         }
         let navController = UINavigationController(rootViewController: controller)

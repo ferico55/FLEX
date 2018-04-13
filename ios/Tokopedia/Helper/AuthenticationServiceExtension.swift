@@ -11,11 +11,12 @@ import RxSwift
 
 extension AuthenticationService {
     
-    func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void) {
+    internal func signInFromViewController(_ viewController: UIViewController, onSignInSuccess: @escaping (_ loginResult: LoginResult?) -> Void) {
         
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
         let loginViewController = navigationController.viewControllers.first as! LoginViewController
+        loginViewController.shouldRedirectToHome = false
         loginViewController.onLoginFinished = { (result: LoginResult?) in
             guard let result = result else {
                 StickyAlertView.showErrorMessage(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])
@@ -27,7 +28,7 @@ extension AuthenticationService {
         viewController.present(navigationController, animated: true, completion: nil)
     }
     
-    func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: (() -> Void)?) {
+    internal func ensureLoggedInFromViewController(_ viewController: UIViewController, onSuccess: (() -> Void)?) {
         if UserAuthentificationManager().isLogin {
             if let theOnSuccess = onSuccess {
                 theOnSuccess()
@@ -43,7 +44,7 @@ extension AuthenticationService {
         }
     }
     
-    func ensureLoggedIn(from viewController: UIViewController) -> Observable<Void> {
+    internal func ensureLoggedIn(from viewController: UIViewController) -> Observable<Void> {
         return Observable.create { observer in
             self.ensureLoggedInFromViewController(viewController) {
                 observer.on(.next())

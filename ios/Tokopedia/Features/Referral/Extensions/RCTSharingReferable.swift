@@ -14,4 +14,8 @@ internal class RCTSharingReferable: NSObject, Referable {
     internal var title: String = ""
     internal var buoDescription: String = ""
     internal var utmCampaign: String = ""
+    
+    internal var ogTitle: String?
+    internal var ogDescription: String?
+    internal var ogImageUrl: String?
 }

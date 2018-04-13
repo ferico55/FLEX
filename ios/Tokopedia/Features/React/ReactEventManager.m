@@ -18,7 +18,7 @@ RCT_EXPORT_MODULE(EventManager)
     @"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct",
     @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped",
     @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab",
-    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat"
+    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat", @"didReceiveGroupChatNotification"
   ];
 }
 
@@ -80,6 +80,10 @@ RCT_EXPORT_MODULE(EventManager)
 
 - (void)didTapShareOnGroupChat:(NSInteger)shareTag {
     [self sendEventWithName:@"didTapShareOnGroupChat" body:@(shareTag)];
+}
+
+- (void)sendNotificationToGroupChat:(NSDictionary*) notificationData {
+    [self sendEventWithName:@"didReceiveGroupChatNotification" body:notificationData];
 }
 
 @end

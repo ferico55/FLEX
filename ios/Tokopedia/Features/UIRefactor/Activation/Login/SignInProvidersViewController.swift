@@ -6,41 +6,47 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import FBSDKLoginKit
+import UIKit
 
-class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
+internal class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDSignInDelegate {
     @IBOutlet private weak var providersListView: SignInProviderListView!
-    weak var parentController: LoginTableViewController?
-    let kClientId = "692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com"
+    private weak var parentController: LoginTableViewController?
+    private let kClientId = "692092518182-bnp4vfc3cbhktuqskok21sgenq0pn34n.apps.googleusercontent.com"
+    
     //    MARK: - Lifecycle
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         self.doInitialSetup()
     }
-    override func viewDidAppear(_ animated: Bool) {
+    
+    override internal func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         if LoginPreference().touchIdPopShown == false {
             LoginPreference().touchIdPopShown = true
             self.showTouchIdUsagePrompt()
         }
     }
-    override func didMove(toParentViewController parent: UIViewController?) {
+    
+    override internal func didMove(toParentViewController parent: UIViewController?) {
         super.didMove(toParentViewController: parent)
         if let parent = parent as? LoginTableViewController {
             self.parentController = parent
             parent.providersListViewHeight = CGFloat(self.providersListView.buttons.count * 54) - 10.0
         }
     }
+    
     deinit {
         debugPrint(self)
     }
+    
     //    MARK: -
-    func doInitialSetup() {
+    private func doInitialSetup() {
         self.providersListView.setSignInProviders(isRegister: false)
         self.addProvidersAction()
     }
-    func addProvidersAction() {
+    
+    private func addProvidersAction() {
         self.providersListView.onTouchIdSelected = { (provider: SignInProvider) in
             LoginAnalytics().trackLoginClickEvent(label: provider.name)
             self.touchIdLoginWith(provider: provider)
@@ -77,7 +83,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             self.loginWithPhoneNumber()
         }
     }
-    func showTouchIdUsagePrompt() {
+    
+    private func showTouchIdUsagePrompt() {
         let touchIdHelper = TouchIDHelper.sharedInstance
         guard touchIdHelper.isTouchIDAvailable() && touchIdHelper.numberOfConnectedAccounts() > 0 else {
             return
@@ -93,16 +100,22 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             self.present(viewController, animated: true, completion: nil)
         }
     }
+    
     //    MARK: - Do Login
     
     // MARK: Login With Tokocash Phone Number
-    func loginWithPhoneNumber() {
+    private func loginWithPhoneNumber() {
+        guard let parent = self.parentController?.parentController else {
+            return
+        }
+        
         let controller = LoginPhoneNumberViewController(nibName: nil, bundle: nil)
         controller.hidesBottomBarWhenPushed = true
+        controller.parentController = parent
         self.navigationController?.pushViewController(controller, animated: true)
     }
     
-    func webViewLoginWithProvider(provider: SignInProvider) {
+    private func webViewLoginWithProvider(provider: SignInProvider) {
         let controller = WebViewSignInViewController(provider: provider)
         controller.onReceiveToken = { (token: String) in
             let service = AuthenticationService.shared
@@ -122,7 +135,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         }
         self.navigationController?.pushViewController(controller, animated: true)
     }
-    func touchIdLoginWith(provider: SignInProvider) {
+    
+    private func touchIdLoginWith(provider: SignInProvider) {
         let touchIdHelper = TouchIDHelper.sharedInstance
         let emailIds = touchIdHelper.loadTouchIDAccount()
         guard emailIds.count > 0 else {
@@ -149,7 +163,7 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         self.present(alertController, animated: true, completion: nil)
     }
     
-    func doLoginWithUser(profile: CreatePasswordUserProfile) {
+    private func doLoginWithUser(profile: CreatePasswordUserProfile) {
         guard let parent = self.parentController?.parentController else {
             return
         }
@@ -173,8 +187,9 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         }
         service.login(withUserProfile: profile)
     }
+    
     //    MARK: - Facebook Login
-    func facebookLoginCompleted(result: FBSDKLoginManagerLoginResult?, error: Error?) {
+    private func facebookLoginCompleted(result: FBSDKLoginManagerLoginResult?, error: Error?) {
         guard let parent = self.parentController?.parentController else {
             return
         }
@@ -202,7 +217,8 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
             parent.makeActivityIndicator(toShow: false)
         }
     }
-    func didReceiveFacebookUserData(userData: [String: String]?) {
+    
+    private func didReceiveFacebookUserData(userData: [String: String]?) {
         guard let parent = self.parentController?.parentController else {
             return
         }
@@ -214,8 +230,9 @@ class SignInProvidersViewController: UIViewController, GIDSignInUIDelegate, GIDS
         let profile = CreatePasswordUserProfile.fromFacebook(userData: userData)
         self.doLoginWithUser(profile: profile)
     }
+    
     //    MARK: - GIDSignInDelegate
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
+    internal func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error?) {
         guard let parent = self.parentController?.parentController else {
             return
         }

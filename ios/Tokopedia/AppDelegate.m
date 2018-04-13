@@ -87,6 +87,11 @@
 
 - (void)userNotificationCenter:(UNUserNotificationCenter *)center willPresentNotification:(UNNotification *)notification withCompletionHandler:(void (^)(UNNotificationPresentationOptions))completionHandler {
     
+    NSDictionary *payload = [notification.request.content.userInfo objectForKey:@"data"];
+    if ([payload objectForKey:@"tkp_code"] != nil && [[[payload objectForKey:@"tkp_code"] stringValue] containsString:@"140"]) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:GroupChatNotification object:nil userInfo:payload];
+    }
+    
     completionHandler(UNNotificationPresentationOptionAlert | UNNotificationPresentationOptionBadge | UNNotificationPresentationOptionSound);
 }
 
@@ -94,7 +99,14 @@
     [[MoEngage sharedInstance] userNotificationCenter:center didReceiveNotificationResponse:response];
     NSDictionary *pushNotificationData = response.notification.request.content.userInfo;
     if (pushNotificationData) {
-        [self didReceiveNotificationBackgroundState:pushNotificationData];
+        UIApplication *application = [UIApplication sharedApplication];
+        //opened when application is on background
+        if(application.applicationState == UIApplicationStateInactive ||
+           application.applicationState == UIApplicationStateBackground) {
+            [self didReceiveNotificationBackgroundState:pushNotificationData];
+        } else {
+            [self didReceiveNotificationActiveState:pushNotificationData];
+        }
     }
     
     completionHandler();
@@ -291,6 +303,11 @@
     }];
     
     [router routeURL:applinksURL];
+    
+    if (applinksURL) {
+        [TPRoutes routeURL: applinksURL];
+        return YES;
+    }
     
     return NO;
 }

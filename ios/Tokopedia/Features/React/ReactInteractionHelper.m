@@ -38,7 +38,29 @@ RCT_EXPORT_METHOD(share:(NSString *)urlString deeplink:(NSString*)deeplink capti
     RCTView* view = anchorTag == 0 ? nil : (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
     UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
     ReferralManager *referralManager = [[ReferralManager alloc] init];
-    [referralManager shareWithObject:object from:viewController anchor:view];
+    [referralManager shareWithObject:object from:viewController anchor:view onCompletion:nil];
+}
+
+RCT_EXPORT_METHOD(shareWithCallback:(NSString *)urlString deeplink:(NSString*)deeplink caption:(NSString*) caption anchor:(nonnull NSNumber*) anchorTag ogProperty:(NSDictionary *)ogProperty callback:(RCTResponseSenderBlock)callback) {
+    RCTSharingReferable * object = [RCTSharingReferable new];
+    object.desktopUrl = urlString;
+    object.deeplinkPath = deeplink;
+    object.title = caption;
+    object.feature = @"Promo";
+    object.utmCampaign = @"promo";
+    
+    if([ogProperty count] > 0 && [ogProperty objectForKey:@"ogTitle"] && [ogProperty objectForKey:@"ogDescription"] && [ogProperty objectForKey:@"ogImageUrl"]){
+        object.ogTitle = [ogProperty valueForKey:@"ogTitle"];
+        object.ogDescription = [ogProperty valueForKey:@"ogDescription"];
+        object.ogImageUrl = [ogProperty valueForKey:@"ogImageUrl"];
+    }
+    
+    RCTView* view = anchorTag == 0 ? nil : (RCTView*)[_bridge.uiManager viewForReactTag: anchorTag];
+    UIViewController *viewController = [UIApplication sharedApplication].keyWindow.rootViewController;
+    ReferralManager *referralManager = [[ReferralManager alloc] init];
+    [referralManager shareWithObject:object from:viewController anchor:view onCompletion:^(NSString *type) {
+        callback(@[type]);
+    }];
 }
 
 RCT_EXPORT_METHOD(showStickyAlert:(NSString*) message) {

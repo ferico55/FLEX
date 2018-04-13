@@ -6,8 +6,8 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Foundation
 import CFAlertViewController
+import Foundation
 
 extension UIViewController {
     
@@ -25,7 +25,7 @@ extension UIViewController {
     }
     
     // MARK: - Method Swizzling
-    func TP_viewWillAppear(animated: Bool) {
+    public func TP_viewWillAppear(animated: Bool) {
         self.TP_viewWillAppear(animated: animated)
         
         let viewControllerName = NSStringFromClass(type(of: self))
@@ -34,14 +34,14 @@ extension UIViewController {
         guard let nav = self.navigationController, let top = nav.topViewController, type(of: self) == type(of: top) else { return }
         if self.isHomePage(top) {
             nav.setGreen()
-        } else {
+        } else if type(of: top) != GroupChatDetailViewController.self {
             nav.setWhite()
         }
     }
     
-    func TP_present(viewControllerToPresent: UIViewController,
-                    animated: Bool,
-                    completion: (() -> Void)? = nil) {
+    public func TP_present(viewControllerToPresent: UIViewController,
+                           animated: Bool,
+                           completion: (() -> Void)? = nil) {
         self.TP_present(viewControllerToPresent: viewControllerToPresent, animated: animated, completion: completion)
         
         guard (type(of: viewControllerToPresent).isSubclass(of: UIViewController.self) &&
@@ -49,19 +49,20 @@ extension UIViewController {
             type(of: viewControllerToPresent) != UIAlertController.self &&
             type(of: viewControllerToPresent) != CFAlertViewController.self &&
             type(of: viewControllerToPresent) != TopAdsInfoActionSheet.self &&
+            type(of: viewControllerToPresent) != GroupChatDetailViewController.self &&
             type(of: viewControllerToPresent) != UIActivityViewController.self) ||
             type(of: viewControllerToPresent).isSubclass(of: UINavigationController.self) else { return }
         
         UINavigationController.setDefaultNav()
     }
     
-    func isHomePage(_ viewController: UIViewController) -> Bool {
+    public func isHomePage(_ viewController: UIViewController) -> Bool {
         
         let elements = [HomeTabViewController.self, HotlistViewController.self, MyWishlistViewController.self, TransactionCartViewController.self, MoreWrapperViewController.self, LoginViewController.self]
         
         var status = false
         for element in elements {
-            if type(of: viewController) == element  {
+            if type(of: viewController) == element {
                 status = true
             }
         }

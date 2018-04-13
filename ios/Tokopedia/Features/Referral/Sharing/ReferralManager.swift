@@ -24,7 +24,7 @@ import Foundation
         }
     }
     //    MARK: - Public
-    internal func share(object: Any, from viewController: UIViewController, anchor: UIView?) {
+    internal func share(object: Any, from viewController: UIViewController, anchor: UIView?, onCompletion: ((String)->Void)? = nil) {
         guard let referable = object as? Referable else { return }
         if ReferralRemoteConfig.shared.isBranchLinkActive == false {
             if let anchor = anchor {
@@ -44,6 +44,10 @@ import Foundation
         if let referalSharing = referable as? ReferralSharing {
             linkProperties.addControlParam("$og_title", withValue: referalSharing.ogTitle)
             linkProperties.addControlParam("$og_description", withValue: referalSharing.ogDescription)
+        } else if let rctReferalSharing = referable as? RCTSharingReferable, let ogTitle = rctReferalSharing.ogTitle, let ogDescription = rctReferalSharing.ogDescription, let ogImageUrl = rctReferalSharing.ogImageUrl {
+            linkProperties.addControlParam("$og_title", withValue: ogTitle)
+            linkProperties.addControlParam("$og_description", withValue: ogDescription)
+            linkProperties.addControlParam("$og_image_url", withValue: ogImageUrl)
         }
         buo.showShareSheet(with: linkProperties, andShareText: shareText, from: viewController) { (_: String?, _: Bool) in
         }

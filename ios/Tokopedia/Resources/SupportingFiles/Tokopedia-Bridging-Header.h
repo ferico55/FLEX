@@ -245,3 +245,5 @@
 
 #import "PromoViewController.h"
 #import "ProfileSettingViewController.h"
+
+#import "GroupChatTweaks.h"

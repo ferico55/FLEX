@@ -454,7 +454,7 @@ static CGFloat rowHeight = 40;
         return;
     }
     ReferralManager *referralManager = [ReferralManager new];
-    [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: view];
+    [referralManager shareWithObject:_catalog.result.catalog_info from:self anchor: view onCompletion:nil];
 }
 
 #pragma mark - Action

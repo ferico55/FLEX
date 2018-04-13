@@ -439,9 +439,9 @@ ProductCellDelegate
         hotlistData.title = title;
         hotlistData.deeplinkPath = [NSString stringWithFormat:@"%@/hot/%@", [NSString tokopediaUrl], [[_bannerResult.info.title stringByReplacingOccurrencesOfString:@" " withString:@"-"] lowercaseString]];
         hotlistData.desktopUrl = [_data objectForKey:@"url"];
-        [referralManager shareWithObject:hotlistData from:self anchor: sender];
+        [referralManager shareWithObject:hotlistData from:self anchor: sender onCompletion:nil];
     } else if (_bannerResult) {
-        [referralManager shareWithObject:_bannerResult from:self anchor: sender];
+        [referralManager shareWithObject:_bannerResult from:self anchor: sender onCompletion:nil];
     }
 }
 
