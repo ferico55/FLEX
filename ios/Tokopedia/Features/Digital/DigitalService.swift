@@ -332,14 +332,5 @@ public class DigitalService {
                 .request(.otpSuccess(cartId))
                 .map { _ in return }
         }
-        .do(
-            onNext: {
-                viewController.dismiss(animated: true, completion: nil)
-            },
-            onError: { _ in
-                viewController.dismiss(animated: true, completion: nil)
-            }
-        )
-        
     }
 }

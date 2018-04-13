@@ -1,5 +1,5 @@
 {
-   "version":"1.13",
+   "version":"1.14",
    "data":[
  {
    "path": "pulsa",
@@ -880,6 +880,82 @@
  {
    "path": "paket-data/bolt",
    "applink": "tokopedia://digital/form?category_id=2&operator_id=3"
+ },
+ {
+   "path": "voucher/pepper-lunch",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=353"
+ },
+ {
+   "path": "voucher/shaburi",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=354"
+ },
+ {
+   "path": "voucher/kintan-buffet",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=355"
+ },
+ {
+   "path": "voucher/bakerzin",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=351"
+ },
+ {
+   "path": "voucher/boga-group",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=360"
+ },
+ {
+   "path": "voucher/carls-jr",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=370"
+ },
+ {
+   "path": "voucher/caribou-coffee",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=371"
+ },
+ {
+   "path": "voucher/wingstop",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=368"
+ },
+ {
+   "path": "voucher/shihlin",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=518"
+ },
+ {
+   "path": "voucher/gaya-gelato",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=519"
+ },
+ {
+   "path": "voucher/gokana",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=521"
+ },
+ {
+   "path": "voucher/platinum-resto",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=522"
+ },
+ {
+   "path": "voucher/fish-n-co",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=523"
+ },
+ {
+   "path": "voucher/auntie-anne",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=524"
+ },
+ {
+   "path": "voucher/liberica-coffee",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=525"
+ },
+ {
+   "path": "voucher/mister-baso",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=260"
+ },
+ {
+   "path": "voucher/rice-bowl",
+   "applink": "tokopedia://digital/form?category_id=24&operator_id=264"
+ },
+ {
+   "path": "angsuran/bfi-finance",
+   "applink": "tokopedia://digital/form?category_id=7&operator_id=526"
+ },
+ {
+   "path": "tiket-pesawat",
+   "applink": "tokopedia://pesawat"
  }
 ]
 }

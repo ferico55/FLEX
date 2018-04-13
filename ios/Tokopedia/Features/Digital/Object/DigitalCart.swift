@@ -10,28 +10,30 @@ import Foundation
 import RestKit
 import Unbox
 
-final class DigitalCart:Unboxable {
-    var cartId = ""
-    var productId = ""
-    var categoryId = ""
-    var userId = ""
-    var clientNumber = ""
-    var title = ""
-    var categoryName = ""
-    var operatorName = ""
-    var icon = ""
-    var priceText = ""
-    var price:Double = 0
-    var instantCheckout = false
-    var needOTP = false
-    var smsState = ""
-    var voucherCode = ""
-    var mainInfo = [DigitalCartInfoDetail]()
-    var additionalInfo:[DigitalCartInfo]?
-    var userInputPrice:DigitalCartUserInputPrice?
-    var isCouponActive = ""
+internal final class DigitalCart:Unboxable {
+    internal var cartId = ""
+    internal var productId = ""
+    internal var categoryId = ""
+    internal var userId = ""
+    internal var clientNumber = ""
+    internal var title = ""
+    internal var categoryName = ""
+    internal var operatorName = ""
+    internal var icon = ""
+    internal var priceText = ""
+    internal var price:Double = 0
+    internal var instantCheckout = false
+    internal var needOTP = false
+    internal var smsState = ""
+    internal var voucherCode = ""
+    internal var mainInfo = [DigitalCartInfoDetail]()
+    internal var additionalInfo:[DigitalCartInfo]?
+    internal var userInputPrice:DigitalCartUserInputPrice?
+    internal var isCouponActive = ""
+    internal var autoCode:AutoCode?
+    internal var defaultTab = ""
     
-    init(cartId:String = "", productId:String = "", categoryId:String = "", userId:String = "", clientNumber:String = "", title:String = "", categoryName:String = "", operatorName:String = "", icon:String = "", priceText:String = "", price:Double = 0.0, instantCheckout:Bool = false, needOTP:Bool = false, smsState:String = "", voucherCode:String = "", mainInfo:[DigitalCartInfoDetail] = [], additionalInfo:[DigitalCartInfo]? = nil, userInputPrice:DigitalCartUserInputPrice? = nil, isCouponActive: String = "") {
+    internal init(cartId:String = "", productId:String = "", categoryId:String = "", userId:String = "", clientNumber:String = "", title:String = "", categoryName:String = "", operatorName:String = "", icon:String = "", priceText:String = "", price:Double = 0.0, instantCheckout:Bool = false, needOTP:Bool = false, smsState:String = "", voucherCode:String = "", mainInfo:[DigitalCartInfoDetail] = [], additionalInfo:[DigitalCartInfo]? = nil, userInputPrice:DigitalCartUserInputPrice? = nil, isCouponActive: String = "", autoCode:AutoCode? = nil, defaultTab: String = "") {
         self.cartId = cartId
         self.productId = productId
         self.categoryId = categoryId
@@ -51,9 +53,11 @@ final class DigitalCart:Unboxable {
         self.additionalInfo = additionalInfo
         self.userInputPrice = userInputPrice
         self.isCouponActive = isCouponActive
+        self.autoCode = autoCode
+        self.defaultTab = defaultTab
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    internal convenience init(unboxer: Unboxer) throws {
         let cartId = try unboxer.unbox(keyPath: "data.id") as String
         let productId = try unboxer.unbox(keyPath: "data.relationships.product.data.id") as String
         let categoryId = try unboxer.unbox(keyPath: "data.relationships.category.data.id") as String
@@ -73,6 +77,8 @@ final class DigitalCart:Unboxable {
         let additionalInfo = try? unboxer.unbox(keyPath: "data.attributes.additional_info") as [DigitalCartInfo]
         let userInputPrice = try? unboxer.unbox(keyPath: "data.attributes.user_input_price") as DigitalCartUserInputPrice
         let isCouponActive = try? unboxer.unbox(keyPath: "data.attributes.is_coupon_active") as String
+        let autoCode = try? unboxer.unbox(keyPath: "data.attributes.autoapply") as AutoCode
+        let defaultTab = try? unboxer.unbox(keyPath: "data.attributes.default_promo_dialog_tab") as String
         
         self.init(cartId:cartId,
                   productId:productId,
@@ -92,6 +98,8 @@ final class DigitalCart:Unboxable {
                   mainInfo:mainInfo,
                   additionalInfo:additionalInfo,
                   userInputPrice:userInputPrice,
-                  isCouponActive:isCouponActive ?? "0")
+                  isCouponActive:isCouponActive ?? "0",
+                  autoCode:autoCode,
+                  defaultTab: defaultTab ?? "voucher")
     }
 }

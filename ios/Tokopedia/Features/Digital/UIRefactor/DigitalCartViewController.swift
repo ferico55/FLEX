@@ -15,53 +15,53 @@ import RxSwift
 import UIKit
 import Unbox
 
-internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, NoResultDelegate, InputPromoViewDelegate {
-    @IBOutlet internal weak var mainView: OAStackView!
-    @IBOutlet internal weak var additionalView: OAStackView!
-    @IBOutlet internal weak var container: UIView!
-    @IBOutlet internal weak var content: OAStackView!
-    @IBOutlet internal weak var discountView: UIView!
-    @IBOutlet internal weak var expandButton: UIView!
-    @IBOutlet internal weak var expandView: UIView!
-    @IBOutlet internal weak var textBoxView: UIView!
+internal class DigitalCartViewController: UIViewController, UITextFieldDelegate, NoResultDelegate, InputPromoViewDelegate {
+    @IBOutlet private weak var mainView: OAStackView!
+    @IBOutlet private weak var additionalView: OAStackView!
+    @IBOutlet private weak var container: UIView!
+    @IBOutlet private weak var content: OAStackView!
+    @IBOutlet private weak var discountView: UIView!
+    @IBOutlet private weak var expandButton: UIView!
+    @IBOutlet private weak var expandView: UIView!
+    @IBOutlet private weak var textBoxView: UIView!
     
-    @IBOutlet internal weak var image: UIImageView!
-    @IBOutlet internal weak var categoryLabel: UILabel!
-    @IBOutlet internal weak var operatorLabel: UILabel!
-    @IBOutlet internal weak var expandLabel: UILabel!
-    @IBOutlet internal weak var expandIcon: UIImageView!
-    @IBOutlet internal weak var inputLabel: UILabel!
-    @IBOutlet internal weak var inputText: UITextField!
-    @IBOutlet internal weak var priceLabel: UILabel!
-    @IBOutlet internal weak var discountLabel: UILabel!
-    @IBOutlet internal weak var totalLabel: UILabel!
-    @IBOutlet internal weak var checkoutButton: UIButton!
+    @IBOutlet private weak var image: UIImageView!
+    @IBOutlet private weak var categoryLabel: UILabel!
+    @IBOutlet private weak var operatorLabel: UILabel!
+    @IBOutlet private weak var expandLabel: UILabel!
+    @IBOutlet private weak var expandIcon: UIImageView!
+    @IBOutlet private weak var inputLabel: UILabel!
+    @IBOutlet private weak var inputText: UITextField!
+    @IBOutlet private weak var priceLabel: UILabel!
+    @IBOutlet private weak var discountLabel: UILabel!
+    @IBOutlet private weak var totalLabel: UILabel!
+    @IBOutlet private weak var checkoutButton: UIButton!
     
-    @IBOutlet internal weak var usedVoucherContainerView: UIView!
-    @IBOutlet internal weak var lblUsedVoucher: UILabel!
-    @IBOutlet internal weak var lblVoucherMessage: UILabel!
-    @IBOutlet internal weak var btnUseVoucher: UIButton!
+    @IBOutlet private weak var usedVoucherContainerView: UIView!
+    @IBOutlet private weak var lblUsedVoucher: UILabel!
+    @IBOutlet private weak var lblVoucherMessage: UILabel!
+    @IBOutlet private weak var btnUseVoucher: UIButton!
     
     internal var categoryId = ""
     internal var transactionId = ""
     fileprivate var isOpen = false
     fileprivate var isVoucherUsed = false
     fileprivate var isDiscount = false
-    fileprivate var networkManager:TokopediaNetworkManager = TokopediaNetworkManager()
-    fileprivate var cart:DigitalCart = DigitalCart()
-    fileprivate var voucher:DigitalVoucher = DigitalVoucher()
+    fileprivate var networkManager: TokopediaNetworkManager = TokopediaNetworkManager()
+    fileprivate var cart: DigitalCart = DigitalCart()
+    fileprivate var voucher: DigitalVoucher = DigitalVoucher()
     fileprivate var noResultView: NoResultReusableView!
     private var promoType: PromoType = .voucher
     
     internal let cartPayment = PublishSubject<DigitalCartPayment>()
     
-    lazy fileprivate var mainActivityIndicator: UIActivityIndicatorView = {
+    fileprivate lazy var mainActivityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .gray)
         indicator.autoresizingMask = [.flexibleRightMargin, .flexibleLeftMargin, .flexibleBottomMargin, .flexibleTopMargin]
         return indicator
     }()
     
-    lazy fileprivate var activityIndicator: UIActivityIndicatorView = {
+    fileprivate lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView(activityIndicatorStyle: .white)
         indicator.frame.origin = CGPoint(x: 20, y: 16)
         return indicator
@@ -73,7 +73,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     
     internal convenience init(cart: Observable<String>) {
         self.init(nibName: nil, bundle: nil)
-        cart.subscribe(onNext: { [weak self] (categoryId) in
+        cart.subscribe(onNext: { [weak self] categoryId in
             guard let `self` = self else { return }
             if !categoryId.isEmpty {
                 self.categoryId = categoryId
@@ -82,7 +82,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                 self.view.addSubview(self.noResultView)
                 self.content.isHidden = true
             }
-        }, onError: { [weak self] (error) in
+        }, onError: { [weak self] error in
             guard let `self` = self else { return }
             let message = error as? String ?? error.localizedDescription
             
@@ -92,7 +92,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
             self.view.addSubview(self.noResultView)
             self.content.isHidden = true
             self.mainActivityIndicator.stopAnimating()
-        }).disposed(by: self.rx_disposeBag)
+        }).disposed(by: rx_disposeBag)
         
     }
     
@@ -103,12 +103,12 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     internal override func viewDidLoad() {
         super.viewDidLoad()
         
-        self.mainActivityIndicator.center = self.view.center
-        self.view.addSubview(self.mainActivityIndicator)
-        self.mainActivityIndicator.startAnimating()
+        mainActivityIndicator.center = view.center
+        view.addSubview(mainActivityIndicator)
+        mainActivityIndicator.startAnimating()
         
         initView()
-        if !self.categoryId.isEmpty {
+        if !categoryId.isEmpty {
             getCart()
         }
     }
@@ -120,19 +120,19 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     fileprivate func setExpandButton() {
-        if (isOpen) {
-            self.expandLabel.text = "Tutup"
-            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
+        if isOpen {
+            expandLabel.text = "Tutup"
+            expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi)
             container.isHidden = false
         } else {
-            self.expandLabel.text = "Lihat Detail"
-            self.expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2)
+            expandLabel.text = "Lihat Detail"
+            expandIcon.transform = CGAffineTransform(rotationAngle: CGFloat.pi * 2)
             container.isHidden = true
         }
     }
     
     fileprivate func setExpandView() {
-        if ((self.cart.additionalInfo?.count)! > 0) {
+        if let count = cart.additionalInfo?.count, count > 0 {
             expandView.isHidden = false
         } else {
             expandView.isHidden = true
@@ -140,22 +140,22 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     fileprivate func setInputView() {
-        if (self.cart.userInputPrice != nil) {
+        if let userInputPrice = cart.userInputPrice {
             textBoxView.isHidden = false
-            inputLabel.text = "Masukkan jumlah nominal yang akan dibayar; \((self.cart.userInputPrice?.minText)!) sampai \((self.cart.userInputPrice?.maxText)!)"
+            inputLabel.text = "Masukkan jumlah nominal yang akan dibayar; \(userInputPrice.minText) sampai \(userInputPrice.maxText)"
         } else {
             textBoxView.isHidden = true
         }
     }
     
     fileprivate func setDiscountView() {
-        if (isDiscount) {
+        if isDiscount {
             discountView.isHidden = false
-            totalLabel.text = self.voucher.total
-            discountLabel.text = self.voucher.discount
+            totalLabel.text = voucher.total
+            discountLabel.text = voucher.discount
         } else {
             discountView.isHidden = true
-            totalLabel.text = self.cart.priceText
+            totalLabel.text = cart.priceText
         }
     }
     
@@ -177,17 +177,15 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
             lblUsedVoucher.attributedText = myCouponString
             lblVoucherMessage.text = voucher.message.trimmingCharacters(in: .whitespacesAndNewlines)
             
-            if (self.voucher.discountAmount > 0) {
+            if voucher.discountAmount > 0 {
                 isDiscount = true
-            }
-            else {
+            } else {
                 isDiscount = false
             }
             
             btnUseVoucher.isHidden = true
             usedVoucherContainerView.isHidden = false
-        }
-        else {
+        } else {
             isDiscount = false
             
             btnUseVoucher.isHidden = false
@@ -198,7 +196,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     fileprivate func setMainInfo() {
-        let infos = self.cart.mainInfo
+        let infos = cart.mainInfo
         mainView.addArrangedSubview(space(15))
         for info in infos {
             mainView.addArrangedSubview(setLabelAndValue(label: info.label, value: info.value))
@@ -208,60 +206,61 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     fileprivate func setAdditionalInfo() {
-        let infos = self.cart.additionalInfo
-        for info in infos! {
-            let titleView = OAStackView()
-            let t = UILabel()
-            t.font = t.font.withSize(14)
-            t.textColor = UIColor.black.withAlphaComponent(0.54)
-            t.setText(info.title, animated: true)
-            titleView.addArrangedSubview(t)
-            additionalView.addArrangedSubview(titleView)
-            additionalView.addArrangedSubview(space(15))
-            
-            for detail in info.detail {
-                additionalView.addArrangedSubview(setLabelAndValue(label: detail.label, value: detail.value))
-                additionalView.addArrangedSubview(space(2))
+        if let infos = cart.additionalInfo {
+            for info in infos {
+                let titleView = OAStackView()
+                let infoLabel = UILabel()
+                infoLabel.font = infoLabel.font.withSize(14)
+                infoLabel.textColor = UIColor.black.withAlphaComponent(0.54)
+                infoLabel.setText(info.title, animated: true)
+                titleView.addArrangedSubview(infoLabel)
+                additionalView.addArrangedSubview(titleView)
+                additionalView.addArrangedSubview(space(15))
+                
+                for detail in info.detail {
+                    additionalView.addArrangedSubview(setLabelAndValue(label: detail.label, value: detail.value))
+                    additionalView.addArrangedSubview(space(2))
+                }
+                additionalView.addArrangedSubview(space(15))
             }
-            additionalView.addArrangedSubview(space(15))
         }
     }
     
-    fileprivate func setLabelAndValue(label:String, value:String) -> OAStackView {
+    fileprivate func setLabelAndValue(label: String, value: String) -> OAStackView {
         let view = OAStackView()
         
-        let l = UILabel()
-        l.font = l.font.withSize(12)
-        l.textColor = UIColor.black.withAlphaComponent(0.54)
-        l.setText(label, animated: true)
-        if (!label.isEmpty) {
-            view.addArrangedSubview(l)
+        let textLabel = UILabel()
+        textLabel.font = textLabel.font.withSize(12)
+        textLabel.textColor = UIColor.black.withAlphaComponent(0.54)
+        textLabel.setText(label, animated: true)
+        if !label.isEmpty {
+            view.addArrangedSubview(textLabel)
         }
         
-        let v = UILabel()
-        v.font = v.font.withSize(12)
-        v.textColor = UIColor.black.withAlphaComponent(0.54)
-        v.setText(value, animated: true)
-        view.addArrangedSubview(v)
+        let valueLabel = UILabel()
+        valueLabel.font = valueLabel.font.withSize(12)
+        valueLabel.textColor = UIColor.black.withAlphaComponent(0.54)
+        valueLabel.setText(value, animated: true)
+        view.addArrangedSubview(valueLabel)
         
         view.distribution = .fillEqually
-        view.snp.makeConstraints { (make) in
+        view.snp.makeConstraints { make in
             make.height.equalTo(20)
         }
         return view
     }
     
     fileprivate func initView() {
-        self.content.isHidden = true
-        self.expandLabel.tintColor = UIColor.tpGreen()
-        self.expandIcon.image = self.expandIcon.image?.withRenderingMode(.alwaysTemplate)
-        self.expandIcon.tintColor = UIColor.tpGreen()
+        content.isHidden = true
+        expandLabel.tintColor = UIColor.tpGreen()
+        expandIcon.image = expandIcon.image?.withRenderingMode(.alwaysTemplate)
+        expandIcon.tintColor = UIColor.tpGreen()
         let tapExpandGesture = UITapGestureRecognizer(target: self, action: #selector(self.expand(_:)))
         tapExpandGesture.numberOfTapsRequired = 1
-        self.expandButton.isUserInteractionEnabled = true
-        self.expandButton.addGestureRecognizer(tapExpandGesture)
+        expandButton.isUserInteractionEnabled = true
+        expandButton.addGestureRecognizer(tapExpandGesture)
         setExpandButton()
-
+        
         container.isHidden = true
         discountView.isHidden = true
         textBoxView.isHidden = true
@@ -274,9 +273,9 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
         noResultView.generateAllElements("icon_no_data_grey.png", title: "Whoops!\nTidak ada koneksi Internet", desc: "Harap coba lagi", btnTitle: "Coba Kembali")
         checkoutButton.addSubview(activityIndicator)
         
-        let keyboard =  MMNumberKeyboard(frame: CGRect.zero)
+        let keyboard = MMNumberKeyboard(frame: CGRect.zero)
         keyboard.allowsDecimalPoint = false
-        self.inputText.inputView = keyboard
+        inputText.inputView = keyboard
         
         usedVoucherContainerView.layer.borderColor = UIColor.tpGreen().cgColor
         usedVoucherContainerView.layer.borderWidth = 1
@@ -288,23 +287,25 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
         setMainInfo()
         setAdditionalInfo()
         
-        categoryLabel.setText(self.cart.categoryName, animated: true)
-        operatorLabel.setText(self.cart.operatorName, animated: true)
-        image.setImageWith(URL(string: self.cart.icon)!)
-        navigationItem.title = self.cart.title
-        totalLabel.text = self.cart.priceText
-        priceLabel.text = self.cart.priceText
+        categoryLabel.setText(cart.categoryName, animated: true)
+        operatorLabel.setText(cart.operatorName, animated: true)
+        if let url = URL(string: cart.icon) {
+            image.setImageWith(url)
+        }
+        navigationItem.title = cart.title
+        totalLabel.text = cart.priceText
+        priceLabel.text = cart.priceText
         
-        AnalyticsManager.trackEventName("viewDigitalNative", category: "digital - \(self.cart.categoryName)", action: "view checkout", label: "")
+        AnalyticsManager.trackEventName("viewDigitalNative", category: "digital - \(cart.categoryName)", action: "view checkout", label: "")
     }
     
     fileprivate func getVoucher(voucherCode: String) {
-        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Gunakan Voucher - \(voucherCode)")
+        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: cart, action: "Click Gunakan Voucher - \(voucherCode)")
         
         DigitalProvider()
             .request(.voucher(categoryId: categoryId, voucherCode: voucherCode))
             .map(to: DigitalVoucher.self)
-            .subscribe(onNext: { [weak self] (voucher) in
+            .subscribe(onNext: { [weak self] voucher in
                 guard let `self` = self else {
                     return
                 }
@@ -314,8 +315,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                 self.promoType = .voucher
                 
                 self.setVoucherCanceled()
-            }, onError: { [unowned self] (error) in
-                
+            }, onError: { [unowned self] _ in
                 // silent error
                 
                 AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Voucher Error - \(voucherCode)")
@@ -323,6 +323,14 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                 self.isVoucherUsed = false
                 self.setVoucherCanceled()
                 self.clearPromoCodeOnError()
+                self.content.isHidden = false
+                self.mainActivityIndicator.stopAnimating()
+                
+                if self.cart.isCouponActive == "1" {
+                    self.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
+                } else {
+                    self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
+                }
             }, onCompleted: {
                 
                 self.content.isHidden = false
@@ -330,12 +338,11 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                 
                 if self.cart.isCouponActive == "1" {
                     self.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
-                }
-                else {
+                } else {
                     self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
                 }
             })
-            .disposed(by: self.rx_disposeBag)
+            .disposed(by: rx_disposeBag)
     }
     private func clearPromoCodeOnError() {
         if UserDefaults.standard.string(forKey: API_VOUCHER_CODE_KEY) != nil {
@@ -343,8 +350,8 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
             UserDefaults.standard.synchronize()
         }
     }
-    internal func expand(_ sender:UITapGestureRecognizer) {
-        self.isOpen = !self.isOpen
+    internal func expand(_ sender: UITapGestureRecognizer) {
+        isOpen = !isOpen
         setExpandButton()
     }
     
@@ -352,10 +359,10 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
         DigitalProvider()
             .request(.getCart(categoryId))
             .map(to: DigitalCart.self)
-            .do(onError: { [unowned self] error in
+            .do(onError: { [unowned self] _ in
                 self.view.addSubview(self.noResultView)
                 self.content.isHidden = true
-                }
+            }
             )
             .subscribe(onNext: { [weak self] cart in
                 guard let `self` = self else {
@@ -366,8 +373,14 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                 self.transactionId = cart.cartId
                 self.setData()
                 
-                if !self.cart.voucherCode.isEmpty {
-                    self.getVoucher(voucherCode: self.cart.voucherCode)
+                if let autoCode = self.cart.autoCode, !autoCode.code.isEmpty, autoCode.success {
+                    self.voucher = DigitalVoucher(voucherCode: autoCode.code, userId: "", discount: autoCode.discount, discountAmount: autoCode.discountAmount, cashback: "", cashbackAmount: 0, total: autoCode.total, totalAmount: autoCode.totalAmount, message: autoCode.message)
+                    self.voucher.couponTitle = autoCode.title
+                    self.isVoucherUsed = true
+                    self.promoType = autoCode.isCoupon ? .coupon : .voucher
+                    self.setVoucherCanceled()
+                    self.content.isHidden = false
+                    self.mainActivityIndicator.stopAnimating()
                 } else if let voucherCode = UserDefaults.standard.string(forKey: API_VOUCHER_CODE_KEY) {
                     self.getVoucher(voucherCode: voucherCode)
                 } else {
@@ -376,42 +389,43 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                     
                     if cart.isCouponActive == "1" {
                         self.btnUseVoucher.setTitle("Gunakan Kode Promo atau Kupon", for: .normal)
-                    }
-                    else {
+                    } else {
                         self.btnUseVoucher.setTitle("Gunakan Kode Promo", for: .normal)
                     }
                 }
-                },
-                       onError: { [unowned self] error in
-                        self.mainActivityIndicator.stopAnimating()
-                        self.view.addSubview(self.noResultView)
-                        self.content.isHidden = true
+            },
+            onError: { [unowned self] _ in
+                self.mainActivityIndicator.stopAnimating()
+                self.view.addSubview(self.noResultView)
+                self.content.isHidden = true
             })
-            .disposed(by: self.rx_disposeBag)
+            .disposed(by: rx_disposeBag)
         
     }
     
     fileprivate func payment() {
-        var amount:Double = 0
-        if ((self.cart.userInputPrice) != nil) {
-            if (self.inputText.text == "") {
-                StickyAlertView.showErrorMessage(["Angka harus diisi"])
-                return
-            }
-            
-            if (Double(self.inputText.text!)! < self.cart.userInputPrice!.min || Double(self.inputText.text!)! > self.cart.userInputPrice!.max) {
-                StickyAlertView.showErrorMessage(["Angka melewati batas yang ditentukan"])
-                return
+        var amount: Double = 0
+        if let userInputPrice = cart.userInputPrice {
+            if let text = inputText.text {
+                if text.isEmpty {
+                    StickyAlertView.showErrorMessage(["Angka harus diisi"])
+                    return
+                }
+                
+                if Double(text) ?? 0 < userInputPrice.min || Double(text) ?? 0 > userInputPrice.max {
+                    StickyAlertView.showErrorMessage(["Angka melewati batas yang ditentukan"])
+                    return
+                }
             }
         }
         
-        if (self.inputText.text != "") {
-            amount = Double(self.inputText.text!)!
+        if let text = inputText.text, !text.isEmpty {
+            amount = Double(text) ?? 0
         } else {
             amount = 0
         }
         
-        AnalyticsManager.trackEventName("viewDigitalNative", category: "digital - \(self.cart.categoryName)", action: "proceed to payment", label: isVoucherUsed ? "promo" : "no promo")
+        AnalyticsManager.trackEventName("viewDigitalNative", category: "digital - \(cart.categoryName)", action: "proceed to payment", label: isVoucherUsed ? "promo" : "no promo")
         
         checkoutButton.setTitle("Sedang proses...", for: .normal)
         checkoutButton.isEnabled = false
@@ -419,18 +433,18 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
         activityIndicator.startAnimating()
         
         DigitalProvider()
-            .request(.payment(voucherCode: voucher.voucherCode, transactionAmount: amount, transactionId:self.transactionId))
+            .request(.payment(voucherCode: voucher.voucherCode, transactionAmount: amount, transactionId: transactionId))
             .map(to: DigitalCartPayment.self)
             .do(
-                onNext: { [weak self] payment in
-                 self?.revertCheckoutButton()
+                onNext: { [weak self] _ in
+                    self?.revertCheckoutButton()
                 },
                 onError: { [unowned self] error in
                     var errorMessage = ""
-                    if let response = (error as! MoyaError).response {
+                    if let response = (error as? MoyaError)?.response {
                         let data = response.data
                         do {
-                            let obj = try Unboxer(data:data)
+                            let obj = try Unboxer(data: data)
                             if let errorTitle = try? obj.unbox(keyPath: "errors.0.title") as String {
                                 StickyAlertView.showErrorMessage([errorTitle])
                                 errorMessage = errorTitle
@@ -454,7 +468,7 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
                     self?.cartPayment.onNext(cartPayment)
                 }
             })
-            .disposed(by: self.rx_disposeBag)
+            .disposed(by: rx_disposeBag)
     }
     
     @IBAction private func payment(_ sender: Any) {
@@ -467,19 +481,19 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     internal func dismissKeyboard() {
-        self.view.endEditing(true)
+        view.endEditing(true)
     }
     
-    internal func space(_ height:Int) -> UIView {
+    internal func space(_ height: Int) -> UIView {
         let space = UIView()
-        space.snp.makeConstraints { (make) in
+        space.snp.makeConstraints { make in
             make.height.equalTo(height)
         }
         return space
     }
     
     public func buttonDidTapped(_ sender: Any!) {
-        if (noResultView.isDescendant(of: self.view)) {
+        if noResultView.isDescendant(of: view) {
             noResultView.removeFromSuperview()
         }
         getCart()
@@ -493,25 +507,28 @@ internal class DigitalCartViewController:UIViewController, UITextFieldDelegate, 
     }
     
     @IBAction private func btnUseVoucherDidTapped(_ sender: Any) {
-        let vc = InputPromoViewController(serviceType: .digital, cart: self.cart, couponEnabled: (self.cart.isCouponActive == "1"))
+        let vc = InputPromoViewController(serviceType: .digital, cart: cart, couponEnabled: (cart.isCouponActive == "1"), defaultTab: cart.defaultTab == "voucher" ? PromoType.voucher : PromoType.coupon)
         vc.delegate = self
         let nvc = UINavigationController(rootViewController: vc)
-        self.navigationController?.present(nvc, animated: true, completion: nil)
+        navigationController?.present(nvc, animated: true, completion: nil)
     }
     
     @IBAction private func btnCancelVoucherDidTapped(_ sender: Any) {
-        isVoucherUsed = false
-        setVoucherCanceled()
-        AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
+        DigitalProvider().request(.cancelVoucher()).subscribe(onNext: { [weak self] _ in
+            guard let `self` = self else { return }
+            self.isVoucherUsed = false
+            self.setVoucherCanceled()
+            AnalyticsManager.trackRechargeEvent(event: .tracking, cart: self.cart, action: "Click Batalkan Voucher")
+        }).disposed(by: rx_disposeBag)
     }
     // InputPromoViewDelegate
     internal func didUseVoucher(_ inputPromoViewController: InputPromoViewController, voucherData: Any, serviceType: PromoServiceType, promoType: PromoType) {
         if let voucher = voucherData as? DigitalVoucher {
             self.voucher = voucher
         }
-        self.isVoucherUsed = true
+        isVoucherUsed = true
         self.promoType = promoType
         
-        self.setVoucherCanceled()
+        setVoucherCanceled()
     }
 }

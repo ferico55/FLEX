@@ -95,10 +95,14 @@
     [self.navigationController pushViewController:vc animated:YES];
 }
 
+- (void)listDigitalTransactionDidTap {
+    [TPRoutes routeURL:[NSURL URLWithString:[NSString stringWithFormat:@"tokopedia://webview?url=%@/order-list", [NSString pulsaUrl]]]];
+}
+
 #pragma mark - Table View Delegate
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 4;
+    return 5;
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
@@ -123,10 +127,13 @@
             cell.detailTextLabel.text = _notification.purchase != nil && _notification.purchase.deliveryConfirm > 0 ? [NSString stringWithFormat:@"%ld", _notification.purchase.deliveryConfirm] : @"0";
             break;
         case 3:
-            cell.textLabel.text = @"Daftar Transaksi";
+            cell.textLabel.text = @"Daftar Belanja";
             cell.detailTextLabel.text = @"";
             break;
-            
+        case 4:
+            cell.textLabel.text = @"Daftar Top-Up & Tagihan";
+            cell.detailTextLabel.text = @"";
+            break;
         default:
             break;
     }
@@ -147,6 +154,9 @@
             break;
         case 3:
             [self listTransactionDidTap];
+            break;
+        case 4:
+            [self listDigitalTransactionDidTap];
             break;
             
         default:

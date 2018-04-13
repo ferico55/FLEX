@@ -8,7 +8,7 @@
 
 import ReSwift
 
-enum DigitalWidgetAction: Action {
+internal enum DigitalWidgetAction: Action {
     case changePhoneNumber(textInput: DigitalTextInput, text: String)
     case selectProduct(DigitalProduct)
     case selectOperator(DigitalOperator?)
@@ -25,24 +25,24 @@ enum DigitalWidgetAction: Action {
     case resetAlert
 }
 
-struct DigitalWidgetReducer: Reducer {
-    func handleAction(action: Action, state: DigitalState?) -> DigitalState {
+internal struct DigitalWidgetReducer: Reducer {
+    internal func handleAction(action: Action, state: DigitalState?) -> DigitalState {
         guard let state = state else {
             fatalError("state must be set by default")
         }
         
         let action = action as! DigitalWidgetAction
         
-        switch(action) {
+        switch action {
         case let .changePhoneNumber(textInput, phoneNumber):
             var newState = state.inputText(for: textInput, with: phoneNumber)
-            
+            let normalizedPhoneNumber = textInput.normalizedText(from: phoneNumber)
             var textInputStates = [String: DigitalTextInputState]()
             
             state.activeTextInputs.forEach { textInput in
                 textInputStates[textInput.id] = DigitalTextInputState(
-                    text: phoneNumber,
-                    failedValidation: textInput.failedValidation(for: phoneNumber)
+                    text: normalizedPhoneNumber,
+                    failedValidation: textInput.failedValidation(for: normalizedPhoneNumber)
                 )
             }
             newState.textInputStates = textInputStates
@@ -62,19 +62,19 @@ struct DigitalWidgetReducer: Reducer {
             }
             return newState
             
-        case .selectProduct(let product):
+        case let .selectProduct(product):
             var newState = state
             newState.selectedProduct = product
             return newState
             
-        case .selectOperator(let digitalOperator):
+        case let .selectOperator(digitalOperator):
             return state.changeOperator(operator: digitalOperator)
             
         case .toggleInstantPayment:
             return state.toggleInstantPayment()
             
         case let .receiveForm(form, lastOrder, isInstant):
-            return state.receive(form: form, lastOrder:lastOrder, isInstant:isInstant)
+            return state.receive(form: form, lastOrder: lastOrder, isInstant: isInstant)
             
         case .loadForm:
             return state.loadForm()
@@ -114,7 +114,7 @@ struct DigitalWidgetReducer: Reducer {
             
             state.activeTextInputs.forEach { textInput in
                 let text = state.textInputStates[textInput.id]?.text ?? ""
-                    
+                
                 textInputStates[textInput.id] = DigitalTextInputState(
                     text: text,
                     failedValidation: textInput.failedValidation(for: text)

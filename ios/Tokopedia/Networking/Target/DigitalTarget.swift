@@ -46,6 +46,7 @@ internal enum DigitalTarget {
     case lastOrder(String)
     case deleteCart(String)
     case favourite(category: String, operatorID: String, clientNumber: String, productID: String)
+    case cancelVoucher()
 }
 
 extension DigitalTarget: TargetType {
@@ -65,13 +66,14 @@ extension DigitalTarget: TargetType {
         case .lastOrder: return "/v1.4/last-order"
         case .deleteCart: return "/v1.4/cart"
         case .favourite : return "/v1.4/favorite/list"
+        case .cancelVoucher: return "/v1.4/voucher/cancel"
         }
     }
     
     /// The HTTP method used in the request.
     internal var method: Moya.Method {
         switch self {
-        case .addToCart, .payment: return .post
+        case .addToCart, .payment, .cancelVoucher: return .post
         case .category, .voucher, .getCart, .lastOrder, .favourite: return .get
         case .otpSuccess: return .patch
         case .deleteCart: return .delete
@@ -187,6 +189,19 @@ extension DigitalTarget: TargetType {
                 "product_id": productID,
                 "sort": "label"
             ]
+        case let .cancelVoucher:
+            return [
+                "data": [
+                    "type": "cancel_voucher",
+                    "attributes": [
+                        "identifier": [
+                            "user_id": userManager.getUserId(),
+                            "device_token": userManager.getMyDeviceToken(),
+                            "os_type": "2"
+                        ]
+                    ]
+                ]
+            ]
         default: return [:]
         }
         
@@ -195,7 +210,7 @@ extension DigitalTarget: TargetType {
     /// The method used for parameter encoding.
     internal var parameterEncoding: ParameterEncoding {
         switch self {
-        case .addToCart, .otpSuccess, .payment: return JSONEncoding.default
+        case .addToCart, .otpSuccess, .payment, .cancelVoucher: return JSONEncoding.default
         default: return URLEncoding.default
         }
     }

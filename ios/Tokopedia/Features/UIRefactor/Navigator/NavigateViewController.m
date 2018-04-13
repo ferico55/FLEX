@@ -159,6 +159,7 @@
 
 -(void)navigateToCartFromViewController:(UIViewController*)viewController {
     TransactionCartViewController *cart = [TransactionCartViewController new];
+    cart.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:cart animated:YES];
 }
 

@@ -43,5 +43,6 @@
 + (nonnull NSString*)webSocketUrl;
 + (nonnull NSString*)tokopointsUrl;
 + (nonnull NSString*)bookingUrl;
++ (nonnull NSString*)apiURL;
 
 @end

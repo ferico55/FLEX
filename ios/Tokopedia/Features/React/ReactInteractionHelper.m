@@ -199,6 +199,12 @@ RCT_EXPORT_METHOD(showImagePicker: (nonnull NSNumber*) maxSelected minSize: (non
     return [rootViewController topMostViewController];
 }
 
+RCT_EXPORT_METHOD(goToExploreUseCase: (NSDictionary*) data) {
+    UIViewController *vc = [[ReactViewController alloc] initWithModuleName:@"ExploreUseCase" props:data];
+    [vc setHidesBottomBarWhenPushed:YES];
+    [[self topMostViewController].navigationController pushViewController:vc animated:YES];
+}
+
 RCT_EXPORT_METHOD(showLoadingOverlay) {
     [SwiftOverlays showBlockingWaitOverlay];
 }

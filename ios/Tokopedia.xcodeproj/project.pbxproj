@@ -19,6 +19,8 @@
 		5256A84320170BBC000262F7 /* FeedAnalyticsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5256A84220170BBC000262F7 /* FeedAnalyticsManager.swift */; };
 		5259D23C200C8E320042385C /* whitelist.json in Resources */ = {isa = PBXBuildFile; fileRef = 5259D23B200C8E310042385C /* whitelist.json */; };
 		525DFA692011EB8000268548 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = 525DFA682011EB8000268548 /* assets */; };
+		52674E8E206CE3570080A628 /* VoucherTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52674E8D206CE3570080A628 /* VoucherTarget.swift */; };
+		52D7C0DE206B78C800FB497A /* AutoCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52D7C0DD206B78C800FB497A /* AutoCode.swift */; };
 		6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6202EF1B1EE4F07200AE68B5 /* API.swift */; };
 		622A6AB520159DAE00E89DAA /* MaintenanceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */; };
 		622A6AB72015A76600E89DAA /* ContentProductCommunicationComponentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */; };
@@ -2227,6 +2229,8 @@
 		5256A84220170BBC000262F7 /* FeedAnalyticsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedAnalyticsManager.swift; sourceTree = "<group>"; };
 		5259D23B200C8E310042385C /* whitelist.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = whitelist.json; sourceTree = "<group>"; };
 		525DFA682011EB8000268548 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = React/assets; sourceTree = "<group>"; };
+		52674E8D206CE3570080A628 /* VoucherTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VoucherTarget.swift; sourceTree = "<group>"; };
+		52D7C0DD206B78C800FB497A /* AutoCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AutoCode.swift; sourceTree = "<group>"; };
 		6202EF1B1EE4F07200AE68B5 /* API.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		622A6AB420159DAE00E89DAA /* MaintenanceViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MaintenanceViewController.swift; sourceTree = "<group>"; };
 		622A6AB62015A76500E89DAA /* ContentProductCommunicationComponentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentProductCommunicationComponentView.swift; sourceTree = "<group>"; };
@@ -5793,6 +5797,7 @@
 				62C76C971FF33C3000F66527 /* TransactionCartGateway.m */,
 				62C76C981FF33C3000F66527 /* TransactionCart.m */,
 				62C76C991FF33C3000F66527 /* Cart.swift */,
+				52D7C0DD206B78C800FB497A /* AutoCode.swift */,
 			);
 			path = TransactionCart;
 			sourceTree = "<group>";
@@ -8742,6 +8747,7 @@
 				E581B5541FE900B500E6D1DA /* TopchatTarget.swift */,
 				F977EED01FE8AB6D00183A85 /* V4Target.swift */,
 				F977EEC51FE8AB6D00183A85 /* WalletTarget.swift */,
+				52674E8D206CE3570080A628 /* VoucherTarget.swift */,
 			);
 			path = Target;
 			sourceTree = "<group>";
@@ -12977,6 +12983,7 @@
 				F977FB471FE8AB7B00183A85 /* HotlistViewController.m in Sources */,
 				62C770C31FF33C3300F66527 /* OrderBookingResponse.m in Sources */,
 				E517178820315DDF00F46831 /* ProductDetailAnalyticsManager.swift in Sources */,
+				52674E8E206CE3570080A628 /* VoucherTarget.swift in Sources */,
 				F977FA431FE8AB7900183A85 /* NSOperationQueue+SharedQueue.m in Sources */,
 				62C770021FF33C3200F66527 /* TxOrderPaymentEditResult.m in Sources */,
 				848FA6ED1FEBF8BF00A22EDE /* RCStatus.swift in Sources */,
@@ -13071,6 +13078,7 @@
 				F977009E1FE8AB8600183A85 /* NSString+MD5.m in Sources */,
 				F977FD801FE8AB7F00183A85 /* ListOption.swift in Sources */,
 				F977FC6F1FE8AB7D00183A85 /* CatalogViewController.m in Sources */,
+				52D7C0DE206B78C800FB497A /* AutoCode.swift in Sources */,
 				F977FBD61FE8AB7C00183A85 /* ProductQuantityViewController.m in Sources */,
 				62C7707B1FF33C3300F66527 /* PreorderDetail.m in Sources */,
 				62C7718D1FF33C3400F66527 /* ProfileEditResult.m in Sources */,

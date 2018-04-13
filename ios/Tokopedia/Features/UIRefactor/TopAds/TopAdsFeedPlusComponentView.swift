@@ -6,46 +6,46 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import Foundation
-import UIKit
-import Render
-import RxSwift
-import ReSwift
 import CFAlertViewController
+import Foundation
+import Render
+import ReSwift
+import RxSwift
+import UIKit
 
-struct TopAdsFeedPlusState: Render.StateType, ReSwift.StateType {
-    var topAds: [PromoResult]?
-    var isDoneFavoriteShop = false
-    var isLoadingFavoriteShop = false
-    var currentViewController = UIViewController()
+public struct TopAdsFeedPlusState: Render.StateType, ReSwift.StateType {
+    public var topAds: [PromoResult]?
+    public var isDoneFavoriteShop = false
+    public var isLoadingFavoriteShop = false
+    public var currentViewController = UIViewController()
 }
 
-class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
+public class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
     
     private var callback: (_ state: TopAdsFeedPlusState) -> Void
     
-    override init() {
+    public override init() {
         callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
+    public convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
         self.init()
         callback = favoriteCallback
     }
     
-    convenience init(ads: [PromoResult]) {
+    public convenience init(ads: [PromoResult]) {
         self.init()
         var theState = TopAdsFeedPlusState()
         theState.topAds = ads
         state = theState
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
+    public override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let theTopAds = state?.topAds, theTopAds.count > 0 else {
             return Node<UIView> {
                 _, _, _ in
@@ -53,7 +53,7 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
         }
         
         let container = Node<UIView> {
-            view, layout, _ in
+            view, _, _ in
             view.backgroundColor = .clear
         }
         
@@ -67,13 +67,13 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
             // product
             return container.add(children: [
                 TopAdsFeedPlusProductComponentView().construct(state: state, size: size),
-                space,
+                space
             ])
         } else {
             // shop
             return container.add(children: [
                 TopAdsFeedPlusShopComponentView(favoriteCallback: callback).construct(state: state, size: size),
-                space,
+                space
             ])
         }
     }
@@ -82,9 +82,9 @@ class TopAdsFeedPlusComponentView: ComponentView<TopAdsFeedPlusState> {
 
 // MARK: Product
 
-class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
+public class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
     
-    override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
+    public override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let state = state, let theTopAds = state.topAds, theTopAds.count > 0 else {
             return Node<UIView> {
                 _, _, _ in
@@ -111,13 +111,14 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
                 let view = UIView()
                 view.isUserInteractionEnabled = true
                 view.backgroundColor = .white
+                view.clipsToBounds = true
                 view.bk_(whenTapped: {
                     let alertController = TopAdsInfoActionSheet()
                     alertController.show()
                 })
                 
                 return view
-            }) {
+            }, configure: {
                 _, layout, _ in
                 layout.alignItems = .center
                 layout.flexDirection = .row
@@ -125,7 +126,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
                 layout.height = 50
                 layout.marginVertical = 1
                 layout.marginHorizontal = UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0
-            }
+            })
             
             let promotedLabel = Node<UILabel> {
                 view, layout, _ in
@@ -163,7 +164,7 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
         
         func adView(topAdsResult: PromoResult, index: Int) -> NodeType {
             
-            let product = topAdsResult.viewModel!
+            guard let product = topAdsResult.viewModel else { return NilNode() }
             
             let outerAdView = Node<UIView> {
                 view, layout, _ in
@@ -185,24 +186,23 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
                     })
                     
                     return view
-                }
-            ) {
-                _, layout, _ in
-                
-                layout.flexDirection = .column
-                layout.flexGrow = 1
-                layout.marginBottom = 1
-                if (index + 1) % 2 != 0 {
-                    layout.marginRight = 1
-                }
-                
-                if UIDevice.current.userInterfaceIdiom == .pad {
-                    layout.marginRight = 1
+                }, configure: {
+                    _, layout, _ in
+                    
+                    layout.flexDirection = .column
+                    layout.flexGrow = 1
+                    layout.marginBottom = 1
                     if (index + 1) % 2 != 0 {
-                        layout.marginLeft = 1
+                        layout.marginRight = 1
                     }
-                }
-            }
+                    
+                    if UIDevice.current.userInterfaceIdiom == .pad {
+                        layout.marginRight = 1
+                        if (index + 1) % 2 != 0 {
+                            layout.marginLeft = 1
+                        }
+                    }
+            })
             
             let productImageView = Node<TopAdsCustomImageView> {
                 view, layout, _ in
@@ -269,25 +269,25 @@ class TopAdsFeedPlusProductComponentView: ComponentView<TopAdsFeedPlusState> {
 
 // MARK: Shop
 
-class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
+public class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
     
     private var callback: (_ state: TopAdsFeedPlusState) -> Void
     
-    override init() {
+    public override init() {
         callback = { _ in }
         super.init()
     }
     
-    convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
+    public convenience init(favoriteCallback: @escaping (_ state: TopAdsFeedPlusState) -> Void) {
         self.init()
         callback = favoriteCallback
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
+    public override func construct(state: TopAdsFeedPlusState?, size: CGSize) -> NodeType {
         guard let state = state, let theTopAds = state.topAds, theTopAds.count > 0 else {
             return NilNode()
         }
@@ -299,7 +299,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
         }
         
         func adView(ad: PromoResult) -> NodeType {
-            let shop = ad.shop!
+            guard let shop = ad.shop else { return NilNode() }
             let isShopFavorited = state.isDoneFavoriteShop || !shop.enable_fav
             let smallPhotoDivider: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 4.3 : 10 / 3
             
@@ -316,14 +316,13 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     })
                     
                     return view
-                }
-            ) {
-                view, layout, size in
-                view.backgroundColor = UIColor.tpLine()
-                layout.width = size.width
-                layout.paddingVertical = 1
-                layout.paddingHorizontal = UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0
-            }
+                }, configure: {
+                    view, layout, size in
+                    view.backgroundColor = UIColor.tpLine()
+                    layout.width = size.width
+                    layout.paddingVertical = 1
+                    layout.paddingHorizontal = UIDevice.current.userInterfaceIdiom == .pad ? 1 : 0
+            })
             
             func promotedInfoView() -> NodeType {
                 
@@ -332,13 +331,14 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     let view = UIView()
                     view.isUserInteractionEnabled = true
                     view.backgroundColor = .white
+                    view.clipsToBounds = true
                     view.bk_(whenTapped: {
                         let alertController = TopAdsInfoActionSheet()
                         alertController.show()
                     })
                     
                     return view
-                }) {
+                }, configure: {
                     view, layout, _ in
                     view.backgroundColor = .white
                     layout.alignItems = .center
@@ -346,7 +346,7 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     layout.flexGrow = 1
                     layout.paddingTop = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 18
                     layout.paddingBottom = UIDevice.current.userInterfaceIdiom == .pad ? 11 : 10
-                }
+                })
                 
                 let promotedLabel = Node<UILabel> {
                     view, layout, _ in
@@ -597,45 +597,47 @@ class TopAdsFeedPlusShopComponentView: ComponentView<TopAdsFeedPlusState> {
                     
                 }
                 
-                func smallPhotoImageView(index: Int) -> NodeType {
-                    let smallPhotoImageView = Node<UIImageView> {
-                        view, layout, _ in
-                        if index <= shop.productPhotoUrls.count {
-                            view.setImageWith(URL(string: shop.productPhotoUrls[index] as! String), placeholderImage: #imageLiteral(resourceName: "grey-bg"))
-                        }
-                        view.borderWidth = 1
-                        view.borderColor = UIColor.tpLine()
-                        view.contentMode = .scaleAspectFill
-                        view.clipsToBounds = true
-                        view.cornerRadius = 2
-                        layout.width = size.width / smallPhotoDivider
-                        layout.height = layout.width
-                        layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 0
-                    }
-                    
-                    return smallPhotoImageView
-                }
-                
-                func smallPhotoWrapper() -> NodeType {
-                    let smallPhotoWrapper = Node<UIView> {
-                        _, layout, _ in
-                        layout.flexDirection = .column
-                        layout.justifyContent = .spaceBetween
-                        layout.height = (size.width / smallPhotoDivider) * 2 + (UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5)
-                        layout.flexWrap = .wrap
-                    }
-                    
-                    let smallPhotoCount = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
-                    
-                    return smallPhotoWrapper.add(children: (1..<smallPhotoCount + 1).map { index in
-                        smallPhotoImageView(index: index)
-                    })
-                }
-                
                 return photoWrapper.add(children: [
                     smallPhotoWrapper(),
                     bigPhotoImageView
                 ])
+            }
+            
+            func smallPhotoImageView(index: Int) -> NodeType {
+                let smallPhotoImageView = Node<UIImageView> {
+                    view, layout, _ in
+                    if index <= shop.productPhotoUrls.count {
+                        if let url = URL(string: (shop.productPhotoUrls[index] as? String) ?? "") {
+                            view.setImageWith(url, placeholderImage: #imageLiteral(resourceName: "grey-bg"))
+                        }
+                    }
+                    view.borderWidth = 1
+                    view.borderColor = UIColor.tpLine()
+                    view.contentMode = .scaleAspectFill
+                    view.clipsToBounds = true
+                    view.cornerRadius = 2
+                    layout.width = size.width / smallPhotoDivider
+                    layout.height = layout.width
+                    layout.marginRight = UIDevice.current.userInterfaceIdiom == .pad ? 8 : 0
+                }
+                
+                return smallPhotoImageView
+            }
+            
+            func smallPhotoWrapper() -> NodeType {
+                let smallPhotoWrapper = Node<UIView> {
+                    _, layout, _ in
+                    layout.flexDirection = .column
+                    layout.justifyContent = .spaceBetween
+                    layout.height = (size.width / smallPhotoDivider) * 2 + (UIDevice.current.userInterfaceIdiom == .pad ? 8 : 5)
+                    layout.flexWrap = .wrap
+                }
+                
+                let smallPhotoCount = UIDevice.current.userInterfaceIdiom == .pad ? 4 : 2
+                
+                return smallPhotoWrapper.add(children: (1..<smallPhotoCount + 1).map { index in
+                    smallPhotoImageView(index: index)
+                })
             }
             
             let favoriteButtonWrapper = Node<UIView> {

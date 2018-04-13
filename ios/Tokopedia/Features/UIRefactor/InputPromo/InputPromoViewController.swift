@@ -15,8 +15,8 @@ internal protocol InputPromoViewDelegate {
 }
 
 @objc internal enum PromoType: Int {
-    case coupon
     case voucher
+    case coupon
 }
 
 internal class InputPromoViewController: MXSegmentedPagerController, InputPromoCodeViewDelegate, MyCouponListTableViewDelegate {
@@ -25,28 +25,30 @@ internal class InputPromoViewController: MXSegmentedPagerController, InputPromoC
     public var cart: DigitalCart?
     public var couponEnabled = false
     private var placeholderView: UIView?
+    private var defaultTab = PromoType.voucher
     
     private var loadingWindow = UIWindow()
     
     private var inputPromoCodeViewController: InputPromoCodeViewController?
     private var myCouponListTableViewController: MyCouponListTableViewController?
     
-    public init(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
+    public init(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool, defaultTab: PromoType) {
         super.init(nibName: nil, bundle: nil)
         
-        setProperties(serviceType: serviceType, cart: cart, couponEnabled: couponEnabled)
+        setProperties(serviceType: serviceType, cart: cart, couponEnabled: couponEnabled, defaultTab: defaultTab)
     }
     
-    public init(serviceType: PromoServiceType, couponEnabled: Bool) {
+    public init(serviceType: PromoServiceType, couponEnabled: Bool, defaultTab: PromoType) {
         super.init(nibName: nil, bundle: nil)
         
-        setProperties(serviceType: serviceType, cart: nil, couponEnabled: couponEnabled)
+        setProperties(serviceType: serviceType, cart: nil, couponEnabled: couponEnabled, defaultTab: defaultTab)
     }
     
-    private func setProperties(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool) {
+    private func setProperties(serviceType: PromoServiceType, cart: DigitalCart?, couponEnabled: Bool, defaultTab: PromoType) {
         self.serviceType = serviceType
         self.cart = cart
         self.couponEnabled = couponEnabled
+        self.defaultTab = defaultTab
     }
     
     required public init?(coder aDecoder: NSCoder) {
@@ -113,6 +115,7 @@ internal class InputPromoViewController: MXSegmentedPagerController, InputPromoC
         guard let navigationController = self.navigationController else {
             return
         }
+        segmentedPager.pager.showPage(at: defaultTab.rawValue, animated: false)
         if couponEnabled && !UserDefaults.standard.bool(forKey: "coupon_onboarding_shown") {
             let vc = OnboardingViewController(title: "Kode Promo dan Kupon tidak dapat digabung.", message: "Penggunaan Kode Promo tidak dapat digabung dengan Kupon yang Anda miliki.", currentStep: 1, totalStep: 1, anchorView: segmentedPager.segmentedControl, presentingViewController: navigationController, fromPresentedViewController: false, callback: { (action) in
                 self.placeholderView?.removeFromSuperview()

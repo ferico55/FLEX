@@ -12,6 +12,7 @@
 
 @class Donation;
 @class PromoSuggestion;
+@class AutoCode;
 
 @interface TransactionCartResult : NSObject <TKPObjectMapping>
 
@@ -37,5 +38,8 @@
 @property (nonatomic,strong) NSString *keroToken;
 @property (nonatomic,strong) NSString *ut;
 @property (nonatomic,strong) NSString *is_coupon_active;
+@property (nonatomic,strong) NSNumber *enable_cancel_partial;
+@property (nonatomic, strong) AutoCode *autoCode;
+@property (nonatomic,strong) NSString *default_promo_dialog_tab;
 
 @end

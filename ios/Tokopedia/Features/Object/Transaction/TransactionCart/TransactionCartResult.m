@@ -28,7 +28,9 @@
                       @"cashback",
                       @"grand_total_without_lp_idr",
                       @"grand_total_without_lp",
-                      @"is_coupon_active"
+                      @"is_coupon_active",
+                      @"enable_cancel_partial",
+                      @"default_promo_dialog_tab"
                       ];
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }
@@ -50,6 +52,9 @@
     
     RKRelationshipMapping *promoSuggestionGatewayMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"promo_suggestion" toKeyPath:@"promoSuggestion" withMapping:[PromoSuggestion mapping]];
     [mapping addPropertyMapping:promoSuggestionGatewayMapping];
+    
+    RKRelationshipMapping *autoCodeMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"autoapply" toKeyPath:@"autoCode" withMapping:[AutoCode mapping]];
+    [mapping addPropertyMapping:autoCodeMapping];
     
     return mapping;
 }

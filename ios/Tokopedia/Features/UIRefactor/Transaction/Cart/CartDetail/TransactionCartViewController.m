@@ -115,6 +115,12 @@ InputPromoViewDelegate
     PromoType _promoType;
     
     UserAuthentificationManager *_userManager;
+    
+    CartRequest *_request;
+    UIView *tickerView;
+    UILabel *couponLabel;
+    UIView *containerView;
+    UIButton *buttonClose;
 }
 
 @property (strong, nonatomic) IBOutlet UIView *checkoutView;
@@ -172,6 +178,7 @@ InputPromoViewDelegate
     _list = [NSMutableArray new];
     _dataInput = [NSMutableDictionary new];
     _topAdsService = [TopAdsService new];
+    _request = [CartRequest new];
     
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
@@ -187,7 +194,7 @@ InputPromoViewDelegate
     [_tableView addSubview:_refreshControl];
 
     [self initAllNoResult];
-    
+    [self setupTickerAndNoResultView];
     [self refreshRequestCart];
     
     [AnalyticsManager trackScreenName:@"Shopping Cart"];
@@ -203,7 +210,6 @@ InputPromoViewDelegate
 -(void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     if (_popFromToppay) {
         _popFromToppay = NO;
         [self refreshRequestCart];
@@ -298,13 +304,36 @@ InputPromoViewDelegate
 -(void)initAllNoResult{
     _noResultScrollView = [[UIScrollView alloc]initWithFrame:[[UIScreen mainScreen]bounds]];
     _noResultScrollView.userInteractionEnabled = true;
-    [_noResultScrollView addSubview:_refreshControlNoResult];
+    
     _topAdsView = [TopAdsView new];
-    [_noResultScrollView addSubview:_topAdsView];
+    
+    couponLabel = [UILabel new];
+    couponLabel.font = [UIFont systemFontOfSize:12 weight:UIFontWeightMedium];
+    couponLabel.textColor = [UIColor tpSecondaryBlackText];
+    couponLabel.lineBreakMode = NSLineBreakByWordWrapping;
+    couponLabel.numberOfLines = 0;
+    
+    buttonClose = [UIButton new];
+    [buttonClose setImage:[UIImage imageNamed:@"icon_close"] forState:UIControlStateNormal];
+    
+    tickerView = [UIView new];
+    tickerView.backgroundColor = [UIColor fromHexString:@"f8f8f8"];
+    tickerView.borderColor = UIColor.tpBorder;
+    tickerView.borderWidth = 1;
+    tickerView.cornerRadius = 3;
+    
+    containerView = [UIView new];
+    
     
     [self initNoResultView];
     [self initNoInternetConnectionView];
     [self initNoLoginView];
+    
+    [_noResultScrollView addSubview:_refreshControlNoResult];
+    [_noResultScrollView addSubview:containerView];
+    
+    [tickerView addSubview:couponLabel];
+    [tickerView addSubview:buttonClose];
 }
 
 - (void)initNoResultView{
@@ -346,30 +375,37 @@ InputPromoViewDelegate
 }
 
 - (void) setupTopAdsViewContraints {
-    [_topAdsView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(_noResultScrollView.mas_top).offset(375);
+    [_topAdsView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        UserAuthentificationManager *manager = [UserAuthentificationManager new];
+        if (manager.isLogin) {
+            make.top.equalTo(_noResultView.mas_bottom).offset(30);
+        } else {
+            make.top.equalTo(_noLoginView.mas_bottom).offset(30);
+        }
         if (IS_IPAD) {
             make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width - 208]);
-            make.left.equalTo(_noResultScrollView.mas_left).offset(104);
-            make.right.equalTo(_noResultScrollView.mas_right).offset(-104);
+            make.left.equalTo(containerView.mas_left).offset(104);
+            make.right.equalTo(containerView.mas_right).offset(-104);
         } else {
             make.width.equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
         }
         make.height.equalTo([NSNumber numberWithFloat:_topAdsView.frame.size.height]);
-        make.bottom.equalTo(_noResultScrollView.mas_bottom);
+        make.bottom.equalTo(containerView.mas_bottom);
     }];
+    [containerView layoutIfNeeded];
 }
 
 -(void)userLogin{
-    //    _noLoginView.hidden = YES;
     [_noResultScrollView removeFromSuperview];
     [_noLoginView removeFromSuperview];
 }
 
 -(void)userLogout{
-    //    _noLoginView.hidden = NO;
+    [_noResultScrollView removeFromSuperview];
+    [_noResultView removeFromSuperview];
     [self.view addSubview:_noResultScrollView];
-    [_noResultScrollView addSubview:_noLoginView];
+    [containerView addSubview:_noLoginView];
+    [_noResultScrollView addSubview:containerView];
     [_noResultScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(self.view);
     }];
@@ -566,13 +602,13 @@ InputPromoViewDelegate
         [picker show];
     }
     if (indexPath.section == _list.count + 1) { // voucher
-        InputPromoViewController *vc = [[InputPromoViewController alloc] initWithServiceType:PromoServiceTypeMarketplace couponEnabled:([_cart.is_coupon_active isEqualToString:@"1"])];
+        InputPromoViewController *vc = [[InputPromoViewController alloc] initWithServiceType:PromoServiceTypeMarketplace couponEnabled:[_cart.is_coupon_active isEqualToString:@"1"] defaultTab:[_cart.default_promo_dialog_tab isEqualToString:@"voucher"] ? PromoTypeVoucher : PromoTypeCoupon];
         vc.delegate = self;
         UINavigationController *nvc = [[UINavigationController alloc] initWithRootViewController:vc];
         [self.navigationController presentViewController:nvc animated:true completion:nil];
     }
     if (indexPath.section == _list.count+2) { //promo
-        [_dataInput setObject:_cart.promoSuggestion.promoCode forKey:@"voucher_code"];
+        [_dataInput setObject:_cart.promoSuggestion.promoCode forKey:API_VOUCHER_CODE_KEY];
         [_dataInput setObject:@(YES) forKey:@"isUsingPromoSuggestion"];
         [self doRequestVoucher];
     }
@@ -592,6 +628,7 @@ InputPromoViewDelegate
         case 1833:
         {
             // btn cancel voucher
+            [_request cancelVoucher];
             _cart.promoSuggestion.isUsingVoucher = NO;
             
             _voucherData = nil;
@@ -1318,7 +1355,7 @@ InputPromoViewDelegate
         }
         else if ( indexPath.row == list.cart_products.count + 2) {
             //adjust total partial cell tidak muncul ketika jumlah barang hanya 1
-            if ([list.cart_total_product integerValue]<=1) {
+            if ([list.cart_total_product integerValue]<=1 || !_cart.enable_cancel_partial.boolValue) {
                 return 0;
             }
         }
@@ -1484,23 +1521,20 @@ InputPromoViewDelegate
         [_list addObjectsFromArray:list];
         
         if(list.count >0){
-            [_noResultView removeFromSuperview];
             [_noResultScrollView removeFromSuperview];
             [self autofillVoucherCode];
         }else{
+            couponLabel.text = data.autoCode.title;
+            [couponLabel layoutIfNeeded];
             [self requestPromo];
-            [self.view addSubview:_noResultScrollView];
-            [_noResultScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.edges.equalTo(self.view);
-            }];
-            [_noResultScrollView addSubview:_noResultView];
+            [self setupTickerAndNoResultView];
         }
         
         _cart = data;
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL];
         [_dataInput setObject:_cart.grand_total_without_lp?:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_WO_LP];
         [_dataInput setObject:_cart.grand_total?:@"" forKey:DATA_CART_GRAND_TOTAL_W_LP];
-        _cart.promoSuggestion.isUsingVoucher = ([_dataInput objectForKey:@"voucher_code"] && ![[_dataInput objectForKey:@"voucher_code"] isEqualToString:@""]);
+        _cart.promoSuggestion.isUsingVoucher = ([_dataInput objectForKey:API_VOUCHER_CODE_KEY] && ![[_dataInput objectForKey:API_VOUCHER_CODE_KEY] isEqualToString:@""]);
         
         if ([data.is_coupon_active isEqualToString:@"1"]) {
             [_btnUseVoucher setTitle:@"Gunakan Kode Promo atau Kupon" forState:UIControlStateNormal];
@@ -1512,11 +1546,23 @@ InputPromoViewDelegate
         [self adjustGrandTotal];
         [self isLoading:NO];
         [self initNotificationManager];
-        [self setPromoSuggestion];
-        
+        if (_cart.autoCode != nil && _cart.autoCode.success) {
+            _voucherData = [TransactionVoucherData new];
+            [_voucherData setVoucher_amount:[NSString stringWithFormat:@"%f",_cart.autoCode.discountAmount]];
+            [_voucherData setVoucher_id:[NSString stringWithFormat:@"%zd",_cart.autoCode.id]];
+            [_voucherData setVoucher_promo_desc:_cart.autoCode.message];
+            [_voucherData setVoucher_code:_cart.autoCode.code];
+            [_voucherData setCoupon_title:_cart.autoCode.title];
+            _promoType = _cart.autoCode.isCoupon ? PromoTypeCoupon : PromoTypeVoucher;
+            [_dataInput setObject:_voucherData.voucher_code forKey:API_VOUCHER_CODE_KEY];
+            [_dataInput setObject:@(NO) forKey:@"isUsingPromoSuggestion"];
+            
+            [self useVoucher];
+        } else {
+            [self setPromoSuggestion];
+        }
     } onFailure:^(NSError *error) {
         [self doClearAllData];
-        [_noResultView removeFromSuperview];
         [_noInternetConnectionView generateRequestErrorViewWithError:error];
         [_tableView addSubview:_noInternetConnectionView];
         [self isLoading:NO];
@@ -1707,6 +1753,63 @@ InputPromoViewDelegate
                               
                               [self isLoading:NO];
                           }];
+}
+
+- (void) setupTickerAndNoResultView {
+    [self.view addSubview:_noResultScrollView];
+    [containerView addSubview:_noResultView];
+    [containerView addSubview:tickerView];
+    [containerView addSubview:_topAdsView];
+    [_noResultScrollView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(self.view);
+    }];
+    [containerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(_noResultScrollView);
+        make.width.mas_equalTo([NSNumber numberWithFloat:UIScreen.mainScreen.bounds.size.width]);
+    }];
+    [tickerView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(containerView.mas_top).offset(16);
+        make.left.mas_equalTo(containerView.mas_left).offset(16);
+        make.right.mas_equalTo(containerView.mas_right).offset(-16);
+    }];
+    [_noResultView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(tickerView.mas_bottom);
+        make.left.mas_equalTo(containerView.mas_left);
+        make.right.mas_equalTo(containerView.mas_right);
+        make.height.mas_equalTo(400);
+    }];
+    [couponLabel mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.mas_equalTo(tickerView.mas_left).offset(16);
+        make.top.mas_equalTo(tickerView.mas_top).offset(16);
+        make.bottom.mas_equalTo(tickerView.mas_bottom).offset(-16);
+        make.right.mas_equalTo(buttonClose.mas_left).offset(-16);
+    }];
+    [buttonClose mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.right.mas_equalTo(tickerView.mas_right).offset(-16);
+        make.centerY.mas_equalTo(tickerView.mas_centerY);
+        make.height.mas_equalTo(16);
+        make.width.mas_equalTo(16);
+    }];
+    if (couponLabel == nil || couponLabel.text.length == 0) {
+        [tickerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+        [buttonClose mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }
+    [buttonClose bk_whenTapped:^{
+        [_request cancelVoucher];
+        [tickerView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+        [buttonClose mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+        [couponLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(0);
+        }];
+    }];
 }
 
 #pragma mark - Delegate LoadingView
