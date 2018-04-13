@@ -62,7 +62,14 @@ public class TPRoutes: NSObject {
         // MARK: Shop Pages (Native)
         JLRoutes.global().addRoute("/shop/:shopId") { (params: [String: Any]) -> Bool in
             guard let shopId = params["shopId"] as? String else { return false }
-            navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId)
+            isShopExists(nil, shopId: shopId, shopExists: { shopId in
+                if shopId != nil {
+                    navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId)
+                } else {
+                    TPRoutes.routeURL(URL(string: "tokopedia://home"))
+                }
+            })
+            
             return true
         }
 
@@ -1589,29 +1596,41 @@ public class TPRoutes: NSObject {
         return TPRoutes.routeURL(modifiedURL)
     }
 
-    private static func isShopExists(_ domain: String, shopExists: @escaping ((String?) -> Void)) {
+    private static func isShopExists(_ domain: String?, shopId: String? = nil, shopExists: @escaping ((String?) -> Void)) {
         let topViewController = UIApplication.topViewController()
         topViewController?.showWaitOverlay()
 
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
+        
+        var parameters: [String: String] = [:]
+        if let domain = domain {
+            parameters["shop_domain"] = domain
+        }
+        if let shopId = shopId {
+            parameters["shop_id"] = shopId
+        }
+        
+        guard parameters.count > 0 else {
+            return shopExists(nil)
+        }
 
         networkManager.request(withBaseUrl: NSString.v4Url(),
                                path: "/v4/shop/get_shop_info.pl",
                                method: .GET,
-                               parameter: ["shop_domain": domain],
+                               parameter: parameters,
                                mapping: Shop.mapping(),
                                onSuccess: { [weak topViewController] mappingResult, _ in
                                    topViewController?.removeAllOverlays()
                                    guard mappingResult.dictionary() != nil else { return shopExists(nil) }
                                    let result: Dictionary = mappingResult.dictionary() as Dictionary
 
-                                   guard let response = result[""] as? Shop else { return }
+                                   guard let response = result[""] as? Shop, let responseResult = response.result else { return shopExists(nil) }
 
-                                   if response.result.info == nil {
+                                   if responseResult.info == nil {
                                        shopExists(nil)
                                    } else {
-                                       shopExists(response.result.info.shop_id)
+                                       shopExists(responseResult.info.shop_id)
                                    }
                                 },
                                onFailure: { _ in
