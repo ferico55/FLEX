@@ -28,7 +28,7 @@ internal class VerifyPhoneTableViewController: UITableViewController {
     }
     private func showTokoCashActivation() {
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {            
-            let controller = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "TokoCashActivationViewController")
+            let controller = TokoCashActivationViewController()
             controller.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(controller, animated: true)
         }
