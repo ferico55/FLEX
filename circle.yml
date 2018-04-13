@@ -9,6 +9,7 @@ dependencies:
   override:
     - gem install fastlane
     - bundle install
+    - brew install getsentry/tools/sentry-cli
 
 test:
   override:
