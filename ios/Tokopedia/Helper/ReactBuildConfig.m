@@ -16,7 +16,7 @@ RCT_EXPORT_MODULE(BuildConfig)
 #ifdef DEBUG
     BOOL debugMode = YES;
 #else
-    BOOL debugMode = YES;
+    BOOL debugMode = NO;
 #endif
     
     return @{
