@@ -77,7 +77,7 @@
 
 - (void)navigateToFeedDetailFromViewController:(UIViewController *) viewController withFeedCardID:(NSString *) cardID;
 - (void)navigateToAddToCartFromViewController:(UIViewController *)viewController withProductID:(NSString *)productID;
-- (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController;
+- (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController withFilterParams:(NSDictionary *) filterParams;
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
 + (void)navigateToReferralWelcomeWithData:(NSDictionary*)data;
 + (void)navigateToReferralScreen;

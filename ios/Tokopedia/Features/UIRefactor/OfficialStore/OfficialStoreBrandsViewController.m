@@ -22,7 +22,7 @@
     
     RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                      moduleName:@"Tokopedia"
-                                              initialProperties:@{@"name" : @"Official Store", @"params" : @{} }];
+                                              initialProperties:@{@"name" : @"Official Store", @"params" : _data }];
     
     self.view = rootView;
     self.view.isAccessibilityElement = true;

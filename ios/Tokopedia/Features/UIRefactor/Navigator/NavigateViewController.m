@@ -729,8 +729,9 @@
     [viewController.navigationController pushViewController:vc animated:YES];
 }
 
-- (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController {
+- (void)navigateToOfficialBrandsFromViewController:(UIViewController*)viewController withFilterParams:(NSDictionary *) filterParams; {
     OfficialStoreBrandsViewController* controller = [OfficialStoreBrandsViewController new];
+    controller.data = filterParams;
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }

@@ -766,8 +766,11 @@ public class TPRoutes: NSObject {
         
 
         // MARK: Official Store Brands (Native)
-        JLRoutes.global().addRoute("/official-store/mobile") { (_: [String: Any]) -> Bool in
-            navigator.navigateToOfficialBrands(from: UIApplication.topViewController())
+        JLRoutes.global().addRoute("/official-store/mobile") { (params: [String: Any]) -> Bool in
+            
+            let filterParams = decodePlus(params: queryParams(params: params))
+            
+            navigator.navigateToOfficialBrands(from: UIApplication.topViewController(), withFilterParams: filterParams)
 
             return true
         }
