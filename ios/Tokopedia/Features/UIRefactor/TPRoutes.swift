@@ -1,4 +1,4 @@
-//
+	//
 //  TPRoutes.swift
 //  Tokopedia
 //
@@ -56,6 +56,39 @@ public class TPRoutes: NSObject {
                 viewController.navigationController?.popToRootViewController(animated: true)
                 NotificationCenter.default.post(name: Notification.Name("didSwipeHomePage"), object: self, userInfo: ["page": 1])
             }
+            return true
+        }
+        
+        // Mark: Content Explore Page (React Native)
+        JLRoutes.global().add(["/content/explore/:tab_name/:cat_id"]) { (params: [String: Any]) -> Bool in
+            guard let id = params["cat_id"] as? String else { return false }
+            guard let tabName = params["tab_name"] as? String else { return false }
+            
+            let params = decodePlus(params: queryParams(params: params))
+            
+            let viewController = ReactViewController(moduleName: "ContentExplorer", props: ["categoryId": id as AnyObject, "tabName": tabName as AnyObject, "params": params as AnyObject ])
+            viewController.hidesBottomBarWhenPushed = true
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushReactViewController(viewController, animated: true)
+            
+            return true
+        }
+        
+        // Mark: Content Detail Page (React Native)
+        JLRoutes.global().add(["/content/:post_id"]) { (params: [String: Any]) -> Bool in
+            guard let id = params["post_id"] as? String else { return false }
+            
+            let params = decodePlus(params: queryParams(params: params))
+            
+            let viewController = ReactViewController(moduleName: "ContentDetailPage", props: ["postId": id as AnyObject, "params": params as AnyObject ])
+            viewController.hidesBottomBarWhenPushed = true
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushReactViewController(viewController, animated: true)
+            
             return true
         }
 
