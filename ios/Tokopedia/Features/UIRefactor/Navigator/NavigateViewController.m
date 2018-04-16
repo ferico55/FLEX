@@ -158,9 +158,15 @@
 }
 
 -(void)navigateToCartFromViewController:(UIViewController*)viewController {
-    TransactionCartViewController *cart = [TransactionCartViewController new];
-    cart.hidesBottomBarWhenPushed = YES;
-    [viewController.navigationController pushViewController:cart animated:YES];
+    UITabBarController *tabBarController = viewController.tabBarController;
+    UINavigationController *navController=(UINavigationController*)[tabBarController.viewControllers objectAtIndex:3];
+    [navController popToRootViewControllerAnimated:YES];
+    
+    UINavigationController *selfNav=(UINavigationController*)[tabBarController.viewControllers objectAtIndex:tabBarController.selectedIndex];
+    [tabBarController setSelectedIndex:3];
+    [selfNav popToRootViewControllerAnimated:YES];
+    
+    [[NSNotificationCenter defaultCenter]postNotificationName:SHOULD_REFRESH_CART object:nil];
 }
 
 //seller
