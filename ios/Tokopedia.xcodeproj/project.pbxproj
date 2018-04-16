@@ -876,6 +876,30 @@
 		E5D8A5812010A311003E66BA /* TokoCashGetTokenResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5712010A311003E66BA /* TokoCashGetTokenResponse.swift */; };
 		E5D8A5822010A311003E66BA /* ListAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5722010A311003E66BA /* ListAccountViewController.swift */; };
 		E5D8A5832010A312003E66BA /* LoginPhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D8A5732010A311003E66BA /* LoginPhoneNumberViewController.swift */; };
+		F72BF0CD20748DDE00958374 /* AddEmailNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F72BF0CC20748DDE00958374 /* AddEmailNavigator.swift */; };
+		F73C99BB20735B7A0025FCF3 /* SignInProviderButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99B920735B790025FCF3 /* SignInProviderButton.swift */; };
+		F73C99BC20735B7A0025FCF3 /* SignInProviderButton.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99BA20735B790025FCF3 /* SignInProviderButton.xib */; };
+		F73C99C220735CC70025FCF3 /* RegisterPhoneNumberViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99BE20735CC60025FCF3 /* RegisterPhoneNumberViewController.swift */; };
+		F73C99C320735CC70025FCF3 /* RegisterPhoneNumberViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99BF20735CC60025FCF3 /* RegisterPhoneNumberViewModel.swift */; };
+		F73C99C420735CC70025FCF3 /* RegisterPhoneNumberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99C020735CC60025FCF3 /* RegisterPhoneNumberViewController.xib */; };
+		F73C99C520735CC70025FCF3 /* RegisterPhoneNumberNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99C120735CC60025FCF3 /* RegisterPhoneNumberNavigator.swift */; };
+		F73C99C820735CD80025FCF3 /* Msisdn.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99C620735CD70025FCF3 /* Msisdn.swift */; };
+		F73C99C920735CD80025FCF3 /* RegisterPhoneNumber.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99C720735CD70025FCF3 /* RegisterPhoneNumber.swift */; };
+		F73C99E020735D850025FCF3 /* AddPasswordViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99CC20735D830025FCF3 /* AddPasswordViewModel.swift */; };
+		F73C99E120735D850025FCF3 /* AddPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99CD20735D830025FCF3 /* AddPasswordViewController.xib */; };
+		F73C99E220735D850025FCF3 /* AddPasswordNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99CE20735D830025FCF3 /* AddPasswordNavigator.swift */; };
+		F73C99E320735D850025FCF3 /* AddPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99CF20735D830025FCF3 /* AddPasswordViewController.swift */; };
+		F73C99E420735D850025FCF3 /* EmailOTPViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99D120735D830025FCF3 /* EmailOTPViewController.xib */; };
+		F73C99E520735D850025FCF3 /* EmailOTPNavigator.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99D220735D830025FCF3 /* EmailOTPNavigator.swift */; };
+		F73C99E620735D850025FCF3 /* EmailOTPViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99D320735D830025FCF3 /* EmailOTPViewModel.swift */; };
+		F73C99E720735D850025FCF3 /* EmailOTPViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99D420735D830025FCF3 /* EmailOTPViewController.swift */; };
+		F73C99E820735D850025FCF3 /* ChangeNameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99D620735D830025FCF3 /* ChangeNameViewController.swift */; };
+		F73C99E920735D850025FCF3 /* ChangeNameViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99D720735D830025FCF3 /* ChangeNameViewController.xib */; };
+		F73C99EA20735D850025FCF3 /* ChangeNameViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99D820735D830025FCF3 /* ChangeNameViewModel.swift */; };
+		F73C99EB20735D850025FCF3 /* AddEmailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99DA20735D830025FCF3 /* AddEmailViewModel.swift */; };
+		F73C99EC20735D850025FCF3 /* AddEmailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99DB20735D830025FCF3 /* AddEmailViewController.swift */; };
+		F73C99ED20735D850025FCF3 /* AddEmailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C99DC20735D830025FCF3 /* AddEmailViewController.xib */; };
+		F73C99EE20735D850025FCF3 /* UpdateProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = F73C99DF20735D840025FCF3 /* UpdateProfile.swift */; };
 		F772714620355FDB00D959AF /* TokoCashViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77270D420355FDA00D959AF /* TokoCashViewModel.swift */; };
 		F772714720355FDB00D959AF /* TokoCashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F77270D520355FDA00D959AF /* TokoCashViewController.swift */; };
 		F772714820355FDB00D959AF /* TokoCashViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F77270D620355FDA00D959AF /* TokoCashViewController.xib */; };
@@ -3588,6 +3612,30 @@
 		E5D8A5712010A311003E66BA /* TokoCashGetTokenResponse.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashGetTokenResponse.swift; sourceTree = "<group>"; };
 		E5D8A5722010A311003E66BA /* ListAccountViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListAccountViewController.swift; sourceTree = "<group>"; };
 		E5D8A5732010A311003E66BA /* LoginPhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginPhoneNumberViewController.swift; sourceTree = "<group>"; };
+		F72BF0CC20748DDE00958374 /* AddEmailNavigator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddEmailNavigator.swift; sourceTree = "<group>"; };
+		F73C99B920735B790025FCF3 /* SignInProviderButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignInProviderButton.swift; sourceTree = "<group>"; };
+		F73C99BA20735B790025FCF3 /* SignInProviderButton.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SignInProviderButton.xib; sourceTree = "<group>"; };
+		F73C99BE20735CC60025FCF3 /* RegisterPhoneNumberViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPhoneNumberViewController.swift; sourceTree = "<group>"; };
+		F73C99BF20735CC60025FCF3 /* RegisterPhoneNumberViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPhoneNumberViewModel.swift; sourceTree = "<group>"; };
+		F73C99C020735CC60025FCF3 /* RegisterPhoneNumberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RegisterPhoneNumberViewController.xib; sourceTree = "<group>"; };
+		F73C99C120735CC60025FCF3 /* RegisterPhoneNumberNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPhoneNumberNavigator.swift; sourceTree = "<group>"; };
+		F73C99C620735CD70025FCF3 /* Msisdn.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Msisdn.swift; sourceTree = "<group>"; };
+		F73C99C720735CD70025FCF3 /* RegisterPhoneNumber.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegisterPhoneNumber.swift; sourceTree = "<group>"; };
+		F73C99CC20735D830025FCF3 /* AddPasswordViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPasswordViewModel.swift; sourceTree = "<group>"; };
+		F73C99CD20735D830025FCF3 /* AddPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddPasswordViewController.xib; sourceTree = "<group>"; };
+		F73C99CE20735D830025FCF3 /* AddPasswordNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPasswordNavigator.swift; sourceTree = "<group>"; };
+		F73C99CF20735D830025FCF3 /* AddPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddPasswordViewController.swift; sourceTree = "<group>"; };
+		F73C99D120735D830025FCF3 /* EmailOTPViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EmailOTPViewController.xib; sourceTree = "<group>"; };
+		F73C99D220735D830025FCF3 /* EmailOTPNavigator.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPNavigator.swift; sourceTree = "<group>"; };
+		F73C99D320735D830025FCF3 /* EmailOTPViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPViewModel.swift; sourceTree = "<group>"; };
+		F73C99D420735D830025FCF3 /* EmailOTPViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailOTPViewController.swift; sourceTree = "<group>"; };
+		F73C99D620735D830025FCF3 /* ChangeNameViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeNameViewController.swift; sourceTree = "<group>"; };
+		F73C99D720735D830025FCF3 /* ChangeNameViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangeNameViewController.xib; sourceTree = "<group>"; };
+		F73C99D820735D830025FCF3 /* ChangeNameViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangeNameViewModel.swift; sourceTree = "<group>"; };
+		F73C99DA20735D830025FCF3 /* AddEmailViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEmailViewModel.swift; sourceTree = "<group>"; };
+		F73C99DB20735D830025FCF3 /* AddEmailViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AddEmailViewController.swift; sourceTree = "<group>"; };
+		F73C99DC20735D830025FCF3 /* AddEmailViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddEmailViewController.xib; sourceTree = "<group>"; };
+		F73C99DF20735D840025FCF3 /* UpdateProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateProfile.swift; sourceTree = "<group>"; };
 		F77270D420355FDA00D959AF /* TokoCashViewModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashViewModel.swift; sourceTree = "<group>"; };
 		F77270D520355FDA00D959AF /* TokoCashViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokoCashViewController.swift; sourceTree = "<group>"; };
 		F77270D620355FDA00D959AF /* TokoCashViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TokoCashViewController.xib; sourceTree = "<group>"; };
@@ -8293,6 +8341,87 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		F73C99BD20735CC60025FCF3 /* Register Phone Number */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99BE20735CC60025FCF3 /* RegisterPhoneNumberViewController.swift */,
+				F73C99BF20735CC60025FCF3 /* RegisterPhoneNumberViewModel.swift */,
+				F73C99C020735CC60025FCF3 /* RegisterPhoneNumberViewController.xib */,
+				F73C99C120735CC60025FCF3 /* RegisterPhoneNumberNavigator.swift */,
+			);
+			path = "Register Phone Number";
+			sourceTree = "<group>";
+		};
+		F73C99CA20735D830025FCF3 /* Scenes */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99CB20735D830025FCF3 /* Add Password */,
+				F73C99D020735D830025FCF3 /* Email OTP */,
+				F73C99D520735D830025FCF3 /* Change Name */,
+				F73C99D920735D830025FCF3 /* Add Email */,
+			);
+			path = Scenes;
+			sourceTree = "<group>";
+		};
+		F73C99CB20735D830025FCF3 /* Add Password */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99CC20735D830025FCF3 /* AddPasswordViewModel.swift */,
+				F73C99CD20735D830025FCF3 /* AddPasswordViewController.xib */,
+				F73C99CE20735D830025FCF3 /* AddPasswordNavigator.swift */,
+				F73C99CF20735D830025FCF3 /* AddPasswordViewController.swift */,
+			);
+			path = "Add Password";
+			sourceTree = "<group>";
+		};
+		F73C99D020735D830025FCF3 /* Email OTP */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99D120735D830025FCF3 /* EmailOTPViewController.xib */,
+				F73C99D220735D830025FCF3 /* EmailOTPNavigator.swift */,
+				F73C99D320735D830025FCF3 /* EmailOTPViewModel.swift */,
+				F73C99D420735D830025FCF3 /* EmailOTPViewController.swift */,
+			);
+			path = "Email OTP";
+			sourceTree = "<group>";
+		};
+		F73C99D520735D830025FCF3 /* Change Name */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99D620735D830025FCF3 /* ChangeNameViewController.swift */,
+				F73C99D720735D830025FCF3 /* ChangeNameViewController.xib */,
+				F73C99D820735D830025FCF3 /* ChangeNameViewModel.swift */,
+			);
+			path = "Change Name";
+			sourceTree = "<group>";
+		};
+		F73C99D920735D830025FCF3 /* Add Email */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99DA20735D830025FCF3 /* AddEmailViewModel.swift */,
+				F73C99DB20735D830025FCF3 /* AddEmailViewController.swift */,
+				F73C99DC20735D830025FCF3 /* AddEmailViewController.xib */,
+				F72BF0CC20748DDE00958374 /* AddEmailNavigator.swift */,
+			);
+			path = "Add Email";
+			sourceTree = "<group>";
+		};
+		F73C99DD20735D840025FCF3 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99DE20735D840025FCF3 /* Model */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		F73C99DE20735D840025FCF3 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				F73C99DF20735D840025FCF3 /* UpdateProfile.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		F77270D220355FDA00D959AF /* TokoCash */ = {
 			isa = PBXGroup;
 			children = (
@@ -9306,15 +9435,15 @@
 		F977EFA01FE8AB6F00183A85 /* Settings */ = {
 			isa = PBXGroup;
 			children = (
+				F977EFB41FE8AB6F00183A85 /* ProfileSettingViewController.h */,
+				F977EFE01FE8AB6F00183A85 /* string_settings.h */,
+				F977EFE11FE8AB6F00183A85 /* ProfileSettingViewController.m */,
+				F977EFA11FE8AB6F00183A85 /* ProfileSettingViewController.xib */,
 				F977EFCB1FE8AB6F00183A85 /* Address */,
 				F977EFB51FE8AB6F00183A85 /* BankAccount */,
 				F977EFAD1FE8AB6F00183A85 /* Notification */,
 				F977EFA21FE8AB6F00183A85 /* Password */,
 				F977EFA61FE8AB6F00183A85 /* Privacy */,
-				F977EFB41FE8AB6F00183A85 /* ProfileSettingViewController.h */,
-				F977EFE11FE8AB6F00183A85 /* ProfileSettingViewController.m */,
-				F977EFA11FE8AB6F00183A85 /* ProfileSettingViewController.xib */,
-				F977EFE01FE8AB6F00183A85 /* string_settings.h */,
 				F977EFC81FE8AB6F00183A85 /* TouchID */,
 				F977EFD81FE8AB6F00183A85 /* UserProfile */,
 			);
@@ -9421,6 +9550,8 @@
 		F977EFD81FE8AB6F00183A85 /* UserProfile */ = {
 			isa = PBXGroup;
 			children = (
+				F73C99DD20735D840025FCF3 /* Domain */,
+				F73C99CA20735D830025FCF3 /* Scenes */,
 				F977EFDB1FE8AB6F00183A85 /* SettingUserPhoneViewController.h */,
 				F977EFD91FE8AB6F00183A85 /* SettingUserPhoneViewController.m */,
 				F977EFDD1FE8AB6F00183A85 /* SettingUserPhoneViewController.xib */,
@@ -10576,6 +10707,8 @@
 		F977F2C11FE8AB7100183A85 /* SignInProviders */ = {
 			isa = PBXGroup;
 			children = (
+				F73C99B920735B790025FCF3 /* SignInProviderButton.swift */,
+				F73C99BA20735B790025FCF3 /* SignInProviderButton.xib */,
 				F977F2C21FE8AB7100183A85 /* SignInProviderListView.swift */,
 			);
 			path = SignInProviders;
@@ -11389,6 +11522,8 @@
 		F977F5071FE8AB7300183A85 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				F73C99C620735CD70025FCF3 /* Msisdn.swift */,
+				F73C99C720735CD70025FCF3 /* RegisterPhoneNumber.swift */,
 				F977F5081FE8AB7300183A85 /* RegisterUnbox.swift */,
 				F977F5091FE8AB7300183A85 /* ResendActivationEmail.swift */,
 			);
@@ -11398,6 +11533,7 @@
 		F977F50A1FE8AB7400183A85 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				F73C99BD20735CC60025FCF3 /* Register Phone Number */,
 				F977F50B1FE8AB7400183A85 /* AccountActivationSuccessViewController.swift */,
 				F977F50F1FE8AB7400183A85 /* AccountActivationSuccessViewController.xib */,
 				F977F5111FE8AB7400183A85 /* AccountActivationViewController.swift */,
@@ -12105,6 +12241,7 @@
 				92A4CBB6201731CC00C42D37 /* SellerInfoInboxFilterCellView.xib in Resources */,
 				7A4672021EB2FEB400A72105 /* Images.xcassets in Resources */,
 				F977FB701FE8AB7B00183A85 /* CategoryPageViewController.xib in Resources */,
+				F73C99E120735D850025FCF3 /* AddPasswordViewController.xib in Resources */,
 				F772715C20355FDB00D959AF /* TokoCashQRPaymentViewController.xib in Resources */,
 				F977FC301FE8AB7D00183A85 /* OrderDeliveredConfirmationAlertView.xib in Resources */,
 				F977FCAC1FE8AB7E00183A85 /* TKPMapView.xib in Resources */,
@@ -12237,6 +12374,7 @@
 				F977FBA71FE8AB7C00183A85 /* ShipmentStatusCell.xib in Resources */,
 				F977FAEB1FE8AB7A00183A85 /* HistoryProductViewController.xib in Resources */,
 				F977FC0F1FE8AB7C00183A85 /* CourierProductViewCell.xib in Resources */,
+				F73C99ED20735D850025FCF3 /* AddEmailViewController.xib in Resources */,
 				F954C4401FC55B6C008C0B30 /* badge_official_small.png in Resources */,
 				F977FB3E1FE8AB7B00183A85 /* DepositSummaryViewController.xib in Resources */,
 				F977FD781FE8AB7F00183A85 /* AddressCell.xib in Resources */,
@@ -12358,7 +12496,9 @@
 				F977FCAF1FE8AB7E00183A85 /* TKPInfoWindowMapView.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
 				F772716F20355FDB00D959AF /* Success-animation.json in Resources */,
+				F73C99E920735D850025FCF3 /* ChangeNameViewController.xib in Resources */,
 				E5ADEDB520353931006488AF /* FloatingSortFilterViewController.xib in Resources */,
+				F73C99E420735D850025FCF3 /* EmailOTPViewController.xib in Resources */,
 				F977FBDA1FE8AB7C00183A85 /* RejectReasonEmptyStockViewController.xib in Resources */,
 				923D971F20048A7800EADE79 /* main.jsbundle in Resources */,
 				F977FAD61FE8AB7A00183A85 /* HomeTabViewController.xib in Resources */,
@@ -12464,6 +12604,7 @@
 				DADB9F721F3C56D9002B1FAE /* FacebookSDKStrings.bundle in Resources */,
 				F977FB6F1FE8AB7B00183A85 /* InboxResolutionCenterTabViewController.xib in Resources */,
 				F977FD3A1FE8AB7F00183A85 /* SearchResultShopViewController.xib in Resources */,
+				F73C99BC20735B7A0025FCF3 /* SignInProviderButton.xib in Resources */,
 				F977FBE91FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 				F977FC831FE8AB7D00183A85 /* EditShopTypeViewCell.xib in Resources */,
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
@@ -12486,6 +12627,7 @@
 				F977FB201FE8AB7B00183A85 /* InboxTicketSplitViewController.xib in Resources */,
 				F977FB2C1FE8AB7B00183A85 /* RetryCollectionReusableView.xib in Resources */,
 				F977FE0A1FE8AB8100183A85 /* PulsaViewController.xib in Resources */,
+				F73C99C420735CC70025FCF3 /* RegisterPhoneNumberViewController.xib in Resources */,
 				F977FAA01FE8AB7A00183A85 /* TransactionCartHeaderView.xib in Resources */,
 				F977FCAA1FE8AB7E00183A85 /* ShopStatView.xib in Resources */,
 				F977FD2F1FE8AB7F00183A85 /* SearchAutoCompleteViewController.xib in Resources */,
@@ -13009,6 +13151,7 @@
 				62C7719F1FF33C3500F66527 /* WalletStore.swift in Sources */,
 				F77271A420355FDC00D959AF /* TokoCashProfile.swift in Sources */,
 				F977FAA81FE8AB7A00183A85 /* TransactionCartEditViewController.m in Sources */,
+				F73C99E220735D850025FCF3 /* AddPasswordNavigator.swift in Sources */,
 				62C7708B1FF33C3300F66527 /* HotlistResultInfo.m in Sources */,
 				F772719020355FDC00D959AF /* TokoCashAccountViewModel.swift in Sources */,
 				E581B5411FE8FDAE00E6D1DA /* NotificationManager.swift in Sources */,
@@ -13075,6 +13218,7 @@
 				62C770C61FF33C3300F66527 /* OrderShipment.m in Sources */,
 				62C770C21FF33C3300F66527 /* ActionOrderResult.m in Sources */,
 				E520972720612A4B002F5301 /* GroupChatDetailViewController.swift in Sources */,
+				F73C99EC20735D850025FCF3 /* AddEmailViewController.swift in Sources */,
 				F977FD2E1FE8AB7F00183A85 /* SearchAutoCompleteViewModel.m in Sources */,
 				F977FDAE1FE8AB8000183A85 /* OfficialStorePromoViewController.m in Sources */,
 				62C770AF1FF33C3300F66527 /* CategoryList.m in Sources */,
@@ -13134,6 +13278,7 @@
 				F772718320355FDC00D959AF /* TokoCashHistoryListNavigator.swift in Sources */,
 				62C770471FF33C3200F66527 /* SearchAWSProduct.m in Sources */,
 				62C7716F1FF33C3400F66527 /* GeneratedHost.m in Sources */,
+				F73C99BB20735B7A0025FCF3 /* SignInProviderButton.swift in Sources */,
 				62C770201FF33C3200F66527 /* TxOrderConfirmPaymentFormForm.m in Sources */,
 				62C770501FF33C3200F66527 /* InboxTicketUserInvolve.m in Sources */,
 				F977FB4D1FE8AB7B00183A85 /* HotlistResultViewController.m in Sources */,
@@ -13198,6 +13343,7 @@
 				62C770B61FF33C3300F66527 /* WarehouseResult.m in Sources */,
 				F977FC5C1FE8AB7D00183A85 /* AddImageCaptionViewController.swift in Sources */,
 				F924FCB520178E41009EDD47 /* PulsaViewManager.m in Sources */,
+				F73C99E520735D850025FCF3 /* EmailOTPNavigator.swift in Sources */,
 				F977FB561FE8AB7B00183A85 /* EditSolutionSellerViewController.swift in Sources */,
 				F977FDE31FE8AB8000183A85 /* ShopPageRequest.m in Sources */,
 				848FA6F71FEBF8BF00A22EDE /* ProblemProductInfoCell.swift in Sources */,
@@ -13240,6 +13386,7 @@
 				62C771321FF33C3400F66527 /* ShopProductPageCampaignInfo.swift in Sources */,
 				F772717A20355FDC00D959AF /* TokoCashPendingTransactionViewModel.swift in Sources */,
 				F977FCD41FE8AB7E00183A85 /* SliderData.m in Sources */,
+				F73C99EB20735D850025FCF3 /* AddEmailViewModel.swift in Sources */,
 				92A4CBBC201731CC00C42D37 /* SellerInfoInboxCellView.swift in Sources */,
 				62C770E71FF33C3300F66527 /* GeneralMetaData.swift in Sources */,
 				F977FC521FE8AB7D00183A85 /* ForgotPasswordViewController.m in Sources */,
@@ -13289,12 +13436,14 @@
 				62C771A91FF33C3500F66527 /* LikeDislikeResult.m in Sources */,
 				62C771B11FF33C3500F66527 /* ProductFeed.m in Sources */,
 				F977FBA11FE8AB7C00183A85 /* RetryPickupRequest.swift in Sources */,
+				F73C99EE20735D850025FCF3 /* UpdateProfile.swift in Sources */,
 				F977FDDF1FE8AB8000183A85 /* ShopNotesPageViewController.m in Sources */,
 				F97700911FE8AB8600183A85 /* TPCryptoManager.swift in Sources */,
 				F977FBD71FE8AB7C00183A85 /* OrderRejectExplanationViewController.m in Sources */,
 				848FA6FD1FEBF8BF00A22EDE /* ProblemDetailTableViewController.swift in Sources */,
 				F772719A20355FDC00D959AF /* TokoCashHelpViewModel.swift in Sources */,
 				DADB9F4E1F3C46CE002B1FAE /* FBTweakShakeWindow.m in Sources */,
+				F73C99E320735D850025FCF3 /* AddPasswordViewController.swift in Sources */,
 				F977FA281FE8AB7900183A85 /* NetworkProvider.swift in Sources */,
 				F772718E20355FDC00D959AF /* TokoCashDateRangeItemViewModel.swift in Sources */,
 				F977FA921FE8AB7A00183A85 /* RequestATC.m in Sources */,
@@ -13320,6 +13469,7 @@
 				F977FE1F1FE8AB8100183A85 /* PromoCollectionReusableView.m in Sources */,
 				F977FE3A1FE8AB8100183A85 /* NSMutableURLRequest+TKPDURLRequestUploadImage.m in Sources */,
 				F977FA451FE8AB7900183A85 /* NSURL+TKPURL.m in Sources */,
+				F73C99C820735CD80025FCF3 /* Msisdn.swift in Sources */,
 				848FA6EA1FEBF8BF00A22EDE /* RCProduct.swift in Sources */,
 				62C771641FF33C3400F66527 /* AddProductValidationResult.m in Sources */,
 				62C771221FF33C3400F66527 /* ReplacementDeadline.swift in Sources */,
@@ -13343,6 +13493,7 @@
 				62C770B41FF33C3300F66527 /* OrderOrder.m in Sources */,
 				F977FD101FE8AB7E00183A85 /* RequestMoveTo.m in Sources */,
 				62C7712E1FF33C3400F66527 /* HotlistDetail.m in Sources */,
+				F73C99E020735D850025FCF3 /* AddPasswordViewModel.swift in Sources */,
 				F977FC1C1FE8AB7C00183A85 /* ReplacementListHeaderView.swift in Sources */,
 				62C770451FF33C3200F66527 /* GooglePlaceDetailResults.m in Sources */,
 				62C7718E1FF33C3400F66527 /* ProfileEdit.m in Sources */,
@@ -13351,6 +13502,7 @@
 				F977FC561FE8AB7D00183A85 /* UploadImageObserver.swift in Sources */,
 				62C7714C1FF33C3400F66527 /* District.m in Sources */,
 				F7CCD91E205BFB0F00EB46A7 /* CCAuthenticationViewModel.swift in Sources */,
+				F73C99C920735CD80025FCF3 /* RegisterPhoneNumber.swift in Sources */,
 				F977FD361FE8AB7F00183A85 /* SpellCheckRequest.m in Sources */,
 				F977FBC81FE8AB7C00183A85 /* OrderButtonView.swift in Sources */,
 				E57974C11FEA73D700610655 /* Modal.swift in Sources */,
@@ -13496,6 +13648,8 @@
 				62C770F31FF33C3300F66527 /* EnvelopeHeader.swift in Sources */,
 				62C770131FF33C3200F66527 /* TxOrderConfirmedDetailPayment.m in Sources */,
 				F97700A81FE8AB8600183A85 /* UIViewController+TKPAdditions.m in Sources */,
+				F73C99E620735D850025FCF3 /* EmailOTPViewModel.swift in Sources */,
+				F73C99E720735D850025FCF3 /* EmailOTPViewController.swift in Sources */,
 				F977FDAA1FE8AB8000183A85 /* ConfirmationRequest.swift in Sources */,
 				F977FC701FE8AB7D00183A85 /* CatalogSectionHeaderView.m in Sources */,
 				E576573B206548A8003683DB /* GroupChatPlainMessageCell.swift in Sources */,
@@ -13686,6 +13840,7 @@
 				62C771C31FF33C3500F66527 /* SimpleFavoritedShopResult.m in Sources */,
 				F977FB431FE8AB7B00183A85 /* ProductDataSource.swift in Sources */,
 				F977005D1FE8AB8500183A85 /* DigitalFavouriteNumberViewController.swift in Sources */,
+				F73C99C220735CC70025FCF3 /* RegisterPhoneNumberViewController.swift in Sources */,
 				F9A7CA722058B114001357F0 /* UINavigationController+CompletionHandler.swift in Sources */,
 				F977FC6B1FE8AB7D00183A85 /* FilterCatalogViewController.m in Sources */,
 				62C7702B1FF33C3200F66527 /* TransactionSystemBank.m in Sources */,
@@ -13929,6 +14084,7 @@
 				F772717620355FDB00D959AF /* TokoCashNominalTableViewCell.swift in Sources */,
 				F772718120355FDC00D959AF /* TokoCashHistoryDetailViewController.swift in Sources */,
 				62C76FF51FF33C3200F66527 /* TxOrderCancelPaymentResult.m in Sources */,
+				F72BF0CD20748DDE00958374 /* AddEmailNavigator.swift in Sources */,
 				62C770011FF33C3200F66527 /* TxOrderPaymentEditMethod.m in Sources */,
 				62C7705B1FF33C3200F66527 /* ReplyInboxTicketResult.m in Sources */,
 				F772717C20355FDC00D959AF /* TokoCashPendingTransactionNavigator.swift in Sources */,
@@ -14089,6 +14245,7 @@
 				F977FC601FE8AB7D00183A85 /* TKPImagePickerController.swift in Sources */,
 				F977FD8A1FE8AB8000183A85 /* FiltersTableViewController.swift in Sources */,
 				92489A002073299F00876F5B /* ReactBuildConfig.m in Sources */,
+				F73C99C320735CC70025FCF3 /* RegisterPhoneNumberViewModel.swift in Sources */,
 				F977FD281FE8AB7F00183A85 /* SearchAutoCompleteCell.m in Sources */,
 				F977FE2F1FE8AB8100183A85 /* AccountActivationViewController.swift in Sources */,
 				F977FA581FE8AB7900183A85 /* HotlistBannerData.swift in Sources */,
@@ -14480,6 +14637,7 @@
 				F772716420355FDB00D959AF /* TokoCashMoveToSaldoFailedNavigator.swift in Sources */,
 				62C770AB1FF33C3300F66527 /* CategoryData.swift in Sources */,
 				F977FBE51FE8AB7C00183A85 /* RejectReasonWrongPriceCell.m in Sources */,
+				F73C99C520735CC70025FCF3 /* RegisterPhoneNumberNavigator.swift in Sources */,
 				F977FBF61FE8AB7C00183A85 /* FuzzySearchData.swift in Sources */,
 				F977FCE41FE8AB7E00183A85 /* DetailProductVideoTableViewCell.swift in Sources */,
 				62C771A01FF33C3500F66527 /* WalletData.swift in Sources */,
@@ -14503,8 +14661,10 @@
 				F977FB271FE8AB7B00183A85 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
 				924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */,
 				F977FCB11FE8AB7E00183A85 /* InfoAddressView.swift in Sources */,
+				F73C99E820735D850025FCF3 /* ChangeNameViewController.swift in Sources */,
 				F772715F20355FDB00D959AF /* TokoCashQRCodeViewController.swift in Sources */,
 				F98052642018AAFE00CE6D67 /* ReactLocationServiceManager.swift in Sources */,
+				F73C99EA20735D850025FCF3 /* ChangeNameViewModel.swift in Sources */,
 				62C7718F1FF33C3400F66527 /* ProfileEditForm.m in Sources */,
 				848FA6FE1FEBF8BF00A22EDE /* ProblemDetailViewController.swift in Sources */,
 				E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */,

@@ -6,12 +6,13 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import RxSwift
+import SwiftyJSON
+import UIKit
 
-class SettingUserProfileRequest: NSObject {
+public class SettingUserProfileRequest: NSObject {
     
-    class func fetchUserProfileForm(_ onSuccess:@escaping ((_ data:DataUser) -> Void), onFailure:@escaping (()->Void)){
+    public class func fetchUserProfileForm(_ onSuccess:@escaping ((_ data:DataUser) -> Void), onFailure:@escaping (()->Void)){
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         let param : [String : String] = ["profile_user_id":auth.getUserId()]
@@ -43,7 +44,7 @@ class SettingUserProfileRequest: NSObject {
         
     }
     
-    class func fetchEditUserProfile(_ postObject:DataUser, onSuccess:@escaping (() -> Void), onFailure:@escaping (()->Void)){
+    public class func fetchEditUserProfile(_ postObject:DataUser, onSuccess:@escaping (() -> Void), onFailure:@escaping (()->Void)){
         
         let auth : UserAuthentificationManager = UserAuthentificationManager()
         
@@ -53,10 +54,7 @@ class SettingUserProfileRequest: NSObject {
             "birth_month" : postObject.birth_month,
             "birth_year"  : postObject.birth_year,
             "gender"      : postObject.gender,
-            "hobby"     : postObject.hobby,
-            "messenger" : postObject.user_messenger,
             "msisdn"    : postObject.user_phone,
-            "user_password" : postObject.user_password,
             "user_id"       : auth.getUserId()
         ]
         
@@ -91,7 +89,7 @@ class SettingUserProfileRequest: NSObject {
         }
     }
     
-    class func fetchUploadProfilePicture(_ image:UIImage,  onSuccess:@escaping ((_ imageURLString: String) -> Void), onFailure:@escaping (()->Void)) {
+    public class func fetchUploadProfilePicture(_ image:UIImage,  onSuccess:@escaping ((_ imageURLString: String) -> Void), onFailure:@escaping (()->Void)) {
                 
         var generatedHost : GeneratedHost = GeneratedHost()
         var imageURLString : String = ""
@@ -185,6 +183,41 @@ class SettingUserProfileRequest: NSObject {
             
             return Disposables.create()
         })
+    }
+    
+    public class func requestEmailRegisterCheck(email: String) -> Observable<EmailCheckResponse>{
+        return AccountProvider()
+            .request(.emailRegisterCheck(email: email))
+            .mapJSON()
+            .map{ response -> EmailCheckResponse in
+                let response = JSON(response)
+                return EmailCheckResponse(json: response)
+        }
+    }
+    
+    public class func requestSendEmailVerificationCode(email: String) -> Observable<EmailVerificationCodeResponse>{
+        return AccountProvider()
+            .request(.sendEmailVerificationCode(email: email))
+            .mapJSON()
+            .map{ response -> EmailVerificationCodeResponse in
+                let response = JSON(response)
+                return EmailVerificationCodeResponse(json: response)
+        }
+    }
+    
+    public class func requestSubmitProfileUpdate(userId: String, fullname: String? = nil, password: String? = nil, phone: String? = nil, email: String? = nil, uniqueCode: String? = nil) -> Observable<UpdateProfileResponse>{
+        return AccountProvider()
+            .request(.submitProfileUpdate(userId: userId,
+                                          fullname: fullname,
+                                          password: password,
+                                          phone: phone,
+                                          email: email,
+                                          uniqueCode: uniqueCode))
+            .mapJSON()
+            .map { response -> UpdateProfileResponse in
+                let response = JSON(response)
+                return UpdateProfileResponse(json: response)
+        }
     }
     
 }

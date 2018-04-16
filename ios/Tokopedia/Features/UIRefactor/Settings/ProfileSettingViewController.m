@@ -46,7 +46,7 @@
 {
     [super viewDidLoad];
     
-    _listMenu = @[@[@"Ubah Kata Sandi"],
+    _listMenu = @[@[@"Kata Sandi"],
                   @[@"Biodata Diri" ,
                     @"Daftar Alamat",
                     @"Akun Bank",
@@ -130,8 +130,13 @@
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     
     if (indexPath.section == 0 && indexPath.row == 0) {
-        SettingPasswordViewController *vc = [SettingPasswordViewController new];
-        [self.navigationController pushViewController:vc animated:YES];
+        if (_userCreatedPassword) {
+            SettingPasswordViewController *vc = [SettingPasswordViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+        } else {
+            AddPasswordViewController *vc = [AddPasswordViewController new];
+            [self.navigationController pushViewController:vc animated:YES];
+        }
     } else if (indexPath.section == 2 && indexPath.row == 0) {
         [AnalyticsManager trackEventName:@"clickProfile" category:@"Profile Setting" action:GA_EVENT_ACTION_CLICK label:@"Touch ID"];
         
@@ -154,8 +159,24 @@
             }
             case 2: {
                 //bank account
-                SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
-                [self.navigationController pushViewController:vc animated:YES];
+                if (_userCreatedPassword) {
+                    SettingBankAccountViewController *vc = [SettingBankAccountViewController new];
+                    [self.navigationController pushViewController:vc animated:YES];
+                } else {
+                    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"Anda tidak memiliki kata sandi"
+                                                                                   message:@"Silahkan buat kata sandi terlebih dahulu untuk menambah rekening."
+                                                                            preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction* cancelAction = [UIAlertAction actionWithTitle:@"Tidak" style:UIAlertActionStyleDefault handler:nil];
+                    UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"Buat kata sandi" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        AddPasswordViewController *vc = [AddPasswordViewController new];
+                        [self.navigationController pushViewController:vc animated:YES];
+                    }];
+                    [alert addAction:cancelAction];
+                    [alert addAction:defaultAction];
+                    [self presentViewController:alert animated:YES completion:nil];
+                    
+                }
                 break;
             }
             case 3: {

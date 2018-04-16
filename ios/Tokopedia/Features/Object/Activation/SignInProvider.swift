@@ -41,27 +41,33 @@ public class SignInProvider: NSObject {
         let fbProvider = SignInProvider()
         fbProvider.name = "Facebook"
         fbProvider.id = "facebook"
-        fbProvider.imageUrl = "https://ecs1.tokopedia.net/img/icon/facebook_icon.png"
-        fbProvider.color = "#3A589B"
+        fbProvider.imageUrl = "https://ecs7.tokopedia.net/img/icon/facebook_icon.png"
+        fbProvider.color = "#ffffff"
         
         let googleProvider = SignInProvider()
         googleProvider.name = "Google"
         googleProvider.id = "gplus"
-        googleProvider.imageUrl = "https://ecs1.tokopedia.net/img/icon/gplus_icon.png"
-        googleProvider.color = "#FFFFFF"
+        googleProvider.imageUrl = "https://ecs7.tokopedia.net/img/icon/gplus_icon.png"
+        googleProvider.color = "#ffffff"
         
         let yahooProvider = SignInProvider()
         yahooProvider.name = "Yahoo"
         yahooProvider.id = "yahoo"
         yahooProvider.signInUrl = "\(NSString.accountsUrl())/wv/yahoo-login"
-        yahooProvider.imageUrl = "https://ecs1.tokopedia.net/img/icon/yahoo_icon.png"
-        yahooProvider.color = "#8B2491"
+        yahooProvider.imageUrl = "https://ecs7.tokopedia.net/img/icon/yahoo_icon.png"
+        yahooProvider.color = "#ffffff"
         
         let tokoCashProvider = SignInProvider()
         tokoCashProvider.name = "Nomor Ponsel"
         tokoCashProvider.id = "phoneNumber"
         tokoCashProvider.imageUrl = ""
         tokoCashProvider.color = "#ffffff"
+        
+        let emailProvider = SignInProvider()
+        emailProvider.name = "Email"
+        emailProvider.id = "regemail"
+        emailProvider.imageUrl = ""
+        emailProvider.color = "#ffffff"
         
         if useFor == .login {
             let loginProvider : [SignInProvider] = [
@@ -74,7 +80,8 @@ public class SignInProvider: NSObject {
         } else {
             let registerProvider : [SignInProvider] = [
                 fbProvider,
-                googleProvider
+                googleProvider,
+                emailProvider
             ]
             return registerProvider
         }

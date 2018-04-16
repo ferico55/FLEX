@@ -77,8 +77,9 @@ import RxSwift
             .mapToVoid()
     }
     
-    public func getThirdPartySignInOptions(onCompletion: @escaping SignOptionsRequestCompletion) {
+    public func getThirdPartySignInOptions(_ type: SignInOptionsType = .login, onCompletion: @escaping SignOptionsRequestCompletion) {
         let request = SignOptionsRequest()
+        request.type = type
         request.completionHandler = onCompletion
         request.getThirdPartySignOptions()
     }

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13527"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,13 +18,11 @@
                 <outlet property="opsionalLabel" destination="TNB-3o-bsd" id="xbs-eK-poZ"/>
                 <outlet property="table" destination="enW-Bl-Ec8" id="O4H-WK-aj1"/>
                 <outlet property="textfieldaddressname" destination="bzh-Yx-Bav" id="PeY-6y-MbO"/>
-                <outlet property="textfieldpass" destination="TuB-lg-ddb" id="J69-he-qmD"/>
                 <outlet property="textfieldphonenumber" destination="4xG-Im-92j" id="2jg-3Q-Lqg"/>
                 <outlet property="textfieldpostcode" destination="rkg-RP-kyH" id="iuY-fP-HHh"/>
                 <outlet property="textfieldreceivername" destination="Y8c-d0-Usk" id="pmv-dx-Uw2"/>
                 <outlet property="textviewaddress" destination="qBI-JP-wnk" id="ztY-aA-gfH"/>
                 <outlet property="view" destination="5jT-qA-8Ca" id="hN8-kb-f63"/>
-                <outlet property="viewpassword" destination="Mb6-kl-6N0" id="bp8-dU-wu8"/>
                 <outletCollection property="section0Cells" destination="wuO-8G-35p" id="fol-Sb-cHP"/>
                 <outletCollection property="section1Cells" destination="ajZ-Zq-6K8" id="91Q-EZ-qsG"/>
                 <outletCollection property="section1Cells" destination="V1F-GX-vq4" id="iKu-ga-lol"/>
@@ -32,7 +30,6 @@
                 <outletCollection property="section2Cells" destination="MnA-aZ-ahf" id="gi2-I3-Ijr"/>
                 <outletCollection property="section2Cells" destination="Nkd-N9-hJV" id="hyt-kn-2gZ"/>
                 <outletCollection property="section2Cells" destination="pra-CU-cPU" id="pz8-gr-Y7q"/>
-                <outletCollection property="section3Cells" destination="rtg-k2-tFe" id="Yxu-xP-leP"/>
             </connections>
         </placeholder>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
@@ -321,63 +318,6 @@
                 </constraints>
             </tableViewCellContentView>
             <point key="canvasLocation" x="-140" y="918"/>
-        </tableViewCell>
-        <tableViewCell tag="11" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" id="rtg-k2-tFe">
-            <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-            <autoresizingMask key="autoresizingMask"/>
-            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rtg-k2-tFe" id="Fgp-Ma-Stb">
-                <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
-                <autoresizingMask key="autoresizingMask"/>
-                <subviews>
-                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Mb6-kl-6N0">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="43"/>
-                        <subviews>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Kata Sandi" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="rZu-fo-kFR">
-                                <rect key="frame" x="15" y="0.0" width="110" height="43"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="110" id="t8M-B3-nQg"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <color key="textColor" red="0.19856953620910645" green="0.19856357574462891" blue="0.19856694340705872" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Masukkan kata sandi" textAlignment="right" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TuB-lg-ddb">
-                                <rect key="frame" x="135" y="0.0" width="185" height="43"/>
-                                <accessibility key="accessibilityConfiguration" identifier="password"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="43" id="Y86-5z-uv2"/>
-                                </constraints>
-                                <color key="textColor" red="0.45882352939999999" green="0.45882352939999999" blue="0.45882352939999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                <textInputTraits key="textInputTraits" returnKeyType="next" secureTextEntry="YES"/>
-                                <connections>
-                                    <outlet property="delegate" destination="-1" id="prN-Lu-PPf"/>
-                                </connections>
-                            </textField>
-                        </subviews>
-                        <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                        <constraints>
-                            <constraint firstItem="TuB-lg-ddb" firstAttribute="top" secondItem="Mb6-kl-6N0" secondAttribute="top" id="27N-8L-D3a"/>
-                            <constraint firstItem="TuB-lg-ddb" firstAttribute="leading" secondItem="rZu-fo-kFR" secondAttribute="trailing" constant="10" id="Ffu-OC-lmU"/>
-                            <constraint firstAttribute="trailing" secondItem="TuB-lg-ddb" secondAttribute="trailing" id="Md6-8e-SP5">
-                                <variation key="heightClass=regular-widthClass=compact" constant="15"/>
-                                <variation key="heightClass=regular-widthClass=regular" constant="15"/>
-                            </constraint>
-                            <constraint firstItem="rZu-fo-kFR" firstAttribute="top" secondItem="Mb6-kl-6N0" secondAttribute="top" id="ZLa-La-ncX"/>
-                            <constraint firstAttribute="bottom" secondItem="rZu-fo-kFR" secondAttribute="bottom" id="ZSL-iw-ahH"/>
-                            <constraint firstAttribute="bottom" secondItem="TuB-lg-ddb" secondAttribute="bottom" id="nip-Zl-LAu"/>
-                            <constraint firstItem="rZu-fo-kFR" firstAttribute="leading" secondItem="Mb6-kl-6N0" secondAttribute="leading" constant="15" id="vjl-JU-rUh"/>
-                        </constraints>
-                    </view>
-                </subviews>
-                <constraints>
-                    <constraint firstItem="Mb6-kl-6N0" firstAttribute="top" secondItem="Fgp-Ma-Stb" secondAttribute="top" id="815-hK-ePA"/>
-                    <constraint firstAttribute="trailing" secondItem="Mb6-kl-6N0" secondAttribute="trailing" id="Dsd-FF-o8U"/>
-                    <constraint firstItem="Mb6-kl-6N0" firstAttribute="leading" secondItem="Fgp-Ma-Stb" secondAttribute="leading" id="Lba-dj-Nes"/>
-                    <constraint firstAttribute="bottom" secondItem="Mb6-kl-6N0" secondAttribute="bottom" id="i5I-0b-EoH"/>
-                </constraints>
-            </tableViewCellContentView>
-            <point key="canvasLocation" x="-140" y="1025"/>
         </tableViewCell>
         <tableViewCell tag="10" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="130" id="Nkd-N9-hJV">
             <rect key="frame" x="0.0" y="0.0" width="320" height="130"/>

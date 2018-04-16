@@ -10,6 +10,9 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <customFonts key="customFonts">
+        <array key="HelveticaNeue.ttc">
+            <string>HelveticaNeue-Medium</string>
+        </array>
         <array key="Roboto-Medium.ttf">
             <string>Roboto-Medium</string>
         </array>
@@ -34,7 +37,7 @@
             </objects>
             <point key="canvasLocation" x="-935" y="153"/>
         </scene>
-        <!--Masuk-->
+        <!--Login View Controller-->
         <scene sceneID="wp1-pz-nFH">
             <objects>
                 <viewController storyboardIdentifier="LoginViewController" id="fvc-Y4-QDZ" customClass="LoginViewController" customModule="Tokopedia" customModuleProvider="target" sceneMemberID="viewController">
@@ -69,17 +72,26 @@
                             <outletCollection property="gestureRecognizers" destination="lge-ni-pMv" appends="YES" id="Ddp-AF-100"/>
                         </connections>
                     </view>
-                    <navigationItem key="navigationItem" title="Masuk" id="8VY-hV-ybE">
-                        <barButtonItem key="rightBarButtonItem" title="Daftar" id="wnZ-gL-1ci">
-                            <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                            <connections>
-                                <action selector="registerButtonTappedWithSender:" destination="fvc-Y4-QDZ" id="eAh-mT-Ozv"/>
-                            </connections>
-                        </barButtonItem>
+                    <navigationItem key="navigationItem" id="8VY-hV-ybE">
+                        <nil key="title"/>
+                        <view key="titleView" contentMode="scaleToFill" id="RZj-oL-7Qv">
+                            <rect key="frame" x="207" y="22" width="0.0" height="0.0"/>
+                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <subviews>
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Masuk" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8cE-Ay-MaY">
+                                    <rect key="frame" x="-26.333333333333332" y="-10.333333333333334" width="52.666666666666664" height="20.666666666666668"/>
+                                    <fontDescription key="fontDescription" name="HelveticaNeue-Medium" family="Helvetica Neue" pointSize="17"/>
+                                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                    <nil key="highlightedColor"/>
+                                </label>
+                            </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstItem="8cE-Ay-MaY" firstAttribute="centerY" secondItem="RZj-oL-7Qv" secondAttribute="centerY" id="aGS-Ha-8gd"/>
+                                <constraint firstItem="8cE-Ay-MaY" firstAttribute="centerX" secondItem="RZj-oL-7Qv" secondAttribute="centerX" id="kPt-IQ-KdU"/>
+                            </constraints>
+                        </view>
                     </navigationItem>
-                    <connections>
-                        <outlet property="registerButton" destination="wnZ-gL-1ci" id="Nss-W6-A1g"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="d9q-bV-mqN" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <tapGestureRecognizer id="lge-ni-pMv">
@@ -88,7 +100,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="-191.19999999999999" y="152.47376311844079"/>
+            <point key="canvasLocation" x="-191.30434782608697" y="152.44565217391306"/>
         </scene>
         <!--Login Table View Controller-->
         <scene sceneID="k6L-vh-JOG">

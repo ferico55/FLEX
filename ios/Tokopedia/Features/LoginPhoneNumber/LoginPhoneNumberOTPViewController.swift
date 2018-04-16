@@ -43,11 +43,10 @@ public class LoginPhoneNumberOTPViewController: UIViewController {
     fileprivate var otpEnteredText: String = ""
     private let resendCountdown = 90
     
-    private let regularAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.tpDisabledBlackText()]
-    private let boldAttributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.tpDisabledBlackText()]
+    private let regularAttributes = [NSFontAttributeName: UIFont.systemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
+    private let boldAttributes = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 12), NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
     
     internal var tokoCashLoginSendOTPResponse: TokoCashLoginSendOTPResponse!
-    internal weak var parentController: LoginViewController?
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -90,7 +89,7 @@ public class LoginPhoneNumberOTPViewController: UIViewController {
     private func setupVerificationInfo(isPhoneCall: Bool) {
         let phoneNumberText = tokoCashLoginSendOTPResponse.phoneNumber
         let regularFont = [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.tpSecondaryBlackText()]
-        let phoneNumberFont = [NSFontAttributeName: UIFont.systemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
+        let phoneNumberFont = [NSFontAttributeName: UIFont.boldSystemFont(ofSize: 14), NSForegroundColorAttributeName: UIColor.tpPrimaryBlackText()]
         
         var text = "Kode verifikasi telah dikirimkan melalui \nSMS ke \(phoneNumberText)."
         var verifyImage = #imageLiteral(resourceName: "greenSMS")
@@ -294,16 +293,13 @@ public class LoginPhoneNumberOTPViewController: UIViewController {
         let controller = ListAccountViewController(nibName: nil, bundle: nil)
         controller.tokocashLoginVerifyResponse = data
         controller.phoneNumber = self.tokoCashLoginSendOTPResponse.phoneNumber
-        controller.onTapExit = { [weak controller] (_ login: Login?) in
+        controller.onTapExit = { [weak controller] isSuccess in
             controller?.dismiss(animated: true, completion: { [weak self] in
-                guard let `self` = self else {
+                guard let vc = self?.navigationController?.viewControllers.first, vc.isModal() else {
+                    NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
                     return
                 }
-                
-                self.navigationController?.popToRootViewController(animated: true)
-                if let parent = self.parentController, let login = login {
-                    parent.loginSuccess(login: login)
-                }
+                self?.navigationController?.dismiss(animated: true, completion: nil)
             })
         }
         let navController = UINavigationController(rootViewController: controller)

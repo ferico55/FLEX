@@ -16,7 +16,6 @@ extension AuthenticationService {
         let storyboard = UIStoryboard(name: "Login", bundle: nil)
         let navigationController = storyboard.instantiateInitialViewController() as! UINavigationController
         let loginViewController = navigationController.viewControllers.first as! LoginViewController
-        loginViewController.shouldRedirectToHome = false
         loginViewController.onLoginFinished = { (result: LoginResult?) in
             guard let result = result else {
                 StickyAlertView.showErrorMessage(["Terjadi kendala pada server. Mohon coba beberapa saat lagi."])

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16G29" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -14,9 +14,9 @@
                 <outlet property="contentView" destination="An2-Vg-AeI" id="mj9-Ec-Ia1"/>
                 <outlet property="descriptionLabel" destination="691-iQ-b2s" id="hcm-R0-cTu"/>
                 <outlet property="headerLabel" destination="2vq-yZ-ZHY" id="3ns-a7-zBi"/>
-                <outlet property="profileCompletionButton" destination="PXf-rl-8cq" id="a30-LM-87A"/>
+                <outlet property="profileCompletionButton" destination="APF-w1-CIO" id="ICg-ql-9Ix"/>
                 <outlet property="scrollView" destination="QJS-VD-wxb" id="K2G-gp-Hvu"/>
-                <outlet property="shopButton" destination="APF-w1-CIO" id="eKQ-pc-aMg"/>
+                <outlet property="shopButton" destination="PXf-rl-8cq" id="ljF-QG-fMd"/>
                 <outlet property="successImage" destination="FXo-dU-VsP" id="b22-op-XSh"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
@@ -46,29 +46,59 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Halo Elly, Selamat Bergabung di Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vq-yZ-ZHY">
-                    <rect key="frame" x="8.5" y="20" width="358.5" height="21.5"/>
-                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="18"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Selamat Bergabung di Tokopedia" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2vq-yZ-ZHY">
+                    <rect key="frame" x="64" y="20" width="248.5" height="19.5"/>
+                    <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="16"/>
                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.69999999999999996" colorSpace="calibratedRGB"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sebelum memulai aktivitas di Tokopedia, kami sarankan untuk melengkapi profil Anda untuk menjadi verified account" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="691-iQ-b2s">
-                    <rect key="frame" x="20" y="57.5" width="335" height="481"/>
-                    <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="691-iQ-b2s">
+                    <rect key="frame" x="20" y="55.5" width="335" height="473.5"/>
+                    <attributedString key="attributedText">
+                        <fragment content="Silakan lanjut atau lengkapi profil untuk menjadi ">
+                            <attributes>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" metaFont="system" size="14"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content="Verified Account">
+                            <attributes>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="14" name=".AppleSystemUIFontItalic"/>
+                                <font key="NSOriginalFont" size="14" name=".AppleSystemUIFontItalic"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                        <fragment content=".">
+                            <attributes>
+                                <color key="NSColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                                <font key="NSFont" size="14" name=".AppleSystemUIFontItalic"/>
+                                <paragraphStyle key="NSParagraphStyle" alignment="center" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                            </attributes>
+                        </fragment>
+                    </attributedString>
                     <nil key="highlightedColor"/>
                 </label>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PXf-rl-8cq">
-                    <rect key="frame" x="20" y="563.5" width="335" height="45"/>
+                    <rect key="frame" x="20" y="554" width="335" height="45"/>
                     <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                     <accessibility key="accessibilityConfiguration" label="profileCompletionButton"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="45" id="miz-pN-hiQ"/>
                     </constraints>
                     <fontDescription key="fontDescription" type="system" weight="semibold" pointSize="13"/>
-                    <state key="normal" title="Lengkapi Profil Sekarang"/>
+                    <state key="normal" title="Lanjut"/>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="shadowRadius">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="3"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                     <connections>
-                        <action selector="onTapProfileCompletionButton:" destination="-1" eventType="touchUpInside" id="MsM-VK-ZMf"/>
+                        <action selector="onTapShopNowButton:" destination="-1" eventType="touchUpInside" id="nL6-ze-9Xj"/>
                     </connections>
                 </button>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="APF-w1-CIO">
@@ -78,12 +108,12 @@
                         <constraint firstAttribute="height" constant="30" id="XtQ-AM-GbF"/>
                         <constraint firstAttribute="width" constant="100" id="xGl-JU-gkF"/>
                     </constraints>
-                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
-                    <state key="normal" title="Mulai Belanja">
-                        <color key="titleColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                    <state key="normal" title="Lengkapi Profil ">
+                        <color key="titleColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
                     </state>
                     <connections>
-                        <action selector="onTapShopNowButton:" destination="-1" eventType="touchUpInside" id="cEU-v2-EPw"/>
+                        <action selector="onTapProfileCompletionButton:" destination="-1" eventType="touchUpInside" id="A6s-W0-UnA"/>
                     </connections>
                 </button>
             </subviews>
@@ -99,7 +129,7 @@
                 <constraint firstItem="2vq-yZ-ZHY" firstAttribute="centerX" secondItem="An2-Vg-AeI" secondAttribute="centerX" id="LU0-8r-en6"/>
                 <constraint firstItem="PXf-rl-8cq" firstAttribute="trailing" secondItem="691-iQ-b2s" secondAttribute="trailing" id="MLg-yp-HFT"/>
                 <constraint firstItem="691-iQ-b2s" firstAttribute="centerX" secondItem="An2-Vg-AeI" secondAttribute="centerX" id="Qfh-mh-BLb"/>
-                <constraint firstItem="APF-w1-CIO" firstAttribute="top" secondItem="PXf-rl-8cq" secondAttribute="bottom" constant="8" id="RrS-gp-Op1"/>
+                <constraint firstItem="APF-w1-CIO" firstAttribute="top" secondItem="PXf-rl-8cq" secondAttribute="bottom" constant="18" id="RrS-gp-Op1"/>
                 <constraint firstItem="PXf-rl-8cq" firstAttribute="centerX" secondItem="An2-Vg-AeI" secondAttribute="centerX" id="aiN-kj-Q3l"/>
                 <constraint firstItem="PXf-rl-8cq" firstAttribute="leading" secondItem="691-iQ-b2s" secondAttribute="leading" id="gjn-uU-zh2"/>
                 <constraint firstItem="2vq-yZ-ZHY" firstAttribute="top" secondItem="An2-Vg-AeI" secondAttribute="top" constant="20" id="sGv-4c-j4T"/>

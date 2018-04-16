@@ -76,6 +76,9 @@ public class VerificationModeListViewController: UIViewController {
     
     override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        guard otpType != .registerPhoneNumber else { return }
+        
         OTPRequest
             .checkChangePhoneNumberStatus(
                 withToken: oAuthToken,
@@ -92,7 +95,7 @@ public class VerificationModeListViewController: UIViewController {
         // use accountInfo if you haven't login (Use for SQ)
         if let userId = accountInfo?.userId {
             self.isLoading.startAnimating()
-            COTPService.getOTPModeList(type: self.otpType, userId: userId).subscribe(onNext: { [unowned self] result in
+            COTPService.getOTPModeList(type: self.otpType, userId: userId, msisdn: self.accountInfo?.phoneNumber ?? "").subscribe(onNext: { [unowned self] result in
                 if result.isSuccess {
                     self.otpModeList = result.modeList
                     self.setupView()

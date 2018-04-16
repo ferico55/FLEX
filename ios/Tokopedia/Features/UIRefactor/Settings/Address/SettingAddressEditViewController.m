@@ -69,7 +69,6 @@
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section0Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section1Cells;
 @property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section2Cells;
-@property (strong, nonatomic) IBOutletCollection(UITableViewCell) NSArray *section3Cells;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *constraintBottomMapName;
 
 @property (weak, nonatomic) IBOutlet UITextField *textfieldreceivername;
@@ -79,7 +78,6 @@
 @property (weak, nonatomic) IBOutlet UIButton *buttondistrict;
 @property (weak, nonatomic) IBOutlet UITextField *textfieldphonenumber;
 @property (weak, nonatomic) IBOutlet UIView *viewpassword;
-@property (weak, nonatomic) IBOutlet UITextField *textfieldpass;
 @property (weak, nonatomic) IBOutlet UIScrollView *scrollView;
 @property (weak, nonatomic) IBOutlet UIView *contentView;
 @property (weak, nonatomic) IBOutlet UITableView *table;
@@ -124,7 +122,6 @@
     [self setDefaultData:_data];
     
     _viewpassword.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC || _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
-    _textfieldpass.hidden = (_type == TYPE_ADD_EDIT_PROFILE_ADD_NEW||_type == TYPE_ADD_EDIT_PROFILE_ATC|| _type == TYPE_ADD_EDIT_PROFILE_ADD_RESO || _type == TYPE_ADD_EDIT_PROFILE_EDIT_RESO)?YES:NO;
     [_table reloadData];
 
     NSNotificationCenter *nc = [NSNotificationCenter defaultCenter];
@@ -414,7 +411,7 @@
     
     [RequestEditAddress fetchEditAddress:[self getAddressWithAddressID:nil]
                               isFromCart:@""
-                            userPassword:_textfieldpass.text
+                            userPassword:@""
                                  success:^(ProfileSettingsResult *data) {
        
         [self.navigationController popViewControllerAnimated:YES];
@@ -546,7 +543,6 @@
     NSString *city = _selectedDistrict.cityName?:list.city_name;
     NSString *prov = _selectedDistrict.provinceName?:list.province_name;
     NSString *phone = _textfieldphonenumber.text;
-    NSString *pass = _textfieldpass.text;
     
     if (!receivername || [receivername isEqualToString:@""]) {
         isValid = NO;
@@ -593,13 +589,6 @@
     else if (phone.length > MAXIMUM_PHONE_CHARACTER_COUNT) {
         isValid = NO;
         [messages addObject:ERRORMESSAGE_INVALID_PHONE_CHARACTER_TOO_LONG];
-    }
-    
-    if (_type == TYPE_ADD_EDIT_PROFILE_EDIT) {
-        if (!pass || [pass isEqualToString:@""]) {
-            isValid = NO;
-            [messages addObject:ERRORMESSAGE_NULL_PASSWORD];
-        }
     }
     
     if (!isValid) {
@@ -688,9 +677,6 @@
         case 2:
             return hasSelectedDistrict && ![_textfieldpostcode.text isEqualToString:@""] ? _section2Cells.count : _section2Cells.count - 1;
             break;
-        case 3:
-            return _section3Cells.count;
-            break;
         default:
             break;
     }
@@ -709,9 +695,6 @@
             break;
         case 2:
             cell = _section2Cells[indexPath.row];
-            break;
-        case 3:
-            cell = _section3Cells[indexPath.row];
             break;
         default:
             break;

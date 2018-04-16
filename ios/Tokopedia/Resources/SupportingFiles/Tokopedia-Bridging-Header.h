@@ -1,7 +1,7 @@
 //
 //  Use this file to import your target's public headers that you would like to expose to Swift.
 //
-
+#import "AppDelegate.h"
 #import <CCBottomRefreshControl/UIScrollView+BottomRefreshControl.h>
 #import "UIKitCategory.h"
 #import "string.h"
@@ -245,5 +245,5 @@
 
 #import "PromoViewController.h"
 #import "ProfileSettingViewController.h"
-
+#import "SettingUserProfileViewController.h"
 #import "GroupChatTweaks.h"

@@ -36,8 +36,12 @@ public class UserLoginRequest {
                                     onSuccess: { (result: RKMappingResult, _: RKObjectRequestOperation) in
                                         let resultDict = result.dictionary() as? [String: Any]
                                         if let login = resultDict?[""] as? Login {
-                                            login.result.email = self.accountInfo?.email
-                                            login.result.full_name = self.accountInfo?.name
+                                            if (login.result.email ?? "").isEmpty {
+                                                login.result.email = self.accountInfo?.email
+                                            }
+                                            if (login.result.full_name ?? "").isEmpty {
+                                                login.result.full_name = self.accountInfo?.name
+                                            }
                                             completionHandler(login, nil)
                                         } else {
                                             let error = NSError(domain: "Login", code: -112233, userInfo: nil)

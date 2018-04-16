@@ -6,16 +6,16 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
-import Moya
-import Unbox
-import RxSwift
-import NSObject_Rx
 import Apollo
+import Moya
+import NSObject_Rx
+import RxSwift
+import UIKit
+import Unbox
 
-class UserRequest: NSObject {
+public class UserRequest: NSObject {
 
-    class func getUserInformation(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
+    public class func getUserInformation(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
         getMoengageUserInformation(withUserID: userID, onSuccess: {
             getPeopleInfo(withUserID: userID, onSuccess: { profile in
                 onSuccess(profile)
@@ -31,7 +31,7 @@ class UserRequest: NSObject {
         })
     }
 
-    class func getPeopleInfo(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
+    public class func getPeopleInfo(withUserID userID: String, onSuccess: @escaping ((ProfileInfo) -> Void), onFailure: @escaping (() -> Void)) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -57,7 +57,7 @@ class UserRequest: NSObject {
         )
     }
 
-    class func getUserCompletion(onSuccess: @escaping (ProfileCompletionInfo) -> Void, onFailure: @escaping () -> Void) {
+    public class func getUserCompletion(onSuccess: @escaping (ProfileCompletionInfo) -> Void, onFailure: @escaping () -> Void) {
         let provider = AccountProvider()
         _ = provider.request(.getInfo)
             .map(to: ProfileCompletionInfo.self)
@@ -73,7 +73,7 @@ class UserRequest: NSObject {
             })
     }
 
-    class func editProfile(birthday: Date?, gender: Int, onSuccess: @escaping (APIAction) -> Void, onFailure: @escaping () -> Void) {
+    public class func editProfile(birthday: Date?, gender: Int, onSuccess: @escaping (APIAction) -> Void, onFailure: @escaping () -> Void) {
         let provider = AccountProvider()
         _ = provider.request(.editProfile(withBirthday: birthday, gender: gender))
             .map(to: APIAction.self)
@@ -97,7 +97,7 @@ class UserRequest: NSObject {
         storageManager.storeShopInformation(profileInfo.result)
     }
 
-    class func registerWithEmail(formData: RegisterFormData, onSuccess: @escaping (RegisterUnbox) -> Void, onFailure: @escaping (() -> Void)) {
+    internal class func registerWithEmail(formData: RegisterFormData, onSuccess: @escaping (RegisterUnbox) -> Void, onFailure: @escaping (() -> Void)) {
         _ = AccountProvider()
             .request(.register(email: formData.email, fullName: formData.fullName, phoneNumber: formData.phoneNumber, password: formData.password))
             .do(onError: { error in
@@ -125,7 +125,7 @@ class UserRequest: NSObject {
             })
     }
 
-    class func resendActivationEmail(email: String, onSuccess: @escaping (ResendActivationEmail) -> Void, onFailure: @escaping () -> Void) {
+    internal class func resendActivationEmail(email: String, onSuccess: @escaping (ResendActivationEmail) -> Void, onFailure: @escaping () -> Void) {
         _ = AccountProvider()
             .request(.resendActivationEmail(email: email))
             .do(onError: { error in
@@ -153,7 +153,7 @@ class UserRequest: NSObject {
             })
     }
 
-    class func createPassword(name: String, gender: String, phoneNumber: String, password: String, token: OAuthToken, accountInfo: AccountInfo, onSuccess: @escaping (CreatePassword) -> Void, onFailure: @escaping () -> Void) {
+    public class func createPassword(name: String, gender: String, phoneNumber: String, password: String, token: OAuthToken, accountInfo: AccountInfo, onSuccess: @escaping (CreatePassword) -> Void, onFailure: @escaping () -> Void) {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -190,7 +190,7 @@ class UserRequest: NSObject {
         )
     }
 
-    class func activateAccount(email: String, uniqueCode: String, onSuccess: @escaping (Login) -> Void, onFailure: @escaping () -> Void) {
+    public class func activateAccount(email: String, uniqueCode: String, onSuccess: @escaping (Login) -> Void, onFailure: @escaping () -> Void) {
         var token: OAuthToken = OAuthToken()
 
         _ = self.requestToken(email: email, uniqueCode: uniqueCode)
@@ -211,7 +211,7 @@ class UserRequest: NSObject {
             )
     }
 
-    class func requestToken(email: String, uniqueCode: String) -> Observable<OAuthToken> {
+    public class func requestToken(email: String, uniqueCode: String) -> Observable<OAuthToken> {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -252,7 +252,7 @@ class UserRequest: NSObject {
         })
     }
 
-    class func getUserInfo(token: OAuthToken) -> Observable<AccountInfo> {
+    public class func getUserInfo(token: OAuthToken) -> Observable<AccountInfo> {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -290,7 +290,7 @@ class UserRequest: NSObject {
         })
     }
 
-    class func doLogin(token: OAuthToken, userID: String) -> Observable<Login> {
+    public class func doLogin(token: OAuthToken, userID: String) -> Observable<Login> {
         let networkManager = TokopediaNetworkManager()
         networkManager.isUsingHmac = true
 
@@ -332,7 +332,7 @@ class UserRequest: NSObject {
         })
     }
 
-    class func getMoengageUserInformation(withUserID: String, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
+    public class func getMoengageUserInformation(withUserID: String, onSuccess: @escaping (() -> Void), onFailure: @escaping (() -> Void)) {
         let userID = Int(withUserID) ?? 0
         let moengageClient: ApolloClient = {
             let configuration = URLSessionConfiguration.default
@@ -367,6 +367,12 @@ class UserRequest: NSObject {
             onSuccess()
         }
 
+    }
+    
+    public class func requestMsisdnRegisterCheck(phone: String) -> Observable<MsisdnResponse> {
+        return AccountProvider()
+            .request(.msisdnRegisterCheck(phone: phone))
+            .map(to: MsisdnResponse.self)
     }
 
     private class func storeUserInformationMoengage(_ result: MoEngageQuery.Data) {

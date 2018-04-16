@@ -11,7 +11,7 @@ import RxSwift
 import SwiftyJSON
 import UIKit
 
-public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate, MMNumberKeyboardDelegate {
+public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelegate {
     
     @IBOutlet weak private var informationText: UILabel!
     @IBOutlet weak private var actionButton: UIButton!
@@ -24,8 +24,6 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
     @IBOutlet weak private var viewLeading: NSLayoutConstraint!
     
     private let nextButtonEnabled = Variable(false)
-    
-    internal weak var parentController: LoginViewController?
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -104,7 +102,6 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
     private func setToOtpScene(_ tokoCashData: TokoCashLoginSendOTPResponse) {
         let controller = LoginPhoneNumberOTPViewController(nibName: nil, bundle: nil)
         controller.hidesBottomBarWhenPushed = true
-        controller.parentController = self.parentController
         controller.tokoCashLoginSendOTPResponse = tokoCashData
         self.navigationController?.pushViewController(controller, animated: true)
     }
@@ -118,11 +115,13 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
             self.viewTrailing.constant = 104
         }
         
-        let numberKeyboard = MMNumberKeyboard(frame: .zero)
-        numberKeyboard.allowsDecimalPoint = false
-        numberKeyboard.delegate = self
-        self.phoneNumberTextField.delegate = self
-        self.phoneNumberTextField.inputView = numberKeyboard
+        phoneNumberTextField.becomeFirstResponder()
+        
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.rx.event.bind(onNext: { [weak self] recognizer in
+            self?.view.endEditing(true)
+        }).disposed(by: rx_disposeBag)
+        view.addGestureRecognizer(tapGesture)
     }
     
     private func setupNextButton() {
@@ -169,5 +168,9 @@ public class LoginPhoneNumberViewController: UIViewController, UITextFieldDelega
         }
         
         return true
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }

@@ -34,13 +34,15 @@ public class ModeListDetail: NSObject {
     public let modeText: String
     public let otpListText: String
     public let afterOtpListText: String
+    public let afterOtpListHtml: String
     public let otpListImgUrl: URL?
 
-    public init(modeCode: Int, modeText: String, otpListText: String, afterOtpListText: String, otpListImgUrl: String) {
+    public init(modeCode: Int, modeText: String, otpListText: String, afterOtpListText: String, afterOtpListHtml: String, otpListImgUrl: String) {
         self.modeCode = modeCode
         self.modeText = modeText
         self.otpListText = otpListText
         self.afterOtpListText = afterOtpListText
+        self.afterOtpListHtml = afterOtpListHtml
         self.otpListImgUrl = URL(string: otpListImgUrl)
     }
 
@@ -49,8 +51,10 @@ public class ModeListDetail: NSObject {
         let modeText = json["mode_text"].stringValue
         let otpListText = json["otp_list_text"].stringValue
         let afterOtpListText = json["after_otp_list_text"].stringValue
+        let afterOtpListHtml = json["after_otp_list_text_html"].stringValue
         let otpListImgUrl = json["otp_list_img_url"].stringValue
 
-        self.init(modeCode: modeCode, modeText: modeText, otpListText: otpListText, afterOtpListText: afterOtpListText, otpListImgUrl: otpListImgUrl)
+        self.init(modeCode: modeCode, modeText: modeText, otpListText: otpListText, afterOtpListText: afterOtpListText, afterOtpListHtml: afterOtpListHtml, otpListImgUrl: otpListImgUrl)
     }
 }
+

@@ -397,6 +397,7 @@
 
 -(IBAction)tap:(id)sender {
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
+        
         UIBarButtonItem *barButton = (UIBarButtonItem *)sender;
         switch (barButton.tag) {
             case 10:

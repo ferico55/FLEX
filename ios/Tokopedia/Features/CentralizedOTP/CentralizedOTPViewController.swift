@@ -6,6 +6,7 @@
 //  Copyright © 2018 TOKOPEDIA. All rights reserved.
 //
 
+import Moya
 import RxSwift
 import UIKit
 
@@ -15,18 +16,18 @@ public protocol CentralizedOTPDelegate: class {
 
 public class CentralizedOTPViewController: UIViewController {
     
-    @IBOutlet weak fileprivate var stackViewOTP: OTPInputView!
-    @IBOutlet weak fileprivate var wrapper: UIView!
+    @IBOutlet fileprivate weak var stackViewOTP: OTPInputView!
+    @IBOutlet fileprivate weak var wrapper: UIView!
     
-    @IBOutlet weak fileprivate var verificationImage: UIImageView!
-    @IBOutlet weak fileprivate var verificationInfo: UILabel!
-    @IBOutlet weak fileprivate var clearOTPButton: UIButton!
-    @IBOutlet weak fileprivate var errorLabel: UILabel!
-    @IBOutlet weak fileprivate var labelInformation: UITextView!
-    @IBOutlet weak fileprivate var verificationButton: UIButton!
-    @IBOutlet weak fileprivate var imageTop: NSLayoutConstraint!
-    @IBOutlet weak fileprivate var wrapperTop: NSLayoutConstraint!
-    @IBOutlet weak private var showLoading: UIActivityIndicatorView!
+    @IBOutlet fileprivate weak var verificationImage: UIImageView!
+    @IBOutlet fileprivate weak var verificationInfo: UILabel!
+    @IBOutlet fileprivate weak var clearOTPButton: UIButton!
+    @IBOutlet fileprivate weak var errorLabel: UILabel!
+    @IBOutlet fileprivate weak var labelInformation: UITextView!
+    @IBOutlet fileprivate weak var verificationButton: UIButton!
+    @IBOutlet fileprivate weak var imageTop: NSLayoutConstraint!
+    @IBOutlet fileprivate weak var wrapperTop: NSLayoutConstraint!
+    @IBOutlet private weak var showLoading: UIActivityIndicatorView!
     
     public weak var delegate: CentralizedOTPDelegate?
     
@@ -49,17 +50,23 @@ public class CentralizedOTPViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    required public init?(coder aDecoder: NSCoder) {
+    public required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    override public func viewDidLoad() {
+    public override func viewDidLoad() {
         super.viewDidLoad()
         
         self.navigationItem.title = "Verifikasi"
         self.navigationItem.leftBarButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_close"), style: .plain, target: self, action: #selector(self.didTapCloseButton))
         
-        setupView()
+        let tapGesture = UITapGestureRecognizer()
+        tapGesture.rx.event.bind(onNext: { [weak self] recognizer in
+            self?.view.endEditing(true)
+        }).disposed(by: rx_disposeBag)
+        view.addGestureRecognizer(tapGesture)
+        
+        self.setupView()
     }
     
     // MARK: Dismiss View Controller
@@ -76,9 +83,9 @@ public class CentralizedOTPViewController: UIViewController {
     }
     
     private func setupView() {
-        setupOTPField()
-        setupOtpButton()
-        setupVerification(imageUrl: modeDetail.otpListImgUrl, label: modeDetail.afterOtpListText)
+        self.setupOTPField()
+        self.setupOtpButton()
+        self.setupVerification(imageUrl: self.modeDetail.otpListImgUrl, label: self.modeDetail.afterOtpListHtml)
         
         if UI_USER_INTERFACE_IDIOM() == .pad {
             self.wrapperTop.constant = 40
@@ -90,42 +97,44 @@ public class CentralizedOTPViewController: UIViewController {
         }
         
         self.triggerCountdown.asObservable().flatMap({ _ -> Observable<Int> in
-            return Observable<Int>.interval(1, scheduler: MainScheduler.instance)
+            Observable<Int>.interval(1, scheduler: MainScheduler.instance)
                 .takeWhile({ (num) -> Bool in
-                    return (num+1) <= self.resendCountdown
+                    (num + 1) <= self.resendCountdown
                 })
-                .do(onNext:{ [unowned self] timer in
+                .do(onNext: { [unowned self] timer in
                     self.labelInformation.isHidden = false
                     let countdown = self.resendCountdown - (timer + 1)
                     self.showCountdownText(resendTimer: countdown + 1)
-                },onError: { error in
+                }, onError: { error in
                     debugPrint("Error :", error.localizedDescription)
-                },onCompleted: {
+                }, onCompleted: {
                     self.showCompleteText()
                 })
         })
-        .subscribe()
-        .addDisposableTo(self.rx_disposeBag)
+            .subscribe()
+            .addDisposableTo(self.rx_disposeBag)
         
-        triggerCountdown.onNext()
+        self.triggerCountdown.onNext()
     }
     
-    // MARK : Setup Verification Label and Image
-    fileprivate func setupVerification(imageUrl: URL?, label: String ) {
+    // MARK: Setup Verification Label and Image
+    fileprivate func setupVerification(imageUrl: URL?, label: String) {
         if let imageUrl = imageUrl {
-            verificationImage.setImageWith(imageUrl)
+            self.verificationImage.setImageWith(imageUrl)
         }
-        verificationInfo.text = label
+        
+        self.verificationInfo.attributedText = NSAttributedString(fromHTML: label, normalFont: UIFont.largeTheme(), boldFont: UIFont.largeThemeSemibold(), italicFont: UIFont.largeTheme())
+        self.verificationInfo.textAlignment = .center
     }
     
-    // MARK : Setup OTP Field
+    // MARK: Setup OTP Field
     private func setupOTPField() {
-        stackViewOTP.otpFieldsCount = self.otpFieldsCount
-        stackViewOTP.delegate = self
-        stackViewOTP.initalizeUI()
+        self.stackViewOTP.otpFieldsCount = self.otpFieldsCount
+        self.stackViewOTP.delegate = self
+        self.stackViewOTP.initalizeUI()
     }
     
-    // MARK : Setup TextView
+    // MARK: Setup TextView
     private func showCountdownText(resendTimer: Int) {
         let combination = NSMutableAttributedString()
         let partOne = NSMutableAttributedString(string: "Mohon tunggu dalam ", attributes: regularAttributes)
@@ -149,7 +158,7 @@ public class CentralizedOTPViewController: UIViewController {
         let partThree = NSMutableAttributedString(string: " atau ", attributes: regularAttributes)
         let partFour = NSMutableAttributedString(string: "gunakan metode verifikasi lain", attributes: clickAbleAttributes)
         
-        // MARK : Set clickable
+        // MARK: Set clickable
         partFour.addAttribute(NSLinkAttributeName, value: "otherverification://", range: (partFour.string as NSString).range(of: "gunakan metode verifikasi lain"))
         partTwo.addAttribute(NSLinkAttributeName, value: "resend://", range: (partTwo.string as NSString).range(of: "Kirim ulang"))
         
@@ -166,17 +175,17 @@ public class CentralizedOTPViewController: UIViewController {
         labelInformation.delegate = self
     }
     
-    // MARK : Setup OTP Button
-    private func setButtonLoading (_ isLoading: Bool) {
+    // MARK: Setup OTP Button
+    private func setButtonLoading(_ isLoading: Bool) {
         self.otpButtonEnabled.value = !isLoading
         if isLoading {
-            verificationButton.setTitle("", for: .normal)
-            showLoading.isHidden = false
-            showLoading.startAnimating()
+            self.verificationButton.setTitle("", for: .normal)
+            self.showLoading.isHidden = false
+            self.showLoading.startAnimating()
         } else {
-            showLoading.isHidden = true
-            showLoading.stopAnimating()
-            verificationButton.setTitle("Verifikasi", for: .normal)
+            self.showLoading.isHidden = true
+            self.showLoading.stopAnimating()
+            self.verificationButton.setTitle("Verifikasi", for: .normal)
         }
     }
     
@@ -210,7 +219,7 @@ public class CentralizedOTPViewController: UIViewController {
         
         self.verificationButton.rx.tap.debounce(0.5, scheduler: MainScheduler.instance).subscribe(onNext: { [unowned self] _ in
             self.setButtonLoading(true)
-            COTPService.validateCentralizedOTP(type: self.otpType, userId: userId, code: self.otpEnteredText)
+            COTPService.validateCentralizedOTP(type: self.otpType, userId: userId, code: self.otpEnteredText, msisdn: self.accountInfo?.phoneNumber ?? "")
                 .subscribe(onNext: { [weak self] result in
                     guard let `self` = self else {
                         return
@@ -229,14 +238,30 @@ public class CentralizedOTPViewController: UIViewController {
                         self.delegate?.didSuccessVerificationOTP(otpType: self.otpType, otpResult: result)
                     }
                     self.setButtonLoading(false)
+                }, onError: { [weak self] error in
+                    guard let moyaError = error as? MoyaError,
+                        case let .underlying(responseError) = moyaError else { return }
+                    var errorMessage: String
+                    if responseError._code == NSURLErrorNotConnectedToInternet {
+                        errorMessage = "Tidak ada koneksi internet."
+                    } else {
+                        errorMessage = "Terjadi kendala pada server. Silahkan coba beberapa saat lagi."
+                    }
+                    StickyAlertView.showErrorMessage([errorMessage])
+                    self?.setButtonLoading(false)
+
                 }).addDisposableTo(self.rx_disposeBag)
         }).addDisposableTo(self.rx_disposeBag)
     }
     
-    // MARK : Button Action
+    // MARK: Button Action
     @IBAction private func didTapClearButton(_ sender: UIButton) {
         self.otpButtonEnabled.value = false
         self.stackViewOTP.clearField()
+    }
+    
+    @objc private func dismissKeyboard() {
+        view.endEditing(true)
     }
 }
 
@@ -270,13 +295,16 @@ extension CentralizedOTPViewController: UITextViewDelegate {
     }
     
     private func resendOTP() {
-        self.triggerCountdown.onNext()
+        
         COTPService.resendOTP(type: self.otpType, modeDetail: self.modeDetail, accountInfo: self.accountInfo)
             .debounce(0.3, scheduler: MainScheduler.instance)
-            .subscribe(onNext: { [unowned self] status in
-                if status {
-                    self.stackViewOTP.clearField()
-                    UIViewController.showNotificationWithMessage("Kode verifikasi akan dikirim ulang", type: NotificationType.success.rawValue, duration: 3.0, buttonTitle: nil, dismissable: true, action: nil)
+            .subscribe(onNext: { [unowned self] response in
+                
+                if let messageSuccess = response.messageSuccess {
+                    UIViewController.showNotificationWithMessage(messageSuccess.joined(separator: " "), type: NotificationType.success.rawValue, duration: 3.0, buttonTitle: nil, dismissable: true, action: nil)
+                    self.triggerCountdown.onNext()
+                } else if let messageError = response.messageError {
+                    UIViewController.showNotificationWithMessage(messageError.joined(separator: " "), type: NotificationType.error.rawValue, duration: 3.0, buttonTitle: nil, dismissable: true, action: nil)
                 }
             })
             .addDisposableTo(self.rx_disposeBag)
@@ -296,12 +324,12 @@ extension CentralizedOTPViewController: UITextViewDelegate {
 }
 
 extension CentralizedOTPViewController: VerificationModeListDelegate {
-    // MARK VerificationList Delegate
+    // MARK: VerificationList Delegate
     public func didTapOtpMode(modeDetail: ModeListDetail, accountInfo: AccountInfo?) {
         self.stackViewOTP.clearField()
         self.otpButtonEnabled.value = false
         self.triggerCountdown.onNext()
-        self.setupVerification(imageUrl: modeDetail.otpListImgUrl, label: modeDetail.afterOtpListText)
+        self.setupVerification(imageUrl: modeDetail.otpListImgUrl, label: modeDetail.afterOtpListHtml)
         self.modeDetail = modeDetail
     }
 }

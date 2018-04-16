@@ -10,19 +10,8 @@
 
 @implementation DataUser
 
-- (NSString *)hobby {
-    if ([_hobby isEqualToString:@"0"]) {
-        return @"";
-    }
-    return _hobby;
-}
-
 - (NSString *)birth_day {
     return _birth_day?:@"";
-}
-
-- (NSString *)user_messenger {
-    return _user_messenger?:@"";
 }
 
 - (NSString *)full_name {
@@ -54,16 +43,15 @@
 }
 
 +(NSDictionary *) attributeMappingDictionary{
-    NSArray *keys = @[@"hobby",
-                      @"birth_day",
+    NSArray *keys = @[@"birth_day",
                       @"full_name",
                       @"birth_month",
                       @"birth_year",
                       @"gender",
                       @"user_image",
                       @"user_email",
-                      @"user_messenger",
-                      @"user_phone"];
+                      @"user_phone",
+                      @"user_generated_name"];
     
     return [NSDictionary dictionaryWithObjects:keys forKeys:keys];
 }

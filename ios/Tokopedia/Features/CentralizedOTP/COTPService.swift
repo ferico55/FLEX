@@ -27,6 +27,7 @@ public enum CentralizedOTPType: String {
     case walletActivation = "111"
     case walletLogin = "112"
     case tokocashTransferP2P = "113"
+    case registerPhoneNumber = "116"
     case paymentCreditCard = "121"
     case googleAuthenticatorActivation = "131"
 }
@@ -36,8 +37,8 @@ private enum CentralizedOTPMode: String {
 }
 
 public class COTPService: NSObject {
-    class public func getOTPModeList(type: CentralizedOTPType, userId: String) -> Observable<ModeListResponse> {
-        return AccountProvider().request(.centralizedOTPModeList(otpType: type, userId: userId))
+    class public func getOTPModeList(type: CentralizedOTPType, userId: String, msisdn: String) -> Observable<ModeListResponse> {
+        return AccountProvider().request(.centralizedOTPModeList(otpType: type, userId: userId, msisdn: msisdn))
             .mapJSON()
             .map { response -> ModeListResponse in
                 let response = JSON(response)
@@ -63,8 +64,8 @@ public class COTPService: NSObject {
         }
     }
 
-    class public func validateCentralizedOTP(type: CentralizedOTPType, userId: String, code: String) -> Observable<COTPResponse> {
-        return AccountProvider().request(.validateCentralizedOtp(userId: userId, code: code, otpType: type))
+    class public func validateCentralizedOTP(type: CentralizedOTPType, userId: String, code: String, msisdn: String = "") -> Observable<COTPResponse> {
+        return AccountProvider().request(.validateCentralizedOtp(userId: userId, code: code, otpType: type, msisdn: msisdn))
             .mapJSON()
             .map { response -> COTPResponse in
                 let response = JSON(response)
@@ -73,7 +74,7 @@ public class COTPService: NSObject {
         }
     }
 
-    class public func resendOTP(type: CentralizedOTPType, modeDetail: ModeListDetail, accountInfo: AccountInfo?) -> Observable<Bool> {
+    class public func resendOTP(type: CentralizedOTPType, modeDetail: ModeListDetail, accountInfo: AccountInfo?) -> Observable<COTPResponse> {
         let userManager = UserAuthentificationManager()
         var userId = accountInfo?.userId ?? ""
         var userEmail = accountInfo?.email ?? ""
@@ -86,19 +87,9 @@ public class COTPService: NSObject {
         }
 
         if modeDetail.modeText == CentralizedOTPMode.email.rawValue {
-            return self.requestCentralizedOTPToEmail(type: type, userId: userId, userEmail: userEmail).map { result -> Bool in
-                if let _ = result.messageError {
-                    return false
-                }
-                return true
-            }
+            return self.requestCentralizedOTPToEmail(type: type, userId: userId, userEmail: userEmail)
         } else {
-            return self.requestCentralizedOTP(type: type, modeDetail: modeDetail, phoneNumber: phoneNumber, userId: userId).map { result -> Bool in
-                if let _ = result.messageError {
-                    return false
-                }
-                return true
-            }
+            return self.requestCentralizedOTP(type: type, modeDetail: modeDetail, phoneNumber: phoneNumber, userId: userId)
         }
     }
 }

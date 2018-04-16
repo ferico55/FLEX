@@ -61,9 +61,12 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (weak, nonatomic) IBOutlet UILabel *birthdateLabel;
 @property (weak, nonatomic) IBOutlet UILabel *sexLabel;
 @property (weak, nonatomic) IBOutlet UILabel *phoneNumberStatusLabel;
+@property (weak, nonatomic) IBOutlet UILabel *emailStatusLabel;
 
 // Button
 @property (weak, nonatomic) IBOutlet UIButton *phoneNumberButton;
+@property (weak, nonatomic) IBOutlet UIButton *fullNameButton;
+@property (weak, nonatomic) IBOutlet UIButton *emailButton;
 
 
 // Verification phone number view
@@ -71,11 +74,9 @@ typedef NS_ENUM(NSInteger, PickerView) {
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *verificationPhoneViewHeight;
 
 // Textfields
-@property (weak, nonatomic) IBOutlet UITextField *hobbyTextField;
 @property (weak, nonatomic) IBOutlet UITextField *emailTextField;
-@property (weak, nonatomic) IBOutlet UITextField *messengerTextField;
-@property (weak, nonatomic) IBOutlet UITextField *passwordTextField;
 @property (weak, nonatomic) UITextField *activeTextField;
+@property (weak, nonatomic) IBOutlet UIStackView *emailStackView;
 
 // Photo picker
 @property (strong, nonatomic) IBOutlet UIButton *verifyButton;
@@ -178,7 +179,9 @@ typedef NS_ENUM(NSInteger, PickerView) {
         [self showSaveButton];
         
     } onFailure:^{
-        
+        [self.fullNameButton setEnabled:false];
+        [self.emailButton setEnabled:false];
+        self.emailStatusLabel.hidden = true;
         [self showSaveButton];
         
     }];
@@ -188,22 +191,14 @@ typedef NS_ENUM(NSInteger, PickerView) {
     
     [self showLoadingBar];
     
-    _userData.user_password = _passwordTextField.text?:@"";
-    
     [SettingUserProfileRequest fetchEditUserProfile:_userData onSuccess:^{
         
         [self notifySuccessEditProfile];
-        [self removePassword];
         [self showSaveButton];
         
     } onFailure:^{
         [self showSaveButton];
     }];
-}
-
--(void)removePassword{
-    // Reset password field
-    self.passwordTextField.text = @"";
 }
 
 - (void)notifySuccessEditProfile{
@@ -225,14 +220,26 @@ typedef NS_ENUM(NSInteger, PickerView) {
 - (void)showUserData:(DataUser *)userData {
     _userData = userData;
     
+    [self.fullNameButton setEnabled:userData.user_generated_name];
+    self.fullNameLabel.textColor = userData.user_generated_name ? [UIColor fromHexString:@"19A33F"] : [UIColor fromHexString:@"757575"];
+    
     // Set value to outlet
     self.fullNameLabel.text = userData.full_name;
     self.birthdateLabel.text = [NSString stringWithFormat:@"%@/%@/%@", userData.birth_day, userData.birth_month, userData.birth_year];
-    self.sexLabel.text = [userData.gender isEqualToString:@"1"]?@"Pria":@"Wanita";
-    self.hobbyTextField.text = userData.hobby;
+    if ([userData.gender isEqualToString:@"1"]) {
+        self.sexLabel.text = @"Pria";
+    }else if ([userData.gender isEqualToString:@"2"]) {
+        self.sexLabel.text = @"Wanita";
+    }
     self.emailTextField.text = userData.user_email;
-    self.messengerTextField.text = userData.user_messenger?:@"-";
     [self.phoneNumberButton setTitle:userData.user_phone forState:UIControlStateNormal];
+    
+    self.emailStatusLabel.hidden = false;
+    [self.emailButton setEnabled:true];
+    
+    if (userData.user_email == nil || [userData.user_email  isEqual: @""]) {
+        self.emailStatusLabel.hidden = true;
+    }
     
     // Set user profile picture
     [self setUserProfilePicture];
@@ -339,13 +346,6 @@ typedef NS_ENUM(NSInteger, PickerView) {
 
 - (void)textFieldDidEndEditing:(UITextField *)textField {
     self.activeTextField = nil;
-
-    // Set textfield value
-    if (textField == _hobbyTextField) {
-        self.userData.hobby = _hobbyTextField.text;
-    } else if (textField == _messengerTextField) {
-        self.userData.user_messenger = _messengerTextField.text;
-    }
 }
 
 #pragma mark - Tap Gesture
@@ -363,6 +363,28 @@ typedef NS_ENUM(NSInteger, PickerView) {
         datePicker.currentdate = [dateFormat dateFromString:dob];
     }
     [datePicker show];
+}
+
+- (IBAction)didTapFullNameLabel:(id)sender {
+    ChangeNameViewController * vc = [ChangeNameViewController new];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)didTapEmailLabel:(id)sender {
+    if ([_userData.user_email isEqual: @""]) {
+        AddEmailViewController * vc = [AddEmailViewController new];
+        [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@""
+                                                                       message:@"Untuk saat ini, perubahan email hanya dapat dilakukan di website Tokopedia"
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction* defaultAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault
+                                                              handler:nil];
+        
+        [alert addAction:defaultAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
 }
 
 - (IBAction)didTapGenderLabel:(id)sender {
@@ -433,6 +455,9 @@ typedef NS_ENUM(NSInteger, PickerView) {
                                                    [wself showSaveButton];
                                                    [wself notifySuccessEditProfileImageWithURLString:imageURLString];
                                                    [wself.profileImageView setImage:image];
+                                                   
+                                                   ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+                                                   [tabManager sendProfileEditedEvent];
                                                    
                                                } onFailure:^{
                                                    // Show user profile image

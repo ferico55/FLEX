@@ -6,21 +6,21 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import FBSDKLoginKit
+import UIKit
 
 @objc(RegisterBaseViewController)
-class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate, AuthenticationServiceProtocol {
+public class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GIDSignInDelegate, GIDSignInUIDelegate, AuthenticationServiceProtocol {
     
-    var onLoginSuccess: ((LoginResult) -> Void)?
-    var isLoginPresented = false
+    public var onLoginSuccess: ((LoginResult) -> Void)?
+    public var isLoginPresented = false
     
     @IBOutlet private var contentView: UIView!
     @IBOutlet private var signInProviderContainer: UIView!
     @IBOutlet private var registerWithEmailButton: UIButton!
     @IBOutlet private var loginButton: UIButton!
     
-    override func viewDidLoad() {
+    override public func viewDidLoad() {
         super.viewDidLoad()
         
         self.title = "Daftar"
@@ -35,18 +35,28 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         
         self.setSignInProviders(provider: SignInProvider.defaultProviders(useFor: .register))
         
-        AuthenticationService.shared.getThirdPartySignInOptions { [weak self] providers, _ in
-            guard let `self` = self , let providers = providers else {
+        AuthenticationService.shared.getThirdPartySignInOptions ( .register, onCompletion: { [weak self] providers, _ in
+            guard let `self` = self, let providers = providers else {
                 return
             }
             
-            self.setSignInProviders(provider: providers)
-        }
+            var arrProvider = providers
+            
+            let emailProvider = SignInProvider()
+            emailProvider.name = "Email"
+            emailProvider.id = "regemail"
+            emailProvider.imageUrl = ""
+            emailProvider.color = "#ffffff"
+            
+            arrProvider.append(emailProvider)
+
+            self.setSignInProviders(provider: arrProvider)
+        })
         
         self.updateFormViewAppearance()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override public func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         AnalyticsManager.trackScreenName("Register Home Page")
     }
@@ -104,6 +114,19 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
             AnalyticsManager.trackEventName("clickRegister", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_CLICK, label: "\(provider.name) - Step 1")
             GIDSignIn.sharedInstance().signIn()
         }
+        
+        providerListView.onRegPhoneNumberSelected = { provider in
+            AnalyticsManager.trackEventName("clickRegister", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_CLICK, label: "\(provider.name) - Step 1")
+            let controller = RegisterPhoneNumberViewController()
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
+        
+        providerListView.onRegEmailSelected = { provider in
+            AnalyticsManager.trackEventName("clickRegister", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_CLICK, label: "Email - Step 1")
+            let controller = RegisterEmailViewController()
+            controller.isLoginPresented = self.isLoginPresented
+            self.navigationController?.pushViewController(controller, animated: true)
+        }
     }
     
     private func webViewSignIn(provider: SignInProvider) {
@@ -152,20 +175,13 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     }
     
     // MARK: Action Button
-    @IBAction func onTapLoginWithEmail(_ sender: Any) {
-        AnalyticsManager.trackEventName("clickRegister", category: GA_EVENT_CATEGORY_REGISTER, action: GA_EVENT_ACTION_CLICK, label: "Email - Step 1")
-        let controller = RegisterEmailViewController()
-        controller.isLoginPresented = self.isLoginPresented
-        self.navigationController?.pushViewController(controller, animated: true)
-    }
-    
-    @IBAction func onTapLogin(_ sender: Any) {
+    @IBAction private func onTapLogin(_ sender: Any) {
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: "navigateToPageInTabBar"), object: "4")
         self.navigationController?.popViewController(animated: true)
     }
     
     // MARK: Facebook SDK Login Delegate
-    func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
+    public func loginButton(_ loginButton: FBSDKLoginButton!, didCompleteWith result: FBSDKLoginManagerLoginResult!, error: Error!) {
         if let accessToken = FBSDKAccessToken.current() {
             let parameters = NSMutableDictionary(dictionary: ["fields": "id, name, email, birthday, gender"])
             guard let param = parameters as? [AnyHashable: Any] else {
@@ -200,12 +216,12 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         }
     }
     
-    func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
+    public func loginButtonDidLogOut(_ loginButton: FBSDKLoginButton!) {
         
     }
     
     // MARK: Google Sign In Delegate
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+    public func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
         guard let user = user else {
             return
         }
@@ -231,7 +247,7 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
     }
     
     // MARK: Authentication Service Protocol
-    func showVerifyLoginScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
+    public func showVerifyLoginScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
         let secureStorage = TKPDSecureStorage.standardKeyChains()
         
         guard let storage = secureStorage,
@@ -269,7 +285,7 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         self.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     
-    func showCreatePasswordScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
+    public func showCreatePasswordScreen(sender: AuthenticationService, onCompletion: @escaping (Error?) -> Void) {
         guard let profile = sender.socialProfile, let token = sender.authToken, let info = sender.accountInfo else {
             return
         }
@@ -289,7 +305,7 @@ class RegisterBaseViewController: UIViewController, FBSDKLoginButtonDelegate, GI
         self.navigationController?.present(navigationController, animated: true, completion: nil)
     }
     
-    func successLoginAfterCreatePassword(sender: AuthenticationService, login: Login) {
+    public func successLoginAfterCreatePassword(sender: AuthenticationService, login: Login) {
         login.justRegistered = true
         self.loginSuccess(login: login)
     }

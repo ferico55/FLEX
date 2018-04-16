@@ -105,13 +105,8 @@ internal class SignInProvidersViewController: UIViewController, GIDSignInUIDeleg
     
     // MARK: Login With Tokocash Phone Number
     private func loginWithPhoneNumber() {
-        guard let parent = self.parentController?.parentController else {
-            return
-        }
-        
         let controller = LoginPhoneNumberViewController(nibName: nil, bundle: nil)
         controller.hidesBottomBarWhenPushed = true
-        controller.parentController = parent
         self.navigationController?.pushViewController(controller, animated: true)
     }
     

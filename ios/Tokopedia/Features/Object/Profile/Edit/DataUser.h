@@ -10,9 +10,7 @@
 
 @interface DataUser : NSObject
 
-@property (nonatomic, strong)NSString *hobby;
 @property (nonatomic, strong)NSString *birth_day;
-@property (nonatomic, strong)NSString *user_messenger;
 @property (nonatomic, strong)NSString *full_name;
 @property (nonatomic, strong)NSString *birth_month;
 @property (nonatomic, strong)NSString *user_email;
@@ -20,7 +18,7 @@
 @property (nonatomic, strong)NSString *user_phone;
 @property (nonatomic, strong)NSString *gender;
 @property (nonatomic, strong)NSString *user_image;
-@property (nonatomic, strong)NSString *user_password;
+@property BOOL user_generated_name;
 
 +(RKObjectMapping *) mapping;
 

@@ -183,17 +183,12 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:kTKPDIMAGE_TITLEHOMEIMAGE]];
     [self.navigationItem setTitleView:logo];
     
-    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
-    _auth = [secureStorage keychainDictionary];
-    _auth = [_auth mutableCopy];
-    
     _navigate = [NavigateViewController new];
     
     _isNoDataDeposit  = YES;
     
     _operationQueue = [[NSOperationQueue alloc] init];
     
-    _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     _versionLabel.text = [NSString stringWithFormat:@"Versi : %@", [UIApplication getAppVersionString]];
     
     // Remove default table inset
@@ -253,6 +248,11 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
     else {
         _viewTokopoints.hidden = true;
     }
+    
+    TKPDSecureStorage *secureStorage = [TKPDSecureStorage standardKeyChains];
+    _auth = [secureStorage keychainDictionary];
+    _auth = [_auth mutableCopy];
+    _fullNameLabel.text = [_auth objectForKey:@"full_name"];
     
     // Universal Analytics
     [AnalyticsManager trackScreenName:@"More Navigation Page"];
@@ -835,8 +835,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 
 
 #pragma mark - Action
-- (IBAction)actionCreateShop:(id)sender
-{
+- (IBAction)actionCreateShop:(id)sender {
     OpenShopViewController *controller = [[OpenShopViewController alloc] initWithNibName:@"OpenShopViewController" bundle:nil];
     [self pushViewController:controller];
 }

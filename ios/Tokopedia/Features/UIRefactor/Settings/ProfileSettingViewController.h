@@ -11,5 +11,6 @@
 @interface ProfileSettingViewController : UIViewController
 
 @property (nonatomic, strong) NSDictionary *data;
+@property BOOL userCreatedPassword;
 
 @end

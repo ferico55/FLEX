@@ -1203,8 +1203,12 @@ public class TPRoutes: NSObject {
         }
 
         // MARK: Profile Settings (Native)
-        JLRoutes(forScheme: "tkpd-internal").addRoute("/people/settings") { (_: [String: Any]) -> Bool in
+        JLRoutes(forScheme: "tkpd-internal").addRoute("/people/settings/:userCreatedPassword") { (params: [String: Any]) -> Bool in
+            guard let userCreatedPassword = params["userCreatedPassword"] as? String else {
+                return false
+            }
             let controller = ProfileSettingViewController()
+            controller.userCreatedPassword = userCreatedPassword == "1" ? true : false
             UIApplication.topViewController()?
                 .navigationController?
                 .pushViewController(controller, animated: true)

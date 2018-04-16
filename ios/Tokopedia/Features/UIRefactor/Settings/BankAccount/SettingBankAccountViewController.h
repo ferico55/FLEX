@@ -18,10 +18,7 @@
 
 @interface SettingBankAccountViewController : UIViewController
 
-
 @property (nonatomic, weak) IBOutlet id<SettingBankAccountViewControllerDelegate> delegate;
-
-
 @property (nonatomic, strong) NSDictionary *data;
 @property BankAccountFormList *selectedObject;
 
