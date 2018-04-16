@@ -51,10 +51,13 @@
     
     CGSize bannerSize = IS_IPAD && (_bannerType == BannerTypeHome) ? self.bannerIPadSize : self.bannerIPhoneSize;
     
-    view = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, bannerSize.width, bannerSize.height)];
+    
+    view = imageView;
     
     Slide *banner = _banners[index];
-    [(UIImageView *)view setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
+    [imageView setImageWithURL:[NSURL URLWithString:banner.image_url] placeholderImage:nil];
+    imageView.contentMode = UIViewContentModeScaleAspectFill;
     
     return view;
 }
