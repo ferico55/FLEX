@@ -744,7 +744,7 @@ public class TPRoutes: NSObject {
         JLRoutes.global().add(["/official-store/promo/:slug", "/sale/:slug"]) { (params: [String: Any]) -> Bool in
             guard let slug = params["slug"] as? String else { return false }
             navigator.navigateToOfficialPromo(from: UIApplication.topViewController(), withSlug: slug)
-
+            
             return true
         }
 
@@ -752,6 +752,14 @@ public class TPRoutes: NSObject {
         JLRoutes.global().addRoute("/official-store/mobile") { (_: [String: Any]) -> Bool in
             navigator.navigateToOfficialBrands(from: UIApplication.topViewController())
 
+            return true
+        }
+        
+        JLRoutes.global().addRoute("/official-store/brand") { (_: [String: Any]) -> Bool in
+            let brandlistViewController = ReactViewController(moduleName: "BrandlistScreen")
+            
+            UIApplication.topViewController()?.navigationController?.pushViewController(brandlistViewController, animated: true)
+            
             return true
         }
 
