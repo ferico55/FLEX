@@ -180,7 +180,7 @@ internal class SprintSaleProductItem: NSObject {
         self.discountPercentage = discountPercentage
         self.discountPrice = discountPrice
         self.originalPrice = originalPrice
-        self.stockPercentage = stockPercentage / 100.0
+        self.stockPercentage = (100 - stockPercentage) / 100
         self.stockText = stockText
     }
 }
