@@ -747,6 +747,23 @@ public class TPRoutes: NSObject {
             
             return true
         }
+        
+        JLRoutes.global().add(["/official-store/promo/:slug/:cat_slug","/sale/:slug/:cat_slug"]) { (params: [String: Any]) -> Bool in
+            guard let slug = params["slug"] as? String,
+                let categorySlug = params["cat_slug"] as? String
+                else { return false }
+            
+            let viewController = ReactViewController(moduleName: "OSPromoDetail", props: ["slug": slug as AnyObject, "cat_slug" :  categorySlug as AnyObject])
+            viewController.hidesBottomBarWhenPushed = true
+            
+            UIApplication.topViewController()?
+                .navigationController?
+                .pushReactViewController(viewController, animated: true)
+            
+            return true
+        }
+        
+        
 
         // MARK: Official Store Brands (Native)
         JLRoutes.global().addRoute("/official-store/mobile") { (_: [String: Any]) -> Bool in
