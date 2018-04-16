@@ -68,6 +68,7 @@ public class TPRoutes: NSObject {
             
             let viewController = ReactViewController(moduleName: "ContentExplorer", props: ["categoryId": id as AnyObject, "tabName": tabName as AnyObject, "params": params as AnyObject ])
             viewController.hidesBottomBarWhenPushed = true
+            viewController.title = "Explore"
             
             UIApplication.topViewController()?
                 .navigationController?
@@ -84,6 +85,7 @@ public class TPRoutes: NSObject {
             
             let viewController = ReactViewController(moduleName: "ContentDetailPage", props: ["postId": id as AnyObject, "params": params as AnyObject ])
             viewController.hidesBottomBarWhenPushed = true
+            viewController.title = "Post Detail"
             
             UIApplication.topViewController()?
                 .navigationController?
