@@ -40,7 +40,7 @@
 #import "UIActivityViewController+Extensions.h"
 #import "ReactEventManager.h"
 #import "UIApplication+React.h"
-
+#import <Lottie/Lottie.h>
 
 @interface MainViewController ()
 <
@@ -64,15 +64,16 @@
     
     MainViewControllerPage _page;
     ScreenshotAlertView *_screenshotAlert;
+    
+    NSUInteger previousSelectedHomeIndex;
+    HomeTabBarItem *animatedHomeTabButton;
+    BOOL isJumperDisabled;
+    BOOL shouldAnimate;
 }
 
 @property (strong, nonatomic) ScreenshotHelper *screenshotHelper;
 
 @end
-
-typedef enum TagRequest {
-    LogoutTag
-} TagRequest;
 
 @implementation MainViewController
 
@@ -102,6 +103,8 @@ typedef enum TagRequest {
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    isJumperDisabled = [[[FIRRemoteConfig remoteConfig] configValueForKey:@"ios_app_is_home_jumper_disabled"] boolValue];
+    shouldAnimate = YES;
     
     _userManager = [UserAuthentificationManager new];
     
@@ -128,6 +131,7 @@ typedef enum TagRequest {
     [center addObserver:self selector:@selector(navigateToPageInTabBar:) name:@"navigateToPageInTabBar" object:nil];
     [center addObserver:self selector:@selector(redirectToSearch) name:@"redirectToSearch"object:nil];
     [center addObserver:self selector:@selector(redirectToHotlist) name:@"redirectToHotlist"object:nil];
+    [center addObserver:self selector:@selector(didSwipeHomePage:) name:@"didSwipeHomeTab" object:nil];
     
     [center addObserver:self
                selector:@selector(showSuccessActivation)
@@ -161,6 +165,9 @@ typedef enum TagRequest {
     FBTweakAction(@"Others", @"NPS Review", @"Reset NPS Review", ^{
         [NSUserDefaults standardUserDefaults].lastVersionNPSRated = NULL;
     });
+    
+    [center addObserver:self selector:@selector(changeHomeTabBarButtonToHome:) name:@"onScrollHomeChangeTabBarButtonToHome" object:nil];
+    [center addObserver:self selector:@selector(changeHomeTabBarButtonToRecommendation:) name:@"onScrollHomeChangeTabBarButtonToRecommendation" object:nil];
 }
 
 - (void)makeSureDeviceTokenExists {
@@ -175,9 +182,6 @@ typedef enum TagRequest {
     NSLog(@"%@ : %@",[self class], NSStringFromSelector(_cmd));
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
-
-
-
 
 - (void)didReceiveMemoryWarning
 {
@@ -271,6 +275,27 @@ typedef enum TagRequest {
     [self initTabBar];
 }
 
+- (void) initJumperButton: (UITabBarItem*) tabBarItem {
+    if (isJumperDisabled) {
+        return;
+    }
+    if (animatedHomeTabButton) {
+        [animatedHomeTabButton removeFromSuperview];
+    }
+    
+    // need to handle ipad specially as in ios 11, title and icon positioning are different
+    // before 11, bottom bar has horizontal margin
+    BOOL useCustomValue = SYSTEM_VERSION_LESS_THAN(@"11.0") && [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
+    BOOL useLargerTopMargin = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")  && [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
+    CGFloat width = useCustomValue ? 76 : self.view.frame.size.width / 5;
+    CGFloat originX = useCustomValue ? 126 : 0;
+    CGFloat originY = useLargerTopMargin ? 8 : 4;
+    CGRect animationRect = CGRectMake(originX, originY, width, 29.5);
+    
+    animatedHomeTabButton = [[HomeTabBarItem alloc] initWithTabBarItem:tabBarItem rect: animationRect];
+    [self.tabBar addSubview: animatedHomeTabButton];
+}
+
 -(void)initTabBar {
     NSArray* items = @[@{@"name" : @"Home", @"image" : @"icon_home.png", @"selectedImage" : @"icon_home_active.png"},
                        @{@"name" : @"Hot List", @"image" : @"icon_hotlist.png", @"selectedImage" : @"icon_hotlist_active.png"},
@@ -280,15 +305,16 @@ typedef enum TagRequest {
     UITabBar *tabBar = self.tabBar;
     tabBar.tintColor = [UIColor colorWithRed:(66/255.0) green:(189/255.0) blue:(65/255.0) alpha:1];
     tabBar.backgroundColor = [UIColor whiteColor];
+    [self initJumperButton: [tabBar.items objectAtIndex:0]];
     
     NSUInteger index = 0;
     NSDictionary *textAttributes = @{
                                      NSForegroundColorAttributeName:[UIColor colorWithRed:(102/255.0) green:(102/255.0) blue:(102/255.0) alpha:1],
                                      NSFontAttributeName:IS_IPAD?[UIFont microTheme]:[UIFont systemFontOfSize:11]};
     for(NSDictionary* item in items) {
-        
         UITabBarItem *tabBarItem = [tabBar.items objectAtIndex:index];
         if(index == items.count - 1) {
+            // setup more page tab bar item
             UserAuthentificationManager* userManager = [UserAuthentificationManager new];
             if(!userManager.isLogin) {
                 [tabBarItem setTitle:@"Login"];
@@ -299,14 +325,28 @@ typedef enum TagRequest {
                 [tabBarItem setImage:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
                 [tabBarItem setSelectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             }
+        } else if (index == 0) {
+            // setup home tab bar item
+            if (isJumperDisabled) {
+                [tabBarItem setImage:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setSelectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+                [tabBarItem setTitle:[item objectForKey:@"name"]];
+                
+                // dealloc immediately to save memory
+                animatedHomeTabButton = nil;
+            } else if (_userManager.isLogin) {
+                [animatedHomeTabButton setState:HomeIconStateJumpingRocket animated:NO];
+            } else {
+                [animatedHomeTabButton setFocused:NO];
+            }
         } else {
-            [tabBarItem setTitle:[item objectForKey:@"name"]];
+            // setup others tab bar item
             [tabBarItem setImage:[[UIImage imageNamed:[item objectForKey:@"image"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
             [tabBarItem setSelectedImage:[[UIImage imageNamed:[item objectForKey:@"selectedImage"]]imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal]];
+            [tabBarItem setTitle:[item objectForKey:@"name"]];
         }
         
         [tabBarItem setTitleTextAttributes:textAttributes forState:UIControlStateNormal];
-        
         index++;
     }
 }
@@ -354,9 +394,10 @@ typedef enum TagRequest {
         UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"Login" bundle:nil];
         LoginViewController *more = [storyboard instantiateViewControllerWithIdentifier:@"LoginViewController"];
         
+        __weak typeof(self) welf = self;
         more.onLoginFinished = ^(LoginResult* result){
-            [self setSelectedIndex:0];
-            UINavigationController *homeNavController = (UINavigationController *)[self.viewControllers firstObject];
+            [welf redirectToTabBarIndex:0];
+            UINavigationController *homeNavController = (UINavigationController *)[welf.viewControllers firstObject];
             [homeNavController popToRootViewControllerAnimated:NO];
         };
         
@@ -394,7 +435,9 @@ typedef enum TagRequest {
     [newControllers replaceObjectAtIndex:4 withObject:moreNavController];
     [self setViewControllers:newControllers animated:YES];
     
-    [self initTabBar];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self initTabBar];
+    });
 }
 
 - (void)applicationlogout:(NSNotification*)notification
@@ -542,6 +585,11 @@ typedef enum TagRequest {
     }
 }
 
+- (void) sendClickTrackingForState: (HomeIconState) state {
+    NSString *action = state == HomeIconStateJumpingRocket ? @"click on infinite product jumper" : @"click on home jumper";
+    [AnalyticsManager trackEventName:@"userInteractionHomePage" category:@"homepage" action:action label:@""];
+}
+
 - (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController {
     static UIViewController *previousController = nil;
     if (previousController == viewController) {
@@ -550,7 +598,6 @@ typedef enum TagRequest {
             [[UIApplication topViewController] performSelector:@selector(scrollToTop)];
         }
     }
-    previousController = viewController;
     
     [AnalyticsManager trackEventName:GA_EVENT_NAME_USER_INTERACTION_HOMEPAGE
                             category:GA_EVENT_CATEGORY_HOMEPAGE_BOTTOM_NAV
@@ -558,8 +605,43 @@ typedef enum TagRequest {
                                label:@""];
     if (tabBarController.selectedIndex == 0) {
         ReactEventManager *tabManager = [[UIApplication sharedApplication].reactBridge moduleForClass:[ReactEventManager class]];
+
+        if (previousSelectedHomeIndex == 0) { // clicked home while on home
+            if (!shouldAnimate) {
+                previousController = viewController;
+                previousSelectedHomeIndex = tabBarController.selectedIndex;
+                return;
+            } else if (!_userManager.isLogin) {
+                [tabManager shouldScrollToSection: HomeSectionHeader];
+                previousController = viewController;
+                previousSelectedHomeIndex = tabBarController.selectedIndex;
+                return;
+            } else if (isJumperDisabled) {
+                [tabManager shouldScrollToSection: HomeSectionHeader];
+                previousController = viewController;
+                previousSelectedHomeIndex = tabBarController.selectedIndex;
+                return;
+            }
+            
+            [self sendClickTrackingForState:animatedHomeTabButton.state];
+            if (animatedHomeTabButton.state == HomeIconStateHomeActivated) {
+                [animatedHomeTabButton setState:HomeIconStateJumpingRocket animated:YES];
+                [tabManager shouldScrollToSection: HomeSectionHeader];
+            } else {
+                [animatedHomeTabButton setState:HomeIconStateHomeActivated animated:YES];
+                [tabManager shouldScrollToSection: HomeSectionRecommendation];
+            }
+        } else {
+            [animatedHomeTabButton setFocused: _userManager.isLogin];
+        }
+
         [tabManager sendRedirectHomeTabEvent];
+    } else {
+        [animatedHomeTabButton setFocused: NO];
     }
+    
+    previousController = viewController;
+    previousSelectedHomeIndex = tabBarController.selectedIndex;
 }
 
 - (BOOL)tabBarController:(UITabBarController *)tabBarController shouldSelectViewController:(UIViewController *)viewController {
@@ -567,11 +649,11 @@ typedef enum TagRequest {
 }
 
 - (void)redirectToSearch {
-    self.selectedIndex = 2;
+    [self redirectToTabBarIndex:2];
 }
 
 - (void)redirectToHotlist {
-    self.selectedIndex = 1;
+    [self redirectToTabBarIndex:1];
 }
 
 - (void)showSuccessActivation {
@@ -593,7 +675,7 @@ typedef enum TagRequest {
 }
 
 - (void)redirectNotification:(NSNotification*)notification {
-    self.selectedIndex = 0;
+    [self redirectToTabBarIndex:0];
 
     [self popToRootAllViewControllers];
 }
@@ -629,6 +711,18 @@ typedef enum TagRequest {
     } else {
         [self checkUserRating:notification];
     }
+}
+
+- (void) didSwipeHomePage: (NSNotification *) notification {
+    UserAuthentificationManager *authManager = [UserAuthentificationManager new];
+    if (!authManager.isLogin) {
+        return;
+    }
+    NSDictionary *userinfo = notification.userInfo;
+    NSInteger pageNumber = [[userinfo objectForKey:@"tag"]integerValue];
+
+    [animatedHomeTabButton setFocused: (pageNumber == 0)];
+    shouldAnimate = pageNumber == 0;
 }
 
 - (void)checkUserRating:(NSNotification *)notification {
@@ -715,17 +809,39 @@ typedef enum TagRequest {
 }
 
 - (void)redirectToHomeViewController {
-    self.selectedIndex = 0;
+    [self redirectToTabBarIndex: 0];
+}
+
+- (void) redirectToTabBarIndex: (int) index {
+    UserAuthentificationManager* userManager = [UserAuthentificationManager new];
+    if (userManager.isLogin) {
+        [animatedHomeTabButton setFocused: (index == 0)];
+    }
+    
+    self.selectedIndex = index;
+    previousSelectedHomeIndex = index;
 }
 
 - (void) navigateToPageInTabBar:(NSNotification*) notification{
     NSString *pageId = [notification object];
     int pagenum = [pageId intValue];
-    self.selectedIndex = pagenum;
+    [self redirectToTabBarIndex:pagenum];
 }
 
 - (void)redirectToMore {
-    self.selectedIndex = 5;
+    [self redirectToTabBarIndex:5];
+}
+
+- (void) changeHomeTabBarButtonToHome:(NSNotification*) notification {
+    if (shouldAnimate && self.selectedIndex == 0 && _userManager.isLogin) {
+        [animatedHomeTabButton setState:HomeIconStateHomeActivated animated:YES];
+    }
+}
+
+- (void) changeHomeTabBarButtonToRecommendation:(NSNotification*) notification {
+    if (shouldAnimate && self.selectedIndex == 0 && _userManager.isLogin) {
+        [animatedHomeTabButton setState:HomeIconStateJumpingRocket animated:YES];
+    }
 }
 
 // MARK: TKPAppFlow methods

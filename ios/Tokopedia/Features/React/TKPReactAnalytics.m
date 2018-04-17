@@ -29,7 +29,8 @@
 RCT_EXPORT_MODULE();
 
 - (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
+    // always run in bg to prevent UI blocking
+    return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
 }
 
 RCT_EXPORT_METHOD(trackScreenName:(NSString*)name) {
@@ -41,6 +42,9 @@ RCT_EXPORT_METHOD(trackEvent:(NSDictionary*)event) {
 }
 
 RCT_EXPORT_METHOD(trackImpression: (NSDictionary*) data) {
+    if (!data) {
+        return;
+    }
     [AnalyticsManager trackData: data];
 }
 

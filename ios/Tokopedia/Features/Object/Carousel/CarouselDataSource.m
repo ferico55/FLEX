@@ -80,11 +80,6 @@
 - (void)carousel:(iCarousel *)carousel didSelectItemAtIndex:(NSInteger)index {
     Slide *banner = _banners[index];
     self.didSelectBanner(banner, index);
-    
-    NSURL *url = [NSURL URLWithString:banner.applinks];
-    if (url) {
-        [TPRoutes routeURL:url];
-    }
 }
 
 - (void)carouselCurrentItemIndexDidChange:(iCarousel *)carousel {
@@ -125,6 +120,10 @@
     if (_usedBannerIndex) {
         [_usedBannerIndex removeAllObjects];
     }
+}
+
+- (void)dealloc {
+    [self endBannerAutoScroll];
 }
 
 @end

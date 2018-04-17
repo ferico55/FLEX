@@ -9,6 +9,11 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
+typedef NS_ENUM(NSInteger, HomeSection) {
+    HomeSectionHeader = 1,
+    HomeSectionRecommendation = 2
+};
+
 @interface ReactEventManager : RCTEventEmitter<RCTBridgeModule>
 
 - (void)sendScrollToTopEvent;
@@ -26,6 +31,7 @@
 - (void)didTapShareOnGroupChat:(NSInteger)shareTag;
 - (void)sendFavoriteShopEvent;
 - (void)sendProfileEditedEvent;
+- (void) shouldScrollToSection: (HomeSection) section;
 - (void)sendNotificationToGroupChat:(NSDictionary*)notificationData;;
 
 @end

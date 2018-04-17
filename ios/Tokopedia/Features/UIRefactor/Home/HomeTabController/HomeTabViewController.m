@@ -184,6 +184,8 @@ UINavigationControllerDelegate
     [self setArrow];
     [self setHeaderBar];
     [self setSearchBar];
+    
+    [AnalyticsManager trackScreenName:@"/"];
 }
 
 
@@ -231,8 +233,6 @@ UINavigationControllerDelegate
 
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
-    
-    self.navigationController.title = @"Home";
     
     self.definesPresentationContext = YES;
     [self.searchController.searchBar setShowsCancelButton:NO animated:YES];
@@ -428,7 +428,7 @@ UINavigationControllerDelegate
     [self view];
     [self instantiateViewControllers];
     [self setSearchByImage];
-    [self setIndexPage:0];
+    [self redirectToHome];
 }
 
 - (void)userDidLogout:(NSNotification*)notification {

@@ -27,8 +27,6 @@
                 (@{
                    (@{}): @"-Blank-",
                    EMAIL_PASSWORD(@"nada.fathia+01@tokopedia.com", @"nadafathia"),
-                   EMAIL_PASSWORD(@"evelyn.greselda+46@tokopedia.com", @"asdf1234"),
-                   EMAIL_PASSWORD(@"evelyn.greselda+45@tokopedia.com", @"asdf1234"),
                    EMAIL_PASSWORD(@"deadora.hendra+01@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"deadora.hendra+02@tokopedia.com", @"tokopedia1995"),
                    EMAIL_PASSWORD(@"elly.susilowati+007@tokopedia.com", @"tokopedia2015"),

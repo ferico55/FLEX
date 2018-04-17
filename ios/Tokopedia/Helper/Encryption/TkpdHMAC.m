@@ -465,7 +465,14 @@ typedef NS_ENUM(NSUInteger, TPUrl) {
     } @finally {
         
     }
+}
+
+- (NSString*)fingerprint {
+    NSString* fingerprint = [[self deviceFingerprint] toJSONString];
+    NSData* fingerprintData = [fingerprint dataUsingEncoding:NSUTF8StringEncoding];
+    NSString* encodedFingerprint = [fingerprintData base64EncodedStringWithOptions:0];
     
+    return encodedFingerprint;
 }
 
 @end

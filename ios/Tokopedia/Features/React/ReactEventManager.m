@@ -12,13 +12,19 @@
 
 RCT_EXPORT_MODULE(EventManager)
 
+- (NSDictionary *)constantsToExport
+{
+    return @{ @"HomeSectionHeader": @(1),
+              @"HomeSectionRecommendation": @(2)
+              };
+}
 
 - (NSArray<NSString *> *)supportedEvents {
   return @[
     @"HotlistScrollToTop", @"didLogin", @"didLogout", @"didWishlistProduct",
     @"didRemoveWishlistProduct", @"changeLayoutCell", @"navBarButtonTapped",
     @"popNavigation", @"shouldRefresh", @"RedirectToHomeTab",
-    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat", @"didReceiveGroupChatNotification"
+    @"DidTapFavoriteShopButton", @"DidEditProfile", @"didTapAturOnTopChat", @"didTapInfoOnGroupChat", @"didTapShareOnGroupChat", @"homeTabScrollToRecommendation", @"didReceiveGroupChatNotification"
   ];
 }
 
@@ -82,8 +88,13 @@ RCT_EXPORT_MODULE(EventManager)
     [self sendEventWithName:@"didTapShareOnGroupChat" body:@(shareTag)];
 }
 
+- (void) shouldScrollToSection: (HomeSection) section {
+    [self sendEventWithName:@"homeTabScrollToRecommendation" body: @(section)];
+}
+
 - (void)sendNotificationToGroupChat:(NSDictionary*) notificationData {
     [self sendEventWithName:@"didReceiveGroupChatNotification" body:notificationData];
 }
 
 @end
+    

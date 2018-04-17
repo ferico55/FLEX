@@ -7,6 +7,8 @@
 //
 
 #import "ReactUserManager.h"
+#import "TkpdHMAC.h"
+#import "NSString+MD5.h"
 
 @implementation ReactUserManager
 
@@ -22,10 +24,6 @@
 
 
 RCT_EXPORT_MODULE();
-
-- (dispatch_queue_t)methodQueue {
-    return dispatch_get_main_queue();
-}
 
 RCT_EXPORT_METHOD(getUserId:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {
     UserAuthentificationManager* userManager = [UserAuthentificationManager new];
@@ -51,11 +49,19 @@ RCT_EXPORT_METHOD(getGraphQLRequestHeader:(RCTPromiseResolveBlock)resolve reject
     NSString *accessToken = loginData[@"oAuthToken.accessToken"] ?: @"";
     NSString *accountsAuth = [NSString stringWithFormat:@"%@ %@", tokenType, accessToken];
     
+    // TODO consider using hmac header instead
+    TkpdHMAC *hmac = [TkpdHMAC new];
+    NSString *fingerprintData = [hmac fingerprint];
+    NSString *fingerprintHash = [[NSString stringWithFormat:@"%@+%@", fingerprintData, [userManager getUserId]] encryptWithMD5];
+    
     NSDictionary *header = @{@"Tkpd-UserId": userID,
                              @"Tkpd-SessionId": deviceToken,
                              @"X-Device": xDevice,
                              @"Device-Type": deviceType,
-                             @"Accounts-Authorization": accountsAuth};
+                             @"Accounts-Authorization": accountsAuth,
+                             @"Fingerprint-Data": fingerprintData,
+                             @"Fingerprint-Hash": fingerprintHash,
+                             };
     
     resolve(header);
 }

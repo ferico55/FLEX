@@ -6,10 +6,10 @@
 //  Copyright © 2016 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
 import FirebaseRemoteConfig
+import UIKit
 
-class HomeSliderView: UIView {
+internal class HomeSliderView: UIView {
 
     @IBOutlet fileprivate var carouselPlaceholder: UIView!
     fileprivate var pageControlHeight: Int = 12
@@ -18,7 +18,9 @@ class HomeSliderView: UIView {
     
     fileprivate var carouselDataSource: CarouselDataSource?
     
-    override func awakeFromNib() {
+    internal override func awakeFromNib() {
+        super.awakeFromNib()
+
         setupCustomPageControl()
         isAccessibilityElement = true
         accessibilityIdentifier = "bannerSliderView"
@@ -29,22 +31,22 @@ class HomeSliderView: UIView {
         customPageControl.pageControlStyle = PageControlStyleDefault
         customPageControl.coreNormalColor = .tpSecondaryWhiteText()
         customPageControl.coreSelectedColor = .tpOrange()
-        customPageControl.strokeNormalColor = UIColor(white: 0, alpha: 0)
-        customPageControl.borderColor = UIColor(white: 0, alpha: 0)
+        customPageControl.strokeNormalColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
+        customPageControl.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0)
         customPageControl.diameter = 12
         customPageControl.gapWidth = 5
         addSubview(customPageControl)
     }
     
-    func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
-        self.carouselPlaceholder.mas_makeConstraints { make in
-            make?.height.mas_equalTo()(UIDevice.current.userInterfaceIdiom == .pad ? 225 : 125)
+    internal func generateSliderView(withBanner banner: [Slide], withNavigationController navigationController: UINavigationController) {
+        self.carouselPlaceholder.snp.makeConstraints { make in
+            make.height.equalTo(UIDevice.current.userInterfaceIdiom == .pad ? 225 : 125)
         }
         slider.backgroundColor = backgroundColor
         slider.clipsToBounds = true
         carouselPlaceholder.addSubview(slider)
-        slider.mas_makeConstraints { make in
-            make?.edges.mas_equalTo()(self.carouselPlaceholder)
+        slider.snp.makeConstraints { [unowned self] make in
+            make.edges.equalTo(self.carouselPlaceholder)
         }
         
         self.carouselDataSource = CarouselDataSource(banner: banner,
@@ -57,6 +59,28 @@ class HomeSliderView: UIView {
         carouselDataSource.navigationDelegate = navigationController
         carouselDataSource.didSelectBanner = { banner, index in
             AnalyticsManager.trackHomeBanner(banner, index: index, type: .click)
+            
+            var bannerTitle: String = "none / other"
+            
+            if let title = banner.bannerTitle {
+                bannerTitle = title
+            }
+            
+            guard var urlComponent = URLComponents(string: banner.applinks) else {
+                return
+            }
+            
+            if let urlComp = urlComponent.queryItems, urlComp.count > 0 {
+                urlComponent.queryItems?.append(URLQueryItem(name: "trackerAttribution", value: String(format: "%@", "1 - sliderBanner \(index + 1) - \(bannerTitle)")))
+            } else {
+                urlComponent.queryItems = [URLQueryItem(name: "trackerAttribution", value: String(format: "%@", "1 - sliderBanner \(index + 1) - \(bannerTitle)"))]
+            }
+            
+            guard let url = urlComponent.url else {
+                return
+            }
+            
+            TPRoutes.routeURL(url)
         }
         
         slider.type = .linear
@@ -66,26 +90,26 @@ class HomeSliderView: UIView {
         
         customPageControl.numberOfPages = banner.count
         customPageControl.hidesForSinglePage = true
-        customPageControl.mas_makeConstraints { make in
-            make?.bottom.mas_equalTo()(self.carouselPlaceholder)?.with().offset()(-4)
-            make?.left.mas_equalTo()(self.carouselPlaceholder)?.with().offset()(12)
-            make?.height.mas_equalTo()(self.pageControlHeight)
-            make?.width.mas_equalTo()(self.pageControlHeight * Int(self.customPageControl.numberOfPages))
+        customPageControl.snp.makeConstraints { [unowned self] make in
+            make.bottom.equalTo(self.carouselPlaceholder).offset(-4)
+            make.left.equalTo(self.carouselPlaceholder).offset(12)
+            make.height.equalTo(self.pageControlHeight)
+            make.width.equalTo(self.pageControlHeight * Int(self.customPageControl.numberOfPages))
         }
     }
     
-    func endBannerAutoScroll() {
+    internal func endBannerAutoScroll() {
         carouselDataSource?.endBannerAutoScroll()
     }
     
-    func startBannerAutoScroll() {
+    internal func startBannerAutoScroll() {
         guard let carouselDataSource = self.carouselDataSource else { return }
         // refresh banner first with endBannerAutoScroll
         carouselDataSource.endBannerAutoScroll()
         carouselDataSource.startBannerAutoScroll()
     }
     
-    func resetBannerCounter() {
+    internal func resetBannerCounter() {
         carouselDataSource?.resetBannerCounter()
     }
 }

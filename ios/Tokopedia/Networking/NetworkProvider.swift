@@ -27,7 +27,7 @@ extension Notification.Name {
     internal static let forceLogout = Notification.Name("NOTIFICATION_FORCE_LOGOUT")
 }
 
-private enum ResponseType: String {
+internal enum ResponseType: String {
     case normal = "OK"
     case maintenance = "UNDER_MAINTENANCE"
     case tooManyRequests = "TOO_MANY_REQUEST"
@@ -45,6 +45,15 @@ private enum ResponseType: String {
             let status = json?["status"] as? String,
             let responseType = ResponseType(rawValue: status)
         else {
+            self = .normal
+            return
+        }
+        
+        self = responseType
+    }
+    
+    init(response: String) {
+        guard let responseType = ResponseType(rawValue: response) else {
             self = .normal
             return
         }
@@ -156,7 +165,7 @@ internal class NetworkProvider<Target>: RxMoyaProvider<Target> where Target: Tar
             .retry(2)
     }
     
-    private func handleErrorRequest(responseType: ResponseType, urlString: String) -> Observable<Response> {
+    internal func handleErrorRequest(responseType: ResponseType, urlString: String) -> Observable<Response> {
         return Observable.create({ observer -> Disposable in
             RequestErrorHandler.handleForceLogout(
                 responseType: responseType.rawValue,

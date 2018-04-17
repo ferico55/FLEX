@@ -642,6 +642,9 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         carouselDataSource.bannerIPhoneSize = CGSize(width: 375, height: 150)
         carouselDataSource.didSelectBanner = { [unowned self] banner, index in
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) - \(self.categoryIntermediaryResult.rootCategoryId)", action: "Banner Click", label: banner.bannerTitle)
+            
+            guard let url = URL(string: banner.applinks) else { return }
+            TPRoutes.routeURL(url)
         }
         self.carouselDataSource.navigationDelegate = navigationController
         

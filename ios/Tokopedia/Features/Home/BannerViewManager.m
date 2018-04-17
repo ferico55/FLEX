@@ -12,7 +12,7 @@
 @import NativeNavigation;
 
 @implementation BannerViewManager {
-    HomeSliderView *_homeSliderView;
+    HomeSliderView* _homeSliderView;
 }
 
 RCT_EXPORT_MODULE(HomeSliderView)
@@ -26,6 +26,7 @@ RCT_CUSTOM_VIEW_PROPERTY(slides, NSArray<NSDictionary*>*, HomeSliderView) {
         slide.message = [banner objectForKey:@"message"];
         slide.redirect_url = [banner objectForKey:@"redirect_url"];
         slide.applinks = [banner objectForKey:@"applink"];
+        slide.promoCode = [banner objectForKey:@"promo_code"];
         
         [slides addObject:slide];
     }
@@ -36,20 +37,7 @@ RCT_CUSTOM_VIEW_PROPERTY(slides, NSArray<NSDictionary*>*, HomeSliderView) {
     [_homeSliderView startBannerAutoScroll];
 }
 
-RCT_CUSTOM_VIEW_PROPERTY(autoScroll, BOOL, HomeSliderView) {
-    if (json) {
-        [_homeSliderView startBannerAutoScroll];
-    } else {
-        [_homeSliderView endBannerAutoScroll];
-    }
-}
-
 - (UIView *)view {
-    UIView *sliderContainer = [[UIView alloc] init];
-    [sliderContainer mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.height.equalTo(UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad ? @(225) : @(125));
-    }];
-    
     _homeSliderView = [[NSBundle mainBundle] loadNibNamed:@"HomeSliderView" owner:nil options:nil][0];
     return _homeSliderView;
 }

@@ -64,6 +64,24 @@ class ReactNetworkProviderObjcBridge: NSObject {
                 }
             )
     }
+    
+    class func handleErrorRequest(withResponseType responseType: String,
+                                  urlString: String,
+                                  onError: @escaping (NSError) -> Void) {
+        guard let responseTypeEnum = ResponseType(rawValue: responseType) else { return }
+        
+        _ = NetworkProvider<ReactTarget>()
+            .handleErrorRequest(responseType: responseTypeEnum, urlString: urlString)
+            .subscribe({ (event) in
+                switch event {
+                case .error(let error):
+                    onError(error as NSError)
+                    break
+                default:
+                    break
+                }
+            })
+    }
 }
 
 struct ReactTarget {

@@ -751,21 +751,45 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     
     NSString *promoAction = type == HomeBannerPromotionTrackerTypeView ? @"promoView" : @"promoClick";
     
-    NSDictionary *ecommercePromoDataLayer = @{
-                           @"ecommerce": @{
-                                   promoAction : @{
-                                           @"promotions": @[@{
-                                                                @"id": slide.slideId,
-                                                                @"name": slide.bannerTitle,
-                                                                @"creative": [slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"],
-                                                                @"position": [NSString stringWithFormat:@"slide_banner_%ld",(long)index]
-                                                                }]
-                                           }
-                                   }
-                           };
-    
+    NSDictionary *ecommercePromoDataLayer;
+  
     if (type == HomeBannerPromotionTrackerTypeClick) {
-        ecommercePromoDataLayer = [ecommercePromoDataLayer mergedWithDictionary:@{@"event": @"promoClick"}];
+        ecommercePromoDataLayer = @{
+                                    @"event": @"promoClick",
+                                    @"eventCategory": @"homepage",
+                                    @"eventAction": @"slider banner click",
+                                    @"eventLabel": slide.applinks ?: @"",
+                                    @"ecommerce": @{
+                                            promoAction: @{
+                                                    @"promotions": @[@{
+                                                                         @"id": slide.slideId,
+                                                                         @"name": @"/ - p1 - promo",
+                                                                         @"creative": [slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                                                         @"position": [NSString stringWithFormat:@"%ld",(long)index + 1],
+                                                                         @"promo_code": ![slide.promoCode  isEqual: @""] ? slide.promoCode : @"NoPromoCode"
+                                                                         }]
+                                                    }
+                                            },
+                                    @"attribution": [NSString stringWithFormat:@"1 - sliderBanner - %ld - %@", (long)index + 1, slide.bannerTitle]
+                                    };
+    } else {
+        ecommercePromoDataLayer = @{
+                                    @"event": @"promoView",
+                                    @"eventCategory": @"homepage",
+                                    @"eventAction": @"slider banner impression",
+                                    @"eventLabel": @"",
+                                    @"ecommerce": @{
+                                            promoAction: @{
+                                                    @"promotions": @[@{
+                                                                         @"id": slide.slideId,
+                                                                         @"name": @"/ - p1 - promo",
+                                                                         @"creative": [slide.bannerTitle stringByReplacingOccurrencesOfString:@" " withString:@"-"],
+                                                                         @"position": [NSString stringWithFormat:@"%ld",(long)index + 1],
+                                                                         @"promo_code": (slide.promoCode && ![slide.promoCode  isEqual: @""]) ? slide.promoCode : @"NoPromoCode"
+                                                                         }]
+                                                    }
+                                            }
+                                    };
     }
 
     NSDictionary* eventDataLayer = [self

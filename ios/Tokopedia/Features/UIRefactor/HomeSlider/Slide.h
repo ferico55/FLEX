@@ -16,5 +16,6 @@
 @property(strong, nonatomic) NSString *image_url;
 @property(strong, nonatomic) NSString *redirect_url;
 @property(strong, nonatomic) NSString *applinks;
+@property(strong, nonatomic) NSString *promoCode;
 
 @end

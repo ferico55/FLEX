@@ -28,6 +28,9 @@
     [mapping addAttributeMappingsFromDictionary:@{
                                                   @"id": @"slideId"
                                                   }];
+    [mapping addAttributeMappingsFromDictionary:@{
+                                                  @"promo_code": @"promoCode"
+                                                  }];
     
     return mapping;
 }

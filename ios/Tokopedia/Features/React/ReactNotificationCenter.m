@@ -16,6 +16,10 @@
 
 RCT_EXPORT_MODULE(NotificationCenter);
 
+- (dispatch_queue_t)methodQueue {
+    return dispatch_get_main_queue();
+}
+
 RCT_EXPORT_METHOD(post:(NSString *)notificationName userInfo:(NSDictionary *)userInfo) {
     [NSNotificationCenter.defaultCenter postNotificationName:notificationName object:nil userInfo:userInfo];
 }

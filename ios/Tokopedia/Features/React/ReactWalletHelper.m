@@ -41,7 +41,14 @@ RCT_EXPORT_METHOD(requestTokocash:(RCTPromiseResolveBlock)resolve reject:(__unus
                           @"pendingCashback": @(NO)
                           });
             }];
-        }else {
+        } else if (error.code == 9991) {
+            // force logout
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [LogEntriesHelper logForceLogoutWithLastURL:[NSString stringWithFormat:@"%@%@", NSString.tokocashUrl, @"/api/v1/wallet/balance"]];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"NOTIFICATION_FORCE_LOGOUT" object:nil userInfo:nil];
+                reject(@(error.code).stringValue, error.localizedDescription, error);
+            });
+        } else {
             reject(@(error.code).stringValue, error.localizedDescription, error);
         }
     }];

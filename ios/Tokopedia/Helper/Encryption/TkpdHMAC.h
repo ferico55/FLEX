@@ -48,4 +48,6 @@
 
 - (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 
+- (NSString *)fingerprint;
+
 @end

@@ -49,4 +49,17 @@ RCT_EXPORT_METHOD(request:(NSDictionary *)methodParams resolver:(RCTPromiseResol
                                      }];
 }
 
+RCT_EXPORT_METHOD(handleErrorRequest:(NSString*)responseType
+                           urlString:(NSString*)urlString
+                            resolver:(RCTPromiseResolveBlock)resolve
+                              reject:(__unused RCTPromiseRejectBlock)reject) {
+    
+    [ReactNetworkProvider handleErrorRequestWithResponseType:responseType
+                                                   urlString:urlString
+                                                     onError:^(NSError *error) {
+                                                         reject(errorCodeFromNumber(error.code), error.localizedDescription, error);
+                                                     }];
+    
+}
+
 @end

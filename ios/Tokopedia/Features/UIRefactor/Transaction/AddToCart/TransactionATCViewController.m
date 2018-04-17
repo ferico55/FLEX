@@ -1028,7 +1028,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
                     }];
                 } else {
                     UINavigationController *selfNav=(UINavigationController*)[self.tabBarController.viewControllers objectAtIndex:self.tabBarController.selectedIndex];
-                    [self.tabBarController setSelectedIndex:3];
+                    [[NSNotificationCenter defaultCenter] postNotificationName:@"navigateToPageInTabBar" object:@"3"];
                     [selfNav popToRootViewControllerAnimated:YES];
                 }
                 

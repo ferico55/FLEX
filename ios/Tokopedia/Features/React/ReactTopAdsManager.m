@@ -30,7 +30,9 @@ RCT_EXPORT_METHOD(showAddPromoTooltip) {
 
 RCT_EXPORT_METHOD(showTopAdsInfoActionSheet) {
     TopAdsInfoActionSheet *topAdsInfoActionSheet = [TopAdsInfoActionSheet new];
-    [topAdsInfoActionSheet show];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [topAdsInfoActionSheet show];
+    });
 }
 
 RCT_EXPORT_METHOD(requestTopAdsHeadline:(NSString*)departmentId didSuccess:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {

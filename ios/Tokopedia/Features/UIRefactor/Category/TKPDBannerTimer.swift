@@ -13,7 +13,8 @@ class TKPDBannerTimer: NSObject {
     
     static func getTimer(slider: iCarousel) -> Timer {
         
-        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { (timer) in
+        let timer = Timer.bk_timer(withTimeInterval: 5.0, block: { [weak slider] (timer) in
+            guard let slider = slider else { return }
             slider.scrollToItem(at: slider.currentItemIndex + 1, duration: 1.0)
         }, repeats: true)!
         RunLoop.main.add(timer, forMode: RunLoopMode.commonModes)
