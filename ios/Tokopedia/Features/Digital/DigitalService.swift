@@ -25,9 +25,7 @@ public class DigitalService {
     ) -> Observable<Void> {
         
         // prevent crash on home
-        guard let navigationController = viewController.navigationController else {
-            fatalError("No Controller")
-        }
+        guard let navigationController = viewController.navigationController else { return Observable.empty() }
         guard let viewController = navigationController.topViewController else { return Observable.empty() }
         
         if !UserAuthentificationManager().isLogin {
