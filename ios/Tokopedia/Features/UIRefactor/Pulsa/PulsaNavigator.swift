@@ -11,7 +11,10 @@ import ContactsUI
 import Foundation
 
 internal class PulsaNavigator: NSObject, CNContactPickerDelegate, ABPeoplePickerNavigationControllerDelegate {
-    internal var controller: UIViewController!
+    internal var controller: UIViewController {
+        guard let c = UIApplication.topViewController() else { fatalError("no top vc when accesed") }
+        return c
+    }
     internal var pulsaView: PulsaView!
     
     internal override init() {

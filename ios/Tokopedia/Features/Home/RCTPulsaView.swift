@@ -17,9 +17,6 @@ class RCTPulsaView: PulsaView {
     public func requestCategory() {
         self.pulsaNavigator = PulsaNavigator()
         self.pulsaNavigator.pulsaView = self
-        let rootViewController = UIApplication.shared.keyWindow?.rootViewController
-        let topMostViewController = rootViewController?.topMostViewController()
-        self.pulsaNavigator.controller = topMostViewController
         self.navigator = self.pulsaNavigator
         
         self.onConsraintChanged = { [weak self] in
