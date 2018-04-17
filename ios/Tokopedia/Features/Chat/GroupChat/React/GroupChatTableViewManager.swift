@@ -25,7 +25,7 @@ public class GroupChatTableViewManager: RCTViewManager {
         }
     }
     
-    @objc public func appendNewMessage(_ reactTag: NSNumber,data:[String: Any]){
+    @objc public func appendNewMessage(_ reactTag: NSNumber, data:[String: Any]){
         self.bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
             guard let viewRegistry = viewRegistry, let reactView = viewRegistry[reactTag], let delegate = reactView as? GroupChatTableViewDelegate else {
                 return
@@ -36,14 +36,31 @@ public class GroupChatTableViewManager: RCTViewManager {
         }
     }
     
-    @objc public func loadMoreMessages(_ reactTag: NSNumber,data: NSArray, scrolling: Bool = true){
+    @objc public func mergeQueueMessages(_ reactTag: NSNumber, data:NSArray, scrolling: Bool = true){
+        self.bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
+            guard let viewRegistry = viewRegistry, let reactView = viewRegistry[reactTag], let delegate = reactView as? GroupChatTableViewDelegate else {
+                return
+            }
+            var newData = [ChatItem]()
+            let json = JSON(data)
+            
+            for value in json.arrayValue {
+                let chatItem = ChatItem(json: value)
+                newData.append(chatItem)
+            }
+            
+            delegate.mergeData(data: newData, scrolling: scrolling)
+        }
+    }
+    
+    @objc public func loadMoreMessages(_ reactTag: NSNumber, data: NSArray){
         self.bridge?.uiManager.addUIBlock { (uiManager: RCTUIManager?, viewRegistry:[NSNumber : UIView]?) in
             guard let viewRegistry = viewRegistry, let reactView = viewRegistry[reactTag], let delegate = reactView as? GroupChatTableViewDelegate else {
                 return
             }
             let json = JSON(data)
             let groupChatDataSources = GroupChatDataSources(json: json)
-            delegate.loadMoreData(data: groupChatDataSources, scrolling: scrolling)
+            delegate.loadMoreData(data: groupChatDataSources)
         }
     }
 }

@@ -23,7 +23,8 @@
 
 RCT_EXTERN_METHOD(scrollToEnd:(nonnull NSNumber *)reactTag)
 RCT_EXTERN_METHOD(appendNewMessage:(nonnull NSNumber *)reactTag data:(NSDictionary *)data)
-RCT_EXTERN_METHOD(loadMoreMessages:(nonnull NSNumber *)reactTag data:(NSArray *)data scrolling:(BOOL)scrolling)
+RCT_EXTERN_METHOD(loadMoreMessages:(nonnull NSNumber *)reactTag data:(NSArray *)data)
+RCT_EXTERN_METHOD(mergeQueueMessages:(nonnull NSNumber *)reactTag data:(NSArray *)data scrolling:(BOOL)scrolling)
 
 // Map native properties to React Component props
 // https://facebook.github.io/react-native/docs/native-components-ios.html#properties

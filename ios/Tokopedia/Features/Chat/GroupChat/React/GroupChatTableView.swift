@@ -14,7 +14,8 @@ import UIKit
 public protocol GroupChatTableViewDelegate: class {
     func scrollToEnd()
     func appendNewMessage(data: ChatItem)
-    func loadMoreData(data: GroupChatDataSources, scrolling: Bool)
+    func loadMoreData(data: GroupChatDataSources)
+    func mergeData(data: [ChatItem], scrolling: Bool)
     func onPressItem(customType: String, data: [String:Any])
 }
 
@@ -220,15 +221,27 @@ public protocol GroupChatTableViewDelegate: class {
         self.tableView.reloadData()
     }
     
-    @objc internal func loadMoreData(data: GroupChatDataSources, scrolling:Bool) {
+    @objc internal func loadMoreData(data: GroupChatDataSources) {
+        self.dataSource = data
+        self.tableView.reloadData()
+    }
+    
+    @objc internal func mergeData(data: [ChatItem], scrolling:Bool) {
+        guard let dataSource = self.dataSource?.list[0] else {
+            return
+        }
+        
         let oldContentHeight: CGFloat = tableView.contentSize.height
         let oldOffsetY: CGFloat = tableView.contentOffset.y
         
-        self.dataSource = data
+        dataSource.data.insert(contentsOf: data, at: 0)
+        
         self.tableView.reloadData()
+        
         if !scrolling {
             self.tableView.layoutIfNeeded()
             let newContentHeight: CGFloat = tableView.contentSize.height
+            
             var calculation = oldOffsetY + (newContentHeight - oldContentHeight)
             if(calculation < 0){
                 calculation = 0
