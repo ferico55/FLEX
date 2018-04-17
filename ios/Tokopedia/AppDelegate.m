@@ -432,10 +432,7 @@
                     });
                 }
             }
-        }else {
-            [StickyAlertView showErrorMessage:[NSArray arrayWithObject:@"Halaman tidak ditemukan"]];
         }
-        
     }];
     UserAuthentificationManager *userManager = [UserAuthentificationManager new];
     if ([userManager isLogin]) {
