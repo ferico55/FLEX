@@ -767,8 +767,6 @@
 		E57974D61FEA741F00610655 /* MyCouponListTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */; };
 		E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CD1FEA741F00610655 /* NoCouponView.xib */; };
 		E57974D81FEA741F00610655 /* SelectCouponLoadingView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */; };
-		E57974EE1FEA748200610655 /* TokopointsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974ED1FEA748100610655 /* TokopointsTarget.swift */; };
-		E57974F21FEA749300610655 /* TokopointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F11FEA749200610655 /* TokopointsService.swift */; };
 		E57974F61FEA754C00610655 /* PointsAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F41FEA754A00610655 /* PointsAlertView.swift */; };
 		E57974F71FEA754C00610655 /* PointsAlertViewButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */; };
 		E581B53E1FE8FDAE00E6D1DA /* NotificationTableViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E581B5381FE8FDAB00E6D1DA /* NotificationTableViewController.xib */; };
@@ -779,11 +777,31 @@
 		E581B5431FE8FDAE00E6D1DA /* NotificationTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B53D1FE8FDAD00E6D1DA /* NotificationTableViewCell.swift */; };
 		E581B5501FE8FFE300E6D1DA /* NotificationTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B54F1FE8FFE300E6D1DA /* NotificationTarget.swift */; };
 		E581B5551FE900B500E6D1DA /* TopchatTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E581B5541FE900B500E6D1DA /* TopchatTarget.swift */; };
+		E583EEF22085EF7E006ACDEB /* CrackEggViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEDB2085EF7E006ACDEB /* CrackEggViewController.swift */; };
+		E583EEF32085EF7E006ACDEB /* TokopointsExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEDD2085EF7E006ACDEB /* TokopointsExtension.swift */; };
+		E583EEF42085EF7E006ACDEB /* Reward.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E583EEDF2085EF7E006ACDEB /* Reward.mp3 */; };
+		E583EEF52085EF7E006ACDEB /* Crack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = E583EEE02085EF7E006ACDEB /* Crack.mp3 */; };
+		E583EEF62085EF7E006ACDEB /* TokopointsTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEE32085EF7E006ACDEB /* TokopointsTarget.swift */; };
+		E583EEF72085EF7E006ACDEB /* TokopointsGQLAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEE52085EF7E006ACDEB /* TokopointsGQLAPI.swift */; };
+		E583EEF82085EF7E006ACDEB /* TokopointsGQLOperations.graphql in Resources */ = {isa = PBXBuildFile; fileRef = E583EEE62085EF7E006ACDEB /* TokopointsGQLOperations.graphql */; };
+		E583EEF92085EF7E006ACDEB /* TokopointsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEE82085EF7E006ACDEB /* TokopointsService.swift */; };
+		E583EEFA2085EF7E006ACDEB /* EggAssetsService.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEE92085EF7E006ACDEB /* EggAssetsService.swift */; };
+		E583EEFB2085EF7E006ACDEB /* CrackEggViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E583EEEA2085EF7E006ACDEB /* CrackEggViewController.xib */; };
+		E583EEFC2085EF7E006ACDEB /* EggView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E583EEEC2085EF7E006ACDEB /* EggView.xib */; };
+		E583EEFD2085EF7E006ACDEB /* RewardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEED2085EF7E006ACDEB /* RewardView.swift */; };
+		E583EEFE2085EF7E006ACDEB /* EggView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEEE2085EF7E006ACDEB /* EggView.swift */; };
+		E583EEFF2085EF7E006ACDEB /* RayView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E583EEEF2085EF7E006ACDEB /* RayView.xib */; };
+		E583EF002085EF7E006ACDEB /* RewardView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E583EEF02085EF7E006ACDEB /* RewardView.xib */; };
+		E583EF012085EF7E006ACDEB /* RayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E583EEF12085EF7E006ACDEB /* RayView.swift */; };
 		E595C6A31FF6596800A8665E /* ShopHeaderView.xib in Resources */ = {isa = PBXBuildFile; fileRef = E595C6A21FF6596400A8665E /* ShopHeaderView.xib */; };
 		E595C6A71FF65A4E00A8665E /* ShopHeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */; };
 		E595C6A91FFB2D0000A8665E /* ActionButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6A81FFB2D0000A8665E /* ActionButton.swift */; };
 		E595C6AB1FFB2DFC00A8665E /* FavoriteButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */; };
 		E59B4BCB1FE8CFED00787491 /* UIView+SafeArea.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */; };
+		E5A6AD4B2084D70100684745 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6AD4A2084D70000684745 /* StringExtension.swift */; };
+		E5A6AD4E2084D71B00684745 /* UIDevice+ScreenType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6AD4C2084D71A00684745 /* UIDevice+ScreenType.swift */; };
+		E5A6AD4F2084D71B00684745 /* UIView+AnchorPoint.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6AD4D2084D71A00684745 /* UIView+AnchorPoint.swift */; };
+		E5A6AD522084D76B00684745 /* RxApollo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A6AD512084D76B00684745 /* RxApollo.swift */; };
 		E5ADEDAC20353931006488AF /* ComplaintSortView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9C20353930006488AF /* ComplaintSortView.swift */; };
 		E5ADEDAD20353931006488AF /* ComplaintFilterCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9D20353930006488AF /* ComplaintFilterCollectionViewCell.swift */; };
 		E5ADEDAE20353931006488AF /* ComplaintsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADED9E20353930006488AF /* ComplaintsViewController.swift */; };
@@ -3506,8 +3524,6 @@
 		E57974CC1FEA741F00610655 /* MyCouponListTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyCouponListTableViewController.xib; sourceTree = "<group>"; };
 		E57974CD1FEA741F00610655 /* NoCouponView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NoCouponView.xib; sourceTree = "<group>"; };
 		E57974CE1FEA741F00610655 /* SelectCouponLoadingView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SelectCouponLoadingView.xib; sourceTree = "<group>"; };
-		E57974ED1FEA748100610655 /* TokopointsTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsTarget.swift; sourceTree = "<group>"; };
-		E57974F11FEA749200610655 /* TokopointsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsService.swift; sourceTree = "<group>"; };
 		E57974F41FEA754A00610655 /* PointsAlertView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsAlertView.swift; sourceTree = "<group>"; };
 		E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PointsAlertViewButton.swift; sourceTree = "<group>"; };
 		E581B5381FE8FDAB00E6D1DA /* NotificationTableViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = NotificationTableViewController.xib; sourceTree = "<group>"; };
@@ -3518,11 +3534,31 @@
 		E581B53D1FE8FDAD00E6D1DA /* NotificationTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTableViewCell.swift; sourceTree = "<group>"; };
 		E581B54F1FE8FFE300E6D1DA /* NotificationTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NotificationTarget.swift; sourceTree = "<group>"; };
 		E581B5541FE900B500E6D1DA /* TopchatTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopchatTarget.swift; sourceTree = "<group>"; };
+		E583EEDB2085EF7E006ACDEB /* CrackEggViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CrackEggViewController.swift; sourceTree = "<group>"; };
+		E583EEDD2085EF7E006ACDEB /* TokopointsExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsExtension.swift; sourceTree = "<group>"; };
+		E583EEDF2085EF7E006ACDEB /* Reward.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Reward.mp3; sourceTree = "<group>"; };
+		E583EEE02085EF7E006ACDEB /* Crack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = Crack.mp3; sourceTree = "<group>"; };
+		E583EEE32085EF7E006ACDEB /* TokopointsTarget.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsTarget.swift; sourceTree = "<group>"; };
+		E583EEE52085EF7E006ACDEB /* TokopointsGQLAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsGQLAPI.swift; sourceTree = "<group>"; };
+		E583EEE62085EF7E006ACDEB /* TokopointsGQLOperations.graphql */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = TokopointsGQLOperations.graphql; sourceTree = "<group>"; };
+		E583EEE82085EF7E006ACDEB /* TokopointsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TokopointsService.swift; sourceTree = "<group>"; };
+		E583EEE92085EF7E006ACDEB /* EggAssetsService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EggAssetsService.swift; sourceTree = "<group>"; };
+		E583EEEA2085EF7E006ACDEB /* CrackEggViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CrackEggViewController.xib; sourceTree = "<group>"; };
+		E583EEEC2085EF7E006ACDEB /* EggView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = EggView.xib; sourceTree = "<group>"; };
+		E583EEED2085EF7E006ACDEB /* RewardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RewardView.swift; sourceTree = "<group>"; };
+		E583EEEE2085EF7E006ACDEB /* EggView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EggView.swift; sourceTree = "<group>"; };
+		E583EEEF2085EF7E006ACDEB /* RayView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RayView.xib; sourceTree = "<group>"; };
+		E583EEF02085EF7E006ACDEB /* RewardView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RewardView.xib; sourceTree = "<group>"; };
+		E583EEF12085EF7E006ACDEB /* RayView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RayView.swift; sourceTree = "<group>"; };
 		E595C6A21FF6596400A8665E /* ShopHeaderView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ShopHeaderView.xib; sourceTree = "<group>"; };
 		E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopHeaderView.swift; sourceTree = "<group>"; };
 		E595C6A81FFB2D0000A8665E /* ActionButton.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionButton.swift; sourceTree = "<group>"; };
 		E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavoriteButton.swift; sourceTree = "<group>"; };
 		E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+SafeArea.swift"; sourceTree = "<group>"; };
+		E5A6AD4A2084D70000684745 /* StringExtension.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		E5A6AD4C2084D71A00684745 /* UIDevice+ScreenType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIDevice+ScreenType.swift"; sourceTree = "<group>"; };
+		E5A6AD4D2084D71A00684745 /* UIView+AnchorPoint.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+AnchorPoint.swift"; sourceTree = "<group>"; };
+		E5A6AD512084D76B00684745 /* RxApollo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RxApollo.swift; sourceTree = "<group>"; };
 		E5ADED9C20353930006488AF /* ComplaintSortView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintSortView.swift; sourceTree = "<group>"; };
 		E5ADED9D20353930006488AF /* ComplaintFilterCollectionViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintFilterCollectionViewCell.swift; sourceTree = "<group>"; };
 		E5ADED9E20353930006488AF /* ComplaintsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ComplaintsViewController.swift; sourceTree = "<group>"; };
@@ -8138,22 +8174,6 @@
 			path = InputPromo;
 			sourceTree = "<group>";
 		};
-		E57974EF1FEA749200610655 /* Service */ = {
-			isa = PBXGroup;
-			children = (
-				E57974F01FEA749200610655 /* Tokopoints */,
-			);
-			path = Service;
-			sourceTree = "<group>";
-		};
-		E57974F01FEA749200610655 /* Tokopoints */ = {
-			isa = PBXGroup;
-			children = (
-				E57974F11FEA749200610655 /* TokopointsService.swift */,
-			);
-			path = Tokopoints;
-			sourceTree = "<group>";
-		};
 		E57974F31FEA754A00610655 /* Points */ = {
 			isa = PBXGroup;
 			children = (
@@ -8161,6 +8181,93 @@
 				E57974F51FEA754A00610655 /* PointsAlertViewButton.swift */,
 			);
 			path = Points;
+			sourceTree = "<group>";
+		};
+		E583EEDA2085EF7E006ACDEB /* Tokopoints */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEDB2085EF7E006ACDEB /* CrackEggViewController.swift */,
+				E583EEDC2085EF7E006ACDEB /* Extensions */,
+				E583EEDE2085EF7E006ACDEB /* Sounds */,
+				E583EEE12085EF7E006ACDEB /* API */,
+				E583EEEA2085EF7E006ACDEB /* CrackEggViewController.xib */,
+				E583EEEB2085EF7E006ACDEB /* Views */,
+			);
+			path = Tokopoints;
+			sourceTree = "<group>";
+		};
+		E583EEDC2085EF7E006ACDEB /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEDD2085EF7E006ACDEB /* TokopointsExtension.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		E583EEDE2085EF7E006ACDEB /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEDF2085EF7E006ACDEB /* Reward.mp3 */,
+				E583EEE02085EF7E006ACDEB /* Crack.mp3 */,
+			);
+			path = Sounds;
+			sourceTree = "<group>";
+		};
+		E583EEE12085EF7E006ACDEB /* API */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEE22085EF7E006ACDEB /* Targets */,
+				E583EEE42085EF7E006ACDEB /* Objects */,
+				E583EEE72085EF7E006ACDEB /* Services */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		E583EEE22085EF7E006ACDEB /* Targets */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEE32085EF7E006ACDEB /* TokopointsTarget.swift */,
+			);
+			path = Targets;
+			sourceTree = "<group>";
+		};
+		E583EEE42085EF7E006ACDEB /* Objects */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEE52085EF7E006ACDEB /* TokopointsGQLAPI.swift */,
+				E583EEE62085EF7E006ACDEB /* TokopointsGQLOperations.graphql */,
+			);
+			path = Objects;
+			sourceTree = "<group>";
+		};
+		E583EEE72085EF7E006ACDEB /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEE82085EF7E006ACDEB /* TokopointsService.swift */,
+				E583EEE92085EF7E006ACDEB /* EggAssetsService.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		E583EEEB2085EF7E006ACDEB /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E583EEEC2085EF7E006ACDEB /* EggView.xib */,
+				E583EEED2085EF7E006ACDEB /* RewardView.swift */,
+				E583EEEE2085EF7E006ACDEB /* EggView.swift */,
+				E583EEEF2085EF7E006ACDEB /* RayView.xib */,
+				E583EEF02085EF7E006ACDEB /* RewardView.xib */,
+				E583EEF12085EF7E006ACDEB /* RayView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		E5A6AD502084D76B00684745 /* Apollo */ = {
+			isa = PBXGroup;
+			children = (
+				E5A6AD512084D76B00684745 /* RxApollo.swift */,
+			);
+			path = Apollo;
 			sourceTree = "<group>";
 		};
 		E5ADED9B20353930006488AF /* Complaints */ = {
@@ -8920,7 +9027,6 @@
 				F977EED41FE8AB6D00183A85 /* JSONAbleType.swift */,
 				F977EED31FE8AB6D00183A85 /* NetworkProvider.swift */,
 				F977EED51FE8AB6D00183A85 /* Observable+JSONAble.swift */,
-				E57974EF1FEA749200610655 /* Service */,
 				F977EEBE1FE8AB6D00183A85 /* Target */,
 				F977EEBC1FE8AB6D00183A85 /* Util */,
 				924AAD30203144900019CAFE /* NetworkingRemoteConfig.swift */,
@@ -8956,7 +9062,6 @@
 				F977EECB1FE8AB6D00183A85 /* ReputationTarget.swift */,
 				F977EEC71FE8AB6D00183A85 /* ScroogeTarget.swift */,
 				F977EEC21FE8AB6D00183A85 /* TalkTarget.swift */,
-				E57974ED1FEA748100610655 /* TokopointsTarget.swift */,
 				F977EEC91FE8AB6D00183A85 /* TopAdsTarget.swift */,
 				E581B5541FE900B500E6D1DA /* TopchatTarget.swift */,
 				F977EED01FE8AB6D00183A85 /* V4Target.swift */,
@@ -8969,6 +9074,7 @@
 		F977EED61FE8AB6E00183A85 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5A6AD502084D76B00684745 /* Apollo */,
 				F977EEF41FE8AB6E00183A85 /* Foundation */,
 				F977EED71FE8AB6E00183A85 /* UIKit */,
 			);
@@ -8980,16 +9086,17 @@
 			children = (
 				843805F92057DA4200D50809 /* FBTweakShakeWindow+Multiple.h */,
 				843805FA2057DA4300D50809 /* FBTweakShakeWindow+Multiple.m */,
-				E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */,
-				E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */,
+				E517178220315DB400F46831 /* LoadingButton.swift */,
 				E57974C01FEA73D600610655 /* Modal.swift */,
 				F977EEF21FE8AB6E00183A85 /* UIActivityViewController+Extensions.h */,
 				F977EEE31FE8AB6E00183A85 /* UIActivityViewController+Extensions.m */,
 				F977EEE91FE8AB6E00183A85 /* UIApplication+React.h */,
 				F977EEDB1FE8AB6E00183A85 /* UIApplication+React.m */,
+				E5ADEDC520353952006488AF /* UICollectionView+Dequeue.swift */,
 				F977EEEF1FE8AB6E00183A85 /* UICollectionViewFlowLayoutExtension.swift */,
 				F977EEEC1FE8AB6E00183A85 /* UIColor+Theme.h */,
 				F977EEE01FE8AB6E00183A85 /* UIColor+Theme.m */,
+				E5A6AD4C2084D71A00684745 /* UIDevice+ScreenType.swift */,
 				F977EED81FE8AB6E00183A85 /* UIFont+Theme.h */,
 				F977EEE71FE8AB6E00183A85 /* UIFont+Theme.m */,
 				F977EEDC1FE8AB6E00183A85 /* UIImage+ImageEffects.h */,
@@ -8997,13 +9104,16 @@
 				F977EEF01FE8AB6E00183A85 /* UIKitCategory.h */,
 				F977EEDE1FE8AB6E00183A85 /* UIKitCategory.m */,
 				F977EEE61FE8AB6E00183A85 /* UIKitExtension.swift */,
+				F9A7CA712058B113001357F0 /* UINavigationController+CompletionHandler.swift */,
 				F977EEE51FE8AB6E00183A85 /* UINavigationController+Header.swift */,
+				E5ADEDC620353952006488AF /* UITableView+Dequeue.swift */,
 				F977EEDA1FE8AB6E00183A85 /* UITableView+IndexPath.h */,
 				F977EEEA1FE8AB6E00183A85 /* UITableView+IndexPath.m */,
 				F977EEF31FE8AB6E00183A85 /* UITableView+RefreshControl.h */,
 				F977EEE11FE8AB6E00183A85 /* UITableView+RefreshControl.m */,
 				F977EEDF1FE8AB6E00183A85 /* UITextView+UITextView_Placeholder.h */,
 				F977EEED1FE8AB6E00183A85 /* UITextView+UITextView_Placeholder.m */,
+				E5A6AD4D2084D71A00684745 /* UIView+AnchorPoint.swift */,
 				E59B4BCA1FE8CFEC00787491 /* UIView+SafeArea.swift */,
 				F977EEE41FE8AB6E00183A85 /* UIViewController+Header.swift */,
 				F977EEEE1FE8AB6E00183A85 /* UIViewController+NavigationItem.swift */,
@@ -9012,8 +9122,6 @@
 				F977EEEB1FE8AB6E00183A85 /* UIViewController+Swizzling.h */,
 				F977EED91FE8AB6E00183A85 /* UIViewController+Swizzling.m */,
 				F977EEE81FE8AB6E00183A85 /* UIViewControllerCategory.swift */,
-				E517178220315DB400F46831 /* LoadingButton.swift */,
-				F9A7CA712058B113001357F0 /* UINavigationController+CompletionHandler.swift */,
 			);
 			path = UIKit;
 			sourceTree = "<group>";
@@ -9021,14 +9129,14 @@
 		F977EEF41FE8AB6E00183A85 /* Foundation */ = {
 			isa = PBXGroup;
 			children = (
-				626C4EB62034172000955D23 /* URLExtension.swift */,
-				E525C6DA20173930003CC99B /* NSDate+Formatter.swift */,
+				E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */,
 				92A4CBA4201731A500C42D37 /* DateExtension.swift */,
 				E57974C21FEA740D00610655 /* MoyaError+UserFriendlyErrorMessage.swift */,
 				F977EEFB1FE8AB6E00183A85 /* NSArrayCategory.h */,
 				F977EF061FE8AB6E00183A85 /* NSArrayCategory.m */,
 				F977EF0C1FE8AB6E00183A85 /* NSData+Encryption.h */,
 				F977EEFF1FE8AB6E00183A85 /* NSData+Encryption.m */,
+				E525C6DA20173930003CC99B /* NSDate+Formatter.swift */,
 				F977EF041FE8AB6E00183A85 /* NSDictionaryCategory.h */,
 				F977EEF51FE8AB6E00183A85 /* NSDictionaryCategory.m */,
 				F977EF021FE8AB6E00183A85 /* NSNumberFormatter+IDRFormater.h */,
@@ -9048,8 +9156,9 @@
 				F977EEF61FE8AB6E00183A85 /* NSURL+TKPURL.h */,
 				F977EF051FE8AB6E00183A85 /* NSURL+TKPURL.m */,
 				F977EEF81FE8AB6E00183A85 /* PHAssetCategory.swift */,
+				E5A6AD4A2084D70000684745 /* StringExtension.swift */,
+				626C4EB62034172000955D23 /* URLExtension.swift */,
 				F977EEFD1FE8AB6E00183A85 /* UserDefaultsCategory.swift */,
-				E50465C620159FBF00FD0872 /* Bundle+Extensions.swift */,
 			);
 			path = Foundation;
 			sourceTree = "<group>";
@@ -9057,16 +9166,16 @@
 		F977EF0D1FE8AB6E00183A85 /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				E520971D20612A4A002F5301 /* Chat */,
 				843805F02057DA3100D50809 /* AudioCampaign */,
-				E576C2562034180D008524AA /* CentralizedOTP */,
-				9244D36E2029850D005CFB89 /* Forbidden */,
 				F977EF2D1FE8AB6E00183A85 /* Cache */,
+				E576C2562034180D008524AA /* CentralizedOTP */,
+				E520971D20612A4A002F5301 /* Chat */,
 				F977F5181FE8AB7400183A85 /* Cocoa */,
 				F977F9611FE8AB7600183A85 /* Digital */,
 				F977EF271FE8AB6E00183A85 /* DistrictRecomendation */,
 				F977F5151FE8AB7400183A85 /* EmptyState */,
 				F977F5361FE8AB7400183A85 /* Feed+ */,
+				9244D36E2029850D005CFB89 /* Forbidden */,
 				F924FCAE20178E40009EDD47 /* Home */,
 				E5D8A5622010A311003E66BA /* LoginPhoneNumber */,
 				F977F9811FE8AB7600183A85 /* Main */,
@@ -9080,6 +9189,7 @@
 				F977EF0E1FE8AB6E00183A85 /* Referral */,
 				F977F5061FE8AB7300183A85 /* Register */,
 				92A4CBA8201731CC00C42D37 /* SellerInfo */,
+				E583EEDA2085EF7E006ACDEB /* Tokopoints */,
 				F977EF5F1FE8AB6F00183A85 /* UIRefactor */,
 			);
 			path = Features;
@@ -12290,6 +12400,7 @@
 				F977FCEF1FE8AB7E00183A85 /* ProductTalkViewController.xib in Resources */,
 				F977FBEF1FE8AB7C00183A85 /* SalesNewOrderViewController.xib in Resources */,
 				F977FC551FE8AB7D00183A85 /* ForgotPasswordViewController.xib in Resources */,
+				E583EEF42085EF7E006ACDEB /* Reward.mp3 in Resources */,
 				F977FC961FE8AB7D00183A85 /* ShopFavoritedViewController.xib in Resources */,
 				F977FC721FE8AB7D00183A85 /* CatalogSpecificationCell.xib in Resources */,
 				F954C4441FC55B6C008C0B30 /* icon_wishlist_active.png in Resources */,
@@ -12331,6 +12442,7 @@
 				F954C44A1FC55B6C008C0B30 /* icon_login_active@2x.png in Resources */,
 				F977FAC61FE8AB7A00183A85 /* SettingAddressViewController.xib in Resources */,
 				F977FDFC1FE8AB8100183A85 /* PulsaProductViewController.xib in Resources */,
+				E583EF002085EF7E006ACDEB /* RewardView.xib in Resources */,
 				F954C45A1FC55B6D008C0B30 /* activateWishlist.json in Resources */,
 				F977FB301FE8AB7B00183A85 /* HeaderCollectionReusableView.xib in Resources */,
 				F954C45E1FC55B6D008C0B30 /* deactivateWishlist.json in Resources */,
@@ -12405,6 +12517,7 @@
 				F977FDD11FE8AB8000183A85 /* ResolutionCenterSellerEditViewController.xib in Resources */,
 				F977FCA31FE8AB7D00183A85 /* OpenShopDomainViewCell.xib in Resources */,
 				E5ADEDBB20353931006488AF /* ComplaintFilterTableViewCell.xib in Resources */,
+				E583EEFB2085EF7E006ACDEB /* CrackEggViewController.xib in Resources */,
 				E576573C206548A9003683DB /* GroupChatPlainMessageCell.xib in Resources */,
 				F977FE2B1FE8AB8100183A85 /* RegisterBaseViewController.xib in Resources */,
 				F977FB351FE8AB7B00183A85 /* DepositFormViewController.xib in Resources */,
@@ -12502,6 +12615,7 @@
 				F977FC311FE8AB7D00183A85 /* AlertListBankView.xib in Resources */,
 				F772718520355FDC00D959AF /* TokoCashFilterCollectionViewCell.xib in Resources */,
 				E57974D71FEA741F00610655 /* NoCouponView.xib in Resources */,
+				E583EEF82085EF7E006ACDEB /* TokopointsGQLOperations.graphql in Resources */,
 				F977FBD01FE8AB7C00183A85 /* ProductQuantityViewController.xib in Resources */,
 				F977FCAF1FE8AB7E00183A85 /* TKPInfoWindowMapView.xib in Resources */,
 				F977FACF1FE8AB7A00183A85 /* SettingUserPhoneViewController.xib in Resources */,
@@ -12527,6 +12641,7 @@
 				F954C4431FC55B6C008C0B30 /* icon_snap.png in Resources */,
 				F977FDE11FE8AB8000183A85 /* EtalaseCell.xib in Resources */,
 				F954C4561FC55B6D008C0B30 /* icon_more_active@3x.png in Resources */,
+				E583EEFF2085EF7E006ACDEB /* RayView.xib in Resources */,
 				F977FDBD1FE8AB8000183A85 /* FilterViewController.xib in Resources */,
 				F954C4581FC55B6D008C0B30 /* icon_login_active.png in Resources */,
 				F977FC071FE8AB7C00183A85 /* CourierInfoViewCell.xib in Resources */,
@@ -12619,6 +12734,7 @@
 				F977FBE91FE8AB7C00183A85 /* RejectReasonEmptyVariantViewController.xib in Resources */,
 				F977FC831FE8AB7D00183A85 /* EditShopTypeViewCell.xib in Resources */,
 				F977FB521FE8AB7B00183A85 /* InboxResolutionCenterComplainCell.xib in Resources */,
+				E583EEF52085EF7E006ACDEB /* Crack.mp3 in Resources */,
 				F977FBD51FE8AB7C00183A85 /* OrderRejectExplanationViewController.xib in Resources */,
 				F954C4521FC55B6D008C0B30 /* icon_login_active@3x.png in Resources */,
 				E5D8A5792010A311003E66BA /* ListAccountViewController.xib in Resources */,
@@ -12644,6 +12760,7 @@
 				F977FD2F1FE8AB7F00183A85 /* SearchAutoCompleteViewController.xib in Resources */,
 				F977FDB31FE8AB8000183A85 /* FilterLocationViewCell.xib in Resources */,
 				F977FD1D1FE8AB7F00183A85 /* PivotNavigationView.xib in Resources */,
+				E583EEFC2085EF7E006ACDEB /* EggView.xib in Resources */,
 				F977FBBD1FE8AB7C00183A85 /* OrderDetailViewController.xib in Resources */,
 				F772714D20355FDB00D959AF /* TokoCashActivationOTPViewController.xib in Resources */,
 				F977FC0A1FE8AB7C00183A85 /* ShipmentLocationViewCell.xib in Resources */,
@@ -13150,7 +13267,6 @@
 				F977FB971FE8AB7C00183A85 /* CategoryIntermediaryProduct.swift in Sources */,
 				F977FC111FE8AB7C00183A85 /* ShipmentPostalCodeViewCell.m in Sources */,
 				62C770DE1FF33C3300F66527 /* NotificationPurchase.swift in Sources */,
-				E57974F21FEA749300610655 /* TokopointsService.swift in Sources */,
 				62C770821FF33C3300F66527 /* ProductTalkFormResult.m in Sources */,
 				F977FA151FE8AB7900183A85 /* HadesTarget.swift in Sources */,
 				84184684203C41070053074A /* ReferralResponse.swift in Sources */,
@@ -13162,6 +13278,7 @@
 				62C7719F1FF33C3500F66527 /* WalletStore.swift in Sources */,
 				F77271A420355FDC00D959AF /* TokoCashProfile.swift in Sources */,
 				F977FAA81FE8AB7A00183A85 /* TransactionCartEditViewController.m in Sources */,
+				E5A6AD4F2084D71B00684745 /* UIView+AnchorPoint.swift in Sources */,
 				F73C99E220735D850025FCF3 /* AddPasswordNavigator.swift in Sources */,
 				62C7708B1FF33C3300F66527 /* HotlistResultInfo.m in Sources */,
 				F772719020355FDC00D959AF /* TokoCashAccountViewModel.swift in Sources */,
@@ -13187,7 +13304,6 @@
 				F977FE511FE8AB8100183A85 /* FeedKOLRecommendationComponentView.swift in Sources */,
 				62C771CB1FF33C3500F66527 /* ProductEditDetail.swift in Sources */,
 				F97700A71FE8AB8600183A85 /* TKPMappingManager.m in Sources */,
-				E57974EE1FEA748200610655 /* TokopointsTarget.swift in Sources */,
 				F977FA231FE8AB7900183A85 /* MojitoTarget.swift in Sources */,
 				62C770D81FF33C3300F66527 /* TrackOrderResult.m in Sources */,
 				F977FDF61FE8AB8100183A85 /* PulsaProductPromo.swift in Sources */,
@@ -13269,6 +13385,7 @@
 				62C76FF11FF33C3200F66527 /* TransactionAddressShipping.m in Sources */,
 				F977FC771FE8AB7D00183A85 /* ShopSettingViewController.m in Sources */,
 				F977FDD01FE8AB8000183A85 /* ResolutionCenterCreateData.m in Sources */,
+				E583EEF92085EF7E006ACDEB /* TokopointsService.swift in Sources */,
 				F977FE381FE8AB8100183A85 /* ImageDownloader.m in Sources */,
 				62C771B31FF33C3500F66527 /* ShipmentOrder.m in Sources */,
 				62C7705F1FF33C3200F66527 /* Info.m in Sources */,
@@ -13294,10 +13411,12 @@
 				62C770501FF33C3200F66527 /* InboxTicketUserInvolve.m in Sources */,
 				F977FB4D1FE8AB7B00183A85 /* HotlistResultViewController.m in Sources */,
 				F977FB381FE8AB7B00183A85 /* DepositRequest.m in Sources */,
+				E583EEF32085EF7E006ACDEB /* TokopointsExtension.swift in Sources */,
 				62C771C71FF33C3500F66527 /* TopchatUnreadData.swift in Sources */,
 				62C770141FF33C3200F66527 /* TxOrderConfirmedDetailOrder.m in Sources */,
 				6202EF1C1EE4F07200AE68B5 /* API.swift in Sources */,
 				F977FBBB1FE8AB7C00183A85 /* OrderTotalView.swift in Sources */,
+				E583EEFD2085EF7E006ACDEB /* RewardView.swift in Sources */,
 				E5ADEDC12035393E006488AF /* ComplaintQuickFilterData.swift in Sources */,
 				62C771B01FF33C3500F66527 /* ProductFeedResult.m in Sources */,
 				F98052682018AAFE00CE6D67 /* ReactSplitViewController.swift in Sources */,
@@ -13401,6 +13520,7 @@
 				92A4CBBC201731CC00C42D37 /* SellerInfoInboxCellView.swift in Sources */,
 				62C770E71FF33C3300F66527 /* GeneralMetaData.swift in Sources */,
 				F977FC521FE8AB7D00183A85 /* ForgotPasswordViewController.m in Sources */,
+				E583EEF22085EF7E006ACDEB /* CrackEggViewController.swift in Sources */,
 				62C771731FF33C3400F66527 /* UploadImage.m in Sources */,
 				62C770411FF33C3200F66527 /* GoogleDistanceMatrixDuration.m in Sources */,
 				84184683203C41070053074A /* ReferralResponseHeader.swift in Sources */,
@@ -13626,6 +13746,7 @@
 				F977FDBE1FE8AB8000183A85 /* TPRoutes.swift in Sources */,
 				F977FC971FE8AB7D00183A85 /* ShopFavoritedCell.m in Sources */,
 				848FA7031FEBF8BF00A22EDE /* RCProofPhotosViewController.swift in Sources */,
+				E5A6AD522084D76B00684745 /* RxApollo.swift in Sources */,
 				F977FC331FE8AB7D00183A85 /* AlertListFilterView.m in Sources */,
 				62C7702C1FF33C3200F66527 /* IndomaretData.m in Sources */,
 				62C7719B1FF33C3400F66527 /* AddressResult.m in Sources */,
@@ -13906,6 +14027,7 @@
 				F977FB0E1FE8AB7B00183A85 /* CatalogModelView.swift in Sources */,
 				62C770421FF33C3200F66527 /* GoogleplaceDetailResult.m in Sources */,
 				62C770801FF33C3300F66527 /* DepositResult.m in Sources */,
+				E5A6AD4B2084D70100684745 /* StringExtension.swift in Sources */,
 				F772719220355FDC00D959AF /* TokoCashProfileNavigator.swift in Sources */,
 				848FA6F41FEBF8BF00A22EDE /* ProblemsListTableViewController.swift in Sources */,
 				F97700571FE8AB8500183A85 /* DigitalCategoriesComponentView.swift in Sources */,
@@ -13942,6 +14064,7 @@
 				62C771911FF33C3400F66527 /* ListFavoriteShop.m in Sources */,
 				F9BFCD9C202029CC007F7ED4 /* DictionaryHelper.swift in Sources */,
 				F977FA651FE8AB7A00183A85 /* ProductDetailDiscussionNode.swift in Sources */,
+				E583EEFA2085EF7E006ACDEB /* EggAssetsService.swift in Sources */,
 				F7CCD91F205BFB0F00EB46A7 /* CCAuthenticationViewController.swift in Sources */,
 				F97700711FE8AB8500183A85 /* MainViewController.m in Sources */,
 				F977FA521FE8AB7900183A85 /* CatalogInfo+Referable.swift in Sources */,
@@ -14028,6 +14151,7 @@
 				62C771021FF33C3300F66527 /* SecurityAnswerResult.m in Sources */,
 				62C770581FF33C3200F66527 /* InboxTicketList.m in Sources */,
 				F977FA2D1FE8AB7900183A85 /* UIViewController+Presentation.swift in Sources */,
+				E583EEFE2085EF7E006ACDEB /* EggView.swift in Sources */,
 				F977FA9F1FE8AB7A00183A85 /* TransactionCartDonationCell.swift in Sources */,
 				62C7719D1FF33C3500F66527 /* WalletCashBack.swift in Sources */,
 				F977FC4B1FE8AB7D00183A85 /* AlertListBankCell.m in Sources */,
@@ -14101,6 +14225,7 @@
 				F772717C20355FDC00D959AF /* TokoCashPendingTransactionNavigator.swift in Sources */,
 				F97700A21FE8AB8600183A85 /* CollectionViewCellType.swift in Sources */,
 				F977FD881FE8AB8000183A85 /* searchObject.swift in Sources */,
+				E5A6AD4E2084D71B00684745 /* UIDevice+ScreenType.swift in Sources */,
 				F97700521FE8AB8500183A85 /* DigitalOperator.swift in Sources */,
 				F977FD7D1FE8AB7F00183A85 /* FilterData.swift in Sources */,
 				62C771611FF33C3400F66527 /* SettingPaymentResult.m in Sources */,
@@ -14117,6 +14242,7 @@
 				F977FCE21FE8AB7E00183A85 /* DetailProductVideoData.swift in Sources */,
 				F977FB661FE8AB7B00183A85 /* InboxResolutionCenterTabViewController.m in Sources */,
 				62C770ED1FF33C3300F66527 /* CatalogShopAWSProductResult.m in Sources */,
+				E583EEF62085EF7E006ACDEB /* TokopointsTarget.swift in Sources */,
 				62C7700A1FF33C3200F66527 /* TransactionActionResult.m in Sources */,
 				62C771A81FF33C3500F66527 /* TotalLikeDislike.m in Sources */,
 				F977FA6C1FE8AB7A00183A85 /* ProductHeaderNode.swift in Sources */,
@@ -14268,6 +14394,7 @@
 				62C770541FF33C3200F66527 /* DetailInboxTicket.m in Sources */,
 				F977FB5E1FE8AB7B00183A85 /* EditResolutionBuyerDetailViewController.swift in Sources */,
 				E5D8A5832010A312003E66BA /* LoginPhoneNumberViewController.swift in Sources */,
+				E583EF012085EF7E006ACDEB /* RayView.swift in Sources */,
 				848FA7011FEBF8BF00A22EDE /* RCPhotosCollectionCell.swift in Sources */,
 				62C7714D1FF33C3400F66527 /* Tiki.m in Sources */,
 				F977FDAD1FE8AB8000183A85 /* OfficialStoreBrandsViewController.m in Sources */,
@@ -14738,6 +14865,7 @@
 				F977FC1B1FE8AB7C00183A85 /* ReplacementListCell.swift in Sources */,
 				848FA6E31FEBF8BE00A22EDE /* RCAmount.swift in Sources */,
 				F98052652018AAFE00CE6D67 /* ReactPermissionManager.m in Sources */,
+				E583EEF72085EF7E006ACDEB /* TokopointsGQLAPI.swift in Sources */,
 				62C7710A1FF33C3300F66527 /* Login.m in Sources */,
 				843805F82057DA3200D50809 /* AudioRecorderViewController.swift in Sources */,
 				F977FAF61FE8AB7A00183A85 /* MyWishlistShopReputation.swift in Sources */,

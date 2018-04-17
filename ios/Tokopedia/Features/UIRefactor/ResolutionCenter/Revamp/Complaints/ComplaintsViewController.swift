@@ -270,13 +270,6 @@ internal class ComplaintsViewController: UIViewController {
         self.activityIndicator.stopAnimating()
     }
     
-    fileprivate func isValidHexColor(value: String) -> Bool {
-        let test = NSPredicate(format: "SELF MATCHES %@", "#?([0-9A-F]{3}|[0-9A-F]{6})")
-        let newValue = value.uppercased()
-        let result = test.evaluate(with: newValue)
-        return result
-    }
-    
     // MARK: actions
     @IBAction private func btnResetDidTapped(_ sender: Any) {
         inboxEmptyView.isHidden = true
@@ -345,13 +338,13 @@ extension ComplaintsViewController: UITableViewDataSource {
         let complaint = complaints[row]
         
         // status
-        if isValidHexColor(value: complaint.statusFontColorHex) {
+        if complaint.statusFontColorHex.isValidHexColor() {
             cell.lblStatus.textColor = UIColor.fromHexString(complaint.statusFontColorHex)
         }
         else {
             cell.lblStatus.textColor = UIColor.tpPrimaryBlackText()
         }
-        if isValidHexColor(value: complaint.statusBgColorHex) {
+        if complaint.statusBgColorHex.isValidHexColor() {
             cell.lblStatus.backgroundColor = UIColor.fromHexString(complaint.statusBgColorHex)
         }
         else {
@@ -380,7 +373,7 @@ extension ComplaintsViewController: UITableViewDataSource {
         cell.lblExpiry.isHidden = true
         if complaint.statusInt != "500" && complaint.statusInt != "0" && !complaint.autoExecuteTime.isEmpty {
             cell.lblExpiry.isHidden = false
-            if isValidHexColor(value: complaint.autoExecuteTimeColorHex) {
+            if complaint.autoExecuteTimeColorHex.isValidHexColor() {
                 cell.lblExpiry.backgroundColor = UIColor.fromHexString(complaint.autoExecuteTimeColorHex)
             }
             else {

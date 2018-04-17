@@ -35,7 +35,7 @@ internal enum ResponseType: String {
     case invalidRequest = "INVALID_REQUEST"
     case forbidden
     
-    init(response: Response) {
+    internal init(response: Response) {
         if response.statusCode == 403 {
             self = .forbidden
             return
@@ -52,7 +52,7 @@ internal enum ResponseType: String {
         self = responseType
     }
     
-    init(response: String) {
+    internal init(response: String) {
         guard let responseType = ResponseType(rawValue: response) else {
             self = .normal
             return

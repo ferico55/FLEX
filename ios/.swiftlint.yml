@@ -3,6 +3,7 @@ excluded:
   - Carthage
   - Pods
   - Tokopedia/API.swift
+  - Tokopedia/Features/Tokopoints/API/objects/TokopointsGQLAPI.swift
 force_cast: warning
 force_try: 
   severity: error

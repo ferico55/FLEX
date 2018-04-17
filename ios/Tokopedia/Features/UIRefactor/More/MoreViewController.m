@@ -979,13 +979,8 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
             [self showProfileProgress];
             
             _lblPoints.text = drawerData.userTier.rewardPointsString;
-            [_imgPointsTierView setBackgroundColor:[UIColor tpGray]];
             
-            NSMutableURLRequest *request = [[NSMutableURLRequest alloc] initWithURL:[NSURL URLWithString:drawerData.userTier.tierImageUrl]];
-            [_imgPointsTierView setImageWithURLRequest:request placeholderImage:nil success:^(NSURLRequest *request, NSHTTPURLResponse *response, UIImage *image) {
-                [_imgPointsTierView setImage:image];
-                [_imgPointsTierView setBackgroundColor:nil];
-            } failure:nil];
+            [_imgPointsTierView setImageWithURL:[NSURL URLWithString:drawerData.userTier.tierImageUrl] placeholderImage:[UIImage imageNamed:@"icon_toppoints"]];
             
             if ([drawerData.hasNotification isEqualToString:@"1"]) {
                 [AnalyticsManager trackEventName:GA_EVENT_NAME_TOKOPOINTS category:@"tokopoints - pop up" action:@"impression on any pop up" label:@"pop up"];

@@ -12,5 +12,6 @@
 
 + (BOOL)shouldCachePulsaRequest;
 + (BOOL)shouldCacheSortRequest;
++ (BOOL)shouldCacheTokopointsAssets;
 
 @end

@@ -1,0 +1,69 @@
+query TokopointsToken {
+    tokopointsToken {
+        resultStatus {
+            code
+            message
+            status
+        }
+        offFlag
+        sumToken
+        floating {
+            tokenId
+        }
+        home {
+            emptyState {
+                title
+                buttonText
+                buttonApplink
+            }
+            countingMessage
+            tokensUser {
+                tokenUserID
+                campaignID
+                title
+                unixTimestampFetch
+                timeRemainingSeconds
+                isShowTime
+                backgroundAsset {
+                    name
+                    version
+                    backgroundImgUrl
+                }
+                tokenAsset {
+                    name
+                    version
+                    floatingImgUrl
+                    smallImgUrl
+                    imageUrls
+                }
+            }
+        }
+    }
+}
+
+mutation CrackResult($tokenUserID: Int!, $campaignID: Int!) {
+    crackResult(tokenUserID: $tokenUserID, campaignID: $campaignID) {
+        resultStatus {
+            code
+            message
+            status
+        }
+        imageUrl
+        benefitType
+        benefits {
+            text
+            color
+            size
+        }
+        ctaButton {
+            title
+            applink
+            type
+        }
+        returnButton {
+            title
+            applink
+            type
+        }
+    }
+}

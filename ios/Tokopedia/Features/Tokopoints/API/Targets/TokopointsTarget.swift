@@ -23,12 +23,38 @@ internal enum TokopointsTarget {
     case getDrawerData
     case getCoupons(serviceType: PromoServiceType, productId: String?, categoryId: String?, page: Int64)
     case geocode(address: String?, latitudeLongitude: String?)
+    case downloadFile(url: String, key: String?)
+    
+    internal var localLocation: URL {
+        switch self {
+        case let .downloadFile(url, key):
+            let fileKey = key ?? url.toMD5()
+            let directory = FileSystem.downloadDirectory.appendingPathComponent(fileKey)
+            return directory
+        default:
+            return URL(string: "")!
+        }
+    }
+    
+    internal var downloadDestination: DownloadDestination {
+        return { _, _ in
+            return (self.localLocation, [.removePreviousFile, .createIntermediateDirectories])
+        }
+    }
 }
 
 extension TokopointsTarget: TargetType {
     /// The target's base `URL`.
     internal var baseURL: URL {
-        return URL(string: NSString.tokopointsUrl())!
+        switch self {
+        case let .downloadFile(url, _):
+            if let scheme = URL(string: url)?.scheme, let host = URL(string: url)?.host {
+                return URL(string: scheme + "://" + host)!
+            }
+            return URL(string: NSString.tokopointsUrl())!
+        default:
+            return URL(string: NSString.tokopointsUrl())!
+        }
     }
     
     /// The path to be appended to `baseURL` to form the full `URL`.
@@ -37,6 +63,7 @@ extension TokopointsTarget: TargetType {
         case .getDrawerData: return "/tokopoints/api/v1/points/drawer"
         case .getCoupons: return "/tokopoints/api/v1/coupon/list"
         case .geocode: return "/maps/geocode"
+        case let .downloadFile(url, _): return URL(string: url)!.path
         }
     }
     
@@ -46,6 +73,7 @@ extension TokopointsTarget: TargetType {
         case .getDrawerData: return .get
         case .getCoupons: return .get
         case .geocode: return .get
+        case .downloadFile: return .get
         }
     }
     
@@ -79,6 +107,8 @@ extension TokopointsTarget: TargetType {
                 params["latlng"] = latitudeLongitude
             }
             return params
+        default:
+            return [:]
         }
     }
     
@@ -93,5 +123,25 @@ extension TokopointsTarget: TargetType {
     }
     
     /// The type of HTTP task to be performed.
-    internal var task: Task { return .request }
+    internal var task: Task {
+        switch self {
+        case .downloadFile:
+            return .download(DownloadType.request(downloadDestination))
+        default:
+            return .request
+        }
+    }
+}
+
+internal class FileSystem {
+    internal static let documentsDirectory: URL = {
+        let urls = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        return urls[urls.endIndex - 1]
+    }()
+    
+    internal static let downloadDirectory: URL = {
+        let directory: URL = FileSystem.documentsDirectory.appendingPathComponent("Downloads/")
+        return directory
+    }()
+    
 }

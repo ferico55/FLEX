@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="EggView" customModule="Tokopedia" customModuleProvider="target">
+            <connections>
+                <outlet property="bottomImageView" destination="qCj-UX-F8D" id="mPa-CK-R4f"/>
+                <outlet property="contentView" destination="iN0-l3-epB" id="NxI-98-W7O"/>
+                <outlet property="eggContainer" destination="32P-6O-SkZ" id="TV9-Pi-u24"/>
+                <outlet property="imgHand" destination="cOD-Qm-B7o" id="NtB-CT-lIn"/>
+                <outlet property="leftImageView" destination="Rio-KT-2pF" id="NlX-pC-sZW"/>
+                <outlet property="rightImageView" destination="fPk-hQ-zMO" id="dc0-gW-s7n"/>
+                <outlet property="topImageView" destination="e0N-ZT-Mil" id="VQp-gk-dI6"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iN0-l3-epB">
+            <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="32P-6O-SkZ">
+                    <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+                    <subviews>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qCj-UX-F8D">
+                            <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="e0N-ZT-Mil">
+                            <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Rio-KT-2pF">
+                            <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+                        </imageView>
+                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="fPk-hQ-zMO">
+                            <rect key="frame" x="0.0" y="0.0" width="151" height="183"/>
+                        </imageView>
+                    </subviews>
+                    <constraints>
+                        <constraint firstItem="fPk-hQ-zMO" firstAttribute="top" secondItem="32P-6O-SkZ" secondAttribute="top" id="3bE-tF-Uzb"/>
+                        <constraint firstAttribute="trailing" secondItem="Rio-KT-2pF" secondAttribute="trailing" id="7og-F6-WBq"/>
+                        <constraint firstAttribute="bottom" secondItem="e0N-ZT-Mil" secondAttribute="bottom" id="7uz-md-Uks"/>
+                        <constraint firstItem="Rio-KT-2pF" firstAttribute="leading" secondItem="32P-6O-SkZ" secondAttribute="leading" id="BCB-09-wyL"/>
+                        <constraint firstItem="qCj-UX-F8D" firstAttribute="leading" secondItem="32P-6O-SkZ" secondAttribute="leading" id="GHe-pG-fJA"/>
+                        <constraint firstItem="e0N-ZT-Mil" firstAttribute="top" secondItem="32P-6O-SkZ" secondAttribute="top" id="KsQ-Wu-PA5"/>
+                        <constraint firstAttribute="bottom" secondItem="qCj-UX-F8D" secondAttribute="bottom" id="Okn-20-EQw"/>
+                        <constraint firstItem="e0N-ZT-Mil" firstAttribute="leading" secondItem="32P-6O-SkZ" secondAttribute="leading" id="d6y-gY-OEs"/>
+                        <constraint firstAttribute="bottom" secondItem="fPk-hQ-zMO" secondAttribute="bottom" id="dmA-7g-bCK"/>
+                        <constraint firstAttribute="trailing" secondItem="fPk-hQ-zMO" secondAttribute="trailing" id="dz9-K9-L9c"/>
+                        <constraint firstItem="fPk-hQ-zMO" firstAttribute="leading" secondItem="32P-6O-SkZ" secondAttribute="leading" id="kZB-Em-0pv"/>
+                        <constraint firstAttribute="trailing" secondItem="qCj-UX-F8D" secondAttribute="trailing" id="o5R-LX-LB7"/>
+                        <constraint firstAttribute="bottom" secondItem="Rio-KT-2pF" secondAttribute="bottom" id="oVc-wz-5tU"/>
+                        <constraint firstItem="qCj-UX-F8D" firstAttribute="top" secondItem="32P-6O-SkZ" secondAttribute="top" id="pO7-hr-foK"/>
+                        <constraint firstAttribute="trailing" secondItem="e0N-ZT-Mil" secondAttribute="trailing" id="ulB-tY-kVK"/>
+                        <constraint firstItem="Rio-KT-2pF" firstAttribute="top" secondItem="32P-6O-SkZ" secondAttribute="top" id="yCP-dT-YdG"/>
+                    </constraints>
+                </view>
+                <imageView hidden="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="egg-onboarding-hand" translatesAutoresizingMaskIntoConstraints="NO" id="cOD-Qm-B7o">
+                    <rect key="frame" x="75.5" y="91.5" width="69" height="55"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="cOD-Qm-B7o" secondAttribute="height" multiplier="68:54" id="ljw-pu-61L"/>
+                    </constraints>
+                </imageView>
+            </subviews>
+            <constraints>
+                <constraint firstItem="cOD-Qm-B7o" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="centerY" id="GkV-sD-nZ5"/>
+                <constraint firstItem="32P-6O-SkZ" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="Gvf-M9-IBB"/>
+                <constraint firstItem="cOD-Qm-B7o" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="centerX" id="QDG-32-5jY"/>
+                <constraint firstAttribute="trailing" secondItem="32P-6O-SkZ" secondAttribute="trailing" id="R9O-A7-qZI"/>
+                <constraint firstItem="32P-6O-SkZ" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="WI6-Xx-xya"/>
+                <constraint firstItem="cOD-Qm-B7o" firstAttribute="height" secondItem="iN0-l3-epB" secondAttribute="height" multiplier="0.3" id="Ywe-5L-mAq"/>
+                <constraint firstAttribute="bottom" secondItem="32P-6O-SkZ" secondAttribute="bottom" id="mgg-vU-cW4"/>
+            </constraints>
+            <nil key="simulatedTopBarMetrics"/>
+            <nil key="simulatedBottomBarMetrics"/>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <point key="canvasLocation" x="109" y="-80.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="egg-onboarding-hand" width="68" height="53"/>
+    </resources>
+</document>

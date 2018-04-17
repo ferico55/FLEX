@@ -18,5 +18,9 @@
     return FBTweakValue(@"Others", @"Cache", @"Sort request", YES);
 }
 
++ (BOOL)shouldCacheTokopointsAssets {
+    return FBTweakValue(@"Others", @"Cache", @"Tokopoints assets", YES);
+}
+
 
 @end

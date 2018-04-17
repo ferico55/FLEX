@@ -1532,6 +1532,22 @@ public class TPRoutes: NSObject {
             }
             return true
         }
+        
+        // MARK: Tokopoints Gamification (Native)
+        JLRoutes.global().addRoute("/gamification") { (_: [String: Any]) -> Bool in
+            guard let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
+            
+            AuthenticationService.shared.ensureLoggedInFromViewController(topViewController) {
+                let userManager = UserAuthentificationManager()
+                if userManager.isLogin {
+                    let vc = CrackEggViewController()
+                    vc.hidesBottomBarWhenPushed = true
+                    topNavigation.pushViewController(vc, animated: true)
+                }
+            }
+            
+            return true
+        }
     }
 
     private static func onLoginSuccess(login: Login) {

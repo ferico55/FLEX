@@ -11,7 +11,6 @@
 #import "TkpdHMAC.h"
 #import "NSURL+Dictionary.h"
 #import "Tokopedia-Swift.h"
-#import "NSString+MD5.h"
 
 @implementation NSMutableURLRequest (TKPDURLRequestUploadImage)
 

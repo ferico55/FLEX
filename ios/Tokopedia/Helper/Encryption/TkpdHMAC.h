@@ -44,8 +44,6 @@
                              path:(NSString*)path
                         parameter:(NSDictionary*)parameter;
 
-- (void)signatureWithWebviewUrl:(NSURL*)url;
-
 - (NSDictionary<NSString *, NSString *> *)authorizedHeaders;
 
 - (NSString *)fingerprint;
