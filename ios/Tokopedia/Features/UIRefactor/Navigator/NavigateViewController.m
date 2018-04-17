@@ -550,6 +550,11 @@
     CodeShareTableViewController* referralController = [storyboard instantiateInitialViewController];
     [viewController.navigationController pushViewController: referralController animated:YES];
 }
+- (void)navigateToErrorScreen:(NSDictionary*)param {
+    UIViewController *viewController = [UIApplication topViewController];
+    TCLandingViewController* landingController = [TCLandingViewController controllerWithParams:param];
+    [viewController.navigationController pushViewController: landingController animated:YES];
+}
 #pragma mark - SplitViewReputation Delegate
 - (void)deallocVC {
     splitViewController = nil;

@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -86,5 +87,138 @@
             </objects>
             <point key="canvasLocation" x="-370.39999999999998" y="20.239880059970016"/>
         </scene>
+        <!--Landing View Controller-->
+        <scene sceneID="Vgb-zr-uyb">
+            <objects>
+                <tableViewController storyboardIdentifier="TCLandingViewController" id="AxJ-Re-5AK" customClass="TCLandingViewController" customModule="Tokopedia" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="plain" separatorStyle="none" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="eaP-Se-iEO">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <sections>
+                            <tableViewSection id="9PL-Ak-C5r">
+                                <cells>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="216" id="N6e-MX-eKE">
+                                        <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="N6e-MX-eKE" id="FVq-xZ-NXT">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="216"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="errorScreenTop" translatesAutoresizingMaskIntoConstraints="NO" id="Sew-AV-Fti">
+                                                    <rect key="frame" x="87" y="32" width="200" height="150"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="200" id="TFy-01-chl"/>
+                                                        <constraint firstAttribute="height" constant="150" id="xzQ-QX-S8t"/>
+                                                    </constraints>
+                                                </imageView>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Sew-AV-Fti" firstAttribute="top" secondItem="FVq-xZ-NXT" secondAttribute="topMargin" constant="21" id="5Xg-p1-G3v"/>
+                                                <constraint firstAttribute="bottomMargin" secondItem="Sew-AV-Fti" secondAttribute="bottom" constant="23" id="9Y4-Pp-T5R"/>
+                                                <constraint firstItem="Sew-AV-Fti" firstAttribute="centerX" secondItem="FVq-xZ-NXT" secondAttribute="centerX" id="HsE-u3-8U7"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="30" id="uUl-k6-VHF">
+                                        <rect key="frame" x="0.0" y="216" width="375" height="30"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="uUl-k6-VHF" id="XDs-ve-xZG">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Terjadi Kendala pada Server" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OIJ-YO-hHN">
+                                                    <rect key="frame" x="0.0" y="0.0" width="375" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.54000000000000004" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="trailing" secondItem="OIJ-YO-hHN" secondAttribute="trailing" id="12J-SR-aXj"/>
+                                                <constraint firstItem="OIJ-YO-hHN" firstAttribute="leading" secondItem="XDs-ve-xZG" secondAttribute="leading" id="9BX-vL-9YO"/>
+                                                <constraint firstItem="OIJ-YO-hHN" firstAttribute="top" secondItem="XDs-ve-xZG" secondAttribute="top" id="RS6-ub-0im"/>
+                                                <constraint firstAttribute="bottom" secondItem="OIJ-YO-hHN" secondAttribute="bottom" constant="10" id="hca-i4-dkd"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="LlK-mk-f1S">
+                                        <rect key="frame" x="0.0" y="246" width="375" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="LlK-mk-f1S" id="F4Q-Jw-1dr">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Untuk saat ini Tokopedia kepenuhan pengunjung" textAlignment="center" lineBreakMode="wordWrap" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" preferredMaxLayoutWidth="44" translatesAutoresizingMaskIntoConstraints="NO" id="Qqn-KP-0gH">
+                                                    <rect key="frame" x="20" y="0.0" width="335" height="19.5"/>
+                                                    <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                                    <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="0.38" colorSpace="calibratedRGB"/>
+                                                    <nil key="highlightedColor"/>
+                                                </label>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="Qqn-KP-0gH" secondAttribute="bottom" constant="24" id="X3m-Gp-Mrx"/>
+                                                <constraint firstItem="Qqn-KP-0gH" firstAttribute="top" secondItem="F4Q-Jw-1dr" secondAttribute="top" id="ePe-lr-66H"/>
+                                                <constraint firstAttribute="trailing" secondItem="Qqn-KP-0gH" secondAttribute="trailing" constant="20" id="j6k-FT-qzL"/>
+                                                <constraint firstItem="Qqn-KP-0gH" firstAttribute="leading" secondItem="F4Q-Jw-1dr" secondAttribute="leading" constant="20" id="xfp-8k-fQa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" rowHeight="60" id="vOY-r8-4Gt">
+                                        <rect key="frame" x="0.0" y="290" width="375" height="60"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="vOY-r8-4Gt" id="2OM-jn-s9M">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="60"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NcJ-cr-rgO">
+                                                    <rect key="frame" x="87" y="0.0" width="200" height="40"/>
+                                                    <color key="backgroundColor" red="0.25882352939999997" green="0.70980392160000005" blue="0.28627450980000002" alpha="1" colorSpace="calibratedRGB"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="height" constant="40" id="RjA-8s-cfi"/>
+                                                        <constraint firstAttribute="width" constant="200" id="ur7-fH-qvS"/>
+                                                    </constraints>
+                                                    <fontDescription key="fontDescription" type="system" weight="medium" pointSize="13"/>
+                                                    <state key="normal" title="Kembali ke Beranda">
+                                                        <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                                    </state>
+                                                    <userDefinedRuntimeAttributes>
+                                                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                                            <real key="value" value="4"/>
+                                                        </userDefinedRuntimeAttribute>
+                                                    </userDefinedRuntimeAttributes>
+                                                    <connections>
+                                                        <action selector="actionButtonTapWithSender:" destination="AxJ-Re-5AK" eventType="touchUpInside" id="xEy-gp-XKe"/>
+                                                    </connections>
+                                                </button>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstAttribute="bottom" secondItem="NcJ-cr-rgO" secondAttribute="bottom" constant="19.5" id="cEq-fF-9af"/>
+                                                <constraint firstItem="NcJ-cr-rgO" firstAttribute="top" secondItem="2OM-jn-s9M" secondAttribute="top" id="hzS-KK-wP6"/>
+                                                <constraint firstItem="NcJ-cr-rgO" firstAttribute="centerX" secondItem="2OM-jn-s9M" secondAttribute="centerX" id="wgp-Th-jFa"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </cells>
+                            </tableViewSection>
+                        </sections>
+                        <connections>
+                            <outlet property="dataSource" destination="AxJ-Re-5AK" id="e8p-Br-nCV"/>
+                            <outlet property="delegate" destination="AxJ-Re-5AK" id="cw3-Vy-Olf"/>
+                        </connections>
+                    </tableView>
+                    <connections>
+                        <outlet property="actionButton" destination="NcJ-cr-rgO" id="BeE-P8-VvH"/>
+                        <outlet property="detailLabel" destination="Qqn-KP-0gH" id="NDd-KP-Q1E"/>
+                        <outlet property="errorLabel" destination="OIJ-YO-hHN" id="ILD-11-Eax"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="SmL-cS-YNP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="380" y="17"/>
+        </scene>
     </scenes>
+    <resources>
+        <image name="errorScreenTop" width="200" height="149"/>
+    </resources>
 </document>

@@ -41,7 +41,11 @@ public class TPRoutes: NSObject {
             return true
         }
 
-        JLRoutes.global().addRoute("/") { (_: [String: Any]) -> Bool in
+        JLRoutes.global().addRoute("/") { (params: [String: Any]) -> Bool in
+            if let url = params[kJLRouteURLKey] as? URL, url.host != "tokopedia" {
+                self.openWebView(routeParams: params)
+                return true
+            }
             if let viewController = UIApplication.topViewController() {
                 viewController.tabBarController?.selectedIndex = 0
                 viewController.navigationController?.popToRootViewController(animated: true)
@@ -309,30 +313,6 @@ public class TPRoutes: NSObject {
             let controller = WKWebViewController(urlString: urlString)
             UIApplication.topViewController()?.navigationController?.pushViewController(controller, animated: true)
             return true
-        }
-
-        JLRoutes.global().unmatchedURLHandler = { _, url, _ in
-            guard let url = url else { return }
-            
-            if url.scheme == "tokopedia" {
-                let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
-                
-                alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
-                    UIApplication.shared.openURL(URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8")!)
-                }))
-                
-                alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
-                
-                UIApplication.topViewController()?.present(alert, animated: true)
-                
-                Crashlytics.sharedInstance().recordError(RoutingError(url: url))
-                LELog.sharedInstance().log([
-                    "event": "Unmatched routing URL",
-                    "url": url
-                ] as NSObject)
-            } else {
-                self.openWebView(url)
-            }
         }
 
         // MARK: Digital Category - Tokocash (Native)
@@ -1532,7 +1512,12 @@ public class TPRoutes: NSObject {
             }
             return true
         }
-        
+        //        MARK: Error
+        JLRoutes.global().addRoute("/tc-landing") { (params: [String: Any]) -> Bool in
+            debugPrint(params)
+            navigator.navigate(toErrorScreen: params)
+            return true
+        }
         // MARK: Tokopoints Gamification (Native)
         JLRoutes.global().addRoute("/gamification") { (_: [String: Any]) -> Bool in
             guard let topViewController = UIApplication.topViewController(), let topNavigation = topViewController.navigationController else { return false }
@@ -1545,7 +1530,6 @@ public class TPRoutes: NSObject {
                     topNavigation.pushViewController(vc, animated: true)
                 }
             }
-            
             return true
         }
     }
@@ -1629,6 +1613,18 @@ public class TPRoutes: NSObject {
 
     @discardableResult
     public static func routeURL(_ url: URL?) -> Bool {
+        self.registerUnmatchedHandler()
+        return self._routeURL(url)
+    }
+    @discardableResult
+    public static func routeURL(_ url: URL?, onDeeplinkNotFound:@escaping ((URL?)->Void)) -> Bool {
+        JLRoutes.global().unmatchedURLHandler = { _, url, _ in
+            onDeeplinkNotFound(url)
+        }
+        return self._routeURL(url)
+    }
+    @discardableResult
+    private static func _routeURL(_ url: URL?) -> Bool {
         guard let url = url else { return false }
         AnalyticsManager.trackCampaign(url)
         let rootViewController = UIApplication.shared.keyWindow?.rootViewController
@@ -1640,10 +1636,9 @@ public class TPRoutes: NSObject {
                 return true
             }
         }
-
+        
         return JLRoutes.routeURL(url)
     }
-    
     @discardableResult
     public static func routeURL(_ url: URL?, additionalQuery: [String: Any]) -> Bool {
         guard let url = url, var urlComponent = URLComponents(url: url, resolvingAgainstBaseURL: true) else {
@@ -1790,5 +1785,36 @@ public class TPRoutes: NSObject {
             return LinkReroute(path: path, applink: applink)
         })
         return array
+    }
+    private static func registerUnmatchedHandler() {
+        JLRoutes.global().unmatchedURLHandler = { _, url, _ in
+            guard let url = url else { return }
+            
+            if url.scheme == "tokopedia" {
+                let alert = UIAlertController(title: "Halaman tidak ditemukan", message: "Untuk dapat melihat halaman produk ini, silahkan update aplikasi Tokopedia Anda.", preferredStyle: .alert)
+                
+                alert.addAction(UIAlertAction(title: "Update", style: .default, handler: { _ in
+                    if let url = URL(string: "https://itunes.apple.com/us/app/tokopedia-jual-beli-online/id1001394201?mt=8") {
+                        UIApplication.shared.openURL(url)
+                    }
+                }))
+                
+                alert.addAction(UIAlertAction(title: "Nanti", style: .cancel, handler: nil))
+                
+                UIApplication.topViewController()?.present(alert, animated: true)
+                
+                Crashlytics.sharedInstance().recordError(RoutingError(url: url))
+                LELog.sharedInstance().log([
+                    "event": "Unmatched routing URL",
+                    "url": url
+                    ] as NSObject)
+            } else {
+                self.openWebView(url)
+            }
+        }
+    }
+    //    MARK: Validate
+    internal static func canRoute(url: URL)-> Bool {
+        return JLRoutes.global().canRouteURL(url)
     }
 }

@@ -445,13 +445,15 @@
     _userManager = [UserAuthentificationManager new];
     _persistToken = [_userManager getMyDeviceToken]; //token device from ios
 
-    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Apakah Anda ingin keluar?"
-                                                        message:nil
-                                                       delegate:self
-                                              cancelButtonTitle:@"Batal"
-                                              otherButtonTitles:@"Iya", nil];
-    alertView.tag = 1;
-    [alertView show];
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"Apakah Anda ingin keluar?" message:nil preferredStyle:UIAlertControllerStyleAlert];
+    __weak typeof(self) weakSelf = self;
+    UIAlertAction *action1 = [UIAlertAction actionWithTitle:@"Batal" style:UIAlertActionStyleCancel handler:nil];
+    UIAlertAction *action2 = [UIAlertAction actionWithTitle:@"Iya" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        [weakSelf doApplicationLogout];
+    }];
+    [alert addAction:action1];
+    [alert addAction:action2];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 
 - (void)removeWebViewCookies {
@@ -576,11 +578,7 @@
 
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    if (alertView.tag == 1) {
-        if(buttonIndex == 1) {
-            [self doApplicationLogout];
-        }
-    } else if (alertView.tag == 2) {
+    if (alertView.tag == 2) {
         [self ratingAlertView:alertView clickedButtonAtIndex:buttonIndex];
     }
 }

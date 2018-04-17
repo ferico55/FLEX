@@ -289,7 +289,6 @@
     }
     
 	[self layoutViews];
-    [[UIApplication sharedApplication] setStatusBarHidden:YES withAnimation:NO];
 	
 	// init with next on first run.
     if( _currentIndex == -1 ) {}
@@ -302,6 +301,9 @@
     [super viewWillDisappear:animated];
 }
 
+- (BOOL)prefersStatusBarHidden {
+    return YES;
+}
 
 - (void)resizeImageViewsWithRect:(CGRect)rect
 {
@@ -414,7 +416,6 @@
 
 - (void)actionCancel:(id)sender
 {
-    [[UIApplication sharedApplication] setStatusBarHidden:NO withAnimation:NO];
     [self dismissViewControllerAnimated:YES completion:^{
         
     }];

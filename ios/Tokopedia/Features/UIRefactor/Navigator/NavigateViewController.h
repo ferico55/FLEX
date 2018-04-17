@@ -81,7 +81,7 @@
 - (void)navigateToOfficialPromoFromViewController:(UIViewController*)viewController withSlug:(NSString*)slug;
 + (void)navigateToReferralWelcomeWithData:(NSDictionary*)data;
 + (void)navigateToReferralScreen;
-
+- (void)navigateToErrorScreen:(NSDictionary*)param;
 #pragma mark - Inbox
 - (void)navigateToInboxTalkFromViewController:(UIViewController *)viewController;
 - (void)navigateToInboxReviewFromViewController:(UIViewController *)viewController;

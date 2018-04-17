@@ -761,10 +761,11 @@ ProductCellDelegate
         tempRect.size.width = self.view.bounds.size.width;
         
         float scale = 0.0;
+        float imageWidth = _imageview.image.size.width ?: 1.0;
         if(IS_IPAD) {
-            scale = self.view.bounds.size.width / (_imageview.image.size.width * 2.0);
+            scale = self.view.bounds.size.width / (imageWidth * 2.0);
         } else {
-            scale = self.view.bounds.size.width / _imageview.image.size.width;
+            scale = self.view.bounds.size.width / imageWidth;
         }
         tempRect.size.height = _imageview.image.size.height * scale;
         

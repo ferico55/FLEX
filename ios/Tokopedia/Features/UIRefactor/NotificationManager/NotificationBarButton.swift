@@ -14,7 +14,7 @@ internal class NotificationBarButton: UIBarButtonItem, NotificationTableViewCont
     
     private let notificationManager = NotificationManager.sharedManager
     private let notificationView = NotificationTableViewController()
-    private var notificationWindow: UIWindow?
+    private var notificationWindow: FBTweakShakeWindow?
     private var triangleView: UIImageView?
     private var parentViewController: UIViewController?
     
@@ -74,6 +74,7 @@ internal class NotificationBarButton: UIBarButtonItem, NotificationTableViewCont
         NotificationCenter.default.addObserver(self, selector: #selector(notificationRead), name: NSNotification.Name(rawValue: "NotificationRead"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(notificationLoaded(_:)), name: NSNotification.Name(rawValue: "NotificationLoaded"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(resetCount), name: NSNotification.Name(rawValue: "clearCacheNotificationBar"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(hideNotificationView(notification:)), name: NSNotification.Name(rawValue: "hideNotificationView"), object: nil)
     }
     
     internal required init?(coder aDecoder: NSCoder) {
@@ -81,7 +82,7 @@ internal class NotificationBarButton: UIBarButtonItem, NotificationTableViewCont
     }
     
     private func initNotificationWindow() {
-        notificationWindow = UIWindow(frame: UIScreen.main.bounds)
+        notificationWindow = FBTweakShakeWindow(frame: UIScreen.main.bounds)
         notificationWindow?.backgroundColor = .clear
         notificationWindow?.clipsToBounds = true
         
@@ -223,7 +224,9 @@ internal class NotificationBarButton: UIBarButtonItem, NotificationTableViewCont
             self.notificationManager.resetNotifications()
         }
     }
-    
+    internal func hideNotificationView(notification: NSNotification) {
+        hideNotificationView(callback: nil)
+    }
     internal func hideNotificationView(sender: UITapGestureRecognizer) {
         hideNotificationView(callback: nil)
     }

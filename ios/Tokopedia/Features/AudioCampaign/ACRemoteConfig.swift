@@ -10,6 +10,7 @@ import FirebaseRemoteConfig
 import UIKit
 internal class ACRemoteConfig: NSObject {
     private var remoteConfig: RemoteConfig?
+    private let shakeTimeInterval: TimeInterval = 5
     internal override init() {
         super.init()
         self.remoteConfig = RemoteConfig.remoteConfig()
@@ -28,10 +29,10 @@ internal class ACRemoteConfig: NSObject {
             return
         }
         let value = remoteConfig.configValue(forKey: "app_shake_feature_enabled")
-        onCompletion(value.boolValue && self.isTimeBoundShake())
+        onCompletion((value.boolValue || !AudioCampaignTweaks().shallUseFirebaseValueForShake()) && self.isTimeBoundShake())
     }
     internal func timeBoundShake() {
-        UserDefaults.standard.set(Date(timeIntervalSinceNow:2) , forKey: "ShakeForAudioDisabled")
+        UserDefaults.standard.set(Date(timeIntervalSinceNow:self.shakeTimeInterval) , forKey: "ShakeForAudioDisabled")
         UserDefaults.standard.synchronize()
     }
     private func isTimeBoundShake()->Bool {

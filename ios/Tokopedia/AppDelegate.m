@@ -680,5 +680,4 @@
 - (UIViewController *)rootViewControllerForCoordinator:(ReactNavigationCoordinator *)coordinator {
     return _window.rootViewController;
 }
-
 @end

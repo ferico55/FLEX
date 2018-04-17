@@ -12,7 +12,7 @@ import UIKit
 internal class AudioRecorderViewController: UIViewController, AVAudioRecorderDelegate {
     @IBOutlet private weak var activityLabel: UILabel!
     @IBOutlet private weak var shareButton: UIButton!
-    private let audioDuration = 10
+    private let audioDuration = 5
     private var recordingSession: AVAudioSession?
     private var audioRecorder: AVAudioRecorder?
     //    MARK:- lifecycle
@@ -83,11 +83,15 @@ internal class AudioRecorderViewController: UIViewController, AVAudioRecorderDel
     private func startRecording() {
         if let audioFileName = getDocumentsDirectory() {
             let audioFile = audioFileName.appendingPathComponent("recording.wav")
-            let settings = [
+            let settings:[String:Any] = [
                 AVFormatIDKey: Int(kAudioFormatLinearPCM),
+                AVLinearPCMBitDepthKey: 16,
                 AVSampleRateKey: 44100,
                 AVNumberOfChannelsKey: 2,
-                AVEncoderAudioQualityKey: AVAudioQuality.high.rawValue
+                AVEncoderBitRateStrategyKey: AVAudioBitRateStrategy_Constant,
+                AVEncoderBitRateKey: 1411200,
+                AVEncoderBitRatePerChannelKey: 1411270,
+                AVEncoderAudioQualityKey: AVAudioQuality.medium.rawValue
             ]
             if let recorder = try? AVAudioRecorder(url: audioFile, settings: settings) {
                 recorder.record(forDuration: TimeInterval(self.audioDuration))

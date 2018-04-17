@@ -39,7 +39,7 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
     override internal var preferredStatusBarStyle: UIStatusBarStyle {
         return UIStatusBarStyle.default
     }
-
+    override internal var prefersStatusBarHidden: Bool { return false }
     // MARK: - Lifecycle
     required internal init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

@@ -245,5 +245,8 @@
 
 #import "PromoViewController.h"
 #import "ProfileSettingViewController.h"
+#import "FBTweakShakeWindow.h"
 #import "SettingUserProfileViewController.h"
 #import "GroupChatTweaks.h"
+#import "AudioCampaignTweaks.h"
+

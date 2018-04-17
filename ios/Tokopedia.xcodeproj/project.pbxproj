@@ -618,6 +618,10 @@
 		848FA70E1FEBF8BF00A22EDE /* SolutionListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6D91FEBF8BD00A22EDE /* SolutionListViewController.swift */; };
 		848FA70F1FEBF8BF00A22EDE /* RCService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6DB1FEBF8BD00A22EDE /* RCService.swift */; };
 		848FA7101FEBF8BF00A22EDE /* RCServiceProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = 848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */; };
+		8492C8AF20626375004FB94E /* ShakeTarget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8492C8AE20626375004FB94E /* ShakeTarget.swift */; };
+		8498846C207F1040005AE746 /* TCLandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8498846B207F1040005AE746 /* TCLandingViewController.swift */; };
+		8498BFA92075F98F006F51D8 /* notification.caf in Resources */ = {isa = PBXBuildFile; fileRef = 8498BFA82075F98F006F51D8 /* notification.caf */; };
+		84E7350B2085E69800C19122 /* AudioCampaignTweaks.m in Sources */ = {isa = PBXBuildFile; fileRef = 84E7350A2085E69800C19122 /* AudioCampaignTweaks.m */; };
 		853A222C1ADD0AB600DD1508 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222B1ADD0AB600DD1508 /* CoreVideo.framework */; };
 		853A222E1ADD0ABC00DD1508 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */; };
 		853A22301ADD0AC800DD1508 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 853A222F1ADD0AC800DD1508 /* CoreMedia.framework */; };
@@ -3309,6 +3313,11 @@
 		848FA6D91FEBF8BD00A22EDE /* SolutionListViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SolutionListViewController.swift; sourceTree = "<group>"; };
 		848FA6DB1FEBF8BD00A22EDE /* RCService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCService.swift; sourceTree = "<group>"; };
 		848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RCServiceProvider.swift; sourceTree = "<group>"; };
+		8492C8AE20626375004FB94E /* ShakeTarget.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShakeTarget.swift; sourceTree = "<group>"; };
+		8498846B207F1040005AE746 /* TCLandingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCLandingViewController.swift; sourceTree = "<group>"; };
+		8498BFA82075F98F006F51D8 /* notification.caf */ = {isa = PBXFileReference; lastKnownFileType = file; path = notification.caf; sourceTree = "<group>"; };
+		84E735092085E69800C19122 /* AudioCampaignTweaks.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AudioCampaignTweaks.h; sourceTree = "<group>"; };
+		84E7350A2085E69800C19122 /* AudioCampaignTweaks.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AudioCampaignTweaks.m; sourceTree = "<group>"; };
 		853A222B1ADD0AB600DD1508 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
 		853A222D1ADD0ABC00DD1508 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		853A222F1ADD0AC800DD1508 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
@@ -7405,6 +7414,10 @@
 				843805F22057DA3100D50809 /* AudioRecorder.storyboard */,
 				843805F32057DA3100D50809 /* AudioCampaignService.swift */,
 				843805F42057DA3100D50809 /* AudioRecorderViewController.swift */,
+				8492C8AE20626375004FB94E /* ShakeTarget.swift */,
+				8498846B207F1040005AE746 /* TCLandingViewController.swift */,
+				84E735092085E69800C19122 /* AudioCampaignTweaks.h */,
+				84E7350A2085E69800C19122 /* AudioCampaignTweaks.m */,
 			);
 			path = AudioCampaign;
 			sourceTree = "<group>";
@@ -7627,6 +7640,14 @@
 				848FA6DC1FEBF8BD00A22EDE /* RCServiceProvider.swift */,
 			);
 			path = WebService;
+			sourceTree = "<group>";
+		};
+		8498BFA72075F64E006F51D8 /* Sounds */ = {
+			isa = PBXGroup;
+			children = (
+				8498BFA82075F98F006F51D8 /* notification.caf */,
+			);
+			path = Sounds;
 			sourceTree = "<group>";
 		};
 		9244D36E2029850D005CFB89 /* Forbidden */ = {
@@ -8925,6 +8946,7 @@
 		F954BD231FC55B65008C0B30 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				8498BFA72075F64E006F51D8 /* Sounds */,
 				525DFA682011EB8000268548 /* assets */,
 				923D971E20048A7700EADE79 /* main.jsbundle */,
 				F954BD241FC55B65008C0B30 /* Database */,
@@ -12521,6 +12543,7 @@
 				E576573C206548A9003683DB /* GroupChatPlainMessageCell.xib in Resources */,
 				F977FE2B1FE8AB8100183A85 /* RegisterBaseViewController.xib in Resources */,
 				F977FB351FE8AB7B00183A85 /* DepositFormViewController.xib in Resources */,
+				8498BFA92075F98F006F51D8 /* notification.caf in Resources */,
 				F772716920355FDB00D959AF /* TokoCashMoveToSaldoViewController.xib in Resources */,
 				F977FA891FE8AB7A00183A85 /* TransactionShipmentATCViewController.xib in Resources */,
 				F954C44D1FC55B6D008C0B30 /* icon_wishlist@3x.png in Resources */,
@@ -14545,6 +14568,7 @@
 				F97700A01FE8AB8600183A85 /* TPSpotlight.m in Sources */,
 				62C771D51FF33C3500F66527 /* WishListObjectResult.m in Sources */,
 				F7CCD916205BFB0F00EB46A7 /* PaymentCCViewModel.swift in Sources */,
+				8498846C207F1040005AE746 /* TCLandingViewController.swift in Sources */,
 				848FA7091FEBF8BF00A22EDE /* RCFreeReturn.swift in Sources */,
 				84184677203C3EAE0053074A /* ReferralWelcomeController.swift in Sources */,
 				F977FD181FE8AB7E00183A85 /* MoreViewController.m in Sources */,
@@ -14604,6 +14628,7 @@
 				F977FC4E1FE8AB7D00183A85 /* AlertListBankView.m in Sources */,
 				F977FD2A1FE8AB7F00183A85 /* SearchViewController.m in Sources */,
 				F977FE4A1FE8AB8100183A85 /* FeedDetailState.swift in Sources */,
+				84E7350B2085E69800C19122 /* AudioCampaignTweaks.m in Sources */,
 				F977FBD41FE8AB7C00183A85 /* RejectOrderRequest.m in Sources */,
 				F977FE301FE8AB8100183A85 /* RegisterSocialMediaViewController.swift in Sources */,
 				F977FBF41FE8AB7C00183A85 /* FuzzySearchDataSuggestionInstead.swift in Sources */,
@@ -14797,6 +14822,7 @@
 				F977FCF01FE8AB7E00183A85 /* ProductListMyShopViewController.m in Sources */,
 				62C770981FF33C3300F66527 /* InboxResolutionCenterResult.m in Sources */,
 				F977FA361FE8AB7900183A85 /* UIFont+Theme.m in Sources */,
+				8492C8AF20626375004FB94E /* ShakeTarget.swift in Sources */,
 				F977FB271FE8AB7B00183A85 /* TopAdsAddPromoTipsActionSheet.swift in Sources */,
 				924B14EE200DB28A00CB65D2 /* AIRGoogleMapPolygonManager.m in Sources */,
 				F977FCB11FE8AB7E00183A85 /* InfoAddressView.swift in Sources */,
