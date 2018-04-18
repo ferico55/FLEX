@@ -341,15 +341,9 @@ internal class FeedKOLActivityComponentView: ComponentView<FeedCardContentState>
                 
                 button.rx.tap
                     .subscribe(onNext: {
-                        let viewController = ReactViewController(
-                            moduleName: "FeedKOLActivityComment",
-                            props: ["cardState": state.dictionary as AnyObject]
-                        )
-                        viewController.hidesBottomBarWhenPushed = true
-                        
-                        UIApplication.topViewController()?
-                            .navigationController?
-                            .pushReactViewController(viewController, animated: true)
+                        if let urlString = URL(string: "tokopedia://kolcomment/\(state.cardID)") {
+                            TPRoutes.routeURL(urlString)
+                        }
                     })
                     .disposed(by: self.rx_disposeBag)
                 
