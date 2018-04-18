@@ -224,7 +224,12 @@ InputPromoViewDelegate
 
 - (void) viewDidLayoutSubviews {
     [super viewDidLayoutSubviews];
-    [self setupTopAdsViewContraints];
+    @try {
+        [self setupTopAdsViewContraints];
+    }
+    @catch (NSException *exception) {
+        NSLog(@"%@", exception.reason);
+    }
 }
 
 -(void)viewWillDisappear:(BOOL)animated

@@ -162,7 +162,12 @@ public class LoginViewController: GAITrackedViewController, TouchIDHelperDelegat
         Branch.getInstance().setIdentity(UserAuthentificationManager().getUserId())
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: UPDATE_TABBAR), object: nil)
         NotificationCenter.default.post(name: NSNotification.Name(rawValue: TKPDUserDidLoginNotification), object: nil)
-        NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
+        
+        guard let vc = self.navigationController?.viewControllers.first, vc.isModal() else {
+            NotificationCenter.default.post(name: NSNotification.Name(rawValue: kTKPD_REDIRECT_TO_HOME), object: nil)
+            return
+        }
+        
         let tabManager = UIApplication.shared.reactBridge.module(for: ReactEventManager.self)
         if let manager = tabManager as? ReactEventManager {
             manager.sendLoginEvent(UserAuthentificationManager().getUserLoginData())
