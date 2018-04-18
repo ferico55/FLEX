@@ -334,6 +334,7 @@ static NSString * const kPreferenceKeyTooltipSetting = @"Prefs.TooltipSetting";
 - (void)requestWallet {
     __weak typeof(self) weakSelf = self;
     [TokoCashUseCase requestBalanceWithCompletionHandler:^(WalletStore * wallet) {
+        _isWalletActive = YES;
         _walletNameLabel.text = wallet.data.text;
         _walletBalanceLabel.text = wallet.data.balance;
         _walletApplink = wallet.data.applinks;
