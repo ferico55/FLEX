@@ -6,31 +6,32 @@
 //  Copyright © 2017 TOKOPEDIA. All rights reserved.
 //
 
-import UIKit
+import BlocksKit
 import Render
 import RestKit
-import BlocksKit
+import UIKit
 import youtube_ios_player_helper
 
-struct IntermediaryState: StateType {
-    var intermediaryViewController: CategoryIntermediaryViewController?
-    var categoryIntermediaryResult: CategoryIntermediaryResult?
-    var categoryIntermediaryNonHiddenChildren: [CategoryIntermediaryChild]?
-    var categoryIntermediaryNotExpandedChildren: [CategoryIntermediaryChild]?
-    var isCategorySubviewExpanded: Bool!
-    var categoryIntermediaryHotListItems: [CategoryIntermediaryHotListItem] = []
-    var ads = [PromoResult]()
-    var banner: iCarousel?
-    var pageControl: StyledPageControl?
-    var officialStoreHomeItems: [OfficialStoreHomeItem]?
-    var topAdsHeadline: PromoResult?
+internal struct IntermediaryState: StateType {
+    internal var intermediaryViewController: CategoryIntermediaryViewController?
+    internal var categoryIntermediaryResult: CategoryIntermediaryResult?
+    internal var categoryIntermediaryNonHiddenChildren: [CategoryIntermediaryChild]?
+    internal var categoryIntermediaryNotExpandedChildren: [CategoryIntermediaryChild]?
+    internal var isCategorySubviewExpanded: Bool!
+    internal var categoryIntermediaryHotListItems: [CategoryIntermediaryHotListItem] = []
+    internal var ads = [PromoResult]()
+    internal var banner: iCarousel?
+    internal var pageControl: StyledPageControl?
+    internal var officialStoreHomeItems: [OfficialStoreHomeItem]?
+    internal var topAdsHeadline: PromoResult?
+    internal var trackerObject = ProductTracker()
 }
 
-class IntermediaryViewComponent: ComponentView<IntermediaryState> {
+internal class IntermediaryViewComponent: ComponentView<IntermediaryState> {
     
-    var parentViewController: UIViewController?
+    internal var parentViewController: UIViewController?
     
-    override func construct(state: IntermediaryState?, size: CGSize) -> NodeType {
+    override internal func construct(state: IntermediaryState?, size: CGSize) -> NodeType {
         let containerView = Node<UIScrollView> { scrollView, layout, size in
             scrollView.backgroundColor = UIColor.tpBackground()
             scrollView.accessibilityLabel = "intermediaryScrollView"
@@ -115,13 +116,25 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
         let subCategoryView = Node<CategoryIntermediarySubCategoryView> { [unowned self] view, layout, size in
             view.setIsRevamp(isRevamp: categoryIntermediaryResult.isRevamp)
             view.accessibilityLabel = "intermediarySubcategory"
-            let isNeedSeeMoreButton = (state?.categoryIntermediaryNonHiddenChildren?.count)! > self.maximumNotExpandedCategory() ? true : false
             
-            if state?.isCategorySubviewExpanded == false {
-                view.setChildrenData(categoryChildren: (state?.categoryIntermediaryNotExpandedChildren)!, isNeedSeeMoreButton: isNeedSeeMoreButton)
+            guard let state = state,
+                let categoryIntermediaryNonHiddenChildren = state.categoryIntermediaryNonHiddenChildren,
+                let categoryIntermediaryNotExpandedChildren = state.categoryIntermediaryNotExpandedChildren,
+                let categoryIntermediaryResult = state.categoryIntermediaryResult else {
+                return
+            }
+            
+            let isNeedSeeMoreButton = categoryIntermediaryNonHiddenChildren.count > self.maximumNotExpandedCategory() ? true : false
+            
+            if state.isCategorySubviewExpanded == false {
+                view.setChildrenData(categoryChildren: categoryIntermediaryNotExpandedChildren,
+                                     categoryResult: categoryIntermediaryResult,
+                                     isNeedSeeMoreButton: isNeedSeeMoreButton)
                 layout.height = ceil((CGFloat((categoryIntermediaryNotExpandedChildren.count)) / 3.0)) * 140 + (isNeedSeeMoreButton ? 38 : 0)
             } else {
-                view.setChildrenData(categoryChildren: (state?.categoryIntermediaryNonHiddenChildren)!, isNeedSeeMoreButton: isNeedSeeMoreButton)
+                view.setChildrenData(categoryChildren: categoryIntermediaryNonHiddenChildren,
+                                     categoryResult: categoryIntermediaryResult,
+                                     isNeedSeeMoreButton: isNeedSeeMoreButton)
                 layout.height = ceil((CGFloat((categoryIntermediaryNonHiddenChildren.count)) / 3.0)) * 140 + (isNeedSeeMoreButton ? 38 : 0)
             }
             
@@ -130,7 +143,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                     category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(String(describing: categoryIntermediaryNonHiddenChildren.first?.rootCategoryId))",
                     action: "Navigation",
                     label: "Expand Subcategory")
-                self.state?.isCategorySubviewExpanded = !(state?.isCategorySubviewExpanded)!
+                self.state?.isCategorySubviewExpanded = !state.isCategorySubviewExpanded
                 self.render(in: CGSize(width: UIScreen.main.bounds.size.width, height: size.height))
             }
         }
@@ -412,7 +425,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                         label.textColor = .tpGreen()
                     },
                     Node<UIImageView>() { imageView, layout, _ in
-                        imageView.image = UIImage(named: "icon_forward")
+                        imageView.image = #imageLiteral(resourceName: "icon_forward")
                         imageView.tintColor = .tpGreen()
                         imageView.contentMode = .scaleAspectFit
                         layout.marginTop = 15
@@ -435,7 +448,7 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
             ])
         }
         
-        func generateCuratedProductCell(curatedProduct: CategoryIntermediaryProduct) -> Node<ProductCell> {
+        func generateCuratedProductCell(curatedProduct: CategoryIntermediaryProduct, trackerDict: [String:Any]) -> Node<ProductCell> {
             let curatedProductCell = Node<ProductCell>(
                 create: {
                     let content = UINib(nibName: "ProductCell", bundle: nil).instantiate(withOwner: nil, options: nil)[0] as! ProductCell
@@ -463,12 +476,19 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 cell.removeWishlistButton()
                 cell.parentViewController = state?.intermediaryViewController
                 cell.applinks = curatedProduct.applinks
+                cell.trackerDictionary = trackerDict
                 if let delegate = state?.intermediaryViewController {
                     cell.delegate = delegate
                 }
                 cell.bk_(whenTapped: {
+                    AnalyticsManager.trackData(cell.trackerDictionary)
                     AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Curated \(cell.viewModel.productName)", label: cell.viewModel.productName)
-                    TPRoutes.routeURL(URL(string: cell.applinks)!)
+                    if let applinks = URL(string: cell.applinks) {
+                        let listName = (cell.trackerDictionary as NSDictionary).value(forKeyPath: "ecommerce.click.actionField.list") as? String ?? "none/other"
+                        let attribution = state?.trackerObject.trackerAttribution ?? "none/other"
+                        TPRoutes.routeURL(applinks,
+                                          additionalQuery: ["trackerAttribution" : attribution, "trackerListName" : listName])
+                    }
                 })
             })
 
@@ -525,7 +545,34 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
                 let curatedListProductContainer = generateCuratedListProductContainer()
                 for (productIndex,curatedProduct) in curatedListSections.products.enumerated() {
                     if productIndex < 4 {
-                        curatedListProductContainer.add(child: generateCuratedProductCell(curatedProduct: curatedProduct))
+                        let attribution = state?.trackerObject.trackerAttribution ?? "none/other"
+                        let strippedPrice = curatedProduct.price.replacingOccurrences( of:"[^0-9]", with: "", options: .regularExpression)
+                        let listName = "/intermediary/\(categoryIntermediaryResult.name) - product \(sectionIndex+1) - \(curatedListSections.title)"
+                        let eeDict: [String : Any] = [
+                            "event": "productClick",
+                            "eventCategory" : "intermediary page",
+                            "eventAction" : "click product curation",
+                            "eventLabel" : "\(curatedProduct.applinks)",
+                            "ecommerce": [
+                                "click": [
+                                    "actionField": [
+                                        "list": listName
+                                    ],
+                                    "products": [[
+                                        "id": curatedProduct.id,
+                                        "name": curatedProduct.name,
+                                        "price": "\(strippedPrice)",
+                                        "brand": "none/other",
+                                        "category": "none/other",
+                                        "variant": "none/other",
+                                        "position": "\(productIndex+1)",
+                                        "dimension37": attribution
+                                        ]]
+                                ]
+                            ]
+                        ]
+                        curatedListProductContainer.add(child: generateCuratedProductCell(curatedProduct: curatedProduct,
+                                                                                          trackerDict: eeDict))
                     }
                 }
                 curatedListView.add(child: curatedListProductContainer)
@@ -576,13 +623,14 @@ class IntermediaryViewComponent: ComponentView<IntermediaryState> {
     }
 }
 
-class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate {
+internal class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate {
     
     private var uiSearchController: UISearchController!
     private var intermediaryView: IntermediaryViewComponent!
     fileprivate var categoryIntermediaryResult: CategoryIntermediaryResult!
     private var carouselDataSource: CarouselDataSource!
     fileprivate var videoFirstTimePlaying = true
+    private var trackerObject: ProductTracker!
     
     fileprivate lazy var safeAreaView: UIView = {
         let view = UIView(frame: CGRect.zero)
@@ -592,7 +640,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         return view
     }()
     
-    func changeWishlist(forProductId productId: String, withStatus isOnWishlist: Bool) {
+    internal func changeWishlist(forProductId productId: String, withStatus isOnWishlist: Bool) {
         guard let curatedProduct = categoryIntermediaryResult.curatedProduct else { return }
         guard let sections = curatedProduct.sections else { return }
         for section in sections {
@@ -615,23 +663,24 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
     }()
     
     // MARK: View Controller Delegate Function
-    init(categoryIntermediaryResult: CategoryIntermediaryResult) {
+    internal init(categoryIntermediaryResult: CategoryIntermediaryResult, trackerObject: ProductTracker) {
         super.init(nibName: nil, bundle: nil)
         self.categoryIntermediaryResult = categoryIntermediaryResult
+        self.trackerObject = trackerObject
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func viewDidLoad() {
+    override internal func viewDidLoad() {
         super.viewDidLoad()
         self.view.backgroundColor = .tpBackground()
         
         let pageControl = StyledPageControl()
         pageControl.pageControlStyle = PageControlStyleDefault
-        pageControl.coreNormalColor = UIColor(red: 214.0 / 255.0, green: 214.0 / 255.0, blue: 214.0 / 255.0, alpha: 1)
-        pageControl.coreSelectedColor = UIColor(red: 255.0 / 255.0, green: 87.0 / 255.0, blue: 34.0 / 255, alpha: 1)
+        pageControl.coreNormalColor = #colorLiteral(red: 0.8392156863, green: 0.8392156863, blue: 0.8392156863, alpha: 1)
+        pageControl.coreSelectedColor = #colorLiteral(red: 1, green: 0.3411764706, blue: 0.1333333333, alpha: 1)
         pageControl.diameter = 11
         pageControl.gapWidth = 5
         
@@ -664,12 +713,13 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
                                                    banner: slider,
                                                    pageControl: pageControl,
                                                    officialStoreHomeItems: [],
-                                                   topAdsHeadline: nil)
+                                                   topAdsHeadline: nil,
+                                                   trackerObject: self.trackerObject)
         intermediaryView.state?.categoryIntermediaryResult = categoryIntermediaryResult
         intermediaryView.state?.categoryIntermediaryNonHiddenChildren = categoryIntermediaryResult.nonHiddenChildren
         intermediaryView.state?.categoryIntermediaryNotExpandedChildren = categoryIntermediaryResult.nonExpandedChildren
         
-        let backButtonItem = UIBarButtonItem(image: UIImage(named: "icon_arrow_white"), style: .plain, target: self, action: #selector(CategoryIntermediaryViewController.back))
+        let backButtonItem = UIBarButtonItem(image: #imageLiteral(resourceName: "icon_arrow_white"), style: .plain, target: self, action: #selector(CategoryIntermediaryViewController.back))
         
         self.view.addSubview(self.safeAreaView)
         
@@ -693,15 +743,15 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         AnalyticsManager.trackScreenName("Browse Category - \(categoryIntermediaryResult.id)")
     }
     
-    func back() {
+    internal func back() {
         _ = self.navigationController?.popViewController(animated: true)
     }
     
-    override func didReceiveMemoryWarning() {
+    override internal func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
+    override internal func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         let searchController = SearchViewController()
         
@@ -710,13 +760,14 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         uiSearchController.setSearchBarToTop(viewController: self, title: categoryIntermediaryResult.name)
     }
     
-    override func viewDidDisappear(_ animated: Bool) {
+    override internal func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
         self.definesPresentationContext = false
         self.uiSearchController.isActive = false
     }
     
-    override func viewDidAppear(_ animated: Bool) {
+    override internal func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         self.definesPresentationContext = true
         self.uiSearchController.searchResultsController?.view.isHidden = true
     }
@@ -733,7 +784,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
             })
     }
     
-    func requestHotlist() {
+    internal func requestHotlist() {
         self.hotListNetworkManager.request(withBaseUrl: NSString.aceUrl(), path: "/hoth/hotlist/v1/category", method: .GET, parameter: ["categories": categoryIntermediaryResult.id, "perPage": "7"], mapping: CategoryIntermediaryHotListResponse.mapping(), onSuccess: { [unowned self] mappingResult, _ in
             let result: NSDictionary = (mappingResult as RKMappingResult).dictionary() as NSDictionary
             let categoryIntermediaryHotListResponse: CategoryIntermediaryHotListResponse = result[""] as! CategoryIntermediaryHotListResponse
@@ -757,7 +808,7 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
         })
     }
     
-    func requestTopAdsHeadline(departmentId: String) {
+    internal func requestTopAdsHeadline(departmentId: String) {
         TopAdsService().requestTopAdsHeadline(departmentId: departmentId, source: .intermediary, onSuccess: { (topAdsHeadline) in
             self.intermediaryView.state?.topAdsHeadline = topAdsHeadline
         }) { (error) in
@@ -768,11 +819,11 @@ class CategoryIntermediaryViewController: UIViewController, ProductCellDelegate 
 
 extension CategoryIntermediaryViewController: YTPlayerViewDelegate {
     
-    func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
+    internal func playerViewDidBecomeReady(_ playerView: YTPlayerView) {
         playerView.webView?.allowsInlineMediaPlayback = false
     }
     
-    func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
+    internal func playerView(_ playerView: YTPlayerView, didChangeTo state: YTPlayerState) {
         if state == .playing && videoFirstTimePlaying {
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY, category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(categoryIntermediaryResult.rootCategoryId)", action: "Video Click", label: categoryIntermediaryResult.video?.title)
             videoFirstTimePlaying = false

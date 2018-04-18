@@ -93,6 +93,7 @@ ProductCellDelegate
     
     NSInteger _start;
     NSInteger _page;
+    NSInteger _productIdx;
     
     NSInteger _viewposition;
     
@@ -176,7 +177,8 @@ ProductCellDelegate
     
     _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     
-    _page = 0;
+    _page = 1;
+    _productIdx = 1;
     
     _requestHotlistManager = [[TokopediaNetworkManager alloc] init];
     _requestHotlistManager.isParameterNotEncrypted = YES;
@@ -250,7 +252,6 @@ ProductCellDelegate
     
     [self fetchDataHotlistBanner];
     [self requestTopAdsHeadline];
-
     
     self.scrollDirection = ScrollDirectionDown;
     
@@ -340,7 +341,8 @@ ProductCellDelegate
         _selectedSort = sort;
         [self showSortingIsActive:[self getSortingIsActive]];
         [self refreshView:nil];
-        
+                                                                    
+        [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click sort" label:_selectedSort.name];
     }];
 }
 
@@ -389,6 +391,14 @@ ProductCellDelegate
     [self isShowFilterIsActive:[self filterIsActive]];
     [_detailfilter removeObjectForKey:@"sc"];
     
+    NSMutableArray *keys = [NSMutableArray new];
+    NSMutableArray *values = [NSMutableArray new];
+    for(ListOption* filter in filters) {
+        [keys addObject:filter.key];
+        [values addObject:filter.value];
+    }
+    [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click filter" label:[NSString stringWithFormat: @"%@ - %@", [keys componentsJoinedByString:@", "], [values componentsJoinedByString:@", "]]];
+    
     [self refreshView:nil];
 }
 
@@ -423,6 +433,9 @@ ProductCellDelegate
         
     }
     
+    NSString *displayType = self.cellType==UITableViewCellTypeOneColumn ? @"display full" : self.cellType==UITableViewCellTypeTwoColumn ? @"display grid" : @"display list";
+    [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click display" label:displayType];
+    
     NSNumber *cellType = [NSNumber numberWithInteger:self.cellType];
     [secureStorage setKeychainWithValue:cellType withKey:USER_LAYOUT_PREFERENCES];
     [_flowLayout setEstimatedSizeWithCellType:self.cellType];
@@ -443,6 +456,15 @@ ProductCellDelegate
     } else if (_bannerResult) {
         [referralManager shareWithObject:_bannerResult from:self anchor: sender onCompletion:nil];
     }
+    BranchUniversalObject *buo = [[BranchUniversalObject alloc] initWithCanonicalIdentifier:@"hotlist/clickShare"];
+    [buo showShareSheetWithLinkProperties:nil andShareText:@"hotlist/clickShare" fromViewController:nil completionWithError:^(NSString * _Nullable activityType, BOOL completed, NSError * _Nullable activityError){
+        NSString *shareType = [BranchActivityItemProvider humanReadableChannelWithActivityType:activityType ?: @""];
+        [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click social share" label:shareType];
+    }];
+    [buo showShareSheetWithShareText:@"hotlist/clickShare" completion:^(NSString * _Nullable activityType, BOOL completed) {
+        NSString *shareType = [BranchActivityItemProvider humanReadableChannelWithActivityType:activityType ?: @""];
+        [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click social share" label:shareType];
+    }];
 }
 
 - (IBAction)gesture:(id)sender {
@@ -570,6 +592,8 @@ ProductCellDelegate
 
     NSURL *url = [NSURL URLWithString:hashtags.url];
     NSArray* querry = [[url path] componentsSeparatedByString: @"/"];
+    
+    [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:@"click category tagging" label:[url absoluteString]];
 
     // Redirect URI to search category
     if ([querry[1] isEqualToString:kTKPDHOME_DATAURLREDIRECTCATEGORY]) {
@@ -595,7 +619,8 @@ ProductCellDelegate
 -(void)refreshView:(UIRefreshControl*)refresh {
     [_requestHotlistManager requestCancel];
     _start = 0;
-    _page = 0;
+    _page = 1;
+    _productIdx = 1;
     [_refreshControl beginRefreshing];
     
     [self requestHotlist];
@@ -677,6 +702,19 @@ ProductCellDelegate
     return cell;
 }
 
+- (void) setTrackerInfoForProduct:(SearchProduct *)product onRow:(int)row onSection:(int)page {
+    NSString *category =  [NSString stringWithFormat: @"%@/%@", product.category_breadcrumb, product.category_id];
+    int position = ((int)ProductAndWishlistNetworkManager.productPerPage*page) + (row+1);
+    NSDictionary *trackerInfo = @{
+                                  @"category" : category,
+                                  @"key" : [_data objectForKey:@"key"] ?: @"",
+                                  @"position" : @(position),
+                                  @"attribution" : _trackerObject.trackerAttribution,
+                                  @"listName" : _trackerObject.trackerListName
+                                  };
+    [product setTrackerInfoWithInfo:trackerInfo];
+}
+
 - (UICollectionReusableView*)collectionView:(UICollectionView*)collectionView viewForSupplementaryElementOfKind:(NSString *)kind atIndexPath:(NSIndexPath *)indexPath {
     UICollectionReusableView *reusableView = nil;
     if (kind == UICollectionElementKindSectionHeader) {
@@ -686,7 +724,7 @@ ProductCellDelegate
         BOOL isNoPromo = YES;
         
         if (![self isPromoHeaderEmpty]) {
-            [_header.promoView setPromoInfo:_bannerResult.promoInfo];
+            [_header.promoView setPromoInfo:_bannerResult.promoInfo bannerInfo:_bannerResult.info];
         }
         
         reusableView = [collectionView dequeueReusableSupplementaryViewOfKind:UICollectionElementKindSectionHeader
@@ -804,18 +842,16 @@ ProductCellDelegate
 
 - (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath {
 	SearchProduct *list = [[_products objectAtIndex:indexPath.section] objectAtIndex:indexPath.row];
-    [AnalyticsManager trackProductClick:list];
-    [AnalyticsManager trackEventName:@"clickHotlist"
-                            category:GA_EVENT_CATEGORY_HOTLIST
-                              action:GA_EVENT_ACTION_CLICK
-                               label:list.product_name];
+    [self setTrackerInfoForProduct:list onRow:indexPath.row onSection:indexPath.section];
+    [AnalyticsManager trackProductListClick:list category:@"hotlist page" action:@"click product list" label:@""];
     
     [NavigateViewController navigateToProductFromViewController:self
                                                   withProductID:list.product_id
                                                         andName:list.product_name
                                                        andPrice:list.product_price
                                                     andImageURL:list.product_image
-                                                    andShopName:list.shop_name];
+                                                    andShopName:list.shop_name
+                                             withProductTracker:_trackerObject];
 }
 
 #pragma mark - Promo request delegate
@@ -1008,6 +1044,8 @@ ProductCellDelegate
     
     //set products
     [_products addObject:searchResult.products];
+    //di sini tracker hotlist impression
+    [self trackProductListImpression:searchResult.products];
     _urinext = searchResult.paging.uri_next;
     _start = [[_requestHotlistManager explodeURL:_urinext withKey:@"start"] integerValue];
     _page++;
@@ -1082,6 +1120,12 @@ ProductCellDelegate
     return [[_selectedCategories valueForKey:@"categoryId"] componentsJoinedByString:@","]?:@"";
 }
 
+-(NSString *)getFilterCategoryForEE{
+    NSString *category =  [[_selectedCategories valueForKey:@"name"] componentsJoinedByString:@" / "]?:@"";
+    category = [NSString stringWithFormat: @"%@%@%@", category, @" / ", [self getFilterCategoryIDs]];
+    return category;
+}
+
 -(NSString *)getSourceString{
     NSString *source = @"";
     if(_isFromAutoComplete){
@@ -1123,10 +1167,15 @@ ProductCellDelegate
 
 #pragma mark - Product Cell Delegate
 - (void) changeWishlistForProductId:(NSString*)productId withStatus:(BOOL) isOnWishlist {
+    int position = 0;
     for(NSArray* products in _products) {
         for(SearchProduct *product in products) {
+            position += 1;
             if([product.product_id isEqualToString:productId]) {
                 product.isOnWishlist = isOnWishlist;
+                NSString *action = isOnWishlist ? @"product list add to wishlist" : @"product list remove from wishlist";
+                NSString *label = [NSString stringWithFormat:@"%d - %@ - %@", position ?: 0, product.product_name ?: @"" , _rootCategoryID ?: @"" ];
+                [AnalyticsManager trackEventName:@"clickHotlist" category:@"hotlist page" action:action label:label];
                 break;
             }
         }
@@ -1149,6 +1198,43 @@ ProductCellDelegate
     
     NSString *productId = [notification object];
     [self changeWishlistForProductId:productId withStatus:NO];
+}
+
+- (void) trackProductListImpression:(NSArray<SearchProduct*>*)details {
+    SearchProduct *detail =  [details firstObject];
+    NSMutableArray *products = [NSMutableArray new];
+    NSString*trackerListName = [NSString stringWithFormat: @"/hot/%@ - product %ld",[_data objectForKey:@"key"] ?: @"", _page];
+    _trackerObject.trackerListName = trackerListName;
+    NSString *category = @"";
+    if (detail) {
+        category =  [NSString stringWithFormat: @"%@/%@", detail.category_breadcrumb ?: @"", detail.category_id ?: @""];
+    }
+    for (SearchProduct*detail in details) {
+        NSDictionary *product = @{
+                                  @"name" : detail.product_name ?: @"",
+                                  @"id" : detail.product_id ?: @"",
+                                  @"price" : @([[detail.product_price priceFromStringIDR] doubleValue]) ?: 0,
+                                  @"brand" : @"none/other",
+                                  @"category" : category,
+                                  @"variant" : @"none/other",
+                                  @"position" : [NSNumber numberWithInteger:_productIdx],
+                                  @"list" : trackerListName,
+                                  @"dimension37" : _trackerObject.trackerAttribution
+                                  };
+        [products addObject:product];
+        _productIdx++;
+    }
+    NSDictionary *data = @{
+                           @"event" : @"productView",
+                           @"eventCategory" : @"hotlist page",
+                           @"eventAction" : @"product list impression",
+                           @"eventLabel" : @"",
+                           @"ecommerce" : @{
+                                   @"currencyCode" : @"IDR",
+                                   @"impressions" : products ?: @[]
+                                   }
+                           };
+    [AnalyticsManager trackData:data];
 }
 
 @end

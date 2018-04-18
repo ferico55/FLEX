@@ -12,8 +12,7 @@ private let LAST_VERSION_NPS_RATED = "lastVersionNPSRated"
 
 @objc
 extension UserDefaults {
-    
-    var lastVersionNPSRated: String? {
+    internal var lastVersionNPSRated: String? {
         get {
             return UserDefaults.standard.string(forKey: LAST_VERSION_NPS_RATED)
         }

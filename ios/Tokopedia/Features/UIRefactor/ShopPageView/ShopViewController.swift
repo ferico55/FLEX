@@ -36,6 +36,7 @@ internal class ShopViewController: UIViewController {
     
     internal weak var delegate: ShopViewControllerDelegate?
     internal var productFilter: ShopProductFilter?
+    internal var productTracker: ProductTracker = ProductTracker()
     
     internal init() {
         super.init(nibName: nil, bundle: nil)
@@ -226,6 +227,7 @@ internal class ShopViewController: UIViewController {
         homeViewController.data = data as [NSObject: AnyObject]?
         
         let productViewController = ShopProductPageViewController()
+        productViewController.objectTracker = self.productTracker
         productViewController.data = data
         productViewController.shop = shop
         productViewController.initialEtalase = self.initialEtalase
@@ -253,7 +255,8 @@ internal class ShopViewController: UIViewController {
                 andName: "",
                 andPrice: "",
                 andImageURL: "",
-                andShopName: ""
+                andShopName: "",
+                with: self.productTracker
             )
         }
         

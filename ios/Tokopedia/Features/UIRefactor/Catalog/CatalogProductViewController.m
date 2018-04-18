@@ -78,6 +78,7 @@
 {
     [tableView deselectRowAtIndexPath:indexPath animated:YES];
     SearchAWSProduct *product = [_product_list objectAtIndex:[indexPath row]];
+    //kalo dari katalog ada attribution nya ga sih?
     [NavigateViewController navigateToProductFromViewController:self
                                                   withProductID:product.product_id
                                                         andName:product.product_name

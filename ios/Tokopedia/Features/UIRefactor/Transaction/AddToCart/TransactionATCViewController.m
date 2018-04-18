@@ -279,6 +279,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 - (IBAction)tapBuy:(id)sender {
     [AnalyticsManager trackEventName:@"clickATC" category:GA_EVENT_CATEGORY_ATC action:GA_EVENT_ACTION_CLICK label:@"Buy"];
     if ([self isValidInput]) {
+        [self trackAddProductToCart];
         [self requestATC];
     }
 }
@@ -864,6 +865,8 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
 
     NSString *quantity = _productQuantityTextField.text;
     NSString *remark = _remarkTextView.text?:@"";
+    
+    _selectedProduct.trackerInfo = _productTracker;
 
     [RequestATC fetchATCProduct:_selectedProduct
                         address:_selectedAddress
@@ -1240,5 +1243,44 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
         StickyAlertView *alert = [[StickyAlertView alloc]initWithErrorMessages:errorMessages delegate:self];
         [alert show];
     }
+}
+
+#pragma mark - Tracker
+- (void)trackAddProductToCart {
+    NSString *shopType = _detailProduct.shop_info.isOfficial ? @"official_store" : _detailProduct.shop_info.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+    
+    NSString *trackerAttribution = @"none/other";
+    NSString *trackerListName = @"none/other";
+    
+    if (_productTracker) {
+        trackerAttribution = _productTracker.trackerAttribution;
+        trackerListName = _productTracker.trackerListName;
+    }
+    
+    NSDictionary *data = @{
+                           @"event" : @"addToCart",
+                           @"ecommerce" : @{
+                                   @"currencyCode" : @"IDR",
+                                   @"add" : @{
+                                           @"products" : @[@{
+                                                   @"name": _selectedProduct.product_name ?: @"",
+                                                   @"id": _selectedProduct.product_id ?: @"",
+                                                   @"price": _selectedProduct.product_price_unfmt ?: @"",
+                                                   @"brand": @"none/other",
+                                                   @"category": _selectedProduct.product_cat_name_tracking ?: @"",
+                                                   @"variant": @"none/other",
+                                                   @"quantity": _productQuantityTextField.text ?: @"1",
+                                                   @"shop_id": @"",
+                                                   @"shop_type": shopType ?: @"",
+                                                   @"shop_name": _ATCForm.shop.name ?: @"",
+                                                   @"category_id": _selectedProduct.product_cat_id ?: @"",
+                                                   @"cart_id": _selectedProduct.product_cart_id ?: @"",
+                                                   @"dimension37" : trackerAttribution,
+                                                   @"dimension39": trackerListName
+                                                   }]
+                                           }
+                                   }
+                           };
+    [AnalyticsManager trackData:data];
 }
 @end

@@ -22,6 +22,8 @@
 
 #import "EtalaseViewController.h"
 
+#import "NSStringCategory.h"
+
 typedef NS_ENUM(NSInteger, UITableViewCellType) {
     UITableViewCellTypeOneColumn,
     UITableViewCellTypeTwoColumn,
@@ -56,6 +58,11 @@ NoResultDelegate
 
 @property (nonatomic) UITableViewCellType cellType;
 
+@property (nonatomic, strong) NSString *shopType;
+@property (nonatomic, strong) NSString *shopID;
+@property (nonatomic, strong) NSString *shopName;
+@property (nonatomic, strong) NSString *userType;
+
 @end
 
 @implementation ShopProductPageViewController {
@@ -65,6 +72,8 @@ NoResultDelegate
     BOOL _isFailRequest;
     
     NSInteger _page;
+    NSInteger _productIdx;
+    NSInteger _topProductIdx;
     NSString *_nextPageUri;
     
     UIRefreshControl *_refreshControl;
@@ -120,6 +129,8 @@ NoResultDelegate
     [super viewDidLoad];
     
     _page = 1;
+    _productIdx = 1;
+    _topProductIdx = 1;
     _product = [NSMutableArray new];
     _featuredProducts = [NSArray new];
     
@@ -194,6 +205,14 @@ NoResultDelegate
     
     UINib *headerNib = [UINib nibWithNibName:@"HeaderCollectionReusableView" bundle:nil];
     [_collectionView registerNib:headerNib forSupplementaryViewOfKind:UICollectionElementKindSectionHeader withReuseIdentifier:@"HeaderIdentifier"];
+    
+    self.shopType = self.shop.result.info.isOfficial ? @"official_store" : self.shop.result.info.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+    self.shopID = self.shop.result.info.shop_id ?: @"";
+    self.shopName = self.shop.result.info.shop_name ?: @"";
+    UserAuthentificationManager *user = [UserAuthentificationManager new];
+    NSString *userShopID = [user getShopId];
+    if ([self.shopID isEqualToString:userShopID]) { self.userType = @"seller"; }
+    else { self.userType = @"buyer"; }
     
     moyaNetworkManager = [[ProductAndWishlistNetworkManager alloc]init];
     [self requestProduct];
@@ -365,17 +384,21 @@ NoResultDelegate
     if(indexPath.section == 0 && _featuredProducts.count > 0) {
         FeaturedProduct *product = [_featuredProducts objectAtIndex:indexPath.row];
         
+        [self trackClickFeaturedProduct:(int)indexPath.row product:product];
         [AnalyticsManager trackProductClick:product];
+        
         [NavigateViewController navigateToProductFromViewController:self
                                                       withProductID:product.productID
                                                             andName:product.name
                                                            andPrice:product.price
                                                         andImageURL:product.imageUri
-                                                        andShopName:nil];
+                                                        andShopName:nil
+                                                 withProductTracker:_objectTracker];
         return;
     }
     ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
     
+    [self trackClickProduct:(int)indexPath.row product:product];
     [AnalyticsManager trackProductClick:product];
     
     NSString *shopName = product.shop_name;
@@ -388,7 +411,8 @@ NoResultDelegate
                                                         andName:product.product_name
                                                        andPrice:product.product_price
                                                     andImageURL:product.product_image
-                                                    andShopName:nil];
+                                                    andShopName:nil
+                                             withProductTracker:_objectTracker];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -411,6 +435,8 @@ NoResultDelegate
         [_productFilter setQuery:_searchBar.text];
     } else {
         _page = 1;
+        _productIdx = 1;
+        _topProductIdx = 1;
         _isrefreshview = YES;
     }
     [self reloadDataSearch];
@@ -478,6 +504,8 @@ NoResultDelegate
     [self.collectionView.collectionViewLayout invalidateLayout];
     
     _page = 1;
+    _productIdx = 1;
+    _topProductIdx = 1;
     _isrefreshview = YES;
     [self requestProduct];
     [self requestFeaturedProduct];
@@ -557,6 +585,8 @@ NoResultDelegate
 
 - (void)didSelectEtalase:(EtalaseList*)selectedEtalase{
     _page = 1;
+    _productIdx = 1;
+    _topProductIdx = 1;
     _isrefreshview = YES;
     _collectionView.contentOffset = CGPointMake(0, 0);
     [_productFilter setEtalaseId:selectedEtalase.etalase_id];
@@ -632,7 +662,8 @@ NoResultDelegate
                                                             andName:product.name
                                                            andPrice:product.price
                                                         andImageURL:product.imageUri
-                                                        andShopName:nil];
+                                                        andShopName:nil
+                                                 withProductTracker:_objectTracker];
         return;
     }
     NSInteger index = 0;
@@ -657,7 +688,8 @@ NoResultDelegate
                                                         andName:list.product_name
                                                        andPrice:list.product_price
                                                     andImageURL:list.product_image
-                                                    andShopName:list.shop_name];
+                                                    andShopName:list.shop_name
+                                             withProductTracker:_objectTracker];
 }
 
 - (void)changeWishlistForProductId:(NSString *)productId withStatus:(bool) isOnWishlist {
@@ -691,6 +723,7 @@ NoResultDelegate
     [moyaNetworkManager requestFeaturedProductWithShopID:shopID
                                    withCompletionHandler:^(NSArray<FeaturedProduct *> * _Nonnull result) {
                                        _featuredProducts = result;
+                                       if ([result count] > 0) { [self trackImpressionFeaturedProducts]; }
                                        [_noResultView removeFromSuperview];
                                        [_collectionView reloadData];
                                        [_collectionView.collectionViewLayout invalidateLayout];
@@ -741,7 +774,8 @@ NoResultDelegate
                                              } else {
                                                  [_product addObjectsFromArray:result.list];
                                              }
-                                             
+                                   
+                                             [self trackImpressionProducts:result.list];
                                              [AnalyticsManager trackProductImpressions:result.list];
                                              
                                              if (_product.count >0) {
@@ -800,6 +834,148 @@ NoResultDelegate
                                                    StickyAlertView *alert = [[StickyAlertView alloc] initWithErrorMessages:@[@"Kendala koneksi internet"] delegate:self];
                                                    [alert show];
                                                }];
+}
+
+#pragma mark - ShopPageRequest
+- (void) trackImpressionFeaturedProducts {
+    NSMutableArray *products = [NSMutableArray new];
+    self.objectTracker.trackerListName = @"/shoppage - product 1 - product - top products";
+    NSString*trackerListName = [NSString stringWithFormat: @"/shoppage - product %d%@", (int)_page, @" - product - top products"];
+    _objectTracker.trackerListName = trackerListName;
+    for (FeaturedProduct*featured in _featuredProducts) {
+        NSDictionary *product = @{
+          @"name" : featured.name ?: @"",
+          @"id" : featured.productID ?: @"",
+          @"price" : @([[featured.price priceFromStringIDR] doubleValue]) ?: 0,
+          @"brand" : @"none/other",
+          @"category" : @"none/other",
+          @"variant" : @"none/other",
+          @"list" : trackerListName,
+          @"position" : [NSNumber numberWithInteger:_topProductIdx],
+          @"shop_type" : self.shopType,
+          @"shop_id" : self.shopID,
+          @"shop_name" : self.shopName,
+          @"page_type" : @"/shoppage",
+          @"dimension37" : self.objectTracker.trackerAttribution
+        };
+        [products addObject:product];
+        _topProductIdx++;
+    }
+    NSDictionary *data = @{
+       @"event" : @"productView",
+       @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
+       @"eventAction" : @"Produk - top products - impression",
+       @"eventLabel" : @"impression of top products",
+       @"ecommerce" : @{
+           @"currencyCode" : @"IDR",
+           @"impressions" : products ?: @[]
+       }
+    };
+    [AnalyticsManager trackData:data];
+}
+
+- (void) trackClickFeaturedProduct:(int)row product:(FeaturedProduct*)featured {
+    NSString*trackerListName = [NSString stringWithFormat: @"%@%d%@", @"/shoppage - product ", (int)_page-1, @" - product - top products"];
+    _objectTracker.trackerListName = trackerListName;
+    NSDictionary *data = @{
+       @"event" : @"productView",
+       @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
+       @"eventAction" : @"Produk - top products - click",
+       @"eventLabel" : @"click product picture",
+       @"ecommerce" : @{
+           @"click" : @{
+               @"actionField" : @{
+                   @"list" : trackerListName
+               },
+               @"products" :@[@{
+                    @"name" : featured.name ?: @"",
+                    @"id" : featured.productID ?: @"",
+                    @"price" : @([[featured.price priceFromStringIDR] doubleValue]) ?: 0,
+                    @"brand" : @"none/other",
+                    @"category" : @"none/other",
+                    @"variant" : @"none/other",
+                    @"list" : trackerListName,
+                    @"position" : @(row+1),
+                    @"shop_type" : self.shopType,
+                    @"shop_id" : self.shopID,
+                    @"shop_name" : self.shopName,
+                    @"page_type" : @"/shoppage",
+                    @"dimension37" : self.objectTracker.trackerAttribution
+                }]
+            }
+        }
+    };
+    [AnalyticsManager trackData:data];
+}
+
+- (void) trackImpressionProducts:(NSArray<ShopProductPageList*>*)productList{
+    NSMutableArray *products = [NSMutableArray new];
+    NSString*trackerListName = [NSString stringWithFormat: @"%@%d%@%@", @"/shoppage - product ", (int)_page, @" - product - ", _initialEtalase.etalase_name?:@"Semua Produk"];
+    _objectTracker.trackerListName = trackerListName;
+    for (ShopProductPageList*list in productList) {
+        NSDictionary *product = @{
+                                  @"name" : list.viewModel.productName ?: @"",
+                                  @"id" : list.viewModel.productId ?: @"",
+                                  @"price" : @([[list.viewModel.productPrice priceFromStringIDR] doubleValue]) ?: 0,
+                                  @"brand" : @"none/other",
+                                  @"category" : @"none/other",
+                                  @"variant" : @"none/other",
+                                  @"list" : trackerListName,
+                                  @"position" : [NSNumber numberWithInteger:_productIdx],
+                                  @"shop_type" : self.shopType,
+                                  @"shop_id" : self.shopID,
+                                  @"shop_name" : self.shopName,
+                                  @"page_type" : @"/shoppage",
+                                  @"dimension37" : self.objectTracker.trackerAttribution
+                                  };
+        [products addObject:product];
+        _productIdx++;
+    }
+    NSDictionary *data = @{
+                           @"event" : @"productView",
+                           @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
+                           @"eventAction" : @"Produk - product list - impression",
+                           @"eventLabel" : @"impression of product list",
+                           @"ecommerce" : @{
+                                   @"currencyCode" : @"IDR",
+                                   @"impressions" : products ?: @[]
+                                   }
+                           };
+    [AnalyticsManager trackData:data];
+}
+
+- (void) trackClickProduct:(int)row product:(ShopProductPageList*)product {
+    NSString*trackerListName = [NSString stringWithFormat: @"/shoppage - product %d%@%@", (int)((row+1)/ProductAndWishlistNetworkManager.productPerPage)+1, @" - product - ", _initialEtalase.etalase_name?:@"Semua Produk"];
+    _objectTracker.trackerListName = trackerListName;
+    NSDictionary *data = @{
+       @"event" : @"productClick",
+       @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
+       @"eventAction" : @"Produk - product list - click",
+       @"eventLabel" : @"click product picture",
+       @"ecommerce" : @{
+           @"click" : @{
+                   @"actionField" : @{
+                       @"list" : trackerListName
+                   },
+                   @"products" : @[@{
+                      @"name" : product.viewModel.productName ?: @"",
+                      @"id" : product.viewModel.productId ?: @"",
+                      @"price" : @([[product.viewModel.productPrice priceFromStringIDR] doubleValue]) ?: 0,
+                      @"brand" : @"none/other",
+                      @"category" : @"none/other",
+                      @"variant" : @"none/other",
+                      @"list" : trackerListName,
+                      @"position" : @(row+1),
+                      @"shop_type" : self.shopType,
+                      @"shop_id" : self.shopID,
+                      @"shop_name" : self.shopName,
+                      @"page_type" : @"/shoppage",
+                      @"dimension37" : self.objectTracker.trackerAttribution
+                  }]
+               }
+       }
+    };
+    [AnalyticsManager trackData:data];
 }
 
 @end

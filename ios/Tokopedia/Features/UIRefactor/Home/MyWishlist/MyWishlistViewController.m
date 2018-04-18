@@ -357,6 +357,7 @@ typedef enum TagRequest {
     
     __weak typeof(self) weakSelf = self;
     cell.tappedBuyButton = ^(ProductWishlistCell* tappedCell){
+        
         [AnalyticsManager trackEventName:@"clickWishlist"
                                 category:GA_EVENT_CATEGORY_WISHLIST
                                   action:GA_EVENT_ACTION_CLICK

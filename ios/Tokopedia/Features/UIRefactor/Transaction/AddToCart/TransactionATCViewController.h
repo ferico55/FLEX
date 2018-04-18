@@ -15,6 +15,7 @@
 @property (strong,nonatomic) NSString *productPrice;
 @property (strong,nonatomic) NSString *productID;
 @property (strong,nonatomic,nullable) NSString *notesToSeller;
+@property (strong, nonatomic) ProductTracker * _Nullable productTracker;
 
 @property BOOL isSnapSearchProduct;
 

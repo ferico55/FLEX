@@ -8,7 +8,7 @@
 
 import UIKit
 
-class CategoryIntermediarySubCategoryNoRevampView: UIView {
+internal class CategoryIntermediarySubCategoryNoRevampView: UIView {
 
     @IBOutlet private var categoryNameLabel: UILabel!
     @IBOutlet private var arrowImageView: UIImageView!
@@ -17,39 +17,42 @@ class CategoryIntermediarySubCategoryNoRevampView: UIView {
     @IBOutlet private var verticalSeparatorView: UIView!
     @IBOutlet private var upperHorizontalSeparatorView: UIView!
     
-    override func awakeFromNib() {
+    override internal func awakeFromNib() {
         super.awakeFromNib()
         
         arrowImageView.tintColor = UIColor.tpPrimaryBlackText()
         // Initialization code
     }
     
-    func setRightMode() {
+    internal func setRightMode() {
         horizontalSeparatorTrailing.constant = 10
         horizontalSeparatorLeading.constant = 0
         verticalSeparatorView.isHidden = true
     }
     
-    func setUnderlinedBottom() {
+    internal func setUnderlinedBottom() {
         horizontalSeparatorTrailing.constant = 0
         horizontalSeparatorLeading.constant = 0
 
     }
     
-    func setBlankMode(){
+    internal func setBlankMode(){
         horizontalSeparatorTrailing.constant = 0
         horizontalSeparatorLeading.constant = 0
         arrowImageView.isHidden = true
         categoryNameLabel.isHidden = true
     }
     
-    func unhideTopSeparatorView() {
+    internal func unhideTopSeparatorView() {
         upperHorizontalSeparatorView.isHidden = false
     }
     
-    func setData(data: CategoryIntermediaryChild) {
+    internal func setData(data: CategoryIntermediaryChild, trackerDict: [String : Any]) {
         self.categoryNameLabel.text = data.name
         self.bk_(whenTapped: {
+            
+            AnalyticsManager.trackData(trackerDict)
+            
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_CATEGORY, category: "\(GA_EVENT_CATEGORY_PAGE) -  \(data.rootCategoryId)", action: GA_EVENT_ACTION_CATEGORY, label: data.id)
             let navigateViewController = NavigateViewController()
             navigateViewController.navigateToIntermediaryCategory(from: UIApplication.topViewController(), withCategoryId: data.id, categoryName: data.name, isIntermediary: false)

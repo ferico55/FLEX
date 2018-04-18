@@ -646,7 +646,7 @@ InputPromoViewDelegate
             if (_hasDisplayedPaymentError) {
                 [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout after error"];
             } else {
-                [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout"];
+                [AnalyticsManager trackEventName:@"clickCheckout" category:GA_EVENT_CATEGORY_CHECKOUT action:GA_EVENT_ACTION_CLICK label:@"Checkout"]; //checkout
             }
             if([self isValidInput]) {
                 [self doCheckoutWithToppay];
@@ -926,8 +926,6 @@ InputPromoViewDelegate
     if (!_isLoadingRequest) {
         TransactionCartList *list = _list[section];
         
-        [AnalyticsManager trackRemoveProductsFromCart:_list];
-        
         NSString *message = [NSString stringWithFormat:FORMAT_CANCEL_CART,list.cart_shop.shop_name, list.cart_total_amount_idr];
         UIAlertView *cancelCartAlert = [[UIAlertView alloc]initWithTitle:TITLE_ALERT_CANCEL_CART message:message delegate:self cancelButtonTitle:TITLE_BUTTON_CANCEL_DEFAULT otherButtonTitles:TITLE_BUTTON_OK_DEFAULT, nil];
         cancelCartAlert.tag = 11;
@@ -956,8 +954,6 @@ InputPromoViewDelegate
     NSArray *products = list.cart_products;
     ProductDetail *product = products[indexPathCancelProduct.row];
     
-    [AnalyticsManager trackRemoveProductFromCart:product];
-    
     if (buttonIndex == actionSheet.cancelButtonIndex) {
         return;
     }
@@ -973,6 +969,7 @@ InputPromoViewDelegate
         editViewController.data = _dataInput;
         editViewController.delegate = self;
         [self.navigationController pushViewController:editViewController animated:YES];
+        [_dataInput setObject:list forKey:@"cartInfo"];
     }
 }
 
@@ -1521,6 +1518,8 @@ InputPromoViewDelegate
     
     CartRequest * request = [CartRequest new];
     [request fetchCartData:^(TransactionCartResult * data) {
+        [self trackCheckoutProduct:data step:@"1" optionName:@"cart page loaded" paymentID:nil];
+        
         NSArray<TransactionCartList*> *list = [self setCartDataFromPreviousCarts:_cart.list toNewCarts:data.list];
         [_list removeAllObjects];
         [_list addObjectsFromArray:list];
@@ -1626,6 +1625,7 @@ InputPromoViewDelegate
                             success:^(TransactionAction *data, ProductDetail *product, TransactionCartList *cart, NSInteger type) {
                                 
                                 if (type == TYPE_CANCEL_CART_PRODUCT ) {
+                                    [self trackRemoveProductFromCart:list productIndex:(int)indexPathCancelProduct.row];
                                     NSMutableArray *products = [NSMutableArray new];
                                     [products addObjectsFromArray:list.cart_products];
                                     [products removeObject:product];
@@ -1634,6 +1634,7 @@ InputPromoViewDelegate
                                         [_list removeObject:_list[indexPathCancelProduct.section]];
                                     }
                                 } else {
+                                    [self trackRemoveProductFromCart:list productIndex:-1];
                                     [_list removeObject:list];
                                 }
                                 [_tableView reloadData];
@@ -1716,6 +1717,7 @@ InputPromoViewDelegate
         [cartListRate setValue:cart.rateValue forKey:cart.rateString];
     }
     
+    __weak typeof(self) weakSelf = self;
     [RequestCart fetchToppayWithToken:_cart.token
                          listDropship:[dropshipStrList copy]
                        dropshipDetail:dropshipperDetail
@@ -1727,19 +1729,25 @@ InputPromoViewDelegate
      
                               success:^(TransactionActionResult *data) {
                                   
+                                  NSString * transactionID = [data.parameter objectForKey:@"transaction_id"];
+                                  [weakSelf trackCheckoutProduct:_cart
+                                                            step:@"2"
+                                                      optionName:@"click payment option button"
+                                                       paymentID:transactionID];
+                                  
                                   [TransactionCartWebViewViewController pushToppayFrom:self data:data];
                                   _popFromToppay = YES;
-                                  [self isLoading:NO];
+                                  [weakSelf isLoading:NO];
                                   
                               } error:^(NSError *error) {
                                   if (error) {
-                                      [self doClearAllData];
-                                      [self isLoading:NO];
+                                      [weakSelf doClearAllData];
+                                      [weakSelf isLoading:NO];
                                       [_noInternetConnectionView generateRequestErrorViewWithError:error];
                                       [_tableView addSubview:_noInternetConnectionView];
                                       
                                   }
-                                  [self isLoading:NO];
+                                  [weakSelf isLoading:NO];
                               }];
 }
 
@@ -1849,5 +1857,88 @@ InputPromoViewDelegate
     webViewController.strURL = [NSString stringWithFormat: @"%@%@", [NSString v4Url], @"/v4/web-view/get_insurance_info.pl"];
     webViewController.strTitle = @"Syarat dan Ketentuan";
     [self.navigationController pushViewController:webViewController animated:YES];
+}
+
+#pragma mark - Tracker
+- (void)trackCheckoutProduct:(TransactionCartResult*)cartResult
+                        step:(NSString *)step
+                  optionName:(NSString *)optionName
+                   paymentID:(nullable NSString *)paymentID {
+    NSMutableArray *products = [NSMutableArray new];
+    for (TransactionCartList*cartList in cartResult.list) {
+        NSString *shopType = cartList.cart_shop.isOfficial ? @"official_store" : cartList.cart_shop.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+        for (ProductDetail*detail in cartList.cart_products) {
+            NSDictionary *product = @{
+                                      @"name" : detail.product_name ?: @"",
+                                      @"id" : detail.product_id ?: @"",
+                                      @"price" : detail.product_price ?: @"0",
+                                      @"brand" : @"none/other",
+                                      @"category" : detail.product_cat_name_tracking ?: @"",
+                                      @"variant" : @"none/other",
+                                      @"quantity" : detail.product_quantity ?: @"1",
+                                      @"shopId" : cartList.cart_shop.shop_id ?: @"",
+                                      @"shop_name" : cartList.cart_shop.shop_name ?: @"",
+                                      @"shopType" : shopType,
+                                      @"dimension37" : detail.trackerInfo.trackerAttribution ?: @"none/other",
+                                      @"ctg_id" : detail.product_cat_id ?: @""
+                                      };
+            [products addObject:product];
+        }
+    }
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:@{
+        @"event" : @"checkout",
+        @"ecommerce" : @{
+              @"checkout" : @{
+                      @"actionField" : @{
+                              @"step" : step ?: @"",
+                              @"option" : optionName ?: @""
+                              },
+                      @"products" : products
+                      }
+              }
+    }];
+    
+    if ([step  isEqual: @"2"] && paymentID != nil) {
+        [data setValue:paymentID forKey:@"payment_id"];
+    }
+    [AnalyticsManager trackData:data];
+}
+
+- (void)trackRemoveProductFromCart:(TransactionCartList*)cartList productIndex:(int)index {
+    NSString *shopType = cartList.cart_shop.isOfficial ? @"official_store" : cartList.cart_shop.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+    if (index >= 0) {
+        [self doTrackRemovePerProduct:cartList.cart_products[index] cart:cartList type:shopType];
+    } else {
+        for (ProductDetail*product in cartList.cart_products) {
+            [self doTrackRemovePerProduct:product cart:cartList type:shopType];
+        }
+    }
+}
+
+- (void) doTrackRemovePerProduct:(ProductDetail*)product cart:(TransactionCartList*)cartList type:(NSString*)shopType {
+    NSDictionary *data = @{
+       @"event" : @"removeFromCart",
+       @"ecommerce" : @{
+           @"currencyCode" : @"IDR",
+           @"remove" : @{
+               @"products" : @[@{
+                   @"name": product.product_name ?: @"",
+                   @"id": product.product_id ?: @"",
+                   @"price": product.product_price ?: @"",
+                   @"brand": @"none/other",
+                   @"category": product.product_cat_name_tracking ?: @"",
+                   @"variant": @"none/other",
+                   @"quantity": product.product_quantity ?: @1,
+                   @"shop_id": cartList.cart_shop.shop_id ?: @"",
+                   @"shop_type": shopType ?: @"",
+                   @"shop_name": cartList.cart_shop.shop_name ?: @"",
+                   @"category_id": product.product_cat_id ?: @"",
+                   @"cart_id": product.product_cart_id ?: @"",
+                   @"dimension37" : product.trackerInfo.trackerAttribution ?: @"none/other"
+                   }]
+               }
+           }
+       };
+    [AnalyticsManager trackData:data];
 }
 @end

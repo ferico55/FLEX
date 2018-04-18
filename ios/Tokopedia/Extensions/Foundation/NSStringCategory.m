@@ -165,6 +165,7 @@
     price = [price stringByReplacingOccurrencesOfString:@"Rp" withString:@""];
     price = [price stringByReplacingOccurrencesOfString:@"-" withString:@""];
     price = [price stringByReplacingOccurrencesOfString:@"," withString:@""];
+    price = [price stringByReplacingOccurrencesOfString:@" " withString:@""];
     
     return price;
 }

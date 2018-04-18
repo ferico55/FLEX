@@ -31,7 +31,7 @@
 @property (strong, nonatomic) IBOutlet UIView *fourButtonsToolbar;
 @property (strong, nonatomic) IBOutlet UIView *threeButtonsToolbar;
 @property (weak, nonatomic) TKPDTabNavigationController *tkpdTabNavigationController;
+@property (strong, nonatomic) ProductTracker *trackerObject;
 @property (nonatomic) BOOL isIntermediary;
-//@property (nonatomic) BOOL isFromHotlist;
 
 @end

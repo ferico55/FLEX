@@ -62,7 +62,10 @@ internal class ProductAndWishlistNetworkManager: NSObject {
             })
     }
     
-    internal func requestIntermediaryCategory(forCategoryID:String, withCompletionHandler completionHandler: @escaping(CategoryIntermediaryResult) -> Void, andErrorHandler errorHandler: @escaping(Error) -> Void) {
+    internal func requestIntermediaryCategory(forCategoryID:String,
+                                              trackerObject:ProductTracker,
+                                              withCompletionHandler completionHandler: @escaping(CategoryIntermediaryResult) -> Void,
+                                              andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:CategoryIntermediaryResult?
         NetworkProvider<HadesTarget>()
             .request(.getCategoryIntermediary(forCategoryID: forCategoryID))
@@ -70,6 +73,75 @@ internal class ProductAndWishlistNetworkManager: NSObject {
             .flatMap { searchResult -> Observable<CategoryIntermediaryResult> in
                 outerResult = searchResult
                 var productIds:[String] = []
+                
+                if let curatedSections = searchResult.curatedProduct?.sections {
+                    let attribution = trackerObject.trackerAttribution
+                    for (sectionIndex, section) in curatedSections.enumerated() {
+                        var productArray: [[String: Any]] = []
+                        for (productIndex, product) in section.products.enumerated() {
+                            if productIndex < 4 {
+                                let strippedPrice = product.price.replacingOccurrences( of:"[^0-9]", with: "", options: .regularExpression)
+                                productArray.append([
+                                    "id": "\(product.id)",
+                                    "name": "\(product.name)",
+                                    "price": "\(strippedPrice)",
+                                    "brand": "none/other",
+                                    "category": "none/other",
+                                    "variant": "none/other",
+                                    "position": "\(productIndex+1)",
+                                    "list": "/intermediary/\(searchResult.name) - product \(sectionIndex+1) - \(section.title)",
+                                    "dimension37": "\(attribution)"
+                                    ])
+                            }
+                        }
+                        
+                        let trackerDict: [String : Any] = [
+                            "event": "productView",
+                            "eventCategory" : "intermediary page",
+                            "eventAction" : "product curation impression",
+                            "eventLabel" : "",
+                            "ecommerce": [
+                                "currencyCode": "IDR",
+                                "impressions": productArray
+                            ]
+                        ]
+                        
+                        AnalyticsManager.trackData(trackerDict)
+                    }
+                }
+                
+                if let children = searchResult.children, children.count > 0 {
+                    let promoNumber = searchResult.isIntermediary ? 2 : 1
+                    let eventCategory = searchResult.isIntermediary ? "intermediary page" : "category page"
+                    
+                    let promotionArray: [[String: Any]] = children.enumerated().map({ (index, child) in
+                        let name = searchResult.isIntermediary ?
+                            "/intermediary/\(searchResult.name) - promo \(promoNumber) - subcategory"
+                            : "/category/\(searchResult.name) - promo \(promoNumber)"
+                        
+                        return [
+                            "id": "\(child.id)",
+                            "name": "\(name)",
+                            "position": "\(index+1)",
+                            "creative": "\(child.name)",
+                            "creative_url": "\(child.thumbnailImage ?? "")",
+                        ]
+                    })
+                    
+                    let trackerDict: [String : Any] = [
+                        "event": "promoView",
+                        "eventCategory" : "\(eventCategory)",
+                        "eventAction" : "subcategory impression",
+                        "eventLabel" : "",
+                        "ecommerce": [
+                            "promoView": [
+                                "promotions": promotionArray
+                            ]
+                        ]
+                    ]
+                    
+                    AnalyticsManager.trackData(trackerDict)
+                }
                 
                 let userManager = UserAuthentificationManager()
                 if !userManager.isLogin {
@@ -188,14 +260,14 @@ internal class ProductAndWishlistNetworkManager: NSObject {
     }
     
     internal func requestProductShop(shopID:String,
-                            etalaseID:String,
-                            keyword:String,
-                            page:Int,
-                            orderBy:ListOption,
-                            shopDomain:String,
-                            isAce: Bool,
-                            withCompletionHandler completionHandler: @escaping(ShopProductPageResult) -> Void,
-                            andErrorHandler errorHandler: @escaping(Error) -> Void) {
+                                     etalaseID:String,
+                                     keyword:String,
+                                     page:Int,
+                                     orderBy:ListOption,
+                                     shopDomain:String,
+                                     isAce: Bool,
+                                     withCompletionHandler completionHandler: @escaping(ShopProductPageResult) -> Void,
+                                     andErrorHandler errorHandler: @escaping(Error) -> Void) {
         var outerResult:ShopProductPageResult?
         let params = [
             "shop_id": shopID,
@@ -238,8 +310,8 @@ internal class ProductAndWishlistNetworkManager: NSObject {
     }
     
     internal func requestFeaturedProduct(shopID: String,
-                                withCompletionHandler completionHandler: @escaping([FeaturedProduct]) -> Void,
-                                andErrorHandler errorHandler: @escaping(Error) -> Void) {
+                                         withCompletionHandler completionHandler: @escaping([FeaturedProduct]) -> Void,
+                                         andErrorHandler errorHandler: @escaping(Error) -> Void) {
         NetworkProvider<GoldMerchantTarget>()
             .request(.getFeaturedProduct(withShopID: shopID))
             .map(to: [FeaturedProduct.self], fromKey: "data")

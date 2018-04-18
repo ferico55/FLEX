@@ -120,6 +120,7 @@
                       @"product_picture",
                       @"product_cat_name",
                       @"product_cat_id",
+                      @"product_cat_name_tracking",
                       @"insurance_used_default",
                       @"insurance_used_info",
                       @"insurance_used_type",
@@ -139,6 +140,7 @@
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"return_info" toKeyPath:@"return_info" withMapping:[ProductReturnInfo mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"preorder" toKeyPath:@"preorder" withMapping:[PreorderDetail mapping]]];
     [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_preorder" toKeyPath:@"product_preorder" withMapping:[ProductPreorder mapping]]];
+    [mapping addPropertyMapping:[RKRelationshipMapping relationshipMappingFromKeyPath:@"product_tracker_data" toKeyPath:@"trackerInfo" withMapping:[ProductTracker mapping]]];
     RKRelationshipMapping *errorMapping = [RKRelationshipMapping relationshipMappingFromKeyPath:@"errors" toKeyPath:@"errors" withMapping:[Errors mapping]];
     [mapping addPropertyMapping:errorMapping];
     
@@ -148,8 +150,5 @@
 + (NSInteger)maximumPurchaseQuantity {
     return 10000;
 }
-
-
-
 
 @end

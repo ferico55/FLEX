@@ -48,6 +48,7 @@
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *productPriceLabelWidthConstraint;
 @property (strong, nonatomic) NSString* applinks;
 @property (strong, nonatomic) ProductModelView *viewModel;
+@property (nonatomic, strong) NSDictionary *trackerDictionary;
 
 @property (strong, nonatomic) NSString *searchTerm;
 

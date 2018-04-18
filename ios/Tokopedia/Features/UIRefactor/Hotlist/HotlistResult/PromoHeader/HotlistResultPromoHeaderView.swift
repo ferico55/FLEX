@@ -33,6 +33,8 @@ class HotlistResultPromoHeaderView: UIView {
             promoPeriodLabel.text = promoInfo?.promoPeriod
         }
     }
+    private var bannerInfo: HotlistBannerInfo?
+    private var trackerLabelInfo = ""
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -66,6 +68,7 @@ class HotlistResultPromoHeaderView: UIView {
                 self.couponButton.setTitle("Kode Tersalin!", for: .normal)
                 self.checkImageView.isHidden = false
                 self.copyCodeButton.isHidden = true
+                AnalyticsManager.trackEventName("clickHotlist", category: "hotlist page", action: "hotlist promo click salin kode", label: self.trackerLabelInfo)
             })
             .subscribe()
             .disposed(by: rx_disposeBag)
@@ -78,12 +81,17 @@ class HotlistResultPromoHeaderView: UIView {
                     let applinks = self.promoInfo?.applinks,
                     let applinksURL = URL(string: applinks) else { return }
                 TPRoutes.routeURL(applinksURL)
+                AnalyticsManager.trackEventName("clickHotlist", category: "hotlist page", action: "hotlist promo click syarat ketentuan", label: self.trackerLabelInfo)
             })
             .disposed(by: rx_disposeBag)
     }
     
-    func setPromoInfo(_ promoInfo: HotlistPromoInfo) {
+    internal func setPromoInfo(_ promoInfo: HotlistPromoInfo, bannerInfo: HotlistBannerInfo) {
         self.promoInfo = promoInfo
+        self.bannerInfo = bannerInfo
+        
+        self.trackerLabelInfo = bannerInfo.title + " - " + promoInfo.text + " - " + promoInfo.voucherCode
+        AnalyticsManager.trackEventName("clickHotlist", category: "hotlist page", action: "hotlist promo impression", label: trackerLabelInfo)
     }
 }
 

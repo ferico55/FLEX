@@ -10,20 +10,21 @@ import Foundation
 import Unbox
 
 @objc(CategoryIntermediaryChild)
-final class CategoryIntermediaryChild: NSObject, Unboxable {
+public final class CategoryIntermediaryChild: NSObject, Unboxable {
     
-    var id: String = ""
-    var name: String = ""
-    var url: String = ""
-    var thumbnailImage:String?
-    var hidden: Int = 0
+    public var id: String = ""
+    public var name: String = ""
+    public var url: String = ""
+    public var thumbnailImage:String?
+    public var hidden: Int = 0
     // isRevamp digunakan sebagai penanda apakah category memiliki design sub category yang bergambar atau tidak
-    var isRevamp: Bool = false
+    public var isRevamp: Bool = false
     // isIntermediary digunakan sebagai penanda apakah category termasuk intermediary atau bukan (memiliki hotlist, top editor choice, top ads toko)
-    var isIntermediary: Bool = false
-    var rootCategoryId = ""
+    public var isIntermediary: Bool = false
+    public var rootCategoryId = ""
+    public var applinks = ""
     
-    convenience init(unboxer:Unboxer) throws {
+    convenience public init(unboxer:Unboxer) throws {
         self.init()
         self.id = try unboxer.unbox(keyPath: "id")
         self.name = try unboxer.unbox(keyPath: "name")
@@ -34,6 +35,7 @@ final class CategoryIntermediaryChild: NSObject, Unboxable {
         }
         self.isRevamp = try unboxer.unbox(keyPath: "is_revamp")
         self.isIntermediary = try unboxer.unbox(keyPath: "is_intermediary")
-        rootCategoryId = try unboxer.unbox(keyPath: "root_category_id")
+        self.rootCategoryId = try unboxer.unbox(keyPath: "root_category_id")
+        self.applinks = try unboxer.unbox(keyPath: "applinks")
     }
 }

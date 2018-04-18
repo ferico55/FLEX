@@ -19,8 +19,18 @@
 
 @interface NavigateViewController : NSObject
 
+@property (nonatomic) BOOL *hasAttribution;
+
 +(void)navigateToMaintenanceViewController;
 + (void)navigateToAccountActivationSuccess;
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController
+                              withProductID:(NSString *)productID
+                                    andName:(NSString *)name
+                                   andPrice:(NSString *)price
+                                andImageURL:(NSString *)imageURL
+                                andShopName:(NSString *)shopName
+                         withProductTracker:(ProductTracker *)productTracker;
 
 + (void)navigateToProductFromViewController:(UIViewController *)viewController
                               withProductID:(NSString *)productID
@@ -33,8 +43,11 @@
 
 -(void)navigateToProfileFromViewController:(UIViewController*)viewController withUserID:(NSString *)userID;
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
+-(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker*)tracker;
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId;
+-(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId withTrackerObject:(ProductTracker*)tracker;
 -(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by;
+-(void)navigateToShopFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by withTrackerObject:(ProductTracker*)tracker;
 -(void)navigateToShopInfoFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopTalkFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
 -(void)navigateToShopReviewFromViewController:(UIViewController*)viewController withShopID:(NSString *)shopID;
@@ -56,12 +69,16 @@
 - (void)navigateToCatalogFromViewController:(UIViewController *)viewController withCatalogID:(NSString *)catalogID;
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName;
+- (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName withTrackerObject:(ProductTracker*)tracker;
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data;
+- (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data withTrackerObject:(ProductTracker*)tracker;
 - (void)navigateToPromoDetailFromViewController:(UIViewController*) viewController withName:(NSString*) promoName;
 
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary trackerObject:(ProductTracker *)trackerObject;
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams;
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams trackerObject:(ProductTracker *)trackerObject;
 
 - (void)navigateToSearchFromViewController:(UIViewController *)viewController withURL:(NSURL*)url;
 
@@ -71,6 +88,7 @@
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type infoAddress:(AddressViewModel*)infoAddress fromViewController:(UIViewController *)viewController;
 +(void)navigateToMap:(CLLocationCoordinate2D)location type:(NSInteger)type fromViewController:(UIViewController *)viewController;
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID;
++(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker*)tracker;
 + (void)navigateToContactUsFromViewController:(UIViewController *)viewController;
 + (void)navigateToSaldoTopupFromViewController:(UIViewController *)viewController;
 - (void)navigateToAddProductFromViewController:(UIViewController*)viewController;

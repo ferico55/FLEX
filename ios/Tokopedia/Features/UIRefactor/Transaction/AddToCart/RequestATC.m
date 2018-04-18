@@ -8,6 +8,7 @@
 
 #import "RequestATC.h"
 #import "StickyAlertView+NetworkErrorHandler.h"
+#import "Tokopedia-Swift.h"
 
 @implementation RequestATC
 
@@ -59,6 +60,8 @@
     NSInteger postalCode = [address.postal_code integerValue];
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
+    NSString *trackerAttribution = product.trackerInfo.trackerAttribution;
+    NSString *trackerListName = product.trackerInfo.trackerListName;
     
     NSDictionary* param = @{
                             @"product_id":@(productID),
@@ -81,7 +84,9 @@
                             @"ut": shipmentPackage.ut,
                             @"check_sum": shipmentPackage.check_sum?:@"",
                             @"weight" : shipment.weight?:@"",
-                            @"price": shipmentPackage.price?:@""
+                            @"price": shipmentPackage.price?:@"",
+                            @"home_attribution" : trackerAttribution,
+                            @"list_name_product": trackerListName
                             };
     
     TokopediaNetworkManager *networkManager = [TokopediaNetworkManager new];

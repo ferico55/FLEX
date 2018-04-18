@@ -8,12 +8,12 @@
 
 import UIKit
 
-class CategoryIntermediarySubCategoryCellView: UIView {
+internal class CategoryIntermediarySubCategoryCellView: UIView {
 
     @IBOutlet private var imageView: UIImageView!
     @IBOutlet private var categoryNameLabel: UILabel!
     
-    func setData(data: CategoryIntermediaryChild) {
+    internal func setData(data: CategoryIntermediaryChild, trackerDict: [String : Any]) {
         if let thumbnailImage = data.thumbnailImage {
             let urlThumbnail: URL? = URL(string: thumbnailImage)
             if let urlThumbnail = urlThumbnail {
@@ -23,6 +23,8 @@ class CategoryIntermediarySubCategoryCellView: UIView {
         }
         self.categoryNameLabel.text = data.name.uppercased()
         self.bk_(whenTapped: {
+            
+            AnalyticsManager.trackData(trackerDict)
             
             AnalyticsManager.trackEventName(GA_EVENT_CLICK_INTERMEDIARY,
                 category: "\(GA_EVENT_INTERMEDIARY_PAGE) -  \(data.rootCategoryId)",

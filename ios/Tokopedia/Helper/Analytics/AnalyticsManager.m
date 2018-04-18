@@ -45,7 +45,6 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
         _userManager = [UserAuthentificationManager new];
         [_dataLayer push:@{@"user_id" : [_userManager getUserId]?:@""}];
     }
-    
     return self;
 }
 
@@ -89,6 +88,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                           attributes:@{
                                        @"screen_name": name ?: @""
                                        }];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackScreenName:(NSString *)name gridType:(NSInteger)gridType {
@@ -101,6 +101,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackScreenName:(NSString *)name customDataLayer:(NSDictionary *)dataLayer {
@@ -115,6 +116,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     [layer addEntriesFromDictionary:dataLayer];
     
     [manager.dataLayer push:layer];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackUserInformation {
@@ -122,6 +124,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     
     if ([manager.userManager isLogin]) {
         [manager.dataLayer push:@{@"user_id" : [manager.userManager getUserId]?:@""}];
+        [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
     }
 }
 
@@ -161,6 +164,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackProductClick:(id)product {
@@ -181,6 +185,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackProductListImpression:(NSArray *)products category:(NSString *)category action:(NSString *)action label:(NSString *)label {
@@ -205,10 +210,11 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                         };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackProductListClick:(id)product category:(NSString *)category action:(NSString *)action label:(NSString *)label {
-    if (!product || (![product isKindOfClass:FuzzySearchProduct.class] && ![product isKindOfClass:PromoResult.class]))
+    if (!product || (![product isKindOfClass:FuzzySearchProduct.class] && ![product isKindOfClass:PromoResult.class] && ![product isKindOfClass:SearchProduct.class]))
         return;
     
     AnalyticsManager *manager = [[self alloc] init];
@@ -230,6 +236,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackProductView:(Product *)product {
@@ -263,6 +270,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                                                    AFEventParamCurrency : @"IDR",
                                                    AFEventParamContentType : @"Product"
                                                    }];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackProductAddToCart:(ProductDetail *)product {
@@ -296,6 +304,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                                                    @"category" : (categories.count > 0) ? categories[0] : @"",
 //                                                   @"subcategory_id" : @"",
                                                    @"subcategory" : (categories.count > 1) ? categories[1] : @""}];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackRemoveProductFromCart:(id)product {
@@ -312,28 +321,24 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                                    }
                            };
     [analytics.dataLayer push:data];
+    [analytics.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
-+ (void)trackRemoveProductsFromCart:(NSArray *)shops {
-    if (!shops) return;
-    AnalyticsManager *analytics = [[self alloc] init];
-    NSMutableArray *products = [NSMutableArray new];
-    for(TransactionCartList *list in shops) {
-        for(ProductDetail *detailProduct in list.cart_products) {
-            [products addObject:detailProduct.productFieldObjects];
-        }
-    }
-    
++ (void)trackAddProductToCart:(id)product {
+    AnalyticsManager *manager = [AnalyticsManager new];
+    NSDictionary *productFieldObjects = [product productFieldObjectsForEnhancedEcommerceTracking];
     NSDictionary *data = @{
-                           @"event" : @"removeFromCart",
+                           @"event" : @"addToCart",
                            @"ecommerce" : @{
                                    @"currencyCode" : @"IDR",
-                                   @"remove" : @{
-                                           @"products" : products
+                                   @"add" : @{
+                                           @"products" : @[productFieldObjects]
                                            }
                                    }
                            };
-    [analytics.dataLayer push:data];
+    
+    [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackPromoClick:(PromoResult *)promoResult {
@@ -350,6 +355,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackPromoClickWithDictionary:(NSDictionary *)promotionsDict {
@@ -365,6 +371,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackData:(NSDictionary *)data {
@@ -397,6 +404,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackPurchaseID:(NSString *)purchaseID carts:(NSArray *)carts coupon:(NSString *)coupon {
@@ -443,7 +451,9 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                                    };
     
     [manager.dataLayer push:transactionData];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
     [manager.dataLayer push:purchaseData];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackLoginUserID:(NSString *)userID {
@@ -458,6 +468,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackExceptionDescription:(NSString *)description {
@@ -469,6 +480,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackOnBoardingClickButton:(NSString *)buttonName {
@@ -480,6 +492,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackSnapSearchCategory:(NSString *)categoryName {
@@ -491,6 +504,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackSnapSearchAddToCart:(ProductDetail *)product {
@@ -502,6 +516,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackAuthenticatedWithLoginResult:(LoginResult *)result {
@@ -520,6 +535,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackSuccessSubmitReview:(NSInteger)status {
@@ -531,6 +547,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackSearchInboxReview {
@@ -541,6 +558,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackPushNotificationAccepted:(BOOL)accepted {
@@ -552,6 +570,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackOpenPushNotificationSetting {
@@ -562,6 +581,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
                            };
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackCampaign:(NSURL *)url {
@@ -580,6 +600,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     if ([[data objectForKey:@"utmSource"] length] != 0 && [[data objectForKey:@"utmMedium"] length] != 0 && [[data objectForKey:@"utmCampaign"] length] != 0 ) {
         [manager.dataLayer push:data];
     }
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (void)trackEventName:(NSString *)event category:(NSString *)category action:(NSString *)action label:(NSString *)label {
@@ -589,6 +610,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     [Crashlytics.sharedInstance setObjectValue:data forKey:@"Last user action"];
     
     [manager.dataLayer push:data];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 #pragma mark - MoEngage trackers
@@ -800,8 +822,9 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
     
     
     [manager.dataLayer push:eventDataLayer];
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
     [manager.dataLayer push:ecommercePromoDataLayer];
-
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 + (BOOL) isSearchIDEqualToSearchSuggestion: (NSString *) searchID {
@@ -842,7 +865,7 @@ typedef NS_ENUM(NSInteger, TrackProductType) {
         eventDataLayer = [eventDataLayer mergedWithDictionary:@{@"destinationURL" : url}];
     }
     [manager.dataLayer push:eventDataLayer];
-    
+    [manager.dataLayer push:@{ @"ecommerce" : [NSNull null] }];
 }
 
 @end

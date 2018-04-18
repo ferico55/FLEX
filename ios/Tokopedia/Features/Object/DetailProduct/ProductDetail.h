@@ -9,9 +9,9 @@
 @class ProductPreorder;
 @class ProductReturnInfo;
 @class Errors;
+@class ProductTracker;
 #import <Foundation/Foundation.h>
 #import "ProductModelView.h"
-
 
 @interface ProductDetail : NSObject <TKPObjectMapping>
 
@@ -61,6 +61,7 @@
 @property (nonatomic, strong) NSString *product_price_last;
 @property (nonatomic, strong) NSString *product_cat_name;
 @property (nonatomic, strong) NSNumber *product_cat_id;
+@property (nonatomic, strong) NSString *product_cat_name_tracking;
 @property (nonatomic, strong) ProductReturnInfo *return_info;
 
 @property (nonatomic, strong) NSArray<Errors *> *errors;
@@ -76,6 +77,8 @@
 @property (nonatomic, strong) NSString *insurance_type;
 @property (nonatomic, strong) NSString *insurance_type_info;
 @property (nonatomic, strong) NSString *insurance_price;
+
+@property (nonatomic, strong) ProductTracker *trackerInfo;
 
 + (NSInteger)maximumPurchaseQuantity;
 

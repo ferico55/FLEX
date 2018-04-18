@@ -91,10 +91,25 @@
 }
 
 
+
++(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker *)tracker {
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
+    container.productTracker = tracker;
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID
 {
     ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+-(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker *)tracker {
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
+    container.productTracker = tracker;
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -108,6 +123,16 @@
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
+-(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId withTrackerObject:(ProductTracker*)tracker {
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{MORE_SHOP_ID : shopID?:@""};
+    EtalaseList *list = [EtalaseList new];
+    list.etalase_id = etalaseId;
+    container.initialEtalase = list;
+    container.productTracker = tracker;
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by
 {
     ShopProductFilter *filter = [ShopProductFilter new];
@@ -118,6 +143,18 @@
     container.data = @{kTKPDDETAIL_APISHOPIDKEY : shopID ?: @""};
     container.productFilter = filter;
     
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+-(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withEtalaseId:(NSString *)etalaseId search:(NSString *)keyword sort:(NSString *)by withTrackerObject:(ProductTracker*)tracker {
+    ShopProductFilter *filter = [ShopProductFilter new];
+    filter.query = keyword ?: @"";
+    filter.orderBy = by ?: @"";
+    filter.etalaseId = etalaseId ?: @"";
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{kTKPDDETAIL_APISHOPIDKEY : shopID ?: @""};
+    container.productFilter = filter;
+    container.productTracker = tracker;
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -244,6 +281,26 @@
     GalleryViewController *gallery = [[GalleryViewController alloc] initWithPhotoSource:self withStartingIndex:(int)index];
     gallery.canDownload = YES;
     [viewController.navigationController presentViewController:gallery animated:YES completion:nil];
+}
+
++ (void)navigateToProductFromViewController:(UIViewController *)viewController
+                              withProductID:(NSString *)productID
+                                    andName:(NSString *)name
+                                   andPrice:(NSString *)price
+                                andImageURL:(NSString *)imageURL
+                                andShopName:(NSString *)shopName
+                         withProductTracker:(ProductTracker *)productTracker {
+    ProductDetailViewController *vc = [[ProductDetailViewController alloc] initWithProductID:productID?:@""
+                                                                                        name:name?:@""
+                                                                                       price:price?:@""
+                                                                                    imageURL:imageURL?:@""
+                                                                                    shopName:shopName?:@""
+                                                                           isReplacementMode:NO
+                                                                              productTracker:productTracker];
+    
+    vc.hidesBottomBarWhenPushed = YES;
+    
+    [viewController.navigationController pushViewController:vc animated:YES];
 }
 
 + (void)navigateToProductFromViewController:(UIViewController *)viewController
@@ -395,10 +452,17 @@
 
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName {
     ShopViewController *container = [[ShopViewController alloc] init];
-
+    
     container.data = @{
                        @"shop_domain" : shopName
                        };
+    [viewController.navigationController pushViewController:container animated:YES];
+}
+
+- (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName withTrackerObject:(ProductTracker*)tracker {
+    ShopViewController *container = [[ShopViewController alloc] init];
+    container.data = @{ @"shop_domain" : shopName };
+    container.productTracker = tracker;
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -415,13 +479,39 @@
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary{
     CategoryResultViewController *categoryResultProductViewController = [CategoryResultViewController new];
     categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
-    categoryResultProductViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_product"};
+    categoryResultProductViewController.data = @{@"sc":categoryId ?: @"", @"department_name":categoryName ?: @"", @"type" : @"search_product"};
     categoryResultProductViewController.isIntermediary = isIntermediary;
     
     SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
     searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
     searchResultCatalogViewController.isFromDirectory = YES;
-    searchResultCatalogViewController.data = @{@"sc" : categoryId, @"department_name": categoryName, @"type" : @"search_catalog"};
+    searchResultCatalogViewController.data = @{@"sc" : categoryId ?: @"", @"department_name": categoryName ?: @"", @"type" : @"search_catalog"};
+    
+    NSArray *subViewControllers = @[categoryResultProductViewController, searchResultCatalogViewController];
+    
+    TKPDTabNavigationController *tkpdTabNavigationController = [TKPDTabNavigationController new];
+    categoryResultProductViewController.tkpdTabNavigationController = tkpdTabNavigationController;
+    NSMutableDictionary *data = [[NSMutableDictionary alloc] initWithDictionary:@{@"type": @1, @"department_id" : categoryId}];
+    tkpdTabNavigationController.data = data;
+    tkpdTabNavigationController.navigationTitle = categoryName ?: @"";
+    tkpdTabNavigationController.selectedIndex = 0;
+    tkpdTabNavigationController.viewControllers = subViewControllers;
+    tkpdTabNavigationController.hidesBottomBarWhenPushed = true;
+    
+    [viewController.navigationController pushViewController:tkpdTabNavigationController animated: YES];
+}
+
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withCategoryId:(NSString *) categoryId categoryName:(NSString *) categoryName isIntermediary:(BOOL) isIntermediary trackerObject:(ProductTracker *)trackerObject {
+    CategoryResultViewController *categoryResultProductViewController = [CategoryResultViewController new];
+    categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
+    categoryResultProductViewController.data = @{@"sc":categoryId ?: @"", @"department_name":categoryName ?: @"", @"type" : @"search_product"};
+    categoryResultProductViewController.isIntermediary = isIntermediary;
+    categoryResultProductViewController.trackerObject = trackerObject;
+    
+    SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
+    searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
+    searchResultCatalogViewController.isFromDirectory = YES;
+    searchResultCatalogViewController.data = @{@"sc" : categoryId ?: @"", @"department_name": categoryName ?: @"", @"type" : @"search_catalog"};
     
     NSArray *subViewControllers = @[categoryResultProductViewController, searchResultCatalogViewController];
     
@@ -440,6 +530,18 @@
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams{
     CategoryResultViewController *vc = [CategoryResultViewController new];
     vc.isIntermediary = YES;
+    NSMutableDictionary *dataDictionaryWithFilterParams = [[self addDataTypeFromData: [data mapToDictionary]] mutableCopy];
+    [dataDictionaryWithFilterParams addEntriesFromDictionary:filterParams];
+    vc.data = [dataDictionaryWithFilterParams copy];
+    vc.title = [self getTitleFromData: dataDictionaryWithFilterParams];
+    vc.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:vc animated:YES];
+}
+
+- (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams trackerObject:(ProductTracker *)trackerObject{
+    CategoryResultViewController *vc = [CategoryResultViewController new];
+    vc.isIntermediary = YES;
+    vc.trackerObject = trackerObject;
     NSMutableDictionary *dataDictionaryWithFilterParams = [[self addDataTypeFromData: [data mapToDictionary]] mutableCopy];
     [dataDictionaryWithFilterParams addEntriesFromDictionary:filterParams];
     vc.data = [dataDictionaryWithFilterParams copy];
@@ -498,12 +600,20 @@
             [viewController.navigationController pushViewController:tabController animated:YES];
         });
     }
-
+    
 }
 
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data {
     HotlistResultViewController *controller = [HotlistResultViewController new];
     controller.data = data;
+    controller.hidesBottomBarWhenPushed = YES;
+    [viewController.navigationController pushViewController:controller animated:YES];
+}
+
+- (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data withTrackerObject:(ProductTracker*)tracker {
+    HotlistResultViewController *controller = [HotlistResultViewController new];
+    controller.data = data;
+    controller.trackerObject = tracker;
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
@@ -625,7 +735,7 @@
         alertLucky.infoLabel.hidden = YES;
         alertLucky.klikDisiniButton.hidden = YES;
     }
-
+    
     [alertLucky show];
     
 }
@@ -672,10 +782,6 @@
     placePicker.delegate = viewController;
     placePicker.hidesBottomBarWhenPushed = YES;
     placePicker.infoAddress = infoAddress;
-//    PlacePickerViewController *placePicker = [PlacePickerViewController new];
-//    placePicker.firstCoordinate = location;
-//    placePicker.type = type;
-//    placePicker.delegate = viewController;
     [viewController.navigationController pushViewController:placePicker animated:YES];
 }
 

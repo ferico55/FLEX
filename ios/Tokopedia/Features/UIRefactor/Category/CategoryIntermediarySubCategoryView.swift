@@ -6,27 +6,27 @@
 //
 //
 
-import UIKit
 import OAStackView
 import SnapKit
+import UIKit
 
-class CategoryIntermediarySubCategoryView: UIView {
+internal class CategoryIntermediarySubCategoryView: UIView {
     private var innerHorizontalStackView: OAStackView = {
         return OAStackView()
     }()
     private var isRevamp: Bool = false
     
-    var didTapSeeAllButton: (() -> Void)?
+    internal var didTapSeeAllButton: (() -> Void)?
     
-    override init(frame: CGRect) {
+    override internal init(frame: CGRect) {
         super.init(frame: frame)
     }
     
-    func setIsRevamp(isRevamp: Bool) {
+    internal func setIsRevamp(isRevamp: Bool) {
         self.isRevamp = isRevamp
     }
     
-    func setChildrenData(categoryChildren: [CategoryIntermediaryChild], isNeedSeeMoreButton: Bool) {
+    internal func setChildrenData(categoryChildren: [CategoryIntermediaryChild], categoryResult: CategoryIntermediaryResult, isNeedSeeMoreButton: Bool) {
         self.removeAllSubviews()
         let stackView: OAStackView = OAStackView()
         self.addSubview(stackView)
@@ -68,8 +68,25 @@ class CategoryIntermediarySubCategoryView: UIView {
             for (index, data) in categoryChildren.enumerated() {
                 let categoryViewCell = (UINib(nibName: "CategoryIntermediarySubCategoryCellView", bundle: nil).instantiate(withOwner: nil, options: [:])[0]) as! CategoryIntermediarySubCategoryCellView
                 
+                let eeDict: [String : Any] = [
+                    "event": "promoClick",
+                    "eventCategory" : "intermediary page",
+                    "eventAction" : "click subcategory",
+                    "eventLabel" : data.applinks,
+                    "ecommerce": [
+                        "promoClick": [
+                            "promotions": [[
+                                "id": data.id,
+                                "name": "/intermediary/\(categoryResult.name) - promo 2 - subcategory",
+                                "position": "\(index+1)",
+                                "creative": data.name,
+                                ]]
+                        ]
+                    ]
+                ]
+                
                 categoryViewCell.layer.shadowOffset = .zero
-                categoryViewCell.setData(data: data)
+                categoryViewCell.setData(data: data, trackerDict: eeDict)
                 innerHorizontalStackView.addArrangedSubview(categoryViewCell)
                 
                 if index % totalColumnInOneRow() == totalColumnInOneRow() - 1 {
@@ -92,7 +109,24 @@ class CategoryIntermediarySubCategoryView: UIView {
             for (index, data) in categoryChildren.enumerated() {
                 let categoryViewCell = (UINib(nibName: "CategoryIntermediarySubCategoryNoRevampView", bundle: nil).instantiate(withOwner: nil, options: [:])[0]) as! CategoryIntermediarySubCategoryNoRevampView
                 
-                categoryViewCell.setData(data: data)
+                let eeDict: [String : Any] = [
+                    "event": "promoClick",
+                    "eventCategory" : "intermediary page",
+                    "eventAction" : "click subcategory",
+                    "eventLabel" : data.applinks,
+                    "ecommerce": [
+                        "promoClick": [
+                            "promotions": [[
+                                "id": data.id,
+                                "name": "/intermediary/\(categoryResult.name) - promo 2 - subcategory",
+                                "position": "\(index+1)",
+                                "creative": data.name,
+                                ]]
+                        ]
+                    ]
+                ]
+                
+                categoryViewCell.setData(data: data, trackerDict: eeDict)
                 innerHorizontalStackView.addArrangedSubview(categoryViewCell)
                 categoryViewCell.snp.makeConstraints({ (make) in
                     make.width.equalTo(UIScreen.main.bounds.size.width / CGFloat(totalColumnInOneRow()))
@@ -127,7 +161,7 @@ class CategoryIntermediarySubCategoryView: UIView {
         }
     }
     
-    required init?(coder aDecoder: NSCoder) {
+    required internal init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

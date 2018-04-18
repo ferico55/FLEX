@@ -173,18 +173,21 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
     fileprivate final let buyViewHeight: CGFloat = 52.0
 
     internal weak var delegate: ProductDetailComponentDelegate?
+    
+    fileprivate var productTracker: ProductTracker
 
     internal func newState(state: ProductDetailState) {
         self.state = state
         self.render(in: self.bounds.size)
     }
 
-    internal init(store: Store<ProductDetailState>, viewController: ProductDetailViewController) {
+    internal init(store: Store<ProductDetailState>, viewController: ProductDetailViewController, productTracker: ProductTracker) {
         self.store = store
         self.viewController = viewController
+        self.productTracker = productTracker
         super.init()
     }
-
+    
     internal required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -1163,6 +1166,7 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         }
 
         let vc = TransactionATCViewController()
+        
         if productDetail.preorderDetail.isPreorder, let time = Int(productDetail.preorderDetail.preorderTime) {
             let detailProduct = DetailProductResult()
             let preorderDetail = PreorderDetail()
@@ -1174,10 +1178,14 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         }
         vc.productPrice = productDetail.info.price
         vc.productID = productDetail.id
-
+        vc.productTracker = self.productTracker
+    
         if let selectedProduct = productDetail.variantProduct?.productVariantSelected {
             vc.notesToSeller = selectedProduct.map { $0.variantValue }.joined(separator: ", ")
         }
+        
+        //tracker klik Beli
+        self.trackATCProductWith(product: productDetail)
 
         self.viewController.navigationController?.pushViewController(vc, animated: true)
     }
@@ -1453,6 +1461,7 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         ])
 
         VariantManager.product = productDetail
+        VariantManager.productTracker = self.productTracker
         VariantManager.completionSelectedVariant = {
             [weak self] productVariantDetail in
             guard let `self` = self else { return }
@@ -1474,6 +1483,56 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         }
 
         self.viewController.navigationController?.presentReactViewController(reactViewController, animated: true, completion: nil, presentationStyle: UIModalPresentationStyle.fullScreen, makeTransition: nil)
+    }
+    
+    // MARK: - Tracker
+    private func trackATCProductWith(product: ProductUnbox) {
+        let eventLabel = product.variantProduct?.productVariantSelected?.map { "{\($0.variantValue)}" }.joined(separator: ",")
+        let shopType = product.shop.isOfficial ? "official_store" : product.shop.isGoldMerchant ? "gold_merchant" : "regular"
+        let trackerAttribution = self.productTracker.trackerAttribution
+        let trackerListName = self.productTracker.trackerListName
+        let productATC: [AnyHashable:Any] = [
+            "name" : product.name,
+            "id" : product.id,
+            "price" : Double(product.info.priceUnformatted),
+            "brand" : "none/other",
+            "category" : product.categories.flatMap({ $0.name }).joined(separator: "/"),
+            "variant" : "none/other",
+            "quantity" : product.info.minimumOrder,
+            "shop_id" : product.shop.id,
+            "shop_type" : shopType,
+            "shop_name" : product.shop.name,
+            "picture" : product.shop.avatarURL,
+            "url" : product.url,
+            "category_id" : product.lastLevelCategory().id,
+            "cart_id" : "",
+            "dimension37" : trackerAttribution
+        ]
+        let data: [AnyHashable:Any] = [
+            "event" : "addToCart",
+            "eventCategory" : "product detail page",
+            "eventAction" : "click - add to cart",
+            "eventLabel" : eventLabel ?? "",
+            "ecommerce" : [
+                "currencyCode" : "IDR",
+                "add" : [
+                    "actionField" : [
+                        "list" : trackerListName
+                    ],
+                    "products" : [productATC]
+                ]
+            ],
+            "key" : product.key,
+            "shop_name" : product.shop.name,
+            "shop_id" : product.shop.id,
+            "shop_domain" : product.shop.domain,
+            "shop_location" : product.shop.location,
+            "shop_is_gold" : product.shop.isGoldMerchant ? 1 : 0,
+            "category_id" : product.lastLevelCategory().id,
+            "url" : product.url,
+            "shop_type" : shopType
+        ]
+        AnalyticsManager.trackData(data)
     }
 }
 

@@ -13,6 +13,7 @@
 #import "TransactionAction.h"
 #import "TransactionCartEditViewController.h"
 #import "MMNumberKeyboard.h"
+#import "ShopInfo.h"
 #import "Tokopedia-Swift.h"
 
 @interface TransactionCartEditViewController ()<UITextViewDelegate, UITextFieldDelegate, UIScrollViewDelegate, MMNumberKeyboardDelegate>
@@ -41,6 +42,7 @@
 @property (strong, nonatomic) IBOutletCollection(UIView) NSArray *borders;
 
 @property (weak, nonatomic) IBOutlet UITextField *quantityTextField;
+@property (nonatomic) NSInteger initQuantity;
 
 @end
 
@@ -74,6 +76,7 @@
     keyboard.allowsDecimalPoint = NO;
     keyboard.delegate = self;
     _quantityTextField.inputView = keyboard;
+    _initQuantity = [_quantityTextField.text integerValue];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -105,12 +108,17 @@
     [_quantityTextField resignFirstResponder];
     if ([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIBarButtonItem *button = (UIBarButtonItem*)sender;
+        NSInteger qty = [_quantityTextField.text intValue] - _initQuantity;
+        if (qty > 0) {
+            [self trackAddProductToCart: qty];
+        } else {
+            [self trackRemoveProductFromCart: qty];
+        }
         switch (button.tag) {
             case TAG_BAR_BUTTON_TRANSACTION_DONE:
             {
                 ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
                 product.product_notes = _remarkTextView.text;
-                [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 product.product_quantity = _quantityTextField.text;
                 [_dataInput setObject:product forKey:DATA_PRODUCT_DETAIL_KEY];
                 [_delegate shouldEditCartWithUserInfo:_dataInput];
@@ -121,7 +129,7 @@
         }
         [self.navigationController popViewControllerAnimated:YES];
     }
-    if ([sender isKindOfClass:[UIStepper class]]) {
+    if ([sender isKindOfClass:[UIStepper class]]) {//tracker ATC & remove
         UIStepper *stepper = (UIStepper*)sender;
         _quantityLabel.text = [NSString stringWithFormat:@"%zd",(NSInteger)stepper.value];
         ProductDetail *product = [_dataInput objectForKey:DATA_PRODUCT_DETAIL_KEY];
@@ -255,6 +263,69 @@
     NSInteger counter = 144 - (textView.text.length + (text.length - range.length));
     _labelCounter.text = [NSString stringWithFormat:@"%zd",(counter<0)?0:counter];
     return textView.text.length + (text.length - range.length) <= 144;
+}
+
+#pragma mark - Tracker
+- (void)trackAddProductToCart:(NSInteger)qty {
+    TransactionCartList *cartList = [_dataInput objectForKey:@"cartInfo"];
+    ProductDetail *product = cartList.cart_products.firstObject;
+    NSString *shopType = cartList.cart_shop.isOfficial ? @"official_store" : cartList.cart_shop.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+    NSDictionary *data = @{
+                           @"event" : @"addToCart",
+                           @"ecommerce" : @{
+                               @"currencyCode" : @"IDR",
+                               @"add" : @{
+                                   @"products" : @[@{
+                                       @"name": product.product_name ?: @"",
+                                       @"id": product.product_id ?: @"",
+                                       @"price": product.product_price ?: @"",
+                                       @"brand": @"none/other",
+                                       @"category": product.product_cat_name_tracking ?: @"",
+                                       @"variant": @"none/other",
+                                       @"quantity": @(ABS(qty)) ?: @1,
+                                       @"shop_id": cartList.cart_shop.shop_id ?: @"",
+                                       @"shop_type": shopType ?: @"",
+                                       @"shop_name": cartList.cart_shop.shop_name ?: @"",
+                                       @"category_id": product.product_cat_id ?: @"",
+                                       @"cart_id": product.product_cart_id ?: @"",
+                                       @"dimension37" : product.trackerInfo.trackerAttribution ?: @"none/other",
+                                       @"dimension39": product.trackerInfo.trackerListName ?: @"none/other"
+                                       }]
+                                   }
+                               }
+                           };
+    [AnalyticsManager trackData:data];
+}
+
+- (void)trackRemoveProductFromCart:(NSInteger)qty {
+    TransactionCartList *cartList = [_dataInput objectForKey:@"cartInfo"];
+    ProductDetail *product = cartList.cart_products.firstObject;
+    NSString *shopType = cartList.cart_shop.isOfficial ? @"official_store" : cartList.cart_shop.shop_is_gold==1 ? @"gold_merchant" : @"reguler";
+    NSDictionary *data = @{
+                           @"event" : @"removeFromCart",
+                           @"ecommerce" : @{
+                               @"currencyCode" : @"IDR",
+                               @"remove" : @{
+                                   @"products" : @[@{
+                                       @"name": product.product_name ?: @"",
+                                       @"id": product.product_id ?: @"",
+                                       @"price": product.product_price ?: @"",
+                                       @"brand": @"none/other",
+                                       @"category": product.product_cat_name_tracking ?: @"",
+                                       @"variant": @"none/other",
+                                       @"quantity": @(ABS(qty)) ?: @1,
+                                       @"shop_id": cartList.cart_shop.shop_id ?: @"",
+                                       @"shop_type": shopType ?: @"",
+                                       @"shop_name": cartList.cart_shop.shop_name ?: @"",
+                                       @"category_id": product.product_cat_id ?: @"",
+                                       @"cart_id": product.product_cart_id ?: @"",
+                                       @"dimension37" : product.trackerInfo.trackerAttribution ?: @"none/other",
+                                       @"dimension39": product.trackerInfo.trackerListName ?: @"none/other"
+                                       }]
+                                   }
+                               }
+                           };
+    [AnalyticsManager trackData:data];
 }
 
 @end

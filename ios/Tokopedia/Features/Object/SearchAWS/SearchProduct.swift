@@ -9,48 +9,52 @@
 import Unbox
 
 @objc(SearchProduct)
-final class SearchProduct:NSObject, Unboxable {
-    let shop_gold_status:Int
-    let product_sold_count:Int
-    let discount_expired:String?
-    var product_review_count:Int
-    let product_wholesale:Int
-    let is_owner:Int
-    let product_image:String?
-    let product_image_700:String?
-    let preorder:Int
-    let product_id:String
-    let shop_location:String?
-    let condition:Int
-    let product_price:String?
-    let product_image_full:String?
-    var product_talk_count:Int
-    let product_preorder:Int
-    let original_price:String?
-    let shop_url:String?
-    var rate:Int
-    let discount_percentage:Int
-    let shop_name:String?
-    let shop_id:Int
-    let product_url:String?
-    let product_name:String?
-    var isOnWishlist = false
-    var badges:[ProductBadge]?
-    var labels:[ProductLabel]?
-    var is_product_wholesale = false
+final internal class SearchProduct:NSObject, Unboxable {
+    internal let shop_gold_status:Int
+    internal let product_sold_count:Int
+    internal let discount_expired:String?
+    internal var product_review_count:Int
+    internal let product_wholesale:Int
+    internal let is_owner:Int
+    internal let product_image:String?
+    internal let product_image_700:String?
+    internal let preorder:Int
+    internal let product_id:String
+    internal let shop_location:String?
+    internal let condition:Int
+    internal let product_price:String?
+    internal let product_image_full:String?
+    internal var product_talk_count:Int
+    internal let product_preorder:Int
+    internal let original_price:String?
+    internal let shop_url:String?
+    internal var rate:Int
+    internal let discount_percentage:Int
+    internal let category_breadcrumb:String
+    internal let shop_name:String?
+    internal let category_id:String?
+    internal let shop_id:Int
+    internal let product_url:String?
+    internal let product_name:String?
+    internal var isOnWishlist = false
+    internal var badges:[ProductBadge]?
+    internal var labels:[ProductLabel]?
+    internal var is_product_wholesale = false
     
-    let catalog_id:String?
-    let catalog_name:String?
-    let catalog_price:String?
-    let catalog_uri:String?
-    let catalog_image:String?
-    let catalog_image_300:String?
-    let catalog_description:String?
-    let catalog_count_product:String?
+    internal let catalog_id:String?
+    internal let catalog_name:String?
+    internal let catalog_price:String?
+    internal let catalog_uri:String?
+    internal let catalog_image:String?
+    internal let catalog_image_300:String?
+    internal let catalog_description:String?
+    internal let catalog_count_product:String?
     
-    var similarity_rank:String?
+    internal var similarity_rank:String?
     
-    var viewModel:ProductModelView {
+    internal var trackerInfo: NSDictionary = [:]
+    
+    internal var viewModel:ProductModelView {
         get {
             let vm = ProductModelView()
             vm.productName = self.product_name
@@ -73,7 +77,7 @@ final class SearchProduct:NSObject, Unboxable {
             return vm
         }
     }
-    var catalogViewModel:CatalogModelView {
+    internal var catalogViewModel:CatalogModelView {
         get {
             let vm = CatalogModelView()
             vm.catalogName = self.catalog_name
@@ -84,7 +88,7 @@ final class SearchProduct:NSObject, Unboxable {
         }
     }
     
-    init(shop_gold_status:Int?,
+    internal init(shop_gold_status:Int?,
          product_sold_count:Int?,
          discount_expired:String?,
          product_review_count:Int?,
@@ -104,7 +108,9 @@ final class SearchProduct:NSObject, Unboxable {
          shop_url:String?,
          rate:Int?,
          discount_percentage:Int?,
+         category_breadcrumb:String?,
          shop_name:String?,
+         category_id:String?,
          shop_id:Int?,
          product_url:String?,
          product_name:String?,
@@ -138,7 +144,9 @@ final class SearchProduct:NSObject, Unboxable {
         self.shop_url = shop_url
         self.rate = rate ?? 0
         self.discount_percentage = discount_percentage ?? 0
+        self.category_breadcrumb = category_breadcrumb ?? ""
         self.shop_name = shop_name
+        self.category_id = category_id
         self.shop_id = shop_id ?? 0
         self.product_url = product_url
         self.product_name = product_name
@@ -154,7 +162,7 @@ final class SearchProduct:NSObject, Unboxable {
         self.labels = labels
     }
     
-    convenience init(unboxer: Unboxer) throws {
+    convenience internal init(unboxer: Unboxer) throws {
         self.init(
             shop_gold_status : try? unboxer.unbox(keyPath: "shop_gold_status") as Int,
             product_sold_count : try? unboxer.unbox(keyPath: "product_sold_count") as Int,
@@ -176,7 +184,9 @@ final class SearchProduct:NSObject, Unboxable {
             shop_url : try? unboxer.unbox(keyPath: "shop_url") as String,
             rate : try? unboxer.unbox(keyPath: "rate") as Int,
             discount_percentage : try? unboxer.unbox(keyPath: "discount_percentage") as Int,
+            category_breadcrumb : try? unboxer.unbox(keyPath: "category_breadcrumb") as String,
             shop_name : try? unboxer.unbox(keyPath: "shop_name") as String,
+            category_id: try? unboxer.unbox(keyPath: "category_id") as String,
             shop_id : try? unboxer.unbox(keyPath: "shop_id") as Int,
             product_url : try? unboxer.unbox(keyPath: "product_url") as String,
             product_name :try? unboxer.unbox(keyPath: "product_name") as String,
@@ -193,14 +203,39 @@ final class SearchProduct:NSObject, Unboxable {
         )
     }
     
-    func productFieldObjects() -> [String:String] {
-        let productPrice = self.product_price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined(separator: "")
+    internal func productFieldObjects() -> [String:String] {
+        let productPrice = self.product_price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         return [
             "name"  : self.product_name!,
             "id"    : String(self.product_id),
             "price" : productPrice!,
             "brand" : self.shop_name!,
             "url"   : self.product_url!
+        ]
+    }
+    
+    internal func setTrackerInfo(info: NSDictionary) -> Void {
+        trackerInfo = info
+    }
+    
+    internal func productFieldObjectsForEnhancedEcommerceTracking() -> [AnyHashable:Any] {
+        let productPrice = self.product_price?.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
+        let category = trackerInfo.object(forKey: "category") as? String ?? "none/other"
+        let position = trackerInfo.object(forKey: "position") as? NSNumber ?? 1
+        let attribution = trackerInfo.object(forKey: "attribution") as? String ?? "none/other"
+        let page = (position.intValue / ProductAndWishlistNetworkManager.productPerPage) + 1
+        
+        return [
+            "name"          : self.product_name ?? "",
+            "id"            : String(self.product_id) ?? "",
+            "price"         : Double(productPrice ?? "0"),
+            "brand"         : "none/other",
+            "url"           : self.product_url ?? "",
+            "category"      : category,
+            "variant"       : "none/other",
+            "list"          : "/hot/\(trackerInfo.object(forKey: "key") ?? "") - product \(page)",
+            "position"      : position,
+            "dimension37"   : attribution
         ]
     }
 }

@@ -17,6 +17,8 @@ internal class VariantManager: NSObject {
     
     internal static var product: ProductUnbox?
     
+    internal static var productTracker: ProductTracker?
+    
     internal static var completionSelectedVariant: ((ProductUnbox) -> Void)?
     
     @objc internal func chooseVariant(_ reactTag: NSNumber, productSelected: [String : AnyObject]) {
@@ -69,6 +71,10 @@ internal class VariantManager: NSObject {
                         let variantValue = selectedProduct.map { $0.variantValue }.joined(separator: ", ")
                         vc.notesToSeller = variantValue
                         AnalyticsManager.trackEventName("clickBuy", category: "product detail page", action: "click - buy on variants page", label: "{\(variantValue)}")
+                    }
+                    
+                    if let productTracker = VariantManager.productTracker {
+                        vc.productTracker = productTracker
                     }
                     
                     presentedViewController.navigationController?.pushViewController(vc, animated: true)

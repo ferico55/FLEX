@@ -26,6 +26,7 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
     fileprivate var isReplacementMode: Bool!
     fileprivate var campaignTimer = Timer()
     fileprivate var campaignEndDate: Date?
+    fileprivate var productTracker: ProductTracker = ProductTracker()
 
     fileprivate lazy var safeAreaView: UIView = {
         let view = UIView(frame: CGRect.zero)
@@ -61,6 +62,19 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
                             "imageURL": imageURL,
                             "shopName": shopName]
     }
+    
+    convenience internal init(productID: String = "", name: String = "", price: String = "", imageURL: String = "", shopName: String = "", isReplacementMode: Bool = false, productTracker: ProductTracker) {
+        self.init(nibName: nil, bundle: nil)
+        
+        self.isReplacementMode = isReplacementMode
+        self.productTracker = productTracker
+        
+        self.initialData = ["id": productID,
+                            "name": name,
+                            "price": price,
+                            "imageURL": imageURL,
+                            "shopName": shopName]
+    }
 
     override internal func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +87,7 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
             return
         }
 
-        self.productView = ProductDetailViewComponent(store: self.store, viewController: self)
+        self.productView = ProductDetailViewComponent(store: self.store, viewController: self, productTracker: self.productTracker)
         self.productView.delegate = self
 
         self.view.addSubview(self.safeAreaView)
@@ -212,6 +226,7 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
                 switch event {
                 case let .next(product) :
                     self.trackScreenWithProduct(product: product)
+                    self.trackViewProductWith(product: product)
                     self.product = product
                     self.store.dispatch(ProductDetailAction.updateWishlist((self.product?.isWishlisted)!))
 
@@ -593,6 +608,47 @@ internal class ProductDetailViewController: UIViewController, EtalaseViewControl
             self.campaignEndDate = endPromoDate
             self.campaignTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(ProductDetailViewController.campaignScheduledProcess), userInfo: nil, repeats: true)
         }
+    }
+    
+    // MARK: - Tracker
+    private func trackViewProductWith(product: ProductUnbox) {
+        let shopType = product.shop.isOfficial ? "official_store" : product.shop.isGoldMerchant ? "gold_merchant" : "regular"
+        let trackerAttribution = self.productTracker.trackerAttribution
+        let trackerListName = self.productTracker.trackerListName
+        let data: [AnyHashable:Any] = [
+            "event" : "viewProduct",
+            "eventCategory" : "product page",
+            "eventAction" : "view product page",
+            "eventLabel" : shopType + " - " + product.shop.name + " - " + product.name,
+            "ecommerce" : [
+                "currencyCode" : "IDR",
+                "detail" : [
+                    "actionField" : [
+                        "list" : trackerListName
+                    ],
+                    "products" : [[
+                        "name" : product.name,
+                        "id" : product.id,
+                        "price" : Double(product.info.priceUnformatted) ?? 0,
+                        "brand" : "none/other",
+                        "category" : !product.categories.isEmpty ? product.categories.flatMap({ $0.name }).joined(separator: "/") : "",
+                        "variant" : "none/other",
+                        "dimension37" : trackerAttribution,
+                        "list" : trackerListName
+                    ]]
+                ]
+            ],
+            "key" : product.key,
+            "shop_name" : product.shop.name,
+            "shop_id" : product.shop.id,
+            "shop_domain" : product.shop.domain,
+            "shop_location" : product.shop.location,
+            "shop_is_gold" : product.shop.isGoldMerchant ? 1 : 0,
+            "category_id" : product.lastLevelCategory().id,
+            "url" : product.url,
+            "shop_type" : shopType
+        ]
+        AnalyticsManager.trackData(data)
     }
 }
 

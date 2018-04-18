@@ -14,7 +14,9 @@
 
 @property (weak, nonatomic) IBOutlet UIImage *image;
 @property (strong, nonatomic) NSDictionary *data;
+@property (strong, nonatomic) ProductTracker *trackerObject;
 @property (strong,nonatomic) NSString* redirectedSearchKeyword;
 @property (nonatomic) BOOL isFromAutoComplete;
+@property (nonatomic) BOOL hasAttribution;
 
 @end

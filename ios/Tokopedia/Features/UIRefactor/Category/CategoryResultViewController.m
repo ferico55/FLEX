@@ -175,6 +175,10 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    if (!_trackerObject) {
+        _trackerObject = [ProductTracker new];
+    }
+    
     _dynamicFilterBridge = [ReactDynamicFilterBridge new];
     
     _userManager = [UserAuthentificationManager new];
@@ -195,7 +199,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(changeCategory:)
                                                  name:kTKPD_DEPARTMENTIDPOSTNOTIFICATIONNAMEKEY
                                                object:nil];
-
+    
     [self configureGTM];
     
     _networkManager = [TokopediaNetworkManager new];
@@ -213,7 +217,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [self requestSearch];
     
     _reactEventManager = [[UIApplication sharedApplication].reactBridge moduleForClass: [ReactEventManager class]];
-
+    
 }
 
 -(NSString*)getSearchSource{
@@ -229,7 +233,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
 }
 
 -(void)setDefaultSort{
-     [self setDefaultSortDirectory];
+    [self setDefaultSortDirectory];
 }
 
 -(void)setDefaultSortDirectory{
@@ -299,7 +303,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     [super viewWillAppear:animated];
     
     _suggestion = @"";
-
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated {
@@ -409,7 +413,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                     category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId]
                                       action:GA_EVENT_ACTION_NAVIGATION_CATEGORY
                                        label:[NSString stringWithFormat:@"%@", [_data objectForKey:@"sc"] ?: [NSString stringWithFormat:@"%@", _searchObject.data.departmentId]]];
-
+            
             CategoryNavigationViewController *categoryNavigationVC = [[CategoryNavigationViewController alloc] initWithCategoryId:_rootCategoryID];
             
             UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:categoryNavigationVC];
@@ -438,7 +442,9 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                        forState:UIControlStateNormal];
             }
             
-            [AnalyticsManager trackEventName:GA_EVENT_CLICK_CATEGORY category:[NSString stringWithFormat:@"%@ - %@", GA_EVENT_CATEGORY_PAGE, _categoryIntermediaryResult.rootCategoryId] action:GA_EVENT_ACTION_NAVIGATION_DISPLAY label:[NSString stringWithFormat:@"%ld", (long)self.cellType]];
+            NSString *displayType = self.cellType==UITableViewCellTypeOneColumn ? @"display full" : self.cellType==UITableViewCellTypeTwoColumn ? @"display grid" : @"display list";
+            [AnalyticsManager trackEventName:@"clickDiscovery" category:@"category page" action:@"click display" label:displayType];
+            
             [[NSUserDefaults standardUserDefaults] setInteger:self.cellType forKey:[NSString stringWithFormat:@"%@-%@",USER_LAYOUT_CATEGORY_PREFERENCES,_categoryIntermediaryResult.id]];
             [_reactEventManager changeLayoutCell:self.cellType];
             break;
@@ -489,6 +495,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                                     
                                                                     [self refreshSearchDataWithDynamicSort];
                                                                     
+                                                                    [AnalyticsManager trackEventName:@"clickDiscovery" category:@"category page" action:@"click sort" label:sort.name];
                                                                 }];
 }
 
@@ -534,6 +541,14 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     _selectedFilterParam = paramFilters;
     [self showFilterIsActive:(_selectedFilters.count > 0)];
     [_params removeObjectForKey:@"sc"];
+    
+    NSMutableArray *keys = [NSMutableArray new];
+    NSMutableArray *values = [NSMutableArray new];
+    for(ListOption* filter in filters) {
+        [keys addObject:filter.key];
+        [values addObject:filter.value];
+    }
+    [AnalyticsManager trackEventName:@"clickDiscovery" category:@"category page" action:@"click filter" label:[NSString stringWithFormat: @"%@ - %@", [keys componentsJoinedByString:@", "], [values componentsJoinedByString:@", "]]];
     
     [self refreshView:nil];
 }
@@ -610,10 +625,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     NSString *categoryId = [_data objectForKey:@"sc"] ?: departmentIDString;
     
     [moyaNetworkManager requestIntermediaryCategoryForCategoryID:categoryId
+                                                   trackerObject:_trackerObject
                                            withCompletionHandler:^(CategoryIntermediaryResult * _Nonnull result) {
                                                _categoryIntermediaryResult = result;
                                                if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
-                                                   CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult];
+                                                   CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult trackerObject:_trackerObject];
                                                    categoryIntermediaryViewController.hidesBottomBarWhenPushed = YES;
                                                    [self.navigationController replaceTopViewControllerWithViewController:categoryIntermediaryViewController ];
                                                } else {
@@ -626,8 +642,15 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                        _reactProductListView = [[RCTRootView alloc] initWithBridge:[UIApplication sharedApplication].reactBridge
                                                                                                         moduleName:@"Tokopedia"
                                                                                                  initialProperties:@{
-                                                                                                                     @"name" : @"CategoryResultPage", @"params" : @{@"categoryResult" :[_searchObject wrap],                                @"categoryParams" : [self getParameter],                                                                                         @"categoryIntermediaryResult" : [_categoryIntermediaryResult wrap],                                                                                                                                                                @"cellType": @([self mapCellLayoutAPI]),
-                                                                @"topAdsFilter": _selectedFilterParam                                                                                    }
+                                                                                                                     @"name" : @"CategoryResultPage",
+                                                                                                                     @"params" : @{
+                                                                                                                             @"categoryResult" :[_searchObject wrap] ? : @{},
+                                                                                                                             @"categoryParams" : [self getParameter] ? : @{},
+                                                                                                                             @"categoryIntermediaryResult" : [_categoryIntermediaryResult wrap] ? : @{},
+                                                                                                                             @"cellType": @([self mapCellLayoutAPI] ? : 0),
+                                                                                                                             @"topAdsFilter": _selectedFilterParam ? : @{},
+                                                                                                                             @"attribution": _trackerObject.trackerAttribution,
+                                                                                                                             }
                                                                                                                      }];
                                                        
                                                        [_containerView addSubview:_reactProductListView];
@@ -641,6 +664,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                [weakSelf showEntireView];
                                                [weakSelf.tryAgainButton setHidden:NO];
                                            }];
+    [AnalyticsManager trackEventName:@"clickDiscovery" category:@"category page" action:@"click category" label:categoryId];
 }
 
 

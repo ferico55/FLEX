@@ -46,7 +46,8 @@ typedef NS_ENUM(NSInteger, HomeBannerPromotionTrackerType) {
 + (void)trackProductView:(Product *)product;
 + (void)trackProductAddToCart:(ProductDetail *)product;
 + (void)trackRemoveProductFromCart:(id)product;
-+ (void)trackRemoveProductsFromCart:(NSArray *)shops;
++ (void)trackAddProductToCart:(id)product;
++ (void)trackRemoveProductsFromCart:(NSArray *)productList;
 + (void)trackPromoClick:(PromoResult *)promoResult;
 + (void)trackPromoClickWithDictionary:(NSDictionary *)promotionsDict;
 + (void)trackCheckout:(NSArray *)shops step:(NSInteger)step option:(NSString *)option;

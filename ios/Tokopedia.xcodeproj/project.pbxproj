@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		23F0853332262F9531A1E8D3 /* Pods_ServiceExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC505715B532493AF9EAE299 /* Pods_ServiceExtension.framework */; settings = {ATTRIBUTES = (Required, ); }; };
+		2A3284C820768F2800B84BCA /* ProductTracker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3284C720768F2800B84BCA /* ProductTracker.swift */; };
 		34E722282015EDC700CFE581 /* TopAdsHeadlineView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 34E722262015EDC700CFE581 /* TopAdsHeadlineView.swift */; };
 		34E722292015EDC700CFE581 /* TopAdsHeadlineView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 34E722272015EDC700CFE581 /* TopAdsHeadlineView.xib */; };
 		34E7222E2015F53300CFE581 /* Headline.m in Sources */ = {isa = PBXBuildFile; fileRef = 34E7222A2015F53000CFE581 /* Headline.m */; };
@@ -2280,6 +2281,7 @@
 
 /* Begin PBXFileReference section */
 		037026F8D8A7767163A046EC /* Pods_Tokopedia.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Tokopedia.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		2A3284C720768F2800B84BCA /* ProductTracker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProductTracker.swift; sourceTree = "<group>"; };
 		34E722262015EDC700CFE581 /* TopAdsHeadlineView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TopAdsHeadlineView.swift; sourceTree = "<group>"; };
 		34E722272015EDC700CFE581 /* TopAdsHeadlineView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = TopAdsHeadlineView.xib; sourceTree = "<group>"; };
 		34E7222A2015F53000CFE581 /* Headline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Headline.m; sourceTree = "<group>"; };
@@ -6040,36 +6042,37 @@
 		62C76CDF1FF33C3000F66527 /* DetailProduct */ = {
 			isa = PBXGroup;
 			children = (
-				62C76CE01FF33C3000F66527 /* ShopStats.h */,
-				62C76CE11FF33C3000F66527 /* OtherProduct.h */,
-				62C76CE21FF33C3000F66527 /* ProductReturnInfo.swift */,
-				62C76CE31FF33C3000F66527 /* Product.h */,
-				62C76CE41FF33C3000F66527 /* CountRatingResult.h */,
-				62C76CE51FF33C3000F66527 /* Breadcrumb.m */,
-				62C76CE61FF33C3000F66527 /* Info.m */,
-				62C76CE71FF33C3000F66527 /* Rating.m */,
-				62C76CE81FF33C3000F66527 /* WholesalePrice.h */,
-				62C76CE91FF33C3000F66527 /* Statistic.m */,
-				62C76CEA1FF33C3000F66527 /* ProductImages.m */,
-				62C76CEB1FF33C3000F66527 /* DetailProductResult.m */,
-				62C76CEC1FF33C3000F66527 /* ShopInfo.h */,
-				62C76CED1FF33C3000F66527 /* ProductDetail.h */,
-				62C76CEE1FF33C3000F66527 /* ShopStats.m */,
-				62C76CEF1FF33C3000F66527 /* CountRatingResult.m */,
 				62C76CF01FF33C3000F66527 /* Breadcrumb.h */,
-				62C76CF11FF33C3000F66527 /* Product.m */,
-				62C76CF21FF33C3000F66527 /* ShopType.h */,
-				62C76CF31FF33C3000F66527 /* OtherProduct.m */,
-				62C76CF41FF33C3000F66527 /* Statistic.h */,
-				62C76CF51FF33C3000F66527 /* WholesalePrice.m */,
-				62C76CF61FF33C3000F66527 /* Rating.h */,
-				62C76CF71FF33C3000F66527 /* Info.h */,
-				62C76CF81FF33C3000F66527 /* ProductDetail.m */,
-				62C76CF91FF33C3000F66527 /* TheOtherProduct */,
-				62C76CFE1FF33C3000F66527 /* ShopInfo.m */,
+				62C76CE51FF33C3000F66527 /* Breadcrumb.m */,
+				62C76CE41FF33C3000F66527 /* CountRatingResult.h */,
+				62C76CEF1FF33C3000F66527 /* CountRatingResult.m */,
 				62C76CFF1FF33C3000F66527 /* DetailProductResult.h */,
-				62C76D001FF33C3000F66527 /* Talk */,
+				62C76CEB1FF33C3000F66527 /* DetailProductResult.m */,
+				62C76CF71FF33C3000F66527 /* Info.h */,
+				62C76CE61FF33C3000F66527 /* Info.m */,
+				62C76CE11FF33C3000F66527 /* OtherProduct.h */,
+				62C76CF31FF33C3000F66527 /* OtherProduct.m */,
+				62C76CE31FF33C3000F66527 /* Product.h */,
+				62C76CF11FF33C3000F66527 /* Product.m */,
+				62C76CED1FF33C3000F66527 /* ProductDetail.h */,
+				62C76CF81FF33C3000F66527 /* ProductDetail.m */,
 				62C76D0E1FF33C3000F66527 /* ProductImages.h */,
+				62C76CEA1FF33C3000F66527 /* ProductImages.m */,
+				62C76CE21FF33C3000F66527 /* ProductReturnInfo.swift */,
+				2A3284C720768F2800B84BCA /* ProductTracker.swift */,
+				62C76CF61FF33C3000F66527 /* Rating.h */,
+				62C76CE71FF33C3000F66527 /* Rating.m */,
+				62C76CEC1FF33C3000F66527 /* ShopInfo.h */,
+				62C76CFE1FF33C3000F66527 /* ShopInfo.m */,
+				62C76CE01FF33C3000F66527 /* ShopStats.h */,
+				62C76CEE1FF33C3000F66527 /* ShopStats.m */,
+				62C76CF21FF33C3000F66527 /* ShopType.h */,
+				62C76CF41FF33C3000F66527 /* Statistic.h */,
+				62C76CE91FF33C3000F66527 /* Statistic.m */,
+				62C76D001FF33C3000F66527 /* Talk */,
+				62C76CF91FF33C3000F66527 /* TheOtherProduct */,
+				62C76CE81FF33C3000F66527 /* WholesalePrice.h */,
+				62C76CF51FF33C3000F66527 /* WholesalePrice.m */,
 			);
 			path = DetailProduct;
 			sourceTree = "<group>";
@@ -9855,18 +9858,18 @@
 		F977F03F1FE8AB6F00183A85 /* Product */ = {
 			isa = PBXGroup;
 			children = (
+				F977F0471FE8AB6F00183A85 /* ProductCell.h */,
 				F977F0401FE8AB6F00183A85 /* ProductCell.m */,
-				F977F0411FE8AB6F00183A85 /* ProductSingleViewCell.m */,
-				F977F0421FE8AB6F00183A85 /* ProductThumbCell.m */,
+				F977F0481FE8AB6F00183A85 /* ProductCell.xib */,
+				F977F04B1FE8AB6F00183A85 /* ProductModelView.h */,
 				F977F0431FE8AB6F00183A85 /* ProductModelView.m */,
-				F977F0441FE8AB6F00183A85 /* ProductThumbCell.xib */,
 				F977F0451FE8AB6F00183A85 /* ProductModelView.swift */,
 				F977F0461FE8AB6F00183A85 /* ProductSingleViewCell.h */,
-				F977F0471FE8AB6F00183A85 /* ProductCell.h */,
-				F977F0481FE8AB6F00183A85 /* ProductCell.xib */,
-				F977F0491FE8AB6F00183A85 /* ProductThumbCell.h */,
+				F977F0411FE8AB6F00183A85 /* ProductSingleViewCell.m */,
 				F977F04A1FE8AB6F00183A85 /* ProductSingleViewCell.xib */,
-				F977F04B1FE8AB6F00183A85 /* ProductModelView.h */,
+				F977F0491FE8AB6F00183A85 /* ProductThumbCell.h */,
+				F977F0421FE8AB6F00183A85 /* ProductThumbCell.m */,
+				F977F0441FE8AB6F00183A85 /* ProductThumbCell.xib */,
 			);
 			path = Product;
 			sourceTree = "<group>";
@@ -11513,31 +11516,31 @@
 			isa = PBXGroup;
 			children = (
 				E595C6A81FFB2D0000A8665E /* ActionButton.swift */,
-				E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */,
-				F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */,
-				F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */,
-				F977F4A61FE8AB7300183A85 /* EtalaseCell.xib */,
-				E595C6A21FF6596400A8665E /* ShopHeaderView.xib */,
-				E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */,
-				F977F4A81FE8AB7300183A85 /* ShopPageRequest.m */,
-				F977F4A91FE8AB7300183A85 /* EtalaseCell.m */,
-				F977F4AA1FE8AB7300183A85 /* ShopTalkPageViewController.m */,
-				F977F4AB1FE8AB7300183A85 /* ShopNotesPageViewController.xib */,
-				F977F4AC1FE8AB7300183A85 /* ShopProductPageViewController.h */,
-				F977F4AD1FE8AB7300183A85 /* ShopTabChild.swift */,
-				F977F4AE1FE8AB7300183A85 /* EtalaseViewController.m */,
-				F977F4AF1FE8AB7300183A85 /* ShopProductFilter.swift */,
-				F977F4B01FE8AB7300183A85 /* EtalaseViewController.xib */,
-				F977F4B11FE8AB7300183A85 /* EtalaseRequest.h */,
-				F977F4B21FE8AB7300183A85 /* ShopNotesPageViewController.h */,
-				F977F4B31FE8AB7300183A85 /* EtalaseViewController.h */,
-				F977F4B41FE8AB7300183A85 /* ShopProductPageViewController.m */,
-				F977F4B51FE8AB7300183A85 /* ShopTalkPageViewController.h */,
 				F977F4B61FE8AB7300183A85 /* EtalaseCell.h */,
-				F977F4B71FE8AB7300183A85 /* ShopPageRequest.h */,
-				F977F4B81FE8AB7300183A85 /* ShopTalkPageViewController.xib */,
-				F977F4B91FE8AB7300183A85 /* ShopHomeViewController.swift */,
+				F977F4A91FE8AB7300183A85 /* EtalaseCell.m */,
+				F977F4A61FE8AB7300183A85 /* EtalaseCell.xib */,
+				F977F4B11FE8AB7300183A85 /* EtalaseRequest.h */,
 				F977F4BA1FE8AB7300183A85 /* EtalaseRequest.m */,
+				F977F4B31FE8AB7300183A85 /* EtalaseViewController.h */,
+				F977F4AE1FE8AB7300183A85 /* EtalaseViewController.m */,
+				F977F4B01FE8AB7300183A85 /* EtalaseViewController.xib */,
+				E595C6AA1FFB2DFC00A8665E /* FavoriteButton.swift */,
+				E595C6A61FF65A4E00A8665E /* ShopHeaderView.swift */,
+				E595C6A21FF6596400A8665E /* ShopHeaderView.xib */,
+				F977F4B91FE8AB7300183A85 /* ShopHomeViewController.swift */,
+				F977F4B21FE8AB7300183A85 /* ShopNotesPageViewController.h */,
+				F977F4A41FE8AB7300183A85 /* ShopNotesPageViewController.m */,
+				F977F4AB1FE8AB7300183A85 /* ShopNotesPageViewController.xib */,
+				F977F4B71FE8AB7300183A85 /* ShopPageRequest.h */,
+				F977F4A81FE8AB7300183A85 /* ShopPageRequest.m */,
+				F977F4AF1FE8AB7300183A85 /* ShopProductFilter.swift */,
+				F977F4AC1FE8AB7300183A85 /* ShopProductPageViewController.h */,
+				F977F4B41FE8AB7300183A85 /* ShopProductPageViewController.m */,
+				F977F4A51FE8AB7300183A85 /* ShopProductPageViewController.xib */,
+				F977F4AD1FE8AB7300183A85 /* ShopTabChild.swift */,
+				F977F4B51FE8AB7300183A85 /* ShopTalkPageViewController.h */,
+				F977F4AA1FE8AB7300183A85 /* ShopTalkPageViewController.m */,
+				F977F4B81FE8AB7300183A85 /* ShopTalkPageViewController.xib */,
 				F977F4BB1FE8AB7300183A85 /* ShopViewController.swift */,
 			);
 			path = ShopPageView;
@@ -14257,6 +14260,7 @@
 				62C771991FF33C3400F66527 /* AddressDistrict.m in Sources */,
 				F977FBCF1FE8AB7C00183A85 /* DueDateViewController.m in Sources */,
 				E520972920612A4B002F5301 /* ChatPagerViewController.swift in Sources */,
+				2A3284C820768F2800B84BCA /* ProductTracker.swift in Sources */,
 				F97700701FE8AB8500183A85 /* MoreWrapperViewController.m in Sources */,
 				F977FA261FE8AB7900183A85 /* AceTarget.swift in Sources */,
 				F977FB2B1FE8AB7B00183A85 /* TopAdsComponentView.swift in Sources */,
