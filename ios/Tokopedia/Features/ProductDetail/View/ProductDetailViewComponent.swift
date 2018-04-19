@@ -174,7 +174,7 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
 
     internal weak var delegate: ProductDetailComponentDelegate?
     
-    fileprivate var productTracker: ProductTracker
+    fileprivate var productTracker: ProductTracker?
 
     internal func newState(state: ProductDetailState) {
         self.state = state
@@ -1178,7 +1178,7 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         }
         vc.productPrice = productDetail.info.price
         vc.productID = productDetail.id
-        vc.productTracker = self.productTracker
+        vc.productTracker = self.productTracker ?? ProductTracker()
     
         if let selectedProduct = productDetail.variantProduct?.productVariantSelected {
             vc.notesToSeller = selectedProduct.map { $0.variantValue }.joined(separator: ", ")
@@ -1461,7 +1461,7 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
         ])
 
         VariantManager.product = productDetail
-        VariantManager.productTracker = self.productTracker
+        VariantManager.productTracker = self.productTracker ?? ProductTracker()
         VariantManager.completionSelectedVariant = {
             [weak self] productVariantDetail in
             guard let `self` = self else { return }
@@ -1489,8 +1489,8 @@ internal class ProductDetailViewComponent: ComponentView<ProductDetailState>, St
     private func trackATCProductWith(product: ProductUnbox) {
         let eventLabel = product.variantProduct?.productVariantSelected?.map { "{\($0.variantValue)}" }.joined(separator: ",")
         let shopType = product.shop.isOfficial ? "official_store" : product.shop.isGoldMerchant ? "gold_merchant" : "regular"
-        let trackerAttribution = self.productTracker.trackerAttribution
-        let trackerListName = self.productTracker.trackerListName
+        let trackerAttribution = self.productTracker?.trackerAttribution ?? "none/other"
+        let trackerListName = self.productTracker?.trackerListName ?? "none/other"
         let productATC: [AnyHashable:Any] = [
             "name" : product.name,
             "id" : product.id,

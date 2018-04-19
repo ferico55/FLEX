@@ -866,7 +866,7 @@ typedef NS_ENUM(NSUInteger, InsuranceType) {
     NSString *quantity = _productQuantityTextField.text;
     NSString *remark = _remarkTextView.text?:@"";
     
-    _selectedProduct.trackerInfo = _productTracker;
+    _selectedProduct.trackerInfo = _productTracker ?: [ProductTracker new];
 
     [RequestATC fetchATCProduct:_selectedProduct
                         address:_selectedAddress
