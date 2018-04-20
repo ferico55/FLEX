@@ -147,20 +147,24 @@ public class TPRoutes: NSObject {
         
         // MARK: Shop Etalase - (Native)
         JLRoutes.global().addRoute("/shop/:shopId/etalase/:etalaseId") { (params: [String: Any]) -> Bool in
-            guard
-            let shopId = params["shopId"] as? String,
-            let etalaseId = params["etalaseId"] as? String,
-            let keyword = params["search"] as? String,
-            let by = params["sort"] as? String else {
-                return false
+            guard let shopId = params["shopId"] as? String,
+                let etalaseId = params["etalaseId"] as? String else {
+                    return false
             }
-            let filterParams = decodePlus(params: queryParams(params: params))
+            
             var trackerAttribution: String = "none/other"
             var trackerListName: String = "none/other"
+            let filterParams = decodePlus(params: queryParams(params: params))
             if let attribution = filterParams["trackerAttribution"] as? String { trackerAttribution = attribution }
             if let listName = filterParams["trackerListName"] as? String { trackerListName = listName }
             let tracker = ProductTracker(trackerAttribution: trackerAttribution, trackerListName: trackerListName)
-            navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId, withEtalaseId: etalaseId, search: keyword, sort: by, withTrackerObject: tracker)
+
+            if let keyword = params["search"] as? String,
+                let by = params["sort"] as? String {
+                navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId, withEtalaseId: etalaseId, search: keyword, sort: by, withTrackerObject: tracker)
+            } else {
+                navigator.navigateToShop(from: UIApplication.topViewController(), withShopID: shopId, withEtalaseId: etalaseId, withTrackerObject: tracker)
+            }
             return true
         }
         
