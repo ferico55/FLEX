@@ -709,8 +709,8 @@ ProductCellDelegate
                                   @"category" : category,
                                   @"key" : [_data objectForKey:@"key"] ?: @"",
                                   @"position" : @(position),
-                                  @"attribution" : _trackerObject.trackerAttribution,
-                                  @"listName" : _trackerObject.trackerListName
+                                  @"attribution" : _trackerObject.trackerAttribution ?: @"none/other",
+                                  @"listName" : _trackerObject.trackerListName ?: @"none/other"
                                   };
     [product setTrackerInfoWithInfo:trackerInfo];
 }
@@ -851,7 +851,7 @@ ProductCellDelegate
                                                        andPrice:list.product_price
                                                     andImageURL:list.product_image
                                                     andShopName:list.shop_name
-                                             withProductTracker:_trackerObject];
+                                             withProductTracker:_trackerObject ?: [ProductTracker new]];
 }
 
 #pragma mark - Promo request delegate
@@ -1204,7 +1204,9 @@ ProductCellDelegate
     SearchProduct *detail =  [details firstObject];
     NSMutableArray *products = [NSMutableArray new];
     NSString*trackerListName = [NSString stringWithFormat: @"/hot/%@ - product %ld",[_data objectForKey:@"key"] ?: @"", _page];
-    _trackerObject.trackerListName = trackerListName;
+    if (_trackerObject) {
+        _trackerObject.trackerListName = trackerListName;
+    }
     NSString *category = @"";
     if (detail) {
         category =  [NSString stringWithFormat: @"%@/%@", detail.category_breadcrumb ?: @"", detail.category_id ?: @""];
@@ -1219,7 +1221,7 @@ ProductCellDelegate
                                   @"variant" : @"none/other",
                                   @"position" : [NSNumber numberWithInteger:_productIdx],
                                   @"list" : trackerListName,
-                                  @"dimension37" : _trackerObject.trackerAttribution
+                                  @"dimension37" : _trackerObject.trackerAttribution ?: @"none/other"
                                   };
         [products addObject:product];
         _productIdx++;

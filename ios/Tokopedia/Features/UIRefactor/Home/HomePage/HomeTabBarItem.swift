@@ -58,13 +58,7 @@ import UIKit
         jumpingRocketLottie.contentMode = .scaleAspectFit
         jumpingRocketLottie.backgroundColor = UIColor.clear
         self.addSubview(jumpingRocketLottie)
-        if isIphoneX {
-            jumpingRocketLottie.frame = self.frame
-        } else {
-            jumpingRocketLottie.snp.makeConstraints { [unowned self] make in
-                make.edges.equalTo(self)
-            }
-        }
+        jumpingRocketLottie.frame = self.frame
         jumpingRocketLottie.isHidden = false
         
         homeTabMenuLottie.animationProgress = 1
@@ -76,11 +70,8 @@ import UIKit
         if isIphoneX {
             homeTabMenuLottie.frame = CGRect(x: self.frame.midX - (29 / 2), y: self.frame.midY - (29 / 2), width: 29, height: 29)
         } else {
-            homeTabMenuLottie.snp.makeConstraints { [unowned self] make in
-                make.center.equalTo(self)
-                make.width.equalTo(29)
-                make.height.equalTo(29)
-            }
+            homeTabMenuLottie.frame.size = CGSize(width: 29, height: 29)
+            homeTabMenuLottie.center = self.center
         }
         homeTabMenuLottie.isHidden = true
         

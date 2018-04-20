@@ -288,8 +288,8 @@
     BOOL useCustomValue = SYSTEM_VERSION_LESS_THAN(@"11.0") && [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
     BOOL useLargerTopMargin = SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"11.0")  && [[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad;
     CGFloat width = useCustomValue ? 76 : self.view.frame.size.width / 5;
-    CGFloat originX = useCustomValue ? 126 : 0;
-    CGFloat originY = useLargerTopMargin ? 8 : 4;
+    CGFloat originX = useCustomValue ? 63 : 0;
+    CGFloat originY = useLargerTopMargin ? 5 : 2;
     CGRect animationRect = CGRectMake(originX, originY, width, 29.5);
     
     animatedHomeTabButton = [[HomeTabBarItem alloc] initWithTabBarItem:tabBarItem rect: animationRect];

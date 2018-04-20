@@ -625,11 +625,11 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
     NSString *categoryId = [_data objectForKey:@"sc"] ?: departmentIDString;
     
     [moyaNetworkManager requestIntermediaryCategoryForCategoryID:categoryId
-                                                   trackerObject:_trackerObject
+                                                   trackerObject:_trackerObject ?: [ProductTracker new]
                                            withCompletionHandler:^(CategoryIntermediaryResult * _Nonnull result) {
                                                _categoryIntermediaryResult = result;
                                                if (_categoryIntermediaryResult.isIntermediary && _isIntermediary) {
-                                                   CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult trackerObject:_trackerObject];
+                                                   CategoryIntermediaryViewController *categoryIntermediaryViewController = [[CategoryIntermediaryViewController alloc] initWithCategoryIntermediaryResult:_categoryIntermediaryResult trackerObject:_trackerObject ?: [ProductTracker new]];
                                                    categoryIntermediaryViewController.hidesBottomBarWhenPushed = YES;
                                                    [self.navigationController replaceTopViewControllerWithViewController:categoryIntermediaryViewController ];
                                                } else {
@@ -649,7 +649,7 @@ NSString *const USER_LAYOUT_CATEGORY_PREFERENCES = @"USER_LAYOUT_CATEGORY_PREFER
                                                                                                                              @"categoryIntermediaryResult" : [_categoryIntermediaryResult wrap] ? : @{},
                                                                                                                              @"cellType": @([self mapCellLayoutAPI] ? : 0),
                                                                                                                              @"topAdsFilter": _selectedFilterParam ? : @{},
-                                                                                                                             @"attribution": _trackerObject.trackerAttribution,
+                                                                                                                             @"attribution": _trackerObject.trackerAttribution ?: @"none/other",
                                                                                                                              }
                                                                                                                      }];
                                                        

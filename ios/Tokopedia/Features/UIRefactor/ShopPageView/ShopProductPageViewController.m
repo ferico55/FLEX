@@ -393,7 +393,7 @@ NoResultDelegate
                                                            andPrice:product.price
                                                         andImageURL:product.imageUri
                                                         andShopName:nil
-                                                 withProductTracker:_objectTracker];
+                                                 withProductTracker:_objectTracker ?: [ProductTracker new]];
         return;
     }
     ShopProductPageList *product = [_product objectAtIndex:indexPath.row];
@@ -412,7 +412,7 @@ NoResultDelegate
                                                        andPrice:product.product_price
                                                     andImageURL:product.product_image
                                                     andShopName:nil
-                                             withProductTracker:_objectTracker];
+                                             withProductTracker:_objectTracker ?: [ProductTracker new]];
 }
 
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath {
@@ -663,7 +663,7 @@ NoResultDelegate
                                                            andPrice:product.price
                                                         andImageURL:product.imageUri
                                                         andShopName:nil
-                                                 withProductTracker:_objectTracker];
+                                                 withProductTracker:_objectTracker ?: [ProductTracker new]];
         return;
     }
     NSInteger index = 0;
@@ -689,7 +689,7 @@ NoResultDelegate
                                                        andPrice:list.product_price
                                                     andImageURL:list.product_image
                                                     andShopName:list.shop_name
-                                             withProductTracker:_objectTracker];
+                                             withProductTracker:_objectTracker ?: [ProductTracker new]];
 }
 
 - (void)changeWishlistForProductId:(NSString *)productId withStatus:(bool) isOnWishlist {
@@ -841,7 +841,9 @@ NoResultDelegate
     NSMutableArray *products = [NSMutableArray new];
     self.objectTracker.trackerListName = @"/shoppage - product 1 - product - top products";
     NSString*trackerListName = [NSString stringWithFormat: @"/shoppage - product %d%@", (int)_page, @" - product - top products"];
-    _objectTracker.trackerListName = trackerListName;
+    if (_objectTracker){
+        _objectTracker.trackerListName = trackerListName;
+    }
     for (FeaturedProduct*featured in _featuredProducts) {
         NSDictionary *product = @{
           @"name" : featured.name ?: @"",
@@ -856,7 +858,7 @@ NoResultDelegate
           @"shop_id" : self.shopID,
           @"shop_name" : self.shopName,
           @"page_type" : @"/shoppage",
-          @"dimension37" : self.objectTracker.trackerAttribution
+          @"dimension37" : self.objectTracker.trackerAttribution ?: @"none/other"
         };
         [products addObject:product];
         _topProductIdx++;
@@ -876,7 +878,9 @@ NoResultDelegate
 
 - (void) trackClickFeaturedProduct:(int)row product:(FeaturedProduct*)featured {
     NSString*trackerListName = [NSString stringWithFormat: @"%@%d%@", @"/shoppage - product ", (int)_page-1, @" - product - top products"];
-    _objectTracker.trackerListName = trackerListName;
+    if (_objectTracker){
+        _objectTracker.trackerListName = trackerListName;
+    }
     NSDictionary *data = @{
        @"event" : @"productView",
        @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
@@ -900,7 +904,7 @@ NoResultDelegate
                     @"shop_id" : self.shopID,
                     @"shop_name" : self.shopName,
                     @"page_type" : @"/shoppage",
-                    @"dimension37" : self.objectTracker.trackerAttribution
+                    @"dimension37" : self.objectTracker.trackerAttribution ?: @"none/other"
                 }]
             }
         }
@@ -911,7 +915,9 @@ NoResultDelegate
 - (void) trackImpressionProducts:(NSArray<ShopProductPageList*>*)productList{
     NSMutableArray *products = [NSMutableArray new];
     NSString*trackerListName = [NSString stringWithFormat: @"%@%d%@%@", @"/shoppage - product ", (int)_page, @" - product - ", _initialEtalase.etalase_name?:@"Semua Produk"];
-    _objectTracker.trackerListName = trackerListName;
+    if (_objectTracker) {
+        _objectTracker.trackerListName = trackerListName;
+    }
     for (ShopProductPageList*list in productList) {
         NSDictionary *product = @{
                                   @"name" : list.viewModel.productName ?: @"",
@@ -926,7 +932,7 @@ NoResultDelegate
                                   @"shop_id" : self.shopID,
                                   @"shop_name" : self.shopName,
                                   @"page_type" : @"/shoppage",
-                                  @"dimension37" : self.objectTracker.trackerAttribution
+                                  @"dimension37" : self.objectTracker.trackerAttribution ?: @"none/other"
                                   };
         [products addObject:product];
         _productIdx++;
@@ -946,7 +952,9 @@ NoResultDelegate
 
 - (void) trackClickProduct:(int)row product:(ShopProductPageList*)product {
     NSString*trackerListName = [NSString stringWithFormat: @"/shoppage - product %d%@%@", (int)((row+1)/ProductAndWishlistNetworkManager.productPerPage)+1, @" - product - ", _initialEtalase.etalase_name?:@"Semua Produk"];
-    _objectTracker.trackerListName = trackerListName;
+    if (_objectTracker) {
+        _objectTracker.trackerListName = trackerListName;
+    }
     NSDictionary *data = @{
        @"event" : @"productClick",
        @"eventCategory" : [NSString stringWithFormat:@"%@%@", @"shop page - " , _userType],
@@ -970,7 +978,7 @@ NoResultDelegate
                       @"shop_id" : self.shopID,
                       @"shop_name" : self.shopName,
                       @"page_type" : @"/shoppage",
-                      @"dimension37" : self.objectTracker.trackerAttribution
+                      @"dimension37" : self.objectTracker.trackerAttribution ?: @"none/other"
                   }]
                }
        }

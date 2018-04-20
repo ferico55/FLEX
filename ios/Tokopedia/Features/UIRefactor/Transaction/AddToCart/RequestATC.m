@@ -60,8 +60,8 @@
     NSInteger postalCode = [address.postal_code integerValue];
     NSString *recieverName = address.receiver_name?:@"";
     NSString *recieverPhone = address.receiver_phone?:@"";
-    NSString *trackerAttribution = product.trackerInfo.trackerAttribution;
-    NSString *trackerListName = product.trackerInfo.trackerListName;
+    NSString *trackerAttribution = product.trackerInfo.trackerAttribution ?: @"none/other";
+    NSString *trackerListName = product.trackerInfo.trackerListName ?: @"none/other";
     
     NSDictionary* param = @{
                             @"product_id":@(productID),

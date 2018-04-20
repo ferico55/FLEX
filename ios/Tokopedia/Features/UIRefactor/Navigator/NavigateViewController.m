@@ -95,7 +95,7 @@
 +(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker *)tracker {
     ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
-    container.productTracker = tracker;
+    container.productTracker = tracker ?: [ProductTracker new];
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -109,7 +109,7 @@
 -(void)navigateToShopFromViewController:(UIViewController *)viewController withShopID:(NSString *)shopID withTrackerObject:(ProductTracker *)tracker {
     ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{MORE_SHOP_ID : shopID?:@""};
-    container.productTracker = tracker;
+    container.productTracker = tracker ?: [ProductTracker new];
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -129,7 +129,7 @@
     EtalaseList *list = [EtalaseList new];
     list.etalase_id = etalaseId;
     container.initialEtalase = list;
-    container.productTracker = tracker;
+    container.productTracker = tracker ?: [ProductTracker new];
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -154,7 +154,7 @@
     ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{kTKPDDETAIL_APISHOPIDKEY : shopID ?: @""};
     container.productFilter = filter;
-    container.productTracker = tracker;
+    container.productTracker = tracker ?: [ProductTracker new];
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -296,7 +296,7 @@
                                                                                     imageURL:imageURL?:@""
                                                                                     shopName:shopName?:@""
                                                                            isReplacementMode:NO
-                                                                              productTracker:productTracker];
+                                                                              productTracker:productTracker ?: [ProductTracker new]];
     
     vc.hidesBottomBarWhenPushed = YES;
     
@@ -462,7 +462,7 @@
 - (void)navigateToShopFromViewController:(UIViewController*)viewController withShopName:(NSString*)shopName withTrackerObject:(ProductTracker*)tracker {
     ShopViewController *container = [[ShopViewController alloc] init];
     container.data = @{ @"shop_domain" : shopName };
-    container.productTracker = tracker;
+    container.productTracker = tracker ?: [ProductTracker new];
     [viewController.navigationController pushViewController:container animated:YES];
 }
 
@@ -506,7 +506,7 @@
     categoryResultProductViewController.hidesBottomBarWhenPushed = YES;
     categoryResultProductViewController.data = @{@"sc":categoryId ?: @"", @"department_name":categoryName ?: @"", @"type" : @"search_product"};
     categoryResultProductViewController.isIntermediary = isIntermediary;
-    categoryResultProductViewController.trackerObject = trackerObject;
+    categoryResultProductViewController.trackerObject = trackerObject ?: [ProductTracker new];
     
     SearchResultViewController *searchResultCatalogViewController = [SearchResultViewController new];
     searchResultCatalogViewController.hidesBottomBarWhenPushed = YES;
@@ -541,7 +541,7 @@
 - (void)navigateToIntermediaryCategoryFromViewController:(UIViewController *)viewController withData:(CategoryDataForCategoryResultVC*)data withFilterParams:(NSDictionary *) filterParams trackerObject:(ProductTracker *)trackerObject{
     CategoryResultViewController *vc = [CategoryResultViewController new];
     vc.isIntermediary = YES;
-    vc.trackerObject = trackerObject;
+    vc.trackerObject = trackerObject ?: [ProductTracker new];
     NSMutableDictionary *dataDictionaryWithFilterParams = [[self addDataTypeFromData: [data mapToDictionary]] mutableCopy];
     [dataDictionaryWithFilterParams addEntriesFromDictionary:filterParams];
     vc.data = [dataDictionaryWithFilterParams copy];
@@ -613,7 +613,7 @@
 - (void)navigateToHotlistResultFromViewController:(UIViewController*)viewController withData:(NSDictionary*)data withTrackerObject:(ProductTracker*)tracker {
     HotlistResultViewController *controller = [HotlistResultViewController new];
     controller.data = data;
-    controller.trackerObject = tracker;
+    controller.trackerObject = tracker ?: [ProductTracker new];
     controller.hidesBottomBarWhenPushed = YES;
     [viewController.navigationController pushViewController:controller animated:YES];
 }
