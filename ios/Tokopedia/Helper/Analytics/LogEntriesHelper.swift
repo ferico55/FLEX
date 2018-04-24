@@ -17,6 +17,20 @@ internal class LogEntriesHelper: NSObject {
         logger.log(data)
     }
     
+    internal class func logFailedAnalytics(dictionary: [AnyHashable: Any]) {
+        let userID = UserAuthentificationManager().getUserId() ?? "0"
+        
+        let data: [String : Any] = [
+            "userID": userID,
+            "device": UIDevice.current.modelName,
+            "ios_version": UIDevice.current.systemVersion,
+            "app_version": Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "",
+            "trackingData": dictionary
+            ]
+        
+        self.logOnLogEntries(data: data)
+    }
+    
     internal class func logShowMaintenance(event: String, lastURL: String?, statusCode: Int) {
         var url = lastURL ?? ""
         let data = [

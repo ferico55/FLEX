@@ -48,7 +48,7 @@ RCT_EXPORT_METHOD(trackImpression: (NSDictionary*) data) {
         [AnalyticsManager trackData: data];
     }
     @catch (NSException *exception) {
-        // do nothing
+        [LogEntriesHelper logFailedAnalyticsWithDictionary: data];
     }
 }
 
@@ -61,7 +61,7 @@ RCT_EXPORT_METHOD(trackPromoClickWithDictionary:(NSDictionary*)promotionsDict di
         [AnalyticsManager trackPromoClickWithDictionary:promotionsDict];
     }
     @catch (NSException *exception) {
-        // do nothing
+        [LogEntriesHelper logFailedAnalyticsWithDictionary: promotionsDict];
     }
 }
 
@@ -70,7 +70,7 @@ RCT_EXPORT_METHOD(gtmTrack:(NSDictionary *)data) {
         [AnalyticsManager trackData: data];
     }
     @catch (NSException *exception) {
-        // do nothing
+        [LogEntriesHelper logFailedAnalyticsWithDictionary: data];
     }
 }
 
