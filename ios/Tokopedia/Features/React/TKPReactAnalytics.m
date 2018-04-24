@@ -29,8 +29,7 @@
 RCT_EXPORT_MODULE();
 
 - (dispatch_queue_t)methodQueue {
-    // always run in bg to prevent UI blocking
-    return dispatch_get_global_queue(QOS_CLASS_BACKGROUND, 0);
+    return dispatch_get_main_queue();
 }
 
 RCT_EXPORT_METHOD(trackScreenName:(NSString*)name) {
@@ -45,7 +44,12 @@ RCT_EXPORT_METHOD(trackImpression: (NSDictionary*) data) {
     if (!data) {
         return;
     }
-    [AnalyticsManager trackData: data];
+    @try {
+        [AnalyticsManager trackData: data];
+    }
+    @catch (NSException *exception) {
+        // do nothing
+    }
 }
 
 RCT_EXPORT_METHOD(moEngageEvent:(NSString *)name attributes:(NSDictionary *)attributes) {
@@ -53,11 +57,21 @@ RCT_EXPORT_METHOD(moEngageEvent:(NSString *)name attributes:(NSDictionary *)attr
 }
 
 RCT_EXPORT_METHOD(trackPromoClickWithDictionary:(NSDictionary*)promotionsDict didSuccess:(RCTPromiseResolveBlock)resolve reject:(__unused RCTPromiseRejectBlock)reject) {
-    [AnalyticsManager trackPromoClickWithDictionary:promotionsDict];
+    @try {
+        [AnalyticsManager trackPromoClickWithDictionary:promotionsDict];
+    }
+    @catch (NSException *exception) {
+        // do nothing
+    }
 }
 
 RCT_EXPORT_METHOD(gtmTrack:(NSDictionary *)data) {
-    [AnalyticsManager trackData:data];
+    @try {
+        [AnalyticsManager trackData: data];
+    }
+    @catch (NSException *exception) {
+        // do nothing
+    }
 }
 
 RCT_EXPORT_METHOD(appsFlyerTrack:(NSDictionary *)data) {
