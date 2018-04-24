@@ -174,7 +174,8 @@
                             category:GA_EVENT_CATEGORY_HOMEPAGE_TAB
                               action:[NSString stringWithFormat:@"click %@ tab", name]
                                label:@""];
-    NSDictionary *userInfo = @{@"page" : @(button.tag)};
+    int pageNumber = button.tag >= 1 && button.tag <= 5 ? (int) button.tag : 1;
+    NSDictionary *userInfo = @{@"page" : @(pageNumber)};
     [[NSNotificationCenter defaultCenter] postNotificationName:@"didSwipeHomePage" object:nil userInfo:userInfo];
     [self setActiveButton];
 }
