@@ -13,6 +13,6 @@
 #if DEBUG
     return FBTweakValue(@"Others", @"Shake-Shake", @"Use Firebase", YES);
 #endif
-    return NO;
+    return YES;
 }
 @end
